@@ -24,3 +24,5 @@ class Meeting(DefaultFields):
     # Sometimes there are additional files atttached to a meeting
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     meeting_series = models.ForeignKey(MeetingSeries, null=True, blank=True)
+    # In case the license is different than the rest of the system, e.g. a CC-licensed picture
+    license = models.CharField(max_length=200)
