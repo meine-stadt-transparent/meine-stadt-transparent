@@ -26,7 +26,9 @@ SECRET_KEY = 'ih2md$&*tl=9(6i((^!_u784pxpky!3xpj+!ynbwp8a)&++7xa'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'opensourceris.local'
+    'opensourceris.local',
+    '127.0.0.1',
+    'localhost'
 ]
 
 

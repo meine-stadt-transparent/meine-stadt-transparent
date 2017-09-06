@@ -6,6 +6,8 @@ Open Source RIS für Prototype Fund
 
 ### Installing the project
 
+Create a virtualenv at `venv`.
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -14,6 +16,7 @@ pip install -r requirements.txt
 
 ```bash
 source venv/bin/activate
+./manage.py migrate
 ./manage.py runserver
 ```
 
