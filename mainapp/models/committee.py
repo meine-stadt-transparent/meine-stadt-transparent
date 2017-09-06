@@ -4,6 +4,7 @@ from .body import Body
 from .default_fields import DefaultFields
 from .legislative_term import LegislativeTerm
 from .location import Location
+from .person import Person
 
 
 class Committee(DefaultFields):
@@ -12,3 +13,4 @@ class Committee(DefaultFields):
     location = models.ForeignKey(Location, null=True, blank=True)
     legislative_term = models.ForeignKey(LegislativeTerm, blank=True)
     body = models.ForeignKey(Body)
+    member = models.ManyToManyField(Person)
