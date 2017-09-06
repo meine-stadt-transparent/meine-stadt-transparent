@@ -3,25 +3,30 @@ import json
 from django.core.management.base import BaseCommand
 import requests
 
-from mainapp.models import SearchPoi
+from mainapp.models import SearchPoi, Body
 
 
 class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def add_arguments(self, parser):
-        parser.add_argument('gemeindeschluessel', nargs=1, type=str)
-        parser.add_argument('amenity', nargs=1, type=str)
-        parser.add_argument('body-id', nargs=1, type=int)
+        parser.add_argument('gemeindeschluessel', type=str)
+        parser.add_argument('amenity', type=str)
+        parser.add_argument('body-id', type=int)
 
     def handle(self, *args, **options):
+        body = Body.objects.filter(id=options['body-id'])
+        if body.count() == 0:
+            self.stderr.write("Body not found: %s" % options['body-id'])
+            return
+
         query = '[out:json];area["de:amtlicher_gemeindeschluessel"~"^%s"];\
             foreach(\
              rel(pivot)->.a;\
              .a out meta;\
              (node(area)[amenity=%s][name];>;);\
              out qt meta;\
-            );' % (options['gemeindeschluessel'][0], options['amenity'][0])
+            );' % (options['gemeindeschluessel'], options['amenity'])
 
         r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
 
@@ -32,7 +37,9 @@ class Command(BaseCommand):
                     poi = SearchPoi()
                     poi.displayed_name = node['tags']['name']
                     poi.osm_id = node['id']
-                    poi.osm_amenity = options['amenity'][0]
+                    poi.osm_amenity = options['amenity']
                     poi.geometry = {'type': 'Point', 'coordinates': [node['lon'], node['lat']]}
                     poi.save()
+
+                    poi.bodies.add(body[0])
                     self.stdout.write("Created: %s" % node['tags']['name'])
