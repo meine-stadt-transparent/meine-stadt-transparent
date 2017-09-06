@@ -11,4 +11,4 @@ class File(DefaultFields):
     legal_date = models.DateField()
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
-    paper = models.ForeignKey(Paper, blank=True)
+    paper = models.ForeignKey(Paper, null=True, blank=True)
