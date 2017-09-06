@@ -26,6 +26,8 @@ wheels/
 *.egg
 
 db.sqlite3
+node_modules/
+webpack-stats.json
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

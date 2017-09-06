@@ -10,6 +10,7 @@ Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ w
 
 ```bash
 pip install -r requirements.txt
+npm install
 ```
 
 ### Starting the development server
@@ -19,6 +20,17 @@ source venv/bin/activate
 ./manage.py migrate
 ./manage.py runserver
 ```
+
+For compiling SCSS/JS automatically:
+
+```bash
+npm run watch
+```
+
+### Important URLs:
+
+- https://opensourceris.local/
+- https://opensourceris.local/admin/
 
 ## Design
 

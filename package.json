@@ -1,0 +1,32 @@
+{
+  "name": "opensourceris",
+  "version": "1.0.0",
+  "description": "Open Source Ratsinformationssystem",
+  "scripts": {
+    "build:dev": "webpack --config config/webpack.config.dev.js",
+    "watch": "webpack --config config/webpack.config.dev.js --watch"
+  },
+  "author": "Konstantin Schütze, Tobias Hößl",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.28.6",
+    "extract-text-webpack-plugin": "^2.1.2",
+    "file-loader": "^0.11.2",
+    "node-sass": "^4.5.3",
+    "resolve-url-loader": "^2.1.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.5.5",
+    "webpack-bundle-tracker": "^0.2.0"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.8",
+    "leaflet": "^1.2.0",
+    "materialize-css": "^0.100.2"
+  }
+}
