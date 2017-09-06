@@ -18,6 +18,7 @@ npm install
 ```bash
 source venv/bin/activate
 ./manage.py migrate
+./manage.py createsuperuser
 ./manage.py runserver
 ```
 
