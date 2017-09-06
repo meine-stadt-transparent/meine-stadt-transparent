@@ -28,11 +28,23 @@ For compiling SCSS/JS automatically:
 npm run watch
 ```
 
+To load the dummy data for development:
+
+```bash
+./manage.py loaddata mainapp/initdata.json
+```
+
+To save the modified dummy data
+
+```bash
+./manage.py dumpdata mainapp --indent 4 > mainapp/initdata.json
+```
+
 ### Important URLs:
 
 - https://opensourceris.local/
 - https://opensourceris.local/admin/
 
-## Design
+## Data model
 
 The names of the models and the fields are highly inspired by the OParl standard. 

@@ -1,0 +1,14 @@
+[
+{
+    "model": "mainapp.legislativeterm",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:19:30.450Z",
+        "modified_date": "2017-09-06T10:19:30.450Z",
+        "deleted": false,
+        "name": "Term 1",
+        "start_date": "2017-01-01",
+        "end_date": "2018-01-01"
+    }
+}
+]

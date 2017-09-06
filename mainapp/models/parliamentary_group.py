@@ -1,6 +1,6 @@
 from django.db import models
-from mainapp.models.default_fields import DefaultFields
-from mainapp.models.person import Person
+from .default_fields import DefaultFields
+from .person import Person
 
 
 class ParliamentaryGroup(DefaultFields):

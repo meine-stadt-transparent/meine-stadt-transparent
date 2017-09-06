@@ -1,5 +1,5 @@
 from django.db import models
-from mainapp.models.default_fields import DefaultFields
+from .default_fields import DefaultFields
 
 
 class Location(DefaultFields):

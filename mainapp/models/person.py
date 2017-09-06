@@ -1,6 +1,6 @@
 from django.db import models
-from mainapp.models.default_fields import DefaultFields
-from mainapp.models.location import Location
+from .default_fields import DefaultFields
+from .location import Location
 
 
 class Person(DefaultFields):
