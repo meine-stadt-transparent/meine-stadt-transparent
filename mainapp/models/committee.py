@@ -10,7 +10,7 @@ from .person import Person
 class Committee(DefaultFields):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=50)
-    location = models.ForeignKey(Location, null=True, blank=True)
-    legislative_term = models.ForeignKey(LegislativeTerm, blank=True)
     body = models.ForeignKey(Body)
-    member = models.ManyToManyField(Person)
+    location = models.ForeignKey(Location, null=True, blank=True)
+    legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
+    members = models.ManyToManyField(Person, blank=True)

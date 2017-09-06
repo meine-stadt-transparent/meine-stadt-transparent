@@ -10,4 +10,3 @@ class ParliamentaryGroup(DefaultFields):
     short_name = models.CharField(max_length=20)
     members = models.ManyToManyField(Person, blank=True)
     body = models.ForeignKey(Body)
-    member = models.ManyToManyField(Person, related_name='parlamentary_group_members')
