@@ -8,4 +8,4 @@ class Meeting(DefaultFields):
     cancelled = models.BooleanField()
     start = models.DateTimeField()
     end = models.DateTimeField()
-    location = models.ForeignKey(Location, null=True)
+    location = models.ForeignKey(Location, null=True, blank=True)

@@ -10,5 +10,81 @@
         "start_date": "2017-01-01",
         "end_date": "2018-01-01"
     }
+},
+{
+    "model": "mainapp.location",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:36:25.236Z",
+        "modified_date": "2017-09-06T10:36:25.236Z",
+        "deleted": false,
+        "displayed_name": "Ort 1",
+        "description": "Irgendwo"
+    }
+},
+{
+    "model": "mainapp.committee",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:35:03.597Z",
+        "modified_date": "2017-09-06T10:35:03.597Z",
+        "deleted": false,
+        "name": "Ausschuss 1",
+        "short_name": "A 1",
+        "location": null,
+        "legislative_term": 1
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:32:43.598Z",
+        "modified_date": "2017-09-06T10:32:43.599Z",
+        "deleted": false,
+        "storage_filename": "uuid1.pdf",
+        "displayed_filename": "Datei 1.pdf",
+        "legal_date": "2017-09-06",
+        "filesize": 0
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:37:39.044Z",
+        "modified_date": "2017-09-06T10:37:45.216Z",
+        "deleted": false,
+        "name": "Sitzung des Ausschusses",
+        "cancelled": false,
+        "start": "2017-09-06T10:00:00Z",
+        "end": "2017-09-06T12:00:00Z",
+        "location": 1
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:40:29.699Z",
+        "modified_date": "2017-09-06T10:40:29.699Z",
+        "deleted": false,
+        "name": "Vorname Nachname",
+        "given_name": "Vorname",
+        "family_name": "Nachname",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.parliamentarygroup",
+    "pk": 1,
+    "fields": {
+        "created_date": "2017-09-06T10:39:13.244Z",
+        "modified_date": "2017-09-06T10:40:01.797Z",
+        "deleted": false,
+        "name": "Fraktion nummer der K\u00f6rperschaft",
+        "short_name": "Fraktion 1",
+        "members": []
+    }
 }
 ]

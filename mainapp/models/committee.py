@@ -8,5 +8,5 @@ from .location import Location
 class Committee(DefaultFields):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=50)
-    location = models.ForeignKey(Location, null=True)
-    legislative_term = models.ForeignKey(LegislativeTerm)
+    location = models.ForeignKey(Location, null=True, blank=True)
+    legislative_term = models.ForeignKey(LegislativeTerm, blank=True)
