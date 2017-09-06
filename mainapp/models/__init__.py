@@ -8,3 +8,5 @@ from .location import Location
 from .meeting import Meeting
 from .parliamentary_group import ParliamentaryGroup
 from .person import Person
+from .search_poi import SearchPoi
+from .search_street import SearchStreet

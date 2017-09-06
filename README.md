@@ -48,3 +48,22 @@ To save the modified dummy data
 ## Data model
 
 The names of the models and the fields are highly inspired by the OParl standard. 
+
+
+## Shell commands
+
+Straßen einer Stadt importieren:
+```bash
+./manage.py import-streets 05315000 1 # Gemeindeschlüssel von Köln, Body-ID 1
+```
+
+POIs anhand einer OSM-Amenity importieren:
+```bash
+./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel von Köln, Amenity, Body-ID 1
+```
+
+Gemeindeschlüssel (Beispiele):
+- München: 09162000
+- Augsburg: 09761000
+- Neumarkt Sankt Veit: 09183129
+- Köln: 05315000

@@ -1,4 +1,5 @@
 from django.db import models
+from djgeojson.fields import GeometryField
 
 from .default_fields import DefaultFields
 
@@ -10,3 +11,4 @@ class Location(DefaultFields):
     bodies = models.ManyToManyField("mainapp.Body", blank=True)
     is_official = models.BooleanField()
     osm_id = models.BigIntegerField(null=True, blank=True)
+    geometry = GeometryField(default=None)

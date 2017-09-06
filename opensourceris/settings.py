@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mainapp',
     'webpack_loader',
+    'djgeojson',
 ]
 
 MIDDLEWARE = [
@@ -137,4 +138,8 @@ WEBPACK_LOADER = {
         'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
+}
+
+LEAFLET_CONFIG = {
+    'SPATIAL_EXTENT': (5.0, 44.0, 7.5, 46)
 }
