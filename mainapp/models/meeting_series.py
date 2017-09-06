@@ -1,7 +1,6 @@
 from django.db import models
 
 from .default_fields import DefaultFields
-from .meeting import Meeting
 
 
 class MeetingSeries(DefaultFields):
@@ -9,4 +8,3 @@ class MeetingSeries(DefaultFields):
     description = models.TextField(null=True, blank=True)
     # This is true for meetings that are e.g. held once a month
     is_regular = models.BooleanField()
-    meetings = models.ManyToManyField(Meeting)
