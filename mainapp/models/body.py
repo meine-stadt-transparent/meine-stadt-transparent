@@ -1,7 +1,7 @@
 from django.db import models
 
-from .default_fields import DefaultFields
 from mainapp.models import location
+from .default_fields import DefaultFields
 
 
 class Body(DefaultFields):

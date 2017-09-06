@@ -1,10 +1,10 @@
 from django.db import models
 
-from .default_fields import DefaultFields
-from .person import Person
-from .parliamentary_group import ParliamentaryGroup
 from .committee import Committee
+from .default_fields import DefaultFields
 from .department import Department
+from .parliamentary_group import ParliamentaryGroup
+from .person import Person
 
 
 class Paper(DefaultFields):

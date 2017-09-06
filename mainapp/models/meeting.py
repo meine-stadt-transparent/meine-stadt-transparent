@@ -17,8 +17,8 @@ class Meeting(DefaultFields):
     committees = models.ManyToManyField(Committee, blank=True)
     # Only applicable when there are participants without an organization
     persons = models.ManyToManyField(Person, blank=True)
-    invitation = models.ForeignKey(File, null=True, blank=True)
-    resultsProtocol = models.ForeignKey(File, null=True, blank=True)
-    verbatim_protocol = models.ForeignKey(File, null=True, blank=True)
+    invitation = models.ForeignKey(File, null=True, blank=True, related_name="meeting_invitation")
+    results_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_results_protocol")
+    verbatim_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_verbatim_protocol")
     # Sometimes there are additional files atttached to a meeting
-    auxiliary_files = models.ManyToManyField(File, blank=True)
+    auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
