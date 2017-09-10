@@ -1,0 +1,32 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <section class="section">
+            <h1>Files durchsuchen</h1>
+            <form method="POST" action="{% url 'search' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="input-field col s10">
+                        <input id="icon_prefix" type="text" name="query">
+                        <label for="icon_prefix">Suchbegriff</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Suchen
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section class="section">
+            <h2>Suchergebnisse</h2>
+            <ul>
+                {% for result in results %}
+                    <li>{{ result }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+{% endblock %}

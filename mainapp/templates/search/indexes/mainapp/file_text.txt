@@ -1,2 +1,0 @@
-{{ object.displayed_filename }}
-{{ object.parsed_text }}

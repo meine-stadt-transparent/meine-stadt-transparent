@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mainapp',
     'elasticsearch_admin',
-    'haystack',
+    'django_elasticsearch_dsl',
     'webpack_loader',
     'djgeojson',
 ]
@@ -152,10 +152,8 @@ WEBPACK_LOADER = {
 ELASTICSEARCH_URL_PRIVATE = 'http://elastic:changeme@opensourceris.local:80/elasticsearch/'
 ELASTICSEARCH_URL_PUBLIC = 'https://opensourceris.local/elasticsearch/'
 
-HAYSTACK_CONNECTIONS = {
+ELASTICSEARCH_DSL = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': ELASTICSEARCH_URL_PRIVATE,
-        'INDEX_NAME': 'haystack',
+        'hosts': ELASTICSEARCH_URL_PRIVATE
     },
 }
