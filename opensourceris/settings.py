@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
+    'elasticsearch_admin',
+    'haystack',
     'webpack_loader',
     'djgeojson',
 ]
@@ -135,6 +137,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
+    os.path.join(BASE_DIR, 'elasticsearch_admin/static'),
 )
 
 WEBPACK_LOADER = {
@@ -142,4 +145,17 @@ WEBPACK_LOADER = {
         'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
+}
+
+# @TODO Remove the default credentials
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+ELASTICSEARCH_URL_PRIVATE = 'http://elastic:changeme@opensourceris.local:80/elasticsearch/'
+ELASTICSEARCH_URL_PUBLIC = 'https://opensourceris.local/elasticsearch/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': ELASTICSEARCH_URL_PRIVATE,
+        'INDEX_NAME': 'haystack',
+    },
 }

@@ -12,3 +12,4 @@ class File(DefaultFields):
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)
+    parsed_text = models.TextField(null=True, blank=True)

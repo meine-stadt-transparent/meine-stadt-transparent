@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from elasticsearch_admin.views import index as elasticsearch_admin
+from opensourceris.settings import ELASTICSEARCH_URL_PUBLIC
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^elasticsearch_admin/', elasticsearch_admin, {'url': ELASTICSEARCH_URL_PUBLIC}, name='index'),
     url(r'^', include('mainapp.urls')),
-
 ]

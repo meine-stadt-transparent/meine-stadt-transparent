@@ -13,7 +13,19 @@ pip install -r requirements.txt
 npm install
 ```
 
+For **elasticsearch**, Docker is required. [Docker installation instructions](https://docs.docker.com/engine/installation/)
+
+To use the [Elastic HQ](http://www.elastichq.org/) (graphical administration of elasticsearch), [download the package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into [elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch).
+
+The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
+- [Sample Apache-configuration](docs/apache.conf)
+
+
 ### Starting the development server
+
+```bash
+docker-compose up # For elasticsearch
+```
 
 ```bash
 source venv/bin/activate
@@ -44,6 +56,7 @@ To save the modified dummy data
 
 - https://opensourceris.local/
 - https://opensourceris.local/admin/
+- https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
 
 ## Data model
 
