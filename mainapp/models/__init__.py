@@ -4,6 +4,7 @@ from .committee import Committee
 from .committee_membership import CommitteeMembership
 from .default_fields import DefaultFields
 from .department import Department
+from .department_membership import DepartmentMembership
 from .file import File
 from .legislative_term import LegislativeTerm
 from .location import Location

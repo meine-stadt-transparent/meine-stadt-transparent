@@ -11,3 +11,6 @@ class ParliamentaryGroupMembership(DefaultFields):
     start = models.DateField()
     end = models.DateField()
     role = models.CharField(max_length=200)
+
+    def __str__(self):
+        return "{}: {}".format(self.person.__str__(), self.parliamentary_group.__str__())

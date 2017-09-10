@@ -8,3 +8,7 @@ class MeetingSeries(DefaultFields):
     description = models.TextField(null=True, blank=True)
     # This is true for meetings that are e.g. held once a month
     is_regular = models.BooleanField()
+
+    def __str__(self):
+        return self.name
+

@@ -12,4 +12,7 @@ class Body(DefaultFields):
     outline = models.ForeignKey(Location, null=True, blank=True, related_name="body_outline")
     # There might be e.g. a newer body that didn't exist in the older terms, so
     # bodies and terms are mapped explicitly
-    legislative_terms = models.ManyToManyField(LegislativeTerm)
+    legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
+
+    def __str__(self):
+        return self.short_name

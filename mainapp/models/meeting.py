@@ -16,7 +16,8 @@ PUBLICALITY = (
 
 
 class Meeting(DefaultFields):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=200)
+    short_name = models.CharField(max_length=50)
     cancelled = models.BooleanField()
     start = models.DateTimeField()
     end = models.DateTimeField()
@@ -32,4 +33,7 @@ class Meeting(DefaultFields):
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     meeting_series = models.ForeignKey(MeetingSeries, null=True, blank=True)
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
+
+    def __str__(self):
+        return self.short_name
 

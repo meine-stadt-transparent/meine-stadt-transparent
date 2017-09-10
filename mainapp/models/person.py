@@ -9,3 +9,7 @@ class Person(DefaultFields):
     given_name = models.CharField(max_length=50)
     family_name = models.CharField(max_length=50)
     location = models.ForeignKey(Location, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+

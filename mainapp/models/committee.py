@@ -12,3 +12,6 @@ class Committee(DefaultFields):
     body = models.ForeignKey(Body)
     location = models.ForeignKey(Location, null=True, blank=True)
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
+
+    def __str__(self):
+        return self.short_name

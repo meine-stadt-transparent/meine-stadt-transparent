@@ -16,3 +16,6 @@ class File(DefaultFields):
     # In case the license is different than the rest of the system, e.g. a CC-licensed picture
     license = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.displayed_filename
