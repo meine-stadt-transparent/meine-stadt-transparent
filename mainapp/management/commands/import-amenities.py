@@ -5,7 +5,7 @@ from mainapp.models import SearchPoi, Body
 
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Imports amenities from OpenStreetMap for a given city (amtlicher_gemeindeschluessel=gemeideschlüssel)'
 
     def add_arguments(self, parser):
         parser.add_argument('gemeindeschluessel', type=str)

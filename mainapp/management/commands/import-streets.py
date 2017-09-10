@@ -5,7 +5,7 @@ from mainapp.models import SearchStreet, Body
 
 
 class Command(BaseCommand):
-    help = 'Closes the specified poll for voting'
+    help = 'Imports streets from OpenStreetMap for a given city (amtlicher_gemeindeschluessel=gemeideschlüssel)'
 
     def add_arguments(self, parser):
         parser.add_argument('gemeindeschluessel', type=str)
