@@ -6,6 +6,13 @@ from .file import File
 from .location import Location
 from .meeting_series import MeetingSeries
 from .person import Person
+PUBLICALITY = (
+    (0, "unknown"),
+    (1, "public"),
+    (2, "not public"),
+    # Most meeting consist of a public and a subsequent private part
+    (3, "splitted"),
+)
 
 
 class Meeting(DefaultFields):
@@ -24,5 +31,5 @@ class Meeting(DefaultFields):
     # Sometimes there are additional files atttached to a meeting
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     meeting_series = models.ForeignKey(MeetingSeries, null=True, blank=True)
-    # In case the license is different than the rest of the system, e.g. a CC-licensed picture
-    license = models.CharField(max_length=200)
+    public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
+

@@ -1,11 +1,12 @@
+import inspect
+
 from django.contrib import admin
 
-from .models import *
+from mainapp import models
 
-admin.site.register(Committee)
-admin.site.register(File)
-admin.site.register(LegislativeTerm)
-admin.site.register(Location)
-admin.site.register(Meeting)
-admin.site.register(ParliamentaryGroup)
-admin.site.register(Person)
+# Register all models using reflections
+for name, obj in inspect.getmembers(models):
+    if inspect.isclass(obj) and not name == "DefaultFields":
+        admin.site.register(obj)
+
+
