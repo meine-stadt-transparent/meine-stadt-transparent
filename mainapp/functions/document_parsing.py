@@ -1,6 +1,11 @@
 from mainapp.models import SearchStreet, File, Body
+from geopy.geocoders import Nominatim
 import geoextract
 import re
+
+# @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
+# of relevant city names
+KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 
 
 def create_geoextract_data(bodies):
@@ -21,12 +26,47 @@ def create_geoextract_data(bodies):
                 'name': street.displayed_name
             })
 
+    for city in KNOWN_CITIES:
+        locations.append({
+            'name': city,
+            'type': 'city',
+        })
+
     return locations
 
 
-def extract_file_geodata(file_id):
+def get_geodata(location, fallback_city_name):
+    search_str = ''
+    if 'street' in location:
+        search_str += location['street']
+        if 'house_number' in location:
+            search_str += ' ' + location['house_number']
+        if 'postcode' in location:
+            search_str += ', ' + location['postcode'] + ' ' + location['city']
+        elif 'city' in location:
+            search_str += ', ' + location['city']
+        else:
+            search_str += ', ' + fallback_city_name
+    elif 'name' in location:
+        search_str += location['name'] + ', ' + fallback_city_name
+
+    search_str += ', Deutschland'
+
+    geolocator = Nominatim()
+    location = geolocator.geocode(search_str)
+    if location:
+        return {
+            'lat': location.latitude,
+            'lng': location.longitude,
+        }
+    else:
+        return None
+
+
+def extract_file_locations(file_id, fallback_city_name):
     """
     :type file_id: int
+    :type fallback_city_name: str
     :return: list
     """
     file = File.objects.get(pk=file_id)
@@ -119,4 +159,8 @@ def extract_file_geodata(file_id):
     )
 
     found_locations = pipeline.extract(file.parsed_text)
+
+    for counter in range(0, len(found_locations)):
+        found_locations[counter]['address'] = get_geodata(found_locations[counter], fallback_city_name)
+
     return found_locations

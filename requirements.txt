@@ -9,6 +9,7 @@ elasticsearch==5.4.0
 elasticsearch-dsl==5.3.0
 Flask==0.12.2
 git+git://github.com/stadt-karlsruhe/geoextract.git#egg=geoextract
+geopy==1.11.0
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
