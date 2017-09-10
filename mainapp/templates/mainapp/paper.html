@@ -1,0 +1,48 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+    <div class="container"><div class="section">
+        <ul>
+            <li>Name: {{ paper.name }}</li>
+            <li>Short Name: {{ paper.short_name }}</li>
+            <li>Description: {{ paper.description }}</li>
+            <li>Change Request Of: {{ paper.change_request_of }}</li>
+            {% if paper.submitter_parliamentary_groups.all  %}
+            <li>Submitter parliamentary_group:
+                <ul>
+                {% for parliamentary_group in paper.submitter_parliamentary_groups.all %}
+                    <li><a href="{% url 'parliamentary-group' parliamentary_group.id %}">{{ parliamentary_group }}</a></li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+            {% if paper.submitter_committees.all  %}
+            <li>Submitter submitter_committees:
+                <ul>
+                {% for committee in paper.submitter_committees.all %}
+                    <li><a href="{% url 'committee' committee.id %}">{{ committee }}</a></li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+            {% if paper.submitter_departments.all %}
+            <li>Submitter submitter_departments:
+                <ul>
+                {% for department in paper.submitter_departments.all %}
+                    <li><a href="{% url 'department' department.id %}">{{ department }}</a></li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+            {% if paper.submitter_persons.all  %}
+            <li>Submitter submitter_persons:
+                <ul>
+                {% for person in paper.submitter_persons.all %}
+                    <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
+                {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+        </ul>
+    </div></div>
+{% endblock %}

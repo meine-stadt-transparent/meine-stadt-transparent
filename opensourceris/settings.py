@@ -46,8 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
-    'elasticsearch_admin',
-    'django_elasticsearch_dsl',
+    #'elasticsearch_admin',
+    #'django_elasticsearch_dsl',
     'webpack_loader',
     'djgeojson',
 ]
