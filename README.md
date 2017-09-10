@@ -46,6 +46,12 @@ To load the dummy data for development:
 ./manage.py loaddata mainapp/initdata.json
 ```
 
+To reindex the elasticsearch index:
+
+```bash
+./manage.py search_index --rebuild
+```
+
 To save the modified dummy data
 
 ```bash
