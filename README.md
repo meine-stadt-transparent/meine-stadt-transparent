@@ -6,22 +6,40 @@ Open Source RIS für Prototype Fund
 
 ## Development
 
+Requirements: 
+ - Python 3 with pip
+ - A recent node version with npm
+ - A webserver (nginx/apache)
+ - For **elasticsearch**: docker and docker compose.
+ [Docker installation instructions](https://docs.docker.com/engine/installation/)
+
 ### Installing the project
 
-Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ with self-signed certificates in your webserver which redirects to localhost:8080
+Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ with self-signed certificates in your
+webserver which redirects to localhost:8080
 
 ```bash
 pip install -r requirements.txt
 npm install
 ```
 
-For **elasticsearch**, Docker is required. [Docker installation instructions](https://docs.docker.com/engine/installation/)
-If you hit problems regarding memory, please have a look at this [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
+To use the [Elastic HQ](http://www.elastichq.org/), the graphical administration of elasticsearch, [download the
+package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into
+[elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch). If you hit problems regarding
+memory, please have a look at this
+[documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-To use the [Elastic HQ](http://www.elastichq.org/) (graphical administration of elasticsearch), [download the package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into [elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch).
+```bash
+wget https://github.com/royrusso/elasticsearch-HQ/zipball/master
+unzip master
+mv royrusso-elasticsearch-HQ-*/*
+elasticsearch_admin/static/elasticsearch
+rm -r royrusso-elasticsearch-HQ-*
+rm master
+```
 
-The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
-- [Sample Apache-configuration](docs/apache.conf)
+The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers: -
+[Sample Apache-configuration](docs/apache.conf)
 
 
 ### Starting the development server
@@ -66,7 +84,6 @@ To save the modified dummy data
 Running the test cases:
 ```bash
 ./manage.py test
-
 ```
 
 ### Important URLs:
@@ -78,17 +95,19 @@ Running the test cases:
 
 ## Data model
 
-The names of the models and the fields are highly inspired by the OParl standard. 
+The names of the models and the fields are highly inspired by the OParl standard.
 
 
 ## Shell commands
 
 Import streets of a given city (identified by the german "Gemeindeschlüssel"):
+
 ```bash
 ./manage.py import-streets 05315000 1 # Gemeindeschlüssel von Köln, Body-ID 1
 ```
 
 Import Open-Streetmap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
+
 ```bash
 ./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel von Köln, Amenity, Body-ID 1
 ```

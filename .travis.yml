@@ -7,4 +7,5 @@ cache: pip
 
 script:
   - cp docs/env-template .env
+  - ./manage.py migrate
   - ./manage.py test

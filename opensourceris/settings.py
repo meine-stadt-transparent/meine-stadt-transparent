@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import warnings
-import environ
 
+import environ
 
 env = environ.Env()  # set default values and casting
 environ.Env.read_env(".env")  # reading .env file

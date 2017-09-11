@@ -15,8 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-
 from elasticsearch_admin.views import index as elasticsearch_admin
+
 from opensourceris.settings import ELASTICSEARCH_URL_PUBLIC
 
 urlpatterns = [
