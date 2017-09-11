@@ -1,0 +1,8 @@
+DEBUG=True
+REAL_HOST=opensourceris.local
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
+ELASTICSEARCH_URL_PUBLIC=https://opensourceris.local/elasticsearch/
+SECRET_KEY=notsosecretkey
+OPENCAGEDATA_KEY=alsonotsosecretkey
+GEOEXTRACT_DEFAULT_CITY=Köln
