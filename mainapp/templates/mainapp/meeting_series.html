@@ -10,7 +10,7 @@
             {% else %}
                 <p>The meeting series isn't regular</p>
             {% endif %}
-            {% for meeting in meeting_series.meeting_set %}
+            {% for meeting in meeting_series.meeting_set.all %}
                 <p><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></p>
             {% endfor %}
         </div>

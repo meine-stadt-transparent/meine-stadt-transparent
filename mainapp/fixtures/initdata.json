@@ -282,7 +282,7 @@
         "created": "2017-09-10T14:08:31.146Z",
         "modified": "2017-09-10T14:08:31.146Z",
         "deleted": false,
-        "name": "Kölner Testgruppe",
+        "name": "K\u00f6lner Testgruppe",
         "short_name": "Testgruppe",
         "start": "2017-09-10",
         "end": "2017-09-27",
@@ -462,8 +462,8 @@
         "modified": "2017-09-10T15:35:04.454Z",
         "deleted": false,
         "reference_number": "2017-09-10/1",
-        "name": "Straßen in Köln",
-        "short_name": "Straßen in Köln",
+        "name": "Stra\u00dfen in K\u00f6ln",
+        "short_name": "Stra\u00dfen in K\u00f6ln",
         "description": "",
         "change_request_of": null,
         "submitter_parliamentary_groups": [
@@ -532,6 +532,19 @@
     }
 },
 {
+    "model": "mainapp.meetingseries",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:47:41.063Z",
+        "modified": "2017-09-11T13:47:41.063Z",
+        "deleted": false,
+        "name": "House Assembly meetings",
+        "description": "Five House Assembly meetings that are scheduled onth per month",
+        "is_regular": true
+    }
+},
+{
     "model": "mainapp.meeting",
     "pk": 1,
     "fields": {
@@ -582,6 +595,136 @@
         "persons": [
             2
         ],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:48:29.482Z",
+        "modified": "2017-09-11T13:53:00.917Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 1",
+        "short_name": "House Assembly 1",
+        "cancelled": false,
+        "start": "2017-09-01T10:00:00Z",
+        "end": "2017-09-01T12:00:00Z",
+        "locations": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "meeting_series": 1,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:49:05.723Z",
+        "modified": "2017-09-11T13:52:54.620Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 2",
+        "short_name": "House Assembly 2",
+        "cancelled": false,
+        "start": "2017-09-08T10:00:00Z",
+        "end": "2017-09-08T12:00:00Z",
+        "locations": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "meeting_series": 1,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:49:34.981Z",
+        "modified": "2017-09-11T13:52:48.493Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 3",
+        "short_name": "House Assembly 3",
+        "cancelled": false,
+        "start": "2017-09-15T10:00:00Z",
+        "end": "2017-09-15T12:00:00Z",
+        "locations": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "meeting_series": 1,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:50:01.662Z",
+        "modified": "2017-09-11T13:52:41.031Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 4",
+        "short_name": "House Assembly 4",
+        "cancelled": false,
+        "start": "2017-09-22T10:00:00Z",
+        "end": "2017-09-22T12:00:00Z",
+        "locations": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "meeting_series": 1,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:50:52.425Z",
+        "modified": "2017-09-11T13:52:28.309Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 5",
+        "short_name": "House Assembly 5",
+        "cancelled": false,
+        "start": "2017-09-29T10:00:00Z",
+        "end": "2017-09-29T12:00:00Z",
+        "locations": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "meeting_series": 1,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
         "auxiliary_files": []
     }
 },
