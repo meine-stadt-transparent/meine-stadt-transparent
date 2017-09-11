@@ -1,8 +1,9 @@
 from django.conf.urls import url
 from django.views.generic import DetailView
 
-from .models import Paper, Person, ParliamentaryGroup, Committee, Department
 from . import views
+from .models import Paper, Person, ParliamentaryGroup, Committee, Department, LegislativeTerm
+from .models import Location, Meeting, MeetingSeries
 
 
 def simple_model_view(name: str, model):
@@ -16,9 +17,13 @@ def simple_model_view(name: str, model):
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
-    simple_model_view('paper', Paper),
-    simple_model_view('parliamentary group', ParliamentaryGroup),
     url(r'^person/(?P<pk>[0-9]+)$', views.person, name='person'),
     simple_model_view('committee', Committee),
     simple_model_view('department', Department),
+    simple_model_view('legislative_term', LegislativeTerm),
+    simple_model_view('location', Location),
+    simple_model_view('meeting', Meeting),
+    simple_model_view('meeting_series', MeetingSeries),
+    simple_model_view('paper', Paper),
+    simple_model_view('parliamentary group', ParliamentaryGroup),
 ]

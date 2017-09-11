@@ -2,6 +2,11 @@
 
 {% block content %}
     <div class="container"><div class="section">
-        <p>{{ location }}</p>
+        <p>{{ location.name }}</p>
+        <p>{{ location.short_name }}</p>
+        <p>{{ location.description }}</p>
+        <p>{{ location.is_official }}</p>
+        <p>{{ location.osm_id }}</p>
+        <p>{{ location.geometry }}</p>
     </div></div>
 {% endblock %}

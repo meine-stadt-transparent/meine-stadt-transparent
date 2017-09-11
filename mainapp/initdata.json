@@ -9,8 +9,8 @@
         "deleted": false,
         "name": "42th Term",
         "short_name": "42th Term",
-        "start_date": "2013-01-01",
-        "end_date": "2016-12-31"
+        "start": "2013-01-01",
+        "end": "2016-12-31"
     }
 },
 {
@@ -23,8 +23,8 @@
         "deleted": false,
         "name": "43th Term",
         "short_name": "43th Term",
-        "start_date": "2017-01-01",
-        "end_date": "2020-12-31"
+        "start": "2017-01-01",
+        "end": "2020-12-31"
     }
 },
 {
@@ -146,35 +146,20 @@
     }
 },
 {
-    "model": "mainapp.body",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T09:41:52.637Z",
-        "modified": "2017-09-11T09:41:52.637Z",
-        "deleted": false,
-        "name": "K\u00f6ln",
-        "short_name": "K\u00f6ln",
-        "center": null,
-        "outline": null,
-        "legislative_terms": []
-    }
-},
-{
     "model": "mainapp.committee",
     "pk": 1,
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T14:11:33.538Z",
-        "modified": "2017-09-10T14:11:33.538Z",
+        "modified": "2017-09-11T10:02:34.860Z",
         "deleted": false,
         "name": "Committee of Inquiry",
         "short_name": "Inquiry",
         "body": 1,
+        "start": "2017-09-11",
+        "end": "2017-09-23",
         "location": null,
-        "legislative_terms": [
-            2
-        ]
+        "legislative_terms": []
     }
 },
 {
@@ -183,11 +168,13 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T16:57:17.627Z",
-        "modified": "2017-09-10T16:57:17.627Z",
+        "modified": "2017-09-11T10:02:05.465Z",
         "deleted": false,
         "name": "Assembly of the House of Representatives",
         "short_name": "House Assembly",
         "body": 1,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
         "location": null,
         "legislative_terms": []
     }
@@ -273,25 +260,6 @@
     }
 },
 {
-    "model": "mainapp.parliamentarygroup",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:08:31.146Z",
-        "modified": "2017-09-10T14:08:31.146Z",
-        "deleted": false,
-        "name": "Kölner Testgruppe",
-        "short_name": "Testgruppe",
-        "start": "2017-09-10",
-        "end": "2017-09-27",
-        "body": 4,
-        "location": null,
-        "legislative_terms": [
-            1
-        ]
-    }
-},
-{
     "model": "mainapp.person",
     "pk": 1,
     "fields": {
@@ -362,6 +330,20 @@
     }
 },
 {
+    "model": "mainapp.person",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Jackie Sharp",
+        "given_name": "Jaqueline",
+        "family_name": "Sharp",
+        "location": null
+    }
+},
+{
     "model": "mainapp.paper",
     "pk": 1,
     "fields": {
@@ -373,12 +355,12 @@
         "name": "Bill for Education",
         "short_name": "Education Bill",
         "description": "That teachers' thing",
-        "is_change_request_of": null,
-        "submitter_parliamentary_group": [
+        "change_request_of": null,
+        "submitter_parliamentary_groups": [
             1
         ],
-        "submitter_committee": [],
-        "submitter_department": [],
+        "submitter_committees": [],
+        "submitter_departments": [],
         "submitter_persons": []
     }
 },
@@ -394,12 +376,12 @@
         "name": "Changerequest for the bill about eduction",
         "short_name": "Change the education bill",
         "description": "",
-        "is_change_request_of": 1,
-        "submitter_parliamentary_group": [
+        "change_request_of": 1,
+        "submitter_parliamentary_groups": [
             2
         ],
-        "submitter_committee": [],
-        "submitter_department": [],
+        "submitter_committees": [],
+        "submitter_departments": [],
         "submitter_persons": []
     }
 },
@@ -408,20 +390,33 @@
     "pk": 3,
     "fields": {
         "oparl_id": null,
-        "created": "2017-09-10T15:35:04.454Z",
-        "modified": "2017-09-10T15:35:04.454Z",
+        "created": "2017-09-10T18:36:50.965Z",
+        "modified": "2017-09-10T18:36:50.965Z",
         "deleted": false,
-        "reference_number": "2017-09-10/1",
-        "name": "Straßen in Köln",
-        "short_name": "Straßen in Köln",
+        "reference_number": "Submitters 1",
+        "name": "Many Submitters",
+        "short_name": "Many Submitters",
         "description": "",
-        "is_change_request_of": null,
-        "submitter_parliamentary_group": [
+        "change_request_of": null,
+        "submitter_parliamentary_groups": [
+            1,
+            2
+        ],
+        "submitter_committees": [
+            1,
+            2
+        ],
+        "submitter_departments": [
+            1,
+            2,
             3
         ],
-        "submitter_committee": [],
-        "submitter_department": [],
-        "submitter_persons": []
+        "submitter_persons": [
+            1,
+            2,
+            3,
+            4
+        ]
     }
 },
 {
@@ -459,25 +454,6 @@
         "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
         "license": null,
         "description": "It's a plaintext file containing the results of overwhelming creativity.",
-        "locations": []
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T09:47:54.207Z",
-        "modified": "2017-09-11T09:47:54.207Z",
-        "deleted": false,
-        "storage_filename": "streettest.text",
-        "displayed_filename": "streettest.txt",
-        "legal_date": "2017-09-10",
-        "filesize": 123,
-        "paper": 3,
-        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\n/ Diversity herbeigef\u00fchrt.\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\nKarlstr. 7, 76133\nKarlsruhe\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\nist daher gering.\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
-        "license": null,
-        "description": "It's a plaintext file containing some addresses for address recognition",
         "locations": []
     }
 },
@@ -620,6 +596,21 @@
         "start": "2013-01-01",
         "end": "2017-12-31",
         "role": "Chairman"
+    }
+},
+{
+    "model": "mainapp.committeemembership",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 6,
+        "committee": 2,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Congresswoman"
     }
 },
 {
