@@ -1,3 +1,5 @@
+import json
+
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 
@@ -11,13 +13,33 @@ def index(request):
 
 
 def search(request):
-    context = {'results': []}
+    context = {
+        'results': [],
+        'lat': "50.929961",
+        'lng': "6.9537318",
+        'radius': "100",
+    }
 
     if 'action' in request.POST:
+        for val in ['lat', 'lng', 'radius', 'query']:
+            context[val] = request.POST[val]
+
+        s = FileDocument.search()
         query = request.POST['query']
-        s = FileDocument.search().filter("match", parsed_text=query)
+        lat = float(request.POST['lat'])
+        lng = float(request.POST['lng'])
+        radius = request.POST['radius']
+        if not query == '':
+            s = s.filter("match", parsed_text=query)
+        if not (lat == '' or lng == '' or radius == ''):
+            s = s.filter("geo_distance", distance=radius + "m", coordinates={
+                "lat": lat,
+                "lon": lng
+            })
+        s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
         for hit in s:
-            context['results'].append(hit.parsed_text)
+            for fragment in hit.meta.highlight.parsed_text:
+                context['results'].append(fragment)
 
     return render(request, 'mainapp/search.html', context)
 

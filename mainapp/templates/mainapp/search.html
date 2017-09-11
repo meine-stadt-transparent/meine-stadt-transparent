@@ -7,9 +7,21 @@
             <form method="POST" action="{% url 'search' %}">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="input-field col s10">
-                        <input id="icon_prefix" type="text" name="query">
+                    <div class="input-field col s4">
+                        <input id="icon_prefix" type="text" name="query" value="{{ query }}">
                         <label for="icon_prefix">Suchbegriff</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="icon_prefix" type="text" name="lat" value="{{ lat }}">
+                        <label for="icon_prefix">Breitengrad</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="icon_prefix" type="text" name="lng" value="{{ lng }}">
+                        <label for="icon_prefix">Längengrad</label>
+                    </div>
+                    <div class="input-field col s2">
+                        <input id="icon_prefix" type="number" name="radius" value="{{ radius }}">
+                        <label for="icon_prefix">Enterfnung in m</label>
                     </div>
                     <div class="input-field col s2">
                         <button class="btn waves-effect waves-light" type="submit" name="action">Suchen
@@ -24,7 +36,7 @@
             <h2>Suchergebnisse</h2>
             <ul>
                 {% for result in results %}
-                    <li>{{ result }}</li>
+                    <li>{{ result | safe }}</li>
                 {% endfor %}
             </ul>
         </section>

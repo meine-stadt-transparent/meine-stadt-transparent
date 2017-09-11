@@ -16,3 +16,12 @@ class Location(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    def coordinates(self):
+        if self.geometry and self.geometry['type'] == 'Point':
+            return {
+                "lat": self.geometry['coordinates'][1],
+                "lon": self.geometry['coordinates'][0],
+            }
+        else:
+            return None

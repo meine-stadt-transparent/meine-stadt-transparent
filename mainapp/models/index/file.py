@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl import DocType, Index
+from django_elasticsearch_dsl import DocType, Index, fields
 
 from mainapp.models import File
 
@@ -13,6 +13,8 @@ fileIndex.settings(
 
 @fileIndex.doc_type
 class FileDocument(DocType):
+    coordinates = fields.GeoPointField(attr="coordinates")
+
     class Meta:
         model = File  # The model associate with this DocType
 

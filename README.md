@@ -16,6 +16,7 @@ npm install
 ```
 
 For **elasticsearch**, Docker is required. [Docker installation instructions](https://docs.docker.com/engine/installation/)
+If you hit problems regarding memory, please have a look at this [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
 To use the [Elastic HQ](http://www.elastichq.org/) (graphical administration of elasticsearch), [download the package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into [elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch).
 

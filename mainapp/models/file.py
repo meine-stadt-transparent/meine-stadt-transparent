@@ -26,3 +26,12 @@ class File(DefaultFields):
         self.locations.clear()
         for location in locations:
             self.locations.add(location)
+
+    def coordinates(self):
+        coordinates = []
+        for location in self.locations.all():
+            coordinate = location.coordinates()
+            if coordinate:
+                coordinates.append(coordinate)
+
+        return coordinates
