@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import warnings
+import environ
+
+
+env = environ.Env()  # set default values and casting
+environ.Env.read_env(".env")  # reading .env file
 
 # Mute an irrelevant warning
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
@@ -24,17 +29,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ih2md$&*tl=9(6i((^!_u784pxpky!3xpj+!ynbwp8a)&++7xa'
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = [
-    'opensourceris.local',
+    env.str('REAL_HOST'),
     '127.0.0.1',
     'localhost'
 ]
-
 
 # Application definition
 
@@ -46,8 +50,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mainapp',
-    #'elasticsearch_admin',
-    #'django_elasticsearch_dsl',
+    'elasticsearch_admin',
+    'django_elasticsearch_dsl',
     'webpack_loader',
     'djgeojson',
 ]
@@ -68,7 +72,6 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
             'mainapp/templates',
         ],
         'APP_DIRS': True,
@@ -147,7 +150,14 @@ WEBPACK_LOADER = {
     }
 }
 
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
+
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+ELASTICSEARCH_URL_PRIVATE = env.url('ELASTICSEARCH_URL_PRIVATE')
+ELASTICSEARCH_URL_PUBLIC = env.url('ELASTICSEARCH_URL_PUBLIC')
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': ELASTICSEARCH_URL_PRIVATE
+    },
+}
