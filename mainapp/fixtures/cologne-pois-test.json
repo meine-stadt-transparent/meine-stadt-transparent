@@ -1,0 +1,116 @@
+[
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 7789,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:42:43.098Z",
+      "modified": "2017-09-10T14:42:43.098Z",
+      "deleted": false,
+      "displayed_name": "Tel-Aviv-Stra\u00dfe",
+      "osm_id": 22949649,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 7807,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:42:43.217Z",
+      "modified": "2017-09-10T14:42:43.217Z",
+      "deleted": false,
+      "displayed_name": "Severinstra\u00dfe",
+      "osm_id": 32007885,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 7798,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:42:43.161Z",
+      "modified": "2017-09-10T14:42:43.161Z",
+      "deleted": false,
+      "displayed_name": "Ankerstra\u00dfe",
+      "osm_id": 23015816,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 7799,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:42:43.167Z",
+      "modified": "2017-09-10T14:42:43.167Z",
+      "deleted": false,
+      "displayed_name": "Friedenstra\u00dfe",
+      "osm_id": 23015817,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 8291,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:42:46.228Z",
+      "modified": "2017-09-10T14:42:46.228Z",
+      "deleted": false,
+      "displayed_name": "Karlstra\u00dfe",
+      "osm_id": 132405264,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchpoi",
+    "pk": 2,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:44:36.650Z",
+      "modified": "2017-09-10T14:44:36.650Z",
+      "deleted": false,
+      "displayed_name": "Ernst-Siemons-Realschule",
+      "osm_id": 5000775121,
+      "osm_amenity": "school",
+      "geometry": "{\"type\":\"Point\",\"coordinates\":[6.8764161,50.9454102]}",
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  },
+  {
+    "model": "mainapp.searchstreet",
+    "pk": 19055,
+    "fields": {
+      "oparl_id": null,
+      "created": "2017-09-10T14:44:13.933Z",
+      "modified": "2017-09-10T14:44:13.933Z",
+      "deleted": false,
+      "displayed_name": "Wolfsweg",
+      "osm_id": 32452447,
+      "exclude_from_search": false,
+      "bodies": [
+        4
+      ]
+    }
+  }
+]

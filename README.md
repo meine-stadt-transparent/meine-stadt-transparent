@@ -58,6 +58,14 @@ To save the modified dummy data
 ./manage.py dumpdata mainapp --indent 4 > mainapp/fixtures/initdata.json
 ```
 
+### Testing
+
+Running the test cases:
+```bash
+./manage.py test
+
+```
+
 ### Important URLs:
 
 - https://opensourceris.local/
@@ -72,17 +80,17 @@ The names of the models and the fields are highly inspired by the OParl standard
 
 ## Shell commands
 
-Straßen einer Stadt importieren:
+Import streets of a given city (identified by the german "Gemeindeschlüssel"):
 ```bash
 ./manage.py import-streets 05315000 1 # Gemeindeschlüssel von Köln, Body-ID 1
 ```
 
-POIs anhand einer OSM-Amenity importieren:
+Import Open-Streetmap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
 ```bash
 ./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel von Köln, Amenity, Body-ID 1
 ```
 
-Gemeindeschlüssel (Beispiele):
+Gemeindeschlüssel (examples):
 - München: 09162000
 - Augsburg: 09761000
 - Neumarkt Sankt Veit: 09183129

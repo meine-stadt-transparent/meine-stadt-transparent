@@ -6,12 +6,16 @@ from mainapp.models import File
 
 @override_settings(ELASTICSEARCH_DSL_AUTOSYNC=False, ELASTICSEARCH_DSL_AUTO_REFRESH=False)
 class TestDocumentParsing(TestCase):
-    fixtures = ['initdata', 'cologne-pois']
+    fixtures = ['initdata', 'cologne-pois-test']
 
     def test_extraction(self):
         file = File.objects.get(id=3)
         locations = extract_locations(file.parsed_text, 'Köln')
+        location_names = []
         for location in locations:
-            print(location)
+            location_names.append(location.name)
 
-        self.assertEqual(1, locations)
+        self.assertTrue('Tel-Aviv-Straße' in location_names)
+        self.assertTrue('Tel-Aviv-Straße 12' in location_names)
+        self.assertTrue('Karlstraße 7' in location_names)
+        self.assertFalse('Wolfsweg' in location_names)
