@@ -39,7 +39,7 @@ rm master
 ```
 
 The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers: -
-[Sample Apache-configuration](docs/apache.conf)
+[Sample Apache-configuration](etc/apache.conf)
 
 
 ### Starting the development server
