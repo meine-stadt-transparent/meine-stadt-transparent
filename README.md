@@ -1,6 +1,6 @@
 # Open Source Ratsinformationssystem
 
-[![Build Status](https://travis-ci.org/OParl/spec.svg)](https://travis-ci.org/OParl/spec)
+[![Build Status](https://travis-ci.org/CatoTH/opensourceris.svg)](https://travis-ci.org/CatoTH/opensourceris)
 
 Open Source RIS für Prototype Fund
 
