@@ -1,7 +1,34 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-    <div class="container"><div class="section">
-        <p>{{ meeting }}</p>
-    </div></div>
+    <div class="container">
+        <div class="section">
+            <p>{{ meeting.name }}</p>
+            <p>{{ meeting.short_name }}</p>
+            <p>{{ meeting.start }}</p>
+            <p>{{ meeting.end }}</p>
+            <p>{{ meeting.location }}</p>
+            <p>{{ meeting.committees }}</p>
+            {% if meeting.persons %}
+                <p>further persons</p>
+                <ul>
+                    {% for person in meeting.persons %}
+                        <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <p><a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
+            <p><a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
+            <p><a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
+            <ul>
+                {% for file in auxiliary_files %}
+                    <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
+                {% endfor %}
+            </ul>
+            {% if meeting_series %}
+                <p><a href="{% url 'meeting-series' meeting.meeting_series.id %}">{{ meeting.meeting_series }}</a></p>
+            {% endif %}
+            <p>TODO: Caldav export</p>
+        </div>
+    </div>
 {% endblock %}

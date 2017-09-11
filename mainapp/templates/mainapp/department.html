@@ -1,7 +1,15 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-    <div class="container"><div class="section">
-        <p>{{ department }}</p>
-    </div></div>
+    <div class="container">
+        <div class="section">
+            <p>{{ department.name }}</p>
+            <p>{{ department.short_name }}</p>
+            <p><a href="{% url 'body' department.body.id %}">{{ department.body }}</a></p>
+            {% for term in legislative_terms %}
+                <p>{{ term }}</p>
+            {% endfor %}
+            <p>{{ department.location }}</p>
+        </div>
+    </div>
 {% endblock %}

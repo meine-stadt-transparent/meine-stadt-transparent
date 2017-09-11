@@ -1,8 +1,13 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-    <div class="container"><div class="section">
-        <p>{{ legislative_term }}</p>
-        <p>TODO: Diplay some statistics</p>
-    </div></div>
+    <div class="container">
+        <div class="section">
+            <p>{{ legislative_term.name }}</p>
+            <p>{{ legislative_term.short_name }}</p>
+            <p>{{ legislative_term.start }}</p>
+            <p>{{ legislative_term.end }}</p>
+            <p>TODO: Diplay some statistics</p>
+        </div>
+    </div>
 {% endblock %}

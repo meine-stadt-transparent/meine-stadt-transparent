@@ -1,7 +1,16 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-    <div class="container"><div class="section">
-        <p>{{ committee }}</p>
-    </div></div>
+    <div class="container">
+        <div class="section">
+            <p>{{ committee.name }}</p>
+            <p>{{ committee.short_name }}</p>
+            <p><a href="{% url 'body' committee.body.id %}">{{ committee.body }}</a></p>
+            <p>{{ committee.start }} - {{ committee.end }}</p>
+            {% for term in legislative_terms %}
+                <p>{{ term }}</p>
+            {% endfor %}
+            <p>{{ committee.location }}</p>
+        </div>
+    </div>
 {% endblock %}

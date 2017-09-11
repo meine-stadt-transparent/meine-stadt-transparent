@@ -7,7 +7,6 @@ from .location import Location
 from .meeting_series import MeetingSeries
 from .person import Person
 
-
 PUBLICALITY = (
     (0, "unknown"),
     (1, "public"),

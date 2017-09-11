@@ -1,4 +1,5 @@
 from django_elasticsearch_dsl import DocType, Index
+
 from mainapp.models import File
 
 # Name of the Elasticsearch index
