@@ -1,6 +1,8 @@
-from mainapp.models import SearchStreet, File, Body
-from geopy.geocoders import Nominatim
+from mainapp.models import SearchStreet, Body, Location
+from geopy.geocoders import OpenCage
 import geoextract
+import environ
+import json
 import re
 
 # @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
@@ -8,14 +10,17 @@ import re
 KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 
 
-def create_geoextract_data(bodies):
+def create_geoextract_data(bodies=None):
     """
     :type bodies: list of mainapp.models.Body
     :return: list
     """
 
     street_names = []
-    streets = SearchStreet.objects.filter(bodies__in=bodies)
+    if bodies:
+        streets = SearchStreet.objects.filter(bodies__in=bodies)
+    else:
+        streets = SearchStreet.objects.all()
 
     locations = []
     for street in streets:
@@ -52,26 +57,42 @@ def get_geodata(location, fallback_city_name):
 
     search_str += ', Deutschland'
 
-    geolocator = Nominatim()
-    location = geolocator.geocode(search_str)
-    if location:
-        return {
-            'lat': location.latitude,
-            'lng': location.longitude,
-        }
-    else:
+    env = environ.Env()
+    geolocator = OpenCage(env('OPENCAGEDATA_KEY'))
+    location = geolocator.geocode(search_str, language="de", exactly_one=False)
+    if len(location) == 0:
         return None
 
+    return {
+        'lat': location[0].latitude,
+        'lng': location[0].longitude,
+    }
 
-def extract_file_locations(file_id, fallback_city_name):
+
+def format_location_name(location):
     """
-    :type file_id: int
-    :type fallback_city_name: str
+    :param location: str
+    :return: str
+    """
+    name = ""
+
+    if 'street' in location:
+        name = location['street']
+        if 'house_number' in location:
+            name += ' ' + location['house_number']
+    elif 'name' in location:
+        name = location['name']
+
+    return name
+
+
+def extract_found_locations(text, bodies=None):
+    """
+    :type text: str
+    :type bodies: list of Body
     :return: list
     """
-    file = File.objects.get(pk=file_id)
-    bodies = Body.objects.get(pk=1)  # @TODO calulate the bodies from the actual file
-    search_for = create_geoextract_data([bodies])
+    search_for = create_geoextract_data(bodies)
 
     #
     # STRING NORMALIZATION
@@ -158,9 +179,57 @@ def extract_file_locations(file_id, fallback_city_name):
         postprocessors=[key_filter_postprocessor],
     )
 
-    found_locations = pipeline.extract(file.parsed_text)
+    return pipeline.extract(text)
 
-    for counter in range(0, len(found_locations)):
-        found_locations[counter]['address'] = get_geodata(found_locations[counter], fallback_city_name)
 
-    return found_locations
+def detect_relevant_bodies(location):
+    """
+    :param location: mainapp.models.Location
+    :return: list of mainapp.models.Body
+    """
+    body = Body.objects.get(id=4)  # @TODO
+    return [body]
+
+
+def extract_locations(text, fallback_city=None):
+    """
+    :type text: str
+    :type fallback_city: str
+    :return: list of mainapp.models.Body
+    """
+    if not fallback_city:
+        env = environ.Env()
+        fallback_city = env('GEOEXTRACT_DEFAULT_CITY')
+
+    found_locations = extract_found_locations(text)
+
+    locations = []
+    for found_location in found_locations:
+        location_name = format_location_name(found_location)
+        try:
+            location = Location.objects.get(name=location_name)
+            locations.append(location)
+        except Location.DoesNotExist:
+            geodata = get_geodata(found_location, fallback_city)
+
+            location = Location()
+            location.name = location_name
+            location.short_name = location_name
+            location.is_official = False
+            location.osm_id = None  # @TODO
+            if geodata:
+                location.geometry = {
+                    "type": "Point",
+                    "coordinates": [geodata['lng'], geodata['lat']]
+                }
+            else:
+                location.geometry = None
+            location.save()
+
+            bodies = detect_relevant_bodies(location)
+            for body in bodies:
+                location.bodies.add(body)
+
+            locations.append(location)
+
+    return locations

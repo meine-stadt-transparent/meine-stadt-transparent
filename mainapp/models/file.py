@@ -19,3 +19,10 @@ class File(DefaultFields):
 
     def __str__(self):
         return self.displayed_filename
+
+    def rebuild_locations(self):
+        from mainapp.functions.document_parsing import extract_locations
+        locations = extract_locations(self.parsed_text)
+        self.locations.clear()
+        for location in locations:
+            self.locations.add(location)

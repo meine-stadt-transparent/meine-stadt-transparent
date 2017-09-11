@@ -63,6 +63,7 @@ To save the modified dummy data
 - https://opensourceris.local/
 - https://opensourceris.local/admin/
 - https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
+- https://docs.google.com/document/d/1Qib4wBvavB8PcJ3LJ45wmNk6vFAXfpQ-2zi1Oal1rIY/edit# : Interne To Dos
 
 ## Data model
 
