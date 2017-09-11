@@ -1,7 +1,19 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-    <div class="container"><div class="section">
-        <p>{{ person }}</p>
-    </div></div>
+    <div class="container">
+        <div class="section">
+            <p>{{ person }}</p>
+            {% if papers %}
+                <p>Submitted Papers:</p>
+                <ul>
+                    {% for paper in papers %}
+                        <li>{{ paper }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No papers submitted</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

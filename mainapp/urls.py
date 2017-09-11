@@ -16,9 +16,9 @@ def simple_model_view(name: str, model):
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
-    simple_model_view('person', Person),
     simple_model_view('paper', Paper),
     simple_model_view('parliamentary group', ParliamentaryGroup),
+    url(r'^person/(?P<pk>[0-9]+)$', views.person, name='person'),
     simple_model_view('committee', Committee),
     simple_model_view('department', Department),
 ]
