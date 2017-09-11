@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Open Source Ratsinformationssystem",
   "scripts": {
-    "build:dev": "webpack --config config/webpack.config.dev.js",
-    "watch": "webpack --config config/webpack.config.dev.js --watch"
+    "build:dev": "webpack --config etc/webpack.config.dev.js",
+    "watch": "webpack --config etc/webpack.config.dev.js --watch"
   },
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",

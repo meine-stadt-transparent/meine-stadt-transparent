@@ -14,6 +14,6 @@
                 <p><a href="{% url 'meeting' meeting.id %}">{{ meeting }}</a></p>
             {% endfor %}
         </div>
-        <p>TODO: caldav export</p>
+        <p><a href="{% url 'meeting-series-ical' meeting_series.id %}">Export</a></p>
     </div>
 {% endblock %}

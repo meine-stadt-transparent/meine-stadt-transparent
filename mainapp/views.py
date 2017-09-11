@@ -1,8 +1,13 @@
+from django.conf import settings
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from icalendar import Event, Calendar
 
 from mainapp.models.index.file import FileDocument
+from mainapp.models.meeting import Meeting
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
+from mainapp.models.meeting_series import MeetingSeries
 
 
 def index(request):
@@ -10,6 +15,7 @@ def index(request):
 
 
 def search(request):
+    # TODO: Move me to a settings file
     context = {
         'results': [],
         'lat': "50.929961",
@@ -52,3 +58,27 @@ def person(request, pk):
 
     context = {"person": person, "papers": paper}
     return render(request, 'mainapp/person.html', context)
+
+
+def build_ical(events):
+    cal = Calendar()
+    cal.add("prodid", "-//{}//ical//".format(settings.PRODUCT_NAME))
+    cal.add('version', '2.0')
+
+    for event in events:
+        cal.add_component(event)
+
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar")
+    response['Content-Disposition'] = 'inline; filename=meeting.ics'
+    return response
+
+
+def meeting_ical(request, pk):
+    meeting = get_object_or_404(Meeting, id=pk)
+    return build_ical([meeting.as_ical_event()])
+
+
+def meeting_series_ical(request, pk):
+    series = get_object_or_404(MeetingSeries, id=pk)
+    events = [meeting.as_ical_event() for meeting in series.meeting_set.all()]
+    return build_ical(events)

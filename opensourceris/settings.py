@@ -161,3 +161,5 @@ ELASTICSEARCH_DSL = {
         'hosts': ELASTICSEARCH_URL_PRIVATE
     },
 }
+
+PRODUCT_NAME = "Open Source Ratsinformationssystem"

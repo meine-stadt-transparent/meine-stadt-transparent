@@ -1,4 +1,5 @@
 from django.db import models
+from icalendar import Event
 
 from .committee import Committee
 from .default_fields import DefaultFields
@@ -22,7 +23,7 @@ class Meeting(DefaultFields):
     cancelled = models.BooleanField()
     start = models.DateTimeField()
     end = models.DateTimeField()
-    locations = models.ForeignKey(Location, null=True, blank=True)
+    location = models.ForeignKey(Location, null=True, blank=True)
     # There are cases where mutliple committes have a joined official meeting
     committees = models.ManyToManyField(Committee, blank=True)
     # Only applicable when there are participants without an organization
@@ -34,6 +35,18 @@ class Meeting(DefaultFields):
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     meeting_series = models.ForeignKey(MeetingSeries, null=True, blank=True)
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
+
+    def as_ical_event(self):
+        event = Event()
+        event.add('summary', self.short_name)
+        event.add('description', self.name)
+        event.add('dtstart', self.start)
+        event.add('dtend', self.end)
+
+        if self.location:
+            event.add('location', self.location.name)
+
+        return event
 
     def __str__(self):
         return self.short_name

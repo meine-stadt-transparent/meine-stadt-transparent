@@ -9,26 +9,41 @@
             <p>{{ meeting.end }}</p>
             <p>{{ meeting.location }}</p>
             <p>{{ meeting.committees }}</p>
-            {% if meeting.persons %}
+            {% if meeting.persons.all %}
                 <p>further persons</p>
                 <ul>
-                    {% for person in meeting.persons %}
+                    {% for person in meeting.persons.all %}
                         <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
                     {% endfor %}
                 </ul>
             {% endif %}
-            <p><a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
-            <p><a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
-            <p><a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
+            {% if meeting.invitation %}
+                <p><a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
+            {% endif %}
+            {% if meeting.results_protocol %}
+                <p><a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
+            {% endif %}
+            {% if meeting.verbatim_protocol %}
+                <p><a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
+            {% endif %}
             <ul>
-                {% for file in auxiliary_files %}
+                {% for file in meeting.auxiliary_files.all %}
                     <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
                 {% endfor %}
             </ul>
             {% if meeting_series %}
                 <p><a href="{% url 'meeting-series' meeting.meeting_series.id %}">{{ meeting.meeting_series }}</a></p>
             {% endif %}
-            <p>TODO: Caldav export</p>
+            {% if meeting.agenda_set.all %}
+                <ul>
+                {% for agenda_item in meeting.agenga_set.all %}
+                    <li>agenda_item</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No Agenda published</p>
+            {% endif %}
+            <p><a href="{% url 'meeting-ical' meeting.id %}">Export</a></p>
         </div>
     </div>
 {% endblock %}
