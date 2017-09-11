@@ -43,7 +43,7 @@ npm run watch
 To load the dummy data for development:
 
 ```bash
-./manage.py loaddata mainapp/initdata.json
+./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
 To reindex the elasticsearch index:
@@ -55,7 +55,7 @@ To reindex the elasticsearch index:
 To save the modified dummy data
 
 ```bash
-./manage.py dumpdata mainapp --indent 4 > mainapp/initdata.json
+./manage.py dumpdata mainapp --indent 4 > mainapp/fixtures/initdata.json
 ```
 
 ### Important URLs:
