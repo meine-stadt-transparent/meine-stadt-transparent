@@ -1,0 +1,124 @@
+# Open Source RIS
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Tobias Hößl <tobias@hoessl.eu>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-09-17 22:04+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models/user_profile.py:9
+msgid "User"
+msgstr ""
+
+#: models/user_profile.py:11
+msgid "Profile completion percentage"
+msgstr ""
+
+#: models/user_profile.py:12
+msgid "Email is verified"
+msgstr ""
+
+#: models/user_profile.py:13
+msgid "Personal info completed"
+msgstr ""
+
+#: models/user_profile.py:16
+msgid "User profile"
+msgstr ""
+
+#: models/user_profile.py:17
+msgid "User profiles"
+msgstr ""
+
+#: templates/account/login.html:6 templates/account/login.html:10
+#: templates/account/login.html:43 templates/base.html:20
+#: templates/base.html:31
+msgid "Sign In"
+msgstr "Einloggen"
+
+#: templates/account/login.html:15
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
+"up</a>\n"
+"for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: templates/account/login.html:25
+msgid "or"
+msgstr ""
+
+#: templates/account/login.html:32
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: templates/account/login.html:42
+msgid "Forgot Password?"
+msgstr ""
+
+#: templates/base.html:14 templates/base.html:25
+msgid "Home"
+msgstr "Start"
+
+#: templates/base.html:15 templates/base.html:26
+#| msgid "Search"
+msgid "Search"
+msgstr "Suche"
+
+#: templates/base.html:17 templates/base.html:28
+msgid "My Account"
+msgstr "Mein Account"
+
+#: templates/base.html:18 templates/base.html:29
+msgid "Log out"
+msgstr "Ausloggen"
+
+#: templates/mainapp/search.html:5
+#| msgid "Search"
+msgctxt "page_title"
+msgid "Search"
+msgstr "Suche"
+
+#: templates/mainapp/search.html:31
+#| msgid "Search"
+msgctxt "perform search"
+msgid "Search"
+msgstr "Suchen"
+
+#: templates/mainapp/search.html:40
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: templates/mainapp/userprofiles/home.html:31
+msgid "Email adress verification"
+msgstr ""
+
+#: templates/mainapp/userprofiles/home.html:35
+msgid "Verify email"
+msgstr ""
+
+#: templates/mainapp/userprofiles/home.html:37
+msgid "Edit email"
+msgstr ""
+
+#: templates/mainapp/userprofiles/home.html:46
+msgid "Change your password"
+msgstr ""
+
+

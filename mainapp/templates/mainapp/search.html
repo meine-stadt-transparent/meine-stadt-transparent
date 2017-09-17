@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
+{% block title %}{% trans "Search" context "page_title" %}{% endblock %}
+
 {% block content %}
     <div class="container">
         <section class="section">
@@ -24,7 +28,7 @@
                         <label for="icon_prefix">Enterfnung in m</label>
                     </div>
                     <div class="input-field col s2">
-                        <button class="btn waves-effect waves-light" type="submit" name="action">Suchen
+                        <button class="btn waves-effect waves-light" type="submit" name="action">{% trans "Search" context "perform search" %}
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -33,7 +37,7 @@
         </section>
 
         <section class="section">
-            <h2>Suchergebnisse</h2>
+            <h2>{% trans "Search results" %}</h2>
             <ul>
                 {% for result in results %}
                     <li>{{ result | safe }}</li>

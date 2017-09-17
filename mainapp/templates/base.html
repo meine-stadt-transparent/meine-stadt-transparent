@@ -1,8 +1,8 @@
-{% load staticfiles %}{% load render_bundle from webpack_loader %}<!DOCTYPE html>
+{% load staticfiles i18n %}{% load render_bundle from webpack_loader %}<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{% block title %}{% endblock %}</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     {% render_bundle 'mainapp' 'css' %}
@@ -11,24 +11,24 @@
 <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Open Source RIS</a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="{% url 'index' %}">Start</a></li>
-            <li><a href="{% url 'search' %}">Suche</a></li>
+            <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+            <li><a href="{% url 'search' %}">{% trans "Search" %}</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile-home' %}">Account</a></li>
-                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile-home' %}">{% trans "My Account" %}</a></li>
+                <li><a href="{% url 'account_logout' %}">{% trans "Log out" %}</a></li>
             {% else %}
-                <li><a href="{% url 'account_login' %}">Login</a></li>
+                <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
             {% endif %}
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
-            <li><a href="{% url 'index' %}">Start</a></li>
-            <li><a href="{% url 'search' %}">Suche</a></li>
+            <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
+            <li><a href="{% url 'search' %}">{% trans "Search" %}</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile-home' %}">Account</a></li>
-                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile-home' %}">{% trans "My Account" %}</a></li>
+                <li><a href="{% url 'account_logout' %}">{% trans "Log out" %}</a></li>
             {% else %}
-                <li><a href="{% url 'account_login' %}">Login</a></li>
+                <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
             {% endif %}
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>

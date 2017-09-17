@@ -79,6 +79,15 @@ To save the modified dummy data
 ./manage.py dumpdata mainapp --indent 4 > mainapp/fixtures/initdata.json
 ```
 
+### Translating strings
+
+```bash
+cd mainapp/
+django-admin makemessages -a
+# translate django.po
+django-admin compilemessages
+```
+
 ### Testing
 
 Running the test cases:

@@ -66,6 +66,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -88,6 +89,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.i18n',
             ],
         },
     },
@@ -95,7 +97,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'opensourceris.wsgi.application'
 
-os.environ['HTTPS'] = "on" # forcing request.build_absolute_uri to return https
+# forcing request.build_absolute_uri to return https
+os.environ['HTTPS'] = "on"
 
 ANYMAIL = {
     "MAILJET_API_KEY": env.str('MAILJET_API_KEY'),
@@ -146,7 +149,6 @@ SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'METHOD': 'js_sdk',
         'SCOPE': ['email', 'public_profile'],
-        #'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'INIT_PARAMS': {'cookie': True},
         'FIELDS': [
             'id',
@@ -196,6 +198,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
     os.path.join(BASE_DIR, 'elasticsearch_admin/static'),
 )
+
 
 WEBPACK_LOADER = {
     'DEFAULT': {
