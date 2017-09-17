@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.views.generic import DetailView
 
+from mainapp.views_profile import ProfileHomeView
 from . import views
 from .models import File, Location, Meeting, MeetingSeries, Body
 from .models import Paper, ParliamentaryGroup, Committee, Department, LegislativeTerm
@@ -30,4 +31,5 @@ urlpatterns = [
     simple_model_view('meeting series', MeetingSeries),
     simple_model_view('paper', Paper),
     simple_model_view('parliamentary group', ParliamentaryGroup),
+    url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
 ]

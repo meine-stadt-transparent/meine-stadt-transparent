@@ -64,7 +64,7 @@ npm run watch
 To load the dummy data for development:
 
 ```bash
-./manage.py loaddata mainapp/fixtures/initdata.json
+./manage.py loaddata mainapp/fixtures/initdata.json mainapp/fixtures/socialapps.json
 ```
 
 To reindex the elasticsearch index:

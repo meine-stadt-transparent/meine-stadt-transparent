@@ -22,5 +22,6 @@ from opensourceris.settings import ELASTICSEARCH_URL_PUBLIC
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^elasticsearch_admin/', elasticsearch_admin, {'url': ELASTICSEARCH_URL_PUBLIC}, name='index'),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^', include('mainapp.urls')),
 ]

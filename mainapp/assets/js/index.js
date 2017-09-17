@@ -1,5 +1,5 @@
 import style from '../css/mainapp.scss';
-import IndexView from "./IndexView";
+import HomeMap from "./HomeMap";
 
 window.jQuery = require('jquery');
 
@@ -39,8 +39,6 @@ require('materialize-css/js/buttons.js');
 require('materialize-css/js/tapTarget.js');
 
 
-new IndexView();
-
 $(function() {
     console.log("Hello 🌍");
 
@@ -52,4 +50,8 @@ $(function() {
       draggable: true, // Choose whether you can drag to open on touch screens,
     }
   );
+
+    $(".js-home-map").each(function() {
+        new HomeMap($(this));
+    });
 });

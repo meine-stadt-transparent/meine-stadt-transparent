@@ -13,11 +13,23 @@
         <ul class="right hide-on-med-and-down">
             <li><a href="{% url 'index' %}">Start</a></li>
             <li><a href="{% url 'search' %}">Suche</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile-home' %}">Account</a></li>
+                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+            {% endif %}
         </ul>
 
         <ul id="nav-mobile" class="side-nav">
             <li><a href="{% url 'index' %}">Start</a></li>
             <li><a href="{% url 'search' %}">Suche</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile-home' %}">Account</a></li>
+                <li><a href="{% url 'account_logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'account_login' %}">Login</a></li>
+            {% endif %}
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>

@@ -49,11 +49,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'mainapp',
     'elasticsearch_admin',
     'django_elasticsearch_dsl',
     'webpack_loader',
     'djgeojson',
+    'anymail',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.twitter',
 ]
 
 MIDDLEWARE = [
@@ -88,6 +95,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'opensourceris.wsgi.application'
 
+os.environ['HTTPS'] = "on" # forcing request.build_absolute_uri to return https
+
+ANYMAIL = {
+    "MAILJET_API_KEY": env.str('MAILJET_API_KEY'),
+    "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
+}
+EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+DEFAULT_FROM_EMAIL = "info@hoessl.eu"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -118,6 +133,45 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'js_sdk',
+        'SCOPE': ['email', 'public_profile'],
+        #'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'LOCALE_FUNC': lambda request: "de",
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.10',
+    }
+}
+
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = "/profile/"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -163,3 +217,6 @@ ELASTICSEARCH_DSL = {
 }
 
 PRODUCT_NAME = "Open Source Ratsinformationssystem"
+
+# Needed by allauth
+SITE_ID = 1

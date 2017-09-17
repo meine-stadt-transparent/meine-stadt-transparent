@@ -1,7 +1,10 @@
 certifi==2017.7.27.1
 chardet==3.0.4
 click==6.7
+defusedxml==0.5.0
 Django==1.11.5
+django-allauth==0.33.0
+django-anymail==0.11.1
 django-elasticsearch-dsl==0.2.0
 django-environ==0.4.4
 django-geojson==2.10.0
@@ -11,6 +14,7 @@ elasticsearch-dsl==5.3.0
 Flask==0.12.2
 -e git://github.com/stadt-karlsruhe/geoextract.git@b18296b54e79b664388ad71804e64bdd50161b85#egg=geoextract
 geopy==1.11.0
+icalendar==3.11.7
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
@@ -18,10 +22,13 @@ jsonfield==2.0.2
 MarkupSafe==1.0
 nltk==3.2.4
 numpy==1.13.1
+oauthlib==2.0.3
 pyahocorasick==1.1.4
 python-dateutil==2.6.1
+python3-openid==3.1.0
 pytz==2017.2
 requests==2.18.4
+requests-oauthlib==0.8.0
 scipy==0.19.1
 six==1.10.0
 Unidecode==0.4.21

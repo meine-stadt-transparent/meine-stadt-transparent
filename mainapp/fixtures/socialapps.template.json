@@ -1,0 +1,30 @@
+[
+{
+    "model": "socialaccount.socialapp",
+    "pk": 1,
+    "fields": {
+        "provider": "facebook",
+        "name": "Facebook",
+        "client_id": "...",
+        "secret": "...",
+        "key": "",
+        "sites": [
+            1
+        ]
+    }
+},
+{
+    "model": "socialaccount.socialapp",
+    "pk": 2,
+    "fields": {
+        "provider": "twitter",
+        "name": "Twitter",
+        "client_id": "...",
+        "secret": "...",
+        "key": "",
+        "sites": [
+            1
+        ]
+    }
+}
+]
