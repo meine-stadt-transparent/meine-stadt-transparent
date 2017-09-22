@@ -1,13 +1,7 @@
 from mainapp.models import SearchStreet, Body, Location
-from geopy.geocoders import OpenCage
+from django.conf import settings
 import geoextract
-import environ
-import json
 import re
-
-# @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
-# of relevant city names
-KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 
 
 def create_geoextract_data(bodies=None):
@@ -31,7 +25,7 @@ def create_geoextract_data(bodies=None):
                 'name': street.displayed_name
             })
 
-    for city in KNOWN_CITIES:
+    for city in settings.GEOEXTRACT_KNOWN_CITIES:
         locations.append({
             'name': city,
             'type': 'city',
@@ -55,10 +49,9 @@ def get_geodata(location, fallback_city_name):
     elif 'name' in location:
         search_str += location['name'] + ', ' + fallback_city_name
 
-    search_str += ', Deutschland'
+    search_str += ', ' + settings.GEO_SEARCH_COUNTRY
 
-    env = environ.Env()
-    geolocator = OpenCage(env('OPENCAGEDATA_KEY'))
+    geolocator = settings.OPENCAGEDATA_KEY
     location = geolocator.geocode(search_str, language="de", exactly_one=False)
     if len(location) == 0:
         return None
@@ -198,8 +191,7 @@ def extract_locations(text, fallback_city=None):
     :return: list of mainapp.models.Body
     """
     if not fallback_city:
-        env = environ.Env()
-        fallback_city = env('GEOEXTRACT_DEFAULT_CITY')
+        fallback_city = settings.GEOEXTRACT_DEFAULT_CITY
 
     found_locations = extract_found_locations(text)
 

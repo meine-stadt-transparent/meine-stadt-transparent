@@ -221,3 +221,11 @@ ELASTICSEARCH_DSL = {
 
 # Needed by allauth
 SITE_ID = 1
+
+
+# Settings for Geo-Extraction
+# @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
+# of relevant city names
+GEOEXTRACT_KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
+GEOEXTRACT_SEARCH_COUNTRY = 'Deutschland'
+GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
