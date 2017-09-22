@@ -40,7 +40,7 @@
         "description": "The place where frank lives. Somewhere in Washington D.C.",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.04946875572205,38.95611336793506]}",
         "bodies": []
     }
 },
@@ -57,7 +57,7 @@
         "description": "",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
+        "geometry": "{\"type\":\"Polygon\",\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]]}",
         "bodies": [
             3
         ]
@@ -76,7 +76,7 @@
         "description": "That look kinda centerish enough for what is needed",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.05016613006592,38.88931256197531]}",
         "bodies": []
     }
 },
@@ -93,7 +93,7 @@
         "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
         "is_official": true,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.00895667076111,38.889788561664936]}",
         "bodies": []
     }
 },

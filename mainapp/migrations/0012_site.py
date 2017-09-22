@@ -8,7 +8,7 @@ from django.db import migrations
 
 
 def update_site(apps, schema_editor):
-    Site.objects.create(name=settings.PRODUCT_NAME, domain=settings.REAL_HOST).save()
+    Site.objects.create(name=settings.PRODUCT_NAME, domain=settings.REAL_HOST)
 
 
 class Migration(migrations.Migration):

@@ -127,3 +127,13 @@ Gemeindeschlüssel (examples):
 - Augsburg: 09761000
 - Neumarkt Sankt Veit: 09183129
 - Köln: 05315000
+
+## Installing liboparl
+
+TODO
+
+To access gi in a virtaulenv you have to do 
+
+```bash 
+ln -s /usr/lib/python3/dist-packages/gi venv/lib/python3.5/site-packages/
+```
