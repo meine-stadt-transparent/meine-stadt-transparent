@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -13,26 +15,37 @@ from mainapp.models.person import Person
 
 
 def index(request):
-    return render(request, 'mainapp/index.html', {})
+    context = {
+        'map': json.dumps({
+            'center': settings.SITE_GEO_CENTER,
+            'zoom': settings.SITE_GEO_INIT_ZOOM,
+            'limit': settings.SITE_GEO_LIMITS,
+        })
+    }
+    return render(request, 'mainapp/index.html', context)
+
 
 def info_privacy(request):
     return render(request, 'mainapp/info_privacy.html', {})
 
+
 def info_contact(request):
     return render(request, 'mainapp/info_contact.html', {})
 
+
 def search(request):
-    # TODO: Move me to a settings file
     context = {
         'results': [],
-        'lat': "50.929961",
-        'lng': "6.9537318",
+        'coordinates': settings.SITE_GEO_CENTER,
         'radius': "100",
     }
 
     if 'action' in request.POST:
-        for val in ['lat', 'lng', 'radius', 'query']:
+        for val in ['radius', 'query']:
             context[val] = request.POST[val]
+
+        context['coordinates']['lat'] = request.POST['lat']
+        context['coordinates']['lng'] = request.POST['lng']
 
         s = FileDocument.search()
         query = request.POST['query']

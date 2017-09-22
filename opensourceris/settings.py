@@ -229,3 +229,9 @@ SITE_ID = 1
 GEOEXTRACT_KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 GEOEXTRACT_SEARCH_COUNTRY = 'Deutschland'
 GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
+
+
+# Configuration regarding the city of choice
+SITE_GEO_LIMITS = {'min': {'lat': 47.965, 'lng': 11.286}, 'max': {'lat': 48.296, 'lng': 11.871}}
+SITE_GEO_CENTER = {'lat': 48.137, 'lng': 11.575}
+SITE_GEO_INIT_ZOOM = 17
