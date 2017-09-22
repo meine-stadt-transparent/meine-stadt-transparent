@@ -38,8 +38,9 @@ rm -r royrusso-elasticsearch-HQ-*
 rm master
 ```
 
-The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers: -
-[Sample Apache-configuration](etc/apache.conf)
+The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
+ - [Apache](etc/apache.conf)
+ - [nginx](etc/nginx.conf)
 
 
 ### Starting the development server
@@ -76,7 +77,7 @@ To reindex the elasticsearch index:
 To save the modified dummy data
 
 ```bash
-./manage.py dumpdata mainapp --indent 4 > mainapp/fixtures/initdata.json
+./manage.py dumpdata mainapp -e mainapp.UserProfile --indent 4 > mainapp/fixtures/initdata.json
 ```
 
 ### Translating strings

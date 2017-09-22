@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.utils.translation import ugettext as _
 from icalendar import Calendar
+from slugify import slugify
 
 from mainapp.models.index.file import FileDocument
 from mainapp.models.meeting import Meeting
@@ -65,7 +67,7 @@ def person(request, pk):
     return render(request, 'mainapp/person.html', context)
 
 
-def build_ical(events):
+def build_ical(events, filename):
     cal = Calendar()
     cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))
     cal.add('version', '2.0')
@@ -74,16 +76,32 @@ def build_ical(events):
         cal.add_component(event)
 
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
-    response['Content-Disposition'] = 'inline; filename=meeting.ics'
+    response['Content-Disposition'] = 'inline; filename={}.ics'.format(slugify(filename))
     return response
 
 
 def meeting_ical(request, pk):
     meeting = get_object_or_404(Meeting, id=pk)
-    return build_ical([meeting.as_ical_event()])
+
+    if meeting.short_name:
+        filename = meeting.short_name
+    elif meeting.name:
+        filename = meeting.name
+    else:
+        filename = _("Meeting")
+
+    return build_ical([meeting.as_ical_event()], filename)
 
 
 def meeting_series_ical(request, pk):
     series = get_object_or_404(MeetingSeries, id=pk)
     events = [meeting.as_ical_event() for meeting in series.meeting_set.all()]
-    return build_ical(events)
+
+    if series.short_name:
+        filename = series.short_name
+    elif series.name:
+        filename = series.name
+    else:
+        filename = _("Meeting Series")
+
+    return build_ical(events, filename)

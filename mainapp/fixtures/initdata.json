@@ -499,11 +499,11 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T16:47:54.207Z",
-        "modified": "2017-09-10T16:47:54.207Z",
+        "modified": "2017-09-22T09:44:57.868Z",
         "deleted": false,
         "storage_filename": "file.txt",
         "displayed_filename": "File.txt",
-        "legal_date": "2017-09-10",
+        "legal_date": "2017-09-12",
         "filesize": 49,
         "paper": 2,
         "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
@@ -540,6 +540,7 @@
         "modified": "2017-09-11T13:47:41.063Z",
         "deleted": false,
         "name": "House Assembly meetings",
+        "short_name": null,
         "description": "Five House Assembly meetings that are scheduled onth per month",
         "is_regular": true
     }
