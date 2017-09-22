@@ -1,6 +1,13 @@
+@import "vars";
 @import "bootstrap";
 @import "~leaflet/dist/leaflet.css";
 
 #leaflet-map {
   height: 400px;
+}
+
+
+#main-content {
+  margin: $main-content-margin-top 50px;
+  min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
 }

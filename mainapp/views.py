@@ -13,6 +13,11 @@ from mainapp.models.person import Person
 def index(request):
     return render(request, 'mainapp/index.html', {})
 
+def info_privacy(request):
+    return render(request, 'mainapp/info_privacy.html', {})
+
+def info_contact(request):
+    return render(request, 'mainapp/info_contact.html', {})
 
 def search(request):
     # TODO: Move me to a settings file

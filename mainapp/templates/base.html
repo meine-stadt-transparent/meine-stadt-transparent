@@ -9,44 +9,47 @@
 <body>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a href="{% url 'index' %}" class="navbar-brand">{% trans "Home" %}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="main-menu">
+    <a href="{% url 'index' %}" class="navbar-brand">OS RIS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
+            aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="main-menu-content">
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a href="{% url 'profile-home' %}">{% trans "My Account" %}</a>
+                    <a class="nav-link" href="{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'account_logout' %}">{% trans "Log out" %}</a>
+                    <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Log out" context 'navigation' %}</a>
                 </li>
             {% else %}
                 <li class="nav-item">
-                    <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                    <a class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" context 'navigation' %}</a>
                 </li>
             {% endif %}
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <input class="form-control mr-sm-2" type="text" placeholder="{% trans "Search" context "page_title" %}" aria-label="{% trans "Search" context "perform search" %}">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans "Search" context "perform search" %}</button>
         </form>
     </div>
 </nav>
 
+<main id="main-content">
+    {% block content %}
+    {% endblock %}
+</main>
 
-{% block content %}
-{% endblock %}
-
-<footer class="footer">
-    <div class="container">
-        <a class="white-text" href="https://github.com/CatoTH/opensourceris">Github</a>
-        <a class="white-text" href="https://prototypefund.de/">Prototype Fund</a>
-    </div>
+<footer class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'info_contact' %}">{% trans "Contact" context 'navigation' %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'info_privacy' %}">{% trans "Privacy Policy" context 'navigation' %}</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://prototypefund.de/">Prototype Fund</a></li>
+        <li class="nav-item"><a class="nav-link" href="https://github.com/CatoTH/opensourceris">Github</a></li>
+    </ul>
 </footer>
 
 

@@ -18,6 +18,8 @@ def simple_model_view(name: str, model):
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
+    url(r'^contact/$', views.info_contact, name='info_contact'),
+    url(r'^privacy/$', views.info_privacy, name='info_privacy'),
     url(r'^person/(?P<pk>[0-9]+)$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical$', views.meeting_ical, name='meeting-ical'),
     url(r'^meeting-series/(?P<pk>[0-9]+)/ical$', views.meeting_series_ical, name='meeting-series-ical'),
