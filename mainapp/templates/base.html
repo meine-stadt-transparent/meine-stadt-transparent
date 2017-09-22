@@ -3,66 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     {% render_bundle 'mainapp' 'css' %}
 </head>
 <body>
-<nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Open Source RIS</a>
-        <ul class="right hide-on-med-and-down">
-            <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
-            <li><a href="{% url 'search' %}">{% trans "Search" %}</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'profile-home' %}">{% trans "My Account" %}</a></li>
-                <li><a href="{% url 'account_logout' %}">{% trans "Log out" %}</a></li>
-            {% else %}
-                <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
-            {% endif %}
-        </ul>
 
-        <ul id="nav-mobile" class="side-nav">
-            <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
-            <li><a href="{% url 'search' %}">{% trans "Search" %}</a></li>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="{% url 'index' %}" class="navbar-brand">{% trans "Home" %}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile-home' %}">{% trans "My Account" %}</a></li>
-                <li><a href="{% url 'account_logout' %}">{% trans "Log out" %}</a></li>
+                <li class="nav-item">
+                    <a href="{% url 'profile-home' %}">{% trans "My Account" %}</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account_logout' %}">{% trans "Log out" %}</a>
+                </li>
             {% else %}
-                <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
+                <li class="nav-item">
+                    <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                </li>
             {% endif %}
         </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
 </nav>
+
 
 {% block content %}
 {% endblock %}
 
-
-<footer class="page-footer orange">
+<footer class="footer">
     <div class="container">
-        <div class="row">
-            <div class="col l6 s12">
-                <h5 class="white-text">Open Source RIS</h5>
-                <p class="grey-text text-lighten-4">Etwas einführender Text</p>
-
-
-            </div>
-            <div class="col l3 s12">
-                <h5 class="white-text">Links</h5>
-                <ul>
-                    <li><a class="white-text" href="https://github.com/CatoTH/opensourceris">Github</a></li>
-                    <li><a class="white-text" href="https://prototypefund.de/">Prototype Fund</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="footer-copyright">
-        <div class="container">
-            Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
-        </div>
+        <a class="white-text" href="https://github.com/CatoTH/opensourceris">Github</a>
+        <a class="white-text" href="https://prototypefund.de/">Prototype Fund</a>
     </div>
 </footer>
+
 
 {% render_bundle 'mainapp' 'js' %}
 

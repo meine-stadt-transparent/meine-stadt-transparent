@@ -2,6 +2,10 @@
   "name": "opensourceris",
   "version": "1.0.0",
   "description": "Open Source Ratsinformationssystem",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CatoTH/opensourceris"
+  },
   "scripts": {
     "build:dev": "webpack --config etc/webpack.config.dev.js",
     "watch": "webpack --config etc/webpack.config.dev.js --watch"
@@ -12,7 +16,9 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015": "^6.24.1",
     "css-loader": "^0.28.6",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^0.11.2",
@@ -25,8 +31,10 @@
     "webpack-bundle-tracker": "^0.2.0"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0-beta",
     "hammerjs": "^2.0.8",
+    "jquery": "^3.2.1",
     "leaflet": "^1.2.0",
-    "materialize-css": "^0.100.2"
+    "popper.js": "^1.12.5"
   }
 }

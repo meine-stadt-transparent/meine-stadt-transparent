@@ -78,7 +78,8 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
-            "Hammer": "hammerjs/hammer"
+            "Hammer": "hammerjs/hammer",
+            "Popper": "popper.js"
         })
     ]
 };
