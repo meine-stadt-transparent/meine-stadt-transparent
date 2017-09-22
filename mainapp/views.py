@@ -1,13 +1,13 @@
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from icalendar import Event, Calendar
+from icalendar import Calendar
 
 from mainapp.models.index.file import FileDocument
 from mainapp.models.meeting import Meeting
+from mainapp.models.meeting_series import MeetingSeries
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
-from mainapp.models.meeting_series import MeetingSeries
 
 
 def index(request):
@@ -62,7 +62,7 @@ def person(request, pk):
 
 def build_ical(events):
     cal = Calendar()
-    cal.add("prodid", "-//{}//ical//".format(settings.PRODUCT_NAME))
+    cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))
     cal.add('version', '2.0')
 
     for event in events:

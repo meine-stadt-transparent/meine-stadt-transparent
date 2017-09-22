@@ -23,7 +23,8 @@ warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+REAL_HOST = env.str('REAL_HOST')
+PRODUCT_NAME = "Open Source Ratsinformationssystem"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -35,7 +36,7 @@ SECRET_KEY = env.str('SECRET_KEY')
 DEBUG = env.bool('DEBUG', default=False)
 
 ALLOWED_HOSTS = [
-    env.str('REAL_HOST'),
+    REAL_HOST,
     '127.0.0.1',
     'localhost'
 ]
@@ -218,8 +219,6 @@ ELASTICSEARCH_DSL = {
         'hosts': ELASTICSEARCH_URL_PRIVATE
     },
 }
-
-PRODUCT_NAME = "Open Source Ratsinformationssystem"
 
 # Needed by allauth
 SITE_ID = 1

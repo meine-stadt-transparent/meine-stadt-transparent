@@ -4,21 +4,17 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.sites.models import Site
-from django.db import migrations, models
-import django.db.models.deletion
+from django.db import migrations
 
 
 def update_site(apps, schema_editor):
-    current_site = Site.objects.get_current()
-    current_site.domain = "opensourceris.local"
-    current_site.name = "Open Source Ratsinformationssystem"
-    current_site.save()
+    Site.objects.create(name=settings.PRODUCT_NAME, domain=settings.REAL_HOST).save()
 
 
 class Migration(migrations.Migration):
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('mainapp', '0011_userprofile'),
+        ('sites', '0002_alter_domain_unique'),
     ]
 
     operations = [

@@ -1,9 +1,0 @@
-[{
-        "pk": 1,
-        "model": "sites.site",
-        "fields": {
-            "name": "localhost:8080",
-            "domain":"localhost:8080"
-        }
-    }
-]
