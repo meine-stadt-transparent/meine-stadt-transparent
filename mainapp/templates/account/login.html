@@ -1,48 +1,35 @@
-{% extends "account/base.html" %}
+{% extends "base_single_panel.html" %}
 
 {% load i18n %}
 {% load account socialaccount %}
 
-{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block title %}{% trans "Sign In" %}{% endblock %}
+{% block panel_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block content %}
+{% block panel_content %}
     {% get_providers as socialaccount_providers %}
 
-    <div class="row">
-        <div class="col-md-10 mr-auto ml-auto">
-            <section class="card">
-                <h1 class="card-header">
-                    {% trans "Sign In" %}
-                </h1>
-                <div class="card-body">
-                    <form class="login" method="POST" action="{% url 'account_login' %}">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                        {% endif %}
-                        <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
-                        <a class="btn btn-light"
-                           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-                        <a class="btn btn-light" href="{{ signup_url }}">{% trans "Sign Up" %}</a>
-                    </form>
-                </div>
-                {% if socialaccount_providers %}
-                    <div class="card-body">
-                        <p>You can also log in with your account at one of the following services:</p>
-                        <div class="socialaccount_ballot">
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
+        <a class="btn btn-light"
+           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        <a class="btn btn-light" href="{{ signup_url }}">{% trans "Sign Up" %}</a>
+    </form>
+    {% if socialaccount_providers %}
+        <p>You can also log in with your account at one of the following services:</p>
+        <div class="socialaccount_ballot">
 
-                            <ul class="socialaccount_providers">
-                                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-                            </ul>
-                        </div>
-
-                        {% include "socialaccount/snippets/login_extra.html" %}
-                    </div>
-                {% endif %}
-            </section>
+            <ul class="socialaccount_providers">
+                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+            </ul>
         </div>
-    </div>
 
+        {% include "socialaccount/snippets/login_extra.html" %}
+    {% endif %}
 
 {% endblock %}

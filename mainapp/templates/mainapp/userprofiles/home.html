@@ -1,52 +1,51 @@
-{% extends "base.html" %}
+{% extends "base_single_panel.html" %}
 {% load i18n %}
 
 {% block title %}My profile{% endblock %}
+{% block panel_title %}My profile{% endblock %}
 
-{% block content %}
-<style>
-.grey {
-	color:grey;
-}
-.success {
-	color:green;
-}
-</style>
-<div class="row">
-	<div class="col-xs-12 col-md-offset-1 col-md-10 col-md-offset-1 col-lg-offset-2 col-lg-8 col-lg-offset-2">
-		<h1>{{ user.username }}</h1>
-		<div class="row">
-			<div class="col-sm-6">
-			    <div class="panel panel-default">
-			        <div class="panel-heading">	        	
-			        	<div class="pull-right">
-				        	{% if not profile.email_is_verified %}
-				        		<a href="{% url 'account_email' %}">
-				        			<i class="fa fa-close fa-2x pull-right text-danger"></i>
-				        		</a>
-				        	{% else %}
-				        		<i class="fa fa-check fa-2x success"></i>
-				        	{% endif %}
-				        </div>
-				        <h4><i class="fa fa-envelope-o fa-lg"></i>&nbsp;{% trans "Email adress verification" %}</h4>
-			        </div>
-			        <div class="panel-body">
-			        	{% if not profile.email_is_verified %}							
-								<a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Verify email" %}</a>
-							{% else %}
-								<a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
-						{% endif %}
-			        </div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
-				<p class="gc gus-l">
-					<a href="{% url 'account_change_password' %}" class="btn btn-link">{% trans "Change your password" %}</a>
-				</p>
-			</div>
-		</div>
-	</div>
-</div>
-{% endblock content %}
+{% block panel_content %}
+    <style>
+        .grey {
+            color: grey;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
+    <h1>{{ user.username }}</h1>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        {% if not profile.email_is_verified %}
+                            <a href="{% url 'account_email' %}">
+                                <i class="fa fa-close fa-2x pull-right text-danger"></i>
+                            </a>
+                        {% else %}
+                            <i class="fa fa-check fa-2x success"></i>
+                        {% endif %}
+                    </div>
+                    <h4><i class="fa fa-envelope-o fa-lg"></i>&nbsp;{% trans "Email adress verification" %}</h4>
+                </div>
+                <div class="panel-body">
+                    {% if not profile.email_is_verified %}
+                        <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Verify email" %}</a>
+                    {% else %}
+                        <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <p class="gc gus-l">
+                <a href="{% url 'account_change_password' %}"
+                   class="btn btn-link">{% trans "Change your password" %}</a>
+            </p>
+        </div>
+    </div>
+{% endblock panel_content %}
