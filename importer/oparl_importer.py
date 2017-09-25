@@ -1,4 +1,5 @@
 import hashlib
+import json
 import logging
 import os
 from collections import defaultdict
@@ -14,6 +15,7 @@ from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
 from gi.repository import GLib
+from gi.repository import Json
 
 
 class OParlImporter:
@@ -26,6 +28,11 @@ class OParlImporter:
         self.logger = logging.getLogger(__name__)
         self.download_files = True
         self.official_geojson = False
+        self.organization_classification = {
+            Department: ["Referat"],
+            Committee: ["Stadtratsgremium"],
+            ParliamentaryGroup: ["Fraktion"],
+        }
 
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
@@ -34,7 +41,15 @@ class OParlImporter:
 
         os.makedirs(self.cachefolder, exist_ok=True)
 
-    def resolve(self, client, url: str):
+    @staticmethod
+    def extract_geometry(glib_json: Json.Object):
+        """ Extracts the geometry part of the geojson as python object. A bit ugly. """
+        if not glib_json:
+            return None
+        node = glib_json.get_member('geometry')
+        return json.loads(Json.to_string(node, True))
+
+    def resolve(self, _, url: str):
         cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
         if self.use_cache and os.path.isfile(cachepath):
             print("Cached: " + url)
@@ -94,9 +109,17 @@ class OParlImporter:
         body.oparl_id = libobject.get_id()
         body.legislative_terms = terms
 
-        body.save()
+        location = self.location(libobject.get_location())
+        if location:
+            if location.geometry["type"] == "Point":
+                body.center = location
+            elif location.geometry["type"] == "Polygon":
+                body.outline = location
+            else:
+                logging.warning("Location object is of type {}, which is neither 'Point' nor 'Polygon'. Skipping this "
+                                "location.".format(location.geometry["type"]))
 
-        # TODO: geolocations
+        body.save()
 
         return body
 
@@ -130,18 +153,18 @@ class OParlImporter:
         print("Processing Organization {}".format(libobject.get_id()))
 
         classification = libobject.get_classification()
-        if classification == "Referat":
+        if classification in self.organization_classification[Department]:
             defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
             organization, created = Department.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
             assert not libobject.get_start_date() and not libobject.get_end_date()
-        elif classification == "Stadtratsgremium":
+        elif classification in self.organization_classification[Committee]:
             defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
             organization, created = Committee.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
             organization.start = self.glib_date_to_python(libobject.get_start_date())
             organization.end = self.glib_date_to_python(libobject.get_end_date())
-        elif classification == "Fraktion":
+        elif classification in self.organization_classification[ParliamentaryGroup]:
             defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
             organization, created = ParliamentaryGroup.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
@@ -207,9 +230,7 @@ class OParlImporter:
         location.short_name = "FIXME"
         location.description = libobject.get_description()
         location.is_official = self.official_geojson
-
-        # FIXME: Actual geojson
-
+        location.geometry = self.extract_geometry(libobject.get_geojson())
         location.save()
 
         return location
