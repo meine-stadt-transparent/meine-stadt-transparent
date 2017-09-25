@@ -6,9 +6,12 @@ from .paper import Paper
 
 
 class File(DefaultFields):
-    storage_filename = models.CharField(max_length=256)
-    displayed_filename = models.CharField(max_length=256)
-    legal_date = models.DateField()
+    name = models.CharField(max_length=200)
+    storage_filename = models.CharField(max_length=200)
+    displayed_filename = models.CharField(max_length=200)
+    # See https://stackoverflow.com/a/643772/3549270#comment11618045_643772
+    mime_type = models.CharField(max_length=255)
+    legal_date = models.DateField(null=True, blank=True)
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)

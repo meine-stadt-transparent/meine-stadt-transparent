@@ -1,1 +1,1 @@
-from .oparl_importer import OparlImporter
+from .oparl_importer import OParlImporter

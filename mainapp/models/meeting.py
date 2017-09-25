@@ -24,7 +24,7 @@ class Meeting(DefaultFields):
     short_name = models.CharField(max_length=50)
     cancelled = models.BooleanField()
     start = models.DateTimeField()
-    end = models.DateTimeField()
+    end = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True)
     # There are cases where mutliple committes have a joined official meeting
     committees = models.ManyToManyField(Committee, blank=True)

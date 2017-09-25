@@ -10,8 +10,9 @@ class Committee(DefaultFields):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=50)
     body = models.ForeignKey(Body)
-    start = models.DateField()
-    end = models.DateField()
+    # start and end shouldn't be nullable, but e.g. München Transparent doesn't have this data
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True)
 
