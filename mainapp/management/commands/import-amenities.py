@@ -7,24 +7,25 @@ from mainapp.models import SearchPoi, Body
 class Command(BaseCommand):
     help = 'Imports amenities from OpenStreetMap for a given city (amtlicher_gemeindeschluessel=gemeideschlüssel)'
 
+    query_template = """
+    [out:json];area["de:amtlicher_gemeindeschluessel"~"^{}"];
+    foreach(
+        rel(pivot)->.a;
+        .a out meta;
+        (node(area)[amenity={}][name];>;);
+        out qt meta;
+    );
+    """
+
     def add_arguments(self, parser):
         parser.add_argument('gemeindeschluessel', type=str)
         parser.add_argument('amenity', type=str)
         parser.add_argument('body-id', type=int)
 
     def handle(self, *args, **options):
-        body = Body.objects.filter(id=options['body-id'])
-        if body.count() == 0:
-            self.stderr.write("Body not found: %s" % options['body-id'])
-            return
+        body = Body.objects.get(id=options['body-id'])
 
-        query = '[out:json];area["de:amtlicher_gemeindeschluessel"~"^%s"];\
-            foreach(\
-             rel(pivot)->.a;\
-             .a out meta;\
-             (node(area)[amenity=%s][name];>;);\
-             out qt meta;\
-            );' % (options['gemeindeschluessel'], options['amenity'])
+        query = self.query_template.format(options['gemeindeschluessel'], options['amenity'])
 
         r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
 
@@ -39,5 +40,5 @@ class Command(BaseCommand):
                     poi.geometry = {'type': 'Point', 'coordinates': [node['lon'], node['lat']]}
                     poi.save()
 
-                    poi.bodies.add(body[0])
+                    poi.bodies.add(body)
                     self.stdout.write("Created: %s" % node['tags']['name'])
