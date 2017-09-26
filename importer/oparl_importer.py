@@ -19,13 +19,12 @@ from gi.repository import Json
 
 
 class OParlImporter:
-    def __init__(self, entrypoint, cachefolder, use_cache=True):
+    def __init__(self, entrypoint, cachefolder, storagefolder, use_cache=True):
+        # Config
+        self.storagefolder = storagefolder
         self.cachefolder = cachefolder
         self.entrypoint = entrypoint
-        self.client = OParl.Client()
-        self.client.connect("resolve_url", self.resolve)
         self.use_cache = use_cache
-        self.logger = logging.getLogger(__name__)
         self.download_files = True
         self.official_geojson = False
         self.organization_classification = {
@@ -34,12 +33,18 @@ class OParlImporter:
             ParliamentaryGroup: ["Fraktion"],
         }
 
+        # Setup
+        self.logger = logging.getLogger(__name__)
+        self.client = OParl.Client()
+        self.client.connect("resolve_url", self.resolve)
+        os.makedirs(self.storagefolder, exist_ok=True)
+        os.makedirs(self.cachefolder, exist_ok=True)
+
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
         self.meeting_person_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
 
-        os.makedirs(self.cachefolder, exist_ok=True)
 
     @staticmethod
     def extract_geometry(glib_json: Json.Object):
@@ -166,7 +171,8 @@ class OParlImporter:
             organization.end = self.glib_date_to_python(libobject.get_end_date())
         elif classification in self.organization_classification[ParliamentaryGroup]:
             defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
-            organization, created = ParliamentaryGroup.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+            organization, created = ParliamentaryGroup.objects.get_or_create(oparl_id=libobject.get_id(),
+                                                                             defaults=defaults)
             self.add_default_fields(organization, libobject)
             organization.start = self.glib_date_to_python(libobject.get_start_date())
             organization.end = self.glib_date_to_python(libobject.get_end_date())
@@ -251,6 +257,18 @@ class OParlImporter:
             self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper()
         return item
 
+    def download_file(self, file: File, libobject: OParl.File):
+        print("Downloading {}".format(libobject.get_download_url()))
+
+        urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
+        path = os.path.join(self.storagefolder, urlhash)
+
+        r = requests.get(libobject.get_download_url(), allow_redirects=True)
+        r.raise_for_status()
+        open(path, 'wb').write(r.content)
+
+        file.filesize = os.stat(path).st_size
+        file.storage_filename = urlhash
     def file(self, libobject: OParl.File):
         if not libobject:
             return None
@@ -258,11 +276,11 @@ class OParlImporter:
 
         file.name = libobject.get_name()
         file.displayed_filename = libobject.get_file_name()
-        file.storage_filename = "NOT IMPLEMENTED"
         file.parsed_text = libobject.get_text()
         file.mime_type = libobject.get_mime_type()
         file.legal_date = libobject.get_date()
-        file.filesize = 0  # FIXME
+
+        self.download_file(file, libobject)
 
         file.save()
 

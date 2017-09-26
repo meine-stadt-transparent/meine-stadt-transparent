@@ -9,6 +9,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('entrypoint', type=str)
         parser.add_argument('--cachefolder', type=str, default="/tmp/import-oparl-cache")
+        parser.add_argument('--storagefolder', type=str, default="./import-storage")
 
     def handle(self, *args, **options):
-        OParlImporter(options['entrypoint'], options['cachefolder']).run()
+        OParlImporter(options['entrypoint'], options['cachefolder'], options["storagefolder"]).run()
