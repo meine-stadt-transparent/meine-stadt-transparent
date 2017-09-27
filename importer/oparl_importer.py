@@ -303,16 +303,19 @@ class OParlImporter:
         person.family_name = libobject.get_family_name()
         person.location = self.location(libobject.get_location())
 
-    def body_lists(self, body: OParl.Body):
+    def body_paper(self, body: OParl.Body):
         for paper in body.get_paper():
             self.paper(paper)
 
+    def body_person(self, body: OParl.Body):
         for person in body.get_person():
             self.person(person)
 
+    def body_organization(self, body: OParl.Body):
         for organization in body.get_organization():
             self.organization(organization)
 
+    def body_meeting(self, body: OParl.Body):
         for meeting in body.get_meeting():
             self.meeting(meeting)
 
@@ -331,10 +334,14 @@ class OParlImporter:
         with Pool(self.threadcount) as executor:
             executor.map(self.body, bodies)
 
-        print("Finished creating bodies")
-
         with Pool(self.threadcount) as executor:
-            executor.map(self.body_lists, bodies)
+            for body in bodies:
+                executor.submit(self.body_paper, body)
+                executor.submit(self.body_person, body)
+                executor.submit(self.body_organization, body)
+                executor.submit(self.body_meeting, body)
+
+        print("Finished creating bodies")
 
         for meeting_id, person_ids in self.meeting_person_queue.items():
             print("Adding missing meeting <-> persons associations")

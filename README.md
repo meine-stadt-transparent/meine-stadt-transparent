@@ -108,10 +108,6 @@ Running the test cases:
 - https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
 - https://docs.google.com/document/d/1Qib4wBvavB8PcJ3LJ45wmNk6vFAXfpQ-2zi1Oal1rIY/edit# : Interne To Dos
 
-## Data model
-
-The names of the models and the fields are highly inspired by the OParl standard.
-
 ## Shell commands
 
 ### Dummy Data
@@ -147,24 +143,24 @@ django-admin compilemessages
 
 Import a whole RIS from an OParl-instance. See `--help` for options
 ```bash
-./manage.py import-oparl https://www.muenchen-transparent.de/oparl/v1.0
+./manage.py importoparl https://www.muenchen-transparent.de/oparl/v1.0
 ```
 
 Import streets of a given city (identified by the german "Gemeindeschlüssel"):
 
 ```bash
-./manage.py import-streets 05315000 1 # Gemeindeschlüssel of Köln, Body-ID 1
+./manage.py importstreets 05315000 1 # Gemeindeschlüssel of Köln, Body-ID 1
 ```
 
 Import OpenStreetMap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
 
 ```bash
-./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
+./manage.py importamenities 05315000 school 1 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
 ```
 
 Import the outer shape of a city from OpenStreetMap and write it into an existing body:
 ```bash
-./manage.py import-city-outline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
+./manage.py importcityoutline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
 
 Gemeindeschlüssel (examples):
@@ -172,3 +168,7 @@ Gemeindeschlüssel (examples):
 - Augsburg: 09761000
 - Neumarkt Sankt Veit: 09183129
 - Köln: 05315000
+
+## Data model
+
+The names of the models and the fields are highly inspired by the OParl standard.
