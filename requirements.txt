@@ -21,10 +21,9 @@ itsdangerous==0.24
 Jinja2==2.9.6
 jsonfield==2.0.2
 MarkupSafe==1.0
-nltk==3.2.4
+nltk==3.2.5
 numpy==1.13.1
 oauthlib==2.0.4
-pkg-resources==0.0.0
 pyahocorasick==1.1.4
 python-dateutil==2.6.1
 python-slugify==1.2.4
