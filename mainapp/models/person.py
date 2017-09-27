@@ -11,5 +11,5 @@ class Person(DefaultFields):
     location = models.ForeignKey(Location, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name or "{} {}".format(self.given_name, self.family_name)
 

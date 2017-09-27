@@ -4,6 +4,8 @@
 
 Open Source RIS für Prototype Fund
 
+![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
+
 ## Development
 
 Requirements: 
