@@ -6,6 +6,6 @@ python:
 cache: pip
 
 script:
-  - cp docs/env-template .env
+  - cp etc/env-template .env
   - ./manage.py migrate
   - ./manage.py test
