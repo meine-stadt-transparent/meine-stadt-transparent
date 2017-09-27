@@ -1,7 +1,9 @@
 language: python
 python:
   - "3.5"
+  - "3.5_with_system_site_packages"
   - "3.6"
+  - "3.6_with_system_site_packages"
 
 addons:
   apt:
