@@ -12,7 +12,7 @@ Requirements:
  - Python 3 with pip
  - A recent node version with npm
  - A webserver (nginx/apache)
- - For **elasticsearch**: docker and docker compose.
+ - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
 ### Installing the project
@@ -30,13 +30,15 @@ The web server needs to be set up with a (self-signed) SSL certificate. Example 
  - [nginx](etc/nginx.conf)
 
 
-#### Elasticsearch
+#### Elastic HQ
 
 To use the [Elastic HQ](http://www.elastichq.org/), the graphical administration of elasticsearch, [download the
 package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into
 [elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch). If you hit problems regarding
 memory, please have a look at this
 [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
+
+All in one:
 
 ```bash
 wget https://github.com/royrusso/elasticsearch-HQ/zipball/master
@@ -47,30 +49,37 @@ rm -r royrusso-elasticsearch-HQ-*
 rm master
 ```
 
-#### LibOparl & GObject (gi)
+#### pygobject (gi) and liboparl
+
+This is currently only required to use the importer.
 
 GObject needs to be installed system-wide.
 
-On Debian/Ubuntu, this can by done by:
-```bash
-# @TODO
-```
+ -  Debian/Ubuntu:
+    ```bash
+    sudo apt install python3-gi
+    ln -s /usr/lib/python3/dist-packages/gi venv/lib/python*/site-packages/
+    ```
 
-On macOS:
-```bash
-brew install pygobject3 --with-python3
-ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
-```
+ -  Mac OS X:
+    ```bash
+    brew install pygobject3 --with-python3
+    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
+    ```
 
-After that, the command ``python3 -c "import gi"`` should not throw any errors within the virtualenv.
+Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
 
-For liboparl, clone the [repository](https://github.com/OParl/liboparl) and follow the installation instructions. Until [#17](https://github.com/OParl/liboparl/pull/17) is merged, the ``resolve_url``-branch has to be checked out before compiling.
+For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Until
+[#17](https://github.com/OParl/liboparl/pull/17) is merged, the ``resolve_url``-branch has to be checked out before
+compiling. Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this
+is for your os)
 
 ### Starting the development server
 
 ```bash
 docker-compose up # For elasticsearch
 ```
+
 
 ```bash
 source venv/bin/activate
@@ -84,6 +93,28 @@ For compiling SCSS/JS automatically:
 ```bash
 npm run watch
 ```
+
+### Testing
+
+Running the test cases:
+```bash
+./manage.py test
+```
+
+### Important URLs:
+
+- https://opensourceris.local/
+- https://opensourceris.local/admin/
+- https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
+- https://docs.google.com/document/d/1Qib4wBvavB8PcJ3LJ45wmNk6vFAXfpQ-2zi1Oal1rIY/edit# : Interne To Dos
+
+## Data model
+
+The names of the models and the fields are highly inspired by the OParl standard.
+
+## Shell commands
+
+### Dummy Data
 
 To load the dummy data for development:
 
@@ -112,29 +143,9 @@ django-admin makemessages -a
 django-admin compilemessages
 ```
 
-### Testing
+### Import
 
-Running the test cases:
-```bash
-./manage.py test
-```
-
-### Important URLs:
-
-- https://opensourceris.local/
-- https://opensourceris.local/admin/
-- https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
-- https://docs.google.com/document/d/1Qib4wBvavB8PcJ3LJ45wmNk6vFAXfpQ-2zi1Oal1rIY/edit# : Interne To Dos
-
-## Data model
-
-The names of the models and the fields are highly inspired by the OParl standard.
-
-
-## Shell commands
-
-
-Import a whole RIS from an OParl-instance:
+Import a whole RIS from an OParl-instance. See `--help` for options
 ```bash
 ./manage.py import-oparl https://www.muenchen-transparent.de/oparl/v1.0
 ```
@@ -156,19 +167,8 @@ Import the outer shape of a city from OpenStreetMap and write it into an existin
 ./manage.py import-city-outline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
 
-
 Gemeindeschlüssel (examples):
 - München: 09162000
 - Augsburg: 09761000
 - Neumarkt Sankt Veit: 09183129
 - Köln: 05315000
-
-## Installing liboparl
-
-TODO
-
-To access gi in a virtaulenv you have to do 
-
-```bash 
-ln -s /usr/lib/python3/dist-packages/gi venv/lib/python3.5/site-packages/
-```
