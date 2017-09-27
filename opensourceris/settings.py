@@ -52,8 +52,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'mainapp',
-    'elasticsearch_admin',
-    'django_elasticsearch_dsl',
     'webpack_loader',
     'djgeojson',
     'anymail',
@@ -62,6 +60,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    # Note: The elasticsearch integration is added further below
 ]
 
 MIDDLEWARE = [
@@ -119,6 +118,16 @@ DATABASES = {
 }
 
 
+# Authentication
+
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
+LOGIN_REDIRECT_URL = "/profile/"
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+# Needed by allauth
+SITE_ID = 1
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -170,12 +179,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_EMAIL_REQUIRED = True
-LOGIN_REDIRECT_URL = "/profile/"
-ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -207,9 +210,14 @@ WEBPACK_LOADER = {
     }
 }
 
-OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
 
-# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+# Elastic
+USE_ELASTICSEARCH = env.bool('USE_ELASTICSEARCH', True)
+
+if USE_ELASTICSEARCH:
+    INSTALLED_APPS.append('elasticsearch_admin')
+    INSTALLED_APPS.append('django_elasticsearch_dsl')
+
 ELASTICSEARCH_URL_PRIVATE = env.str('ELASTICSEARCH_URL_PRIVATE')
 ELASTICSEARCH_URL_PUBLIC = env.str('ELASTICSEARCH_URL_PUBLIC')
 
@@ -219,9 +227,7 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-# Needed by allauth
-SITE_ID = 1
-
+OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
 
 # Settings for Geo-Extraction
 # @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
@@ -229,7 +235,7 @@ SITE_ID = 1
 GEOEXTRACT_KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 GEOEXTRACT_SEARCH_COUNTRY = 'Deutschland'
 GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
-
+GEO_SEARCH_COUNTRY=env.str('GEO_SEARCH_COUNTRY' , 'Deutschland')
 
 # Configuration regarding the city of choice
 SITE_GEO_LIMITS = {'min': {'lat': 47.965, 'lng': 11.286}, 'max': {'lat': 48.296, 'lng': 11.871}}
