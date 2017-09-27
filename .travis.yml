@@ -3,9 +3,20 @@ python:
   - "3.5"
   - "3.6"
 
-cache: pip
+addon:
+  apt:
+    packages:
+      - python3-gi
+
+cache:
+ - pip
+ - apt
+
+before_script:
+ # Add pygobject to the virtualenv
+ - ln -s /usr/lib/python3/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
+ - cp etc/env-template .env
 
 script:
-  - cp etc/env-template .env
   - ./manage.py migrate
   - ./manage.py test
