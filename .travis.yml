@@ -3,18 +3,12 @@ python:
   - "3.5"
   - "3.6"
 
-addons:
-  apt:
-    packages:
-      - python3-gi
-
 cache:
  - pip
- - apt
 
 before_script:
  # Add pygobject to the virtualenv
- - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
+ # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
  - cp etc/env-template .env
 
 script:

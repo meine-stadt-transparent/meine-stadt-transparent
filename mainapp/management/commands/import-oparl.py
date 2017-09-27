@@ -1,7 +1,5 @@
 from django.core.management.base import BaseCommand
 
-from importer import OParlImporter
-
 
 class Command(BaseCommand):
     help = 'Import the data from an oparl api into '
@@ -15,6 +13,16 @@ class Command(BaseCommand):
         parser.set_defaults(download_files=True)
 
     def handle(self, *args, **options):
+        # Remove gi requirement for running tests
+        try:
+            from importer.oparl_importer import OParlImporter
+        except ImportError as e:
+            if str(e) == "No module named 'gi'":
+                self.stderr.write("You need to install liboparl for the importer. The readme contains the installation "
+                                  "instructions")
+                return
+            else:
+                raise e
         OParlImporter(
             options['entrypoint'],
             options['cachefolder'],
