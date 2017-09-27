@@ -19,11 +19,11 @@ from gi.repository import Json
 
 
 class OParlImporter:
-    def __init__(self, entrypoint, cachefolder, storagefolder, use_cache=True):
+    def __init__(self, entrypoint, cachefolder, storagefolder, download_files, use_cache=True):
         # Config
         self.storagefolder = storagefolder
-        self.cachefolder = cachefolder
         self.entrypoint = entrypoint
+        self.cachefolder = os.path.join(cachefolder, hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest())
         self.use_cache = use_cache
         self.download_files = True
         self.official_geojson = False
@@ -32,6 +32,7 @@ class OParlImporter:
             Committee: ["Stadtratsgremium"],
             ParliamentaryGroup: ["Fraktion"],
         }
+        self.download_files = download_files
 
         # Setup
         self.logger = logging.getLogger(__name__)
@@ -44,7 +45,6 @@ class OParlImporter:
         # hasn't been imported yet
         self.meeting_person_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
-
 
     @staticmethod
     def extract_geometry(glib_json: Json.Object):
@@ -269,18 +269,24 @@ class OParlImporter:
 
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
+
     def file(self, libobject: OParl.File):
         if not libobject:
             return None
         file = File.objects.filter(oparl_id=libobject.get_id()).first() or File()
 
+        file.oparl_id = libobject.get_id()
         file.name = libobject.get_name()
         file.displayed_filename = libobject.get_file_name()
         file.parsed_text = libobject.get_text()
         file.mime_type = libobject.get_mime_type()
         file.legal_date = libobject.get_date()
 
-        self.download_file(file, libobject)
+        if self.download_files:
+            self.download_file(file, libobject)
+        else:
+            file.storage_filename = 0
+            file.storage_filename = "FILES NOT DOWNLOADED"
 
         file.save()
 
