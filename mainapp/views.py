@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from icalendar import Calendar
 from slugify import slugify
 
+from mainapp.models import Body
 from mainapp.models.index.file import FileDocument
 from mainapp.models.meeting import Meeting
 from mainapp.models.meeting_series import MeetingSeries
@@ -15,11 +16,20 @@ from mainapp.models.person import Person
 
 
 def index(request):
+    main_body = Body.objects.get(id=settings.SITE_GEO_SHAPE_BODY_ID)
+    if main_body.outline:
+        outline = main_body.outline.geometry
+    else:
+        outline = None
+
+    print(main_body.outline)
+
     context = {
         'map': json.dumps({
             'center': settings.SITE_GEO_CENTER,
             'zoom': settings.SITE_GEO_INIT_ZOOM,
             'limit': settings.SITE_GEO_LIMITS,
+            'outline': outline
         })
     }
     return render(request, 'mainapp/index.html', context)

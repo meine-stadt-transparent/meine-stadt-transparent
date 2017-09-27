@@ -1,6 +1,33 @@
 import * as L from "leaflet/src/Leaflet";
 
 export default class IndexView {
+    getOutlineToPolygons(outline) {
+        let polygons = [];
+        if (typeof(outline) === 'string') {
+            outline = JSON.parse(outline);
+        }
+
+        let coordsToPolygon = (coords) => {
+            let latlngs = [];
+            coords[0].forEach((lnglat) => {
+                latlngs.push(L.latLng(lnglat[1], lnglat[0]));
+            });
+            polygons.push(L.polygon(latlngs, {}));
+        };
+
+        if (outline['type'] && outline['type'] === 'Polygon') {
+            coordsToPolygon(outline['coordinates']);
+        }
+        if (outline['features']) {
+            outline['features'].forEach((feature) => {
+                if (feature['geometry']['type'] === 'MultiPolygon') {
+                    feature['geometry']['coordinates'].forEach(coordsToPolygon);
+                }
+            });
+        }
+        return polygons;
+    }
+
     constructor($map_element) {
         this.leaflet = L.map($map_element.attr('id'));
 
@@ -29,6 +56,12 @@ export default class IndexView {
                 L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
                 L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng']),
             ));
+        }
+
+        if (initData['outline']) {
+            this.getOutlineToPolygons(initData['outline']).forEach((polygon) => {
+                this.leaflet.addLayer(polygon);
+            });
         }
     }
 }

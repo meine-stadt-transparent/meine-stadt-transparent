@@ -131,17 +131,29 @@ The names of the models and the fields are highly inspired by the OParl standard
 
 ## Shell commands
 
+
+Import a whole RIS from an OParl-instance:
+```bash
+./manage.py import-oparl https://www.muenchen-transparent.de/oparl/v1.0
+```
+
 Import streets of a given city (identified by the german "Gemeindeschlüssel"):
 
 ```bash
-./manage.py import-streets 05315000 1 # Gemeindeschlüssel von Köln, Body-ID 1
+./manage.py import-streets 05315000 1 # Gemeindeschlüssel of Köln, Body-ID 1
 ```
 
-Import Open-Streetmap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
+Import OpenStreetMap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
 
 ```bash
-./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel von Köln, Amenity, Body-ID 1
+./manage.py import-amenities 05315000 school 1 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
 ```
+
+Import the outer shape of a city from OpenStreetMap and write it into an existing body:
+```bash
+./manage.py import-city-outline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
+```
+
 
 Gemeindeschlüssel (examples):
 - München: 09162000
