@@ -11,3 +11,12 @@
   margin: $main-content-margin-top 50px;
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
 }
+
+.form-home-search {
+  margin-top: 20px;
+}
+.home-main-links {
+  .main-link-holder {
+    margin-top: 20px;
+  }
+}

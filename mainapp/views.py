@@ -50,6 +50,15 @@ def search(request):
         'radius': "100",
     }
 
+    if 'query' in request.GET:
+        context['query'] = request.GET['query']
+        s = FileDocument.search()
+        s = s.filter("match", parsed_text=request.GET['query'])
+        s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
+        for hit in s:
+            for fragment in hit.meta.highlight.parsed_text:
+                context['results'].append(fragment)
+
     if 'action' in request.POST:
         for val in ['radius', 'query']:
             context[val] = request.POST[val]

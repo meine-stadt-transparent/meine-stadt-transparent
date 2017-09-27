@@ -8,7 +8,7 @@
 </head>
 <body>
 
-
+{% block header %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="main-menu">
     <a href="{% url 'index' %}" class="navbar-brand">OS RIS</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
@@ -37,12 +37,16 @@
                 <button class="btn" type="submit">{% trans "Log out" %}</button>
             </form>
         {% endif %}
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="text" placeholder="{% trans "Search" context "page_title" %}" aria-label="{% trans "Search" context "perform search" %}">
+        {% if not disable_header_search %}
+        <form class="form-inline my-2 my-lg-0" method="GET" action="{% url 'search' %}">
+            <input class="form-control mr-sm-2" type="text" name="query" required
+                   placeholder="{% trans "Search" context "page_title" %}" aria-label="{% trans "Search" context "perform search" %}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans "Search" context "perform search" %}</button>
         </form>
+        {% endif %}
     </div>
 </nav>
+{% endblock %}
 
 <main id="main-content">
     {% block content %}
