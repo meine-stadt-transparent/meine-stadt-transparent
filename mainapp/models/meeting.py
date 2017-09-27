@@ -7,7 +7,6 @@ from .committee import Committee
 from .default_fields import DefaultFields
 from .file import File
 from .location import Location
-from .meeting_series import MeetingSeries
 from .person import Person
 
 PUBLICALITY = (
@@ -35,7 +34,6 @@ class Meeting(DefaultFields):
     verbatim_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_verbatim_protocol")
     # Sometimes there are additional files atttached to a meeting
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
-    meeting_series = models.ForeignKey(MeetingSeries, null=True, blank=True)
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
 
     def as_ical_event(self):

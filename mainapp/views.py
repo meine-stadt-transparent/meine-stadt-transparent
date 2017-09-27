@@ -7,10 +7,9 @@ from django.utils.translation import ugettext as _
 from icalendar import Calendar
 from slugify import slugify
 
-from mainapp.models import Body
+from mainapp.models import Body, Committee
 from mainapp.models.index.file import FileDocument
 from mainapp.models.meeting import Meeting
-from mainapp.models.meeting_series import MeetingSeries
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
 
@@ -125,14 +124,14 @@ def meeting_ical(request, pk):
     return build_ical([meeting.as_ical_event()], filename)
 
 
-def meeting_series_ical(request, pk):
-    series = get_object_or_404(MeetingSeries, id=pk)
-    events = [meeting.as_ical_event() for meeting in series.meeting_set.all()]
+def committee_ical(request, pk):
+    committee = get_object_or_404(Committee, id=pk)
+    events = [meeting.as_ical_event() for meeting in committee.meeting_set.all()]
 
-    if series.short_name:
-        filename = series.short_name
-    elif series.name:
-        filename = series.name
+    if committee.short_name:
+        filename = committee.short_name
+    elif committee.name:
+        filename = committee.name
     else:
         filename = _("Meeting Series")
 

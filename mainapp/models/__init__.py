@@ -9,7 +9,6 @@ from .file import File
 from .legislative_term import LegislativeTerm
 from .location import Location
 from .meeting import Meeting
-from .meeting_series import MeetingSeries
 from .paper import Paper
 from .parliamentary_group import ParliamentaryGroup
 from .parliamentary_group_membership import ParliamentaryGroupMembership

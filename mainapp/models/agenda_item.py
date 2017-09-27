@@ -12,6 +12,7 @@ class AgendaItem(models.Model):
     position = models.IntegerField()
     public = models.NullBooleanField(blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)
+    # TODO: Modelling the resolution which can be both file and plain text
 
     def __str__(self):
         return "{}: {} ({})".format(self.meeting.__str__(), self.key, self.position)

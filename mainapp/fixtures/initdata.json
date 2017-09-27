@@ -482,8 +482,10 @@
         "created": "2017-09-10T16:44:54.977Z",
         "modified": "2017-09-10T16:48:36.760Z",
         "deleted": false,
+        "name": "",
         "storage_filename": "the_complexity_of_songs_donald_knuth.pdf",
         "displayed_filename": "The Complexity of Songs.pdf",
+        "mime_type": "",
         "legal_date": "1984-04-01",
         "filesize": 153996,
         "paper": 1,
@@ -501,8 +503,10 @@
         "created": "2017-09-10T16:47:54.207Z",
         "modified": "2017-09-22T09:44:57.868Z",
         "deleted": false,
+        "name": "",
         "storage_filename": "file.txt",
         "displayed_filename": "File.txt",
+        "mime_type": "",
         "legal_date": "2017-09-12",
         "filesize": 49,
         "paper": 2,
@@ -520,8 +524,10 @@
         "created": "2017-09-11T09:47:54.207Z",
         "modified": "2017-09-11T09:47:54.207Z",
         "deleted": false,
+        "name": "",
         "storage_filename": "streettest.text",
         "displayed_filename": "streettest.txt",
+        "mime_type": "",
         "legal_date": "2017-09-10",
         "filesize": 123,
         "paper": 3,
@@ -529,20 +535,6 @@
         "license": null,
         "description": "It's a plaintext file containing some addresses for address recognition",
         "locations": []
-    }
-},
-{
-    "model": "mainapp.meetingseries",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T13:47:41.063Z",
-        "modified": "2017-09-11T13:47:41.063Z",
-        "deleted": false,
-        "name": "House Assembly meetings",
-        "short_name": null,
-        "description": "Five House Assembly meetings that are scheduled onth per month",
-        "is_regular": true
     }
 },
 {
@@ -562,7 +554,6 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": null,
         "public": 2,
         "committees": [
             1
@@ -577,7 +568,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T16:58:16.847Z",
-        "modified": "2017-09-10T16:58:16.847Z",
+        "modified": "2017-09-27T15:21:28.677Z",
         "deleted": false,
         "name": "Meeting of the Congress of the USA 1",
         "short_name": "Congress Meeting 1",
@@ -588,10 +579,9 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": null,
         "public": 1,
         "committees": [
-            2
+            1
         ],
         "persons": [
             2
@@ -616,7 +606,6 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": 1,
         "public": 1,
         "committees": [
             2
@@ -642,7 +631,6 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": 1,
         "public": 1,
         "committees": [
             2
@@ -668,7 +656,6 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": 1,
         "public": 1,
         "committees": [
             2
@@ -694,7 +681,6 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": 1,
         "public": 1,
         "committees": [
             2
@@ -720,8 +706,7 @@
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "meeting_series": 1,
-        "public": 1,
+        "public": 0,
         "committees": [
             2
         ],

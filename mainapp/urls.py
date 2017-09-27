@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 
 from mainapp.views_profile import ProfileHomeView
 from . import views
-from .models import File, Location, Meeting, MeetingSeries, Body
+from .models import File, Location, Meeting, Body
 from .models import Paper, ParliamentaryGroup, Committee, Department, LegislativeTerm
 
 
@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^privacy/$', views.info_privacy, name='info_privacy'),
     url(r'^person/(?P<pk>[0-9]+)$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical$', views.meeting_ical, name='meeting-ical'),
-    url(r'^meeting-series/(?P<pk>[0-9]+)/ical$', views.meeting_series_ical, name='meeting-series-ical'),
+    url(r'^committee/(?P<pk>[0-9]+)/ical$', views.committee_ical, name='committee_ical'),
     simple_model_view('body', Body),
     simple_model_view('committee', Committee),
     simple_model_view('department', Department),
@@ -30,7 +30,6 @@ urlpatterns = [
     simple_model_view('legislative term', LegislativeTerm),
     simple_model_view('location', Location),
     simple_model_view('meeting', Meeting),
-    simple_model_view('meeting series', MeetingSeries),
     simple_model_view('paper', Paper),
     simple_model_view('parliamentary group', ParliamentaryGroup),
     url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
