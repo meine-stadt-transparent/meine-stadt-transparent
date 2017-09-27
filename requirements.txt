@@ -24,15 +24,16 @@ MarkupSafe==1.0
 nltk==3.2.4
 numpy==1.13.1
 oauthlib==2.0.4
+pkg-resources==0.0.0
 pyahocorasick==1.1.4
 python-dateutil==2.6.1
+python-slugify==1.2.4
 python3-openid==3.1.0
 pytz==2017.2
 requests==2.18.4
 requests-oauthlib==0.8.0
 scipy==0.19.1
 six==1.11.0
-slugify==0.0.1
 Unidecode==0.4.21
 urllib3==1.22
 Werkzeug==0.12.2
