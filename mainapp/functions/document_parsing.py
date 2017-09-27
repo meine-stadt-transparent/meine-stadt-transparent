@@ -1,3 +1,5 @@
+from geopy import OpenCage
+
 from mainapp.models import SearchStreet, Body, Location
 from django.conf import settings
 import geoextract
@@ -51,7 +53,7 @@ def get_geodata(location, fallback_city_name):
 
     search_str += ', ' + settings.GEO_SEARCH_COUNTRY
 
-    geolocator = settings.OPENCAGEDATA_KEY
+    geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
     location = geolocator.geocode(search_str, language="de", exactly_one=False)
     if len(location) == 0:
         return None
