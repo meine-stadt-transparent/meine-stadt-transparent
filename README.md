@@ -23,6 +23,13 @@ pip install -r requirements.txt
 npm install
 ```
 
+The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
+ - [Apache](etc/apache.conf)
+ - [nginx](etc/nginx.conf)
+
+
+#### Elasticsearch
+
 To use the [Elastic HQ](http://www.elastichq.org/), the graphical administration of elasticsearch, [download the
 package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into
 [elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch). If you hit problems regarding
@@ -38,10 +45,24 @@ rm -r royrusso-elasticsearch-HQ-*
 rm master
 ```
 
-The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
- - [Apache](etc/apache.conf)
- - [nginx](etc/nginx.conf)
+#### LibOparl & GObject (gi)
 
+GObject needs to be installed system-wide.
+
+On Debian/Ubuntu, this can by done by:
+```bash
+# @TODO
+```
+
+On macOS:
+```bash
+brew install pygobject3 --with-python3
+ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
+```
+
+After that, the command ``python3 -c "import gi"`` should not throw any errors within the virtualenv.
+
+For liboparl, clone the [repository](https://github.com/OParl/liboparl) and follow the installation instructions. Until [#17](https://github.com/OParl/liboparl/pull/17) is merged, the ``resolve_url``-branch has to be checked out before compiling.
 
 ### Starting the development server
 
