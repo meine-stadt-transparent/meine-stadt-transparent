@@ -8,6 +8,7 @@ class Command(BaseCommand):
         parser.add_argument('entrypoint', type=str)
         parser.add_argument('--cachefolder', type=str, default="/tmp/import-oparl-cache")
         parser.add_argument('--storagefolder', type=str, default="./import-storage")
+        parser.add_argument('--threadcount', type=int, default=10)
         parser.add_argument('--download-files', dest='download_files', action='store_true')
         parser.add_argument('--no-download-files', dest='download_files', action='store_false')
         parser.set_defaults(download_files=True)
@@ -27,5 +28,6 @@ class Command(BaseCommand):
             options['entrypoint'],
             options['cachefolder'],
             options["storagefolder"],
-            options["download_files"]
+            options["download_files"],
+            options["threadcount"]
         ).run()

@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
 
 import gi
@@ -19,7 +20,7 @@ from gi.repository import Json
 
 
 class OParlImporter:
-    def __init__(self, entrypoint, cachefolder, storagefolder, download_files, use_cache=True):
+    def __init__(self, entrypoint, cachefolder, storagefolder, download_files, thread_count, use_cache=True):
         # Config
         self.storagefolder = storagefolder
         self.entrypoint = entrypoint
@@ -33,6 +34,7 @@ class OParlImporter:
             ParliamentaryGroup: ["Fraktion"],
         }
         self.download_files = download_files
+        self.threadcount = thread_count
 
         # Setup
         self.logger = logging.getLogger(__name__)
@@ -325,13 +327,14 @@ class OParlImporter:
 
         print("Creating bodies")
         # Ensure all bodies exist when calling the other methods
-        for body in bodies:
-            self.body(body)
+
+        with Pool(self.threadcount) as executor:
+            executor.map(self.body, bodies)
 
         print("Finished creating bodies")
 
-        for body in bodies:
-            self.body_lists(body)
+        with Pool(self.threadcount) as executor:
+            executor.map(self.body_lists, bodies)
 
         for meeting_id, person_ids in self.meeting_person_queue.items():
             print("Adding missing meeting <-> persons associations")
