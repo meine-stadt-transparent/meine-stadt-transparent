@@ -1,9 +1,7 @@
 language: python
 python:
   - "3.5"
-  - "3.5_with_system_site_packages"
   - "3.6"
-  - "3.6_with_system_site_packages"
 
 addons:
   apt:
@@ -16,7 +14,7 @@ cache:
 
 before_script:
  # Add pygobject to the virtualenv
- - ln -s /usr/lib/python3/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
+ - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
  - cp etc/env-template .env
 
 script:
