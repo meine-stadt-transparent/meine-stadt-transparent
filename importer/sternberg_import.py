@@ -15,3 +15,4 @@ class SternbergImport(OParlImporter):
                     oparl_object["location"]["type"] = "https://schema.oparl.org/1.0/Location"
             response.set_resolved_data(json.dumps(oparl_list))
         return response
+

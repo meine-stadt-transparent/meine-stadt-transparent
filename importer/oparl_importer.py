@@ -20,12 +20,15 @@ from gi.repository import Json
 
 
 class OParlImporter:
-    def __init__(self, entrypoint, cachefolder, storagefolder, download_files, thread_count, use_cache=True):
+    def __init__(self, options):
         # Config
-        self.storagefolder = storagefolder
-        self.entrypoint = entrypoint
-        self.cachefolder = os.path.join(cachefolder, hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest())
-        self.use_cache = use_cache
+        self.storagefolder = options["storagefolder"]
+        self.entrypoint = options["entrypoint"]
+        self.use_cache = options["use_cache"]
+        self.download_files = options["download_files"]
+        self.threadcount = options["threadcount"]
+        entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
+        self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
         self.download_files = True
         self.official_geojson = False
         self.organization_classification = {
@@ -33,8 +36,6 @@ class OParlImporter:
             Committee: ["Stadtratsgremium"],
             ParliamentaryGroup: ["Fraktion"],
         }
-        self.download_files = download_files
-        self.threadcount = thread_count
 
         # Setup
         self.logger = logging.getLogger(__name__)
@@ -96,7 +97,8 @@ class OParlImporter:
             return None
         return date(glibdate.get_year(), glibdate.get_month(), glibdate.get_day())
 
-    def add_default_fields(self, djangoobject: DefaultFields, libobject: OParl.Object):
+    @staticmethod
+    def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
         djangoobject.oparl_id = libobject.get_id()
         djangoobject.name = libobject.get_name()
         djangoobject.short_name = libobject.get_short_name() or libobject.get_name()
@@ -161,18 +163,18 @@ class OParlImporter:
 
         classification = libobject.get_classification()
         if classification in self.organization_classification[Department]:
-            defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
+            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = Department.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
             assert not libobject.get_start_date() and not libobject.get_end_date()
         elif classification in self.organization_classification[Committee]:
-            defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
+            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = Committee.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
             organization.start = self.glib_date_to_python(libobject.get_start_date())
             organization.end = self.glib_date_to_python(libobject.get_end_date())
         elif classification in self.organization_classification[ParliamentaryGroup]:
-            defaults = {"body": Body.objects.get(oparl_id=libobject.get_body().get_id())}
+            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = ParliamentaryGroup.objects.get_or_create(oparl_id=libobject.get_id(),
                                                                              defaults=defaults)
             self.add_default_fields(organization, libobject)
@@ -210,7 +212,7 @@ class OParlImporter:
 
         persons = []
         for oparlperson in libobject.get_participant():
-            djangoperson = Person.objects.get(oparl_id=oparlperson.get_id())
+            djangoperson = Person.by_oparl_id(oparlperson.get_id())
             if djangoperson:
                 persons.append(djangoperson)
             else:
@@ -252,7 +254,7 @@ class OParlImporter:
         item.key = libobject.get_number()
         item.public = libobject.get_public()
 
-        paper = Paper.objects.get(oparl_id=libobject.get_consultation().get_paper())
+        paper = Paper.by_oparl_id(libobject.get_consultation().get_paper())
         if paper:
             item.paper = paper
         else:
@@ -319,6 +321,19 @@ class OParlImporter:
         for meeting in body.get_meeting():
             self.meeting(meeting)
 
+    def add_missing_associations(self):
+        for meeting_id, person_ids in self.meeting_person_queue.items():
+            print("Adding missing meeting <-> persons associations")
+            meeting = Meeting.by_oparl_id(meeting_id)
+            meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
+            meeting.save()
+
+        for item_id, paper_id in self.agenda_item_paper_queue:
+            print("Adding missing agenda item <-> persons associations")
+            item = AgendaItem.objects.get(oparl_id=item_id)
+            item.paper = Paper.by_oparl_id(paper_id)
+            item.save()
+
     def run(self):
         try:
             system = self.client.open(self.entrypoint)
@@ -335,22 +350,21 @@ class OParlImporter:
             executor.map(self.body, bodies)
 
         with Pool(self.threadcount) as executor:
-            for body in bodies:
-                executor.submit(self.body_paper, body)
-                executor.submit(self.body_person, body)
-                executor.submit(self.body_organization, body)
-                executor.submit(self.body_meeting, body)
+            executor.map(self.body_paper, bodies)
+            executor.map(self.body_person, bodies)
+            executor.map(self.body_organization, bodies)
+            executor.map(self.body_meeting, bodies)
 
         print("Finished creating bodies")
+        self.add_missing_associations()
 
-        for meeting_id, person_ids in self.meeting_person_queue.items():
-            print("Adding missing meeting <-> persons associations")
-            meeting = Meeting.objects.get(oparl_id=meeting_id)
-            meeting.persons = [Person.objects.get(oparl_id=person_id) for person_id in person_ids]
-            meeting.save()
+    @staticmethod
+    def run_static(config):
+        """ This method is requried as instances of this class can't be moved to other processes """
+        try:
+            runner = OParlImporter(config)
+            runner.run()
+        except Exception as e:
+            return e
+        return True
 
-        for item_id, paper_id in self.agenda_item_paper_queue:
-            print("Adding missing agenda item <-> persons associations")
-            item = AgendaItem.objects.get(oparl_id=item_id)
-            item.paper = Paper.objects.get(oparl_id=paper_id)
-            item.save()
