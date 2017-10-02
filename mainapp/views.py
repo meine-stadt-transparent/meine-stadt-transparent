@@ -40,6 +40,10 @@ def info_contact(request):
     return render(request, 'mainapp/info_contact.html', {})
 
 
+def about(request):
+    return render(request, 'mainapp/about.html', {})
+
+
 def search(request):
     context = {
         'results': [],
@@ -83,8 +87,19 @@ def search(request):
     return render(request, 'mainapp/search.html', context)
 
 
+def persons(request):
+    pk = settings.SITE_DEFAULT_COMMITTEE
+    committee = get_object_or_404(Committee, id=pk)
+    context = {"current_committee": committee}
+    return render(request, 'mainapp/persons.html', context)
+
+
+def calendar(request):
+    return render(request, 'mainapp/calendar.html')
+
+
 def person(request, pk):
-    person = get_object_or_404(Person, id=pk)
+    selected_person = get_object_or_404(Person, id=pk)
 
     # That will become a shiny little query with just 7 joins
     filter_self = Paper.objects.filter(submitter_persons__id=pk)
@@ -92,7 +107,7 @@ def person(request, pk):
     filer_group = Paper.objects.filter(submitter_parliamentary_groups__parliamentarygroupmembership__id=pk)
     paper = (filter_self | filter_committee | filer_group).distinct()
 
-    context = {"person": person, "papers": paper}
+    context = {"person": selected_person, "papers": paper}
     return render(request, 'mainapp/person.html', context)
 
 

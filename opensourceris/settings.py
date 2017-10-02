@@ -242,3 +242,4 @@ SITE_GEO_LIMITS = {'min': {'lat': 47.965, 'lng': 11.286}, 'max': {'lat': 48.296,
 SITE_GEO_CENTER = {'lat': 48.137, 'lng': 11.575}
 SITE_GEO_INIT_ZOOM = 11
 SITE_GEO_SHAPE_BODY_ID = 1
+SITE_DEFAULT_COMMITTEE = 1

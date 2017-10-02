@@ -2,6 +2,8 @@
 
 {% load i18n %}
 
+{% block title %}{% trans "Open Source Ratsinformationssystem" %}{% endblock %}
+
 {% block header %}
     {% with True as disable_header_search %}
         {{ block.super }}
@@ -29,15 +31,15 @@
         <nav class="home-main-links">
             <div class="row">
                 <div class="col-sm-6 main-link-holder">
-                    <a href="" class="btn btn-primary btn-block">Stadtrat</a>
+                    <a href="{% url 'persons' %}" class="btn btn-primary btn-block">Personen</a>
                 </div>
                 <div class="col-sm-6 main-link-holder">
-                    <a href="" class="btn btn-secondary btn-block">Sitzungen</a>
+                    <a href="{% url 'calendar' %}" class="btn btn-secondary btn-block">Termine</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6 main-link-holder">
-                    <a href="" class="btn btn-secondary btn-block">Über das Projekt</a>
+                    <a href="{% url 'about' %}" class="btn btn-secondary btn-block">Über das Projekt</a>
                 </div>
                 <div class="col-sm-6 main-link-holder">
                     <a href="" class="btn btn-secondary btn-block">...</a>
