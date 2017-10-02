@@ -15,9 +15,17 @@ class Command(BaseCommand):
         parser.add_argument('--use-cache', dest='use-cache', action='store_true')
         parser.add_argument('--no-use-cache', dest='use-cache', action='store_false')
         parser.add_argument('--use-sternberg-workarounds', dest='use-sternberg', action='store_false')
+        parser.add_argument('--without-persons', dest='with-persons', action='store_false')
+        parser.add_argument('--without-papers', dest='with-papers', action='store_false')
+        parser.add_argument('--without-organizations', dest='with-organizations', action='store_false')
+        parser.add_argument('--without-meetings', dest='with-meetings', action='store_false')
         parser.set_defaults(download_files=True)
         parser.set_defaults(use_cache=True)
         parser.set_defaults(use_sternberg=True)
+        parser.set_defaults(with_persons=True)
+        parser.set_defaults(with_papers=True)
+        parser.set_defaults(with_organizations=True)
+        parser.set_defaults(with_meetings=True)
 
     @staticmethod
     def import_importer(options):

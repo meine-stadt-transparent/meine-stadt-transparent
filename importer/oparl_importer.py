@@ -26,6 +26,10 @@ class OParlImporter:
         self.entrypoint = options["entrypoint"]
         self.use_cache = options["use_cache"]
         self.download_files = options["download_files"]
+        self.with_persons = options["with-persons"]
+        self.with_papers = options["with-papers"]
+        self.with_organizations = options["with-organizations"]
+        self.with_meetings = options["with-meetings"]
         self.threadcount = options["threadcount"]
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
@@ -304,6 +308,7 @@ class OParlImporter:
         person.given_name = libobject.get_given_name()
         person.family_name = libobject.get_family_name()
         person.location = self.location(libobject.get_location())
+        person.save()
 
     def body_paper(self, body: OParl.Body):
         for paper in body.get_paper():
@@ -350,10 +355,14 @@ class OParlImporter:
             executor.map(self.body, bodies)
 
         with Pool(self.threadcount) as executor:
-            executor.map(self.body_paper, bodies)
-            executor.map(self.body_person, bodies)
-            executor.map(self.body_organization, bodies)
-            executor.map(self.body_meeting, bodies)
+            if self.with_papers:
+                executor.map(self.body_paper, bodies)
+            if self.with_persons:
+                executor.map(self.body_person, bodies)
+            if self.with_organizations:
+                executor.map(self.body_organization, bodies)
+            if self.with_meetings:
+                executor.map(self.body_meeting, bodies)
 
         print("Finished creating bodies")
         self.add_missing_associations()
