@@ -24,7 +24,12 @@ class Command(OParlImport):
         with Pool(len(options_per_process)) as executor:
             results = executor.map(importer.run_static, options_per_process)
 
-        for i in results:
-            print(i)
-            if i:
-                print("SUCCESS")
+        print("\nAll processes finished\n")
+
+        for succes, options in zip(results, options_per_process):
+            if succes:
+                print("SUCCESS: {}".format(options["entrypoint"]))
+            else:
+                print("FAILED: {}".format(options["entrypoint"]))
+
+        print("\nFinal results: {} successes and {} failures\n".format(results.count(True), results.count(False)))

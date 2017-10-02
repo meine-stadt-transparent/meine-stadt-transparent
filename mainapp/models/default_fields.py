@@ -10,9 +10,9 @@ class DefaultFields(models.Model):
     modified = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
 
-    @staticmethod
-    def by_oparl_id(oparl_id):
-        return DefaultFields.objects.get(oparl_id=oparl_id)
+    @classmethod
+    def by_oparl_id(cls, oparl_id):
+        return cls.objects.get(oparl_id=oparl_id)
 
     class Meta:
         abstract = True

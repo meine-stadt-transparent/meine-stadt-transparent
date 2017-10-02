@@ -2,6 +2,7 @@ import hashlib
 import json
 import logging
 import os
+import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
@@ -374,6 +375,8 @@ class OParlImporter:
             runner = OParlImporter(config)
             runner.run()
         except Exception as e:
-            return e
+            print("There was an error in the Process for {}".format(config["entrypoint"]))
+            print(traceback.format_exc())
+            return False
         return True
 
