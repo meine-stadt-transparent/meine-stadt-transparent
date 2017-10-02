@@ -21,8 +21,6 @@ def index(request):
     else:
         outline = None
 
-    print(main_body.outline)
-
     context = {
         'map': json.dumps({
             'center': settings.SITE_GEO_CENTER,

@@ -12,7 +12,7 @@ class ParliamentaryGroup(DefaultFields):
     # start and end shouldn't be nullable, but e.g. München Transparent doesn't have this data
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
-    body = models.ForeignKey(Body)
+    body = models.ForeignKey(Body, related_name='parliamentarygroup')
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True)
 

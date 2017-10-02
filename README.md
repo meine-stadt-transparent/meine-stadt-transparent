@@ -61,10 +61,10 @@ GObject needs to be installed system-wide.
     ln -s /usr/lib/python3/dist-packages/gi venv/lib/python*/site-packages/
     ```
 
- -  Mac OS X:
+ -  macOS:
     ```bash
     brew install pygobject3 --with-python3
-    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
+    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
     ```
 
 Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.

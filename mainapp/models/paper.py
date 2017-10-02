@@ -22,3 +22,11 @@ class Paper(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    def belongs_to_body(self, body):
+        """
+        :param body: Body
+        :return: bool
+        """
+        for group in body.parliamentarygroup:
+            print(group.name)
