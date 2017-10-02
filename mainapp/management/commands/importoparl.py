@@ -21,7 +21,7 @@ class Command(BaseCommand):
         parser.add_argument('--without-meetings', dest='with-meetings', action='store_false')
         parser.set_defaults(download_files=True)
         parser.set_defaults(use_cache=True)
-        parser.set_defaults(use_sternberg=True)
+        parser.set_defaults(use_sternberg=False)
         parser.set_defaults(with_persons=True)
         parser.set_defaults(with_papers=True)
         parser.set_defaults(with_organizations=True)
