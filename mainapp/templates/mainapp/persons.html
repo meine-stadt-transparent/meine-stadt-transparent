@@ -1,11 +1,42 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load render_bundle from webpack_loader %}
 
 {% block title %}{% trans "Persons" %}{% endblock %}
 
 {% block content %}
-    <div class="container">
-        @TODO
+    <div class="container persons-list-container">
+
+        <ul class="persons-list">
+            <li class="person party-1">
+                <span class="name">Person 3</span> (<span class="party">Partei 1</span>)
+            </li>
+            <li class="person party-2">
+                <span class="name">Person 2</span> (<span class="party">Partei 2</span>)
+            </li>
+            <li class="person party-2">
+                <span class="name">Person 4</span> (<span class="party">Partei 2</span>)
+            </li>
+            <li class="person party-1">
+                <span class="name">Person 1</span> (<span class="party">Partei 1</span>)
+            </li>
+            <li class="person party-3">
+                <span class="name">Person 5</span> (<span class="party">Partei 3</span>)
+            </li>
+        </ul>
+
+        <label>Sortieren nach:
+            <select name="sort_by" size="1">
+                <option value="none">-</option>
+                <option value="name">Name</option>
+                <option value="party">Partei</option>
+            </select>
+        </label>
+
     </div>
+{% endblock %}
+
+{% block additional_js %}
+    {% render_bundle 'persons' 'js' %}
 {% endblock %}

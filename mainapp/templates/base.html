@@ -62,8 +62,10 @@
     </ul>
 </footer>
 
-
+{% render_bundle 'vendor' 'js' %}
 {% render_bundle 'mainapp' 'js' %}
+
+{% block additional_js %}{% endblock %}
 
 </body>
 </html>

@@ -139,6 +139,14 @@ django-admin makemessages -a
 django-admin compilemessages
 ```
 
+### Creating a page with additional JS libraries
+
+If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:
+- Normally install it using NPM
+- Create a new entry JS script in [mainapp/assets/js](mainapp/assets/js). Require the library from there.
+- Register this new entry point in the [webpack-configuration](etc/webpack.config.common.js).
+- Load this new JS-file in a Django-template within the ``additional_js``-block using the ``render_bundle``-tag. (See [persons.html](mainapp/templates/mainapp/persons.html) for an example)
+
 ### Import
 
 Import a whole RIS from an OParl-instance. See `--help` for options

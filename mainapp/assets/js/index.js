@@ -3,9 +3,6 @@ import HomeMap from "./HomeMap";
 
 window.jQuery = require('jquery');
 
-require('popper.js/dist/popper.js');
-require('bootstrap/dist/js/bootstrap.js');
-
 $(function() {
     console.log("Hello 🌍");
 

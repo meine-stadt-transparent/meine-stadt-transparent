@@ -1,0 +1,17 @@
+.persons-list {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  > * {
+    display: block;
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin: 5px;
+    padding: 10px;
+    background: #888;
+    color: #262524;
+  }
+}
