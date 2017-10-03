@@ -1,12 +1,18 @@
 import style from '../css/mainapp.scss';
 import HomeMap from "./HomeMap";
+import SearchWidget from "./SearchWidget";
 
 window.jQuery = require('jquery');
+require('typeahead.js/dist/typeahead.jquery');
 
-$(function() {
+$(function () {
     console.log("Hello 🌍");
 
-    $(".js-home-map").each(function() {
+    $(".js-home-map").each(function () {
         new HomeMap($(this));
     });
+
+    $(".search-autocomplete input").each(function() {
+        new SearchWidget($(this));
+    })
 });

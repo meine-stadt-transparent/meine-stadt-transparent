@@ -9,7 +9,14 @@ module.exports = {
         mainapp: '../mainapp/assets/js/index',
         persons: '../mainapp/assets/js/persons',
         calendar: '../mainapp/assets/js/calendar',
-        vendor: ['jquery', 'hammerjs/hammer', 'popper.js', 'leaflet/src/Leaflet', 'bootstrap/dist/js/bootstrap.js']
+        vendor: [
+            'jquery',
+            'hammerjs/hammer',
+            'popper.js',
+            'leaflet/src/Leaflet',
+            'bootstrap/dist/js/bootstrap.js',
+            'typeahead.js/dist/typeahead.jquery',
+        ]
     },
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),

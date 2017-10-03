@@ -40,6 +40,7 @@
     "jquery": "^3.2.1",
     "leaflet": "^1.2.0",
     "osmtogeojson": "*",
-    "popper.js": "^1.12.5"
+    "popper.js": "^1.12.5",
+    "typeahead.js": "^0.11.1"
   }
 }

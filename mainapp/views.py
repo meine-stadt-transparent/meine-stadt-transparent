@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
+from elasticsearch import Elasticsearch
+from elasticsearch_dsl import Search
 from icalendar import Calendar
 from slugify import slugify
 
@@ -87,6 +89,25 @@ def search(request):
                 context['results'].append(fragment)
 
     return render(request, 'mainapp/search.html', context)
+
+
+def search_autosuggest(request):
+    ret = request.GET['query']
+    s = Search(index='ris_files').suggest("autocomplete", ret, completion={'field': 'autocomplete'})
+    suggestions = s.execute_suggest()
+
+    results = []
+    for hit in suggestions.autocomplete:
+        for option in hit.options:
+            print(option)
+            if option['_type'] == 'person_document':
+                results.append({'name': option['text'], 'url': reverse('person', args=[option['_source']['id']])})
+            elif option['_type'] == 'parliamentary_group_document':
+                results.append({'name': option['text'], 'url': reverse('person', args=[option['_source']['id']])})
+            else:
+                print("Unknown type: %s" % option['_type'])
+
+    return HttpResponse(json.dumps(results), content_type='application/json')
 
 
 def persons(request):

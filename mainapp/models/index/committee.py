@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import DocType, Index, fields
 
-from mainapp.models import Person
+from mainapp.models import Committee
 
 # Name of the Elasticsearch index
 fileIndex = Index('ris_files')
@@ -12,18 +12,17 @@ fileIndex.settings(
 
 
 @fileIndex.doc_type
-class PersonDocument(DocType):
+class CommitteeDocument(DocType):
     autocomplete = fields.CompletionField(attr="name_autocomplete")
 
     class Meta:
-        model = Person  # The model associate with this DocType
+        model = Committee  # The model associate with this DocType
 
         # The fields of the model you want to be indexed in Elasticsearch
         fields = [
             'id',
             'name',
-            'given_name',
-            'family_name',
+            'short_name',
         ]
 
         # To ignore auto updating of Elasticsearch when a model is save

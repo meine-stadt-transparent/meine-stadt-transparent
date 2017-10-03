@@ -18,3 +18,7 @@ class Committee(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    # A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error
+    def name_autocomplete(self):
+        return self.name if len(self.name) > 0 else ' '

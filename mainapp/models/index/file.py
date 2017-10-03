@@ -20,6 +20,7 @@ class FileDocument(DocType):
 
         # The fields of the model you want to be indexed in Elasticsearch
         fields = [
+            'id',
             'storage_filename',
             'parsed_text',
             'created',
