@@ -147,6 +147,11 @@ If we use a library on only one page and thus don't want to include it into the 
 - Register this new entry point in the [webpack-configuration](etc/webpack.config.common.js).
 - Load this new JS-file in a Django-template within the ``additional_js``-block using the ``render_bundle``-tag. (See [persons.html](mainapp/templates/mainapp/persons.html) for an example)
 
+If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would be the additional procedure to the one above (which is necessary):
+- Create a new SCSS-file in [mainapp/assets/css](mainapp/assets/css).
+- Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
+- Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
+
 ### Import
 
 Import a whole RIS from an OParl-instance. See `--help` for options
