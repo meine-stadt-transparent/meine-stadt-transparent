@@ -7,9 +7,9 @@
     "url": "https://github.com/CatoTH/opensourceris"
   },
   "scripts": {
-    "build:dev": "webpack --config etc/webpack.config.dev.js",
-    "build:prod": "webpack --config etc/webpack.config.prod.js",
-    "watch": "webpack --config etc/webpack.config.dev.js --watch"
+    "build:dev": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js",
+    "build:prod": "NODE_ENV=production webpack --config etc/webpack.config.prod.js",
+    "watch": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js --watch"
   },
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
@@ -34,11 +34,12 @@
   },
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
+    "fullcalendar": "^3.5.1",
     "hammerjs": "^2.0.8",
+    "isotope-layout": "^3.0.4",
     "jquery": "^3.2.1",
     "leaflet": "^1.2.0",
-    "popper.js": "^1.12.5",
     "osmtogeojson": "*",
-    "isotope-layout": "^3.0.4"
+    "popper.js": "^1.12.5"
   }
 }

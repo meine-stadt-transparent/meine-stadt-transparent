@@ -1,11 +1,19 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load render_bundle from webpack_loader %}
 
 {% block title %}{% trans "Calendar" %}{% endblock %}
 
 {% block content %}
     <div class="container">
-        @TODO
+        <div id='calendar' data-src="{% url 'calendar_data' %}" data-date="{{ default_date }}"></div>
     </div>
+{% endblock %}
+
+{% block additional_css %}
+    {% render_bundle 'calendar' 'css' %}
+{% endblock %}
+{% block additional_js %}
+    {% render_bundle 'calendar' 'js' %}
 {% endblock %}

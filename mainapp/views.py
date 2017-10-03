@@ -1,8 +1,10 @@
 import json
 
+from datetime import date
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 from icalendar import Calendar
 from slugify import slugify
@@ -95,7 +97,25 @@ def persons(request):
 
 
 def calendar(request):
-    return render(request, 'mainapp/calendar.html')
+    context = {
+        'default_date': date.today().strftime("%Y-%m-%d")
+    }
+    return render(request, 'mainapp/calendar.html', context)
+
+
+def calendar_data(request):
+    start = request.GET['start']
+    end = request.GET['end']
+    meetings = Meeting.objects.filter(start__gte=start, start__lte=end)
+    data = []
+    for meeting in meetings:
+        data.append({
+            'title': meeting.name,
+            'start': meeting.start.isoformat() if meeting.start is not None else None,
+            'end': meeting.end.isoformat() if meeting.end is not None else None,
+            'details': reverse('meeting', args=[meeting.id])
+        })
+    return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 def person(request, pk):

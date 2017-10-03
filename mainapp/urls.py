@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^about/$', views.about, name='about'),
     url(r'^persons/$', views.persons, name='persons'),
     url(r'^calendar/$', views.calendar, name='calendar'),
+    url(r'^calendar/data/$', views.calendar_data, name='calendar_data'),
     url(r'^privacy/$', views.info_privacy, name='info_privacy'),
     url(r'^person/(?P<pk>[0-9]+)$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical$', views.meeting_ical, name='meeting-ical'),

@@ -8,6 +8,7 @@ module.exports = {
     entry: {
         mainapp: '../mainapp/assets/js/index',
         persons: '../mainapp/assets/js/persons',
+        calendar: '../mainapp/assets/js/calendar',
         vendor: ['jquery', 'hammerjs/hammer', 'popper.js', 'leaflet/src/Leaflet', 'bootstrap/dist/js/bootstrap.js']
     },
     output: {
@@ -73,7 +74,10 @@ module.exports = {
             path: path.resolve(__dirname, '../'),
             filename: './webpack-stats.json'
         }),
-        new ExtractTextPlugin(process.env.NODE_ENV === 'production' ? 'style-[contenthash].css' : 'style.css'),
+        new ExtractTextPlugin({
+            filename: process.env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css',
+            allChunks: true
+        }),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
