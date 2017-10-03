@@ -12,8 +12,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
-        //filename: '[name]-[hash].js'
-        filename: '[name].js'
+        filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js')
     },
     devtool: 'source-map',
     resolveLoader: {
@@ -74,13 +73,13 @@ module.exports = {
             path: path.resolve(__dirname, '../'),
             filename: './webpack-stats.json'
         }),
-        new ExtractTextPlugin('style.css'),
+        new ExtractTextPlugin(process.env.NODE_ENV === 'production' ? 'style-[contenthash].css' : 'style.css'),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery",
             "Hammer": "hammerjs/hammer",
             "Popper": "popper.js"
         }),
-        new webpack.optimize.CommonsChunkPlugin({name: "vendor", filename: "vendor.bundle.js"})
+        new webpack.optimize.CommonsChunkPlugin('vendor')
     ]
 };
