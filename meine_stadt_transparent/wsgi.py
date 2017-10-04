@@ -1,5 +1,5 @@
 """
-WSGI config for opensourceris project.
+WSGI config for meine-stadt-transparent project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "opensourceris.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "meine_stadt_transparent.settings")
 
 application = get_wsgi_application()

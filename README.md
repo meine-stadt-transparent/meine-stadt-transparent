@@ -4,20 +4,20 @@
 [![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
 [![Dependency Status](https://gemnasium.com/badges/github.com/meine-stadt-transparent/meine-stadt-transparent.svg)](https://gemnasium.com/github.com/meine-stadt-transparent/meine-stadt-transparent)
 
-Meine Stadt Transparent is a [TODO] für Prototype Fund
+Meine Stadt Transparent is a [TODO] für den Prototype Fund
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
 
-## Development
 
-Requirements: 
+## Setup
+
+### Requirements:
  - Python 3 with pip
  - A recent node version with npm
  - A webserver (nginx/apache)
  - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
-### Installing the project
 
 Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ with self-signed certificates in your
 webserver which redirects to localhost:8080
@@ -32,7 +32,7 @@ The web server needs to be set up with a (self-signed) SSL certificate. Example 
  - [nginx](etc/nginx.conf)
 
 
-#### Elastic HQ
+### Elastic HQ
 
 To use the [Elastic HQ](http://www.elastichq.org/), the graphical administration of elasticsearch, [download the
 package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into
@@ -51,7 +51,7 @@ rm -r royrusso-elasticsearch-HQ-*
 rm master
 ```
 
-#### pygobject (gi) and liboparl
+### pygobject (gi) and liboparl
 
 This is currently only required to use the importer.
 
@@ -75,6 +75,8 @@ For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/O
 [#17](https://github.com/OParl/liboparl/pull/17) is merged, the ``resolve_url``-branch has to be checked out before
 compiling. Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this
 is for your os)
+
+## Development
 
 ### Starting the development server
 
@@ -110,8 +112,6 @@ Running the test cases:
 - https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
 - https://docs.google.com/document/d/1Qib4wBvavB8PcJ3LJ45wmNk6vFAXfpQ-2zi1Oal1rIY/edit# : Interne To Dos
 
-## Shell commands
-
 ### Dummy Data
 
 To load the dummy data for development:
@@ -140,19 +140,6 @@ django-admin makemessages -a
 # translate django.po
 django-admin compilemessages
 ```
-
-### Creating a page with additional JS libraries
-
-If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:
-- Normally install it using NPM
-- Create a new entry JS script in [mainapp/assets/js](mainapp/assets/js). Require the library from there.
-- Register this new entry point in the [webpack-configuration](etc/webpack.config.common.js).
-- Load this new JS-file in a Django-template within the ``additional_js``-block using the ``render_bundle``-tag. (See [persons.html](mainapp/templates/mainapp/persons.html) for an example)
-
-If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would be the additional procedure to the one above (which is necessary):
-- Create a new SCSS-file in [mainapp/assets/css](mainapp/assets/css).
-- Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
-- Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
 
 ### Import
 
@@ -183,6 +170,20 @@ Gemeindeschlüssel (examples):
 - Augsburg: 09761000
 - Neumarkt Sankt Veit: 09183129
 - Köln: 05315000
+
+### Creating a page with additional JS libraries
+
+If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:
+- Normally install it using NPM
+- Create a new entry JS script in [mainapp/assets/js](mainapp/assets/js). Require the library from there.
+- Register this new entry point in the [webpack-configuration](etc/webpack.config.common.js).
+- Load this new JS-file in a Django-template within the ``additional_js``-block using the ``render_bundle``-tag. (See [persons.html](mainapp/templates/mainapp/persons.html) for an example)
+
+If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would be the additional procedure to the one above (which is necessary):
+- Create a new SCSS-file in [mainapp/assets/css](mainapp/assets/css).
+- Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
+- Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
+
 
 ## Data model
 

@@ -1,4 +1,4 @@
-"""opensourceris URL Configuration
+"""meine-stadt-transparent URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -17,7 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from elasticsearch_admin.views import index as elasticsearch_admin
 
-from opensourceris.settings import ELASTICSEARCH_URL_PUBLIC
+from meine_stadt_transparent.settings import ELASTICSEARCH_URL_PUBLIC
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

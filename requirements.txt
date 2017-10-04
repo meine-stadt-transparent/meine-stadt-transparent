@@ -21,6 +21,7 @@ itsdangerous==0.24
 Jinja2==2.9.6
 jsonfield==2.0.2
 MarkupSafe==1.0
+mysqlclient==1.3.12
 nltk==3.2.5
 numpy==1.13.3
 oauthlib==2.0.4

@@ -12,7 +12,7 @@ BEGIN:VEVENT
 SUMMARY:Meeting with Remy
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170910T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170910T180000
-UID:meeting-1@opensourceris.local
+UID:meeting-1@meine-stadt-transparent.local
 DESCRIPTION:Meeting with Remy Danton
 LOCATION:The Captiol
 END:VEVENT
@@ -27,35 +27,35 @@ BEGIN:VEVENT
 SUMMARY:House Assembly 1
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170901T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170901T140000
-UID:meeting-3@opensourceris.local
+UID:meeting-3@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 1
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:House Assembly 2
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170908T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170908T140000
-UID:meeting-4@opensourceris.local
+UID:meeting-4@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 2
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:House Assembly 3
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170915T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170915T140000
-UID:meeting-5@opensourceris.local
+UID:meeting-5@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 3
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:House Assembly 4
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170922T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170922T140000
-UID:meeting-6@opensourceris.local
+UID:meeting-6@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 4
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:House Assembly 5
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170929T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170929T140000
-UID:meeting-7@opensourceris.local
+UID:meeting-7@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 5
 END:VEVENT
 END:VCALENDAR
