@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from elasticsearch import Elasticsearch
 from elasticsearch_dsl import Search
 from icalendar import Calendar
 from slugify import slugify
@@ -93,32 +92,30 @@ def search(request):
 
 def search_autosuggest(request):
     ret = request.GET['query']
-    s = Search(index='ris_files').suggest("autocomplete", ret, completion={'field': 'autocomplete', 'size': 50})
-    suggestions = s.execute_suggest()
+    s = Search(index='ris_files').query("match", autocomplete2=ret)
+    response = s.execute()
 
     bodies = Body.objects.count()
 
     results = []
     num_persons = num_parliamentary_groups = 0
-    limit_per_type = 3
+    limit_per_type = 5
 
-    for hit in suggestions.autocomplete:
-        for option in hit.options:
-            source = option['_source']
-            if option['_type'] == 'person_document':
-                if num_persons < limit_per_type:
-                    results.append({'name': option['text'], 'url': reverse('person', args=[source['id']])})
-                    num_persons += 1
-            elif option['_type'] == 'parliamentary_group_document':
-                if num_parliamentary_groups < limit_per_type:
-                    if bodies > 1:
-                        name = option['text'] + " (" + source['body']['name'] + ")"
-                    else:
-                        name = option['text']
-                    results.append({'name': name, 'url': reverse('parliamentary-group', args=[source['id']])})
-                    num_parliamentary_groups += 1
-            else:
-                print("Unknown type: %s" % option['_type'])
+    for hit in response.hits:
+        if hit.meta.doc_type == 'person_document':
+            if num_persons < limit_per_type:
+                results.append({'name': hit.name, 'url': reverse('person', args=[hit.id])})
+                num_persons += 1
+        elif hit.meta.doc_type == 'parliamentary_group_document':
+            if num_parliamentary_groups < limit_per_type:
+                if bodies > 1:
+                    name = hit.name + " (" + hit.body.name + ")"
+                else:
+                    name = hit.name
+                results.append({'name': name, 'url': reverse('parliamentary-group', args=[hit.id])})
+                num_parliamentary_groups += 1
+        else:
+            print("Unknown type: %s" % hit.meta.doc_type)
 
     return HttpResponse(json.dumps(results), content_type='application/json')
 

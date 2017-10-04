@@ -2,13 +2,7 @@ from django_elasticsearch_dsl import DocType, Index, fields
 
 from mainapp.models import File
 
-# Name of the Elasticsearch index
-fileIndex = Index('ris_files')
-# See Elasticsearch Indices API reference for available settings
-fileIndex.settings(
-    number_of_shards=1,
-    number_of_replicas=0
-)
+from .utils import fileIndex
 
 
 @fileIndex.doc_type

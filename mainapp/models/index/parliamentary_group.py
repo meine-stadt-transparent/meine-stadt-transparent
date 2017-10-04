@@ -1,19 +1,12 @@
 from django_elasticsearch_dsl import DocType, Index, fields
 
 from mainapp.models import ParliamentaryGroup
-
-# Name of the Elasticsearch index
-fileIndex = Index('ris_files')
-# See Elasticsearch Indices API reference for available settings
-fileIndex.settings(
-    number_of_shards=1,
-    number_of_replicas=0
-)
+from .utils import autocomplete_analyzer, fileIndex
 
 
 @fileIndex.doc_type
 class ParliamentaryGroupDocument(DocType):
-    autocomplete = fields.CompletionField(attr="name_autocomplete")
+    autocomplete = fields.StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
 
     body = fields.ObjectField(properties={
         'id': fields.IntegerField(),
