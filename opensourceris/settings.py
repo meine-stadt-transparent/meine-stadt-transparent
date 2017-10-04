@@ -117,6 +117,10 @@ DATABASES = {
     }
 }
 
+DATABASES = {
+    'default': env.db()
+}
+
 
 # Authentication
 
