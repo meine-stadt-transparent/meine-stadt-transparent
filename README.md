@@ -1,8 +1,11 @@
-# Open Source Ratsinformationssystem
+# Meine Stadt Transparent
 
-[![Build Status](https://travis-ci.org/CatoTH/opensourceris.svg)](https://travis-ci.org/CatoTH/opensourceris)
+[![Build Status](https://travis-ci.org/meine-stadt-transparent/meine-stadt-transparent.svg)](https://travis-ci.org/CatoTH/opensourceris)
 
-Open Source RIS für Prototype Fund
+[![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
+
+
+Meine Stadt Transparent is a [TODO] für Prototype Fund
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
 
