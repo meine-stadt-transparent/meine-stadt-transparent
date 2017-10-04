@@ -1,8 +1,6 @@
 from django_elasticsearch_dsl import DocType, fields
 
 from mainapp.models import Committee
-
-
 from .utils import autocomplete_analyzer, fileIndex
 
 

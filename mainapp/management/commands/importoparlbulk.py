@@ -1,7 +1,7 @@
 import sys
+from multiprocessing import Pool
 
 from .importoparl import Command as OParlImport
-from multiprocessing import Pool
 
 
 class Command(OParlImport):

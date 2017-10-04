@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from django.views.generic import TemplateView
 from braces.views import LoginRequiredMixin
+from django.views.generic import TemplateView
+
 from mainapp.models import UserProfile
 
 

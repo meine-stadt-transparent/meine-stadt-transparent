@@ -1,9 +1,10 @@
+import re
+
+import geoextract
+from django.conf import settings
 from geopy import OpenCage
 
 from mainapp.models import SearchStreet, Body, Location
-from django.conf import settings
-import geoextract
-import re
 
 
 def create_geoextract_data(bodies=None):

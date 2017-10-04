@@ -1,7 +1,6 @@
 from django_elasticsearch_dsl import DocType, fields
 
 from mainapp.models import Person
-
 from .utils import fileIndex, autocomplete_analyzer
 
 

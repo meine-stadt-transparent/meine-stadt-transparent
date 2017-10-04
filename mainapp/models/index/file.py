@@ -1,7 +1,6 @@
-from django_elasticsearch_dsl import DocType, Index, fields
+from django_elasticsearch_dsl import DocType, fields
 
 from mainapp.models import File
-
 from .utils import fileIndex
 
 

@@ -1,8 +1,7 @@
-import json
-
 import os
-import requests
 import subprocess
+
+import requests
 from django.core.management.base import BaseCommand
 
 from mainapp.models import Body, Location
