@@ -92,7 +92,7 @@ def search(request):
 
 def search_autosuggest(request):
     ret = request.GET['query']
-    s = Search(index='ris_files').query("match", autocomplete2=ret)
+    s = Search(index='ris_files').query("match", autocomplete=ret)
     response = s.execute()
 
     bodies = Body.objects.count()
@@ -114,6 +114,9 @@ def search_autosuggest(request):
                     name = hit.name
                 results.append({'name': name, 'url': reverse('parliamentary-group', args=[hit.id])})
                 num_parliamentary_groups += 1
+        elif hit.meta.doc_type == 'committee_document':
+            name = hit.name
+            results.append({'name': name, 'url': reverse('committee', args=[hit.id])})
         else:
             print("Unknown type: %s" % hit.meta.doc_type)
 
