@@ -6,7 +6,7 @@ Django==1.11.5
 django-allauth==0.33.0
 django-anymail==1.0
 django-braces==1.11.0
-django-elasticsearch-dsl==0.2.0
+django-elasticsearch-dsl==0.3.0
 django-environ==0.4.4
 django-geojson==2.10.0
 django-webpack-loader==0.5.0
@@ -22,7 +22,7 @@ Jinja2==2.9.6
 jsonfield==2.0.2
 MarkupSafe==1.0
 nltk==3.2.5
-numpy==1.13.1
+numpy==1.13.3
 oauthlib==2.0.4
 pyahocorasick==1.1.4
 python-dateutil==2.6.1
