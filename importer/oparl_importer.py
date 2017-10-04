@@ -1,11 +1,14 @@
 import hashlib
+import itertools
 import json
 import logging
 import os
+import sys
 import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
+from urllib.parse import urlparse
 
 import gi
 import requests
@@ -13,6 +16,9 @@ from django.utils import dateparse
 
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, DefaultFields, \
     Meeting, Location, File, Person, AgendaItem
+from mainapp.models.committee_membership import CommitteeMembership
+from mainapp.models.department_membership import DepartmentMembership
+from mainapp.models.parliamentary_group_membership import ParliamentaryGroupMembership
 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
@@ -38,13 +44,14 @@ class OParlImporter:
         self.official_geojson = False
         self.organization_classification = {
             Department: ["Referat"],
-            Committee: ["Stadtratsgremium"],
+            Committee: ["Stadtratsgremium", "BA-Gremium"],
             ParliamentaryGroup: ["Fraktion"],
         }
 
         # Setup
         self.logger = logging.getLogger(__name__)
         self.client = OParl.Client()
+
         self.client.connect("resolve_url", self.resolve)
         os.makedirs(self.storagefolder, exist_ok=True)
         os.makedirs(self.cachefolder, exist_ok=True)
@@ -53,6 +60,7 @@ class OParlImporter:
         # hasn't been imported yet
         self.meeting_person_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
+        self.membership_queue = []
 
     @staticmethod
     def extract_geometry(glib_json: Json.Object):
@@ -97,6 +105,13 @@ class OParlImporter:
         return dateparse.parse_datetime(glibdatetime.format("%FT%T%z"))
 
     @staticmethod
+    def glib_datetime_to_python_date(glibdatetime: GLib.DateTime):
+        # TODO: Remove once https://github.com/OParl/liboparl/issues/18 is fixed
+        if not glibdatetime:
+            return None
+        return date(glibdatetime.get_year(), glibdatetime.get_month(), glibdatetime.get_day_of_month())
+
+    @staticmethod
     def glib_date_to_python(glibdate: GLib.Date):
         if not glibdate:
             return None
@@ -110,7 +125,7 @@ class OParlImporter:
         djangoobject.deleted = libobject.get_deleted()
 
     def body(self, libobject: OParl.Body):
-        print("Processing {}".format(libobject.get_name()))
+        self.logger.info("Processing {}".format(libobject.get_name()))
         body, created = Body.objects.get_or_create(oparl_id=libobject.get_id())
 
         terms = []
@@ -130,15 +145,14 @@ class OParlImporter:
             elif location.geometry["type"] == "Polygon":
                 body.outline = location
             else:
-                logging.warning("Location object is of type {}, which is neither 'Point' nor 'Polygon'. Skipping this "
-                                "location.".format(location.geometry["type"]))
+                self.logger.warning("Location object is of type {}, which is neither 'Point' nor 'Polygon'. Skipping "
+                                    "this location.".format(location.geometry["type"]))
 
         body.save()
 
         return body
 
     def term(self, libobject: OParl.LegislativeTerm):
-        print("Processing Term {}".format(libobject.get_name()))
         if not libobject.get_start_date() or not libobject.get_end_date():
             self.logger.error("Term has no start or end date - skipping")
             return None
@@ -155,7 +169,7 @@ class OParlImporter:
         return term
 
     def paper(self, libobject: OParl.Paper):
-        print("Processing Paper {}".format(libobject.get_id()))
+        self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
         paper, created = Paper.objects.get_or_create(oparl_id=libobject.get_id())
 
@@ -164,7 +178,7 @@ class OParlImporter:
         paper.save()
 
     def organization(self, libobject: OParl.Organization):
-        print("Processing Organization {}".format(libobject.get_id()))
+        self.logger.info("Processing Organization {}".format(libobject.get_id()))
 
         classification = libobject.get_classification()
         if classification in self.organization_classification[Department]:
@@ -189,12 +203,15 @@ class OParlImporter:
             self.logger.error("Unknown classification: {}".format(classification))
             return
 
+        for membership in libobject.get_membership():
+            self.membership(classification, organization, membership)
+
         organization.save()
 
         return organization
 
     def meeting(self, libobject: OParl.Meeting):
-        print("Processing Meeting {}".format(libobject.get_id()))
+        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
         meeting = Meeting.objects.filter(oparl_id=libobject.get_id()).first() or Meeting()
         self.add_default_fields(meeting, libobject)
 
@@ -239,6 +256,8 @@ class OParlImporter:
         if not libobject:
             return None
 
+        self.logger.info("Processing Location {}".format(libobject.get_id()))
+
         location = Location.objects.filter(oparl_id=libobject.get_id()).first() or Location()
         location.oparl_id = libobject.get_id()
         location.name = "TODO: FIXME"
@@ -282,6 +301,9 @@ class OParlImporter:
     def file(self, libobject: OParl.File):
         if not libobject:
             return None
+
+        self.logger.info("Processing File {}".format(libobject.get_id()))
+        
         file = File.objects.filter(oparl_id=libobject.get_id()).first() or File()
 
         file.oparl_id = libobject.get_id()
@@ -303,6 +325,8 @@ class OParlImporter:
         # TODO: Download the file
 
     def person(self, libobject: OParl.Person):
+        self.logger.info("Processing Person {}".format(libobject.get_id()))
+
         person, created = Person.objects.get_or_create(oparl_id=libobject.get_id())
 
         person.name = libobject.get_name()
@@ -340,6 +364,38 @@ class OParlImporter:
             item.paper = Paper.by_oparl_id(paper_id)
             item.save()
 
+        for classification, organization, libobject in self.membership_queue:
+            print("Adding missing memberships")
+            self.membership(classification, organization, libobject)
+
+    def membership(self, classification, organization, libobject: OParl.Membership):
+        person = Person.objects.filter(oparl_id=libobject.get_person().get_id()).first()
+        if not person:
+            self.membership_queue.append((classification, organization, libobject))
+            return None
+
+        defaults = {
+            "person": person,
+            "start": self.glib_datetime_to_python_date(libobject.get_start_date()),
+            "end": self.glib_datetime_to_python_date(libobject.get_end_date()),
+            "role": libobject.get_role(),
+        }
+
+        if classification in self.organization_classification[Department]:
+            defaults["department"] = organization
+            membership = DepartmentMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+        elif classification in self.organization_classification[Committee]:
+            defaults["committee"] = organization
+            membership = CommitteeMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+        elif classification in self.organization_classification[ParliamentaryGroup]:
+            defaults["parliamentary_group"] = organization
+            membership = ParliamentaryGroupMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+        else:
+            self.logger.error("Unknown Classification: {}".format(classification))
+            return
+
+        return membership
+
     def run(self):
         try:
             system = self.client.open(self.entrypoint)
@@ -353,30 +409,41 @@ class OParlImporter:
         # Ensure all bodies exist when calling the other methods
 
         with Pool(self.threadcount) as executor:
-            executor.map(self.body, bodies)
+            results = executor.map(self.body, bodies)
 
+        # Raise those exceptions
+        list(results)
+
+        results = []
         with Pool(self.threadcount) as executor:
             if self.with_papers:
-                executor.map(self.body_paper, bodies)
+                papers = executor.map(self.body_paper, bodies)
+                results.append(papers)
             if self.with_persons:
-                executor.map(self.body_person, bodies)
+                persons = executor.map(self.body_person, bodies)
+                results.append(persons)
             if self.with_organizations:
-                executor.map(self.body_organization, bodies)
+                organizations = executor.map(self.body_organization, bodies)
+                results.append(organizations)
             if self.with_meetings:
-                executor.map(self.body_meeting, bodies)
+                meetings = executor.map(self.body_meeting, bodies)
+                results.append(meetings)
+
+        # Raise even better exceptions
+        list(itertools.chain.from_iterable(results))
 
         print("Finished creating bodies")
         self.add_missing_associations()
 
-    @staticmethod
-    def run_static(config):
+    @classmethod
+    def run_static(cls, config):
         """ This method is requried as instances of this class can't be moved to other processes """
         try:
-            runner = OParlImporter(config)
+            runner = cls(config)
             runner.run()
-        except Exception as e:
-            print("There was an error in the Process for {}".format(config["entrypoint"]))
-            print(traceback.format_exc())
+        except Exception:
+            print("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
+            print(traceback.format_exc(), file=sys.stderr)
             return False
         return True
 

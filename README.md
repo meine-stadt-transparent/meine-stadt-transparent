@@ -118,7 +118,7 @@ To load the dummy data for development:
 ./manage.py loaddata mainapp/fixtures/initdata.json mainapp/fixtures/socialapps.json
 ```
 
-To reindex the elasticsearch index:
+To reindex the elasticsearch index (requires elastic search to be enabled):
 
 ```bash
 ./manage.py search_index --rebuild

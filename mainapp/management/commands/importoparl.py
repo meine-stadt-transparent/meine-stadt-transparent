@@ -14,7 +14,7 @@ class Command(BaseCommand):
         parser.add_argument('--no-download-files', dest='download-files', action='store_false')
         parser.add_argument('--use-cache', dest='use-cache', action='store_true')
         parser.add_argument('--no-use-cache', dest='use-cache', action='store_false')
-        parser.add_argument('--use-sternberg-workarounds', dest='use-sternberg', action='store_false')
+        parser.add_argument('--use-sternberg-workarounds', dest='use-sternberg', action='store_true')
         parser.add_argument('--without-persons', dest='with-persons', action='store_false')
         parser.add_argument('--without-papers', dest='with-papers', action='store_false')
         parser.add_argument('--without-organizations', dest='with-organizations', action='store_false')
@@ -31,7 +31,7 @@ class Command(BaseCommand):
     def import_importer(options):
         # Remove gi requirement for running tests
         try:
-            if options["use_sternberg"]:
+            if options["use-sternberg"]:
                 from importer.sternberg_import import SternbergImport as Importer
             else:
                 from importer.oparl_importer import OParlImporter as Importer

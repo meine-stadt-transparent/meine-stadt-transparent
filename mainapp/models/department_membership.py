@@ -8,8 +8,8 @@ from .person import Person
 class DepartmentMembership(DefaultFields):
     person = models.ForeignKey(Person)
     department = models.ForeignKey(Department)
-    start = models.DateField()
-    end = models.DateField()
+    start = models.DateField(null=True, blank=True)
+    end = models.DateField(null=True, blank=True)
     role = models.CharField(max_length=200)
 
     def __str__(self):

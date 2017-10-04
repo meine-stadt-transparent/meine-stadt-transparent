@@ -1,3 +1,5 @@
+import sys
+
 from .importoparl import Command as OParlImport
 from multiprocessing import Pool
 
@@ -26,10 +28,13 @@ class Command(OParlImport):
 
         print("\nAll processes finished\n")
 
-        for succes, options in zip(results, options_per_process):
-            if succes:
+        for success, options in zip(results, options_per_process):
+            if success:
                 print("SUCCESS: {}".format(options["entrypoint"]))
             else:
                 print("FAILED: {}".format(options["entrypoint"]))
 
         print("\nFinal results: {} successes and {} failures\n".format(results.count(True), results.count(False)))
+
+        if results.count(False) > 0:
+            sys.exit(1)
