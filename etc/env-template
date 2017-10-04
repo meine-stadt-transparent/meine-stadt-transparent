@@ -9,4 +9,5 @@ GEOEXTRACT_DEFAULT_CITY=Köln
 MAILJET_API_KEY=
 MAILJET_SECRET_KEY=
 USE_ELASTICSEARCH=False
-DATABASE_URL=mysql://osris:osris@localhost/osris
+# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
+DATABASE_URL=sqlite:///db.sqlite3
