@@ -1,0 +1,4 @@
+exclude_paths:
+  - mainapp/migrations/
+  - mainapp/fixtures/
+  - manage.py
