@@ -15,6 +15,11 @@ fileIndex.settings(
 class ParliamentaryGroupDocument(DocType):
     autocomplete = fields.CompletionField(attr="name_autocomplete")
 
+    body = fields.ObjectField(properties={
+        'id': fields.IntegerField(),
+        'name': fields.StringField(),
+    })
+
     class Meta:
         model = ParliamentaryGroup  # The model associate with this DocType
 

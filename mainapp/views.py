@@ -93,17 +93,30 @@ def search(request):
 
 def search_autosuggest(request):
     ret = request.GET['query']
-    s = Search(index='ris_files').suggest("autocomplete", ret, completion={'field': 'autocomplete'})
+    s = Search(index='ris_files').suggest("autocomplete", ret, completion={'field': 'autocomplete', 'size': 50})
     suggestions = s.execute_suggest()
 
+    bodies = Body.objects.count()
+
     results = []
+    num_persons = num_parliamentary_groups = 0
+    limit_per_type = 3
+
     for hit in suggestions.autocomplete:
         for option in hit.options:
-            print(option)
+            source = option['_source']
             if option['_type'] == 'person_document':
-                results.append({'name': option['text'], 'url': reverse('person', args=[option['_source']['id']])})
+                if num_persons < limit_per_type:
+                    results.append({'name': option['text'], 'url': reverse('person', args=[source['id']])})
+                    num_persons += 1
             elif option['_type'] == 'parliamentary_group_document':
-                results.append({'name': option['text'], 'url': reverse('person', args=[option['_source']['id']])})
+                if num_parliamentary_groups < limit_per_type:
+                    if bodies > 1:
+                        name = option['text'] + " (" + source['body']['name'] + ")"
+                    else:
+                        name = option['text']
+                    results.append({'name': name, 'url': reverse('parliamentary-group', args=[source['id']])})
+                    num_parliamentary_groups += 1
             else:
                 print("Unknown type: %s" % option['_type'])
 

@@ -1,5 +1,7 @@
+require('typeahead.js/dist/typeahead.jquery');
+
 export default class SearchWidget {
-    constructor($widget) {
+    constructor($, $widget) {
         let url = $widget.data('suggest-url');
 
         $widget.typeahead(null,

@@ -3,7 +3,6 @@ import HomeMap from "./HomeMap";
 import SearchWidget from "./SearchWidget";
 
 window.jQuery = require('jquery');
-require('typeahead.js/dist/typeahead.jquery');
 
 $(function () {
     console.log("Hello 🌍");
@@ -13,6 +12,6 @@ $(function () {
     });
 
     $(".search-autocomplete input").each(function() {
-        new SearchWidget($(this));
+        new SearchWidget($, $(this));
     })
 });
