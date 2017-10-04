@@ -102,7 +102,7 @@ npm run watch
 
 Running the test cases:
 ```bash
-./manage.py test
+./manage.py test --settings=meine_stadt_transparent.settings_test
 ```
 
 ### Important URLs:

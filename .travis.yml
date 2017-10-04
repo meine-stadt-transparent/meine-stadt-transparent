@@ -13,4 +13,4 @@ before_script:
 
 script:
   - ./manage.py migrate
-  - ./manage.py test
+  - ./manage.py test --settings=meine_stadt_transparent.settings_test

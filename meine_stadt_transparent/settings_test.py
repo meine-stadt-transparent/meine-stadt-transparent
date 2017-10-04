@@ -1,7 +1,7 @@
 """
 Settings environment for running tests
- - The Host ist fixed to meine-stadt-transparent.local
- - The Database is sqlite
+ - The host is fixed to meine-stadt-transparent.local
+ - The database is sqlite
 """
 
 from .settings import *
