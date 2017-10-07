@@ -63,11 +63,8 @@ module.exports = {
             test: /\.(jpe?g|gif|png)$/,
             use: 'file-loader?emitFile=false&name=[path][name].[ext]'
         }, {
-            test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "url?limit=10000&mimetype=application/font-woff"
-        }, {
-            test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-            loader: "file"
+            test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+            loader: 'file-loader?name=fonts/[name].[ext]'
         }
         ]
     },
