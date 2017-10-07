@@ -169,6 +169,22 @@ def person(request, pk):
     return render(request, 'mainapp/person.html', context)
 
 
+def meeting(request, pk):
+    selected_meeting = get_object_or_404(Meeting, id=pk)
+    datetime_format = "%d.%m.%Y, %H:%M"
+    timeformat = "%H:%M"
+    begin = selected_meeting.start.strftime(datetime_format)
+    end = selected_meeting.end.strftime(timeformat)
+    if not selected_meeting.end:
+        time = begin
+    elif selected_meeting.start.date() == selected_meeting.end.date():
+        time = "{} - {}".format(begin, end)
+    else:
+        time = "{} - {}".format(begin, selected_meeting.end.strftime(datetime_format))
+
+    return render(request, 'mainapp/meeting.html', {"meeting": selected_meeting, "time": time})
+
+
 def build_ical(events, filename):
     cal = Calendar()
     cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))

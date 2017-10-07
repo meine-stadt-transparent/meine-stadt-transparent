@@ -9,13 +9,11 @@ $(function () {
         data_src = $calendar.data('src');
 
     $calendar.fullCalendar({
-        //themeSystem: 'bootstrap3',
         header: {
             left: 'prev,next today',
             center: 'title',
             right: 'month,agendaWeek,agendaDay,listMonth'
         },
-        defaultDate: '2017-09-12',
         weekNumbers: true,
         navLinks: true, // can click day/week names to navigate views
         editable: true,

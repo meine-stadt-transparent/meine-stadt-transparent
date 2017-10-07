@@ -5,16 +5,14 @@
 {% block panel_title %}My profile{% endblock %}
 
 {% block panel_content %}
-    <style>
-        .grey {
-            color: grey;
-        }
-
-        .success {
-            color: green;
-        }
-    </style>
     <h1>{{ user.username }}</h1>
+    <form class="form-inline logout-form" method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+        <button class="btn" type="submit">{% trans "Log out" %}</button>
+    </form>
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-default">

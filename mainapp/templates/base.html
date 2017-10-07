@@ -31,15 +31,6 @@
                 </li>
             {% endif %}
         </ul>
-        {% if user.is_authenticated %}
-            <form class="form-inline logout-form" method="post" action="{% url 'account_logout' %}">
-                {% csrf_token %}
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-                {% endif %}
-                <button class="btn" type="submit">{% trans "Log out" %}</button>
-            </form>
-        {% endif %}
         {% if not disable_header_search %}
         <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' %}">
             <input class="form-control mr-sm-2" type="text" name="query" value=""

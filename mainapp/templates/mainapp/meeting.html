@@ -3,14 +3,30 @@
 {% block content %}
     <div class="container">
         <div class="section">
-            <p>{{ meeting.name }}</p>
-            <p>{{ meeting.short_name }}</p>
-            <p>{{ meeting.start }}</p>
-            <p>{{ meeting.end }}</p>
-            <p>{{ meeting.location }}</p>
-            <p>{{ meeting.committees }}</p>
+            <h2>{{ meeting.short_name }}</h2>
+            {% if meeting.short_name != meeting.name %}
+                <p>{{ meeting.name }}</p>
+            {% endif %}
+            <p title="Time of the meeting"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ time }}</p>
+            <p title="Place of the meeting"><i class="fa fa-map-marker fa-fw"
+                                               aria-hidden="true"></i> {{ meeting.location }}</p>
+            {% if meeting.committees.all|length == 1 %}
+                <p title="Main committee of that meeting">
+                    <a href="{% url 'committee' meeting.committees.all.0.id %}">
+                        <i class="fa fa-users fa-fw" aria-hidden="true"></i> {{ meeting.committees.all.0 }}
+                    </a>
+                </p>
+            {% elif meeting.committees.all|length > 1 %}
+                <p title="Committee participating in the meeting">
+                    <i class="fa fa-users fa-fw" aria-hidden="true"></i> Committees:
+                    {% for committee in meeting.committees.all %}
+                        <a href="{% url 'committee' committee.id %}">{{ committee }}</a>
+                    {% endfor %}
+                </p>
+            {% endif %}
+
             {% if meeting.persons.all %}
-                <p>further persons</p>
+                <p><i class="fa fa-user fa-fw" aria-hidden="true"></i> Further Attendees</p>
                 <ul>
                     {% for person in meeting.persons.all %}
                         <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
@@ -18,13 +34,15 @@
                 </ul>
             {% endif %}
             {% if meeting.invitation %}
-                <p><a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
+                <p>Invitation: <a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
             {% endif %}
             {% if meeting.results_protocol %}
-                <p><a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
+                <p>Results protocol: <a
+                        href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
             {% endif %}
             {% if meeting.verbatim_protocol %}
-                <p><a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
+                <p>Verbatim protocol: <a
+                        href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
             {% endif %}
             <ul>
                 {% for file in meeting.auxiliary_files.all %}
@@ -34,14 +52,15 @@
             {% if meeting_series %}
                 <p><a href="{% url 'meeting-series' meeting.meeting_series.id %}">{{ meeting.meeting_series }}</a></p>
             {% endif %}
-            {% if meeting.agenda_set.all %}
-                <ul>
-                {% for agenda_item in meeting.agenga_set.all %}
-                    <li>agenda_item</li>
-                {% endfor %}
+            <h3>Agenda</h3>
+            {% if meeting.agendaitem_set.all %}
+                <ul style="list-style: none">
+                    {% for agenda_item in meeting.agendaitem_set.all %}
+                        <li>{{ agenda_item.key }} {{ agenda_item.title }}</li>
+                    {% endfor %}
                 </ul>
             {% else %}
-                <p>No Agenda published</p>
+                <p>Not agenda available</p>
             {% endif %}
             <p><a href="{% url 'meeting-ical' meeting.id %}">Export</a></p>
         </div>
