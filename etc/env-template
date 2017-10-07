@@ -11,3 +11,4 @@ MAILJET_SECRET_KEY=
 USE_ELASTICSEARCH=False
 # Use DATABASE_URL=mysql://username:password@localhost/databasename in production
 DATABASE_URL=sqlite:///db.sqlite3
+SITE_SEO_NOINDEX=False

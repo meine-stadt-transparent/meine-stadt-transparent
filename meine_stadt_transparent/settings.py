@@ -90,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'mainapp.context_processors.seo',
             ],
         },
     },
@@ -240,3 +241,6 @@ SITE_GEO_CENTER = {'lat': 48.137, 'lng': 11.575}
 SITE_GEO_INIT_ZOOM = 11
 SITE_GEO_SHAPE_BODY_ID = 1
 SITE_DEFAULT_COMMITTEE = 1
+
+# Configuration regarding Search Engine Optimization
+SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
