@@ -3,6 +3,7 @@ from django.db import models
 from .committee import Committee
 from .default_fields import DefaultFields
 from .department import Department
+from .file import File
 from .parliamentary_group import ParliamentaryGroup
 from .person import Person
 
@@ -21,7 +22,8 @@ class Paper(DefaultFields):
     change_request_of = models.ForeignKey("self", null=True, blank=True)
     # This is relevant e.g. for deadlines
     legal_date = models.DateField(null=True, blank=True)
-    main_file = models.ForeignKey("File", null=True, blank=True, related_name="paper_main_file")
+    main_file = models.ForeignKey(File, null=True, blank=True, related_name="paper_main_file")
+    files = models.ManyToManyField(File, blank=True)
 
     def __str__(self):
         return self.short_name

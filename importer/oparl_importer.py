@@ -191,10 +191,10 @@ class OParlImporter:
             main_file = self.file(libobject.get_main_file())
             paper.main_file = main_file
 
-        paper.save()
-
         for file in libobject.get_auxiliary_file():
-            self.file(file)
+            paper.files.add(self.file(file))
+
+        paper.save()
 
         return paper
 
@@ -235,7 +235,6 @@ class OParlImporter:
         self.logger.info("Processing Meeting {}".format(libobject.get_id()))
         meeting = Meeting.objects.filter(oparl_id=libobject.get_id()).first() or Meeting()
         self.add_default_fields(meeting, libobject)
-
         meeting.start = self.glib_datetime_to_python(libobject.get_start())
         meeting.end = self.glib_datetime_to_python(libobject.get_end())
         meeting.location = self.location(libobject.get_location())
@@ -262,12 +261,8 @@ class OParlImporter:
                 self.meeting_person_queue[libobject.get_id()].append(oparlperson.get_id())
         meeting.persons = persons
 
-        agenda_items = []
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
-            djangoitem = self.agendaitem(oparlitem, index)
-            if djangoitem:
-                agenda_items.append(djangoitem)
-        meeting.agenda_items = agenda_items
+            self.agendaitem(oparlitem, index, meeting)
 
         meeting.save()
 
@@ -290,20 +285,28 @@ class OParlImporter:
 
         return location
 
-    def agendaitem(self, libobject: OParl.AgendaItem, index):
+    def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
         if not libobject:
             return None
 
-        item, created = AgendaItem.objects.get_or_create(oparl_id=libobject.get_id())
-        item.position = index
-        item.key = libobject.get_number()
-        item.public = libobject.get_public()
+        paper = None
+        if libobject.get_consultation() and libobject.get_consultation().get_paper():
+            paper = Paper.objects.filter(oparl_id=libobject.get_consultation().get_paper()).first()
+            if not paper:
+                self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper()
+        
+        values = {
+            "title": libobject.get_name(),
+            "position": index,
+            "meeting": meeting,
+            "oparl_id": libobject.get_id(),
+            "key": libobject.get_number(),
+            "public": libobject.get_public(),
+            "paper": paper,
+        }
 
-        paper = Paper.by_oparl_id(libobject.get_consultation().get_paper())
-        if paper:
-            item.paper = paper
-        else:
-            self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper()
+        item, created = AgendaItem.objects.update_or_create(oparl_id=libobject.get_id(), defaults=values)
+
         return item
 
     def download_file(self, file: File, libobject: OParl.File):
@@ -323,7 +326,7 @@ class OParlImporter:
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
 
-    def file(self, libobject: OParl.File):
+    def file(self, libobject: OParl.File, paper=None):
         if not libobject:
             return None
 
@@ -332,7 +335,7 @@ class OParlImporter:
         file = File.objects.filter(oparl_id=libobject.get_id()).first() or File()
 
         file.oparl_id = libobject.get_id()
-        file.name = libobject.get_name()
+        file.name = libobject.get_name()[:200]  # FIXME
         file.displayed_filename = libobject.get_file_name()
         file.parsed_text = libobject.get_text()
         file.mime_type = libobject.get_mime_type() or "application/octet-stream"
@@ -419,7 +422,7 @@ class OParlImporter:
             defaults["parliamentary_group"] = organization
             membership = ParliamentaryGroupMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
         else:
-            self.logger.error("Unknown Classification: {}".format(classification))
+            self.logger.error("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
             return
 
         return membership

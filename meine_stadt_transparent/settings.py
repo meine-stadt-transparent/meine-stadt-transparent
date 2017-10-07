@@ -15,8 +15,8 @@ import warnings
 
 import environ
 
-env = environ.Env()  # set default values and casting
-environ.Env.read_env(".env")  # reading .env file
+env = environ.Env()
+environ.Env.read_env(".env")
 
 # Mute an irrelevant warning
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
