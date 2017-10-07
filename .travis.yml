@@ -5,6 +5,11 @@ python:
 
 cache:
  - pip
+ - npm
+
+install:
+ - npm install
+ - pip install -r requirements.txt
 
 before_script:
  # Add pygobject to the virtualenv
@@ -13,4 +18,5 @@ before_script:
 
 script:
   - ./manage.py migrate
+  - npm run build:prod
   - ./manage.py test --settings=meine_stadt_transparent.settings_test
