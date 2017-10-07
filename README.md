@@ -22,7 +22,14 @@ Meine Stadt Transparent is a [TODO] für den Prototype Fund
 Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ with self-signed certificates in your
 webserver which redirects to localhost:8080
 
+On Debian:
 ```bash
+apt install python3-virtualenv python3-pip python3-gi libmysqlclient-dev
+virtualenv venv
+```
+
+```bash
+source venv/bin/activate
 pip install -r requirements.txt
 npm install
 ```
