@@ -19,6 +19,8 @@ class Paper(DefaultFields):
     submitter_persons = models.ManyToManyField(Person, blank=True)
     # There isn't any logic built on change requests, so higher order change requests are allowed
     change_request_of = models.ForeignKey("self", null=True, blank=True)
+    # This is relevant e.g. for deadlines
+    legal_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.short_name
