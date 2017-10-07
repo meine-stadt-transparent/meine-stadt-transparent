@@ -10,6 +10,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
 from typing import Callable, TypeVar
+from django.utils.translation import ugettext as _
 
 import gi
 import requests
@@ -401,15 +402,15 @@ class OParlImporter:
             self.membership_queue.append((classification, organization, libobject))
             return None
 
-        if not libobject.get_role():
-            logging.error("Role cannot be empty")
-            return None
+        role = libobject.get_role()
+        if not role:
+            role = _("Unknown")
 
         defaults = {
             "person": person,
             "start": self.glib_datetime_to_python_date(libobject.get_start_date()),
             "end": self.glib_datetime_to_python_date(libobject.get_end_date()),
-            "role": libobject.get_role(),
+            "role": role,
         }
 
         if classification in self.organization_classification[Department]:
