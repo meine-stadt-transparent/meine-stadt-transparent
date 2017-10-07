@@ -189,17 +189,14 @@ def meeting(request, pk):
     context = {"meeting": selected_meeting, "time": time}
     if selected_meeting.committees.all().count() == 1:
         committee = selected_meeting.committees.first()
-        context["previous"] = Meeting.objects \
+        query = Meeting.objects \
             .annotate(count=Count("committees")) \
             .filter(count=1) \
-            .filter(start__lt=selected_meeting.start, committees__id=committee.id) \
-            .order_by("start") \
-            .last()
-        context["following"] = Meeting.objects.annotate(count=Count("committees")) \
-            .filter(count=1) \
-            .filter(start__gt=selected_meeting.start, committees__id=committee.id) \
-            .order_by("start") \
-            .first()
+            .filter(committees__id=committee.id) \
+            .order_by("start")
+
+        context["previous"] = query.filter(start__lt=selected_meeting.start).last()
+        context["following"] = query.filter(start__gt=selected_meeting.start).first()
 
     return render(request, 'mainapp/meeting.html', context)
 
