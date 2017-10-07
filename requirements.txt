@@ -9,6 +9,7 @@ django-braces==1.11.0
 django-elasticsearch-dsl==0.3.0
 django-environ==0.4.4
 django-geojson==2.10.0
+django-settings-export==1.2.1
 django-webpack-loader==0.5.0
 elasticsearch==5.4.0
 elasticsearch-dsl==5.3.0

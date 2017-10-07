@@ -2,8 +2,7 @@
 db.sqlite3
 node_modules/
 webpack-stats.json
-import-storage/
-import-oparl-cache/
+storage/
 .env
 
 # Python Stuff

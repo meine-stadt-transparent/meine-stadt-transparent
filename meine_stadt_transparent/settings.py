@@ -24,7 +24,13 @@ warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REAL_HOST = env.str('REAL_HOST')
-PRODUCT_NAME = "Open Source Ratsinformationssystem"
+PRODUCT_NAME = "Meine Stadt Transparent"
+
+TEMPLATE_META = {
+    "logo_name": "Meine Stadt Transparent",
+    "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
+    "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -90,10 +96,15 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.i18n',
+                'django_settings_export.settings_export',
                 'mainapp.context_processors.seo',
             ],
         },
     },
+]
+
+SETTINGS_EXPORT = [
+    'TEMPLATE_META',
 ]
 
 WSGI_APPLICATION = 'meine_stadt_transparent.wsgi.application'

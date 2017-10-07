@@ -8,7 +8,6 @@ import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
-from urllib.parse import urlparse
 
 import gi
 import requests

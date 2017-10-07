@@ -2,12 +2,13 @@ import json
 from datetime import date
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
 from icalendar import Calendar
+# noinspection PyPackageRequirements
 from slugify import slugify
 
 from mainapp.models import Body, Committee
@@ -24,13 +25,16 @@ def index(request):
     else:
         outline = None
 
+    latest_paper = Paper.objects.order_by("modified", "legal_date")[:20]
+
     context = {
         'map': json.dumps({
             'center': settings.SITE_GEO_CENTER,
             'zoom': settings.SITE_GEO_INIT_ZOOM,
             'limit': settings.SITE_GEO_LIMITS,
             'outline': outline
-        })
+        }),
+        'latest_paper': latest_paper,
     }
     return render(request, 'mainapp/index.html', context)
 
@@ -149,7 +153,7 @@ def calendar_data(request):
             'end': meeting.end.isoformat() if meeting.end is not None else None,
             'details': reverse('meeting', args=[meeting.id])
         })
-    return HttpResponse(json.dumps(data), content_type='application/json')
+    return JsonResponse(data, safe=False)
 
 
 def person(request, pk):
