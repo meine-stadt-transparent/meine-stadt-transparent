@@ -18,9 +18,3 @@ class PersonDocument(DocType):
             'given_name',
             'family_name',
         ]
-
-        # To ignore auto updating of Elasticsearch when a model is save
-        # or delete
-        # ignore_signals = True
-        # Don't perform an index refresh after every update (overrides global setting)
-        # auto_refresh = False

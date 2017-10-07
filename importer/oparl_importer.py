@@ -1,13 +1,15 @@
+import concurrent
 import hashlib
-import itertools
 import json
 import logging
 import os
 import sys
+import threading
 import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
+from typing import Callable, TypeVar
 
 import gi
 import requests
@@ -39,7 +41,7 @@ class OParlImporter:
         self.threadcount = options["threadcount"]
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
-        self.download_files = True
+        self.download_files = options["download-files"]
         self.official_geojson = False
         self.organization_classification = {
             Department: ["Referat"],
@@ -72,7 +74,7 @@ class OParlImporter:
     def resolve(self, _, url: str):
         cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
         if self.use_cache and os.path.isfile(cachepath):
-            print("Cached: " + url)
+            # print("Cached: " + url)
             with open(cachepath) as file:
                 data = file.read()
                 return OParl.ResolveUrlResult(resolved_data=data, success=True, status_code=304)
@@ -120,7 +122,15 @@ class OParlImporter:
     def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
         djangoobject.oparl_id = libobject.get_id()
         djangoobject.name = libobject.get_name()
+
+        # FIXME: We can't just cut off official texts
+        if len(djangoobject.name) > 200:
+            djangoobject.name = djangoobject.name.split("\n")[0]
+        if len(djangoobject.name) > 200:
+            djangoobject.name = djangoobject.name[:200]
+
         djangoobject.short_name = libobject.get_short_name() or libobject.get_name()
+        djangoobject.short_name = djangoobject.short_name[:50]
         djangoobject.deleted = libobject.get_deleted()
 
     def body(self, libobject: OParl.Body):
@@ -138,7 +148,7 @@ class OParlImporter:
         body.legislative_terms = terms
 
         location = self.location(libobject.get_location())
-        if location:
+        if location and location.geometry:
             if location.geometry["type"] == "Point":
                 body.center = location
             elif location.geometry["type"] == "Polygon":
@@ -170,11 +180,23 @@ class OParlImporter:
     def paper(self, libobject: OParl.Paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
-        paper, created = Paper.objects.get_or_create(oparl_id=libobject.get_id())
+        paper = Paper.objects.filter(oparl_id=libobject.get_id()).first() or Paper()
+
+        # TODO: Here's surely some fields missing
+
+        paper.legal_date = libobject.get_date()
 
         self.add_default_fields(paper, libobject)
+        if libobject.get_main_file():
+            main_file = self.file(libobject.get_main_file())
+            paper.main_file = main_file
 
         paper.save()
+
+        for file in libobject.get_auxiliary_file():
+            self.file(file)
+
+        return paper
 
     def organization(self, libobject: OParl.Organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
@@ -285,6 +307,10 @@ class OParlImporter:
         return item
 
     def download_file(self, file: File, libobject: OParl.File):
+        if file.modified and self.glib_datetime_to_python(libobject.get_modified()) < file.modified:
+            print("Cached Donwload: {}".format(libobject.get_download_url()))
+            return
+
         print("Downloading {}".format(libobject.get_download_url()))
 
         urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
@@ -309,19 +335,18 @@ class OParlImporter:
         file.name = libobject.get_name()
         file.displayed_filename = libobject.get_file_name()
         file.parsed_text = libobject.get_text()
-        file.mime_type = libobject.get_mime_type()
-        file.legal_date = libobject.get_date()
+        file.mime_type = libobject.get_mime_type() or "application/octet-stream"
+        file.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
 
         if self.download_files:
             self.download_file(file, libobject)
         else:
-            file.storage_filename = 0
-            file.storage_filename = "FILES NOT DOWNLOADED"
+            file.storage_filename = "FILE NOT DOWNLOADED"
+            file.filesize = -1
 
         file.save()
 
         return file
-        # TODO: Download the file
 
     def person(self, libobject: OParl.Person):
         self.logger.info("Processing Person {}".format(libobject.get_id()))
@@ -373,6 +398,10 @@ class OParlImporter:
             self.membership_queue.append((classification, organization, libobject))
             return None
 
+        if not libobject.get_role():
+            logging.error("Role cannot be empty")
+            return None
+
         defaults = {
             "person": person,
             "start": self.glib_datetime_to_python_date(libobject.get_start_date()),
@@ -395,6 +424,17 @@ class OParlImporter:
 
         return membership
 
+    T = TypeVar('T')
+
+    @staticmethod
+    def reraise(fn: Callable[[T], None], arg: T):
+        """ Raise exceptions in threads immediately """
+        try:
+            fn(arg)
+        except Exception as e:
+            print("An error occured:", e)
+            traceback.print_exc()
+
     def run(self):
         try:
             system = self.client.open(self.entrypoint)
@@ -412,26 +452,22 @@ class OParlImporter:
 
         # Raise those exceptions
         list(results)
-
-        results = []
-        with Pool(self.threadcount) as executor:
-            if self.with_papers:
-                papers = executor.map(self.body_paper, bodies)
-                results.append(papers)
-            if self.with_persons:
-                persons = executor.map(self.body_person, bodies)
-                results.append(persons)
-            if self.with_organizations:
-                organizations = executor.map(self.body_organization, bodies)
-                results.append(organizations)
-            if self.with_meetings:
-                meetings = executor.map(self.body_meeting, bodies)
-                results.append(meetings)
-
-        # Raise even better exceptions
-        list(itertools.chain.from_iterable(results))
-
         print("Finished creating bodies")
+
+        with Pool(self.threadcount) as executor:
+            print("Submitting concurrent tasks")
+            futures = {}
+            for body in bodies:
+                futures[executor.submit(self.reraise, self.body_paper, body)] = "{}: Paper".format(body.get_short_name())
+                futures[executor.submit(self.reraise, self.body_person, body)] = "{}: Person".format(body.get_short_name())
+                futures[executor.submit(self.reraise, self.body_organization, body)] = "{}: Organization".format(body.get_short_name())
+                futures[executor.submit(self.reraise, self.body_meeting, body)] = "{}: Meeting".format(body.get_short_name())
+            print("Finished submitting concurrent tasks")
+            for future in concurrent.futures.as_completed(futures):
+                print("Finished", futures[future])
+                future.result()
+
+        print("Finished creating objects")
         self.add_missing_associations()
 
     @classmethod
