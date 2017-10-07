@@ -42,7 +42,7 @@ SUMMARY:House Assembly 3
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170915T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170915T140000
 UID:meeting-5@meine-stadt-transparent.local
-DESCRIPTION:House Assembly Meeting 3
+DESCRIPTION:House Assembly Meeting 3 - Joint Meeting with Inquiry
 END:VEVENT
 BEGIN:VEVENT
 SUMMARY:House Assembly 4
@@ -50,13 +50,6 @@ DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170922T120000
 DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170922T140000
 UID:meeting-6@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 4
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:House Assembly 5
-DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170929T120000
-DTEND;TZID=Europe/Berlin;VALUE=DATE-TIME:20170929T140000
-UID:meeting-7@meine-stadt-transparent.local
-DESCRIPTION:House Assembly Meeting 5
 END:VEVENT
 END:VCALENDAR
 """.strip().replace("\n", "\r\n")

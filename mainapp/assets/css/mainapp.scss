@@ -18,8 +18,22 @@
 .form-home-search {
   margin-top: 20px;
 }
+
 .home-main-links {
   .main-link-holder {
     margin-top: 20px;
+  }
+}
+
+a .no-link-color {
+  // ideally, this would only remove the style of the a, but there's nothing avaible for that right now
+  color: black;
+}
+
+ul.agenda-list {
+  list-style: none;
+  > li > span {
+    min-width: 40px;
+    display: inline-block;
   }
 }

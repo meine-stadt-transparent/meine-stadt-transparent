@@ -2,6 +2,7 @@ import json
 from datetime import date
 
 from django.conf import settings
+from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -171,18 +172,36 @@ def person(request, pk):
 
 def meeting(request, pk):
     selected_meeting = get_object_or_404(Meeting, id=pk)
-    datetime_format = "%d.%m.%Y, %H:%M"
-    timeformat = "%H:%M"
-    begin = selected_meeting.start.strftime(datetime_format)
-    end = selected_meeting.end.strftime(timeformat)
+
+    # Format the time frame
+    begin = selected_meeting.start.strftime(settings.DATETIME_FORMAT)
+    end = selected_meeting.end.strftime(settings.DATETIME_FORMAT)
     if not selected_meeting.end:
         time = begin
     elif selected_meeting.start.date() == selected_meeting.end.date():
-        time = "{} - {}".format(begin, end)
+        # We don't need to repeat the date
+        time = "{} - {}".format(begin, selected_meeting.end.strftime(settings.TIME_FORMAT))
     else:
-        time = "{} - {}".format(begin, selected_meeting.end.strftime(datetime_format))
+        time = "{} - {}".format(begin, end)
 
-    return render(request, 'mainapp/meeting.html', {"meeting": selected_meeting, "time": time})
+    # Try to find a previous or following meetings using the committee
+    # TODO: Can we do that with meeting with two committees ?
+    context = {"meeting": selected_meeting, "time": time}
+    if selected_meeting.committees.all().count() == 1:
+        committee = selected_meeting.committees.first()
+        context["previous"] = Meeting.objects \
+            .annotate(count=Count("committees")) \
+            .filter(count=1) \
+            .filter(start__lt=selected_meeting.start, committees__id=committee.id) \
+            .order_by("start") \
+            .last()
+        context["following"] = Meeting.objects.annotate(count=Count("committees")) \
+            .filter(count=1) \
+            .filter(start__gt=selected_meeting.start, committees__id=committee.id) \
+            .order_by("start") \
+            .first()
+
+    return render(request, 'mainapp/meeting.html', context)
 
 
 def build_ical(events, filename):

@@ -1,71 +1,107 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
-    <div class="container">
-        <div class="section">
-            <h2>{{ meeting.short_name }}</h2>
-            {% if meeting.short_name != meeting.name %}
-                <p>{{ meeting.name }}</p>
-            {% endif %}
-            <p title="Time of the meeting">
-                <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ time }}
-            </p>
-            <p title="Place of the meeting">
-                <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> {{ meeting.location }}
-            </p>
-            {% if meeting.committees.all|length == 1 %}
-                <p title="Main committee of that meeting">
-                    <a href="{% url 'committee' meeting.committees.all.0.id %}">
-                        <i class="fa fa-users fa-fw" aria-hidden="true"></i> {{ meeting.committees.all.0 }}
+    <div class="container col-8" style="max-width: 800px;">
+        <div class="d-flex justify-content-between pb-3">
+            <div style="width: 100%; text-align: left">
+                {% if previous %}
+                    <a href="{% url 'meeting' previous.id %}">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i> {% trans 'Previous Meeting' %}
                     </a>
-                </p>
-            {% elif meeting.committees.all|length > 1 %}
-                <p title="Committee participating in the meeting">
-                    <i class="fa fa-users fa-fw" aria-hidden="true"></i> Committees:
-                    {% for committee in meeting.committees.all %}
-                        <a href="{% url 'committee' committee.id %}">{{ committee }}</a>
-                    {% endfor %}
-                </p>
-            {% endif %}
+                {% endif %}
+            </div>
+            <div style="width: 100%; text-align: center">
+                <a href="{% url 'meeting-ical' meeting.id %}">
+                    <i class="fa fa-download" aria-hidden="true"></i> {% trans 'Export' %}
+                </a>
+            </div>
+            <div style="width: 100%; text-align: right">
+                {% if following %}
+                    <a href="{% url 'meeting' following.id %}">
+                        {% trans 'Following Meeting' %}
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
 
-            {% if meeting.persons.all %}
-                <p><i class="fa fa-user fa-fw" aria-hidden="true"></i> Further Attendees</p>
-                <ul>
-                    {% for person in meeting.persons.all %}
-                        <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
+        <h2>{{ meeting.short_name }}</h2>
+        {% if meeting.short_name != meeting.name %}
+            <p>{{ meeting.name }}</p>
+        {% endif %}
+
+        <p title="{% trans 'Time of the Meeting' %}">
+            <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ time }}
+        </p>
+        <p title="{% trans 'Place of the meeting' %}">
+            <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> {{ meeting.location }}
+        </p>
+
+        {% if meeting.committees.all|length == 1 %}
+            <p title="{% trans 'Main committee of the meeting' %}">
+                <a href="{% url 'committee' meeting.committees.all.0.id %}">
+                    <i class="fa fa-users fa-fw no-link-color" aria-hidden="true"></i> {{ meeting.committees.all.0 }}
+                </a>
+            </p>
+        {% elif meeting.committees.all|length > 1 %}
+            <p title="{% trans 'Committees participating in the meeting' %}">
+                <i class="fa fa-users fa-fw no-link-color" aria-hidden="true"></i> Committees:
+                {% spaceless %}
+                    {% for committee in meeting.committees.all %}
+                        <a href="{% url 'committee' committee.id %}" title="{{ committee.name }}">
+                            <span>{{ committee }}</span>
+                        </a>{% if not forloop.last %}, {% endif %}
                     {% endfor %}
-                </ul>
-            {% endif %}
-            {% if meeting.invitation %}
-                <p>Invitation: <a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a></p>
-            {% endif %}
-            {% if meeting.results_protocol %}
-                <p>Results protocol: <a
-                        href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a></p>
-            {% endif %}
-            {% if meeting.verbatim_protocol %}
-                <p>Verbatim protocol: <a
-                        href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a></p>
-            {% endif %}
-            <ul>
-                {% for file in meeting.auxiliary_files.all %}
-                    <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
+                {% endspaceless %}
+            </p>
+        {% endif %}
+
+        {% if meeting.persons.all %}
+            <p>
+                <i class="fa fa-user fa-fw no-link-color" aria-hidden="true"></i> {% trans 'Further Attendees' %}
+                {% for person in meeting.persons.all %}
+                    <a href="{% url 'person' person.id %}">{{ person }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+
+        {% if meeting.invitation %}
+            <p>{% trans 'Invitation: ' %}
+                <a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a>
+            </p>
+        {% endif %}
+        {% if meeting.results_protocol %}
+            <p>{% trans 'Results protocol: ' %}
+                <a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a>
+            </p>
+        {% endif %}
+        {% if meeting.verbatim_protocol %}
+            <p>{% trans 'Verbatim protocol: ' %}
+                <a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a>
+            </p>
+        {% endif %}
+        <ul>
+            {% for file in meeting.auxiliary_files.all %}
+                <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <h3>{% trans 'Agenda' %}</h3>
+        {% if meeting.agendaitem_set.all %}
+            <ul class="agenda-list">
+                {% for agenda_item in meeting.agendaitem_set.all %}
+                    <li><span>{{ agenda_item.key }}</span>
+                        {% if agenda_item.paper %}
+                            <a href="{% url 'paper' agenda_item.paper.id %}">{{ agenda_item.title }}</a>
+                        {% else %}
+                            {{ agenda_item.title }}
+                        {% endif %}
+                    </li>
                 {% endfor %}
             </ul>
-            {% if meeting_series %}
-                <p><a href="{% url 'meeting-series' meeting.meeting_series.id %}">{{ meeting.meeting_series }}</a></p>
-            {% endif %}
-            <h3>Agenda</h3>
-            {% if meeting.agendaitem_set.all %}
-                <ul style="list-style: none">
-                    {% for agenda_item in meeting.agendaitem_set.all %}
-                        <li>{{ agenda_item.key }} {{ agenda_item.title }}</li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>Not agenda available</p>
-            {% endif %}
-            <p><a href="{% url 'meeting-ical' meeting.id %}">Export</a></p>
-        </div>
+        {% else %}
+            <p>{% trans 'Not agenda available' %}</p>
+        {% endif %}
     </div>
 {% endblock %}
