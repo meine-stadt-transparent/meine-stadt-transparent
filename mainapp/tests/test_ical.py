@@ -7,7 +7,7 @@ from django.test import TestCase
 expected_meeting = """
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Open Source Ratsinformationssystem//
+PRODID:-//Meine Stadt Transparent//
 BEGIN:VEVENT
 SUMMARY:Meeting with Remy
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170910T120000
@@ -22,7 +22,7 @@ END:VCALENDAR
 expected_meeting_series = """
 BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Open Source Ratsinformationssystem//
+PRODID:-//Meine Stadt Transparent//
 BEGIN:VEVENT
 SUMMARY:House Assembly 1
 DTSTART;TZID=Europe/Berlin;VALUE=DATE-TIME:20170901T120000

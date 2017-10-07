@@ -18,17 +18,16 @@ Meine Stadt Transparent is a [TODO] für den Prototype Fund
  - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
-
-Create a virtualenv at `venv`. Add a local domain https://opensourceris.local/ with self-signed certificates in your
-webserver which redirects to localhost:8080
-
-On Debian:
+On Debian/Ubuntu:
 ```bash
-apt install python3-virtualenv python3-pip python3-gi libmysqlclient-dev
-virtualenv venv
+sudo apt install python3-virtualenv python3-pip python3-gi libmysqlclient-dev
 ```
 
+Add a local domain https://opensourceris.local/ with self-signed certificates in your webserver which redirects to
+localhost:8080
+
 ```bash
+python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 npm install

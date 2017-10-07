@@ -7,9 +7,12 @@
             {% if meeting.short_name != meeting.name %}
                 <p>{{ meeting.name }}</p>
             {% endif %}
-            <p title="Time of the meeting"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ time }}</p>
-            <p title="Place of the meeting"><i class="fa fa-map-marker fa-fw"
-                                               aria-hidden="true"></i> {{ meeting.location }}</p>
+            <p title="Time of the meeting">
+                <i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ time }}
+            </p>
+            <p title="Place of the meeting">
+                <i class="fa fa-map-marker fa-fw" aria-hidden="true"></i> {{ meeting.location }}
+            </p>
             {% if meeting.committees.all|length == 1 %}
                 <p title="Main committee of that meeting">
                     <a href="{% url 'committee' meeting.committees.all.0.id %}">
