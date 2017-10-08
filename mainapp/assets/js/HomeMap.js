@@ -23,6 +23,9 @@ export default class IndexView {
                 if (feature['geometry']['type'] === 'MultiPolygon') {
                     feature['geometry']['coordinates'].forEach(coordsToPolygon);
                 }
+                if (feature['geometry']['type'] === 'Polygon') {
+                    coordsToPolygon(feature['geometry']['coordinates']);
+                }
             });
         }
         return polygons;

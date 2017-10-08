@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 
@@ -21,7 +22,7 @@ class Command(BaseCommand):
         file.close()
 
         result = subprocess.run(['node_modules/.bin/osmtogeojson', '-f', 'json', '-m', tmpfile], stdout=subprocess.PIPE)
-        geojson = result.stdout.decode('utf-8')
+        geojson = json.loads(result.stdout.decode('utf-8'))
 
         os.remove(tmpfile)
         return geojson
@@ -48,6 +49,7 @@ class Command(BaseCommand):
         r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
 
         geojson = self.convert_to_geojson(r.text)
+        print(geojson)
         outline.geometry = geojson
         outline.save()
 
