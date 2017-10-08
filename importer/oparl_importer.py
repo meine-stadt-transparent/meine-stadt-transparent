@@ -46,8 +46,8 @@ class OParlImporter:
         self.official_geojson = False
         self.organization_classification = {
             Department: ["Referat"],
-            Committee: ["Stadtratsgremium", "BA-Gremium"],
-            ParliamentaryGroup: ["Fraktion"],
+            Committee: ["Stadtratsgremium", "BA-Gremium", "Gremien"],
+            ParliamentaryGroup: ["Fraktion", "Fraktionen"],
         }
 
         # Setup
@@ -118,6 +118,15 @@ class OParlImporter:
         if not glibdate:
             return None
         return date(glibdate.get_year(), glibdate.get_month(), glibdate.get_day())
+
+    @staticmethod
+    def glib_datetime_or_date_to_python(glibdate):
+        if isinstance(glibdate, GLib.Date):
+            return OParlImporter.glib_date_to_python(glibdate)
+        if isinstance(glibdate, GLib.DateTime):
+            return OParlImporter.glib_datetime_to_python_date(glibdate)
+        return None
+
 
     @staticmethod
     def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
@@ -212,19 +221,20 @@ class OParlImporter:
             defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = Committee.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
             self.add_default_fields(organization, libobject)
-            organization.start = self.glib_date_to_python(libobject.get_start_date())
-            organization.end = self.glib_date_to_python(libobject.get_end_date())
+            organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
+            organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         elif classification in self.organization_classification[ParliamentaryGroup]:
             defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = ParliamentaryGroup.objects.get_or_create(oparl_id=libobject.get_id(),
                                                                              defaults=defaults)
             self.add_default_fields(organization, libobject)
-            organization.start = self.glib_date_to_python(libobject.get_start_date())
-            organization.end = self.glib_date_to_python(libobject.get_end_date())
+            organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
+            organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
             self.logger.error("Unknown classification: {}".format(classification))
             return
 
+        print(libobject.get_name())
         for membership in libobject.get_membership():
             self.membership(classification, organization, membership)
 
@@ -295,13 +305,17 @@ class OParlImporter:
             paper = Paper.objects.filter(oparl_id=libobject.get_consultation().get_paper()).first()
             if not paper:
                 self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper()
+
+        item_key = libobject.get_number()
+        if not item_key:
+            item_key = "-"
         
         values = {
             "title": libobject.get_name(),
             "position": index,
             "meeting": meeting,
             "oparl_id": libobject.get_id(),
-            "key": libobject.get_number(),
+            "key": item_key,
             "public": libobject.get_public(),
             "paper": paper,
         }
@@ -332,12 +346,16 @@ class OParlImporter:
             return None
 
         self.logger.info("Processing File {}".format(libobject.get_id()))
+
+        displayed_filename = libobject.get_file_name()
+        if not displayed_filename:
+            displayed_filename = _("Unknown")
         
         file = File.objects.filter(oparl_id=libobject.get_id()).first() or File()
 
         file.oparl_id = libobject.get_id()
         file.name = libobject.get_name()[:200]  # FIXME
-        file.displayed_filename = libobject.get_file_name()
+        file.displayed_filename = displayed_filename
         file.parsed_text = libobject.get_text()
         file.mime_type = libobject.get_mime_type() or "application/octet-stream"
         file.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
@@ -364,6 +382,9 @@ class OParlImporter:
         person.save()
 
     def body_paper(self, body: OParl.Body):
+        if not self.with_papers:
+            return
+
         for paper in body.get_paper():
             self.paper(paper)
 
@@ -376,6 +397,9 @@ class OParlImporter:
             self.organization(organization)
 
     def body_meeting(self, body: OParl.Body):
+        if not self.with_meetings:
+            return
+
         for meeting in body.get_meeting():
             self.meeting(meeting)
 
