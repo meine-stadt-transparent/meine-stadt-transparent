@@ -3,6 +3,7 @@ db.sqlite3
 node_modules/
 webpack-stats.json
 storage/
+static/
 .env
 
 # Python Stuff
