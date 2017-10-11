@@ -117,7 +117,7 @@ ANYMAIL = {
     "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
 }
 EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
-DEFAULT_FROM_EMAIL = "info@hoessl.eu"
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
