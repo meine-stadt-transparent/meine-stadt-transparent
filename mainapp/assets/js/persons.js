@@ -1,17 +1,13 @@
 require('isotope-layout/dist/isotope.pkgd');
 
-console.log("Isotope");
-
 $(function () {
-    console.log("Isotope2");
-
     // init Isotope
     let $grid = $('.persons-list').isotope({
         itemSelector: '.person',
         layoutMode: 'fitRows',
         getSortData: {
             name: '.name',
-            party: '.party'
+            parliamentary_group: '.parliamentary-group'
         }
     });
 
@@ -21,7 +17,16 @@ $(function () {
             $grid.isotope({ sortBy: 'name' });
         }
         if (sort === 'party') {
-            $grid.isotope({ sortBy: 'party' });
+            $grid.isotope({ sortBy: 'parliamentary_group' });
         }
+    });
+    $("input[name=parliamentary-group]").change(function() {
+        let filter = $(this).val();
+        if (filter === 'all') {
+            $grid.isotope({ filter: null });
+        } else {
+            $grid.isotope({ filter: '.parliamentary-group-' + filter });
+        }
+        console.log(filter);
     });
 });

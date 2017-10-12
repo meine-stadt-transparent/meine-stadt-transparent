@@ -6,26 +6,8 @@
 {% block title %}{% trans "Persons" %}{% endblock %}
 
 {% block content %}
-    <div class="container persons-list-container">
 
-        <ul class="persons-list">
-            <li class="person party-1">
-                <span class="name">Person 3</span> (<span class="party">Partei 1</span>)
-            </li>
-            <li class="person party-2">
-                <span class="name">Person 2</span> (<span class="party">Partei 2</span>)
-            </li>
-            <li class="person party-2">
-                <span class="name">Person 4</span> (<span class="party">Partei 2</span>)
-            </li>
-            <li class="person party-1">
-                <span class="name">Person 1</span> (<span class="party">Partei 1</span>)
-            </li>
-            <li class="person party-3">
-                <span class="name">Person 5</span> (<span class="party">Partei 3</span>)
-            </li>
-        </ul>
-
+    <section class="filter-sorter">
         <label>Sortieren nach:
             <select name="sort_by" size="1">
                 <option value="none">-</option>
@@ -33,6 +15,25 @@
                 <option value="party">Partei</option>
             </select>
         </label>
+
+        <ul class="parliamentary-group-filter-list">
+            <li><label><input type="radio" name="parliamentary-group" value="all" checked> All</label></li>
+            {% for group in parliamentary_groups %}
+                <li><label><input type="radio" name="parliamentary-group" value="{{ group.id }}"> {{ group.name }}
+                </label></li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <div class="container persons-list-container">
+        <ul class="persons-list">
+            {% for member in members %}
+                <li class="person {{ member.groups_css_classes }}">
+                    <span class="name">{{ member.name }}</span>
+                    (<span class="parliamentary-group">{{ member.groups_names }}</span>)
+                </li>
+            {% endfor %}
+        </ul>
 
     </div>
 {% endblock %}

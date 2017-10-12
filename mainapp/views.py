@@ -131,7 +131,36 @@ def search_autosuggest(request):
 def persons(request):
     pk = settings.SITE_DEFAULT_COMMITTEE
     committee = get_object_or_404(Committee, id=pk)
-    context = {"current_committee": committee}
+
+    memberships = committee.committeemembership_set.all()
+    parliamentarygroups = []
+    members = []
+    for membership in memberships:
+        pers = membership.person
+        groups_ids = []
+        groups_css_classes = []
+        groups_names = []
+
+        for parlmember in pers.parliamentarygroupmembership_set.all():
+            group = parlmember.parliamentary_group
+            groups_ids.append(str(group.id))
+            groups_css_classes.append("parliamentary-group-%i" % group.id)
+            groups_names.append(group.name)
+            if group not in parliamentarygroups:
+                parliamentarygroups.append(group)
+
+        members.append({
+            'name': pers.name,
+            'groups_ids': ','.join(groups_ids),
+            'groups_css_classes': ' '.join(groups_css_classes),
+            'groups_names': ', '.join(groups_names),
+        })
+
+    context = {
+        "current_committee": committee,
+        "members": members,
+        "parliamentary_groups": parliamentarygroups,
+    }
     return render(request, 'mainapp/persons.html', context)
 
 
