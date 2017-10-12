@@ -254,11 +254,11 @@ GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
 GEO_SEARCH_COUNTRY = env.str('GEO_SEARCH_COUNTRY', 'Deutschland')
 
 # Configuration regarding the city of choice
-SITE_GEO_LIMITS = {'min': {'lat': 47.965, 'lng': 11.286}, 'max': {'lat': 48.296, 'lng': 11.871}}
-SITE_GEO_CENTER = {'lat': 48.137, 'lng': 11.575}
-SITE_GEO_INIT_ZOOM = 11
-SITE_GEO_SHAPE_BODY_ID = 1
-SITE_DEFAULT_COMMITTEE = 1
+SITE_GEO_LIMITS = env.json('SITE_GEO_LIMITS')
+SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
+SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM')
+SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY')
+SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE')
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)

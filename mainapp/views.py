@@ -20,7 +20,7 @@ from mainapp.models.person import Person
 
 
 def index(request):
-    main_body = Body.objects.get(id=settings.SITE_GEO_SHAPE_BODY_ID)
+    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
     if main_body.outline:
         outline = main_body.outline.geometry
     else:
