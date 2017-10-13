@@ -27,17 +27,50 @@ def index(request):
         outline = None
 
     latest_paper = Paper.objects.order_by("modified", "legal_date")[:20]
+    geo_papers = Paper.objects.filter(modified__gte="2017-10-10")
 
     context = {
         'map': json.dumps({
             'center': settings.SITE_GEO_CENTER,
             'zoom': settings.SITE_GEO_INIT_ZOOM,
             'limit': settings.SITE_GEO_LIMITS,
-            'outline': outline
+            'outline': outline,
+            'documents': _index_papers_to_geodata(geo_papers)
         }),
         'latest_paper': latest_paper,
     }
     return render(request, 'mainapp/index.html', context)
+
+
+def _index_papers_to_geodata(papers):
+    """
+    :param papers: list of Paper
+    :return: object
+    """
+    geodata = {}
+    for paper in papers:
+        for file in paper.files.all():
+            for location in file.locations.all():
+                if location.id not in geodata:
+                    geodata[location.id] = {
+                        "id": location.id,
+                        "name": location.name,
+                        "coordinates": location.geometry,
+                        "papers": {}
+                    }
+                if paper.id not in geodata[location.id]['papers']:
+                    geodata[location.id]['papers'][paper.id] = {
+                        "id": paper.id,
+                        "name": paper.id,
+                        "files": []
+                    }
+                geodata[location.id]['papers'][paper.id]["files"].append({
+                    "id": file.id,
+                    "name": file.name,
+                    "url": reverse('file', args=[file.id])
+                })
+
+    return geodata
 
 
 def info_privacy(request):

@@ -42,7 +42,7 @@
         </ul>
         {% if not disable_header_search %}
         <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' %}">
-            <input class="form-control mr-sm-2" type="text" name="query" value=""
+            <input class="form-control mr-sm-2" type="text" name="query" value="" autocomplete="off"
                    data-suggest-url="{% url 'search_autosuggest' %}"
                    placeholder="{% trans "Search" context "page_title" %}" aria-label="{% trans "Search" context "perform search" %}">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans "Search" context "perform search" %}</button>

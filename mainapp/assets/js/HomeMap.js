@@ -31,6 +31,30 @@ export default class IndexView {
         return polygons;
     }
 
+    geojsonToLocation(geojson) {
+        if (geojson['type'] === 'Point') {
+            return L.latLng(geojson['coordinates'][1], geojson['coordinates'][0]);
+        } else {
+            throw 'Unknown GeoJSON-Type: ' + geojson['type'];
+        }
+    }
+
+    addDocumentLocationMarkers(documents) {
+        this.locationMarkers = [];
+        for (let location of Object.values(documents)) {
+            console.log(location);
+            let marker = L.marker(this.geojsonToLocation(location.coordinates), {
+                icon: L.icon({
+                    iconUrl: '/static/images/marker-icon-2x.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12.5, 41]
+                })
+            });
+            marker.addTo(this.leaflet);
+            this.locationMarkers.push(marker);
+        }
+    }
+
     constructor($map_element) {
         this.leaflet = L.map($map_element.attr('id'));
 
@@ -65,6 +89,10 @@ export default class IndexView {
             this.getOutlineToPolygons(initData['outline']).forEach((polygon) => {
                 this.leaflet.addLayer(polygon);
             });
+        }
+
+        if (initData['documents']) {
+            this.addDocumentLocationMarkers(initData['documents']);
         }
     }
 }

@@ -183,7 +183,7 @@ def detect_relevant_bodies(location):
     :param location: mainapp.models.Location
     :return: list of mainapp.models.Body
     """
-    body = Body.objects.get(id=4)  # @TODO
+    body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)  # @TODO
     return [body]
 
 
