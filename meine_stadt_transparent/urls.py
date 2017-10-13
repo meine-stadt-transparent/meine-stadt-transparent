@@ -25,3 +25,6 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^', include('mainapp.urls')),
 ]
+
+handler404 = "mainapp.views.error404"
+handler500 = "mainapp.views.error500"

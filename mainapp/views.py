@@ -272,3 +272,11 @@ def committee_ical(request, pk):
         filename = _("Meeting Series")
 
     return build_ical(events, filename)
+
+
+def error404(request):
+    return render(request, "error/404.html", status=404)
+
+
+def error500(request):
+    return render(request, "error/500.html", status=500)
