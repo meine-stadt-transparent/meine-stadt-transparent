@@ -37,5 +37,8 @@ urlpatterns = [
     simple_model_view('location', Location),
     simple_model_view('paper', Paper),
     simple_model_view('parliamentary group', ParliamentaryGroup),
-    url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
+    url(r'^profile$', ProfileHomeView.as_view(), name='profile-home'),
+    url(r'^404$', views.error404, name="error-404"),
+    url(r'^500', views.error500, name="error-500"),
 ]
+

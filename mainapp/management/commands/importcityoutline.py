@@ -49,7 +49,6 @@ class Command(BaseCommand):
         r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
 
         geojson = self.convert_to_geojson(r.text)
-        print(geojson)
         outline.geometry = geojson
         outline.save()
 

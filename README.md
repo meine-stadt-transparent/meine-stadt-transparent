@@ -20,7 +20,7 @@ Meine Stadt Transparent is a [TODO] für den Prototype Fund
 
 On Debian/Ubuntu:
 ```bash
-sudo apt install python3-virtualenv python3-pip python3-gi libmysqlclient-dev
+sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext
 ```
 
 Add a local domain https://opensourceris.local/ with self-signed certificates in your webserver which redirects to
@@ -37,6 +37,7 @@ The web server needs to be set up with a (self-signed) SSL certificate. Example 
  - [Apache](etc/apache.conf)
  - [nginx](etc/nginx.conf)
 
+Docker installation instructions can be found [here](https://docs.docker.com/engine/installation/linux/docker-ce/debian/).
 
 ### Elastic HQ
 

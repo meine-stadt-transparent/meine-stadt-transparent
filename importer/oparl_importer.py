@@ -486,10 +486,14 @@ class OParlImporter:
             print("Submitting concurrent tasks")
             futures = {}
             for body in bodies:
-                futures[executor.submit(self.reraise, self.body_paper, body)] = "{}: Paper".format(body.get_short_name())
-                futures[executor.submit(self.reraise, self.body_person, body)] = "{}: Person".format(body.get_short_name())
-                futures[executor.submit(self.reraise, self.body_organization, body)] = "{}: Organization".format(body.get_short_name())
-                futures[executor.submit(self.reraise, self.body_meeting, body)] = "{}: Meeting".format(body.get_short_name())
+                if self.with_papers:
+                    futures[executor.submit(self.reraise, self.body_paper, body)] = "{}: Paper".format(body.get_short_name())
+                if self.with_persons:
+                    futures[executor.submit(self.reraise, self.body_person, body)] = "{}: Person".format(body.get_short_name())
+                if self.with_organizations:
+                    futures[executor.submit(self.reraise, self.body_organization, body)] = "{}: Organization".format(body.get_short_name())
+                if self.with_meetings:
+                    futures[executor.submit(self.reraise, self.body_meeting, body)] = "{}: Meeting".format(body.get_short_name())
             print("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 print("Finished", futures[future])

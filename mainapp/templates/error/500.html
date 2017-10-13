@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Not Found" %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>
+            {% trans "Sorry, there has been an internal error" %}<br>
+            <small class="text-muted">{% trans "Error 500" %}</small>
+        </h1>
+        <figure class="figure">
+            <img class="pt-3 img-fluid rounded"
+                 src="{% static 'images/cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg' %}"
+                 alt="Cat making a facepalm"/>
+
+            <figcaption class="figure-caption">
+                {% trans "Photography by Luigi Rosa, CC-BY-SA" context "figure caption" %} |
+                <a href="https://www.flickr.com/photos/lrosa/6700769763">Source</a>
+            </figcaption>
+        </figure>
+    </div>
+{% endblock %}

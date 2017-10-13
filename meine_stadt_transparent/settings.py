@@ -117,7 +117,7 @@ ANYMAIL = {
     "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
 }
 EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
-DEFAULT_FROM_EMAIL = "info@hoessl.eu"
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -132,8 +132,11 @@ DATABASES = {
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 LOGIN_REDIRECT_URL = "/profile/"
+ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = True
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
+SOCIALACCOUNT_QUERY_EMAIL = True
 # Needed by allauth
 SITE_ID = 1
 
@@ -208,6 +211,7 @@ TIME_FORMAT = "%H:%M"
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
@@ -250,11 +254,11 @@ GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
 GEO_SEARCH_COUNTRY = env.str('GEO_SEARCH_COUNTRY', 'Deutschland')
 
 # Configuration regarding the city of choice
-SITE_GEO_LIMITS = {'min': {'lat': 47.965, 'lng': 11.286}, 'max': {'lat': 48.296, 'lng': 11.871}}
-SITE_GEO_CENTER = {'lat': 48.137, 'lng': 11.575}
-SITE_GEO_INIT_ZOOM = 11
-SITE_GEO_SHAPE_BODY_ID = 1
-SITE_DEFAULT_COMMITTEE = 1
+SITE_GEO_LIMITS = env.json('SITE_GEO_LIMITS')
+SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
+SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
+SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
+SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE', 1)
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)

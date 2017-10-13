@@ -6,26 +6,8 @@
 {% block title %}{% trans "Persons" %}{% endblock %}
 
 {% block content %}
-    <div class="container persons-list-container">
 
-        <ul class="persons-list">
-            <li class="person party-1">
-                <span class="name">Person 3</span> (<span class="party">Partei 1</span>)
-            </li>
-            <li class="person party-2">
-                <span class="name">Person 2</span> (<span class="party">Partei 2</span>)
-            </li>
-            <li class="person party-2">
-                <span class="name">Person 4</span> (<span class="party">Partei 2</span>)
-            </li>
-            <li class="person party-1">
-                <span class="name">Person 1</span> (<span class="party">Partei 1</span>)
-            </li>
-            <li class="person party-3">
-                <span class="name">Person 5</span> (<span class="party">Partei 3</span>)
-            </li>
-        </ul>
-
+    <section class="filter-sorter">
         <label>Sortieren nach:
             <select name="sort_by" size="1">
                 <option value="none">-</option>
@@ -34,7 +16,40 @@
             </select>
         </label>
 
-    </div>
+        <div class="btn-group parliamentary-group-filter-list pull-right" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="parliamentary-group" value="all" autocomplete="off" checked> All
+            </label>
+            {% for group in parliamentary_groups %}
+                <label class="btn btn-primary">
+                    <input type="radio" name="parliamentary-group" value="{{ group.id }}" autocomplete="off">
+                    {{ group.name }}
+                </label>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="container persons-list-container">
+        <ul class="persons-list">
+            {% for member in members %}
+                <li class="card person {{ member.groups_css_classes }}">
+                    <a href="{% url 'person' member.id %}" class="card-body">
+                        <div class="name">{{ member.name }}</div>
+                        <div class="parliamentary-group">{{ member.groups_names }}</div>
+                        <div class="role">{{ member.role }}</div>
+                        <div class="date">
+                            {% if member.end %}
+                                Von {{ member.start }} bis {{ member.end }}
+                            {% else %}
+                                Seit {{ member.start }}
+                            {% endif %}
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </section>
 {% endblock %}
 
 {% block additional_js %}

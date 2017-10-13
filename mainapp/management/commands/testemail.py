@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
+from django.conf import settings
 
 
 class Command(BaseCommand):
@@ -12,4 +13,5 @@ class Command(BaseCommand):
         email = options['email']
         message_text = "Hallo 🌍"
         message_html = "<h1>Hallo 🌍</h1><p>Schön ist's hier!</p>"
-        send_mail("Hallo", message_text, "Tobias <tobias@hoessl.eu>", [email], html_message=message_html)
+        mail_from = "Meine Stadt Transparent <" + settings.DEFAULT_FROM_EMAIL + ">"
+        send_mail("Hallo", message_text, mail_from, [email], html_message=message_html)
