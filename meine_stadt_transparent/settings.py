@@ -117,7 +117,7 @@ ANYMAIL = {
     "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
 }
 EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
-DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL')
+DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -256,9 +256,9 @@ GEO_SEARCH_COUNTRY = env.str('GEO_SEARCH_COUNTRY', 'Deutschland')
 # Configuration regarding the city of choice
 SITE_GEO_LIMITS = env.json('SITE_GEO_LIMITS')
 SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
-SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM')
-SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY')
-SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE')
+SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
+SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
+SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE', 1)
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
