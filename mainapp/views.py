@@ -150,7 +150,11 @@ def persons(request):
                 parliamentarygroups.append(group)
 
         members.append({
+            'id': pers.id,
             'name': pers.name,
+            'start': membership.start,
+            'end': membership.end,
+            'role': membership.role,
             'groups_ids': ','.join(groups_ids),
             'groups_css_classes': ' '.join(groups_css_classes),
             'groups_names': ', '.join(groups_names),

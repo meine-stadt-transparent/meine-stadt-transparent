@@ -16,26 +16,40 @@
             </select>
         </label>
 
-        <ul class="parliamentary-group-filter-list">
-            <li><label><input type="radio" name="parliamentary-group" value="all" checked> All</label></li>
+        <div class="btn-group parliamentary-group-filter-list pull-right" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="parliamentary-group" value="all" autocomplete="off" checked> All
+            </label>
             {% for group in parliamentary_groups %}
-                <li><label><input type="radio" name="parliamentary-group" value="{{ group.id }}"> {{ group.name }}
-                </label></li>
+                <label class="btn btn-primary">
+                    <input type="radio" name="parliamentary-group" value="{{ group.id }}" autocomplete="off">
+                    {{ group.name }}
+                </label>
             {% endfor %}
-        </ul>
+        </div>
     </section>
 
-    <div class="container persons-list-container">
+    <section class="container persons-list-container">
         <ul class="persons-list">
             {% for member in members %}
-                <li class="person {{ member.groups_css_classes }}">
-                    <span class="name">{{ member.name }}</span>
-                    (<span class="parliamentary-group">{{ member.groups_names }}</span>)
+                <li class="card person {{ member.groups_css_classes }}">
+                    <a href="{% url 'person' member.id %}" class="card-body">
+                        <div class="name">{{ member.name }}</div>
+                        <div class="parliamentary-group">{{ member.groups_names }}</div>
+                        <div class="role">{{ member.role }}</div>
+                        <div class="date">
+                            {% if member.end %}
+                                Von {{ member.start }} bis {{ member.end }}
+                            {% else %}
+                                Seit {{ member.start }}
+                            {% endif %}
+                        </div>
+                    </a>
                 </li>
             {% endfor %}
         </ul>
 
-    </div>
+    </section>
 {% endblock %}
 
 {% block additional_js %}

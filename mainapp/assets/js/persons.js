@@ -10,6 +10,7 @@ $(function () {
             parliamentary_group: '.parliamentary-group'
         }
     });
+    window.$grid = $grid;
 
     $("select[name=sort_by]").change(function() {
         let sort = $(this).val();
