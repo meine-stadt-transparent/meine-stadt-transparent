@@ -61,7 +61,8 @@ def _index_papers_to_geodata(papers):
                 if paper.id not in geodata[location.id]['papers']:
                     geodata[location.id]['papers'][paper.id] = {
                         "id": paper.id,
-                        "name": paper.id,
+                        "name": paper.name,
+                        "url": reverse('paper', args=[file.id]),
                         "files": []
                     }
                 geodata[location.id]['papers'][paper.id]["files"].append({

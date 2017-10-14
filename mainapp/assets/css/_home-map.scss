@@ -1,0 +1,16 @@
+#leaflet-map {
+  .leaflet-popup-content-wrapper {
+    .paper-title {
+      padding-bottom: 5px;
+      margin-bottom: 5px;
+      border-bottom: solid 1px #ccc;
+    }
+    .file-location {
+      overflow: auto;
+      font-size: 12px;
+    }
+    .location-name {
+      float: right;
+    }
+  }
+}
