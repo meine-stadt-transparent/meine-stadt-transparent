@@ -179,10 +179,10 @@ class OParlImportObjects(OParlImportHelper):
             return None
 
         paper = None
-        if libobject.get_consultation() and libobject.get_consultation().get_paper():
-            paper = Paper.objects.filter(oparl_id=libobject.get_consultation().get_paper()).first()
+        if libobject.get_consultation_url() != "" and libobject.get_consultation().get_paper_url() != "":
+            paper = Paper.objects.filter(oparl_id=libobject.get_consultation().get_paper_url()).first()
             if not paper:
-                self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper()
+                self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper_url()
 
         item_key = libobject.get_number()
         if not item_key:
