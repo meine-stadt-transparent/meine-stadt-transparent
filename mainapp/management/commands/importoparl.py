@@ -20,6 +20,7 @@ class Command(BaseCommand):
         parser.add_argument('--without-organizations', dest='with-organizations', action='store_false')
         parser.add_argument('--without-meetings', dest='with-meetings', action='store_false')
         parser.add_argument('--no-threads', dest='no-threads', action='store_true', help="Debug option")
+        parser.add_argument('--batchsize', type=int, default=100)
         parser.set_defaults(download_files=True)
         parser.set_defaults(use_cache=True)
         parser.set_defaults(use_sternberg=False)

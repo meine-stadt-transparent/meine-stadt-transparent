@@ -40,6 +40,7 @@ class OParlImporter:
         self.with_organizations = options["with-organizations"]
         self.with_meetings = options["with-meetings"]
         self.threadcount = options["threadcount"]
+        self.batchsize = options["batchsize"]
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
         self.download_files = options["download-files"]
@@ -389,27 +390,38 @@ class OParlImporter:
         person.location = self.location(libobject.get_location())
         person.save()
 
-    def body_paper(self, body: OParl.Body):
-        if not self.with_papers:
-            return
+    @staticmethod
+    def chunks(l, n):
+        """
+        Yield successive n-sized chunks from l.
+        https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks
+        """
+        for i in range(0, len(l), n):
+            yield l[i:i + n]
 
-        for paper in body.get_paper():
-            self.paper(paper)
+    def body_paper(self, body: OParl.Body):
+        for batch in self.chunks(body.get_paper(), self.batchsize):
+            with transaction.atomic():
+                for paper in batch:
+                    self.paper(paper)
 
     def body_person(self, body: OParl.Body):
-        for person in body.get_person():
-            self.person(person)
+        for batch in self.chunks(body.get_person(), self.batchsize):
+            with transaction.atomic():
+                for person in batch:
+                    self.person(person)
 
     def body_organization(self, body: OParl.Body):
-        for organization in body.get_organization():
-            self.organization(organization)
+        for batch in self.chunks(body.get_organization(), self.batchsize):
+            with transaction.atomic():
+                for organization in batch:
+                    self.organization(organization)
 
     def body_meeting(self, body: OParl.Body):
-        if not self.with_meetings:
-            return
-
-        for meeting in body.get_meeting():
-            self.meeting(meeting)
+        for batch in self.chunks(body.get_meeting(), self.batchsize):
+            with transaction.atomic():
+                for meeting in batch:
+                    self.meeting(meeting)
 
     def add_missing_associations(self):
         for meeting_id, person_ids in self.meeting_person_queue.items():
