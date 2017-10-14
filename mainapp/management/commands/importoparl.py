@@ -10,16 +10,16 @@ class Command(BaseCommand):
         parser.add_argument('--cachefolder', type=str, default="../mst-storage/import-oparl-cache")
         parser.add_argument('--storagefolder', type=str, default="../mst-storage/files")
         parser.add_argument('--threadcount', type=int, default=10)
-        parser.add_argument('--download-files', dest='download-files', action='store_true')
-        parser.add_argument('--no-download-files', dest='download-files', action='store_false')
-        parser.add_argument('--use-cache', dest='use-cache', action='store_true')
-        parser.add_argument('--no-use-cache', dest='use-cache', action='store_false')
-        parser.add_argument('--use-sternberg-workarounds', dest='use-sternberg', action='store_true')
-        parser.add_argument('--without-persons', dest='with-persons', action='store_false')
-        parser.add_argument('--without-papers', dest='with-papers', action='store_false')
-        parser.add_argument('--without-organizations', dest='with-organizations', action='store_false')
-        parser.add_argument('--without-meetings', dest='with-meetings', action='store_false')
-        parser.add_argument('--no-threads', dest='no-threads', action='store_true', help="Debug option")
+        parser.add_argument('--download-files', dest='download_files', action='store_true')
+        parser.add_argument('--no-download-files', dest='download_files', action='store_false')
+        parser.add_argument('--use-cache', dest='use_cache', action='store_true')
+        parser.add_argument('--no-use-cache', dest='use_cache', action='store_false')
+        parser.add_argument('--use-sternberg-workarounds', dest='use_sternberg', action='store_true')
+        parser.add_argument('--without-persons', dest='with_persons', action='store_false')
+        parser.add_argument('--without-papers', dest='with_papers', action='store_false')
+        parser.add_argument('--without-organizations', dest='with_organizations', action='store_false')
+        parser.add_argument('--without-meetings', dest='with_meetings', action='store_false')
+        parser.add_argument('--no-threads', dest='no_threads', action='store_true', help="Debug option")
         parser.add_argument('--batchsize', type=int, default=100)
         parser.set_defaults(download_files=True)
         parser.set_defaults(use_cache=True)
@@ -34,7 +34,7 @@ class Command(BaseCommand):
     def import_importer(options):
         # Remove gi requirement for running tests
         try:
-            if options["use-sternberg"]:
+            if options["use_sternberg"]:
                 from importer.sternberg_import import SternbergImport as Importer
             else:
                 from importer.oparl_import_objects import OParlImport as Importer
@@ -49,9 +49,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         importer = self.import_importer(options)
-
-        if options["no-threads"]:
-            importer(options).run_singlethread()
-            return
-
         importer(options).run()

@@ -24,15 +24,16 @@ class OParlImportHelper:
         self.entrypoint = options["entrypoint"]
         self.use_cache = options["use_cache"]
         self.download_files = options["download_files"]
-        self.with_persons = options["with-persons"]
-        self.with_papers = options["with-papers"]
-        self.with_organizations = options["with-organizations"]
-        self.with_meetings = options["with-meetings"]
+        self.with_persons = options["with_persons"]
+        self.with_papers = options["with_papers"]
+        self.with_organizations = options["with_organizations"]
+        self.with_meetings = options["with_meetings"]
         self.threadcount = options["threadcount"]
         self.batchsize = options["batchsize"]
+        self.no_threads = options["no_threads"]
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
-        self.download_files = options["download-files"]
+        self.download_files = options["download_files"]
         self.official_geojson = False
         self.organization_classification = {
             Department: ["Referat"],

@@ -110,7 +110,7 @@ class OParlImport(OParlImportObjects):
         print("Finished creating objects")
         self.add_missing_associations()
 
-    def run(self):
+    def run_multithreaded(self):
         try:
             system = self.client.open(self.entrypoint)
         except GLib.Error as e:
@@ -153,12 +153,18 @@ class OParlImport(OParlImportObjects):
         print("Finished creating objects")
         self.add_missing_associations()
 
+    def run(self):
+        if self.no_threads:
+            self.run_singlethread()
+        else:
+            self.run_multithreaded()
+
     @classmethod
     def run_static(cls, config):
         """ This method is requried as instances of this class can't be moved to other processes """
         try:
             runner = cls(config)
-            runner.run()
+            runner.run_multithreaded()
         except Exception:
             print("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
             print(traceback.format_exc(), file=sys.stderr)

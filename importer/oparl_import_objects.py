@@ -203,16 +203,19 @@ class OParlImportObjects(OParlImportHelper):
         return item
 
     def download_file(self, file: File, libobject: OParl.File):
-        if file.modified and self.glib_datetime_to_python(libobject.get_modified()) < file.modified:
-            print("Cached Donwload: {}".format(libobject.get_download_url()))
+        url = libobject.get_download_url()
+        last_modified = self.glib_datetime_to_python(libobject.get_modified())
+
+        if file.filesize > 0 and file.modified and last_modified < file.modified:
+            print("Skipping cached Download: {}".format(url))
             return
 
-        print("Downloading {}".format(libobject.get_download_url()))
+        print("Downloading {}".format(url))
 
         urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
         path = os.path.join(self.storagefolder, urlhash)
 
-        r = requests.get(libobject.get_download_url(), allow_redirects=True)
+        r = requests.get(url, allow_redirects=True)
         r.raise_for_status()
         open(path, 'wb').write(r.content)
 
@@ -241,7 +244,7 @@ class OParlImportObjects(OParlImportHelper):
         if self.download_files:
             self.download_file(file, libobject)
         else:
-            file.storage_filename = "FILE NOT DOWNLOADED"
+            file.storage_filename = ""
             file.filesize = -1
 
         file.save()
@@ -301,7 +304,8 @@ class OParlImportObjects(OParlImportHelper):
             membership = CommitteeMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
         elif classification in self.organization_classification[ParliamentaryGroup]:
             defaults["parliamentary_group"] = organization
-            membership = ParliamentaryGroupMembership.objects.get_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+            membership = ParliamentaryGroupMembership.objects.get_or_create(oparl_id=libobject.get_id(),
+                                                                            defaults=defaults)
         else:
             self.logger.error("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
             return

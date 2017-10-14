@@ -1,6 +1,16 @@
+import hashlib
 import json
+import os
 
+import gi
+import requests
+from requests import HTTPError
+
+from mainapp.models import File
 from .oparl_import import OParlImport
+
+gi.require_version("OParl", "0.2")
+from gi.repository import OParl
 
 
 class SternbergImport(OParlImport):
@@ -36,3 +46,31 @@ class SternbergImport(OParlImport):
             response.set_resolved_data(json.dumps(oparl_list))
 
         return response
+
+    def download_file(self, file: File, libobject: OParl.File):
+        """ Fix the invalid urls of sternberg oparl """
+        url = libobject.get_download_url().replace(r"files//rim", r"files/rim")
+        last_modified = self.glib_datetime_to_python(libobject.get_modified())
+
+        if file.filesize > 0 and file.modified and last_modified < file.modified:
+            print("Skipping cached Download: {}".format(url))
+            return
+
+        print("Downloading {}".format(url))
+
+        urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
+        path = os.path.join(self.storagefolder, urlhash)
+
+        r = requests.get(url, allow_redirects=True)
+        try:
+            r.raise_for_status()
+        except HTTPError as err:
+            self.logger.error(err)
+            file.storage_filename = "Error downloading File"
+            file.filesize = -1
+            return
+
+        open(path, 'wb').write(r.content)
+
+        file.filesize = os.stat(path).st_size
+        file.storage_filename = urlhash
