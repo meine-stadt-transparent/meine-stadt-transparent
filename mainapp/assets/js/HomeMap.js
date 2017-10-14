@@ -16,7 +16,7 @@ export default class IndexView {
         });
     }
 
-    getOutlineToPolygons(outline) {
+    getPolygonCoveringExterior(limitRect, outline) {
         let polygons = [];
         if (typeof(outline) === 'string') {
             outline = JSON.parse(outline);
@@ -27,9 +27,18 @@ export default class IndexView {
             coords[0].forEach((lnglat) => {
                 latlngs.push(L.latLng(lnglat[1], lnglat[0]));
             });
-            polygons.push(L.polygon(latlngs, {}));
+            polygons.push(latlngs);
         };
 
+        // The limit of the view is the outer ring of the polygon
+        polygons.push([
+            L.latLng(limitRect['min']['lat'], limitRect['min']['lng']),
+            L.latLng(limitRect['min']['lat'], limitRect['max']['lng']),
+            L.latLng(limitRect['max']['lat'], limitRect['max']['lng']),
+            L.latLng(limitRect['max']['lat'], limitRect['min']['lng']),
+        ]);
+
+        // The shape of the city itself is the "hole" in the polygon
         if (outline['type'] && outline['type'] === 'Polygon') {
             coordsToPolygon(outline['coordinates']);
         }
@@ -43,6 +52,7 @@ export default class IndexView {
                 }
             });
         }
+
         return polygons;
     }
 
@@ -60,7 +70,6 @@ export default class IndexView {
             if (Object.values(location.papers).length > 1) {
                 console.warn('Multiple papers in this location', location); // @TODO Handle colliding markers and multiple papers
             }
-            console.log(location);
             for (let paper of Object.values(location.papers)) {
                 let marker = L.marker(this.geojsonToLocation(location.coordinates), {
                     icon: L.icon({
@@ -89,11 +98,14 @@ export default class IndexView {
     }
 
     constructor($map_element) {
-        this.leaflet = L.map($map_element.attr('id'));
+        this.leaflet = L.map($map_element.attr('id'), {
+            maxBoundsViscosity: 1,
+            minZoom: 12,
+            maxZoom: 19,
+        });
 
         L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token=pk.eyJ1IjoidG9iaWFzaG9lc3NsIiwiYSI6ImNpeTMwdnFndTAwNDAzM21uaHpxYjZnNnEifQ.J_LAeL1849oRy4JK59X8cw', {
             attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-            maxZoom: 18,
             id: 'mapbox.streets',
             accessToken: 'pk.eyJ1IjoidG9iaWFzaG9lc3NsIiwiYSI6ImNpeTMwdnFndTAwNDAzM21uaHpxYjZnNnEifQ.J_LAeL1849oRy4JK59X8cw'
         }).addTo(this.leaflet);
@@ -109,7 +121,6 @@ export default class IndexView {
             initZoom = initData['zoom'];
         }
         this.leaflet.setView(initCenter, initZoom);
-        this.leaflet.setMinZoom(10);
 
         if (initData['limit']) {
             this.leaflet.setMaxBounds(L.latLngBounds(
@@ -118,10 +129,17 @@ export default class IndexView {
             ));
         }
 
-        if (initData['outline']) {
-            this.getOutlineToPolygons(initData['outline']).forEach((polygon) => {
-                this.leaflet.addLayer(polygon);
-            });
+        if (initData['outline'] && initData['limit']) {
+            let polygon = this.getPolygonCoveringExterior(initData['limit'], initData['outline']);
+            this.leaflet.addLayer(L.polygon(polygon, {
+                weight: 1,
+                fillColor: "#ffffff",
+                fillOpacity: 0.75,
+                stroke: true,
+                color: '#0000ff',
+                opacity: 0.5,
+                dashArray: [2, 4]
+            }));
         }
 
         if (initData['documents']) {
