@@ -8,7 +8,7 @@ class SternbergImport(OParlImporter):
 
     def resolve(self, _, url: str):
         response = super().resolve(_, url)
-        if not response.get_success() or "/body" not in url:
+        if not response.get_success():
             return response
 
         if "/body" in url:
@@ -17,11 +17,11 @@ class SternbergImport(OParlImporter):
             # Add missing "type"-attributes in body-lists
             if "data" in oparl_list:
                 for oparl_object in oparl_list["data"]:
-                    if "location" in oparl_object.keys() and type(oparl_object["location"]) != str:
+                    if "location" in oparl_object.keys() and not isinstance(oparl_object["location"], str):
                         oparl_object["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Add missing "type"-attributes in single bodies
-            if "location" in oparl_list.keys() and type(oparl_list["location"]) != str:
+            if "location" in oparl_list.keys() and not isinstance(oparl_list["location"], str):
                 oparl_list["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             response.set_resolved_data(json.dumps(oparl_list))
@@ -31,7 +31,7 @@ class SternbergImport(OParlImporter):
 
             # If an array is resturned instead of an object, we just skip all list entries except for the last one
             if isinstance(oparl_list, list):
-                oparl_list = oparl_list[len(oparl_list) - 1]
+                oparl_list = oparl_list[0]
 
             response.set_resolved_data(json.dumps(oparl_list))
 

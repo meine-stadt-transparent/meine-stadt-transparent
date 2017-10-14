@@ -4,17 +4,17 @@ import json
 import logging
 import os
 import sys
-import threading
 import traceback
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor as Pool
 from datetime import date
 from typing import Callable, TypeVar
-from django.utils.translation import ugettext as _
 
 import gi
 import requests
+from django.db import transaction
 from django.utils import dateparse
+from django.utils.translation import ugettext as _
 
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, DefaultFields, \
     Meeting, Location, File, Person, AgendaItem
@@ -75,7 +75,7 @@ class OParlImporter:
     def resolve(self, _, url: str):
         cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
         if self.use_cache and os.path.isfile(cachepath):
-            # print("Cached: " + url)
+            print("Cached: " + url)
             with open(cachepath) as file:
                 data = file.read()
                 return OParl.ResolveUrlResult(resolved_data=data, success=True, status_code=304)
@@ -127,7 +127,6 @@ class OParlImporter:
             return OParlImporter.glib_datetime_to_python_date(glibdate)
         return None
 
-
     @staticmethod
     def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
         djangoobject.oparl_id = libobject.get_id()
@@ -142,6 +141,22 @@ class OParlImporter:
         djangoobject.short_name = libobject.get_short_name() or libobject.get_name()
         djangoobject.short_name = djangoobject.short_name[:50]
         djangoobject.deleted = libobject.get_deleted()
+
+    @staticmethod
+    def add_default_fields_dict(djangoobject: dict, libobject: OParl.Object):
+        """ TODO: That's code duplication """
+        djangoobject["oparl_id"] = libobject.get_id()
+        djangoobject["name"] = libobject.get_name()
+
+        # FIXME: We can't just cut off official texts
+        if len(djangoobject["name"]) > 200:
+            djangoobject["name"] = djangoobject["name"].split("\n")[0]
+        if len(djangoobject["name"]) > 200:
+            djangoobject["name"] = djangoobject["name"][:200]
+
+        djangoobject["short_name"] = libobject.get_short_name() or libobject.get_name()
+        djangoobject["short_name"] = djangoobject["short_name"][:50]
+        djangoobject["deleted"] = libobject.get_deleted()
 
     def body(self, libobject: OParl.Body):
         self.logger.info("Processing {}".format(libobject.get_name()))
@@ -190,21 +205,15 @@ class OParlImporter:
     def paper(self, libobject: OParl.Paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
-        paper = Paper.objects.filter(oparl_id=libobject.get_id()).first() or Paper()
+        defaults = {
+            # TODO: Here's surely some fields missing
+            "legal_date": self.glib_datetime_to_python_date(libobject.get_date())
+        }
+        self.add_default_fields_dict(defaults, libobject)
 
-        # TODO: Here's surely some fields missing
-
-        paper.legal_date = libobject.get_date()
-
-        self.add_default_fields(paper, libobject)
-        if libobject.get_main_file():
-            main_file = self.file(libobject.get_main_file())
-            paper.main_file = main_file
-
-        for file in libobject.get_auxiliary_file():
-            paper.files.add(self.file(file))
-
-        paper.save()
+        paper, _ = Paper.objects.update_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+        paper.files = [self.file(file) for file in libobject.get_auxiliary_file()]
+        paper.main_file = self.file(libobject.get_main_file())
 
         return paper
 
@@ -231,10 +240,9 @@ class OParlImporter:
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
-            self.logger.error("Unknown classification: {}".format(classification))
+            self.logger.error("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
             return
 
-        print(libobject.get_name())
         for membership in libobject.get_membership():
             self.membership(classification, organization, membership)
 
@@ -341,7 +349,7 @@ class OParlImporter:
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
 
-    def file(self, libobject: OParl.File, paper=None):
+    def file(self, libobject: OParl.File):
         if not libobject:
             return None
 
@@ -462,6 +470,34 @@ class OParlImporter:
         except Exception as e:
             print("An error occured:", e)
             traceback.print_exc()
+
+    def run_singlethread(self):
+        try:
+            system = self.client.open(self.entrypoint)
+        except GLib.Error as e:
+            self.logger.fatal("Failed to load entrypoint: {}".format(e))
+            self.logger.fatal("Aborting.")
+            return
+        bodies = system.get_body()
+
+        print("Creating bodies")
+        for body in bodies:
+            self.body(body)
+        print("Finished creating bodies")
+
+        print("Creating objects")
+        for body in bodies:
+            if self.with_papers:
+                self.body_paper(body)
+            if self.with_persons:
+                self.body_person(body)
+            if self.with_organizations:
+                self.body_organization(body)
+            if self.with_meetings:
+                self.body_meeting(body)
+
+        print("Finished creating objects")
+        self.add_missing_associations()
 
     def run(self):
         try:

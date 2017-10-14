@@ -7,8 +7,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser, add_entrypoint=True):
         if add_entrypoint:
             parser.add_argument('entrypoint', type=str)
-        parser.add_argument('--cachefolder', type=str, default="./storage/import-oparl-cache")
-        parser.add_argument('--storagefolder', type=str, default="./storage/files")
+        parser.add_argument('--cachefolder', type=str, default="../mst-storage/import-oparl-cache")
+        parser.add_argument('--storagefolder', type=str, default="../mst-storage/files")
         parser.add_argument('--threadcount', type=int, default=10)
         parser.add_argument('--download-files', dest='download-files', action='store_true')
         parser.add_argument('--no-download-files', dest='download-files', action='store_false')
@@ -19,6 +19,7 @@ class Command(BaseCommand):
         parser.add_argument('--without-papers', dest='with-papers', action='store_false')
         parser.add_argument('--without-organizations', dest='with-organizations', action='store_false')
         parser.add_argument('--without-meetings', dest='with-meetings', action='store_false')
+        parser.add_argument('--no-threads', dest='no-threads', action='store_true', help="Debug option")
         parser.set_defaults(download_files=True)
         parser.set_defaults(use_cache=True)
         parser.set_defaults(use_sternberg=False)
@@ -26,6 +27,7 @@ class Command(BaseCommand):
         parser.set_defaults(with_papers=True)
         parser.set_defaults(with_organizations=True)
         parser.set_defaults(with_meetings=True)
+        parser.set_defaults(no_threads=False)
 
     @staticmethod
     def import_importer(options):
@@ -46,4 +48,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         importer = self.import_importer(options)
+
+        if options["no-threads"]:
+            importer(options).run_singlethread()
+            return
+
         importer(options).run()
