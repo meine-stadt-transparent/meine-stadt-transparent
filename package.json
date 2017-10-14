@@ -40,7 +40,7 @@
     "isotope-layout": "^3.0.4",
     "jquery": "^3.2.1",
     "leaflet": "^1.2.0",
-    "osmtogeojson": "*",
+    "osmtogeojson": "^3.0.0-beta.2",
     "popper.js": "^1.12.5",
     "typeahead.js": "^0.11.1"
   }
