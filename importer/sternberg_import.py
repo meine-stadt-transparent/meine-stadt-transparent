@@ -1,9 +1,9 @@
 import json
 
-from .oparl_importer import OParlImporter
+from .oparl_import import OParlImport
 
 
-class SternbergImport(OParlImporter):
+class SternbergImport(OParlImport):
     """ Class for patching up the failures in Sternberg OParl """
 
     def resolve(self, _, url: str):
@@ -36,4 +36,3 @@ class SternbergImport(OParlImporter):
             response.set_resolved_data(json.dumps(oparl_list))
 
         return response
-

@@ -1,163 +1,32 @@
-import concurrent
 import hashlib
-import json
 import logging
 import os
-import sys
-import traceback
 from collections import defaultdict
-from concurrent.futures import ThreadPoolExecutor as Pool
-from datetime import date
-from typing import Callable, TypeVar
 
 import gi
 import requests
-from django.db import transaction
 from django.utils import dateparse
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, DefaultFields, \
-    Meeting, Location, File, Person, AgendaItem
-from mainapp.models.committee_membership import CommitteeMembership
-from mainapp.models.department_membership import DepartmentMembership
-from mainapp.models.parliamentary_group_membership import ParliamentaryGroupMembership
+from importer.oparl_import_helper import OParlImportHelper
+from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
+    File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
-from gi.repository import GLib
-from gi.repository import Json
 
 
-class OParlImporter:
+class OParlImportObjects(OParlImportHelper):
+    """ Methods for saving the oparl objects as database entries. """
     def __init__(self, options):
-        # Config
-        self.storagefolder = options["storagefolder"]
-        self.entrypoint = options["entrypoint"]
-        self.use_cache = options["use_cache"]
-        self.download_files = options["download_files"]
-        self.with_persons = options["with-persons"]
-        self.with_papers = options["with-papers"]
-        self.with_organizations = options["with-organizations"]
-        self.with_meetings = options["with-meetings"]
-        self.threadcount = options["threadcount"]
-        self.batchsize = options["batchsize"]
-        entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
-        self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
-        self.download_files = options["download-files"]
-        self.official_geojson = False
-        self.organization_classification = {
-            Department: ["Referat"],
-            Committee: ["Stadtratsgremium", "BA-Gremium", "Gremien"],
-            ParliamentaryGroup: ["Fraktion", "Fraktionen"],
-        }
-
-        # Setup
+        super().__init__(options)
         self.logger = logging.getLogger(__name__)
-        self.client = OParl.Client()
-
-        self.client.connect("resolve_url", self.resolve)
-        os.makedirs(self.storagefolder, exist_ok=True)
-        os.makedirs(self.cachefolder, exist_ok=True)
 
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
         self.meeting_person_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
         self.membership_queue = []
-
-    @staticmethod
-    def extract_geometry(glib_json: Json.Object):
-        """ Extracts the geometry part of the geojson as python object. A bit ugly. """
-        if not glib_json:
-            return None
-        node = glib_json.get_member('geometry')
-        return json.loads(Json.to_string(node, True))
-
-    def resolve(self, _, url: str):
-        cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
-        if self.use_cache and os.path.isfile(cachepath):
-            print("Cached: " + url)
-            with open(cachepath) as file:
-                data = file.read()
-                return OParl.ResolveUrlResult(resolved_data=data, success=True, status_code=304)
-
-        try:
-            print("Loading: " + url)
-            req = requests.get(url)
-        except Exception as e:
-            self.logger.error("Error loading url: ", e)
-            return OParl.ResolveUrlResult(resolved_data=None, success=False, status_code=-1)
-
-        content = req.content.decode('utf-8')
-
-        try:
-            req.raise_for_status()
-        except Exception as e:
-            self.logger.error("HTTP status code error: ", e)
-            return OParl.ResolveUrlResult(resolved_data=content, success=False, status_code=req.status_code)
-
-        with open(cachepath, 'w') as file:
-            file.write(content)
-
-        return OParl.ResolveUrlResult(resolved_data=content, success=True, status_code=req.status_code)
-
-    @staticmethod
-    def glib_datetime_to_python(glibdatetime: GLib.DateTime):
-        if not glibdatetime:
-            return None
-        return dateparse.parse_datetime(glibdatetime.format("%FT%T%z"))
-
-    @staticmethod
-    def glib_datetime_to_python_date(glibdatetime: GLib.DateTime):
-        # TODO: Remove once https://github.com/OParl/liboparl/issues/18 is fixed
-        if not glibdatetime:
-            return None
-        return date(glibdatetime.get_year(), glibdatetime.get_month(), glibdatetime.get_day_of_month())
-
-    @staticmethod
-    def glib_date_to_python(glibdate: GLib.Date):
-        if not glibdate:
-            return None
-        return date(glibdate.get_year(), glibdate.get_month(), glibdate.get_day())
-
-    @staticmethod
-    def glib_datetime_or_date_to_python(glibdate):
-        if isinstance(glibdate, GLib.Date):
-            return OParlImporter.glib_date_to_python(glibdate)
-        if isinstance(glibdate, GLib.DateTime):
-            return OParlImporter.glib_datetime_to_python_date(glibdate)
-        return None
-
-    @staticmethod
-    def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
-        djangoobject.oparl_id = libobject.get_id()
-        djangoobject.name = libobject.get_name()
-
-        # FIXME: We can't just cut off official texts
-        if len(djangoobject.name) > 200:
-            djangoobject.name = djangoobject.name.split("\n")[0]
-        if len(djangoobject.name) > 200:
-            djangoobject.name = djangoobject.name[:200]
-
-        djangoobject.short_name = libobject.get_short_name() or libobject.get_name()
-        djangoobject.short_name = djangoobject.short_name[:50]
-        djangoobject.deleted = libobject.get_deleted()
-
-    @staticmethod
-    def add_default_fields_dict(djangoobject: dict, libobject: OParl.Object):
-        """ TODO: That's code duplication """
-        djangoobject["oparl_id"] = libobject.get_id()
-        djangoobject["name"] = libobject.get_name()
-
-        # FIXME: We can't just cut off official texts
-        if len(djangoobject["name"]) > 200:
-            djangoobject["name"] = djangoobject["name"].split("\n")[0]
-        if len(djangoobject["name"]) > 200:
-            djangoobject["name"] = djangoobject["name"][:200]
-
-        djangoobject["short_name"] = libobject.get_short_name() or libobject.get_name()
-        djangoobject["short_name"] = djangoobject["short_name"][:50]
-        djangoobject["deleted"] = libobject.get_deleted()
 
     def body(self, libobject: OParl.Body):
         self.logger.info("Processing {}".format(libobject.get_name()))
@@ -390,39 +259,6 @@ class OParlImporter:
         person.location = self.location(libobject.get_location())
         person.save()
 
-    @staticmethod
-    def chunks(l, n):
-        """
-        Yield successive n-sized chunks from l.
-        https://stackoverflow.com/questions/312443/how-do-you-split-a-list-into-evenly-sized-chunks
-        """
-        for i in range(0, len(l), n):
-            yield l[i:i + n]
-
-    def body_paper(self, body: OParl.Body):
-        for batch in self.chunks(body.get_paper(), self.batchsize):
-            with transaction.atomic():
-                for paper in batch:
-                    self.paper(paper)
-
-    def body_person(self, body: OParl.Body):
-        for batch in self.chunks(body.get_person(), self.batchsize):
-            with transaction.atomic():
-                for person in batch:
-                    self.person(person)
-
-    def body_organization(self, body: OParl.Body):
-        for batch in self.chunks(body.get_organization(), self.batchsize):
-            with transaction.atomic():
-                for organization in batch:
-                    self.organization(organization)
-
-    def body_meeting(self, body: OParl.Body):
-        for batch in self.chunks(body.get_meeting(), self.batchsize):
-            with transaction.atomic():
-                for meeting in batch:
-                    self.meeting(meeting)
-
     def add_missing_associations(self):
         for meeting_id, person_ids in self.meeting_person_queue.items():
             print("Adding missing meeting <-> persons associations")
@@ -471,94 +307,3 @@ class OParlImporter:
             return
 
         return membership
-
-    T = TypeVar('T')
-
-    @staticmethod
-    def reraise(fn: Callable[[T], None], arg: T):
-        """ Raise exceptions in threads immediately """
-        try:
-            fn(arg)
-        except Exception as e:
-            print("An error occured:", e)
-            traceback.print_exc()
-
-    def run_singlethread(self):
-        try:
-            system = self.client.open(self.entrypoint)
-        except GLib.Error as e:
-            self.logger.fatal("Failed to load entrypoint: {}".format(e))
-            self.logger.fatal("Aborting.")
-            return
-        bodies = system.get_body()
-
-        print("Creating bodies")
-        for body in bodies:
-            self.body(body)
-        print("Finished creating bodies")
-
-        print("Creating objects")
-        for body in bodies:
-            if self.with_papers:
-                self.body_paper(body)
-            if self.with_persons:
-                self.body_person(body)
-            if self.with_organizations:
-                self.body_organization(body)
-            if self.with_meetings:
-                self.body_meeting(body)
-
-        print("Finished creating objects")
-        self.add_missing_associations()
-
-    def run(self):
-        try:
-            system = self.client.open(self.entrypoint)
-        except GLib.Error as e:
-            self.logger.fatal("Failed to load entrypoint: {}".format(e))
-            self.logger.fatal("Aborting.")
-            return
-        bodies = system.get_body()
-
-        print("Creating bodies")
-        # Ensure all bodies exist when calling the other methods
-
-        with Pool(self.threadcount) as executor:
-            results = executor.map(self.body, bodies)
-
-        # Raise those exceptions
-        list(results)
-        print("Finished creating bodies")
-
-        with Pool(self.threadcount) as executor:
-            print("Submitting concurrent tasks")
-            futures = {}
-            for body in bodies:
-                if self.with_papers:
-                    futures[executor.submit(self.reraise, self.body_paper, body)] = "{}: Paper".format(body.get_short_name())
-                if self.with_persons:
-                    futures[executor.submit(self.reraise, self.body_person, body)] = "{}: Person".format(body.get_short_name())
-                if self.with_organizations:
-                    futures[executor.submit(self.reraise, self.body_organization, body)] = "{}: Organization".format(body.get_short_name())
-                if self.with_meetings:
-                    futures[executor.submit(self.reraise, self.body_meeting, body)] = "{}: Meeting".format(body.get_short_name())
-            print("Finished submitting concurrent tasks")
-            for future in concurrent.futures.as_completed(futures):
-                print("Finished", futures[future])
-                future.result()
-
-        print("Finished creating objects")
-        self.add_missing_associations()
-
-    @classmethod
-    def run_static(cls, config):
-        """ This method is requried as instances of this class can't be moved to other processes """
-        try:
-            runner = cls(config)
-            runner.run()
-        except Exception:
-            print("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
-            print(traceback.format_exc(), file=sys.stderr)
-            return False
-        return True
-

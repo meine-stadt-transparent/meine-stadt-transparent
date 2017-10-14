@@ -37,7 +37,7 @@ class Command(BaseCommand):
             if options["use-sternberg"]:
                 from importer.sternberg_import import SternbergImport as Importer
             else:
-                from importer.oparl_importer import OParlImporter as Importer
+                from importer.oparl_import_objects import OParlImport as Importer
         except ImportError as e:
             if str(e) == "No module named 'gi'":
                 raise ImportError("You need to install liboparl for the importer. The readme contains the installation "
