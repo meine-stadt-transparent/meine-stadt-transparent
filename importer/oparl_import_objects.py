@@ -20,6 +20,7 @@ from gi.repository import OParl
 
 class OParlImportObjects(OParlImportHelper):
     """ Methods for saving the oparl objects as database entries. """
+
     def __init__(self, options):
         super().__init__(options)
         self.logger = logging.getLogger(__name__)
@@ -81,7 +82,7 @@ class OParlImportObjects(OParlImportHelper):
             # TODO: Here's surely some fields missing
             "legal_date": self.glib_datetime_to_python_date(libobject.get_date())
         }
-        self.add_default_fields_dict(defaults, libobject)
+        defaults.update(self.default_fields(libobject))
 
         paper, _ = Paper.objects.update_or_create(oparl_id=libobject.get_id(), defaults=defaults)
         paper.files = [self.file(file) for file in libobject.get_auxiliary_file()]
@@ -189,7 +190,7 @@ class OParlImportObjects(OParlImportHelper):
         item_key = libobject.get_number()
         if not item_key:
             item_key = "-"
-        
+
         values = {
             "title": libobject.get_name(),
             "position": index,

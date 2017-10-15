@@ -19,6 +19,7 @@ class OParlImportHelper:
 
     These are methods and not functions so they can be easily overwritten.
     """
+
     def __init__(self, options):
         self.storagefolder = options["storagefolder"]
         self.entrypoint = options["entrypoint"]
@@ -78,32 +79,30 @@ class OParlImportHelper:
         return None
 
     @staticmethod
-    def add_default_fields(djangoobject: DefaultFields, libobject: OParl.Object):
-        djangoobject.oparl_id = libobject.get_id()
-        djangoobject.name = libobject.get_name()
+    def default_fields(libobject: OParl.Object):
+        defaults = {
+            "oparl_id": libobject.get_id(),
+            "short_name": libobject.get_short_name() or libobject.get_name(),
+            "deleted": libobject.get_deleted(),
+            "name": libobject.get_name(),
+        }
+
+        # Add an ellipsis to not-so-short short names
+        if len(defaults["short_name"]) > 50:
+            defaults["short_name"] = defaults["short_name"][:47] + "\u2026"
 
         # FIXME: We can't just cut off official texts
-        if len(djangoobject.name) > 200:
-            djangoobject.name = djangoobject.name.split("\n")[0]
-        if len(djangoobject.name) > 200:
-            djangoobject.name = djangoobject.name[:200]
+        if len(defaults["name"]) > 200:
+            defaults["name"] = defaults["name"].split("\n")[0]
+        if len(defaults["name"]) > 200:
+            defaults["name"] = defaults["name"][:200]
 
-        djangoobject.short_name = libobject.get_short_name() or libobject.get_name()
-        djangoobject.short_name = djangoobject.short_name[:50]
-        djangoobject.deleted = libobject.get_deleted()
+        return defaults
 
-    @staticmethod
-    def add_default_fields_dict(djangoobject: dict, libobject: OParl.Object):
-        """ TODO: That's code duplication """
-        djangoobject["oparl_id"] = libobject.get_id()
-        djangoobject["name"] = libobject.get_name()
-
-        # FIXME: We can't just cut off official texts
-        if len(djangoobject["name"]) > 200:
-            djangoobject["name"] = djangoobject["name"].split("\n")[0]
-        if len(djangoobject["name"]) > 200:
-            djangoobject["name"] = djangoobject["name"][:200]
-
-        djangoobject["short_name"] = libobject.get_short_name() or libobject.get_name()
-        djangoobject["short_name"] = djangoobject["short_name"][:50]
-        djangoobject["deleted"] = libobject.get_deleted()
+    @classmethod
+    def add_default_fields(cls, djangoobject: DefaultFields, libobject: OParl.Object):
+        defaults = cls.default_fields(libobject)
+        djangoobject.oparl_id = defaults["oparl_id"]
+        djangoobject.name = defaults["name"]
+        djangoobject.short_name = defaults["short_name"]
+        djangoobject.deleted = defaults["deleted"]
