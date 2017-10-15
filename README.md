@@ -38,25 +38,8 @@ The web server needs to be set up with a (self-signed) SSL certificate. Example 
  - [nginx](etc/nginx.conf)
 
 Docker installation instructions can be found [here](https://docs.docker.com/engine/installation/linux/docker-ce/debian/).
-
-### Elastic HQ
-
-To use the [Elastic HQ](http://www.elastichq.org/), the graphical administration of elasticsearch, [download the
-package](https://github.com/royrusso/elasticsearch-HQ/zipball/master) and unzip its content into
-[elasticsearch_admin/static/elasticsearch](elasticsearch_admin/static/elasticsearch). If you hit problems regarding
-memory, please have a look at this
+If you hit problems regarding memory, please have a look at this
 [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
-
-All in one:
-
-```bash
-wget https://github.com/royrusso/elasticsearch-HQ/zipball/master
-unzip master
-mv royrusso-elasticsearch-HQ-*/*
-elasticsearch_admin/static/elasticsearch
-rm -r royrusso-elasticsearch-HQ-*
-rm master
-```
 
 ### pygobject (gi) and liboparl
 

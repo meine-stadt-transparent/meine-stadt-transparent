@@ -215,7 +215,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
-    os.path.join(BASE_DIR, 'elasticsearch_admin/static'),
 )
 
 
@@ -231,7 +230,6 @@ WEBPACK_LOADER = {
 USE_ELASTICSEARCH = env.bool('USE_ELASTICSEARCH', True)
 
 if USE_ELASTICSEARCH:
-    INSTALLED_APPS.append('elasticsearch_admin')
     INSTALLED_APPS.append('django_elasticsearch_dsl')
 
 ELASTICSEARCH_URL_PRIVATE = env.str('ELASTICSEARCH_URL_PRIVATE')
