@@ -1,8 +1,8 @@
 {% extends "base_single_panel.html" %}
 {% load i18n %}
 
-{% block title %}My profile{% endblock %}
-{% block panel_title %}My profile{% endblock %}
+{% block title %}{% trans "My profile" %}{% endblock %}
+{% block panel_title %}{% trans "My profile" %}{% endblock %}
 
 {% block panel_content %}
     <h1>{{ user.username }}</h1>
@@ -20,13 +20,16 @@
                     <div class="pull-right">
                         {% if not profile.email_is_verified %}
                             <a href="{% url 'account_email' %}">
-                                <i class="fa fa-close fa-2x pull-right text-danger"></i>
+                                <i class="fa fa-close fa-2x pull-right text-danger" aria-hidden="true"></i>
                             </a>
                         {% else %}
-                            <i class="fa fa-check fa-2x success"></i>
+                            <i class="fa fa-check fa-2x success" aria-hidden="true"></i>
                         {% endif %}
                     </div>
-                    <h4><i class="fa fa-envelope-o fa-lg"></i>&nbsp;{% trans "Email adress verification" %}</h4>
+                    <h4>
+                        <i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>
+                        &nbsp;{% trans "Email adress verification" %}
+                    </h4>
                 </div>
                 <div class="panel-body">
                     {% if not profile.email_is_verified %}
@@ -41,8 +44,9 @@
     <div class="row">
         <div class="col-xs-12">
             <p class="gc gus-l">
-                <a href="{% url 'account_change_password' %}"
-                   class="btn btn-link">{% trans "Change your password" %}</a>
+                <a href="{% url 'account_change_password' %}" class="btn btn-link">
+                    {% trans "Change your password" %}
+                </a>
             </p>
         </div>
     </div>

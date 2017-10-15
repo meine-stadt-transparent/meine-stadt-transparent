@@ -9,9 +9,8 @@ class PersonDocument(DocType):
     autocomplete = fields.StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
 
     class Meta:
-        model = Person  # The model associate with this DocType
+        model = Person
 
-        # The fields of the model you want to be indexed in Elasticsearch
         fields = [
             'id',
             'name',

@@ -1,7 +1,7 @@
 {
-  "name": "opensourceris",
+  "name": "meine-stadt-transparent",
   "version": "1.0.0",
-  "description": "Open Source Ratsinformationssystem",
+  "description": "Meine Stadt Trasnparent",
   "repository": {
     "type": "git",
     "url": "https://github.com/CatoTH/opensourceris"

@@ -14,9 +14,8 @@ class ParliamentaryGroupDocument(DocType):
     })
 
     class Meta:
-        model = ParliamentaryGroup  # The model associate with this DocType
+        model = ParliamentaryGroup
 
-        # The fields of the model you want to be indexed in Elasticsearch
         fields = [
             'id',
             'name',

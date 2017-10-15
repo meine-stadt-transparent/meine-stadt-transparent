@@ -14,9 +14,8 @@ class CommitteeDocument(DocType):
     })
 
     class Meta:
-        model = Committee  # The model associate with this DocType
+        model = Committee
 
-        # The fields of the model you want to be indexed in Elasticsearch
         fields = [
             'id',
             'name',

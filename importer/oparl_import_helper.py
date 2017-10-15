@@ -35,6 +35,7 @@ class OParlImportHelper:
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
         self.download_files = options["download_files"]
         self.official_geojson = False
+        self.filename_length_cutoff = 100
         self.organization_classification = {
             Department: ["Referat"],
             Committee: ["Stadtratsgremium", "BA-Gremium", "Gremien"],

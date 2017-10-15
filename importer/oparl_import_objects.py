@@ -1,5 +1,6 @@
 import hashlib
 import logging
+import mimetypes
 import os
 from collections import defaultdict
 
@@ -7,6 +8,7 @@ import gi
 import requests
 from django.utils import dateparse
 from django.utils.translation import ugettext as _
+from slugify.slugify import slugify
 
 from importer.oparl_import_helper import OParlImportHelper
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
@@ -203,11 +205,11 @@ class OParlImportObjects(OParlImportHelper):
         return item
 
     def download_file(self, file: File, libobject: OParl.File):
-        url = libobject.get_download_url()
+        url = libobject.get_download_url() or libobject.get_access_url()
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
         if file.filesize > 0 and file.modified and last_modified < file.modified:
-            print("Skipping cached Download: {}".format(url))
+            self.logger.info("Skipping cached Download: {}".format(url))
             return
 
         print("Downloading {}".format(url))
@@ -228,10 +230,15 @@ class OParlImportObjects(OParlImportHelper):
 
         self.logger.info("Processing File {}".format(libobject.get_id()))
 
-        displayed_filename = libobject.get_file_name()
-        if not displayed_filename:
-            displayed_filename = _("Unknown")
-        
+        if libobject.get_file_name():
+            displayed_filename = libobject.get_file_name()
+        elif libobject.get_name():
+            extension = mimetypes.guess_extension("application/pdf") or ""
+            length = self.filename_length_cutoff - len(extension)
+            displayed_filename = slugify(libobject.get_name())[:length] + extension
+        else:
+            displayed_filename = slugify(libobject.get_access_url())[-self.filename_length_cutoff:]
+
         file = File.objects.filter(oparl_id=libobject.get_id()).first() or File()
 
         file.oparl_id = libobject.get_id()
@@ -263,20 +270,24 @@ class OParlImportObjects(OParlImportHelper):
         person.save()
 
     def add_missing_associations(self):
+        print("Adding missing meeting <-> persons associations")
         for meeting_id, person_ids in self.meeting_person_queue.items():
-            print("Adding missing meeting <-> persons associations")
             meeting = Meeting.by_oparl_id(meeting_id)
             meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
             meeting.save()
 
-        for item_id, paper_id in self.agenda_item_paper_queue:
-            print("Adding missing agenda item <-> persons associations")
+        print("Adding missing agenda item <-> paper associations")
+        for item_id, paper_id in self.agenda_item_paper_queue.items():
+            print(item_id)
+            print("'{}'".format(paper_id))
             item = AgendaItem.objects.get(oparl_id=item_id)
-            item.paper = Paper.by_oparl_id(paper_id)
+            item.paper = Paper.objects.filter(oparl_id=paper_id).first()
+            if not item.paper:
+                self.logger.error("Missing Paper: {}".format(paper_id))
             item.save()
 
+        print("Adding missing memberships")
         for classification, organization, libobject in self.membership_queue:
-            print("Adding missing memberships")
             self.membership(classification, organization, libobject)
 
     def membership(self, classification, organization, libobject: OParl.Membership):

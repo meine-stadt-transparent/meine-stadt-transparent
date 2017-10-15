@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="section">
+            <ul>
+                <li>name: {{ file.name }}</li>
+                <li>storage_filename: {{ file.storage_filename }}</li>
+                <li>displayed_filename: {{ file.displayed_filename }}</li>
+                <li>mime_type: {{ file.mime_type }}</li>
+                <li>legal_date: {{ file.legal_date }}</li>
+                <li>filesize: {{ file.filesize }}</li>
+                <li>locations: {{ file.locations }}</li>
+                <li>parsed_text: {{ file.parsed_text }}</li>
+                <li>license: {{ file.license }}</li>
+                <li>description: {{ file.description }}</li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

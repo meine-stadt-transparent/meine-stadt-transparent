@@ -52,8 +52,8 @@
                 {% if paper.main_file %}
                     <li>Main File <a href="{% url 'file' paper.main_file.id %}">{{ paper.main_file }}</a></li>
                 {% endif %}
-                {% for file in paper.file_set.all %}
-                    <li>{{ file }}</li>
+                {% for file in paper.files.all %}
+                    <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
                 {% endfor %}
             </ul>
         </div>

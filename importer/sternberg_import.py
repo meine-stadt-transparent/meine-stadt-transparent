@@ -53,7 +53,7 @@ class SternbergImport(OParlImport):
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
         if file.filesize > 0 and file.modified and last_modified < file.modified:
-            print("Skipping cached Download: {}".format(url))
+            self.logger.info("Skipping cached Download: {}".format(url))
             return
 
         print("Downloading {}".format(url))
