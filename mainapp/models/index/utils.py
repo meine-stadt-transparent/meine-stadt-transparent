@@ -1,8 +1,9 @@
 # Name of the Elasticsearch index
+from django.conf import settings
 from django_elasticsearch_dsl import Index
 from elasticsearch_dsl import analyzer, token_filter
 
-fileIndex = Index('ris_files')
+fileIndex = Index(settings.ELASTICSEARCH_INDEX)
 # See Elasticsearch Indices API reference for available settings
 fileIndex.settings(
     number_of_shards=1,

@@ -87,52 +87,50 @@ def about(request):
 
 
 def search(request):
-    context = {
-        'results': [],
-        'coordinates': settings.SITE_GEO_CENTER,
-        'radius': "100",
-    }
+    s = Search(index=settings.ELASTICSEARCH_INDEX)
+
+    if 'searchterm' in request.GET:
+        s = s.query('query_string', query=request.GET['searchterm'])
 
     if 'query' in request.GET:
-        context['query'] = request.GET['query']
-        s = FileDocument.search()
         s = s.filter("match", parsed_text=request.GET['query'])
         s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
-        for hit in s:
-            for fragment in hit.meta.highlight.parsed_text:
-                context['results'].append(fragment)
 
-    if 'action' in request.POST:
-        for val in ['radius', 'query']:
-            context[val] = request.POST[val]
+    if 'radius' in request.GET and 'lat' in request.GET and 'lng' in request.GET:
+        lat = request.GET['lat']
+        lng = request.GET['lng']
+        radius = request.GET['radius']
 
-        context['coordinates']['lat'] = request.POST['lat']
-        context['coordinates']['lng'] = request.POST['lng']
+        s = s.filter("geo_distance", distance=radius + "m", coordinates={
+            "lat": float(lat),
+            "lon": float(lng),
+        })
 
-        s = FileDocument.search()
-        query = request.POST['query']
-        lat = float(request.POST['lat'])
-        lng = float(request.POST['lng'])
-        radius = request.POST['radius']
-        if not query == '':
-            s = s.filter("match", parsed_text=query)
-        if not (lat == '' or lng == '' or radius == ''):
-            s = s.filter("geo_distance", distance=radius + "m", coordinates={
-                "lat": lat,
-                "lon": lng
-            })
-        s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
-        for hit in s:
-            for fragment in hit.meta.highlight.parsed_text:
-                context['results'].append(fragment)
+    results = []
+    for raw_result in s.execute():
+        result = {
+            "type": raw_result.meta.doc_type,
+            "id": raw_result.id,
+            "name": raw_result.name,
+        }
+        if hasattr(raw_result.meta, "highlight"):
+            result["highlight"] = raw_result.meta.highlight.parsed_text
+        results.append(result)
+
+    context = {
+        "results": results,
+        "request_params": request.GET,
+    }
 
     return render(request, 'mainapp/search.html', context)
 
 
-def search_autosuggest(request):
-    ret = request.GET['query']
-    s = Search(index='ris_files').query("match", autocomplete=ret)
-    response = s.execute()
+def search_autosuggest(request, query):
+    if not settings.USE_ELASTICSEARCH:
+        results = [{'name': _('search disabled'), 'url': reverse('index')}]
+        return HttpResponse(json.dumps(results), content_type='application/json')
+
+    response = Search(index='ris_files').query("match", autocomplete=query).execute()
 
     bodies = Body.objects.count()
 

@@ -40,7 +40,7 @@
             <h2>{% trans "Search results" %}</h2>
             <ul>
                 {% for result in results %}
-                    <li>{{ result | safe }}</li>
+                    <li>{{ result }}{{ result.fragment | safe }}</li>
                 {% endfor %}
             </ul>
         </section>

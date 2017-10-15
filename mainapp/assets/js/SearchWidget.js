@@ -9,7 +9,7 @@ export default class SearchWidget {
                 name: 'name',
                 display: 'name',
                 source: function (query, syncResults, asyncResults) {
-                    $.get(url + '?query=' + query, function (data) {
+                    $.get(url + query, function (data) {
                         console.log(data);
                         asyncResults(data);
                     });

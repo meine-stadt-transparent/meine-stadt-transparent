@@ -242,6 +242,8 @@ ELASTICSEARCH_DSL = {
     },
 }
 
+ELASTICSEARCH_INDEX = 'ris_files'
+
 OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
 
 # Settings for Geo-Extraction
