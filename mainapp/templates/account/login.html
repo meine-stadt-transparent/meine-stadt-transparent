@@ -1,35 +1,69 @@
-{% extends "base_single_panel.html" %}
+{% extends "base.html" %}
 
 {% load i18n %}
 {% load account socialaccount %}
+{% load widget_tweaks %}
 
 {% block title %}{% trans "Sign In" %}{% endblock %}
-{% block panel_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block panel_content %}
-    {% get_providers as socialaccount_providers %}
+{% block content %}
+    <div class="container">
+        <section class="card">
+            <h1 class="card-header">
+                {% trans "Sign in with..." context 'login' %}
+            </h1>
+            {% get_providers as socialaccount_providers %}
+            {% if socialaccount_providers %}
+                <div class="card-body">
+                    <div class="socialaccount_ballot">
+                        <ul class="socialaccount_providers">
+                            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                        </ul>
+                    </div>
 
-    <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-        <button class="btn btn-primary" type="submit">{% trans "Sign In" %}</button>
-        <a class="btn btn-light"
-           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-        <a class="btn btn-light" href="{{ signup_url }}">{% trans "Sign Up" %}</a>
-    </form>
-    {% if socialaccount_providers %}
-        <p>You can also log in with your account at one of the following services:</p>
-        <div class="socialaccount_ballot">
+                    {% include "socialaccount/snippets/login_extra.html" %}
+                </div>
+                <div class="card-header">
+                    {% trans "Sign in with your e-mail-address" context 'login' %}
+                </div>
+            {% endif %}
+            <form class="login card-body" method="POST" action="{% url 'account_login' %}">
+                <div class="signup">
+                    <a class="signup-link" href="{{ signup_url }}">{% trans "Sign Up" context 'login' %}</a>
+                </div>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
 
-            <ul class="socialaccount_providers">
-                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-            </ul>
-        </div>
+                {{ form.login.errors }}
+                <div class="form-group row">
+                    <label for="{{ form.login.id_for_label }}" class="col-sm-3  col-form-label">
+                        {{ form.login.label }}:
+                    </label>
+                    <div class="col-sm-9">
+                        {{ form.login|add_class:"form-control" }}
+                    </div>
+                </div>
 
-        {% include "socialaccount/snippets/login_extra.html" %}
-    {% endif %}
+                {{ form.password.errors }}
+                <div class="form-group row">
+                    <label for="{{ form.password.id_for_label }}" class="col-sm-3 col-form-label">
+                        {{ form.password.label }}:
+                    </label>
+                    <div class="col-sm-9">
+                        {{ form.password|add_class:"form-control" }}
+                        <a class="forgot-link"
+                           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                    </div>
+                </div>
+
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                {% endif %}
+                <div class="save-row">
+                    <button class="btn btn-primary" type="submit">{% trans "Sign In" context 'login' %}</button>
+                </div>
+            </form>
+        </section>
+    </div>
 
 {% endblock %}

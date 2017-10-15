@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.twitter',
+    'widget_tweaks',
     # Note: The elasticsearch integration is added further below
 ]
 

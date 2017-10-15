@@ -12,5 +12,5 @@ $(function () {
 
     $(".search-autocomplete input").each(function() {
         new SearchWidget($, $(this));
-    })
+    });
 });

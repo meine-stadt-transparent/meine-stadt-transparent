@@ -4,6 +4,7 @@
 @import "home-map";
 @import "typeahead";
 @import "persons";
+@import "login";
 @import "~font-awesome/scss/font-awesome.scss";
 
 #leaflet-map {
@@ -37,4 +38,8 @@ ul.agenda-list {
     min-width: 40px;
     display: inline-block;
   }
+}
+
+.save-row {
+  text-align: center;
 }

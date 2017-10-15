@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-17 22:04+0200\n"
+"POT-Creation-Date: 2017-10-15 18:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,83 +42,235 @@ msgstr ""
 msgid "User profiles"
 msgstr ""
 
-#: templates/account/login.html:6 templates/account/login.html:10
-#: templates/account/login.html:43 templates/base.html:20
-#: templates/base.html:31
+#: templates/account/email_confirm.html:6
+#: templates/account/email_confirm.html:7
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: templates/account/email_confirm.html:15
+#, python-format
+msgid ""
+"Please confirm that\n"
+"            <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail address "
+"for user\n"
+"            %(user_display)s\n"
+"            ."
+msgstr ""
+
+#: templates/account/email_confirm.html:22
+msgid "Confirm"
+msgstr ""
+
+#: templates/account/email_confirm.html:29
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please\n"
+"            <a href=\"%(email_url)s\">issue a new e-mail confirmation "
+"request</a>."
+msgstr ""
+
+#: templates/account/login.html:7
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: templates/account/login.html:15
-#, python-format
-msgid ""
-"Please sign in with one\n"
-"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
-"up</a>\n"
-"for a %(site_name)s account and sign in below:"
-msgstr ""
+#: templates/account/login.html:13
+msgctxt "login"
+msgid "Sign in with..."
+msgstr "Einloggen mit..."
 
-#: templates/account/login.html:25
-msgid "or"
-msgstr ""
+#: templates/account/login.html:27
+msgctxt "login"
+msgid "Sign in with your e-mail-address"
+msgstr "Mit der E-Mail-Adresse einloggen"
 
 #: templates/account/login.html:32
-#, python-format
-msgid ""
-"If you have not created an account yet, then please\n"
-"<a href=\"%(signup_url)s\">sign up</a> first."
-msgstr ""
+msgctxt "login"
+msgid "Sign Up"
+msgstr "Einloggen"
 
-#: templates/account/login.html:42
+#: templates/account/login.html:55
 msgid "Forgot Password?"
-msgstr ""
+msgstr "Passwort vergessen"
 
-#: templates/base.html:14 templates/base.html:25
-msgid "Home"
-msgstr "Start"
+#: templates/account/login.html:63
+msgctxt "login"
+msgid "Sign In"
+msgstr "Einloggen"
 
-#: templates/base.html:15 templates/base.html:26
-#| msgid "Search"
-msgid "Search"
-msgstr "Suche"
-
-#: templates/base.html:17 templates/base.html:28
+#: templates/base.html:26
+msgctxt "navigation"
 msgid "My Account"
-msgstr "Mein Account"
+msgstr "Mein Zugang"
 
-#: templates/base.html:18 templates/base.html:29
-msgid "Log out"
+#: templates/base.html:34
+msgctxt "navigation"
+msgid "Sign Out"
 msgstr "Ausloggen"
 
+#: templates/base.html:39
+msgctxt "navigation"
+msgid "Sign In"
+msgstr "Einloggen"
+
+#: templates/base.html:47 templates/mainapp/index.html:23
 #: templates/mainapp/search.html:5
-#| msgid "Search"
 msgctxt "page_title"
 msgid "Search"
 msgstr "Suche"
 
-#: templates/mainapp/search.html:31
-#| msgid "Search"
+#: templates/base.html:47 templates/base.html:48
+#: templates/mainapp/index.html:24 templates/mainapp/index.html:26
+#: templates/mainapp/search.html:32
 msgctxt "perform search"
 msgid "Search"
 msgstr "Suchen"
+
+#: templates/base.html:62
+msgctxt "navigation"
+msgid "Contact"
+msgstr "Kontakt"
+
+#: templates/base.html:63
+msgctxt "navigation"
+msgid "Privacy Policy"
+msgstr "Datenschutz"
+
+#: templates/error/404.html:6 templates/error/500.html:6
+msgid "Not Found"
+msgstr "Nicht gefunden"
+
+#: templates/error/404.html:11
+msgid "Sorry, the page you requested could not be found"
+msgstr "Es tut uns Leid. Die angeforderte Seite wurde nicht gefunden."
+
+#: templates/error/404.html:12
+msgid "Error 404"
+msgstr ""
+
+#: templates/error/500.html:11
+msgid "Sorry, there has been an internal error"
+msgstr "Es tut uns Leid. Es gab leider einen internen Fehler."
+
+#: templates/error/500.html:12
+msgid "Error 500"
+msgstr ""
+
+#: templates/error/500.html:20
+msgctxt "figure caption"
+msgid "Photography by Luigi Rosa, CC-BY-SA"
+msgstr ""
+
+#: templates/mainapp/about.html:5
+msgid "About this project"
+msgstr "Über dieses Projekt"
+
+#: templates/mainapp/calendar.html:6
+msgid "Calendar"
+msgstr "Kalneder"
+
+#: templates/mainapp/index.html:5
+msgid "Open Source Ratsinformationssystem"
+msgstr ""
+
+#: templates/mainapp/info_contact.html:5
+msgid "Contact"
+msgstr "Kontakt"
+
+#: templates/mainapp/info_privacy.html:5
+msgid "Privacy Policy"
+msgstr "Datenschutz"
+
+#: templates/mainapp/meeting.html:10
+msgid "Previous Meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:16
+msgid "Export"
+msgstr ""
+
+#: templates/mainapp/meeting.html:22
+msgid "Following Meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:34
+msgid "Time of the Meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:37
+msgid "Place of the meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:42
+msgid "Main committee of the meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:48
+msgid "Committees participating in the meeting"
+msgstr ""
+
+#: templates/mainapp/meeting.html:62
+msgid "Further Attendees"
+msgstr ""
+
+#: templates/mainapp/meeting.html:70
+msgid "Invitation: "
+msgstr ""
+
+#: templates/mainapp/meeting.html:75
+msgid "Results protocol: "
+msgstr ""
+
+#: templates/mainapp/meeting.html:80
+msgid "Verbatim protocol: "
+msgstr ""
+
+#: templates/mainapp/meeting.html:90
+msgid "Agenda"
+msgstr ""
+
+#: templates/mainapp/meeting.html:104
+msgid "Not agenda available"
+msgstr ""
+
+#: templates/mainapp/persons.html:6
+msgid "Persons"
+msgstr "Personen"
 
 #: templates/mainapp/search.html:40
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: templates/mainapp/userprofiles/home.html:31
+#: templates/mainapp/userprofiles/home.html:14
+msgid "Log out"
+msgstr "Ausloggen"
+
+#: templates/mainapp/userprofiles/home.html:29
 msgid "Email adress verification"
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:35
+#: templates/mainapp/userprofiles/home.html:33
 msgid "Verify email"
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:37
+#: templates/mainapp/userprofiles/home.html:35
 msgid "Edit email"
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:46
+#: templates/mainapp/userprofiles/home.html:45
 msgid "Change your password"
 msgstr ""
 
+#: views.py:292
+msgid "Meeting"
+msgstr ""
 
+#: views.py:306
+msgid "Meeting Series"
+msgstr ""
+
+#~ msgid "Home"
+#~ msgstr "Start"
+
+#~| msgid "Search"
+#~ msgid "Search"
+#~ msgstr "Suche"
