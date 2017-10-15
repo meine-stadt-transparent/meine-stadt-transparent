@@ -16,7 +16,7 @@ def simple_model_view(name: str, model):
 
 
 urlpatterns = [
-    url(r'^/$', views.index, name='index'),
+    url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
     url(r'^search/suggest/(?P<query>.*)$', views.search_autosuggest, name='search_autosuggest'),
     url(r'^contact/$', views.info_contact, name='info_contact'),

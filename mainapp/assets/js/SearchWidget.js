@@ -22,3 +22,14 @@ export default class SearchWidget {
         })
     }
 }
+
+// Remove empty fields from url
+// https://stackoverflow.com/a/8029581/3549270
+$("#searchform").submit(function () {
+    $(this)
+        .find('input[name]')
+        .filter(function () {
+            return !this.value;
+        })
+        .prop('name', '');
+});

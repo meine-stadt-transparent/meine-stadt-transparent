@@ -18,7 +18,7 @@
     <div class="container pb-3">
         <form class="form form-home-search" method="GET" action="{% url 'search' %}">
             <div class="input-group search-autocomplete">
-                <input name="query" type="text" class="form-control" value="" autocomplete="off"
+                <input name="searchterm" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' '' %}"
                        placeholder="{% trans "Search" context "page_title" %}"
                        aria-label="{% trans "Search" context "perform search" %}">

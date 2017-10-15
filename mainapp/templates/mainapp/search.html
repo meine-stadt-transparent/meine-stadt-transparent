@@ -4,33 +4,42 @@
 
 {% block title %}{% trans "Search" context "page_title" %}{% endblock %}
 
+{% block header %}
+    {% with True as disable_header_search %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
 {% block content %}
     <div class="container">
         <section class="section">
-            <h1>Files durchsuchen</h1>
-            <form method="POST" action="{% url 'search' %}">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="input-field col s4">
-                        <input id="icon_prefix" type="text" name="query" value="{{ query }}">
-                        <label for="icon_prefix">Suchbegriff</label>
-                    </div>
+            <h1>{% trans "Search" context "page_title" %}</h1>
+
+            <form id="searchform">
+                <div class="input-group search-autocomplete py-3">
+                    <input name="searchterm" type="text" class="form-control" value="{{ options.searchterm }}"
+                           autocomplete="off"
+                           data-suggest-url="{% url 'search_autosuggest' '' %}"
+                           placeholder="{% trans "Search" context "page_title" %}"
+                           aria-label="{% trans "Search" context "perform search" %}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary"
+                                type="submit">{% trans "Search" context "perform search" %}</button>
+                    </span>
+                </div>
+
+                <div class="row py-3">
                     <div class="input-field col s2">
-                        <input id="icon_prefix" type="text" name="lat" value="{{ lat }}">
+                        <input id="icon_prefix" type="text" name="lat" value="{{ options.lat }}">
                         <label for="icon_prefix">Breitengrad</label>
                     </div>
                     <div class="input-field col s2">
-                        <input id="icon_prefix" type="text" name="lng" value="{{ lng }}">
+                        <input id="icon_prefix" type="text" name="lng" value="{{ options.lng }}">
                         <label for="icon_prefix">Längengrad</label>
                     </div>
                     <div class="input-field col s2">
-                        <input id="icon_prefix" type="number" name="radius" value="{{ radius }}">
+                        <input id="icon_prefix" type="number" name="radius" value="{{ options.radius }}">
                         <label for="icon_prefix">Enterfnung in m</label>
-                    </div>
-                    <div class="input-field col s2">
-                        <button class="btn waves-effect waves-light" type="submit" name="action">
-                            {% trans "Search" context "perform search" %}
-                        </button>
                     </div>
                 </div>
             </form>
@@ -38,9 +47,26 @@
 
         <section class="section">
             <h2>{% trans "Search results" %}</h2>
-            <ul>
+            <ul class="list-unstyled">
                 {% for result in results %}
-                    <li>{{ result }}{{ result.fragment | safe }}</li>
+                    <li class="py-1">
+                        <a href="{% url result.type result.id %}">
+                            {% if result.type == "file" %}
+                                <i class="fa fa-file no-link-color" aria-hidden="true"></i>&nbsp;
+                            {% elif result.type == "person" %}
+                                <i class="fa fa-user no-link-color" aria-hidden="true"></i>&nbsp;
+                            {% elif result.type == "parliamentary-group" %}
+                                <i class="fa fa-users no-link-color" aria-hidden="true"></i>&nbsp;
+                            {% else %}
+                                {{ result }}
+                            {% endif %}
+                            {{ result.name }}
+                        </a>
+                        {% if result.type == "file" %}
+                            {{ result.fragment | safe }}
+                        {% endif %}
+                    </li>
+
                 {% endfor %}
             </ul>
         </section>

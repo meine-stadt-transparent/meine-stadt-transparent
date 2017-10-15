@@ -88,28 +88,34 @@ def about(request):
 
 def search(request):
     s = Search(index=settings.ELASTICSEARCH_INDEX)
+    options = {}
 
     if 'searchterm' in request.GET:
         s = s.query('query_string', query=request.GET['searchterm'])
+        options['searchterm'] = request.GET['searchterm']
 
     if 'query' in request.GET:
         s = s.filter("match", parsed_text=request.GET['query'])
         s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
 
-    if 'radius' in request.GET and 'lat' in request.GET and 'lng' in request.GET:
-        lat = request.GET['lat']
-        lng = request.GET['lng']
-        radius = request.GET['radius']
-
-        s = s.filter("geo_distance", distance=radius + "m", coordinates={
-            "lat": float(lat),
-            "lon": float(lng),
+    try:
+        lat = float(request.GET.get('lat', ''))
+        lng = float(request.GET.get('lng', ''))
+        radius = int(request.GET.get('radius', ''))
+        s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
+            "lat": lat,
+            "lon": lng,
         })
+        options['lat'] = lat
+        options['lng'] = lng
+        options['radius'] = radius
+    except ValueError:
+        pass
 
     results = []
     for raw_result in s.execute():
         result = {
-            "type": raw_result.meta.doc_type,
+            "type": raw_result.meta.doc_type.replace("_document", "").replace("_", "-"),
             "id": raw_result.id,
             "name": raw_result.name,
         }
@@ -119,7 +125,7 @@ def search(request):
 
     context = {
         "results": results,
-        "request_params": request.GET,
+        "options": options,
     }
 
     return render(request, 'mainapp/search.html', context)
