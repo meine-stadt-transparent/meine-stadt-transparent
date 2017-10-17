@@ -24,7 +24,6 @@ DATABASES = {
 }
 
 if USE_ELASTICSEARCH:
-    INSTALLED_APPS.remove('elasticsearch_admin')
     INSTALLED_APPS.remove('django_elasticsearch_dsl')
 
 USE_ELASTICSEARCH = False
