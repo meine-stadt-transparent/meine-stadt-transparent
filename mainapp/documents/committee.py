@@ -1,26 +1,18 @@
-from django_elasticsearch_dsl import DocType, fields
-from mainapp.documents.utils import RelatedToValueList
+from django_elasticsearch_dsl.documents import DocType
 
 from mainapp.models import Committee
-from .utils import autocomplete_analyzer, fileIndex
+from .generic_membership import GenericMembershipDocument
+from .utils import RelatedToValueList
+from .utils import fileIndex
 
 
 @fileIndex.doc_type
-class CommitteeDocument(DocType):
-    autocomplete = fields.StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
-
-    body = fields.ObjectField(properties={
-        'id': fields.IntegerField(),
-        'name': fields.StringField(),
-    })
-
+class CommitteeDocument(DocType, GenericMembershipDocument):
+    autocomplete = GenericMembershipDocument.autocomplete
+    body = GenericMembershipDocument.body
     legislative_terms = RelatedToValueList(attr="legislative_terms")
 
-    class Meta:
+    class Meta(GenericMembershipDocument.Meta):
         model = Committee
 
-        fields = [
-            'id',
-            'name',
-            'short_name'
-        ]
+        fields = GenericMembershipDocument.Meta.fields + ["start", "end"]

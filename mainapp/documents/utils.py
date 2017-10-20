@@ -1,8 +1,7 @@
 # Name of the Elasticsearch index
 from django.conf import settings
-from elasticsearch_dsl import analyzer, token_filter
-
 from django_elasticsearch_dsl import Index, DEDField, Integer
+from elasticsearch_dsl import analyzer, token_filter
 
 
 class RelatedToValueList(DEDField, Integer):
@@ -16,7 +15,6 @@ fileIndex.settings(
     number_of_shards=1,
     number_of_replicas=0
 )
-
 
 autocomplete_filter = token_filter(
     "autocomplete_filter",
