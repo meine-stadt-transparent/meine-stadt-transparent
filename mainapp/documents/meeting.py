@@ -2,10 +2,10 @@ from django_elasticsearch_dsl import DocType, fields, GeoPointField, NestedField
     BooleanField
 
 from mainapp.models import Meeting
-from .utils import fileIndex
+from .utils import mainIndex
 
 
-@fileIndex.doc_type
+@mainIndex.doc_type
 class MeetingDocument(DocType):
     location = GeoPointField()
     agenda_items = NestedField(attr="agendaitem_set", properties={

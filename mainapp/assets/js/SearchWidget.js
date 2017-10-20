@@ -14,7 +14,7 @@ export default class SearchWidget {
                         asyncResults(data);
                     });
                 },
-                limit: 10
+                limit: 5
             });
 
         $widget.on("typeahead:selected", function (ev, obj) {

@@ -9,9 +9,9 @@ class RelatedToValueList(DEDField, Integer):
         return [obj.id for obj in super().get_value_from_instance(data)]
 
 
-fileIndex = Index(settings.ELASTICSEARCH_INDEX)
+mainIndex = Index(settings.ELASTICSEARCH_INDEX)
 # See Elasticsearch Indices API reference for available settings
-fileIndex.settings(
+mainIndex.settings(
     number_of_shards=1,
     number_of_replicas=0
 )
@@ -28,4 +28,4 @@ autocomplete_analyzer = analyzer(
     tokenizer="standard",
     filter=["lowercase", autocomplete_filter],
 )
-fileIndex.analyzer(autocomplete_analyzer)
+mainIndex.analyzer(autocomplete_analyzer)

@@ -1,10 +1,10 @@
 from django_elasticsearch_dsl import DocType, StringField
 
 from mainapp.models import Person
-from .utils import fileIndex, autocomplete_analyzer
+from .utils import mainIndex, autocomplete_analyzer
 
 
-@fileIndex.doc_type
+@mainIndex.doc_type
 class PersonDocument(DocType):
     autocomplete = StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
 

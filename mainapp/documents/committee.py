@@ -3,10 +3,10 @@ from django_elasticsearch_dsl.documents import DocType
 from mainapp.models import Committee
 from .generic_membership import GenericMembershipDocument
 from .utils import RelatedToValueList
-from .utils import fileIndex
+from .utils import mainIndex
 
 
-@fileIndex.doc_type
+@mainIndex.doc_type
 class CommitteeDocument(DocType, GenericMembershipDocument):
     autocomplete = GenericMembershipDocument.autocomplete
     body = GenericMembershipDocument.body

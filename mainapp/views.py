@@ -139,10 +139,13 @@ def search_autosuggest(request, query):
         elif hit.meta.doc_type == 'committee_document':
             name = hit.name
             results.append({'name': name, 'url': reverse('committee', args=[hit.id])})
+        elif hit.meta.doc_type == 'paper_document':
+            name = hit.name
+            results.append({'name': name, 'url': reverse('paper', args=[hit.id])})
         else:
             print("Unknown type: %s" % hit.meta.doc_type)
 
-    return HttpResponse(json.dumps(results), content_type='application/json')
+    return JsonResponse(results, safe=False)
 
 
 def persons(request):
