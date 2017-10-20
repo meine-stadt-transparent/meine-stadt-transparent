@@ -1,14 +1,14 @@
-from django_elasticsearch_dsl import fields
+from django_elasticsearch_dsl import StringField, IntegerField, ObjectField
 
 from .utils import autocomplete_analyzer
 
 
 class GenericMembershipDocument:
-    autocomplete = fields.StringField(attr="name", analyzer=autocomplete_analyzer)
+    autocomplete = StringField(attr="name", analyzer=autocomplete_analyzer)
 
-    body = fields.ObjectField(properties={
-        'id': fields.IntegerField(),
-        'name': fields.StringField(),
+    body = ObjectField(properties={
+        'id': IntegerField(),
+        'name': StringField(),
     })
 
     class Meta:

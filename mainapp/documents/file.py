@@ -1,11 +1,11 @@
-from django_elasticsearch_dsl import DocType, fields
+from django_elasticsearch_dsl import DocType, GeoPointField
 
 from mainapp.models import File
 
 
 # @fileIndex.doc_type
 class FileDocument(DocType):
-    coordinates = fields.GeoPointField(attr="coordinates")
+    coordinates = GeoPointField(attr="coordinates")
 
     class Meta:
         model = File

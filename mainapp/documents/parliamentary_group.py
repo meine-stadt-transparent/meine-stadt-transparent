@@ -1,7 +1,7 @@
 from django_elasticsearch_dsl import DocType
 
-from mainapp.documents.generic_membership import GenericMembershipDocument
 from mainapp.models import ParliamentaryGroup
+from .generic_membership import GenericMembershipDocument
 from .utils import fileIndex
 
 

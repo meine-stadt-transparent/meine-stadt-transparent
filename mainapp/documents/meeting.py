@@ -1,4 +1,5 @@
-from django_elasticsearch_dsl import DocType, fields
+from django_elasticsearch_dsl import DocType, fields, GeoPointField, NestedField, StringField, IntegerField, \
+    BooleanField
 
 from mainapp.models import Meeting
 from .utils import fileIndex
@@ -6,15 +7,16 @@ from .utils import fileIndex
 
 @fileIndex.doc_type
 class MeetingDocument(DocType):
-    location = fields.GeoPointField()
-    agenda_items = fields.NestedField(attr="agendaitem_set", properties={
-        "key": fields.StringField(),
-        "title": fields.StringField(),
-        "position": fields.IntegerField(),
-        "public": fields.BooleanField(),
+    location = GeoPointField()
+    agenda_items = NestedField(attr="agendaitem_set", properties={
+        "key": StringField(),
+        "title": StringField(),
+        "position": IntegerField(),
+        "public": BooleanField(),
     })
 
-    def prepare_location(self, instance: Meeting):
+    @staticmethod
+    def prepare_location(instance: Meeting):
         if instance.location:
             return instance.location.coordinates()
 

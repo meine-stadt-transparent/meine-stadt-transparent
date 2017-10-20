@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl import DocType, fields
+from django_elasticsearch_dsl import DocType, StringField
 
 from mainapp.models import Person
 from .utils import fileIndex, autocomplete_analyzer
@@ -6,7 +6,7 @@ from .utils import fileIndex, autocomplete_analyzer
 
 @fileIndex.doc_type
 class PersonDocument(DocType):
-    autocomplete = fields.StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
+    autocomplete = StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
 
     class Meta:
         model = Person
