@@ -12,11 +12,12 @@ from icalendar import Calendar
 # noinspection PyPackageRequirements
 from slugify import slugify
 
+
 from mainapp.models import Body, Committee
-from mainapp.models.index.file import FileDocument
 from mainapp.models.meeting import Meeting
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
+from mainapp.functions.search_tools import params_to_query
 
 
 def index(request):
@@ -87,30 +88,8 @@ def about(request):
 
 
 def search(request):
-    s = Search(index=settings.ELASTICSEARCH_INDEX)
-    options = {}
-
-    if 'searchterm' in request.GET:
-        s = s.query('query_string', query=request.GET['searchterm'])
-        options['searchterm'] = request.GET['searchterm']
-
-    if 'query' in request.GET:
-        s = s.filter("match", parsed_text=request.GET['query'])
-        s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
-
-    try:
-        lat = float(request.GET.get('lat', ''))
-        lng = float(request.GET.get('lng', ''))
-        radius = int(request.GET.get('radius', ''))
-        s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
-            "lat": lat,
-            "lon": lng,
-        })
-        options['lat'] = lat
-        options['lng'] = lng
-        options['radius'] = radius
-    except ValueError:
-        pass
+    params = request.GET
+    options, s = params_to_query(params)
 
     results = []
     for raw_result in s.execute():

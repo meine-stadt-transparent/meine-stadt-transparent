@@ -57,6 +57,8 @@
                                 <i class="fa fa-user no-link-color" aria-hidden="true"></i>&nbsp;
                             {% elif result.type == "parliamentary-group" %}
                                 <i class="fa fa-users no-link-color" aria-hidden="true"></i>&nbsp;
+                            {% elif result.type == "committee" %}
+                                <i class="fa fa-users no-link-color" aria-hidden="true"></i>&nbsp;
                             {% else %}
                                 {{ result }}
                             {% endif %}

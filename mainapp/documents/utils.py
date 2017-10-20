@@ -1,7 +1,14 @@
 # Name of the Elasticsearch index
 from django.conf import settings
-from django_elasticsearch_dsl import Index
 from elasticsearch_dsl import analyzer, token_filter
+
+from django_elasticsearch_dsl import Index, DEDField, Integer
+
+
+class RelatedToValueList(DEDField, Integer):
+    def get_value_from_instance(self, data):
+        return [obj.id for obj in super().get_value_from_instance(data)]
+
 
 fileIndex = Index(settings.ELASTICSEARCH_INDEX)
 # See Elasticsearch Indices API reference for available settings
