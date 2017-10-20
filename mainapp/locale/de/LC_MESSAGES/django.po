@@ -86,7 +86,7 @@ msgstr "Mit der E-Mail-Adresse einloggen"
 #: templates/account/login.html:32
 msgctxt "login"
 msgid "Sign Up"
-msgstr "Einloggen"
+msgstr "Registrieren"
 
 #: templates/account/login.html:55
 msgid "Forgot Password?"

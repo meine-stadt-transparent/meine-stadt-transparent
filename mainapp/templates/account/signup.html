@@ -1,0 +1,50 @@
+{% extends "base_single_panel.html" %}
+
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title %}{% trans "Sign Up" context "login" %}{% endblock %}
+
+{% block panel_title %}{% trans "Sign Up" context "login" %}{% endblock %}
+
+{% block panel_content %}
+    <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+    </p>
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        {{ form.email.errors }}
+        <div class="form-group row">
+            <label for="{{ form.email.id_for_label }}" class="col-sm-3  col-form-label">
+                {{ form.email.label }}:
+            </label>
+            <div class="col-sm-9">
+                {{ form.email|add_class:"form-control" }}
+            </div>
+        </div>
+
+        {{ form.password1.errors }}
+        <div class="form-group row">
+            <label for="{{ form.password1.id_for_label }}" class="col-sm-3 col-form-label">
+                {{ form.password1.label }}:
+            </label>
+            <div class="col-sm-9">
+                {{ form.password1|add_class:"form-control" }}
+                <a class="forgot-link"
+                   href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+            </div>
+        </div>
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <div class="save-row">
+            <button type="submit" class="btn btn-primary">{% trans "Sign Up" context "login" %} &raquo;</button>
+        </div>
+    </form>
+
+{% endblock %}
