@@ -35,9 +35,9 @@ class SternbergImport(OParlImport):
                 oparl_list["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Location in Person must be a url, not an object
-            if "/person" in url:
+            if "/person" in url and "data" in oparl_list:
                 for oparl_object in oparl_list["data"]:
-                    if "location" in oparl_object and isinstance(oparl_object["location"], object):
+                    if "location" in oparl_object and isinstance(oparl_object["location"], dict):
                         oparl_object["location"] = oparl_object["location"]["id"]
 
             response.set_resolved_data(json.dumps(oparl_list))
@@ -54,7 +54,7 @@ class SternbergImport(OParlImport):
         if "/person" in url:
             oparl_object = json.loads(response.get_resolved_data())
             if "location" in oparl_object and isinstance(oparl_object["location"], object):
-                oparl_object["location"] = oparl_object["loccation"]["id"]
+                oparl_object["location"] = oparl_object["location"]["id"]
 
             response.set_resolved_data(json.dumps(oparl_object))
 
