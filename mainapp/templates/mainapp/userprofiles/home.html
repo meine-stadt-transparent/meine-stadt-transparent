@@ -1,53 +1,46 @@
-{% extends "base_single_panel.html" %}
+{% extends "base.html" %}
 {% load i18n %}
 
 {% block title %}{% trans "My profile" %}{% endblock %}
-{% block panel_title %}{% trans "My profile" %}{% endblock %}
 
-{% block panel_content %}
-    <h1>{{ user.username }}</h1>
-    <form class="form-inline logout-form" method="post" action="{% url 'account_logout' %}">
-        {% csrf_token %}
-        {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+{% block content %}
+    <div class="container container-mst-account">
+        {% if not profile.email_is_verified %}
+            <section class="alert alert-warning mst-account-section">
+                <p>Deine E-Mail-Adresse ist noch nicht bestätigt.</p>
+                <a class="btn btn-primary" href="{% url 'account_email' %}">
+                    Jetzt bestätigen
+                </a>
+            </section>
         {% endif %}
-        <button class="btn" type="submit">{% trans "Log out" %}</button>
-    </form>
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        {% if not profile.email_is_verified %}
-                            <a href="{% url 'account_email' %}">
-                                <i class="fa fa-close fa-2x pull-right text-danger" aria-hidden="true"></i>
-                            </a>
-                        {% else %}
-                            <i class="fa fa-check fa-2x success" aria-hidden="true"></i>
-                        {% endif %}
-                    </div>
-                    <h4>
-                        <i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>
-                        &nbsp;{% trans "Email adress verification" %}
-                    </h4>
-                </div>
-                <div class="panel-body">
-                    {% if not profile.email_is_verified %}
-                        <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Verify email" %}</a>
-                    {% else %}
-                        <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
-                    {% endif %}
-                </div>
+
+        <section class="card mst-notifications mst-account-section">
+            <h2 class="card-header">
+                Benachrichtigungen
+            </h2>
+            <div class="card-body">
+                @TODO
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <p class="gc gus-l">
+        </section>
+
+        <section class="card mst-accountsettings mst-account-section">
+            <h2 class="card-header">
+                Account-Einstellungen
+            </h2>
+            <div class="card-body">
+                {% if not profile.email_is_verified %}
+                    <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Verify email" %}</a>
+                {% else %}
+                    <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
+                {% endif %}
+
+
                 <a href="{% url 'account_change_password' %}" class="btn btn-link">
                     {% trans "Change your password" %}
                 </a>
-            </p>
-        </div>
+
+                @TODO Account löschen
+            </div>
+        </section>
     </div>
-{% endblock panel_content %}
+{% endblock %}

@@ -13,3 +13,7 @@ $container-max-widths: (
     font-size: 1.5rem;
   }
 }
+
+.btn {
+  cursor: pointer; // Logout-Button in the navbar
+}

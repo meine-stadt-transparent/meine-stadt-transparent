@@ -1,0 +1,38 @@
+{% extends "base_single_panel.html" %}
+
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block title %}{% trans "Signup" %}{% endblock %}
+{% block panel_title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block panel_content %}
+
+    <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your
+        {{ provider_name }} account to login to
+        {{ site_name }}. As a final step, please complete the following form:{% endblocktrans %}</p>
+
+    <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
+        {% csrf_token %}
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        {{ form.non_field_errors }}
+
+        {{ form.email.errors }}
+        <div class="form-group row">
+            <label for="{{ form.email.id_for_label }}" class="col-sm-3  col-form-label">
+                {{ form.email.label }}:
+            </label>
+            <div class="col-sm-9">
+                {{ form.email|add_class:"form-control" }}
+            </div>
+        </div>
+
+        <div class="save-row">
+            <input type="submit" class="btn btn-primary" value="{% trans "Sign Up" %}"/>
+        </div>
+    </form>
+
+{% endblock %}
