@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="container">
-        <div id='calendar' data-src="{% url 'calendar_data' %}" data-date="{{ default_date }}"></div>
+        <div id='calendar' data-src="{% url 'calendar_data' %}" data-date="{{ default_date }}" data-default-view="{{ default_view }}"></div>
     </div>
 {% endblock %}
 

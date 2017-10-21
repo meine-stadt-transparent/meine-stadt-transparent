@@ -11,5 +11,12 @@ MAILJET_SECRET_KEY=
 USE_ELASTICSEARCH=False
 # Use DATABASE_URL=mysql://username:password@localhost/databasename in production
 DATABASE_URL=sqlite:///db.sqlite3
+SITE_SEO_NOINDEX=True
+DEFAULT_FROM_EMAIL=info@example.org
+
+SITE_DEFAULT_COMMITTEE=1
+SITE_DEFAULT_BODY=1
 SITE_GEO_LIMITS={"min": {"lat": 47.965, "lng": 11.286}, "max": {"lat": 48.296, "lng": 11.871}}
 SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
+SITE_GEO_INIT_ZOOM=12
+CALENDAR_DEFAULT_VIEW=listMonth

@@ -6,7 +6,8 @@ require('fullcalendar/dist/locale/de');
 $(function () {
     let $calendar = $('#calendar'),
         language = $('html').attr('lang'),
-        data_src = $calendar.data('src');
+        defaultView = $calendar.data('default-view'),
+        dataSrc = $calendar.data('src');
 
     $calendar.fullCalendar({
         header: {
@@ -17,9 +18,10 @@ $(function () {
         weekNumbers: true,
         navLinks: true, // can click day/week names to navigate views
         editable: true,
+        defaultView: defaultView,
         eventLimit: true, // allow "more" link when too many events
         locale: language,
-        events: data_src,
+        events: dataSrc,
         timezone: 'local',
         eventClick: function(calEvent/*, jsEvent, view*/) {
             window.location.href = calEvent['details'];

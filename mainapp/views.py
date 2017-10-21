@@ -27,7 +27,7 @@ def index(request):
     else:
         outline = None
 
-    latest_paper = Paper.objects.order_by("modified", "legal_date")[:20]
+    latest_paper = Paper.objects.order_by("-modified", "-legal_date")[:20]
     geo_papers = Paper.objects.filter(modified__gte="2017-10-10")
 
     context = {
@@ -190,7 +190,8 @@ def persons(request):
 
 def calendar(request):
     context = {
-        'default_date': date.today().strftime("%Y-%m-%d")
+        'default_date': date.today().strftime("%Y-%m-%d"),
+        'default_view': settings.CALENDAR_DEFAULT_VIEW,
     }
     return render(request, 'mainapp/calendar.html', context)
 

@@ -261,5 +261,8 @@ SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
 SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
 SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE', 1)
 
+# Possible values: month, listYear, listMonth, listDay, basicWeek, basicDay, agendaWeek, agendaDay
+CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
+
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
