@@ -73,13 +73,13 @@ class OParlImport(OParlImportObjects):
         """ Downloads and parses a body list and prints all errors immediately.
         This is a fixup for python's broken error handling with threadpools.
         """
-        try:
-            objectlist = objectlistfn()
-            for item in objectlist:
+        objectlist = objectlistfn()
+        for item in objectlist:
+            try:
                 fn(item)
-        except Exception as e:
-            print("An error occured:", e)
-            traceback.print_exc()
+            except Exception as e:
+                print("An error occured:", e)
+                traceback.print_exc()
 
     def run_singlethread(self):
         try:
