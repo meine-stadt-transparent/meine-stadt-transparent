@@ -5,8 +5,26 @@ form.login {
   }
 }
 
-.container-mst-account {
+.mst-container-account {
   .mst-account-section + .mst-account-section {
     margin-top: 50px;
+  }
+}
+
+.mst-email-confirm {
+  .email-list {
+    .address {
+      font-weight: bold;
+    }
+    .verified, .unverified, .primary {
+      font-size: 0.8em;
+    }
+  }
+  .email-actions {
+    margin-top: 20px;
+  }
+  .email-add-row h2 {
+    padding-top: 0.5rem;
+    font-size: inherit;
   }
 }

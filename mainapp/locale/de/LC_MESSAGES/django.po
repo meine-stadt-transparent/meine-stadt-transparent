@@ -166,7 +166,7 @@ msgstr "Über dieses Projekt"
 
 #: templates/mainapp/calendar.html:6
 msgid "Calendar"
-msgstr "Kalneder"
+msgstr "Kalender"
 
 #: templates/mainapp/index.html:5
 msgid "Open Source Ratsinformationssystem"

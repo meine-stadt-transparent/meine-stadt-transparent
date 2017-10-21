@@ -4,7 +4,9 @@
 {% block title %}{% trans "My profile" %}{% endblock %}
 
 {% block content %}
-    <div class="container container-mst-account">
+    <div class="container mst-container-account">
+        {% include 'partials/messages.html' %}
+
         {% if not profile.email_is_verified %}
             <section class="alert alert-warning mst-account-section">
                 <p>Deine E-Mail-Adresse ist noch nicht bestätigt.</p>

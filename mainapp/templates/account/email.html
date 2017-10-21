@@ -1,14 +1,17 @@
 {% extends "account/base.html" %}
 
 {% load i18n %}
+{% load widget_tweaks %}
 
 {% block title %}{% trans "Account" %}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container mst-email-confirm">
         <article class="card">
             <h1 class="card-header">{% trans "E-mail Addresses" %}</h1>
             <main class="card-body">
+                {% include 'partials/messages.html' %}
+
                 {% if user.emailaddress_set.all %}
                     <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
 
@@ -17,7 +20,7 @@
                         <fieldset class="blockLabels">
 
                             {% for emailaddress in user.emailaddress_set.all %}
-                                <div class="ctrlHolder">
+                                <div class="email-list">
                                     <label for="email_radio_{{ forloop.counter }}"
                                            class="{% if emailaddress.primary %}primary_email{% endif %}">
 
@@ -25,24 +28,24 @@
                                                {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{% endif %}
                                                value="{{ emailaddress.email }}"/>
 
-                                        {{ emailaddress.email }}
+                                        <span class="address">{{ emailaddress.email }}</span>
                                         {% if emailaddress.verified %}
-                                            <span class="verified">{% trans "Verified" %}</span>
+                                            <span class="verified text-success">{% trans "Verified" %}</span>
                                         {% else %}
-                                            <span class="unverified">{% trans "Unverified" %}</span>
+                                            <span class="unverified text-danger">{% trans "Unverified" %}</span>
                                         {% endif %}
                                         {% if emailaddress.primary %}
-                                            <span class="primary">{% trans "Primary" %}</span>{% endif %}
+                                            <span class="primary text-primary">{% trans "Primary" %}</span>{% endif %}
                                     </label>
                                 </div>
                             {% endfor %}
 
-                            <div class="buttonHolder">
-                                <button class="secondaryAction" type="submit"
+                            <div class="email-actions">
+                                <button type="submit" class="btn btn-light btn-sm"
                                         name="action_primary">{% trans 'Make Primary' %}</button>
-                                <button class="secondaryAction" type="submit"
+                                <button type="submit" class="btn btn-light btn-sm"
                                         name="action_send">{% trans 'Re-send Verification' %}</button>
-                                <button class="primaryAction" type="submit"
+                                <button type="submit" class="btn btn-danger btn-sm"
                                         name="action_remove">{% trans 'Remove' %}</button>
                             </div>
 
@@ -57,14 +60,25 @@
                 {% endif %}
             </main>
             <footer class="card-footer">
+                <div class="row email-add-row">
+                    <h2 class="col-sm-4">{% trans "Add E-mail Address" %}:</h2>
+                    <form method="post" action="{% url 'account_email' %}" class="add_email col-sm-8">
+                        {% csrf_token %}
 
-                <h2>{% trans "Add E-mail Address" %}</h2>
+                        {{ form.non_field_errors }}
 
-                <form method="post" action="{% url 'account_email' %}" class="add_email">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button name="action_add" type="submit">{% trans "Add E-mail" %}</button>
-                </form>
+                        {{ form.email.errors }}
+                        <div class="input-group">
+                            {{ form.email|add_class:"form-control" }}
+                            <span class="input-group-btn">
+                                <button name="action_add" type="submit"
+                                        class="btn btn-primary">{% trans "Add E-mail" %}</button>
+                                <!--{{ form.email.label }}-->
+                            </span>
+
+                        </div>
+                    </form>
+                </div>
             </footer>
         </article>
     </div>
