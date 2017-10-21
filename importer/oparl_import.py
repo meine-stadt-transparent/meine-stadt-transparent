@@ -69,10 +69,11 @@ class OParlImport(OParlImportObjects):
             print("Batch finished")
 
     @staticmethod
-    def list_caught(objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]):
+    def list_caught(objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]) -> int:
         """ Downloads and parses a body list and prints all errors immediately.
         This is a fixup for python's broken error handling with threadpools.
         """
+        err_count = 0
         objectlist = objectlistfn()
         for item in objectlist:
             try:
@@ -80,6 +81,9 @@ class OParlImport(OParlImportObjects):
             except Exception as e:
                 print("An error occured:", e)
                 traceback.print_exc()
+                err_count += 1
+
+        return err_count
 
     def run_singlethread(self):
         try:
@@ -146,8 +150,11 @@ class OParlImport(OParlImportObjects):
                     futures[future] = "{}: Meeting".format(body.get_short_name())
             print("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
-                print("Finished", futures[future])
-                future.result()
+                err_count = future.result()
+                if err_count == 0:
+                    print("Finished Successfully: ", futures[future])
+                else:
+                    print("Finished with {} errors: {}".format(err_count, futures[future]))
 
         print("Finished creating objects")
         self.add_missing_associations()
