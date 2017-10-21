@@ -61,10 +61,9 @@ GObject needs to be installed system-wide.
 
 Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
 
-For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Until
-[#17](https://github.com/OParl/liboparl/pull/17) is merged, the ``resolve_url``-branch has to be checked out before
-compiling. Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this
-is for your os)
+For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions.
+
+Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this is for your os)
 
 ## Development
 
