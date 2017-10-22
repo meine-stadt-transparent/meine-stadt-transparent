@@ -8,9 +8,11 @@ import gi
 import requests
 from django.utils import dateparse
 from django.utils.translation import ugettext as _
+from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 from slugify.slugify import slugify
 
 from importer.oparl_import_helper import OParlImportHelper
+from mainapp.functions.document_parsing import extract_text_from_pdf
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
     File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
 
@@ -225,6 +227,16 @@ class OParlImportObjects(OParlImportHelper):
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
 
+    def extract_text_from_file(self, file: File):
+        path = os.path.join(self.storagefolder, file.storage_filename)
+        if file.mime_type == "application/pdf":
+            print("Extracting text from PDF: %s" % path)
+            try:
+                text = extract_text_from_pdf(path, self.cachefolder)
+                file.parsed_text = text
+            except PDFTextExtractionNotAllowed:
+                self.logger.warning("Forbidden to extract text from PDF {}".format(path))
+
     def file(self, libobject: OParl.File):
         if not libobject:
             return None
@@ -255,7 +267,11 @@ class OParlImportObjects(OParlImportHelper):
             file.storage_filename = ""
             file.filesize = -1
 
+        if file.storage_filename and not file.parsed_text:
+            self.extract_text_from_file(file)
+
         file.save()
+        file.rebuild_locations()
 
         return file
 

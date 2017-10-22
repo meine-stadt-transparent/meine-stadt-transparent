@@ -22,6 +22,9 @@ class File(DefaultFields):
         return self.displayed_filename
 
     def rebuild_locations(self):
+        if not self.parsed_text:
+            return
+
         from mainapp.functions.document_parsing import extract_locations
         locations = extract_locations(self.parsed_text)
         self.locations.clear()

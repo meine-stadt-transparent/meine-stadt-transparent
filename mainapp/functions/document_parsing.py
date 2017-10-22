@@ -1,5 +1,8 @@
 import re
 
+import os
+from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
+
 from mainapp.models import SearchStreet, Body, Location
 
 import geoextract
@@ -32,12 +35,13 @@ def _extract_text(filename, outfile='-',
     outfp.close()
 
 
-def extract_text_from_pdf(pdf_file):
+def extract_text_from_pdf(pdf_file, cachefolder):
     """
     :param pdf_file: str
+    :param cachefolder: str
     :return: str
     """
-    tmp_file = '/tmp/pdf-text.txt'  # @TODO
+    tmp_file = os.path.join(cachefolder, 'pdf-extract.txt')
     _extract_text(pdf_file, outfile=tmp_file)
     fp = open(tmp_file, "r")
     text = fp.read()
