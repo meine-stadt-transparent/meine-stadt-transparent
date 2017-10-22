@@ -17,3 +17,4 @@ from .person import Person
 from .search_poi import SearchPoi
 from .search_street import SearchStreet
 from .user_profile import UserProfile
+from .user_alert import UserAlert
