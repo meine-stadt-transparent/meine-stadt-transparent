@@ -46,29 +46,42 @@
         </section>
 
         <section class="section">
-            <h2>{% trans "Search results" %}</h2>
-            <ul class="list-unstyled">
+            <ul class="results-list">
                 {% for result in results %}
-                    <li class="py-1">
-                        <a href="{% url result.type result.id %}">
-                            {% if result.type == "file" %}
-                                <i class="fa fa-file no-link-color" aria-hidden="true"></i>&nbsp;
-                            {% elif result.type == "person" %}
-                                <i class="fa fa-user no-link-color" aria-hidden="true"></i>&nbsp;
-                            {% elif result.type == "parliamentary-group" %}
-                                <i class="fa fa-users no-link-color" aria-hidden="true"></i>&nbsp;
-                            {% elif result.type == "committee" %}
-                                <i class="fa fa-users no-link-color" aria-hidden="true"></i>&nbsp;
-                            {% else %}
-                                {{ result }}
-                            {% endif %}
-                            {{ result.name }}
+                    <li class="clearfix">
+                        <a href="{% url result.type result.id %}" class="no-link-color">
+                            <div class="py-2 container">
+                                <div class="row">
+                                    <div class="col-md-auto p-2">
+                                        {% if result.type == "committee" %}
+                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "department" %}
+                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "parliamentary-group" %}
+                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "file" %}
+                                            <i class="fa fa-3x fa-fw fa-file-text" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "meeting" %}
+                                            <i class="fa fa-3x fa-fw fa-calendar" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "paper" %}
+                                            <i class="fa fa-3x fa-fw fa-file" aria-hidden="true"></i>&nbsp;
+                                        {% elif result.type == "person" %}
+                                            <i class="fa fa-3x fa-fw fa-user" aria-hidden="true"></i>&nbsp;
+                                        {% else %}
+                                            <i class="fa fa-3x fa-fw fa-question" aria-hidden="true"></i>&nbsp;
+                                        {% endif %}
+                                    </div>
+                                    <div class="col text-truncate">
+                                        <div class="lead text-truncate">{{ result.name }}</div>
+                                        <div class="text-muted text-truncate">{{ result.type }}</div>
+                                        <div class="text-muted text-truncate">{{ result.raw_result.body.name }}</div>
+                                    </div>
+                                </div>
+                            </div>
                         </a>
-                        {% if result.type == "file" %}
-                            {{ result.fragment | safe }}
-                        {% endif %}
                     </li>
-
+                {% empty %}
+                    <p>{% trans "Nothing Found" %}</p>
                 {% endfor %}
             </ul>
         </section>

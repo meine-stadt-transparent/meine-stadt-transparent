@@ -88,6 +88,14 @@ def about(request):
 
 
 def search(request):
+    if request.GET == {}:
+        context = {
+            "results": [],
+            "options": [],
+        }
+
+        return render(request, 'mainapp/search.html', context)
+
     params = request.GET
     options, s = params_to_query(params)
 
@@ -97,6 +105,7 @@ def search(request):
             "type": raw_result.meta.doc_type.replace("_document", "").replace("_", "-"),
             "id": raw_result.id,
             "name": raw_result.name,
+            "raw_result": raw_result,
         }
         if hasattr(raw_result.meta, "highlight"):
             result["highlight"] = raw_result.meta.highlight.parsed_text
