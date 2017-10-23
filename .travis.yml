@@ -18,5 +18,6 @@ before_script:
 
 script:
   - ./manage.py migrate
+  - npm run build:dev
   - npm run build:prod
   - ./manage.py test --settings=meine_stadt_transparent.settings_test
