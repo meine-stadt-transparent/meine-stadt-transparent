@@ -266,3 +266,11 @@ CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
+
+# Debug Toolbar
+if DEBUG:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = [
+        '127.0.0.1'
+    ]

@@ -6,6 +6,7 @@ Django==1.11.6
 django-allauth==0.33.0
 django-anymail==1.0
 django-braces==1.11.0
+django-debug-toolbar==1.8
 django-elasticsearch-dsl==0.4.0
 django-environ==0.4.4
 django-geojson==2.10.0
@@ -38,6 +39,7 @@ requests==2.18.4
 requests-oauthlib==0.8.0
 scipy==0.19.1
 six==1.11.0
+sqlparse==0.2.4
 Unidecode==0.4.21
 urllib3==1.22
 Werkzeug==0.12.2
