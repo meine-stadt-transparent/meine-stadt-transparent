@@ -140,16 +140,16 @@ class OParlImport(OParlImportObjects):
             for body in bodies:
                 if self.with_papers:
                     future = executor.submit(self.list_caught, body.get_paper, self.paper)
-                    futures[future] = body.get_short_name() + ": Paper"
+                    futures[future] = body.get_short_name() or body.get_name() + ": Paper"
                 if self.with_persons:
                     future = executor.submit(self.list_caught, body.get_person, self.person)
-                    futures[future] = body.get_short_name() + ": Person"
+                    futures[future] = body.get_short_name() or body.get_name() + ": Person"
                 if self.with_organizations:
                     future = executor.submit(self.list_caught, body.get_organization, self.organization)
-                    futures[future] = body.get_short_name() + ": Organization"
+                    futures[future] = body.get_short_name() or body.get_name() + ": Organization"
                 if self.with_meetings:
                     future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
-                    futures[future] = body.get_short_name() + ": Meeting"
+                    futures[future] = body.get_short_name() or body.get_name() + ": Meeting"
             print("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
