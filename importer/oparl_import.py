@@ -32,7 +32,7 @@ class OParlImport(OParlImportObjects):
         self.client = OParl.Client()
         self.client.connect("resolve_url", self.resolve)
         try:
-            system = self.client.open(self.entrypoint)
+            self.system = self.client.open(self.entrypoint)
         except GLib.Error as e:
             self.logger.fatal("Failed to load entrypoint: {}".format(e))
             self.logger.fatal("Aborting.")
@@ -93,7 +93,7 @@ class OParlImport(OParlImportObjects):
         return err_count
 
     def get_bodies(self):
-        return system.get_body()
+        return self.system.get_body()
 
     def bodies_singlethread(self, bodies):
         print("Creating bodies")
