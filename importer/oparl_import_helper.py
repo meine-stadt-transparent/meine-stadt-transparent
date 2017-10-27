@@ -4,6 +4,7 @@ import os
 from datetime import date
 
 import gi
+from django.test import override_settings
 from django.utils import dateparse
 
 from mainapp.models import DefaultFields
@@ -14,6 +15,7 @@ gi.require_version('Json', '1.0')
 from gi.repository import Json, GLib, OParl
 
 
+@override_settings(ELASTICSEARCH_DSL_AUTOSYNC=False, ELASTICSEARCH_DSL_AUTO_REFRESH=False)
 class OParlImportHelper:
     """ A collection of helper function for the oparl importer.
 
