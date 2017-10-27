@@ -3,6 +3,7 @@ span.twitter-typeahead {
 
   .tt-menu {
     @extend .dropdown-menu;
+    max-width: 100%;
   }
 
   .tt-suggestion {
