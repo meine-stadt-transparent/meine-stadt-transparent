@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<form class="pull-right subscribe-widget" method="POST">
+    {% csrf_token %}
+    {% if is_subscribed %}
+        <span class="fa fa-check"></span> You receive updates
+        <button class="btn btn-default btn-sm" name="unsubscribe" value="unsubscribe">
+            <span class="fa fa-minus"></span> {% trans "Unsubscribe" %}
+        </button>
+    {% else %}
+        <button class="btn btn-primary btn-sm" name="subscribe" value="subscribe"
+                title="{% trans 'Get notified about new documents' %}">
+            <span class="fa fa-plus"></span> {% trans "Subscribe" %}
+        </button>
+    {% endif %}
+</form>

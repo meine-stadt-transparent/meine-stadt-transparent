@@ -1,7 +1,7 @@
 from django.conf import settings
 from elasticsearch_dsl import Search
 
-QUERY_KEYS = ["document-type", "radius", "lat", "lng"]
+QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person"]
 
 
 def params_to_query(params: dict):
@@ -57,3 +57,7 @@ def params_to_search_string(params: dict):
         values.append(params["searchterm"])
     searchstring = " ".join(values)
     return searchstring
+
+
+def params_are_equal(params1: dict, params2: dict):
+    return params_to_search_string(params1) == params_to_search_string(params2)

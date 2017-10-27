@@ -1,19 +1,28 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block content %}
     <div class="container">
-        <div class="section">
-            <p>{{ person }}</p>
-            {% if papers %}
-                <p>Submitted Papers:</p>
-                <ul>
-                    {% for paper in papers %}
-                        <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No papers submitted</p>
-            {% endif %}
-        </div>
+        {% include 'partials/messages.html' %}
+
+        <article class="card">
+            <h1 class="card-header">
+                {% include 'partials/subscribe_widget.html' %}
+                {{ person }}
+            </h1>
+            <div class="card-body">
+                {% if papers %}
+                    <p>{% trans "Submitted Papers" %}:</p>
+                    <ul>
+                        {% for paper in papers %}
+                            <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>{% trans "No papers submitted" %}</p>
+                {% endif %}
+            </div>
+        </article>
     </div>
 {% endblock %}
