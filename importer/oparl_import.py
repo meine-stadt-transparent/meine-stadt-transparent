@@ -85,19 +85,24 @@ class OParlImport(OParlImportObjects):
 
         return err_count
 
-    def run_singlethread(self):
+    def get_bodies(self):
         try:
             system = self.client.open(self.entrypoint)
         except GLib.Error as e:
             self.logger.fatal("Failed to load entrypoint: {}".format(e))
             self.logger.fatal("Aborting.")
             return
-        bodies = system.get_body()
+        return system.get_body()
 
+    def bodies_singlethread(self, bodies):
         print("Creating bodies")
         for body in bodies:
             self.body(body)
         print("Finished creating bodies")
+
+    def run_singlethread(self):
+        bodies = self.get_bodies()
+        self.bodies_singlethread(bodies)
 
         print("Creating objects")
         for body in bodies:
@@ -113,15 +118,7 @@ class OParlImport(OParlImportObjects):
         print("Finished creating objects")
         self.add_missing_associations()
 
-    def run_multithreaded(self):
-        try:
-            system = self.client.open(self.entrypoint)
-        except GLib.Error as e:
-            self.logger.fatal("Failed to load entrypoint: {}".format(e))
-            self.logger.fatal("Aborting.")
-            return
-        bodies = system.get_body()
-
+    def bodies_multithread(self, bodies):
         print("Creating bodies")
         # Ensure all bodies exist when calling the other methods
 
@@ -132,22 +129,26 @@ class OParlImport(OParlImportObjects):
         list(results)
         print("Finished creating bodies")
 
+    def run_multithreaded(self):
+        bodies = self.get_bodies()
+        self.bodies_multithread(bodies)
+
         with Pool(self.threadcount) as executor:
             print("Submitting concurrent tasks")
             futures = {}
             for body in bodies:
                 if self.with_papers:
                     future = executor.submit(self.list_caught, body.get_paper, self.paper)
-                    futures[future] = "{}: Paper".format(body.get_short_name())
+                    futures[future] = body.get_short_name() + ": Paper"
                 if self.with_persons:
                     future = executor.submit(self.list_caught, body.get_person, self.person)
-                    futures[future] = "{}: Person".format(body.get_short_name())
+                    futures[future] = body.get_short_name() + ": Person"
                 if self.with_organizations:
                     future = executor.submit(self.list_caught, body.get_organization, self.organization)
-                    futures[future] = "{}: Organization".format(body.get_short_name())
+                    futures[future] = body.get_short_name() + ": Organization"
                 if self.with_meetings:
                     future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
-                    futures[future] = "{}: Meeting".format(body.get_short_name())
+                    futures[future] = body.get_short_name() + ": Meeting"
             print("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
