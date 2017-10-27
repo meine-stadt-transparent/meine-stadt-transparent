@@ -46,3 +46,13 @@ def search_string_to_params(query: str):
     if len(values) > 0:
         params["searchterm"] = " ".join(values).replace("  ", " ").strip()
     return params
+
+
+def params_to_search_string(params: dict):
+    values = []
+    for key, value in params.items():
+        if key == "searchterm":
+            values.append(value)
+        else:
+            values.append(key + ":" + value)
+    return " ".join(values)

@@ -2,20 +2,22 @@
 
 from django.contrib.auth.models import User
 from django.db import models
-from jsonfield import JSONField
 
-from mainapp.functions.search_expression import SearchExpression
+from mainapp.functions.search_tools import params_to_search_string, search_string_to_params
 
 
 class UserAlert(models.Model):
     user = models.ForeignKey(User)
-    alert_json = JSONField(null=False, blank=False)
+    search_string = models.TextField(null=False, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     last_match = models.DateTimeField(null=True)
 
-    def alert(self):
-        return SearchExpression.create_from_json(self.alert_json)
+    def get_search_params(self):
+        return search_string_to_params(self.search_string)
+
+    def set_search_params(self, params: dict):
+        self.search_string = params_to_search_string(params)
 
     def __str__(self):
-        return self.alert().__str__()
+        return self.search_string
 
