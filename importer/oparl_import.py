@@ -28,6 +28,8 @@ class OParlImport(OParlImportObjects):
         os.makedirs(self.storagefolder, exist_ok=True)
         os.makedirs(self.cachefolder, exist_ok=True)
 
+        self.errorlist = []
+
         # Initialize the liboparl client
         self.client = OParl.Client()
         self.client.connect("resolve_url", self.resolve)
@@ -75,8 +77,7 @@ class OParlImport(OParlImportObjects):
                     fn(item)
             print("Batch finished")
 
-    @staticmethod
-    def list_caught(objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]) -> int:
+    def list_caught(self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]) -> int:
         """ Downloads and parses a body list and prints all errors immediately.
         This is a fixup for python's broken error handling with threadpools.
         """
@@ -86,8 +87,9 @@ class OParlImport(OParlImportObjects):
             try:
                 fn(item)
             except Exception as e:
-                print("An error occured:", e)
-                traceback.print_exc()
+                print("An error occured:", e, file=sys.stderr)
+                print(traceback.format_exc(), file=sys.stderr)
+                self.errorlist.append((item.get_id(), e, traceback.format_exc()))
                 err_count += 1
 
         return err_count
@@ -160,6 +162,11 @@ class OParlImport(OParlImportObjects):
 
         print("Finished creating objects")
         self.add_missing_associations()
+
+        for i in self.errorlist:
+            print(i[0])
+            print(i[1])
+            print(i[2])
 
     def run(self):
         if self.no_threads:

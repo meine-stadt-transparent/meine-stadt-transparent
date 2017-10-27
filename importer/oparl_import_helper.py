@@ -87,6 +87,9 @@ class OParlImportHelper:
             "name": libobject.get_name(),
         }
 
+        if defaults["deleted"]:
+            return defaults
+
         # Add an ellipsis to not-so-short short names
         if len(defaults["short_name"]) > 50:
             defaults["short_name"] = defaults["short_name"][:47] + "\u2026"

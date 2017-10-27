@@ -53,7 +53,7 @@ class SternbergImport(OParlImport):
 
         if "/person" in url:
             oparl_object = json.loads(response.get_resolved_data())
-            if "location" in oparl_object and isinstance(oparl_object["location"], object):
+            if "location" in oparl_object and not isinstance(oparl_object["location"], str):
                 oparl_object["location"] = oparl_object["location"]["id"]
 
             response.set_resolved_data(json.dumps(oparl_object))
