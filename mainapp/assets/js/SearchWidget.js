@@ -10,7 +10,6 @@ export default class SearchWidget {
                 display: 'name',
                 source: function (query, syncResults, asyncResults) {
                     $.get(url + query, function (data) {
-                        console.log(data);
                         asyncResults(data);
                     });
                 },
@@ -29,22 +28,20 @@ $("#searchform").submit(function (event) {
 
     let searchterm = "";
     let querystring = "";
-    let values = {};
-    $('#searchform :input').each(function () {
-        if ('searchterm' in values) {
-            searchterm = values["searchterm"];
-            delete values["searchterm"];
+    $('#searchform').find(':input').each(function () {
+        let val = $(this).val();
+        let name = this.name;
+        // Skip empty values
+        if (name === "" || val === "" || (Array.isArray(val) && val.length === 0)) {
+            return;
         }
-        if (this.name !== "" && $(this).val() !== "") {
-            if (this.name === "searchterm") {
-                searchterm = $(this).val()
-            } else {
-                values[this.name] = $(this).val();
-                querystring += "" + this.name + ":" + $(this).val() + " ";
-            }
+
+        if (name === "searchterm") {
+            searchterm = val
+        } else {
+            querystring += "" + name + ":" + val + " ";
         }
     });
-
 
     querystring += searchterm;
 

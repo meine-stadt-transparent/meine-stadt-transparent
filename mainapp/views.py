@@ -106,15 +106,12 @@ def search(request):
     options, s = params_to_query(searchdict)
 
     results = []
-    for raw_result in s.execute():
-        result = {
-            "type": raw_result.meta.doc_type.replace("_document", "").replace("_", "-"),
-            "id": raw_result.id,
-            "name": raw_result.name,
-            "raw_result": raw_result,
-        }
-        if hasattr(raw_result.meta, "highlight"):
-            result["highlight"] = raw_result.meta.highlight.parsed_text
+    for hit in s.execute():
+        result = hit.__dict__['_d_']  # Extract the raw fields from the hit
+        result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
+
+        if hasattr(hit.meta, "highlight"):
+            result["highlight"] = hit.meta.highlight.parsed_text
         results.append(result)
 
     context = {
