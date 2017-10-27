@@ -7,7 +7,7 @@ from mainapp.models import UserProfile
 
 
 class ProfileHomeView(LoginRequiredMixin, TemplateView):
-    template_name = 'mainapp/userprofiles/home.html'
+    template_name = 'account/home.html'
     user_check_failure_path = '/comptes/signup/'
 
     def check_user(self, user):

@@ -7,14 +7,55 @@
 {% block title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <section class="card">
-            <h1 class="card-header">
-                {% trans "Sign in with..." context 'login' %}
-            </h1>
-            {% get_providers as socialaccount_providers %}
-            {% if socialaccount_providers %}
-                <div class="card-body">
+    <div class="container col-4">
+        <div class="card">
+            <div class="card-body">
+                <h1>{% trans "Sign in" context 'login' %}</h1>
+
+                <div class="signup">
+                    <a class="signup-link" href="{{ signup_url }}">{% trans "Sign Up" context 'login' %}</a>
+                </div>
+
+                <form class="login card-body" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    {{ form.login.errors }}
+                    <div class="form-group row">
+                        <label for="{{ form.login.id_for_label }}" class="col-form-label" hidden>
+                            {{ form.login.label }}:
+                        </label>
+                        {{ form.login|add_class:"form-control" }}
+                    </div>
+
+                    {{ form.password.errors }}
+                    <div class="form-group row">
+                        <label for="{{ form.password.id_for_label }}" class="col-form-label" hidden>
+                            {{ form.password.label }}:
+                        </label>
+                        {{ form.password|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group row">
+                        <a class="forgot-link"
+                           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                    </div>
+
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+
+                    <div class="form-group row">
+                        <button class="w-100 btn btn-primary" type="submit">{% trans "Sign In" context 'login' %}</button>
+                    </div>
+                </form>
+
+                <h3>
+                    {% trans "Social Login" context 'login' %}
+                </h3>
+
+                {% get_providers as socialaccount_providers %}
+                {% if socialaccount_providers %}
                     <div class="socialaccount_ballot">
                         <ul class="socialaccount_providers">
                             {% include "socialaccount/snippets/provider_list.html" with process="login" %}
@@ -22,48 +63,9 @@
                     </div>
 
                     {% include "socialaccount/snippets/login_extra.html" %}
-                </div>
-                <div class="card-header">
-                    {% trans "Sign in with your e-mail-address" context 'login' %}
-                </div>
-            {% endif %}
-            <form class="login card-body" method="POST" action="{% url 'account_login' %}">
-                <div class="signup">
-                    <a class="signup-link" href="{{ signup_url }}">{% trans "Sign Up" context 'login' %}</a>
-                </div>
-                {% csrf_token %}
-                {{ form.non_field_errors }}
-
-                {{ form.login.errors }}
-                <div class="form-group row">
-                    <label for="{{ form.login.id_for_label }}" class="col-sm-3  col-form-label">
-                        {{ form.login.label }}:
-                    </label>
-                    <div class="col-sm-9">
-                        {{ form.login|add_class:"form-control" }}
-                    </div>
-                </div>
-
-                {{ form.password.errors }}
-                <div class="form-group row">
-                    <label for="{{ form.password.id_for_label }}" class="col-sm-3 col-form-label">
-                        {{ form.password.label }}:
-                    </label>
-                    <div class="col-sm-9">
-                        {{ form.password|add_class:"form-control" }}
-                        <a class="forgot-link"
-                           href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-                    </div>
-                </div>
-
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                 {% endif %}
-                <div class="save-row">
-                    <button class="btn btn-primary" type="submit">{% trans "Sign In" context 'login' %}</button>
-                </div>
-            </form>
-        </section>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
