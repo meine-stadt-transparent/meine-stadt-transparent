@@ -261,6 +261,9 @@ SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
 SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
 SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE', 1)
 
+# The documents of the last SITE_INDEX_DOCUMENT_DAY days will be shown on the home page
+SITE_INDEX_DOCUMENT_DAY = env.int('SITE_INDEX_DOCUMENT_DAY', 7)
+
 # Possible values: month, listYear, listMonth, listDay, basicWeek, basicDay, agendaWeek, agendaDay
 CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 

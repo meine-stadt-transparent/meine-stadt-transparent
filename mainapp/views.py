@@ -1,5 +1,5 @@
 import json
-from datetime import date
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.db.models import Count
@@ -27,8 +27,13 @@ def index(request):
     else:
         outline = None
 
-    latest_paper = Paper.objects.order_by("-modified", "-legal_date")[:20]
-    geo_papers = Paper.objects.filter(modified__gte="2017-10-10")
+    document_end_date = date.today() + timedelta(days=1)
+    document_start_date = document_end_date - timedelta(days=settings.SITE_INDEX_DOCUMENT_DAY)
+    latest_paper = Paper.objects\
+                        .filter(modified__range=[document_start_date, document_end_date])\
+                        .order_by("-modified", "-legal_date")[:50]
+    geo_papers = Paper.objects\
+                      .filter(modified__range=[document_start_date, document_end_date])[:50]
 
     context = {
         'map': json.dumps({
