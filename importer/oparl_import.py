@@ -25,11 +25,18 @@ class OParlImport(OParlImportObjects):
 
     def __init__(self, options):
         super().__init__(options)
-        self.client = OParl.Client()
-
-        self.client.connect("resolve_url", self.resolve)
         os.makedirs(self.storagefolder, exist_ok=True)
         os.makedirs(self.cachefolder, exist_ok=True)
+
+        # Initialize the liboparl client
+        self.client = OParl.Client()
+        self.client.connect("resolve_url", self.resolve)
+        try:
+            system = self.client.open(self.entrypoint)
+        except GLib.Error as e:
+            self.logger.fatal("Failed to load entrypoint: {}".format(e))
+            self.logger.fatal("Aborting.")
+            return
 
     def resolve(self, _, url: str):
         cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
@@ -86,12 +93,6 @@ class OParlImport(OParlImportObjects):
         return err_count
 
     def get_bodies(self):
-        try:
-            system = self.client.open(self.entrypoint)
-        except GLib.Error as e:
-            self.logger.fatal("Failed to load entrypoint: {}".format(e))
-            self.logger.fatal("Aborting.")
-            return
         return system.get_body()
 
     def bodies_singlethread(self, bodies):
