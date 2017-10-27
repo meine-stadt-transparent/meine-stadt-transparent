@@ -13,7 +13,7 @@
 }
 
 #main-content {
-  margin: $main-content-margin-top 50px;
+  margin: $main-content-margin-top auto;
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
 }
 
@@ -75,4 +75,18 @@ ul.agenda-list {
       border-bottom: none;
     }
   }
+}
+
+.login-container {
+  .facebook {
+    background-color: #3b5998;
+    color: white;
+  }
+
+  .twitter {
+    background-color: #005fd1;
+    color: white;
+  }
+
+  max-width: 400px
 }

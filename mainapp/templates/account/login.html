@@ -7,7 +7,7 @@
 {% block title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-    <div class="container col-4">
+    <div class="container login-container">
         <div class="card">
             <div class="card-body">
                 <h1>{% trans "Sign in" context 'login' %}</h1>
@@ -46,21 +46,18 @@
                     {% endif %}
 
                     <div class="form-group row">
-                        <button class="w-100 btn btn-primary" type="submit">{% trans "Sign In" context 'login' %}</button>
+                        <button class="w-100 btn btn-primary"
+                                type="submit">{% trans "Sign In" context 'login' %}</button>
                     </div>
                 </form>
 
-                <h3>
-                    {% trans "Social Login" context 'login' %}
-                </h3>
-
                 {% get_providers as socialaccount_providers %}
                 {% if socialaccount_providers %}
-                    <div class="socialaccount_ballot">
-                        <ul class="socialaccount_providers">
-                            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-                        </ul>
-                    </div>
+                    <h3>
+                        {% trans "Social Login" context 'login' %}
+                    </h3>
+
+                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
 
                     {% include "socialaccount/snippets/login_extra.html" %}
                 {% endif %}
