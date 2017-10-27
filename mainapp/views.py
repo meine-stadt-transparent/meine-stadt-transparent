@@ -17,7 +17,7 @@ from mainapp.models import Body, Committee
 from mainapp.models.meeting import Meeting
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
-from mainapp.functions.search_tools import params_to_query
+from mainapp.functions.search_tools import params_to_query, search_string_to_params
 
 
 def index(request):
@@ -102,7 +102,8 @@ def search(request):
         return render(request, 'mainapp/search.html', context)
 
     params = request.GET
-    options, s = params_to_query(params)
+    searchdict = search_string_to_params(params.get("query", ""))
+    options, s = params_to_query(searchdict)
 
     results = []
     for raw_result in s.execute():

@@ -15,13 +15,28 @@ def params_to_query(params: dict):
         lat = float(params.get('lat', ''))
         lng = float(params.get('lng', ''))
         radius = int(params.get('radius', ''))
-        s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
+        s = s.filter("geo_distance", distance=str(radius) + "m", location={
             "lat": lat,
             "lon": lng,
         })
-        options['lat'] = lat
-        options['lng'] = lng
-        options['radius'] = radius
+        options['lat'] = str(lat)
+        options['lng'] = str(lng)
+        options['radius'] = str(radius)
     except ValueError:
         pass
     return options, s
+
+
+def search_string_to_params(query: str):
+    values = [value.strip() for value in query.split(" ")]
+    keys = ["body", "radius", "lat", "lng"]
+    params = dict()
+    for value in values[:]:
+        for key in keys:
+            if value.startswith(key + ":"):
+                values.remove(value)
+                value = value[len(key + ":"):]
+                params[key] = value
+    if len(values) > 0:
+        params["searchterm"] = " ".join(values).replace("  ", " ").strip()
+    return params

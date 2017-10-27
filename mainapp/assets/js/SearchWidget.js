@@ -23,13 +23,32 @@ export default class SearchWidget {
     }
 }
 
-// Remove empty fields from url
-// https://stackoverflow.com/a/8029581/3549270
-$("#searchform").submit(function () {
-    $(this)
-        .find('input[name]')
-        .filter(function () {
-            return !this.value;
-        })
-        .prop('name', '');
+// Build a querystring from the form
+$("#searchform").submit(function (event) {
+    event.preventDefault();
+    let $inputs = $('#searchform :input');
+
+    let searchterm = "";
+    let querystring = "";
+    let values = {};
+    $inputs.each(function () {
+        if ('searchterm' in values) {
+            searchterm = values["searchterm"]
+            delete values["searchterm"];
+        }
+        if (this.name !== "" && $(this).val() !== "") {
+            if (this.name === "searchterm") {
+                searchterm = $(this).val()
+            } else {
+                values[this.name] = $(this).val();
+                querystring += "" + this.name + ":" + $(this).val() + " ";
+            }
+        }
+    });
+
+    querystring += searchterm;
+
+    let searchParams = new URLSearchParams(window.location.search);
+    searchParams.set("query", querystring);
+    window.location.search = searchParams.toString();
 });
