@@ -50,10 +50,10 @@ def search_string_to_params(query: str):
 
 def params_to_search_string(params: dict):
     values = []
-    for key, value in params.items():
+    for key, value in sorted(params.items()):
         if key != "searchterm":
             values.append(key + ":" + value)
-    searchstring = " ".join(values)
     if "searchterm" in params:
-        searchstring += " " + params["searchterm"]
+        values.append(params["searchterm"])
+    searchstring = " ".join(values)
     return searchstring

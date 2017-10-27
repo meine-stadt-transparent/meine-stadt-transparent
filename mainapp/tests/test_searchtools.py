@@ -39,6 +39,6 @@ class TestSearchtools(TestCase):
         self.assertEqual(query.to_dict(), expected)
 
     def test_params_to_search_string(self):
-        expected = "radius:50 document-type:file,committee word radius anotherword"
+        expected = "document-type:file,committee radius:50 word radius anotherword"
         search_string = params_to_search_string(self.params)
         self.assertEqual(search_string, expected)
