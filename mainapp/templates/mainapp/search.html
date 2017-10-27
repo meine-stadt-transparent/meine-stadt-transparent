@@ -38,9 +38,22 @@
                         <label for="lng">Längengrad</label>
                     </div>
                     <div class="input-field col s2">
-                        <label for="radius">Enterfnung in m</label>
                         <input id="lng" type="text" name="radius" value="{{ options.radius }}">
+                        <label for="radius">Enterfnung in m</label>
                     </div>
+                </div>
+
+                <div class="input-field col s2">
+                    <select id="document-type" name="document-type" multiple="multiple">
+                        {% for document_type in document_types %}
+                            {% if document_type in options.document_type %}
+                                <option value="{{ document_type }}" selected>{{ document_type }}</option>
+                            {% else %}
+                                <option value="{{ document_type }}">{{ document_type }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label id="document-type" type="text" name="document_type">document type1</label>
                 </div>
             </form>
         </section>

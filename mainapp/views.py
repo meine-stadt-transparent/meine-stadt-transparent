@@ -12,12 +12,12 @@ from icalendar import Calendar
 # noinspection PyPackageRequirements
 from slugify import slugify
 
-
+from mainapp.documents import DOCUMENT_TYPES
+from mainapp.functions.search_tools import params_to_query, search_string_to_params
 from mainapp.models import Body, Committee
 from mainapp.models.meeting import Meeting
 from mainapp.models.paper import Paper
 from mainapp.models.person import Person
-from mainapp.functions.search_tools import params_to_query, search_string_to_params
 
 
 def index(request):
@@ -120,6 +120,7 @@ def search(request):
     context = {
         "results": results,
         "options": options,
+        "document_types": DOCUMENT_TYPES,
     }
 
     return render(request, 'mainapp/search.html', context)

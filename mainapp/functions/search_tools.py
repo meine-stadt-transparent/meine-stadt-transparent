@@ -1,6 +1,8 @@
 from django.conf import settings
 from elasticsearch_dsl import Search
 
+QUERY_KEYS = ["document-type", "radius", "lat", "lng"]
+
 
 def params_to_query(params: dict):
     s = Search(index=settings.ELASTICSEARCH_INDEX)
@@ -24,12 +26,16 @@ def params_to_query(params: dict):
         options['radius'] = str(radius)
     except ValueError:
         pass
+    if 'document-type' in params:
+        split = params['document-type'].split(",")
+        s = s.filter('terms', _type=[i + "_document" for i in split])
+        options["document_type"] = split
     return options, s
 
 
 def search_string_to_params(query: str):
     values = [value.strip() for value in query.split(" ")]
-    keys = ["body", "radius", "lat", "lng"]
+    keys = QUERY_KEYS
     params = dict()
     for value in values[:]:
         for key in keys:

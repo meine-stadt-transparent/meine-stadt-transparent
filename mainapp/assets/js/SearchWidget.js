@@ -26,14 +26,13 @@ export default class SearchWidget {
 // Build a querystring from the form
 $("#searchform").submit(function (event) {
     event.preventDefault();
-    let $inputs = $('#searchform :input');
 
     let searchterm = "";
     let querystring = "";
     let values = {};
-    $inputs.each(function () {
+    $('#searchform :input').each(function () {
         if ('searchterm' in values) {
-            searchterm = values["searchterm"]
+            searchterm = values["searchterm"];
             delete values["searchterm"];
         }
         if (this.name !== "" && $(this).val() !== "") {
@@ -45,6 +44,7 @@ $("#searchform").submit(function (event) {
             }
         }
     });
+
 
     querystring += searchterm;
 
