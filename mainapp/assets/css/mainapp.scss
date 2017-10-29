@@ -38,12 +38,11 @@ a.no-link-color {
   color: black;
 }
 
-ul.agenda-list {
-  list-style: none;
-  > li > span {
-    min-width: 40px;
-    display: inline-block;
-  }
+.fa-custom {
+  @extend .fa;
+  @extend .fa-fw;
+  @extend .mr-1;
+  @extend .no-link-color;
 }
 
 .dropdown-item, span.twitter-typeahead .tt-suggestion {
