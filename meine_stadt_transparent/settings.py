@@ -274,5 +274,7 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1'
     ]
+    DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 
-CSP_IMG_SRC = ("'self'", "api.tiles.mapbox.com")
+CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+SECURE_CONTENT_TYPE_NOSNIFF = True
