@@ -295,12 +295,10 @@ class OParlImportObjects(OParlImportHelper):
 
         print("Adding missing agenda item <-> paper associations")
         for item_id, paper_id in self.agenda_item_paper_queue.items():
-            print(item_id)
-            print("'{}'".format(paper_id))
             item = AgendaItem.objects.get(oparl_id=item_id)
             item.paper = Paper.objects.filter(oparl_id=paper_id).first()
             if not item.paper:
-                self.logger.error("Missing Paper: {}".format(paper_id))
+                self.logger.error("Missing Paper: {}, ({})".format(paper_id, item_id))
             item.save()
 
         print("Adding missing memberships")

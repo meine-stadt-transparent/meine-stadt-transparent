@@ -9,25 +9,27 @@
 
         {% if not profile.email_is_verified %}
             <section class="alert alert-warning mst-account-section">
-                <p>Deine E-Mail-Adresse ist noch nicht bestätigt.</p>
+                <p>{% trans 'Your email address has not been verified' %}</p>
                 <a class="btn btn-primary" href="{% url 'account_email' %}">
-                    Jetzt bestätigen
+                    {% trans 'Verify now' %}
                 </a>
             </section>
         {% endif %}
 
         <section class="card mst-notifications mst-account-section">
             <h2 class="card-header">
-                Benachrichtigungen
+                {% trans 'Notifications' %}
             </h2>
             <div class="card-body">
-                @TODO
+                {% for alert in alerts %}
+                    {{ alert }}
+                {% endfor %}
             </div>
         </section>
 
         <section class="card mst-accountsettings mst-account-section">
             <h2 class="card-header">
-                Account-Einstellungen
+                {% trans 'Account Settings' %}
             </h2>
             <div class="card-body">
                 {% if not profile.email_is_verified %}
@@ -36,12 +38,11 @@
                     <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
                 {% endif %}
 
-
-                <a href="{% url 'account_change_password' %}" class="btn btn-link">
+                <a href="{% url 'account_change_password' %}" class="btn btn-primary">
                     {% trans "Change your password" %}
                 </a>
 
-                @TODO Account löschen
+                @TODO {% trans 'Account löschen' %}
             </div>
         </section>
     </div>
