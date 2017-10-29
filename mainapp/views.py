@@ -258,10 +258,15 @@ def person(request, pk):
     filer_group = Paper.objects.filter(submitter_parliamentary_groups__parliamentarygroupmembership__id=pk)
     paper = (filter_self | filter_committee | filer_group).distinct()
 
+    if not request.user.pk:
+        is_subscribed = False
+    else:
+        is_subscribed = UserAlert.user_has_alert(request.user, search_params)
+
     context = {
         "person": selected_person,
         "papers": paper,
-        "is_subscribed": UserAlert.user_has_alert(request.user, search_params)
+        "is_subscribed": is_subscribed,
     }
     return render(request, 'mainapp/person.html', context)
 
