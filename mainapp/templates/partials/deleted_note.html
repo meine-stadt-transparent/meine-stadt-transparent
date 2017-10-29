@@ -1,0 +1,13 @@
+{% load i18n %}
+
+<div class="alert alert-danger" role="alert">
+    <h3 class="alert-heading">{% trans 'Deleted' %}</h3>
+    <p>
+        {% trans "This object has been deleted. " %}
+        {% trans "This normally happend when something has been incorrectly published or had to be depublished." %}
+    </p>
+    <p>
+        {% trans "All information on this page is void." %}
+        {% trans "This page exists solely to inform about the deletion." %}
+    </p>
+</div>

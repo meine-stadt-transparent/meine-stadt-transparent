@@ -2,9 +2,12 @@
 
 {% block content %}
     <div class="container">
+        {% if paper.deleted %}
+            {% include "partials/deleted_note.html" %}
+        {% endif %}
+
         <div class="section">
             <ul>
-                <li>Deleted: {{ paper.deleted }}</li>
                 <li>Name: {{ paper.name }}</li>
                 <li>Short Name: {{ paper.short_name }}</li>
                 <li>Description: {{ paper.description }}</li>
