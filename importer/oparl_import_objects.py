@@ -101,6 +101,8 @@ class OParlImportObjects(OParlImportHelper):
             else:
                 print("Failed to find organization for {}".format(i))
 
+        paper.save()
+
         return paper
 
     def organization(self, libobject: OParl.Organization):
