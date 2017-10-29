@@ -81,7 +81,9 @@ class OParlImportObjects(OParlImportHelper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
         defaults = {
-            "legal_date": self.glib_datetime_to_python_date(libobject.get_date())
+            "legal_date": self.glib_datetime_to_python_date(libobject.get_date()),
+            "reference_number": libobject.get_reference(),
+            "paper_type": libobject.get_paper_type(),
         }
         defaults.update(self.default_fields(libobject))
 
