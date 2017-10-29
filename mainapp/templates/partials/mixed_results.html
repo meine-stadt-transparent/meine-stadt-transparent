@@ -1,0 +1,25 @@
+{% load i18n %}
+
+<ul class="results-list">
+    {% for result in results %}
+        <li class="clearfix">
+            <a href="{% url result.type result.id %}" class="no-link-color">
+                <div class="py-2 container">
+                    <div class="row">
+                        <div class="col-auto p-2">
+                            <i class="fa fa-fw fa-3x {% include "partials/type_to_fa_icon.html" with type=result.type %}"
+                               aria-hidden="true"></i>
+                        </div>
+                        <div class="col text-truncate">
+                            <div class="lead text-truncate">{{ result.name }}</div>
+                            <div class="text-muted text-truncate">{{ result.type }}</div>
+                            <div class="text-muted text-truncate">{{ result.body.name }}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    {% empty %}
+        <p>{% trans "Nothing Found" %}</p>
+    {% endfor %}
+</ul>

@@ -30,11 +30,13 @@ def index(request):
 
     document_end_date = date.today() + timedelta(days=1)
     document_start_date = document_end_date - timedelta(days=settings.SITE_INDEX_DOCUMENT_DAY)
-    latest_paper = Paper.objects\
-                        .filter(modified__range=[document_start_date, document_end_date])\
-                        .order_by("-modified", "-legal_date")[:50]
-    geo_papers = Paper.objects\
-                      .filter(modified__range=[document_start_date, document_end_date])[:50]
+    latest_paper = Paper.objects \
+                       .filter(modified__range=[document_start_date, document_end_date]) \
+                       .order_by("-modified", "-legal_date")[:10]
+    for paper in latest_paper:
+        setattr(paper, "type", "paper")  # The mixed results view needs this
+    geo_papers = Paper.objects \
+                     .filter(modified__range=[document_start_date, document_end_date])[:50]
 
     context = {
         'map': json.dumps({

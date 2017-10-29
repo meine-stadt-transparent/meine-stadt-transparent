@@ -44,6 +44,9 @@
                 </div>
 
                 <div class="input-field col s2">
+                    <label for="document-type">
+                        {% trans "Document Type" context "search" %}
+                    </label>
                     <select id="document-type" name="document-type" multiple="multiple">
                         {% for document_type in document_types %}
                             {% if document_type in options.document_type %}
@@ -53,50 +56,12 @@
                             {% endif %}
                         {% endfor %}
                     </select>
-                    <label id="document-type" type="text" name="document_type">{% trans "Document Type" context "search"%}</label>
                 </div>
             </form>
         </section>
 
         <section class="section">
-            <ul class="results-list">
-                {% for result in results %}
-                    <li class="clearfix">
-                        <a href="{% url result.type result.id %}" class="no-link-color">
-                            <div class="py-2 container">
-                                <div class="row">
-                                    <div class="col-md-auto p-2">
-                                        {% if result.type == "committee" %}
-                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "department" %}
-                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "parliamentary-group" %}
-                                            <i class="fa fa-3x fa-fw fa-users" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "file" %}
-                                            <i class="fa fa-3x fa-fw fa-file-text" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "meeting" %}
-                                            <i class="fa fa-3x fa-fw fa-calendar" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "paper" %}
-                                            <i class="fa fa-3x fa-fw fa-file" aria-hidden="true"></i>&nbsp;
-                                        {% elif result.type == "person" %}
-                                            <i class="fa fa-3x fa-fw fa-user" aria-hidden="true"></i>&nbsp;
-                                        {% else %}
-                                            <i class="fa fa-3x fa-fw fa-question" aria-hidden="true"></i>&nbsp;
-                                        {% endif %}
-                                    </div>
-                                    <div class="col text-truncate">
-                                        <div class="lead text-truncate">{{ result.name }}</div>
-                                        <div class="text-muted text-truncate">{{ result.type }}</div>
-                                        <div class="text-muted text-truncate">{{ result.body.name }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                {% empty %}
-                    <p>{% trans "Nothing Found" %}</p>
-                {% endfor %}
-            </ul>
+            {% include "partials/mixed_results.html" %}
         </section>
     </div>
 {% endblock %}

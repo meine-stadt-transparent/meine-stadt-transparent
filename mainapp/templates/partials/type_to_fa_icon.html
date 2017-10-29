@@ -1,0 +1,17 @@
+{% if type == "committee" %}
+    fa-users
+{% elif type == "department" %}
+    fa-users
+{% elif type == "parliamentary-group" %}
+    fa-users
+{% elif type == "file" %}
+    fa-file-text
+{% elif type == "meeting" %}
+    fa-calendar
+{% elif type == "paper" %}
+    fa-file
+{% elif type == "person" %}
+    fa-user
+{% else %}
+    fa-question
+{% endif %}
