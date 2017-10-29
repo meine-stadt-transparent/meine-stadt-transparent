@@ -63,7 +63,7 @@ class OParlImportObjects(OParlImportHelper):
 
     def term(self, libobject: OParl.LegislativeTerm):
         if not libobject.get_start_date() or not libobject.get_end_date():
-            self.logger.error("Term has no start or end date - skipping")
+            print("Term has no start or end date - skipping")
             return None
 
         term = LegislativeTerm.objects.filter(oparl_id=libobject.get_id()).first() or LegislativeTerm()
@@ -81,14 +81,25 @@ class OParlImportObjects(OParlImportHelper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
         defaults = {
-            # TODO: Here's surely some fields missing
             "legal_date": self.glib_datetime_to_python_date(libobject.get_date())
         }
         defaults.update(self.default_fields(libobject))
 
         paper, _ = Paper.objects.update_or_create(oparl_id=libobject.get_id(), defaults=defaults)
+
         paper.files = [self.file(file) for file in libobject.get_auxiliary_file()]
         paper.main_file = self.file(libobject.get_main_file())
+
+        for i in libobject.get_under_direction_of_url():
+            organization = self.get_organization_by_oparl_id(i)
+            if isinstance(organization, Committee):
+                paper.submitter_committees.add(organization)
+            elif isinstance(organization, Department):
+                paper.submitter_departments.add(organization)
+            elif isinstance(organization, ParliamentaryGroup):
+                paper.submitter_parliamentary_groups.add(organization)
+            else:
+                print("Failed to find organization for {}".format(i))
 
         return paper
 
@@ -115,7 +126,7 @@ class OParlImportObjects(OParlImportHelper):
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
-            self.logger.error("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
+            print("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
             return
 
         for membership in libobject.get_membership():
@@ -298,7 +309,7 @@ class OParlImportObjects(OParlImportHelper):
             item = AgendaItem.objects.get(oparl_id=item_id)
             item.paper = Paper.objects.filter(oparl_id=paper_id).first()
             if not item.paper:
-                self.logger.error("Missing Paper: {}, ({})".format(paper_id, item_id))
+                print("Missing Paper: {}, ({})".format(paper_id, item_id))
             item.save()
 
         print("Adding missing memberships")
@@ -333,7 +344,7 @@ class OParlImportObjects(OParlImportHelper):
             membership = ParliamentaryGroupMembership.objects.get_or_create(oparl_id=libobject.get_id(),
                                                                             defaults=defaults)
         else:
-            self.logger.error("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
+            print("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
             return
 
         return membership

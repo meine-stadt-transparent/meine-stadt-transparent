@@ -109,3 +109,9 @@ class OParlImportHelper:
         djangoobject.name = defaults["name"]
         djangoobject.short_name = defaults["short_name"]
         djangoobject.deleted = defaults["deleted"]
+
+    @staticmethod
+    def get_organization_by_oparl_id(oparl_id):
+        return Department.objects.filter(oparl_id=oparl_id).first() or \
+               Committee.objects.filter(oparl_id=oparl_id).first() or \
+               ParliamentaryGroup.objects.filter(oparl_id=oparl_id).first()
