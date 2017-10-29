@@ -79,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
@@ -127,7 +128,6 @@ DATABASES = {
     'default': env.db()
 }
 
-
 # Authentication
 
 ACCOUNT_USERNAME_REQUIRED = False
@@ -158,7 +158,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -218,14 +217,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
 )
 
-
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/',
         'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
     }
 }
-
 
 # Elastic
 USE_ELASTICSEARCH = env.bool('USE_ELASTICSEARCH', True)
@@ -277,3 +274,5 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1'
     ]
+
+CSP_IMG_SRC = ("'self'", "api.tiles.mapbox.com")
