@@ -6,6 +6,10 @@ from .importoparl import Command as ImportOParlCommand
 class Command(ImportOParlCommand):
     help = 'Import the bodies from an oparl api into the database'
 
+    def add_arguments(self, parser, add_entrypoint=True):
+        super().add_arguments(parser, add_entrypoint)
+        parser.add_argument('url', type=str)
+
     def handle(self, *args, **options):
         importer = self.import_importer(options)
         importer = importer(options)
@@ -15,7 +19,7 @@ class Command(ImportOParlCommand):
             s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
             return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
 
-        object = importer.client.parse_url("https://www.muenchen-transparent.de/oparl/v1.0/meeting/564060")
-        oparltype = convert(object.get_oparl_type().split("/")[-1])
-        getattr(importer, oparltype)(object)
+        oparlobject = importer.client.parse_url(options["url"])
+        oparltype = convert(oparlobject.get_oparl_type().split("/")[-1])
+        getattr(importer, oparltype)(oparlobject)
 
