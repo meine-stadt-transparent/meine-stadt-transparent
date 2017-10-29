@@ -8,10 +8,6 @@
 @import "widgets";
 @import "~font-awesome/scss/font-awesome.scss";
 
-#leaflet-map {
-  height: 400px;
-}
-
 #main-content {
   margin: $main-content-margin-top auto;
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
@@ -21,10 +17,18 @@
   margin-top: 20px;
 }
 
+.mw-1000 {
+  max-width: 1000px;
+}
+
 .home-main-links {
   .main-link-holder {
     margin-top: 20px;
   }
+}
+
+#leaflet-map {
+  height: 400px;
 }
 
 a.no-link-color {

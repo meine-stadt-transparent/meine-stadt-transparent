@@ -5,51 +5,57 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta name="robots" content="{{ seo_robotos_index }},follow" />
+    <meta name="robots" content="{{ seo_robotos_index }},follow"/>
     {% render_bundle 'mainapp' 'css' %}
     {% block additional_css %}{% endblock %}
 </head>
 <body>
 
 {% block header %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="main-menu">
-    <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
-            aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-dark" id="main-menu">
+        <div class="container px-0 mw-1000">
+            <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
+                    aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    <div class="collapse navbar-collapse" id="main-menu-content">
-        <ul class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
-                </li>
-                <li class="nav-item">
-                    <form method="post" action="{% url 'account_logout' %}">
-                        {% csrf_token %}
-                        {% if redirect_field_value %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">
-                        {% endif %}
-                        <button type="submit" class="btn btn-link nav-link">{% trans 'Sign Out' context 'navigation' %}</button>
+            <div class="collapse navbar-collapse" id="main-menu-content">
+                <ul class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'account_logout' %}">
+                                {% csrf_token %}
+                                {% if redirect_field_value %}
+                                    <input type="hidden" name="{{ redirect_field_name }}"
+                                           value="{{ redirect_field_value }}">
+                                {% endif %}
+                                <button type="submit"
+                                        class="btn btn-link nav-link">{% trans 'Sign Out' context 'navigation' %}</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{% url 'account_login' %}">{% trans "Sign In" context 'navigation' %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                {% if not disable_header_search %}
+                    <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' %}">
+                        <input class="form-control" type="text" name="query" value="" autocomplete="off"
+                               data-suggest-url="{% url 'search_autosuggest' '' %}"
+                               placeholder="{% trans "Search" context "page_title" %}"
+                               aria-label="{% trans "Search" context "perform search" %}">
                     </form>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" context 'navigation' %}</a>
-                </li>
-            {% endif %}
-        </ul>
-        {% if not disable_header_search %}
-        <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' %}">
-            <input class="form-control mr-sm-2" type="text" name="query" value="" autocomplete="off"
-                   data-suggest-url="{% url 'search_autosuggest' '' %}"
-                   placeholder="{% trans "Search" context "page_title" %}" aria-label="{% trans "Search" context "perform search" %}">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">{% trans "Search" context "perform search" %}</button>
-        </form>
-        {% endif %}
-    </div>
-</nav>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
 {% endblock %}
 
 <main id="main-content">
@@ -58,12 +64,29 @@
 </main>
 
 <footer class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item"><a class="nav-link" href="{% url 'info_contact' %}">{% trans "Contact" context 'navigation' %}</a></li>
-        <li class="nav-item"><a class="nav-link" href="{% url 'info_privacy' %}">{% trans "Privacy Policy" context 'navigation' %}</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ settings.TEMPLATE_META.prototype_fund }}">Prototype Fund</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ settings.TEMPLATE_META.github }}">Github</a></li>
-    </ul>
+    <div class="container px-0 mw-1000 flex-column">
+        <div>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link"
+                                        href="{% url 'info_contact' %}">{% trans "Contact" context 'navigation' %}</a>
+                </li>
+                <li class="nav-item"><a class="nav-link"
+                                        href="{% url 'info_privacy' %}">{% trans "Privacy Policy" context 'navigation' %}</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{{ settings.TEMPLATE_META.prototype_fund }}">Prototype
+                    Fund</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="{{ settings.TEMPLATE_META.github }}">Github</a></li>
+            </ul>
+        </div>
+        <div>
+            <div class="navbar-nav">
+                <div class="nav-link">
+                    {% trans 'Meine Stadt Transparent is a private project and not authorized by any city council' %}
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>
 
 {% render_bundle 'vendor' 'js' %}

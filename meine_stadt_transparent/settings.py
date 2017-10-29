@@ -27,7 +27,7 @@ REAL_HOST = env.str('REAL_HOST')
 PRODUCT_NAME = "Meine Stadt Transparent"
 
 TEMPLATE_META = {
-    "logo_name": "Meine Stadt Transparent",
+    "logo_name": "MST",
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
 }
