@@ -1,11 +1,19 @@
+{% load i18n %}
+
 {% if messages %}
     {% for message in messages %}
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-            <div class="alert alert-success">{{ message }}</div>
-        {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-            <div class="alert alert-danger">{{ message }}</div>
-        {% else %}
-            <div class="alert alert-info">{{ message }}</div>
-        {% endif %}
+        <div
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                    class="alert alert-success"
+                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                    class="alert alert-danger"
+                {% else %}
+                    class="alert alert-info"
+                {% endif %}
+        >{{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="{% trans 'close message' %}">
+                <i class="fa fa-close" aria-hidden="true"></i>
+            </button>
+        </div>
     {% endfor %}
 {% endif %}
