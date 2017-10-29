@@ -7,7 +7,7 @@ from .paper import Paper
 class AgendaItem(models.Model):
     oparl_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     key = models.CharField(max_length=20)
-    title = models.CharField(max_length=1000)
+    title = models.TextField()
     meeting = models.ForeignKey(Meeting)
     # The agenda items of a meeting are ordered by this field
     position = models.IntegerField()
