@@ -28,3 +28,21 @@ form.login {
     font-size: inherit;
   }
 }
+
+.login-container {
+  max-width: 400px;
+
+  .facebook {
+    background-color: #3b5998;
+    color: white;
+  }
+
+  .twitter {
+    background-color: #005fd1;
+    color: white;
+  }
+}
+
+.errorlist {
+  @extend .list-unstyled;
+}

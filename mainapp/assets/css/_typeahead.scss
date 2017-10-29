@@ -25,3 +25,8 @@ span.twitter-typeahead {
     }
   }
 }
+
+.dropdown-item, span.twitter-typeahead .tt-suggestion {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -20,7 +20,7 @@
     </div>
 
     <div class="container pb-3">
-        <form class="form form-home-search" method="GET" action="{% url 'search' %}">
+        <form class="form" method="GET" action="{% url 'search' %}">
             <div class="input-group search-autocomplete">
                 <input name="query" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' '' %}"
@@ -38,18 +38,18 @@
 
         <nav class="home-main-links">
             <div class="row">
-                <div class="col-sm-6 main-link-holder">
+                <div class="col-sm-6 pt-3">
                     <a href="{% url 'persons' %}" class="btn btn-primary btn-block">Personen</a>
                 </div>
-                <div class="col-sm-6 main-link-holder">
+                <div class="col-sm-6 pt-3">
                     <a href="{% url 'calendar' %}" class="btn btn-primary btn-block">Termine</a>
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6 main-link-holder">
+                <div class="col-sm-6 pt-3">
                     <a href="{% url 'about' %}" class="btn btn-secondary btn-block">Über das Projekt</a>
                 </div>
-                <div class="col-sm-6 main-link-holder">
+                <div class="col-sm-6 pt-3">
                     <a href="" class="btn btn-secondary btn-block">Wie funktioniert Stadtpolitik?</a>
                 </div>
             </div>

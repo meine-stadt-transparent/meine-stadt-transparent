@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<form class="pull-right subscribe-widget" method="POST">
+<form class="pull-right" method="POST">
     {% csrf_token %}
     {% if is_subscribed %}
         <span class="fa fa-check"></span> You receive updates

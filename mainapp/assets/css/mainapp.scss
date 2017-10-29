@@ -5,7 +5,6 @@
 @import "typeahead";
 @import "persons";
 @import "account";
-@import "widgets";
 @import "~font-awesome/scss/font-awesome.scss";
 
 #main-content {
@@ -13,24 +12,10 @@
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
 }
 
-.form-home-search {
-  margin-top: 20px;
-}
-
 .mw-max {
   max-width: 800px;
   padding-right: 15px;
   padding-left: 15px;
-}
-
-.home-main-links {
-  .main-link-holder {
-    margin-top: 20px;
-  }
-}
-
-#leaflet-map {
-  height: 400px;
 }
 
 a.no-link-color {
@@ -45,14 +30,6 @@ a.no-link-color {
   @extend .no-link-color;
 }
 
-.errorlist {
-  @extend .list-unstyled;
-}
-
-.dropdown-item, span.twitter-typeahead .tt-suggestion {
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
 
 .results-list {
   list-style: none;
@@ -84,18 +61,4 @@ a.no-link-color {
       border-bottom: none;
     }
   }
-}
-
-.login-container {
-  .facebook {
-    background-color: #3b5998;
-    color: white;
-  }
-
-  .twitter {
-    background-color: #005fd1;
-    color: white;
-  }
-
-  max-width: 400px
 }
