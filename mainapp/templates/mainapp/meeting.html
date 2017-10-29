@@ -4,9 +4,9 @@
 {% block content %}
     {% spaceless %}
         <div class="container mw-max">
-            <h2>{{ meeting.short_name }}</h2>
+            <h1 class="h2">{{ meeting.short_name }}</h1>
             {% if meeting.short_name != meeting.name %}
-                <p>{{ meeting.name }}</p>
+                <p class="lead">{{ meeting.name }}</p>
             {% endif %}
 
             <p title="{% trans 'Time of the Meeting' %}">

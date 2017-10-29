@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
+
 {% block content %}
     <div class="container">
         {% if paper.deleted %}
@@ -7,59 +9,102 @@
         {% endif %}
 
         <div class="section">
-            <ul>
-                <li>Name: {{ paper.name }}</li>
-                <li>Short Name: {{ paper.short_name }}</li>
-                <li>Description: {{ paper.description }}</li>
-                {% if paper.submitter_parliamentary_groups.all %}
-                    <li>Submitter parliamentary_group:
-                        <ul>
-                            {% for parliamentary_group in paper.submitter_parliamentary_groups.all %}
-                                <li>
-                                    <a href="{% url 'parliamentary-group' parliamentary_group.id %}">{{ parliamentary_group }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
-                {% if paper.submitter_committees.all %}
-                    <li>Submitter submitter_committees:
-                        <ul>
-                            {% for committee in paper.submitter_committees.all %}
-                                <li><a href="{% url 'committee' committee.id %}">{{ committee }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
-                {% if paper.submitter_departments.all %}
-                    <li>Submitter submitter_departments:
-                        <ul>
-                            {% for department in paper.submitter_departments.all %}
-                                <li><a href="{% url 'department' department.id %}">{{ department }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
-                {% if paper.submitter_persons.all %}
-                    <li>Submitter submitter_persons:
-                        <ul>
-                            {% for person in paper.submitter_persons.all %}
-                                <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
-                {% if paper.change_request_of %}
-                    <li>Change Request of <a
-                            href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a></li>
-                {% endif %}
-                {% if paper.main_file %}
-                    <li>Main File <a href="{% url 'file' paper.main_file.id %}">{{ paper.main_file }}</a></li>
-                {% endif %}
-                {% for file in paper.files.all %}
-                    <li><a href="{% url 'file' file.id %}">{{ file }}</a></li>
-                {% endfor %}
-            </ul>
+            <h1 class="h2">{{ paper.short_name }}</h1>
+
+            {% if paper.short_name != paper.name %}
+                <p class="lead">{{ paper.name }}</p>
+            {% endif %}
+
+            {% if paper.description %}
+                <p><i class="fa-custom fa-info" aria-hidden="true"></i>{{ paper.description }}</p>
+            {% endif %}
+            {% if paper.paper_type %}
+                <p><i class="fa-custom fa-bookmark" aria-hidden="true"></i>{{ paper.paper_type }}</p>
+            {% endif %}
+            <p><i class="fa-custom fa-tag" aria-hidden="true"></i>{{ paper.reference_number }}</p>
+            {% if paper.legal_date %}
+                <p><i class="fa-custom fa-calendar"
+                      aria-hidden="true"></i>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
+            {% endif %}
+
+            {% if paper.submitter_parliamentary_groups.all %}
+                <div class="clearfix">
+                    <span class="float-left pr-2">
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Parliamentary Groups:
+                    </span>
+                    <ul class="list-inline float-left">
+                        {% for parliamentary_group in paper.submitter_parliamentary_groups.all %}
+                            <li class="list-inline-item">
+                                <a href="{% url 'parliamentary-group' parliamentary_group.id %}">
+                                    {{ parliamentary_group }}</a>{% if not forloop.last %}, {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if paper.submitter_committees.all %}
+                <div class="clearfix">
+                    <span class="float-left pr-2">
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Committees: </span>
+                    <ul class="list-inline float-left">
+                        {% for committee in paper.submitter_committees.all %}
+                            <li class="list-inline-item">
+                                <a href="{% url 'committee' committee.id %}">
+                                    {{ committee }}</a>{% if not forloop.last %}, {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if paper.submitter_departments.all %}
+                <div class="clearfix">
+                    <span class="float-left pr-2">
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Departments: </span>
+                    <ul class="list-inline float-left">
+                        {% for department in paper.submitter_departments.all %}
+                            <li class="list-inline-item">
+                                <a href="{% url 'department' department.id %}">
+                                    {{ department }}</a>{% if not forloop.last %}, {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if paper.submitter_persons.all %}
+                <div>Submitting Persons:
+                    <ul>
+                        {% for person in paper.submitter_persons.all %}
+                            <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            {% if paper.change_request_of %}
+                <li>Change Request of <a
+                        href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a></li>
+            {% endif %}
+
+            {% if paper.files.count > 0 %}
+                <h2 class="h4">{% trans "Attached Files" %}</h2>
+                <ul class="list-unstyled">
+                    {% if paper.main_file %}
+                        <li class="font-weight-bold">
+                            <a href="{% url 'file' paper.main_file.id %}">
+                                <i class="fa-custom fa-file"></i>{% firstof paper.main_file.name paper.main_file.displayed_filename %}
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for file in paper.files.all %}
+                        <li>
+                            <a href="{% url 'file' file.id %}">
+                                <i class="fa-custom fa-file"></i>{% firstof file.name file.displayed_filename file %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="lead">{% trans "No files attached" %}</p>
+            {% endif %}
         </div>
     </div>
-{% endblock %}
+{% endblock %}6
