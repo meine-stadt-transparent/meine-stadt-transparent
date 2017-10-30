@@ -52,12 +52,12 @@ def _build_map_object(body: Body, geo_papers):
         outline = None
 
     return json.dumps({
-            'center': settings.SITE_GEO_CENTER,
-            'zoom': settings.SITE_GEO_INIT_ZOOM,
-            'limit': settings.SITE_GEO_LIMITS,
-            'outline': outline,
-            'documents': _index_papers_to_geodata(geo_papers)
-        })
+        'center': settings.SITE_GEO_CENTER,
+        'zoom': settings.SITE_GEO_INIT_ZOOM,
+        'limit': settings.SITE_GEO_LIMITS,
+        'outline': outline,
+        'documents': _index_papers_to_geodata(geo_papers)
+    })
 
 
 def _index_papers_to_geodata(papers):
@@ -127,9 +127,9 @@ def _search_to_context(query, options, s):
     return context
 
 
-def search(request):
-    options, s = params_to_query(search_string_to_params(request.GET.get("query", "")))
-    context = _search_to_context(request.GET.get("query", ""), options, s)
+def search(request, query):
+    options, s = params_to_query(search_string_to_params(query))
+    context = _search_to_context(query, options, s)
     return render(request, "mainapp/search.html", context)
 
 
@@ -137,7 +137,7 @@ def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
     options, s = params_to_query(search_string_to_params(query))
     after = int(request.GET.get("after"), 0)
-    s = s[after:after+3]
+    s = s[after:after + 3]
     context = _search_to_context(query, options, s)
     return render(request, "partials/mixed_results.html", context)
 

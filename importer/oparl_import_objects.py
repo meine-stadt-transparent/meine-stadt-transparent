@@ -143,6 +143,7 @@ class OParlImportObjects(OParlImportHelper):
         else:
             message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
             self.errorlist.append(message)
+            return
 
         for membership in libobject.get_membership():
             self.membership(classification, organization, membership)

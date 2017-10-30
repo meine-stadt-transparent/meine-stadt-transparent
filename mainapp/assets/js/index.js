@@ -11,9 +11,10 @@ $(function () {
         new HomeMap($(this));
     });
 
-    $(".search-autocomplete input").each(function () {
+    $(".search-autocomplete").each(function () {
         new SearchWidget($, $(this));
     });
+
     $(".detailed-searchform").each(function() {
         new SearchForm($, $(this));
     })

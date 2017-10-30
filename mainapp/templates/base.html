@@ -43,7 +43,7 @@
                     </li>
                 </ul>
                 {% if not disable_header_search %}
-                    <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' %}">
+                    <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET" action="{% url 'search' '' %}">
                         <input class="form-control" type="text" name="query" value="" autocomplete="off"
                                data-suggest-url="{% url 'search_autosuggest' '' %}"
                                placeholder="{% trans "Search" context "page_title" %}"

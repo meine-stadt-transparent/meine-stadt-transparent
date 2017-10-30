@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 
 from mainapp.views_profile import ProfileHomeView
 from . import views
-from .models import File, Location, Meeting, Body
+from .models import File, Location, Body
 from .models import Paper, ParliamentaryGroup, Committee, Department, LegislativeTerm
 
 
@@ -17,7 +17,7 @@ def simple_model_view(name: str, model):
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^search/$', views.search, name='search'),
+    url(r'^search/query/(?P<query>.*)/$', views.search, name='search'),
     url(r'^search/suggest/(?P<query>.*)/$', views.search_autosuggest, name='search_autosuggest'),
     url(r'^search/results_only/(?P<query>.*)/$', views.search_results_only,
         name='search_results_only'),

@@ -20,8 +20,8 @@
     </div>
 
     <div class="container pb-3">
-        <form class="form" method="GET" action="{% url 'search' %}">
-            <div class="input-group search-autocomplete">
+        <form class="form search-autocomplete" method="GET" action="{% url 'search' '' %}">
+            <div class="input-group">
                 <input name="query" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' '' %}"
                        placeholder="{% trans "Search" context "page_title" %}"
