@@ -160,6 +160,16 @@ Gemeindeschlüssel (examples):
 - Köln: 05315000
 - Jülich: 05358024
 
+### A complete installation for a city, starting from an empty database - exmplae: Jülich
+
+```bash
+./manage.py migrate
+./manage.py importbodies --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importcityoutline 05358024 1
+./manage.py importstreets 05358024 1
+./manage.py importoparl --use-sternberg-workarounds --without-papers --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+```
+
 ### Creating a page with additional JS libraries
 
 If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:
