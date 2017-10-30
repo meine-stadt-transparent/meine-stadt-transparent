@@ -7,7 +7,7 @@ QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person"]
 def params_to_query(params: dict):
     s = Search(index=settings.ELASTICSEARCH_INDEX)
     options = {}
-    if 'searchterm' in params:
+    if 'searchterm' in params and params['searchterm'] is not "":
         s = s.query('query_string', query=params['searchterm'])
         options['searchterm'] = params['searchterm']
     if 'query' in params:
@@ -17,7 +17,7 @@ def params_to_query(params: dict):
         lat = float(params.get('lat', ''))
         lng = float(params.get('lng', ''))
         radius = int(params.get('radius', ''))
-        s = s.filter("geo_distance", distance=str(radius) + "m", location={
+        s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
             "lat": lat,
             "lon": lng,
         })
