@@ -160,14 +160,18 @@ Gemeindeschlüssel (examples):
 - Köln: 05315000
 - Jülich: 05358024
 
-### A complete installation for a city, starting from an empty database - exmplae: Jülich
+### A complete installation for a city, starting from an empty database
+
+To bootstrap a city, two pieces of information are required: the URL of the OParl-Endpoint, and (for now) the German "Gemeindeschlüssel".
+
+The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the "use-sternberg-workarounds" to mitigate issues with server-side implementations.  
 
 ```bash
 ./manage.py migrate
 ./manage.py importbodies --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ./manage.py importcityoutline 05358024 1
 ./manage.py importstreets 05358024 1
-./manage.py importoparl --use-sternberg-workarounds --without-papers --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importoparl --use-sternberg-workarounds --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
 ### Creating a page with additional JS libraries
