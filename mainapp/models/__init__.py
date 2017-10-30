@@ -11,6 +11,7 @@ from .legislative_term import LegislativeTerm
 from .location import Location
 from .meeting import Meeting
 from .paper import Paper
+from .paper_type import PaperType
 from .parliamentary_group import ParliamentaryGroup
 from .parliamentary_group_membership import ParliamentaryGroupMembership
 from .person import Person

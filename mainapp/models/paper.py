@@ -4,12 +4,13 @@ from .committee import Committee
 from .default_fields import DefaultFields
 from .department import Department
 from .file import File
+from .paper_type import PaperType
 from .parliamentary_group import ParliamentaryGroup
 from .person import Person
 
 
 class Paper(DefaultFields):
-    reference_number = models.CharField(max_length=50)
+    reference_number = models.CharField(max_length=50, null=True, blank=True)
     name = models.CharField(max_length=300)
     short_name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
@@ -24,7 +25,8 @@ class Paper(DefaultFields):
     legal_date = models.DateField(null=True, blank=True)
     main_file = models.ForeignKey(File, null=True, blank=True, related_name="paper_main_file")
     files = models.ManyToManyField(File, blank=True)
-    paper_type = models.CharField(max_length=200, null=True, blank=True)
+    paper_type = models.ForeignKey(PaperType, null=True, blank=True)
+    deleted = models.BooleanField(default=False)
 
     def reference_number_autocomplete(self):
         """ A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error """

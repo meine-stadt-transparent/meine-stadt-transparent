@@ -15,6 +15,7 @@ from importer.oparl_import_helper import OParlImportHelper
 from mainapp.functions.document_parsing import extract_text_from_pdf
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
     File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
+from mainapp.models.paper_type import PaperType
 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
@@ -80,10 +81,15 @@ class OParlImportObjects(OParlImportHelper):
     def paper(self, libobject: OParl.Paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
+        if libobject.get_paper_type():
+            paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
+        else:
+            paper_type = None
+
         defaults = {
             "legal_date": self.glib_datetime_to_python_date(libobject.get_date()),
             "reference_number": libobject.get_reference(),
-            "paper_type": libobject.get_paper_type(),
+            "paper_type": paper_type,
         }
         defaults.update(self.default_fields(libobject))
 

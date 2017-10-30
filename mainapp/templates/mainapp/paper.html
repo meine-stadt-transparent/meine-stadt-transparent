@@ -19,7 +19,7 @@
                 <p><i class="fa-custom fa-info" aria-hidden="true"></i>{{ paper.description }}</p>
             {% endif %}
             {% if paper.paper_type %}
-                <p><i class="fa-custom fa-bookmark" aria-hidden="true"></i>{{ paper.paper_type }}</p>
+                <p><i class="fa-custom fa-bookmark" aria-hidden="true"></i>{{ paper.paper_type.paper_type }}</p>
             {% endif %}
             <p><i class="fa-custom fa-tag" aria-hidden="true"></i>{{ paper.reference_number }}</p>
             {% if paper.legal_date %}
@@ -84,7 +84,7 @@
                         href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a></li>
             {% endif %}
 
-            {% if paper.files.count > 0 %}
+            {% if paper.main_file or paper.files.count > 0 %}
                 <h2 class="h4">{% trans "Attached Files" %}</h2>
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
