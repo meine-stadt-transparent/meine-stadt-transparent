@@ -8,7 +8,7 @@ class Command(ImportOParlCommand):
 
     def add_arguments(self, parser, add_entrypoint=True):
         super().add_arguments(parser, add_entrypoint)
-        parser.add_argument('list', type=str)
+        parser.add_argument('list', choices=["paper", "person", "organization", "meeting"])
 
     def handle(self, *args, **options):
         importer = self.import_importer(options)
