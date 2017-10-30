@@ -5,6 +5,7 @@
 @import "typeahead";
 @import "persons";
 @import "account";
+@import "search";
 @import "~font-awesome/scss/font-awesome.scss";
 
 #main-content {
@@ -28,37 +29,4 @@ a.no-link-color {
   @extend .fa-fw;
   @extend .mr-1;
   @extend .no-link-color;
-}
-
-
-.results-list {
-  list-style: none;
-  padding-left: 0;
-
-  li {
-    i {
-      color: map_get($theme-colors, dark);
-    }
-
-    .col {
-      padding: 0;
-    }
-
-    a:hover {
-      text-decoration: none;
-
-      div {
-        background-color: map-get($theme-colors, dark);
-        color: map_get($theme-colors, light);
-      }
-
-      i {
-        color: map_get($theme-colors, light);
-      }
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
 }

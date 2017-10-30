@@ -277,4 +277,5 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+#CSP_SCRIPT_SRC = ("'self'")
 SECURE_CONTENT_TYPE_NOSNIFF = True

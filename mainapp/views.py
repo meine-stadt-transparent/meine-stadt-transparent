@@ -23,10 +23,6 @@ from mainapp.models.person import Person
 
 def index(request):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
-    if main_body.outline:
-        outline = main_body.outline.geometry
-    else:
-        outline = None
 
     document_end_date = date.today() + timedelta(days=1)
     document_start_date = document_end_date - timedelta(days=settings.SITE_INDEX_DOCUMENT_DAY)
@@ -43,16 +39,25 @@ def index(request):
                      .prefetch_related('files__locations')[:50]
 
     context = {
-        'map': json.dumps({
+        'map': _build_map_object(main_body, geo_papers),
+        'latest_paper': latest_paper,
+    }
+    return render(request, 'mainapp/index.html', context)
+
+
+def _build_map_object(body: Body, geo_papers):
+    if body.outline:
+        outline = body.outline.geometry
+    else:
+        outline = None
+
+    return json.dumps({
             'center': settings.SITE_GEO_CENTER,
             'zoom': settings.SITE_GEO_INIT_ZOOM,
             'limit': settings.SITE_GEO_LIMITS,
             'outline': outline,
             'documents': _index_papers_to_geodata(geo_papers)
-        }),
-        'latest_paper': latest_paper,
-    }
-    return render(request, 'mainapp/index.html', context)
+        })
 
 
 def _index_papers_to_geodata(papers):
@@ -100,10 +105,13 @@ def about(request):
 
 
 def search(request):
+    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
+
     if request.GET == {}:
         context = {
             "results": [],
             "options": [],
+            "map": _build_map_object(main_body, [])
         }
 
         return render(request, 'mainapp/search.html', context)
@@ -125,6 +133,7 @@ def search(request):
         "results": results,
         "options": options,
         "document_types": DOCUMENT_TYPES,
+        "map": _build_map_object(main_body, [])
     }
 
     return render(request, 'mainapp/search.html', context)

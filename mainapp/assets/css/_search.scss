@@ -1,0 +1,55 @@
+@import "vars";
+
+#detailed_searchform {
+  margin-bottom: 30px;
+  border-bottom: solid 1px $card-border-color;
+
+  .searchterm-row {
+    padding-bottom: 15px;
+  }
+
+  .location-col {
+    .location-select-map {
+      height: 300px;
+    }
+    .dropdown-menu {
+      width: 420px;
+      padding-top: 0;
+    }
+  }
+  .radius-select-row {
+    padding: 0 7px;
+  }
+}
+
+.results-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    i {
+      color: map_get($theme-colors, dark);
+    }
+
+    .col {
+      padding: 0;
+    }
+
+    a:hover {
+      text-decoration: none;
+
+      div {
+        background-color: map-get($theme-colors, dark);
+        color: map_get($theme-colors, light);
+      }
+
+      i {
+        color: map_get($theme-colors, light);
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}

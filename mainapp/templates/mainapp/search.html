@@ -12,56 +12,99 @@
 
 {% block content %}
     <div class="container">
-        <section class="section">
-            <h1>{% trans "Search" context "page_title" %}</h1>
-
-            <form id="searchform">
-                <div class="input-group search-autocomplete py-3">
-                    <input name="searchterm" type="text" class="form-control" value="{{ options.searchterm }}"
-                           autocomplete="off"
+        <article class="card">
+            <h1 class="card-header">{% trans "Search" context "page_title" %}</h1>
+            <form id="detailed_searchform" class="section detailed-searchform p-2">
+                <div class="input-group searchterm-row">
+                    <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
+                    <input name="searchterm" type="text" class="form-control"
+                           value="{{ options.searchterm }}" id="searchterm" autocomplete="off"
                            data-suggest-url="{% url 'search_autosuggest' '' %}"
-                           placeholder="{% trans "Search" context "page_title" %}"
-                           aria-label="{% trans "Search" context "perform search" %}">
+                           placeholder="{% trans "Search term" context "search_form" %}"
+                           aria-label="{% trans "Search term" context "search_form" %}">
                     <span class="input-group-btn">
-                        <button class="btn btn-primary"
-                                type="submit">{% trans "Search" context "perform search" %}</button>
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Search" context "search_form" %}
+                        </button>
                     </span>
                 </div>
+                <div class="form-row align-items-center">
+                    <div class="col-auto location-col">
+                        <div class="sr-only">{% trans "Location" context "search_form" %}</div>
 
-                <div class="row py-3">
-                    <div class="input-field col s2">
-                        <input id="lat" type="text" name="lat" value="{{ options.lat }}">
-                        <label for="lat">Breitengrad</label>
-                    </div>
-                    <div class="input-field col s2">
-                        <input id="lng" type="text" name="lng" value="{{ options.lng }}">
-                        <label for="lng">Längengrad</label>
-                    </div>
-                    <div class="input-field col s2">
-                        <input id="lng" type="text" name="radius" value="{{ options.radius }}">
-                        <label for="radius">Enterfnung in m</label>
-                    </div>
-                </div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                    id="locationSelectButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="location-description">
+                                    <span class="radius"></span>m around
+                                    <span class="lat"></span>,<span
+                                        class="lng"></span>
+                                </span>
+                                <span class="location-not-set">
+                                    Location
+                                </span>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="locationSelectButton">
+                                <div class="location-select-map" id="location-select-map"
+                                     data-map-data="{{ map }}"></div>
+                                <div class="radius-select-row">
+                                    <div class="input-group">
+                                        <label for="new-radius" class="input-group-addon">Entfernung in m:</label>
+                                        <input type="number" class="form-control new-radius" id="new-radius"
+                                               value="{{ options.radius }}">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary select-btn" type="button">
+                                                {% trans "Select" context "search_form" %}
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="input-field col s2">
-                    <label for="document-type">
-                        {% trans "Document Type" context "search" %}
-                    </label>
-                    <select id="document-type" name="document-type" multiple="multiple">
-                        {% for document_type in document_types %}
-                            {% if document_type in options.document_type %}
-                                <option value="{{ document_type }}" selected>{{ document_type }}</option>
-                            {% else %}
-                                <option value="{{ document_type }}">{{ document_type }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
+                        <input type="hidden" name="lat" value="{{ options.lat }}">
+                        <input type="hidden" name="lng" value="{{ options.lng }}">
+                        <input type="hidden" name="radius" value="{{ options.radius }}">
+
+                    </div>
+                    <div class="col-auto type-col">
+                        <div class="sr-only">{% trans "Document Type" context "search_form" %}</div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                                    id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% trans "Document Type" context "search_form" %}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for document_type in document_types %}
+                                    {% if document_type in options.document_type %}
+                                        <div class="dropdown-item">
+                                            <label>
+                                                <input type="checkbox" name="document-type[]" checked autocomplete="off"
+                                                       value="{{ document_type }}">
+                                                {{ document_type }}
+                                            </label>
+                                        </div>
+                                    {% else %}
+                                        <div class="dropdown-item">
+                                            <label>
+                                                <input type="checkbox" name="document-type[]" autocomplete="off" value="{{ document_type }}">
+                                                {{ document_type }}
+                                            </label>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </form>
-        </section>
-
-        <section class="section">
-            {% include "partials/mixed_results.html" %}
-        </section>
+            <div class="card-content">
+                <section class="section">
+                    {% include "partials/mixed_results.html" %}
+                </section>
+            </div>
+        </article>
     </div>
 {% endblock %}
