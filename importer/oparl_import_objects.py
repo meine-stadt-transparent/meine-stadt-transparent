@@ -26,6 +26,7 @@ class OParlImportObjects(OParlImportHelper):
 
     def __init__(self, options):
         super().__init__(options)
+        self.errorlist = []
         self.logger = logging.getLogger(__name__)
 
         # mappings that could not be resolved because the target object
@@ -55,8 +56,9 @@ class OParlImportObjects(OParlImportHelper):
             elif location.geometry["type"] == "Polygon":
                 body.outline = location
             else:
-                self.logger.warning("Location object is of type {}, which is neither 'Point' nor 'Polygon'. Skipping "
-                                    "this location.".format(location.geometry["type"]))
+                message = "Location object is of type {}, which is neither 'Point' nor 'Polygon'." \
+                          "Skipping this location.".format(location.geometry["type"])
+                self.errorlist.append(message)
 
         body.save()
 
@@ -107,7 +109,8 @@ class OParlImportObjects(OParlImportHelper):
             elif isinstance(organization, ParliamentaryGroup):
                 paper.submitter_parliamentary_groups.add(organization)
             else:
-                print("Failed to find organization for {}".format(i))
+                message = "Failed to find organization for {}".format(i)
+                self.errorlist.append(message)
 
         paper.save()
 
@@ -138,8 +141,8 @@ class OParlImportObjects(OParlImportHelper):
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
-            print("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
-            return
+            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
+            self.errorlist.append(message)
 
         for membership in libobject.get_membership():
             self.membership(classification, organization, membership)
@@ -256,12 +259,16 @@ class OParlImportObjects(OParlImportHelper):
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)
         if file.mime_type == "application/pdf":
-            print("Extracting text from PDF: %s" % path)
+            print("Extracting text from PDF: " + path)
             try:
                 text = extract_text_from_pdf(path, self.cachefolder)
                 file.parsed_text = text
             except PDFTextExtractionNotAllowed:
-                self.logger.warning("Forbidden to extract text from PDF {}".format(path))
+                message = "The pdf {} is encrypted".format(path)
+                self.errorlist.append(message)
+        elif file.mime_type == "text/text":
+            with open(path) as f:
+                file.parsed_text = f.read()
 
     def file(self, libobject: OParl.File):
         if not libobject:
@@ -324,7 +331,8 @@ class OParlImportObjects(OParlImportHelper):
             item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
             item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
             if not item.paper:
-                print("Missing Paper: {}, ({})".format(paper_id, item_id))
+                message = "Missing Paper: {}, ({})".format(paper_id, item_id)
+                self.errorlist.append(message)
             item.save()
 
         print("Adding missing memberships")
@@ -361,7 +369,8 @@ class OParlImportObjects(OParlImportHelper):
             membership = ParliamentaryGroupMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
                                                                                          defaults=defaults)
         else:
-            print("Unknown Classification: {} ({})".format(classification, libobject.get_id()))
+            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
+            self.errorlist.append(message)
             return
 
         return membership

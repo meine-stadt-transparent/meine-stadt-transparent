@@ -5,7 +5,6 @@ from datetime import date
 
 import gi
 from django.utils import dateparse
-from django.utils.translation import ugettext as _
 
 from mainapp.models import DefaultFields
 from mainapp.models import Department, Committee, ParliamentaryGroup
