@@ -18,7 +18,9 @@ def simple_model_view(name: str, model):
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/$', views.search, name='search'),
-    url(r'^search/suggest/(?P<query>.*)$', views.search_autosuggest, name='search_autosuggest'),
+    url(r'^search/suggest/(?P<query>.*)/$', views.search_autosuggest, name='search_autosuggest'),
+    url(r'^search/results_only/(?P<query>.*)/$', views.search_results_only,
+        name='search_results_only'),
     url(r'^contact/$', views.info_contact, name='info_contact'),
     url(r'^about/$', views.about, name='about'),
     url(r'^persons/$', views.persons, name='persons'),
@@ -41,4 +43,3 @@ urlpatterns = [
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]
-

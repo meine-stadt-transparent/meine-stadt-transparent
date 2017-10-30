@@ -58,6 +58,8 @@
 
     <div class="container">
         <h2>Aktuelle Dokumente</h2>
-        {% include "partials/mixed_results.html" with results=latest_paper %}
+        <ul class="results-list" id="endless-scroll-target">
+            {% include "partials/mixed_results.html" with results=latest_paper %}
+        </ul>
     </div>
 {% endblock %}

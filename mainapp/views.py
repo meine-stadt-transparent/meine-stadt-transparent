@@ -104,21 +104,8 @@ def about(request):
     return render(request, 'mainapp/about.html', {})
 
 
-def search(request):
+def _search_to_context(query, options, s):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
-
-    if request.GET == {}:
-        context = {
-            "results": [],
-            "options": [],
-            "map": _build_map_object(main_body, [])
-        }
-
-        return render(request, 'mainapp/search.html', context)
-
-    params = request.GET
-    searchdict = search_string_to_params(params.get("query", ""))
-    options, s = params_to_query(searchdict)
 
     results = []
     for hit in s.execute():
@@ -130,13 +117,29 @@ def search(request):
         results.append(result)
 
     context = {
+        "query": query,
         "results": results,
         "options": options,
         "document_types": DOCUMENT_TYPES,
         "map": _build_map_object(main_body, [])
     }
 
-    return render(request, 'mainapp/search.html', context)
+    return context
+
+
+def search(request):
+    options, s = params_to_query(search_string_to_params(request.GET.get("query", "")))
+    context = _search_to_context(request.GET.get("query", ""), options, s)
+    return render(request, "mainapp/search.html", context)
+
+
+def search_results_only(request, query):
+    """ Returns only the result list items. Used for the endless scrolling """
+    options, s = params_to_query(search_string_to_params(query))
+    after = int(request.GET.get("after"), 0)
+    s = s[after:after+3]
+    context = _search_to_context(query, options, s)
+    return render(request, "partials/mixed_results.html", context)
 
 
 def search_autosuggest(request, query):
