@@ -20,14 +20,35 @@ export default class SearchForm {
         this.$typeSelector.find(".dropdown").on("hidden.bs.dropdown", this.submitForm.bind(this));
     }
 
+
+    setLocation(pos) {
+        if (this.currMarker) {
+            this.leaflet.removeLayer(this.currMarker);
+        }
+        this.currPosition = pos;
+        this.currMarker = new L.Marker(pos, {
+            icon: L.icon({
+                iconUrl: '/static/images/marker-icon-2x.png',
+                iconSize: [25, 41],
+                iconAnchor: [12.5, 41],
+                popupAnchor: [0, -35]
+            })
+        });
+        this.currMarker.addTo(this.leaflet);
+    }
+
     initLocationSelector() {
         this.$locationSelector = this.$form.find(".location-col");
         this.leaflet = null;
 
         let mapIsInitialized = false;
-        let currMarker = null;
+        this.currMarker = null;
         this.currPosition = null;
         this.$locationSelector.find(".dropdown").on("shown.bs.dropdown", () => {
+            let $radius = this.$locationSelector.find(".new-radius");
+            if ($radius.val() < 1) {
+                $radius.val($radius.data("default"));
+            }
             if (!mapIsInitialized) {
                 let $mapElement = this.$form.find(".location-select-map");
                 let initData = $mapElement.data("map-data");
@@ -36,24 +57,18 @@ export default class SearchForm {
                 mapIsInitialized = true;
 
                 this.leaflet.on("click", (ev) => {
-                    if (currMarker) {
-                        this.leaflet.removeLayer(currMarker);
-                    }
-                    this.currPosition = ev.latlng;
-                    currMarker = new L.Marker(ev.latlng, {
-                        icon: L.icon({
-                            iconUrl: '/static/images/marker-icon-2x.png',
-                            iconSize: [25, 41],
-                            iconAnchor: [12.5, 41],
-                            popupAnchor: [0, -35]
-                        })
-                    });
-                    currMarker.addTo(this.leaflet);
+                    this.setLocation(ev.latlng)
                 });
+            }
+            if (this.$locationSelector.find("input[name=lat]").val() && this.$locationSelector.find("input[name=lng]").val()) {
+                this.setLocation(new L.LatLng(
+                    this.$locationSelector.find("input[name=lat]").val(),
+                    this.$locationSelector.find("input[name=lng]").val()
+                ));
             }
         });
         this.$locationSelector.find(".select-btn").click(() => {
-            if (this.currPosition) {
+            if (this.currPosition && this.$locationSelector.find(".new-radius").val() > 0) {
                 this.$locationSelector.find("input[name=lat]").val(this.currPosition.lat);
                 this.$locationSelector.find("input[name=lng]").val(this.currPosition.lng);
                 this.$locationSelector.find("input[name=radius]").val(this.$locationSelector.find(".new-radius").val());
