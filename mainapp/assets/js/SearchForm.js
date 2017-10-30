@@ -3,10 +3,35 @@ import create_map from "./create_map";
 
 export default class SearchForm {
     constructor($, $form) {
+        this.$ = $;
         this.$form = $form;
         this.$form.submit(this.submitForm.bind(this));
         this.initLocationSelector();
         this.initDocumentTypeSelector();
+        this.initAutocomplete();
+    }
+
+    initAutocomplete() {
+        let $widget = this.$form.find(".searchterm-row input[name=searchterm]");
+        let url = $widget.data('suggest-url');
+
+        console.log($widget);
+
+        $widget.typeahead(null,
+            {
+                name: 'name',
+                display: 'name',
+                source: (query, syncResults, asyncResults) => {
+                    this.$.get(url + query, function (data) {
+                        asyncResults(data);
+                    });
+                },
+                limit: 5
+            });
+
+        $widget.on("typeahead:selected", function (ev, obj) {
+            if (obj.url !== undefined) window.location.href = obj.url;
+        });
     }
 
     initDocumentTypeSelector() {
