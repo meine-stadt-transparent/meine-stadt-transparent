@@ -5,6 +5,7 @@ from datetime import date
 
 import gi
 from django.utils import dateparse
+from django.utils.translation import ugettext as _
 
 from mainapp.models import DefaultFields
 from mainapp.models import Department, Committee, ParliamentaryGroup
@@ -80,15 +81,18 @@ class OParlImportHelper:
 
     @staticmethod
     def default_fields(libobject: OParl.Object):
+        if libobject.get_deleted():
+            return {
+                "oparl_id": libobject.get_id(),
+                "deleted": libobject.get_deleted(),
+            }
+
         defaults = {
             "oparl_id": libobject.get_id(),
+            "name": libobject.get_name(),
             "short_name": libobject.get_short_name() or libobject.get_name(),
             "deleted": libobject.get_deleted(),
-            "name": libobject.get_name(),
         }
-
-        if defaults["deleted"]:
-            return defaults
 
         # Add an ellipsis to not-so-short short names
         if len(defaults["short_name"]) > 50:
@@ -106,8 +110,9 @@ class OParlImportHelper:
     def add_default_fields(cls, djangoobject: DefaultFields, libobject: OParl.Object):
         defaults = cls.default_fields(libobject)
         djangoobject.oparl_id = defaults["oparl_id"]
-        djangoobject.name = defaults["name"]
-        djangoobject.short_name = defaults["short_name"]
+        if not defaults["deleted"]:
+            djangoobject.name = defaults["name"]
+            djangoobject.short_name = defaults["short_name"]
         djangoobject.deleted = defaults["deleted"]
 
     @staticmethod

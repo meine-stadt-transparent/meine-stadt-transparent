@@ -1,5 +1,6 @@
 from django.db import models
 
+from .default_fields import SoftDeleteModelManager, SoftDeleteModelManagerWithDeleted
 from .meeting import Meeting
 from .paper import Paper
 
@@ -13,11 +14,14 @@ class AgendaItem(models.Model):
     position = models.IntegerField()
     public = models.NullBooleanField(blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)
+    deleted = models.BooleanField(default=False)
     # TODO: Modelling the resolution which can be both file and plain text
+
+    objects = SoftDeleteModelManager()
+    objects_with_deleted = SoftDeleteModelManagerWithDeleted()
 
     def __str__(self):
         return "{} {} ({}. {})".format(self.key, self.title, self.position, self.meeting.__str__())
 
     class Meta:
-        unique_together = (("meeting", "position"),)
         ordering = ["meeting", "position"]

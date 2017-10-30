@@ -6,6 +6,12 @@ class SoftDeleteModelManager(models.Manager):
         queryset = models.query.QuerySet(self.model, using=self._db)
         return queryset.filter(deleted=0)
 
+    def get_or_create(self, defaults=None, **kwargs):
+        raise ValueError("get_or_create with `objects` is bogus, use `objects_with_deleted` instead")
+
+    def update_or_create(self, defaults=None, **kwargs):
+        raise ValueError("update_or_create with `objects` is bogus, use `objects_with_deleted` instead")
+
 
 class SoftDeleteModelManagerWithDeleted(models.Manager):
     def get_queryset(self):
