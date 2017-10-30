@@ -1,4 +1,4 @@
-require('typeahead.js/dist/typeahead.jquery');
+require('corejs-typeahead/dist/typeahead.jquery');
 
 export default class SearchWidget {
     constructor($, $widget) {

@@ -15,7 +15,7 @@ module.exports = {
             'popper.js',
             'leaflet/src/Leaflet',
             'bootstrap/dist/js/bootstrap.js',
-            'typeahead.js/dist/typeahead.jquery',
+            'corejs-typeahead/dist/typeahead.jquery',
         ]
     },
     output: {
