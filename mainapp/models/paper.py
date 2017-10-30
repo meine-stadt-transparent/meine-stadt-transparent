@@ -10,7 +10,7 @@ from .person import Person
 
 
 class Paper(DefaultFields):
-    reference_number = models.CharField(max_length=50, null=True, blank=True)
+    reference_number = models.CharField(max_length=50)
     name = models.CharField(max_length=300)
     short_name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)

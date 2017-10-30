@@ -97,10 +97,10 @@
 
             <h3>{% trans 'Agenda' %}</h3>
             {% if meeting.agendaitem_set.all %}
-                <dl>
+                <dl class="agenda">
                     {% for agenda_item in meeting.agendaitem_set.all %}
                         <div class="d-flex align-content-start">
-                            <dt class="mr-2" style="min-width: 30px">{{ agenda_item.key }}</dt>
+                            <dt class="mr-2">{{ agenda_item.key }}</dt>
                             <dd>
                                 {% if agenda_item.paper %}
                                     <a href="{% url 'paper' agenda_item.paper.id %}">{{ agenda_item.title }}</a>
