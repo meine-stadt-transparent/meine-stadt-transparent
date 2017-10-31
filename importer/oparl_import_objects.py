@@ -83,6 +83,10 @@ class OParlImportObjects(OParlImportHelper):
     def paper(self, libobject: OParl.Paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
+        if libobject.get_deleted():
+            Paper.objects_with_deleted.filter(oparl_id=libobject.get_id()).update(deleted=True)
+            return
+
         if libobject.get_paper_type():
             paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
         else:

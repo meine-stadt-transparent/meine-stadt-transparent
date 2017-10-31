@@ -31,7 +31,10 @@ def index(request):
                        .filter(modified__range=[document_start_date, document_end_date]) \
                        .order_by("-modified", "-legal_date")[:10]
     for paper in latest_paper:
-        setattr(paper, "type", "paper")  # The mixed results view needs this
+        # The mixed results view needs those
+        setattr(paper, "type", "paper")
+        setattr(paper, "type_translated", DOCUMENT_TYPE_NAMES[paper.type])
+
     geo_papers = Paper \
                      .objects \
                      .filter(modified__range=[document_start_date, document_end_date]) \
@@ -111,6 +114,7 @@ def _search_to_context(query, options, s):
     for hit in s.execute():
         result = hit.__dict__['_d_']  # Extract the raw fields from the hit
         result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
+        result["type_translated"] = DOCUMENT_TYPE_NAMES[result["type"]]
 
         if hasattr(hit.meta, "highlight"):
             result["highlight"] = hit.meta.highlight.parsed_text
