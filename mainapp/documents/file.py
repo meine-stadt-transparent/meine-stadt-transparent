@@ -16,5 +16,6 @@ class FileDocument(DocType):
             'name',
             'description',
             'displayed_filename',
+            'parsed_text',
             'created',
         ]
