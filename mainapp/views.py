@@ -13,7 +13,7 @@ from icalendar import Calendar
 # noinspection PyPackageRequirements
 from slugify import slugify
 
-from mainapp.documents import DOCUMENT_TYPES
+from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.search_tools import params_to_query, search_string_to_params
 from mainapp.models import Body, Committee, UserAlert
 from mainapp.models.meeting import Meeting
@@ -120,7 +120,7 @@ def _search_to_context(query, options, s):
         "query": query,
         "results": results,
         "options": options,
-        "document_types": DOCUMENT_TYPES,
+        "document_types": DOCUMENT_TYPE_NAMES,
         "map": _build_map_object(main_body, [])
     }
 

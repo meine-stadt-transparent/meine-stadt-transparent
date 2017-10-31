@@ -158,8 +158,9 @@ export default class SearchForm {
 
         querystring += searchterm;
 
-        let searchParams = new URLSearchParams(window.location.search);
-        searchParams.set("query", querystring);
-        window.location.search = searchParams.toString();
+        let url = this.$form.attr("action").slice(0, -1);
+        url = url + querystring + "/";
+
+        window.location = url;
     }
 }

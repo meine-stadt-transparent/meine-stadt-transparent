@@ -14,7 +14,8 @@
     <div class="container ">
         <div class="card">
             <h1 class="card-header">{% trans "Search" context "page_title" %}</h1>
-            <form id="detailed_searchform" class="section detailed-searchform p-2">
+            <form id="detailed_searchform" class="section detailed-searchform p-2" method="GET"
+                  action="{% url 'search' '' %}">
                 <div class="input-group searchterm-row">
                     <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
                     <input name="searchterm" type="text" class="form-control"
@@ -77,21 +78,21 @@
                                 {% trans "Document Type" context "search_form" %}
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {% for document_type in document_types %}
-                                    {% if document_type in options.document_type %}
+                                {% for document_type_id, document_type_name in document_types.items %}
+                                    {% if document_type_id in options.document_type %}
                                         <div class="dropdown-item">
                                             <label>
                                                 <input type="checkbox" name="document-type[]" checked autocomplete="off"
-                                                       value="{{ document_type }}">
-                                                {{ document_type }}
+                                                       value="{{ document_type_id }}">
+                                                {{ document_type_name }}
                                             </label>
                                         </div>
                                     {% else %}
                                         <div class="dropdown-item">
                                             <label>
                                                 <input type="checkbox" name="document-type[]" autocomplete="off"
-                                                       value="{{ document_type }}">
-                                                {{ document_type }}
+                                                       value="{{ document_type_id }}">
+                                                {{ document_type_name }}
                                             </label>
                                         </div>
                                     {% endif %}
@@ -106,14 +107,16 @@
                     <ul class="results-list" id="endless-scroll-target">
                         {% include "partials/mixed_results.html" %}
                     </ul>
-                {% else %}
-                    <li><p>{% trans "Nothing Found" %}</p></li>
-                {% endif %}
 
-                <button class="btn btn-secondary w-100" id="start-endless-scroll"
-                        data-url="{% url "search_results_only" query=query %}">
-                    {% trans "Load More" %}
-                </button>
+                    <button class="btn btn-secondary w-100" id="start-endless-scroll"
+                            data-url="{% url "search_results_only" query=query %}">
+                        {% trans "Load More" %}
+                    </button>
+                {% else %}
+                    <div class="p-2">
+                        <p class="alert alert-danger">{% trans "Nothing Found" %}</p>
+                    </div>
+                {% endif %}
             </section>
         </div>
     </div>

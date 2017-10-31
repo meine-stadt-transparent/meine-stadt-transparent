@@ -1,3 +1,9 @@
+.search-autocomplete-home {
+  span.twitter-typeahead {
+    z-index: 1100;
+  }
+}
+
 #leaflet-map {
   height: 400px;
 
