@@ -41,6 +41,9 @@ Docker installation instructions can be found [here](https://docs.docker.com/eng
 If you hit problems regarding memory, please have a look at this
 [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
+If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed,
+with Barracuda being set as the default format for new InnoDB-Tables (default), otherwise you will run into errors about too long Indexes.
+
 ### pygobject (gi) and liboparl
 
 This is currently only required to use the importer.
