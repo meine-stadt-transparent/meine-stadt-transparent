@@ -19,3 +19,5 @@ pip-delete-this-directory.txt
 *.pot
 *.log
 
+# Docker
+docker-compose.override.yml
