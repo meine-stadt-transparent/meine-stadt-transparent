@@ -1,7 +1,7 @@
 import * as L from "leaflet/src/Leaflet";
 import create_map from "./create_map";
 // noinspection ES6UnusedImports
-import css from "bootstrap-datepicker/dist/css/bootstrap-datepicker.css";
+import style from "../css/datepicker.scss";
 
 require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
 
