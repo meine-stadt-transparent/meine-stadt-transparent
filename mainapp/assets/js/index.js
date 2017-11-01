@@ -1,8 +1,9 @@
+// noinspection ES6UnusedImports
 import style from '../css/mainapp.scss';
 
 import HomeMap from "./HomeMap";
-import SearchWidget from "./SearchWidget";
-import SearchForm from "./SearchForm";
+import SearchBar from "./SearchBar";
+import FacettedSearch from "./FacettedSearch";
 
 window.jQuery = require('jquery');
 
@@ -12,11 +13,11 @@ $(function () {
     });
 
     $(".search-autocomplete").each(function () {
-        new SearchWidget($, $(this));
+        new SearchBar($(this));
     });
 
     $(".detailed-searchform").each(function() {
-        new SearchForm($, $(this));
+        new FacettedSearch($(this));
     })
 });
 

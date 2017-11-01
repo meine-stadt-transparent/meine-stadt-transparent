@@ -6,14 +6,17 @@ import css from "bootstrap-datepicker/dist/css/bootstrap-datepicker.css";
 require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
 
 
-export default class SearchForm {
-    constructor($, $form) {
-        this.$ = $;
+export default class FacettedSearch {
+    constructor($form) {
         this.$form = $form;
         this.$form.submit(this.submitForm.bind(this));
         this.initLocationSelector();
         this.initDocumentTypeSelector();
         this.initAutocomplete();
+        this.initDatePicker();
+    }
+
+    initDatePicker() {
         $("input#after").datepicker({
             format: "yyyy-mm-dd"
         });

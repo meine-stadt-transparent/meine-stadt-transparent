@@ -1,7 +1,7 @@
 require('corejs-typeahead/dist/typeahead.jquery');
 
-export default class SearchWidget {
-    constructor($, $widget) {
+export default class SearchBar {
+    constructor($widget) {
         this.$widget = $widget;
         this.$input = $widget.find("input");
         let url = this.$input.data('suggest-url');
