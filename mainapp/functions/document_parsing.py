@@ -1,18 +1,15 @@
+import os
 import re
 
-import os
-from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
-
-from mainapp.models import SearchStreet, Body, Location
-
 import geoextract
-from django.conf import settings
-from geopy import OpenCage
-
-import pdfminer.settings
-
 import pdfminer.high_level
 import pdfminer.layout
+import pdfminer.settings
+from django.conf import settings
+from django.urls import reverse
+from geopy import OpenCage
+
+from mainapp.models import SearchStreet, Body, Location
 
 
 def _extract_text(filename, outfile='-',
@@ -270,3 +267,35 @@ def extract_locations(text, fallback_city=None):
             locations.append(location)
 
     return locations
+
+
+def index_papers_to_geodata(papers):
+    """
+    :param papers: list of Paper
+    :return: object
+    """
+    geodata = {}
+    for paper in papers:
+        for file in paper.files.all():
+            for location in file.locations.all():
+                if location.id not in geodata:
+                    geodata[location.id] = {
+                        "id": location.id,
+                        "name": location.name,
+                        "coordinates": location.geometry,
+                        "papers": {}
+                    }
+                if paper.id not in geodata[location.id]['papers']:
+                    geodata[location.id]['papers'][paper.id] = {
+                        "id": paper.id,
+                        "name": paper.name,
+                        "url": reverse('paper', args=[file.id]),
+                        "files": []
+                    }
+                geodata[location.id]['papers'][paper.id]["files"].append({
+                    "id": file.id,
+                    "name": file.name,
+                    "url": reverse('file', args=[file.id])
+                })
+
+    return geodata
