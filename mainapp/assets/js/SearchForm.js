@@ -1,5 +1,10 @@
 import * as L from "leaflet/src/Leaflet";
 import create_map from "./create_map";
+// noinspection ES6UnusedImports
+import css from "bootstrap-datepicker/dist/css/bootstrap-datepicker.css";
+
+require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
+
 
 export default class SearchForm {
     constructor($, $form) {
@@ -9,13 +14,17 @@ export default class SearchForm {
         this.initLocationSelector();
         this.initDocumentTypeSelector();
         this.initAutocomplete();
+        $("input#after").datepicker({
+            format: "yyyy-mm-dd"
+        });
+        $("input#before").datepicker({
+            format: "yyyy-mm-dd"
+        });
     }
 
     initAutocomplete() {
         let $widget = this.$form.find(".searchterm-row input[name=searchterm]");
         let url = $widget.data('suggest-url');
-
-        console.log($widget);
 
         $widget.typeahead(null,
             {

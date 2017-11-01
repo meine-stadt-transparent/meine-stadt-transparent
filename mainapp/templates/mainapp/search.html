@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container ">
+    <div class="container">
         <div class="card">
             <h1 class="card-header">{% trans "Search" context "page_title" %}</h1>
-            <form id="detailed_searchform" class="section detailed-searchform p-2" method="GET"
+            <form id="detailed_searchform" class="section detailed-searchform p-2 mb-0" method="GET"
                   action="{% url 'search' '' %}">
                 <div class="input-group searchterm-row">
                     <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
@@ -100,18 +100,44 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-auto type-col">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">
+                                {% trans "after" %}
+                            </span>
+
+                            <input id="after" name="after" type="text" class="form-control"
+                                   value="{{ options.after|date:"Y-m-d" }}"
+                                   aria-label="{% trans 'find only those after this date' %}">
+                        </div>
+                    </div>
+                    <div class="col-auto type-col">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-addon">
+                                {% trans "before" %}
+                            </span>
+
+                            <input id="before" name="before" type="text" class="form-control"
+                                   value="{{ options.before|date:"Y-m-d" }}"
+                                   aria-label="{% trans 'find only those before this date' %}">
+                        </div>
+                    </div>
                 </div>
             </form>
+
             <section class="section">
                 {% if results|length > 0 %}
                     <ul class="results-list" id="endless-scroll-target">
                         {% include "partials/mixed_results.html" %}
                     </ul>
 
-                    <button class="btn btn-secondary w-100" id="start-endless-scroll"
-                            data-url="{% url "search_results_only" query=query %}">
-                        {% trans "Load More" %}
-                    </button>
+                    {% if total_hits > results|length %}
+                        <button class="btn btn-secondary w-100" id="start-endless-scroll"
+                                data-url="{% url "search_results_only" query=query %}">
+                            <span>{% trans "Load More" %}</span>
+                            <span class="badge badge-light">{{ total_hits }}</span>
+                        </button>
+                    {% endif %}
                 {% else %}
                     <div class="p-2">
                         <p class="alert alert-danger">{% trans "Nothing Found" %}</p>

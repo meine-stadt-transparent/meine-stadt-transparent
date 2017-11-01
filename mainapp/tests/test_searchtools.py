@@ -35,7 +35,8 @@ class TestSearchtools(TestCase):
             }
         }
 
-        options, query = params_to_query(self.params)
+        options, query, errors = params_to_query(self.params)
+        self.assertEqual(errors, [])
         self.assertEqual(query.to_dict(), expected)
 
     def test_params_to_search_string(self):

@@ -1,6 +1,7 @@
 import json
 from datetime import date, timedelta, datetime
 
+from csp.decorators import csp_replace, csp_update
 from django.conf import settings
 from django.contrib import messages
 from django.db.models import Count
@@ -111,7 +112,8 @@ def _search_to_context(query, options, s):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
     results = []
-    for hit in s.execute():
+    executed = s.execute()
+    for hit in executed:
         result = hit.__dict__['_d_']  # Extract the raw fields from the hit
         result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
         result["type_translated"] = DOCUMENT_TYPE_NAMES[result["type"]]
@@ -125,21 +127,25 @@ def _search_to_context(query, options, s):
         "results": results,
         "options": options,
         "document_types": DOCUMENT_TYPE_NAMES,
-        "map": _build_map_object(main_body, [])
+        "map": _build_map_object(main_body, []),
+        "total_hits": executed.hits.total,
     }
 
     return context
 
 
+@csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def search(request, query):
-    options, s = params_to_query(search_string_to_params(query))
+    options, s, errors = params_to_query(search_string_to_params(query))
+    for error in errors:
+        messages.error(request, error)
     context = _search_to_context(query, options, s)
     return render(request, "mainapp/search.html", context)
 
 
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
-    options, s = params_to_query(search_string_to_params(query))
+    options, s, _ = params_to_query(search_string_to_params(query))
     after = int(request.GET.get("after"), 0)
     s = s[after:after + 3]
     context = _search_to_context(query, options, s)
