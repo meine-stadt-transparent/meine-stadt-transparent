@@ -53,15 +53,15 @@ def _build_map_object(body: Body, geo_papers):
 
 
 def info_privacy(request):
-    return render(request, 'mainapp/info_privacy.html', {})
+    return render(request, 'info/privacy.html', {})
 
 
 def info_contact(request):
-    return render(request, 'mainapp/info_contact.html', {})
+    return render(request, 'info/contact.html', {})
 
 
-def about(request):
-    return render(request, 'mainapp/about.html', {})
+def info_about(request):
+    return render(request, 'info/about.html', {})
 
 
 def error404(request):
