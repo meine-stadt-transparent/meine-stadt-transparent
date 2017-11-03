@@ -15,7 +15,8 @@
     <div class="container">
         {% include 'partials/messages.html' %}
 
-        <p>Meine Stadt Transparent liefert Informationen zu ihrem Stadtrat <a href="{% url 'info_about' %}">Mehr erfahren</a>
+        <p>Meine Stadt Transparent liefert Informationen zu ihrem Stadtrat <a href="{% url 'info_about' %}">Mehr
+            erfahren</a>
         </p>
     </div>
 
@@ -58,8 +59,6 @@
 
     <div class="container">
         <h2>Aktuelle Dokumente</h2>
-        <ul class="results-list" id="endless-scroll-target">
-            {% include "partials/mixed_results.html" with results=latest_paper %}
-        </ul>
+        {% include "partials/mixed_results.html" with results=latest_paper %}
     </div>
 {% endblock %}

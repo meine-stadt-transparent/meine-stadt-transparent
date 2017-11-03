@@ -1,8 +1,8 @@
 import * as L from "leaflet/src/Leaflet";
-import create_map from "./create_map";
+import create_map from "./createMap";
 
 export default class IndexView {
-    escapeHtml(html) {
+    static escapeHtml(html) {
         return String(html).replace(/[&<>"'`=\/]/g, function (s) {
             return {
                 '&': '&amp;',
@@ -17,7 +17,7 @@ export default class IndexView {
         });
     }
 
-    geojsonToLocation(geojson) {
+    static geojsonToLocation(geojson) {
         if (geojson['type'] === 'Point') {
             return L.latLng(geojson['coordinates'][1], geojson['coordinates'][0]);
         } else {
@@ -32,7 +32,7 @@ export default class IndexView {
                 console.warn('Multiple papers in this location', location); // @TODO Handle colliding markers and multiple papers
             }
             for (let paper of Object.values(location.papers)) {
-                let marker = L.marker(this.geojsonToLocation(location.coordinates), {
+                let marker = L.marker(IndexView.geojsonToLocation(location.coordinates), {
                     icon: L.icon({
                         iconUrl: '/static/images/marker-icon-2x.png',
                         iconSize: [25, 41],
@@ -43,12 +43,12 @@ export default class IndexView {
                 let files = '';
                 for (let i = 0; i < paper.files.length; i++) {
                     files += (i > 1 ? ', ' : '');
-                    files += '<a href="' + paper.files[i].url + '">' + this.escapeHtml(paper.files[i].name) + '</a>';
+                    files += '<a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a>';
                 }
 
-                let paperHtml = '<a href="' + paper.url + '">' + this.escapeHtml(paper.name) + '</a>';
+                let paperHtml = '<a href="' + paper.url + '">' + IndexView.escapeHtml(paper.name) + '</a>';
                 let contentHtml = '<div class="paper-title">' + paperHtml + '</div>' +
-                    '<div class="file-location"><div class="location-name">' + this.escapeHtml(location.name) + '</div>' +
+                    '<div class="file-location"><div class="location-name">' + IndexView.escapeHtml(location.name) + '</div>' +
                     '<div class="files">' + files + '</div></div>';
                 marker.bindPopup(contentHtml, {className: 'file-location', minWidth: 200});
                 marker.addTo(this.leaflet);
@@ -58,10 +58,10 @@ export default class IndexView {
         }
     }
 
-    constructor($map_element) {
-        let initData = $map_element.data("map-data");
+    constructor($mapElement) {
+        let initData = $mapElement.data("map-data");
 
-        this.leaflet = create_map($map_element, initData);
+        this.leaflet = create_map($mapElement, initData);
 
         if (initData['documents']) {
             this.addDocumentLocationMarkers(initData['documents']);

@@ -159,7 +159,7 @@ Import the outer shape of a city from OpenStreetMap and write it into an existin
 Gemeindeschlüssel (examples):
 - München: 09162000
 - Augsburg: 09761000
-- Neumarkt Sankt Veit: 09183129
+- Neumarkt-Sankt Veit: 09183129
 - Köln: 05315000
 - Jülich: 05358024
 

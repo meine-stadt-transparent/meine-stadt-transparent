@@ -53,8 +53,8 @@ def search(request, query):
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
     options, s, _ = params_to_query(search_string_to_params(query))
-    after = int(request.GET.get("after"), 0)
-    s = s[after:after + 3]
+    after = int(request.GET.get("after", 0))
+    s = s[after:after + 10]
     context = _search_to_context(query, options, s)
     return render(request, "partials/mixed_results.html", context)
 

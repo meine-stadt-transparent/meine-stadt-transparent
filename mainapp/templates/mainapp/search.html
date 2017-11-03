@@ -15,8 +15,8 @@
         <div class="card">
             <h1 class="card-header">{% trans "Search" context "page_title" %}</h1>
             <form id="detailed_searchform" class="section detailed-searchform p-2 mb-0" method="GET"
-                  action="{% url 'search' '' %}">
-                <div class="input-group searchterm-row">
+                  action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
+                <div class="input-group">
                     <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
                     <input name="searchterm" type="text" class="form-control"
                            value="{{ options.searchterm }}" id="searchterm" autocomplete="off"
@@ -30,19 +30,19 @@
                     </span>
                 </div>
                 <div class="form-row align-items-center">
-                    <div class="col-auto location-col">
+                    <div class="col-auto search-facet location-col">
                         <div class="sr-only">{% trans "Location" context "search_form" %}</div>
 
                         <div class="dropdown">
                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                     id="locationSelectButton"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="location-description">
-                                    <span class="radius"></span>m around
-                                    <span class="lat"></span>,<span
-                                        class="lng"></span>
+                                <span class="location-description" {% if not options.radius %}hidden="hidden"{% endif %}>
+                                    <span class="radius">{{ options.radius }}</span>{% trans "m around" %}
+                                    <span class="lat">{{ options.lat|floatformat:3 }}</span>
+                                    <span class="lng">{{ options.lng|floatformat:3 }}</span>
                                 </span>
-                                <span class="location-not-set">
+                                <span class="location-not-set" {% if options.radius %}hidden="hidden"{% endif %}>
                                     Location
                                 </span>
                             </button>
@@ -69,9 +69,9 @@
                         <input type="hidden" name="radius" value="{{ options.radius }}">
 
                     </div>
-                    <div class="col-auto type-col">
+                    <div class="col-auto search-facet">
                         <div class="sr-only">{% trans "Document Type" context "search_form" %}</div>
-                        <div class="dropdown">
+                        <div class="dropdown facet-dropdown">
                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
                                     id="dropdownMenuButton"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,70 +79,66 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 {% for document_type_id, document_type_name in document_types.items %}
-                                    {% if document_type_id in options.document_type %}
-                                        <div class="dropdown-item">
-                                            <label>
+                                    <div class="dropdown-item">
+                                        <label>
+                                            {% if document_type_id in options.document_type %}
                                                 <input type="checkbox" name="document-type[]" checked autocomplete="off"
                                                        value="{{ document_type_id }}">
-                                                {{ document_type_name }}
-                                            </label>
-                                        </div>
-                                    {% else %}
-                                        <div class="dropdown-item">
-                                            <label>
+                                            {% else %}
                                                 <input type="checkbox" name="document-type[]" autocomplete="off"
                                                        value="{{ document_type_id }}">
-                                                {{ document_type_name }}
-                                            </label>
-                                        </div>
-                                    {% endif %}
+                                            {% endif %}
+                                            {{ document_type_name }}
+                                        </label>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
-                    <div class="col-auto type-col">
+                    <div class="col-auto search-facet">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-addon">
+                            <span class="input-group-addon btn btn-secondary">
                                 {% trans "after" %}
                             </span>
 
+                            <label for="after" class="sr-only">Find only those after this date</label>
                             <input id="after" name="after" type="text" class="form-control"
-                                   value="{{ options.after|date:"Y-m-d" }}"
-                                   aria-label="{% trans 'find only those after this date' %}">
+                                   value="{{ options.after|date:"Y-m-d" }}">
+                            <span class="input-group-addon searchclear btn">
+                                <i class="fa fa-close fa"></i>
+                            </span>
                         </div>
                     </div>
-                    <div class="col-auto type-col">
+                    <div class="col-auto search-facet">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">
                                 {% trans "before" %}
                             </span>
 
+                            <label for="before" class="sr-only">Find only those before this date</label>
                             <input id="before" name="before" type="text" class="form-control"
-                                   value="{{ options.before|date:"Y-m-d" }}"
-                                   aria-label="{% trans 'find only those before this date' %}">
+                                   value="{{ options.before|date:"Y-m-d" }}">
+                            <span class="input-group-addon searchclear btn">
+                                <i class="fa fa-close fa"></i>
+                            </span>
                         </div>
                     </div>
                 </div>
             </form>
 
             <section class="section">
-                {% if results|length > 0 %}
-                    <ul class="results-list" id="endless-scroll-target">
-                        {% include "partials/mixed_results.html" %}
-                    </ul>
+                {% include "partials/mixed_results.html" %}
 
-                    {% if total_hits > results|length %}
-                        <button class="btn btn-secondary w-100" id="start-endless-scroll"
-                                data-url="{% url "search_results_only" query=query %}">
-                            <span>{% trans "Load More" %}</span>
-                            <span class="badge badge-light">{{ total_hits }}</span>
-                        </button>
-                    {% endif %}
-                {% else %}
-                    <div class="p-2">
-                        <p class="alert alert-danger">{% trans "Nothing Found" %}</p>
-                    </div>
-                {% endif %}
+                <button class="btn btn-secondary w-100" id="start-endless-scroll"
+                        data-url="{% url "search_results_only" query %}"
+                        {% if total_hits == results|length %} hidden="hidden" {% endif %}>
+                    <span>{% trans "Load More" %}</span>
+                    <span class="total-hits badge badge-light">{{ total_hits }}</span>
+                </button>
+
+                <div class="p-2 nothing-found" {% if results|length > 0 %} hidden="hidden" {% endif %}>
+                    <p class="alert alert-danger">{% trans "Nothing Found" %}</p>
+                </div>
             </section>
         </div>
     </div>

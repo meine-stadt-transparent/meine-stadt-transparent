@@ -4,8 +4,8 @@
   margin-bottom: 30px;
   border-bottom: solid 1px $card-border-color;
 
-  .searchterm-row {
-    padding-bottom: 15px;
+  .search-facet {
+    @extend .pt-2;
   }
 
   .location-col {

@@ -1,5 +1,5 @@
 import * as L from "leaflet/src/Leaflet";
-import create_map from "./create_map";
+import create_map from "./createMap";
 // noinspection ES6UnusedImports
 import style from "../css/datepicker.scss";
 
@@ -9,7 +9,7 @@ require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
 export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
-        this.$form.submit(this.submitForm.bind(this));
+        this.$form.submit(this.search.bind(this));
         this.initLocationSelector();
         this.initDocumentTypeSelector();
         this.initAutocomplete();
@@ -23,6 +23,10 @@ export default class FacettedSearch {
         $("input#before").datepicker({
             format: "yyyy-mm-dd"
         });
+        $(".searchclear").click((event) => {
+            $(event.target).parent().parent().find("input").val("");
+            this.search();
+        });
     }
 
     initAutocomplete() {
@@ -34,7 +38,7 @@ export default class FacettedSearch {
                 name: 'name',
                 display: 'name',
                 source: (query, syncResults, asyncResults) => {
-                    this.$.get(url + query, function (data) {
+                    $.get(url + query, function (data) {
                         asyncResults(data);
                     });
                 },
@@ -47,14 +51,14 @@ export default class FacettedSearch {
     }
 
     initDocumentTypeSelector() {
-        this.$typeSelector = this.$form.find(".type-col");
-        this.$typeSelector.find(".dropdown-menu").click((ev) => {
+        $(".facet-dropdown .dropdown-item").click((ev) => {
             let $checkbox = $(ev.target).find("input");
             $checkbox.prop("checked", !$checkbox.prop("checked"));
+            this.search();
+
             ev.stopPropagation();
             ev.preventDefault();
         });
-        this.$typeSelector.find(".dropdown").on("hidden.bs.dropdown", this.submitForm.bind(this));
     }
 
 
@@ -110,39 +114,36 @@ export default class FacettedSearch {
                 this.$locationSelector.find("input[name=lng]").val(this.currPosition.lng);
                 this.$locationSelector.find("input[name=radius]").val(this.$locationSelector.find(".new-radius").val());
                 this.$locationSelector.find(".dropdown").dropdown("toggle");
-                this.submitForm();
+                this.search();
             }
         });
         this.$locationSelector.find(".dropdown-menu").click((ev) => {
             ev.preventDefault();
             ev.stopPropagation();
         });
-        this.setLocationString();
     }
 
-    setLocationString() {
+    updateLocationString() {
         let lat = this.$locationSelector.find("input[name=lat]").val(),
             lng = this.$locationSelector.find("input[name=lng]").val(),
             radius = this.$locationSelector.find("input[name=radius]").val(),
             $desc = this.$locationSelector.find(".location-description");
 
         if (lat !== "" && lng !== "" && radius > 0) {
-            this.$locationSelector.find(".location-not-set").hide();
-            $desc.find(".lat").text(Math.round(parseFloat(lat) * 1000) / 1000);
-            $desc.find(".lng").text(Math.round(parseFloat(lng) * 1000) / 1000);
+            this.$locationSelector.find(".location-not-set").attr('hidden', 'hidden');
+            let latText = (Math.round(parseFloat(lat) * 1000) / 1000).toLocaleString();
+            $desc.find(".lat").text(latText);
+            let lngText = (Math.round(parseFloat(lng) * 1000) / 1000).toLocaleString();
+            $desc.find(".lng").text(lngText);
             $desc.find(".radius").text(radius);
-            $desc.show();
+            this.$locationSelector.find(".location-description").removeAttr('hidden');
         } else {
-            this.$locationSelector.find(".location-not-set").show();
-            $desc.hide();
+            this.$locationSelector.find(".location-not-set").removeProp('hidden');
+            $desc.attr('hidden', 'hidden');
         }
     }
 
-    submitForm(event) {
-        if (event) {
-            event.preventDefault();
-        }
-
+    getQuerystring() {
         let searchterm = "";
         let querystring = "";
         let documentTypes = [];
@@ -170,9 +171,36 @@ export default class FacettedSearch {
 
         querystring += searchterm;
 
-        let url = this.$form.attr("action").slice(0, -1);
-        url = url + querystring + "/";
+        return querystring;
+    }
 
-        window.location = url;
+    updateSearchResults(querystring) {
+        let url = this.$form.data("results-only-url").slice(0, -1) + querystring;
+        $.get(url, function (data) {
+            let $data = $(data);
+            let $btn = $("#start-endless-scroll");
+            let total = parseInt($data.data("total-hits"));
+            let current = $data.find("> li").length;
+            if (total > current) {
+                $btn.find(".total-hits").text(total - current);
+                $btn.removeProp('hidden');
+            } else {
+                $btn.prop('hidden', 'hidden');
+            }
+            $("#endless-scroll-target").html($data.find("> li"));
+        });
+    }
+
+    search(event) {
+        if (event) {
+            event.preventDefault();
+        }
+        let querystring = this.getQuerystring();
+
+        let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
+
+        window.history.pushState({}, "", url);
+        this.updateSearchResults(querystring);
+        this.updateLocationString();
     }
 }
