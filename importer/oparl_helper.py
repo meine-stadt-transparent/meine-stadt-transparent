@@ -121,6 +121,8 @@ class OParlHelper:
 
         dbobject = constructor.objects_with_deleted.filter(oparl_id=libobject.get_id()).first()  # type: DefaultFields
         if not dbobject:
+            if libobject.get_deleted():
+                return None
             self.logger.debug("New")
             dbobject = constructor()
             if add_defaults:
