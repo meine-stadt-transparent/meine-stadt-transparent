@@ -14,12 +14,6 @@
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
 }
 
-.mw-max {
-  max-width: 800px;
-  padding-right: 15px;
-  padding-left: 15px;
-}
-
 a.no-link-color {
   // ideally, this would only remove the style of the a, but there's nothing avaible for that right now
   color: black;
@@ -30,4 +24,13 @@ a.no-link-color {
   @extend .fa-fw;
   @extend .mr-1;
   @extend .no-link-color;
+}
+
+.navbar-dark .navbar-toggler {
+  border: none;
+  outline: 0;
+}
+
+.twitter-typeahead {
+  width: 100%;
 }

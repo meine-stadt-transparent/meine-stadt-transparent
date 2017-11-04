@@ -13,7 +13,7 @@
 
 {% block header %}
     <nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-dark bg-dark" id="main-menu">
-        <div class="container mw-max">
+        <div class="container">
             <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
                     aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,12 +43,13 @@
                     {% endif %}
                 </ul>
                 {% if not disable_header_search %}
-                    <form class="form-inline my-2 my-lg-0 search-autocomplete" method="GET"
+                    <form class="form-inline search-autocomplete" method="GET"
                           action="{% url 'search' '' %}">
                         <input class="form-control" type="text" name="query" value="" autocomplete="off"
                                data-suggest-url="{% url 'search_autosuggest' '' %}"
                                placeholder="{% trans "Search" context "page_title" %}"
                                aria-label="{% trans "Search" context "perform search" %}">
+                        <i class="fa fa-user-circle-o" style="position: absolute; top: -5px; right: -5px"></i>
                         <button type="submit" hidden>{% trans "Search" context "perform search" %}</button>
                     </form>
                 {% endif %}
@@ -68,7 +69,7 @@
 </main>
 
 <footer class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-dark bg-dark">
-    <div class="container mw-max flex-column align-items-start">
+    <div class="container flex-column align-items-start">
         <div>
             <ul class="navbar-nav">
                 <li class="nav-item">
