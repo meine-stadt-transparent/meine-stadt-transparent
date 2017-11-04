@@ -9,7 +9,6 @@ import gi
 import requests
 from django.utils.translation import ugettext as _
 # noinspection PyPackageRequirements
-# noinspection PyPackageRequirements
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper

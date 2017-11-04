@@ -26,14 +26,11 @@ class OParlHelper:
     """
 
     def __init__(self, options):
+        self.ignore_modified = options["ignore_modified"]
         self.storagefolder = options["storagefolder"]
         self.entrypoint = options["entrypoint"]
         self.use_cache = options["use_cache"]
         self.download_files = options["download_files"]
-        self.with_persons = options["with_persons"]
-        self.with_papers = options["with_papers"]
-        self.with_organizations = options["with_organizations"]
-        self.with_meetings = options["with_meetings"]
         self.threadcount = options["threadcount"]
         self.batchsize = options["batchsize"]
         self.no_threads = options["no_threads"]
@@ -138,7 +135,7 @@ class OParlHelper:
         if not libobject.get_modified():
             error_message = "Modified missing on {}".format(libobject.get_id())
             self.errorlist.append(error_message)
-        if libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(libobject.get_modified()):
+        if not self.ignore_modified and libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(libobject.get_modified()):
             self.logger.debug("Not Modified")
             return None
 

@@ -107,14 +107,10 @@ class OParlImport(OParlObjects):
 
         print("Creating objects")
         for body in bodies:
-            if self.with_papers:
-                self.list_batched(body.get_paper, self.paper)
-            if self.with_persons:
-                self.list_batched(body.get_person, self.person)
-            if self.with_organizations:
-                self.list_batched(body.get_organization, self.organization)
-            if self.with_meetings:
-                self.list_batched(body.get_meeting, self.meeting)
+            self.list_batched(body.get_paper, self.paper)
+            self.list_batched(body.get_person, self.person)
+            self.list_batched(body.get_organization, self.organization)
+            self.list_batched(body.get_meeting, self.meeting)
 
         print("Finished creating objects")
         self.add_missing_associations()
@@ -138,18 +134,14 @@ class OParlImport(OParlObjects):
             print("Submitting concurrent tasks")
             futures = {}
             for body in bodies:
-                if self.with_papers:
-                    future = executor.submit(self.list_caught, body.get_paper, self.paper)
-                    futures[future] = body.get_short_name() or body.get_name() + ": Paper"
-                if self.with_persons:
-                    future = executor.submit(self.list_caught, body.get_person, self.person)
-                    futures[future] = body.get_short_name() or body.get_name() + ": Person"
-                if self.with_organizations:
-                    future = executor.submit(self.list_caught, body.get_organization, self.organization)
-                    futures[future] = body.get_short_name() or body.get_name() + ": Organization"
-                if self.with_meetings:
-                    future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
-                    futures[future] = body.get_short_name() or body.get_name() + ": Meeting"
+                future = executor.submit(self.list_caught, body.get_paper, self.paper)
+                futures[future] = body.get_short_name() or body.get_name() + ": Paper"
+                future = executor.submit(self.list_caught, body.get_person, self.person)
+                futures[future] = body.get_short_name() or body.get_name() + ": Person"
+                future = executor.submit(self.list_caught, body.get_organization, self.organization)
+                futures[future] = body.get_short_name() or body.get_name() + ": Organization"
+                future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
+                futures[future] = body.get_short_name() or body.get_name() + ": Meeting"
             print("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
