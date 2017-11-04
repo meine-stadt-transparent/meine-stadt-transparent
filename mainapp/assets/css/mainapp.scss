@@ -11,7 +11,8 @@
 
 #main-content {
   margin: $main-content-margin-top auto;
-  min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top})
+  min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top});
+  hyphens: auto;
 }
 
 a.no-link-color {
