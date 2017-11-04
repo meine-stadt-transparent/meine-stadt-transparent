@@ -4,30 +4,32 @@ $(function () {
     // init Isotope
     let $grid = $('.persons-list').isotope({
         itemSelector: '.person',
-        layoutMode: 'fitRows',
+        sortBy: 'name',
         getSortData: {
             name: '.name',
             parliamentary_group: '.parliamentary-group'
-        }
+        },
     });
     window.$grid = $grid;
 
-    $("select[name=sort_by]").change(function() {
+    $("select[name=sort_by]").change(function () {
         let sort = $(this).val();
         if (sort === 'name') {
-            $grid.isotope({ sortBy: 'name' });
+            $grid.isotope({sortBy: 'name'});
         }
         if (sort === 'party') {
-            $grid.isotope({ sortBy: 'parliamentary_group' });
+            $grid.isotope({sortBy: 'parliamentary_group'});
         }
     });
-    $("input[name=parliamentary-group]").change(function() {
-        let filter = $(this).val();
+
+    $("#filter-parliamentary-groups").find("a").click(function () {
+        let filter = $(this).data("group-id");
         if (filter === 'all') {
-            $grid.isotope({ filter: null });
+            $grid.isotope({filter: null});
         } else {
-            $grid.isotope({ filter: '.parliamentary-group-' + filter });
+            $grid.isotope({filter: '.parliamentary-group-' + filter});
         }
-        console.log(filter);
+        $("#filter-parliamentary-groups").find(".active").removeClass("active");
+        $(this).addClass("active")
     });
 });

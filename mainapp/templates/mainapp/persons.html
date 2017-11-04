@@ -6,49 +6,51 @@
 {% block title %}{% trans "Persons" %}{% endblock %}
 
 {% block content %}
-
-    <section class="filter-sorter">
+    <section class="container filter-sorter">
         <label>Sortieren nach:
             <select name="sort_by" size="1">
-                <option value="none">-</option>
-                <option value="name">Name</option>
+                <option value="name" selected>Name</option>
                 <option value="party">Partei</option>
             </select>
         </label>
 
-        <div class="btn-group parliamentary-group-filter-list pull-right" data-toggle="buttons">
-            <label class="btn btn-primary active">
-                <input type="radio" name="parliamentary-group" value="all" autocomplete="off" checked> All
-            </label>
+        <ul class="nav nav-pills" id="filter-parliamentary-groups">
+            <li class="nav-item">
+                <a class="nav-link active" data-group-id="all" href="#">
+                    {% trans "All" %}
+                </a>
+            </li>
             {% for group in parliamentary_groups %}
-                <label class="btn btn-primary">
-                    <input type="radio" name="parliamentary-group" value="{{ group.id }}" autocomplete="off">
-                    {{ group.name }}
-                </label>
-            {% endfor %}
-        </div>
-    </section>
-
-    <section class="container persons-list-container">
-        <ul class="persons-list">
-            {% for member in members %}
-                <li class="card person {{ member.groups_css_classes }}">
-                    <a href="{% url 'person' member.id %}" class="card-body">
-                        <div class="name">{{ member.name }}</div>
-                        <div class="parliamentary-group">{{ member.groups_names }}</div>
-                        <div class="role">{{ member.role }}</div>
-                        <div class="date">
-                            {% if member.end %}
-                                Von {{ member.start }} bis {{ member.end }}
-                            {% else %}
-                                Seit {{ member.start }}
-                            {% endif %}
-                        </div>
+                <li class="nav-item">
+                    <a class="nav-link" data-group-id="{{ group.id }}" href="#">
+                        {{ group.name }}
                     </a>
                 </li>
             {% endfor %}
         </ul>
+    </section>
 
+    <section class="container d-flex flex-column">
+        <ul class="persons-list row list-unstyled">
+            {% for member in members %}
+                <li class="col-3 person {{ member.groups_css_classes }}">
+                    <div>
+                        <a href="{% url 'person' member.id %}">
+                            <div class="name">{{ member.name }}</div>
+                            <div class="parliamentary-group">{{ member.groups_names }}</div>
+                            <div class="role">{{ member.role }}</div>
+                            <div class="date">
+                                {% if member.end %}
+                                    Von {{ member.start }} bis {{ member.end }}
+                                {% else %}
+                                    Seit {{ member.start }}
+                                {% endif %}
+                            </div>
+                        </a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
     </section>
 {% endblock %}
 
