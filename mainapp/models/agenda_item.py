@@ -14,6 +14,8 @@ class AgendaItem(models.Model):
     position = models.IntegerField()
     public = models.NullBooleanField(blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
     # TODO: Modelling the resolution which can be both file and plain text
 
