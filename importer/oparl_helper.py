@@ -7,6 +7,7 @@ from typing import Optional, Type
 
 import gi
 from django.utils import dateparse
+# noinspection PyPackageRequirements
 from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 
 from mainapp.functions.document_parsing import extract_text_from_pdf
@@ -86,59 +87,23 @@ class OParlHelper:
         return None
 
     @staticmethod
-    def default_fields(libobject: OParl.Object):
-        if libobject.get_deleted():
-            return {
-                "oparl_id": libobject.get_id(),
-                "deleted": libobject.get_deleted(),
-            }
-
-        defaults = {
-            "oparl_id": libobject.get_id(),
-            "name": libobject.get_name(),
-            "short_name": libobject.get_short_name() or libobject.get_name(),
-            "deleted": libobject.get_deleted(),
-        }
+    def add_default_fields(libobject: OParl.Object, dbitem: DefaultFields, name_fixup=None):
+        dbitem.oparl_id = libobject.get_id()
+        dbitem.name = libobject.get_name() or name_fixup
+        dbitem.short_name = libobject.get_short_name() or dbitem.name
+        dbitem.deleted = libobject.get_deleted()
 
         # Add an ellipsis to not-so-short short names
-        if len(defaults["short_name"]) > 50:
-            defaults["short_name"] = defaults["short_name"][:47] + "\u2026"
+        if len(dbitem.short_name) > 50:
+            dbitem.short_name = dbitem.short_name[:47] + "\u2026"
 
         # FIXME: We can't just cut off official texts
-        if len(defaults["name"]) > 200:
-            defaults["name"] = defaults["name"].split("\n")[0]
-        if len(defaults["name"]) > 200:
-            defaults["name"] = defaults["name"][:200]
+        if len(dbitem.name) > 200:
+            dbitem.name = dbitem.name.split("\n")[0]
+        if len(dbitem.name) > 200:
+            dbitem.name = dbitem.name[:200]
 
-        return defaults
-
-    @staticmethod
-    def default_fields_new(libobject: OParl.Object, item: DefaultFields, name_fixup=None):
-        item.oparl_id = libobject.get_id()
-        item.name = libobject.get_name() or name_fixup
-        item.short_name = libobject.get_short_name() or item.name
-        item.deleted = libobject.get_deleted()
-
-        # Add an ellipsis to not-so-short short names
-        if len(item.short_name) > 50:
-            item.short_name = item.short_name[:47] + "\u2026"
-
-        # FIXME: We can't just cut off official texts
-        if len(item.name) > 200:
-            item.name = item.name.split("\n")[0]
-        if len(item.name) > 200:
-            item.name = item.name[:200]
-
-        return item
-
-    @classmethod
-    def add_default_fields(cls, djangoobject: DefaultFields, libobject: OParl.Object):
-        defaults = cls.default_fields(libobject)
-        djangoobject.oparl_id = defaults["oparl_id"]
-        if not defaults["deleted"]:
-            djangoobject.name = defaults["name"]
-            djangoobject.short_name = defaults["short_name"]
-        djangoobject.deleted = defaults["deleted"]
+        return dbitem
 
     @staticmethod
     def get_organization_by_oparl_id(oparl_id):
@@ -159,7 +124,7 @@ class OParlHelper:
             self.logger.debug("New")
             dbobject = constructor()
             if add_defaults:
-                self.default_fields_new(libobject, dbobject, name_fixup)
+                self.add_default_fields(libobject, dbobject, name_fixup)
             return dbobject
 
         if libobject.get_deleted():
@@ -177,7 +142,7 @@ class OParlHelper:
 
         print("Modified")
         if add_defaults:
-            self.default_fields_new(libobject, dbobject, name_fixup)
+            self.add_default_fields(libobject, dbobject, name_fixup)
         return dbobject
 
     def extract_text_from_file(self, file: File):
