@@ -140,7 +140,7 @@ class OParlHelper:
             self.logger.debug("Not Modified")
             return None
 
-        print("Modified")
+        self.logger.debug("Modified")
         if add_defaults:
             self.add_default_fields(libobject, dbobject, name_fixup)
         return dbobject
@@ -148,7 +148,7 @@ class OParlHelper:
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)
         if file.mime_type == "application/pdf":
-            print("Extracting text from PDF: " + path)
+            self.logger.info("Extracting text from PDF: " + path)
             try:
                 text = extract_text_from_pdf(path, self.cachefolder)
                 file.parsed_text = text
