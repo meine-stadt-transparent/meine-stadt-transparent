@@ -276,5 +276,11 @@ if DEBUG:
     ]
     DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
 SECURE_CONTENT_TYPE_NOSNIFF = True
+CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+
+# Make debugging css styles in firefox easier
+DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
+if DEBUG and DEBUG_STYLES:
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+
