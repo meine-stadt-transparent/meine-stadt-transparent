@@ -2,7 +2,7 @@ import hashlib
 import mimetypes
 import os
 from collections import defaultdict
-from typing import Optional
+from typing import Optional, Type
 
 # noinspection PyPackageRequirements
 import gi
@@ -119,7 +119,7 @@ class OParlObjects(OParlHelper):
 
         return paper
 
-    def organization_to_class(self, libobject: OParl.Organization) -> Optional[DefaultFields.__class__]:
+    def organization_to_class(self, libobject: OParl.Organization) -> Optional[Type[DefaultFields]]:
         classification = libobject.get_classification()
         if classification in self.organization_classification[Department]:
             return Department
@@ -132,44 +132,32 @@ class OParlObjects(OParlHelper):
             self.errorlist.append(message)
             return None
 
-    def department(self, libobject: OParl.Organization):
-        pass
-
-    def committee(self, libobject: OParl.Organization):
-        pass
-
-    def parliamentary_group(self, libobject: OParl.Organization):
-        pass
-
     def organization(self, libobject: OParl.Organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
+        if not libobject:
+            return
+        org_type = self.organization_to_class(libobject)
+        if not org_type:
+            return
 
-        classification = libobject.get_classification()
-        defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
-        if classification in self.organization_classification[Department]:
-            organization, created = Department.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                  defaults=defaults)
-            self.add_default_fields(organization, libobject)
+        organization = self.check_existing(libobject, org_type)
+        if not organization:
+            return
+
+        organization.body = Body.by_oparl_id(libobject.get_body().get_id())
+        if org_type == Department:
             assert not libobject.get_start_date() and not libobject.get_end_date()
-        elif classification in self.organization_classification[Committee]:
-            organization, created = Committee.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                 defaults=defaults)
-            self.add_default_fields(organization, libobject)
+        elif org_type == Committee:
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
-        elif classification in self.organization_classification[ParliamentaryGroup]:
-            organization, created = ParliamentaryGroup.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                          defaults=defaults)
-            self.add_default_fields(organization, libobject)
+        elif org_type == ParliamentaryGroup:
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
-            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
-            self.errorlist.append(message)
-            return
+            assert False
 
         for membership in libobject.get_membership():
-            self.membership(classification, organization, membership)
+            self.membership(org_type, organization, membership)
 
         organization.save()
 
