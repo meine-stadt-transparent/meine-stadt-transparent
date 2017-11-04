@@ -1,33 +1,32 @@
 import hashlib
-import logging
 import mimetypes
 import os
 from collections import defaultdict
+from typing import Optional
 
+# noinspection PyPackageRequirements
 import gi
 import requests
-from django.utils import dateparse
 from django.utils.translation import ugettext as _
-from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
+# noinspection PyPackageRequirements
+# noinspection PyPackageRequirements
 from slugify.slugify import slugify
 
-from importer.oparl_import_helper import OParlImportHelper
-from mainapp.functions.document_parsing import extract_text_from_pdf
+from importer.oparl_helper import OParlHelper
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
     File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
+from mainapp.models.default_fields import DefaultFields
 from mainapp.models.paper_type import PaperType
 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
 
 
-class OParlImportObjects(OParlImportHelper):
+class OParlObjects(OParlHelper):
     """ Methods for saving the oparl objects as database entries. """
 
     def __init__(self, options):
         super().__init__(options)
-        self.errorlist = []
-        self.logger = logging.getLogger(__name__)
 
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
@@ -36,8 +35,12 @@ class OParlImportObjects(OParlImportHelper):
         self.membership_queue = []
 
     def body(self, libobject: OParl.Body):
-        self.logger.info("Processing {}".format(libobject.get_name()))
-        body, created = Body.objects_with_deleted.get_or_create(oparl_id=libobject.get_id())
+        body = self.check_existing(libobject, Body)
+        if not body:
+            return
+        print("Processing {}".format(libobject.get_id()))
+
+        body.save()
 
         terms = []
         for term in libobject.get_legislative_term():
@@ -45,8 +48,6 @@ class OParlImportObjects(OParlImportHelper):
             if saved_term:
                 terms.append(saved_term)
 
-        self.add_default_fields(body, libobject)
-        body.oparl_id = libobject.get_id()
         body.legislative_terms = terms
 
         location = self.location(libobject.get_location())
@@ -67,41 +68,39 @@ class OParlImportObjects(OParlImportHelper):
     def term(self, libobject: OParl.LegislativeTerm):
         if not libobject.get_start_date() or not libobject.get_end_date():
             print("Term has no start or end date - skipping")
-            return None
+            return
 
-        term = LegislativeTerm.objects_with_deleted.filter(oparl_id=libobject.get_id()).first() or LegislativeTerm()
+        term = self.check_existing(libobject, LegislativeTerm)
+        if not term:
+            return
 
-        term.name = libobject.get_name()
-        term.short_name = libobject.get_short_name() or libobject.get_name()
-        term.start = dateparse.parse_datetime(libobject.get_start_date().format("%FT%T%z"))
-        term.end = dateparse.parse_datetime(libobject.get_end_date().format("%FT%T%z"))
+        self.logger.info("Processing {}".format(libobject.get_name()))
+
+        term.start = self.glib_datetime_to_python_date(libobject.get_start_date())
+        term.end = self.glib_datetime_to_python_date(libobject.get_end_date())
 
         term.save()
 
         return term
 
     def paper(self, libobject: OParl.Paper):
-        self.logger.info("Processing Paper {}".format(libobject.get_id()))
-
-        if libobject.get_deleted():
-            Paper.objects_with_deleted.filter(oparl_id=libobject.get_id()).update(deleted=True)
+        paper = self.check_existing(libobject, Paper)
+        if not paper:
             return
+        self.logger.info("Processing Paper {}".format(libobject.get_id()))
 
         if libobject.get_paper_type():
             paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
         else:
             paper_type = None
 
-        defaults = {
-            "legal_date": self.glib_datetime_to_python_date(libobject.get_date()),
-            "reference_number": libobject.get_reference(),
-            "paper_type": paper_type,
-        }
-        defaults.update(self.default_fields(libobject))
+        paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
+        paper.reference_number = libobject.get_reference()
+        paper.paper_type = paper_type
+        paper.save()
 
-        paper, _ = Paper.objects_with_deleted.update_or_create(oparl_id=defaults["oparl_id"], defaults=defaults)
-
-        paper.files = [self.file(file) for file in libobject.get_auxiliary_file()]
+        files = [self.file(file) for file in libobject.get_auxiliary_file()]
+        paper.files = [file for file in files if file is not None]
         paper.main_file = self.file(libobject.get_main_file())
 
         for i in libobject.get_under_direction_of_url():
@@ -120,25 +119,45 @@ class OParlImportObjects(OParlImportHelper):
 
         return paper
 
+    def organization_to_class(self, libobject: OParl.Organization) -> Optional[DefaultFields.__class__]:
+        classification = libobject.get_classification()
+        if classification in self.organization_classification[Department]:
+            return Department
+        elif classification in self.organization_classification[Committee]:
+            return Committee
+        elif classification in self.organization_classification[ParliamentaryGroup]:
+            return ParliamentaryGroup
+        else:
+            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
+            self.errorlist.append(message)
+            return None
+
+    def department(self, libobject: OParl.Organization):
+        pass
+
+    def committee(self, libobject: OParl.Organization):
+        pass
+
+    def parliamentary_group(self, libobject: OParl.Organization):
+        pass
+
     def organization(self, libobject: OParl.Organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
 
         classification = libobject.get_classification()
+        defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
         if classification in self.organization_classification[Department]:
-            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = Department.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
                                                                                   defaults=defaults)
             self.add_default_fields(organization, libobject)
             assert not libobject.get_start_date() and not libobject.get_end_date()
         elif classification in self.organization_classification[Committee]:
-            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = Committee.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
                                                                                  defaults=defaults)
             self.add_default_fields(organization, libobject)
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         elif classification in self.organization_classification[ParliamentaryGroup]:
-            defaults = {"body": Body.by_oparl_id(libobject.get_body().get_id())}
             organization, created = ParliamentaryGroup.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
                                                                                           defaults=defaults)
             self.add_default_fields(organization, libobject)
@@ -157,11 +176,10 @@ class OParlImportObjects(OParlImportHelper):
         return organization
 
     def meeting(self, libobject: OParl.Meeting):
-        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
-        meeting = Meeting.objects_with_deleted.filter(oparl_id=libobject.get_id()).first() or Meeting()
-        self.add_default_fields(meeting, libobject)
-        if meeting.deleted:
+        meeting = self.check_existing(libobject, Meeting)
+        if not meeting:
             return
+        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
 
         meeting.start = self.glib_datetime_to_python(libobject.get_start())
         meeting.end = self.glib_datetime_to_python(libobject.get_end())
@@ -197,15 +215,12 @@ class OParlImportObjects(OParlImportHelper):
         return meeting
 
     def location(self, libobject: OParl.Location):
-        if not libobject:
+        self.logger.info("Processing Location {}".format(libobject.get_id()))
+        location = self.check_existing(libobject, Location, name_fixup=_("Unknown"))
+        if not location:
             return None
 
-        self.logger.info("Processing Location {}".format(libobject.get_id()))
-
-        location = Location.objects_with_deleted.filter(oparl_id=libobject.get_id()).first() or Location()
         location.oparl_id = libobject.get_id()
-        location.name = "TODO: FIXME"
-        location.short_name = "FIXME"
         location.description = libobject.get_description()
         location.is_official = self.official_geojson
         location.geometry = self.extract_geometry(libobject.get_geojson())
@@ -261,24 +276,10 @@ class OParlImportObjects(OParlImportHelper):
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
 
-    def extract_text_from_file(self, file: File):
-        path = os.path.join(self.storagefolder, file.storage_filename)
-        if file.mime_type == "application/pdf":
-            print("Extracting text from PDF: " + path)
-            try:
-                text = extract_text_from_pdf(path, self.cachefolder)
-                file.parsed_text = text
-            except PDFTextExtractionNotAllowed:
-                message = "The pdf {} is encrypted".format(path)
-                self.errorlist.append(message)
-        elif file.mime_type == "text/text":
-            with open(path) as f:
-                file.parsed_text = f.read()
-
     def file(self, libobject: OParl.File):
-        if not libobject:
-            return None
-
+        file = self.check_existing(libobject, File, add_defaults=False)
+        if not file:
+            return
         self.logger.info("Processing File {}".format(libobject.get_id()))
 
         if libobject.get_file_name():
@@ -289,8 +290,6 @@ class OParlImportObjects(OParlImportHelper):
             displayed_filename = slugify(libobject.get_name())[:length] + extension
         else:
             displayed_filename = slugify(libobject.get_access_url())[-self.filename_length_cutoff:]
-
-        file = File.objects_with_deleted.filter(oparl_id=libobject.get_id()).first() or File()
 
         file.oparl_id = libobject.get_id()
         file.name = libobject.get_name()[:200]  # FIXME
@@ -315,34 +314,15 @@ class OParlImportObjects(OParlImportHelper):
 
     def person(self, libobject: OParl.Person):
         self.logger.info("Processing Person {}".format(libobject.get_id()))
-
-        person, created = Person.objects_with_deleted.get_or_create(oparl_id=libobject.get_id())
+        person = self.check_existing(libobject, Person)
+        if not person:
+            return
 
         person.name = libobject.get_name()
         person.given_name = libobject.get_given_name()
         person.family_name = libobject.get_family_name()
         person.location = self.location(libobject.get_location())
         person.save()
-
-    def add_missing_associations(self):
-        print("Adding missing meeting <-> persons associations")
-        for meeting_id, person_ids in self.meeting_person_queue.items():
-            meeting = Meeting.by_oparl_id(meeting_id)
-            meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
-            meeting.save()
-
-        print("Adding missing agenda item <-> paper associations")
-        for item_id, paper_id in self.agenda_item_paper_queue.items():
-            item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
-            item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
-            if not item.paper:
-                message = "Missing Paper: {}, ({})".format(paper_id, item_id)
-                self.errorlist.append(message)
-            item.save()
-
-        print("Adding missing memberships")
-        for classification, organization, libobject in self.membership_queue:
-            self.membership(classification, organization, libobject)
 
     def membership(self, classification, organization, libobject: OParl.Membership):
         person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
@@ -379,3 +359,23 @@ class OParlImportObjects(OParlImportHelper):
             return
 
         return membership
+
+    def add_missing_associations(self):
+        print("Adding missing meeting <-> persons associations")
+        for meeting_id, person_ids in self.meeting_person_queue.items():
+            meeting = Meeting.by_oparl_id(meeting_id)
+            meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
+            meeting.save()
+
+        print("Adding missing agenda item <-> paper associations")
+        for item_id, paper_id in self.agenda_item_paper_queue.items():
+            item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
+            item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
+            if not item.paper:
+                message = "Missing Paper: {}, ({})".format(paper_id, item_id)
+                self.errorlist.append(message)
+            item.save()
+
+        print("Adding missing memberships")
+        for classification, organization, libobject in self.membership_queue:
+            self.membership(classification, organization, libobject)

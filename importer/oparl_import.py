@@ -10,13 +10,13 @@ import gi
 import requests
 from django.db import transaction
 
-from .oparl_import_objects import OParlImportObjects
+from .oparl_objects import OParlObjects
 
 gi.require_version('OParl', '0.2')
 from gi.repository import GLib, OParl
 
 
-class OParlImport(OParlImportObjects):
+class OParlImport(OParlObjects):
     """ Imports a oparl 1.0 compatible endpoint into the database.
 
     The importer can be customized by overriding this class.
