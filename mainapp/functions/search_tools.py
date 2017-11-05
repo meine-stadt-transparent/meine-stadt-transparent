@@ -81,3 +81,11 @@ def params_to_search_string(params: dict):
 
 def params_are_equal(params1: dict, params2: dict):
     return params_to_search_string(params1) == params_to_search_string(params2)
+
+
+def params_are_subscribable(params: dict):
+    if 'after' in params:
+        return False
+    if 'before' in params:
+        return False
+    return True

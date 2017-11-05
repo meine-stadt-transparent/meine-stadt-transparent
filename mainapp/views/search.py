@@ -5,17 +5,19 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.template import loader
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
-from mainapp.functions.search_tools import params_to_query, search_string_to_params
+from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable
 from mainapp.models import Body
+from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
 from mainapp.views.views import _build_map_object
 
 
-def _search_to_context(query, options, s):
+def _search_to_context(query, params: dict, options, s):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
     results = []
@@ -36,6 +38,7 @@ def _search_to_context(query, options, s):
         "document_types": DOCUMENT_TYPE_NAMES,
         "map": _build_map_object(main_body, []),
         "total_hits": executed.hits.total,
+        "subscribable": params_are_subscribable(params),
     }
 
     return context
@@ -43,20 +46,40 @@ def _search_to_context(query, options, s):
 
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def search(request, query):
-    options, s, errors = params_to_query(search_string_to_params(query))
+    params = search_string_to_params(query)
+    options, s, errors = params_to_query(params)
     for error in errors:
         messages.error(request, error)
-    context = _search_to_context(query, options, s)
+
+    handle_subscribe_requests(request, params,
+                              _('You will now receive notifications about new search results.'),
+                              _('You will no longer receive notifications.'),
+                              _('You have already subscribed to this search.'))
+
+    context = _search_to_context(query, params, options, s)
+    context['subscribable'] = params_are_subscribable(params)
+    context['is_subscribed'] = is_subscribed_to_search(request.user, params)
+
     return render(request, "mainapp/search.html", context)
 
 
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
-    options, s, _ = params_to_query(search_string_to_params(query))
-    after = int(request.GET.get("after", 0))
+    params = search_string_to_params(query)
+    options, s, _ = params_to_query(params)
+    after = int(request.GET.get('after', 0))
     s = s[after:after + 10]
-    context = _search_to_context(query, options, s)
-    return render(request, "partials/mixed_results.html", context)
+    context = _search_to_context(query, params, options, s)
+    context['subscribable'] = params_are_subscribable(params)
+    context['is_subscribed'] = is_subscribed_to_search(request.user, params)
+
+    result = {
+        'results': loader.render_to_string('partials/mixed_results.html', context, request),
+        'total_results': context['total_hits'],
+        'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
+    }
+
+    return JsonResponse(result, safe=False)
 
 
 def search_autosuggest(request, query):

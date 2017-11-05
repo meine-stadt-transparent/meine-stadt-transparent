@@ -13,7 +13,12 @@
 {% block content %}
     <div class="container">
         <div class="card">
-            <h1 class="card-header">{% trans "Search" context "page_title" %}</h1>
+            <h1 class="card-header">
+                <div class="subscribe-widget">
+                    {% include 'partials/subscribe_widget.html' %}
+                </div>
+                {% trans "Search" context "page_title" %}
+            </h1>
             <form id="detailed_searchform" class="section detailed-searchform p-2 mb-0" method="GET"
                   action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
                 <div class="input-group">

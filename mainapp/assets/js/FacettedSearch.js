@@ -169,17 +169,25 @@ export default class FacettedSearch {
 
     updateSearchResults(querystring) {
         let url = this.$form.data("results-only-url").slice(0, -1) + querystring;
-        $.get(url, function (data) {
-            let $data = $(data);
+        $.get(url, (data) => {
+            let $data = $(data['results']);
             let $btn = $("#start-endless-scroll");
-            let total = parseInt($data.data("total-hits"));
             let current = $data.find("> li").length;
-            if (total > current) {
-                $btn.find(".total-hits").text(total - current);
-                $btn.removeProp('hidden');
+            let $nothingFound = $('.nothing-found');
+            let $subscribeWidget = $(".subscribe-widget"); // Outside of this form to prevent nested forms
+            if (parseInt(data['total_results']) === 0) {
+                console.log("Zero", $nothingFound);
+                $btn.attr('hidden', 'hidden');
+                $nothingFound.removeAttr('hidden');
+            } else if (data['total_results'] > current) {
+                $btn.find('.total-hits').text(data['total_results'] - current);
+                $btn.removeAttr('hidden');
+                $nothingFound.attr('hidden', 'hidden');
             } else {
-                $btn.prop('hidden', 'hidden');
+                $btn.attr('hidden', 'hidden');
+                $nothingFound.attr('hidden', 'hidden');
             }
+            $subscribeWidget.html(data['subscribe_widget']);
             $("#endless-scroll-target").html($data.find("> li"));
         });
     }
