@@ -5,6 +5,10 @@ import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
 import FacettedSearch from "./FacettedSearch";
 
+// Force loading these images, as they are not referenced in the stylesheet but required by the JS library
+import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
+import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
+
 window.jQuery = require('jquery');
 
 $(function () {

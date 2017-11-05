@@ -32,14 +32,7 @@ export default class IndexView {
                 console.warn('Multiple papers in this location', location); // @TODO Handle colliding markers and multiple papers
             }
             for (let paper of Object.values(location.papers)) {
-                let marker = L.marker(IndexView.geojsonToLocation(location.coordinates), {
-                    icon: L.icon({
-                        iconUrl: '/static/images/marker-icon-2x.png',
-                        iconSize: [25, 41],
-                        iconAnchor: [12.5, 41],
-                        popupAnchor: [0, -35]
-                    })
-                });
+                let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
                 let files = '';
                 for (let i = 0; i < paper.files.length; i++) {
                     files += (i > 1 ? ', ' : '');

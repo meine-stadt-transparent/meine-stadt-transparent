@@ -67,14 +67,7 @@ export default class FacettedSearch {
             this.leaflet.removeLayer(this.currMarker);
         }
         this.currPosition = pos;
-        this.currMarker = new L.Marker(pos, {
-            icon: L.icon({
-                iconUrl: '/static/images/marker-icon-2x.png',
-                iconSize: [25, 41],
-                iconAnchor: [12.5, 41],
-                popupAnchor: [0, -35]
-            })
-        });
+        this.currMarker = new L.Marker(pos);
         this.currMarker.addTo(this.leaflet);
     }
 
