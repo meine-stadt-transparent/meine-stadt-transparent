@@ -22,7 +22,7 @@ module.exports = {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
         filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js')
     },
-    devtool: 'source-map',
+    devtool: (process.env.NODE_ENV !== 'production' ? 'source-map' : false),
     resolveLoader: {
         moduleExtensions: ['-loader']
     },
@@ -35,18 +35,18 @@ module.exports = {
                 use: [{
                     loader: 'css-loader',
                     options: {
-                        sourceMap: true,
+                        sourceMap: (process.env.NODE_ENV !== 'production'),
                         minimize: true
                     }
                 }, {
                     loader: 'resolve-url-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: (process.env.NODE_ENV !== 'production')
                     }
                 }, {
                     loader: 'sass-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: (process.env.NODE_ENV !== 'production')
                     }
                 }]
             })
@@ -56,7 +56,7 @@ module.exports = {
                 loader: 'babel-loader',
                 options: {
                     presets: ["env"],
-                    sourceMap: true
+                    sourceMap: (process.env.NODE_ENV !== 'production')
                 }
             }
         }, {
