@@ -1,10 +1,10 @@
-certifi==2017.7.27.1
+certifi==2017.11.5
 chardet==3.0.4
 click==6.7
 defusedxml==0.5.0
-Django==1.11.6
+Django==1.11.7
 django-allauth==0.34.0
-django-anymail==1.1
+django-anymail==1.2
 django-braces==1.11.0
 django-csp==3.3
 django-debug-toolbar==1.8
