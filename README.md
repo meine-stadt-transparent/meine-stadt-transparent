@@ -190,7 +190,12 @@ If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would 
 - Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
 - Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
 
+### Multi-Database setup
 
-## Data model
+When developing you might want to have multiple databases, e.g. one for the dummy data, one for an official OParl provider and another for mixing everything up. With debug enabled you can easily do this with the following command:
 
-The names of the models and the fields are highly inspired by the OParl standard.
+```bash
+export DATABASE_URL=mysql://otheruser:otherpassword@localhost/otherdatabase
+```
+
+TODO (LOWPRIO): Also alter elastic search index.

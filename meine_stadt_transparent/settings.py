@@ -267,8 +267,11 @@ CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
-# Debug Toolbar
+SECURE_CONTENT_TYPE_NOSNIFF = True
+CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+
 if DEBUG:
+    # Debug Toolbar
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     INTERNAL_IPS = [
@@ -276,11 +279,15 @@ if DEBUG:
     ]
     DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+    # For using runserver with multiple databases
+    if os.environ.get('DATABASE_URL'):
+        DATABASES['default'] = env.db_url_config(os.environ.get('DATABASE_URL'))
 
-# Make debugging css styles in firefox easier
-DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
-if DEBUG and DEBUG_STYLES:
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    # Make debugging css styles in firefox easier
+    DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
+    if DEBUG_STYLES:
+        CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+
+    # Just an additional host you might want
+    ALLOWED_HOSTS.append("meinestadttransparent.local")
 
