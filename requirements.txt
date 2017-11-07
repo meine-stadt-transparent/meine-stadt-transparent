@@ -19,7 +19,7 @@ elasticsearch-dsl==5.3.0
 Flask==0.12.2
 -e git://github.com/stadt-karlsruhe/geoextract.git@b18296b54e79b664388ad71804e64bdd50161b85#egg=geoextract
 geopy==1.11.0
-icalendar==3.11.7
+icalendar==3.12
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.9.6
