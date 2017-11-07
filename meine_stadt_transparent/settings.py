@@ -239,7 +239,7 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-ELASTICSEARCH_INDEX = 'ris_files'
+ELASTICSEARCH_INDEX = 'meine_stadt_transparent_documents'
 
 OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
 

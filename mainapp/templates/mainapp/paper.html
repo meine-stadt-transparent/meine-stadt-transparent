@@ -26,13 +26,11 @@
                 <p><i class="fa-custom fa-calendar"
                       aria-hidden="true"></i>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
             {% endif %}
-            <hr>
 
             {% if paper.submitter_parliamentary_groups.all %}
                 <div class="clearfix">
                     <span class="float-left pr-2">
-                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Parliamentary Groups:
-                    </span>
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Parliamentary Groups:&nbsp;</span>
                     <ul class="list-inline float-left">
                         {% for parliamentary_group in paper.submitter_parliamentary_groups.all %}
                             <li class="list-inline-item">
@@ -46,7 +44,7 @@
             {% if paper.submitter_committees.all %}
                 <div class="clearfix">
                     <span class="float-left pr-2">
-                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Committees: </span>
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Committees:&nbsp;</span>
                     <ul class="list-inline float-left">
                         {% for committee in paper.submitter_committees.all %}
                             <li class="list-inline-item">
@@ -60,7 +58,7 @@
             {% if paper.submitter_departments.all %}
                 <div class="clearfix">
                     <span class="float-left pr-2">
-                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Departments: </span>
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Departments:&nbsp;</span>
                     <ul class="list-inline float-left">
                         {% for department in paper.submitter_departments.all %}
                             <li class="list-inline-item">
@@ -72,10 +70,15 @@
                 </div>
             {% endif %}
             {% if paper.submitter_persons.all %}
-                <div>Submitting Persons:
-                    <ul>
+                <div class="clearfix">
+                    <span class="float-left pr-2">
+                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Persons:&nbsp;</span>
+                    <ul class="list-inline float-left">
                         {% for person in paper.submitter_persons.all %}
-                            <li><a href="{% url 'person' person.id %}">{{ person }}</a></li>
+                            <li class="list-inline-item">
+                                <a href="{% url 'person' person.id %}">
+                                    {{ person }}</a>{% if not forloop.last %}, {% endif %}
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

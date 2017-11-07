@@ -4,10 +4,11 @@
 [![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
 [![Dependency Status](https://gemnasium.com/badges/github.com/meine-stadt-transparent/meine-stadt-transparent.svg)](https://gemnasium.com/github.com/meine-stadt-transparent/meine-stadt-transparent)
 
-Meine Stadt Transparent is a [TODO] für den Prototype Fund
+Meine Stadt Transparent is a council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinforamtionssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources. 
+
+The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
-
 
 ## Setup
 
@@ -15,6 +16,7 @@ Meine Stadt Transparent is a [TODO] für den Prototype Fund
  - Python 3 with pip
  - A recent node version with npm
  - A webserver (nginx/apache)
+ - A Database (MariaDB is recommended, though anything that django supports should work)
  - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
@@ -33,7 +35,9 @@ pip install -r requirements.txt
 npm install
 ```
 
-The web server needs to be set up with a (self-signed) SSL certificate. Example configurations for some web servers:
+The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
+Example configurations:
+
  - [Apache](etc/apache.conf)
  - [nginx](etc/nginx.conf)
 
@@ -59,7 +63,8 @@ GObject needs to be installed system-wide.
  -  macOS:
     ```bash
     brew install pygobject3 --with-python3
-    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/lib/python3.6/site-packages/ # Replace 3.26.0 and projectdir by the real paths
+    # Replace 3.26.0 and projectdir by the real paths
+    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/lib/python3.6/site-packages/ 
     ```
 
 Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
@@ -75,7 +80,6 @@ Remember setting the environment variables or copy the typelib to an autodiscove
 ```bash
 docker-compose up # For elasticsearch
 ```
-
 
 ```bash
 source venv/bin/activate
