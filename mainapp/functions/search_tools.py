@@ -1,10 +1,21 @@
 import datetime
+from typing import NamedTuple
 
 from django.conf import settings
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search, Q
 
+from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
+
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "after", "before"]
+
+
+class NotificationSearchResult(NamedTuple):
+    title: str
+    url: str
+    type: str
+    type_name: str
 
 
 def add_date(s, raw, operator, options, errors):
@@ -92,3 +103,27 @@ def params_are_subscribable(params: dict):
     if 'before' in params:
         return False
     return True
+
+
+def search_result_for_notification(result):
+    from mainapp.documents import DOCUMENT_TYPE_NAMES
+
+    if result["type"] == "meeting":
+        title = result["name"]
+        url = ABSOLUTE_URI_BASE + reverse('meeting', args=[result["id"]])
+    elif result["type"] == "paper":
+        title = result["name"]
+        url = ABSOLUTE_URI_BASE + reverse('paper', args=[result["id"]])
+    elif result["type"] == "file": # displayed_filename?
+        title = result["name"]
+        url = ABSOLUTE_URI_BASE + reverse('file', args=[result["id"]])
+    else:
+        title = "Unknown"
+        url = ""
+
+    return NotificationSearchResult(
+        title=title,
+        url=url,
+        type=result["type"],
+        type_name=DOCUMENT_TYPE_NAMES[result["type"]]
+    )

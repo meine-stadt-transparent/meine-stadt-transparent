@@ -25,6 +25,7 @@ warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REAL_HOST = env.str('REAL_HOST')
 PRODUCT_NAME = "Meine Stadt Transparent"
+ABSOLUTE_URI_BASE = env.str('ABSOLUTE_URI_BASE', 'https://' + REAL_HOST)
 
 TEMPLATE_META = {
     "logo_name": "MST",
@@ -121,6 +122,7 @@ ANYMAIL = {
 }
 EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
+DEFAULT_FROM_EMAIL_NAME = env.str('DEFAULT_FROM_EMAIL_NAME', PRODUCT_NAME)
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

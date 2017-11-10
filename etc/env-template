@@ -1,5 +1,6 @@
 DEBUG=True
 REAL_HOST=opensourceris.local
+ABSOLUTE_URI_BASE=https://opensourceris.local
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
 ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
 ELASTICSEARCH_URL_PUBLIC=https://opensourceris.local/elasticsearch/
@@ -13,6 +14,7 @@ USE_ELASTICSEARCH=False
 DATABASE_URL=sqlite:///db.sqlite3
 SITE_SEO_NOINDEX=True
 DEFAULT_FROM_EMAIL=info@example.org
+DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
 
 SITE_DEFAULT_COMMITTEE=1
 SITE_DEFAULT_BODY=1

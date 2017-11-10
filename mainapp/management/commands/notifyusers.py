@@ -4,11 +4,14 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
+from django.template.loader import get_template
 from django.utils import timezone
+from django.utils.translation import ugettext as _
+from html2text import html2text
 
-from mainapp.documents import DOCUMENT_TYPE_NAMES
-from mainapp.functions.search_tools import params_to_query, add_modified_since
+from mainapp.functions.search_tools import params_to_query, add_modified_since, search_result_for_notification
 from mainapp.models import UserAlert
+from meine_stadt_transparent.settings import DEFAULT_FROM_EMAIL_NAME
 
 
 class Command(BaseCommand):
@@ -32,44 +35,43 @@ class Command(BaseCommand):
         for hit in executed:
             result = hit.__dict__['_d_']  # Extract the raw fields from the hit
             result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
-            result["type_translated"] = DOCUMENT_TYPE_NAMES[result["type"]]
             results.append(result)
 
         return results
 
-    def format_notification(self, title: str, objects):
-        str = title + "\n" + "===========\n"
-        for object in objects:
-            if "short_name" in object:
-                name = object["short_name"]
-            elif "displayed_filename" in object:
-                name = object["displayed_filename"]
-            else:
-                name = object.__str__()
-
-            str += "- %s - %s  (Modified: %s)\n" % (object["type_translated"], name, object["modified"])
-
-        str += "\n\n"
-        return str
-
     def notify_user(self, user: User, override_since: datetime, debug: bool):
         self.stdout.write("Notifying user: %s\n===============\n" % user.email)
-        notify_strs = []
+
+        context = {
+            "alerts": [],
+            "email": user.email,
+        }
 
         for alert in user.useralert_set.all():
             notifyobjects = self.perform_search(alert, override_since)
+            for obj in notifyobjects:
+                search_result_for_notification(obj)
+
             if len(notifyobjects) > 0:
-                notify_strs.append(self.format_notification(alert.__str__(), notifyobjects))
+                results = []
+                for obj in notifyobjects:
+                    results.append(search_result_for_notification(obj))
+                context["alerts"].append({
+                    "title": alert.__str__(),
+                    "results": results
+                })
+
+        message_html = get_template('email/new_documents.html').render(context)
+        message_text = html2text(message_html)
 
         if debug:
-            if len(notify_strs) > 0:
-                self.stdout.write("".join(notify_strs))
+            if len(context["alerts"]) > 0:
+                self.stdout.write(message_text)
             else:
                 self.stdout.write("-> NOTHING FOUND")
         else:
-            mail_from = "Meine Stadt Transparent <" + settings.DEFAULT_FROM_EMAIL + ">"
-            send_mail("New search results", "".join(notify_strs), mail_from, [user.email])
-            pass
+            mail_from = DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
+            send_mail(_("New search results"), message_text, mail_from, [user.email], html_message=message_html)
 
         if not override_since:
             for alert in user.useralert_set.all():
