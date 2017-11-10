@@ -1,4 +1,4 @@
-from django_elasticsearch_dsl import DocType, fields, GeoPointField, NestedField, StringField, IntegerField, \
+from django_elasticsearch_dsl import DocType, GeoPointField, NestedField, StringField, IntegerField, \
     BooleanField
 
 from mainapp.models import Meeting
