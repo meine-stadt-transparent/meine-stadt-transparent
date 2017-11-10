@@ -9,7 +9,7 @@
         {% endif %}
 
         <div class="section">
-            <h1 class="h2">{{ paper.short_name }}</h1>
+            <h1 class="h2 pb-3">{{ paper.short_name }}</h1>
 
             {% if paper.short_name != paper.name %}
                 <p class="lead">{{ paper.name }}</p>
@@ -30,7 +30,8 @@
             {% if paper.submitter_parliamentary_groups.all %}
                 <div class="clearfix">
                     <span class="float-left pr-2">
-                        <i class="fa-custom fa-users" aria-hidden="true"></i>Submitting Parliamentary Groups:&nbsp;</span>
+                        <i class="fa-custom fa-users"
+                           aria-hidden="true"></i>Submitting Parliamentary Groups:&nbsp;</span>
                     <ul class="list-inline float-left">
                         {% for parliamentary_group in paper.submitter_parliamentary_groups.all %}
                             <li class="list-inline-item">
@@ -109,6 +110,15 @@
             {% else %}
                 <p class="lead">{% trans "No files attached" %}</p>
             {% endif %}
+
+            <h2 class="h4 py-3">{% trans "History" %}</h2>
+            <dl class="row">
+                {% for entry in history %}
+                    <dt class="col-3">{{ entry.meeting.start|date }}</dt>
+                    <dd class="col-9">{{ entry }}</dd>
+                {% endfor %}
+            </dl>
+
         </div>
     </div>
 {% endblock %}6

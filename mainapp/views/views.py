@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, Department, Committee
+from mainapp.models import Body, Department, Committee, AgendaItem
 from mainapp.models.paper import Paper
 
 
@@ -52,6 +52,23 @@ def _build_map_object(body: Body, geo_papers):
     })
 
 
+def organizations(request):
+    context = {
+        "departments": Department.objects.all(),
+        "committees": Committee.objects.all(),
+        "organizations": [],  # TODO
+    }
+    return render(request, "mainapp/organizations.html", context)
+
+
+def paper(request, pk):
+    context = {
+        "paper": Paper.objects.get(id=pk),
+        "history": AgendaItem.objects.filter(paper_id=pk).all(),
+    }
+    return render(request, "mainapp/paper.html", context)
+
+
 def info_privacy(request):
     return render(request, 'info/privacy.html', {})
 
@@ -70,12 +87,3 @@ def error404(request):
 
 def error500(request):
     return render(request, "error/500.html", status=500)
-
-
-def organizations(request):
-    context = {
-        "departments": Department.objects.all(),
-        "committees": Committee.objects.all(),
-        "organizations": [],  # TODO
-    }
-    return render(request, "mainapp/organizations.html", context)
