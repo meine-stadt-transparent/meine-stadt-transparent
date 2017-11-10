@@ -27,10 +27,10 @@
                        data-suggest-url="{% url 'search_autosuggest' '' %}"
                        placeholder="{% trans "Search" context "page_title" %}"
                        aria-label="{% trans "Search" context "perform search" %}">
-                <span class="input-group-btn">
-                    <button class="btn btn-primary" type="submit">{% trans "Search" context "perform search" %}</button>
-                </span>
+
+                <button class="search-icon fa fa-search" type="submit" title="{%  trans 'Show search results' context 'aria label' %}"></button>
             </div>
+
         </form>
     </div>
 

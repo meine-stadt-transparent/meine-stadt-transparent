@@ -7,10 +7,13 @@
     padding-right: 30px;
   }
 
-  i.fa {
+  .search-icon {
     position: absolute;
     top: calc(50% - 16px / 2); // font awesome says 14px, but `font-size: inherit;` seems to override that
     right: calc((#{$input-height} - 16px) / 2);
+    border: 0;
+    padding: 0;
+    background: none;
   }
 }
 

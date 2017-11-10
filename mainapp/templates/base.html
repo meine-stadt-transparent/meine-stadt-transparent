@@ -58,8 +58,9 @@
                                data-suggest-url="{% url 'search_autosuggest' '' %}"
                                placeholder="{% trans "Search" context "page_title" %}"
                                aria-label="{% trans "Search" context "perform search" %}">
-                        <i class="fa fa-search"></i>
-                        <button type="submit" hidden>{% trans "Search" context "perform search" %}</button>
+                        <button class="search-icon fa fa-search" type="submit"
+                                title="{% trans 'Show search results' context 'aria label' %}"></button>
+
                     </form>
                 {% endif %}
             </div>

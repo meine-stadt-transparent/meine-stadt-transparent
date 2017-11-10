@@ -1,6 +1,15 @@
+// There's one element with 800 and an outer with 10000
+$leaflet-controls-zindex: 1000;
+$typeahead-zindex: $leaflet-controls-zindex + 10;
+$search-icon-zindex: $typeahead-zindex + 10;
+
 .search-autocomplete-home {
   span.twitter-typeahead {
-    z-index: 1100;
+    z-index: $typeahead-zindex;
+  }
+
+  .search-icon {
+    z-index: $search-icon-zindex;
   }
 }
 
