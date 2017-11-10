@@ -3,35 +3,18 @@
 
 {% block content %}
     <div class="container">
-        <h1 class="h2">{{ organization.short_name }}</h1>
-
-        {% if organization.short_name != organization.name %}
-            <p class="lead">{{ organization.name }}</p>
-        {% else %}
-            <div class="pb-3"></div>
-        {% endif %}
+        {% include "partials/header_name.html" with object=organization %}
 
         {% block exttendmeta %}
             {% if organization.start %}
                 <p title="The timeframe in which the organization existed">
                     <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{{ organization.start }}
-                    {% if organization.end %}- {{ organization.end }}{% endif %}
+                    {% if organization.end %} - {{ organization.end }}{% endif %}
                 </p>
             {% endif %}
 
-            {% if organization.legislative_terms.all|length > 0 %}
-                <div class="clearfix">
-                    <span class="float-left pr-2">
-                        <i class="fa-custom fa-users" aria-hidden="true"></i>Legislative Terms:&nbsp;</span>
-                    <ul class="list-inline float-left">
-                        {% for term in organization.legislative_terms.all %}
-                            <li class="list-inline-item">
-                                {{ term }}{% if not forloop.last %}, {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+            {% trans "Legislative Terms:" as name context "List name" %}
+            {% include "partials/inline_list.html" with objects=organization.legislative_terms.all icon="calendar" %}
         {% endblock %}
 
         <p title="{% trans 'Belongs to this body' %}">
@@ -43,22 +26,10 @@
             </p>
         {% endif %}
 
-        {% if memberships|length > 0 %}
-            <h2 class="h3">{% trans "Members" context "Header" %}</h2>
-            <ul>
-                {% for membership in memberships %}
-                    <li><a href="{% url "person" membership.person.id %}">{{ membership.person }}</a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% trans "Members" as name context "Header" %}
+        {% include "partials/header_list.html" with objects=memberships link="person" icon="user" %}
 
-        {% if papers|length > 0 %}
-            <h2 class="h3">{% trans "Paper" context "Header" %}</h2>
-            <ul>
-                {% for paper in papers %}
-                    <li><a href="{% url "paper" paper.id %}">{{ paper }}</a></li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% trans "Paper" as name context "Header" %}
+        {% include "partials/header_list.html" with objects=papers link="paper" icon="user" %}
     </div>
 {% endblock %}

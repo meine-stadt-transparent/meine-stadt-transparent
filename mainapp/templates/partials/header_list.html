@@ -1,0 +1,16 @@
+{% if objects|length > 0 %}
+    <div class="clearfix pb-3">
+        <h2 class="h3">{{ name }}</h2>
+        <ul>
+            {% for object in objects %}
+                <li>
+                    {% if link %}
+                        <a href="{% url link object.id %}">{{ object }}</a>
+                    {% else %}
+                        {{ object }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

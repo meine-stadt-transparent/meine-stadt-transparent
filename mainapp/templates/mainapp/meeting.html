@@ -4,10 +4,7 @@
 {% block content %}
     {% spaceless %}
         <div class="container">
-            <h1 class="h2">{{ meeting.short_name }}</h1>
-            {% if meeting.short_name != meeting.name %}
-                <p class="lead">{{ meeting.name }}</p>
-            {% endif %}
+            {% include "partials/header_name.html" with object=meeting %}
 
             <p title="{% trans 'Time of the Meeting' %}">
                 <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{{ time }}
@@ -24,25 +21,12 @@
                     </a>
                 </p>
             {% elif meeting.committees.all|length > 1 %}
-                <p title="{% trans 'Committees participating in the meeting' %}">
-                    <i class="fa-custom fa-users" aria-hidden="true"></i> Committees:
-                    {% for committee in meeting.committees.all %}
-                        <a href="{% url 'committee' committee.id %}" title="{{ committee.name }}">
-                            <span>{{ committee }}</span>
-                        </a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
+                {% trans "Participating committees:" as name %}
+                {% include "partials/inline_list.html" with objects=meeting.committees.all icon="users" link="committee" %}
             {% endif %}
 
-            {% if meeting.persons.all %}
-                <p>
-                    <i class="fa-custom fa-user" aria-hidden="true"></i>
-                    {% trans 'Further Attendees' %}
-                    {% for person in meeting.persons.all %}
-                        <a href="{% url 'person' person.id %}">{{ person }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </p>
-            {% endif %}
+            {% trans "Further Attendees:" as name %}
+            {% include "partials/inline_list.html" with objects=meeting.persons.all icon="user" link="person" %}
 
             {% if meeting.invitation %}
                 <p>

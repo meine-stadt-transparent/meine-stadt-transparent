@@ -3,24 +3,15 @@
 
 {% block content %}
     <div class="container">
-        <h2 class="h3">{% trans "Parliamentary Groups" context "Header" %}</h2>
-        <ul>
-            {% for group in parliamentary_groups %}
-                <li><a href="{% url "parliamentary-group" group.id %}">{{ group }}</a></li>
-            {% endfor %}
-        </ul>
-        <h2 class="h3">{% trans "Committees" context "Header" %}</h2>
-        <ul>
-            {% for committee in committees %}
-                <li><a href="{% url "committee" committee.id %}">{{ committee }}</a></li>
-            {% endfor %}
-        </ul>
-        <h2 class="h3">{% trans "Departments" context "Header" %}</h2>
-        <ul>
-            {% for department in departments %}
-                <li><a href="{% url "department" department.id %}">{{ department }}</a></li>
-            {% endfor %}
-        </ul>
+        {% trans "Parliamentary Groups" context "Header" as name %}
+        {% include "partials/header_list.html" with objects=parliamentary_groups name=name link="parliamentary-group" %}
+
+        {% trans "Committees" context "Header" as name %}
+        {% include "partials/header_list.html" with objects=committees name=name link="committee" %}
+
+        {% trans "Department" context "Header" as name %}
+        {% include "partials/header_list.html" with objects=departments name=name link="department" %}
+
         <h2 class="h3">{% trans "Other Organizations" context "Header" %}</h2>
         <ul>
             <li>TODO</li>

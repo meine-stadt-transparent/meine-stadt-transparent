@@ -1,0 +1,18 @@
+{% if objects|length > 0 %}
+    <div class="clearfix pb-3">
+        <span class="float-left">
+            <i class="fa-custom fa-{{ icon }}" aria-hidden="true"></i>{{ name }}&nbsp;
+        </span>
+        <ul class="list-inline float-left mb-0">
+            {% for object in objects %}
+                <li class="list-inline-item">
+                    {% if link %}
+                        <a href="{% url link object.id %}">{{ object }}</a>{% if not forloop.last %}, {% endif %}
+                    {% else %}
+                        {{ object }}{% if not forloop.last %}, {% endif %}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

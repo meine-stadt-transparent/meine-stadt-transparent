@@ -12,15 +12,16 @@
 
 {% block content %}
     <div class="container">
-        <p>
-        <div class=" d-flex flex-wrap">
-            <div>{{ settings.TEMPLATE_META.product_name }} liefert Informationen zu ihrem Stadtrat.&nbsp;</div>
-            <div><a href="{% url 'info_about' %}">Mehr erfahren</a></div>
+        <div class="d-flex flex-wrap lead">
+            <div>
+                {{ settings.TEMPLATE_META.product_name }}
+                {% blocktrans %}informs you about your local city council.{% endblocktrans %}&nbsp;
+            </div>
+            <div><a href="{% url 'info_about' %}">{% trans "More information" %}</a></div>
         </div>
-        </p>
     </div>
 
-    <div class="container pb-3">
+    <div class="container pt-3">
         <form class="form search-autocomplete search-autocomplete-home" method="GET" action="{% url 'search' '' %}">
             <div class="input-group">
                 <input name="query" type="text" class="form-control" value="" autocomplete="off"
@@ -28,36 +29,51 @@
                        placeholder="{% trans "Search" context "page_title" %}"
                        aria-label="{% trans "Search" context "perform search" %}">
 
-                <button class="search-icon fa fa-search" type="submit" title="{%  trans 'Show search results' context 'aria label' %}"></button>
+                <button class="search-icon fa fa-search" type="submit"
+                        title="{% trans 'Show search results' context 'aria label' %}"></button>
             </div>
 
         </form>
     </div>
 
-    <div class="container pb-5">
+    <div class="container pt-3">
         <div id="leaflet-map" class="js-home-map" data-map-data="{{ map }}"></div>
 
         <nav class="home-main-links">
             <div class="row">
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'persons' %}" class="btn btn-primary btn-block">Personen</a>
+                    <a href="{% url 'info_about' %}" class="btn btn-outline-dark btn-block">Über das Projekt</a>
                 </div>
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'calendar' %}" class="btn btn-primary btn-block">Termine</a>
+                    <a href="" class="btn btn-outline-dark btn-block">Wie funktioniert Stadtpolitik?</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'info_about' %}" class="btn btn-secondary btn-block">Über das Projekt</a>
+                    <a href="{% url 'persons' %}" class="btn btn-outline-dark btn-block">Personen</a>
                 </div>
                 <div class="col-sm-6 pt-3">
-                    <a href="" class="btn btn-secondary btn-block">Wie funktioniert Stadtpolitik?</a>
+                    <a href="{% url 'calendar' %}" class="btn btn-outline-dark btn-block">Termine</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 pt-3">
+                    {% if user.is_authenticated %}
+                        <a class="btn btn-outline-dark btn-block"
+                           href="{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
+                    {% else %}
+                        <a class="btn btn-outline-dark btn-block"
+                           href="{% url 'account_login' %}">{% trans "Sign In" context 'navigation' %}</a>
+                    {% endif %}
+                </div>
+                <div class="col-sm-6 pt-3">
+                    <a href="" class="btn btn-outline-dark btn-block">Wie funktioniert Stadtpolitik?</a>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div class="container">
+    <div class="container pt-3">
         <h2>Aktuelle Dokumente</h2>
         {% include "partials/mixed_results.html" with results=latest_paper %}
     </div>
