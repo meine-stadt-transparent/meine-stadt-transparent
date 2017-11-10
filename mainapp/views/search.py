@@ -82,12 +82,12 @@ def search_results_only(request, query):
     return JsonResponse(result, safe=False)
 
 
-def search_autosuggest(request, query):
+def search_autosuggest(_, query):
     if not settings.USE_ELASTICSEARCH:
         results = [{'name': _('search disabled'), 'url': reverse('index')}]
         return HttpResponse(json.dumps(results), content_type='application/json')
 
-    response = Search(index='ris_files').query("match", autocomplete=query).execute()
+    response = Search(index='ris_files').query("match", autocomplete=query).extra(min_score=1).execute()
 
     bodies = Body.objects.count()
 
@@ -95,7 +95,9 @@ def search_autosuggest(request, query):
     num_persons = num_parliamentary_groups = 0
     limit_per_type = 5
 
+    print(response.hits)
     for hit in response.hits:
+        print(hit.meta.score)
         if hit.meta.doc_type == 'person_document':
             if num_persons < limit_per_type:
                 results.append({'name': hit.name, 'url': reverse('person', args=[hit.id])})
@@ -114,6 +116,9 @@ def search_autosuggest(request, query):
         elif hit.meta.doc_type == 'paper_document':
             name = hit.name
             results.append({'name': name, 'url': reverse('paper', args=[hit.id])})
+        elif hit.meta.doc_type == 'meeting_document':
+            name = hit.name
+            results.append({'name': name, 'url': reverse('meeting', args=[hit.id])})
         else:
             print("Unknown type: %s" % hit.meta.doc_type)
 

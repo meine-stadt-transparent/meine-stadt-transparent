@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.views.generic import DetailView
 
+import mainapp.views.views
 from mainapp.views_profile import ProfileHomeView
 from . import views
 from .models import File, Location, Body
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^info/about/$', views.info_about, name='info_about'),
     url(r'^info/privacy/$', views.info_privacy, name='info_privacy'),
     url(r'^persons/$', views.persons, name='persons'),
+    url(r'^organizations/$', mainapp.views.views.organizations, name='organizations'),
     url(r'^calendar/$', views.calendar, name='calendar'),
     url(r'^calendar/data/$', views.calendar_data, name='calendar_data'),
     url(r'^person/(?P<pk>[0-9]+)/$', views.person, name='person'),

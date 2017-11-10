@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body
+from mainapp.models import Body, Department, Committee
 from mainapp.models.paper import Paper
 
 
@@ -70,3 +70,12 @@ def error404(request):
 
 def error500(request):
     return render(request, "error/500.html", status=500)
+
+
+def organizations(request):
+    context = {
+        "departments": Department.objects.all(),
+        "committees": Committee.objects.all(),
+        "organizations": [],  # TODO
+    }
+    return render(request, "mainapp/organizations.html", context)

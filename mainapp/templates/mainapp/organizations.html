@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="h3">{% trans "Departments" %}</h2>
+        <ul>
+            {% for department in departments %}
+                        <li><a href="{% url "department" department.id %}">{{ department }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2 class="h3">{% trans "Committees" %}</h2>
+        <ul>
+            {% for committee in committees %}
+                <li><a href="{% url "committee" committee.id %}">{{ committee }}</a></li>
+            {% endfor %}
+        </ul>        <h2 class="h3">{% trans "Other Organizations" %}</h2>
+        <ul>
+            <li>TODO</li>
+            {% for organization in organizations %}
+                <li><a href="{% url "organization" organization.id %}">{{ organization }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
