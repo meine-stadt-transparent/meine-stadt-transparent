@@ -1,5 +1,4 @@
 import datetime
-from typing import NamedTuple
 
 from django.conf import settings
 from django.urls import reverse
@@ -11,11 +10,17 @@ from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "after", "before"]
 
 
-class NotificationSearchResult(NamedTuple):
-    title: str
-    url: str
-    type: str
-    type_name: str
+class NotificationSearchResult:
+    title = None
+    url = None
+    type = None
+    type_name = None
+
+    def __init__(self, title, url, type_id, type_name):
+        self.title = title
+        self.url = url
+        self.type = type_id
+        self.type_name = type_name
 
 
 def add_date(s, raw, operator, options, errors):
@@ -114,7 +119,7 @@ def search_result_for_notification(result):
     elif result["type"] == "paper":
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse('paper', args=[result["id"]])
-    elif result["type"] == "file": # displayed_filename?
+    elif result["type"] == "file":  # displayed_filename?
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse('file', args=[result["id"]])
     else:
@@ -124,6 +129,6 @@ def search_result_for_notification(result):
     return NotificationSearchResult(
         title=title,
         url=url,
-        type=result["type"],
+        type_id=result["type"],
         type_name=DOCUMENT_TYPE_NAMES[result["type"]]
     )
