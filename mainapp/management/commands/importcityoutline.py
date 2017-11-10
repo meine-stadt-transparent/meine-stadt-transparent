@@ -1,8 +1,6 @@
-import requests
 from django.core.management.base import BaseCommand
 
-from importer.citytools import convert_to_geojson, import_outline
-from mainapp.models import Body, Location
+from importer.citytools import import_outline
 
 
 class Command(BaseCommand):
@@ -15,31 +13,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         import_outline(options["body-id"], options["gemeindeschluessel"], options["tmpfile"])
-        body = Body.objects.get(id=options['body-id'])
-        if not body:
-            self.stderr.write("Body not found: %s" % options['body-id'])
-            return
-
-        if not body.outline:
-            outline = Location()
-            outline.name = 'Outline of ' + body.name
-            outline.short_name = body.short_name
-            outline.is_official = False
-        else:
-            outline = body.outline
-
-        self.stdout.write(self.style.SUCCESS('Importing outline from %s' % options['gemeindeschluessel']))
-
-        query = '[out:json];area["de:amtlicher_gemeindeschluessel"~"^%s"]->.cityarea;rel(pivot.cityarea);out geom;'\
-                % options['gemeindeschluessel']
-
-        r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
-
-        geojson = convert_to_geojson(r.text, options["tmpfile"])
-        outline.geometry = geojson
-        outline.save()
-
-        body.outline = outline
-        body.save()
-
-
