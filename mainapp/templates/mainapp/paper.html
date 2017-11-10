@@ -9,10 +9,12 @@
         {% endif %}
 
         <div class="section">
-            <h1 class="h2 pb-3">{{ paper.short_name }}</h1>
+            <h1 class="h2">{{ paper.short_name }}</h1>
 
             {% if paper.short_name != paper.name %}
                 <p class="lead">{{ paper.name }}</p>
+            {% else %}
+                <div class="pb-3"></div>
             {% endif %}
 
             {% if paper.description %}
@@ -85,8 +87,10 @@
                 </div>
             {% endif %}
             {% if paper.change_request_of %}
-                <li>Change Request of <a
-                        href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a></li>
+                <div>
+                    <i class="fa-custom fa-pencil"></i>Change Request of
+                    <a href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a>
+                </div>
             {% endif %}
 
             {% if paper.main_file or paper.files.count > 0 %}
@@ -108,7 +112,7 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <p class="lead">{% trans "No files attached" %}</p>
+                <p class="lead pt-3">{% trans "No files attached" %}</p>
             {% endif %}
 
             <h2 class="h4 py-3">{% trans "History" %}</h2>

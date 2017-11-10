@@ -8,6 +8,7 @@ from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
 from mainapp.models import Body, Department, Committee, AgendaItem
 from mainapp.models.paper import Paper
+from mainapp.models.parliamentary_group import ParliamentaryGroup
 
 
 def index(request):
@@ -54,9 +55,10 @@ def _build_map_object(body: Body, geo_papers):
 
 def organizations(request):
     context = {
-        "departments": Department.objects.all(),
         "committees": Committee.objects.all(),
+        "departments": Department.objects.all(),
         "organizations": [],  # TODO
+        "parliamentary_groups": ParliamentaryGroup.objects.all(),
     }
     return render(request, "mainapp/organizations.html", context)
 
@@ -67,6 +69,36 @@ def paper(request, pk):
         "history": AgendaItem.objects.filter(paper_id=pk).all(),
     }
     return render(request, "mainapp/paper.html", context)
+
+
+def department(request, pk):
+    organization = Department.objects.get(id=pk)
+    context = {
+        "organization": organization,
+        "memberships": organization.departmentmembership_set.all(),
+        "papers": Paper.objects.filter(submitter_departments__in=pk)[:25],
+    }
+    return render(request, "mainapp/department.html", context)
+
+
+def committee(request, pk):
+    organization = Committee.objects.get(id=pk)
+    context = {
+        "organization": organization,
+        "memberships": organization.committeemembership_set.all(),
+        "papers": Paper.objects.filter(submitter_committees__in=pk)[:25],
+    }
+    return render(request, "mainapp/committee.html", context)
+
+
+def parliamentary_group(request, pk):
+    organization = ParliamentaryGroup.objects.get(id=pk)
+    context = {
+        "organization": organization,
+        "memberships": organization.parliamentarygroupmembership_set.all(),
+        "papers": Paper.objects.filter(submitter_parliamentary_groups__in=pk)[:25],
+    }
+    return render(request, "mainapp/parliamentary_group.html", context)
 
 
 def info_privacy(request):

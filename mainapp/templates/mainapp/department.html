@@ -1,15 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'mainapp/organization.html' %}
 
-{% block content %}
-    <div class="container">
-        <div class="section">
-            <p>{{ department.name }}</p>
-            <p>{{ department.short_name }}</p>
-            <p><a href="{% url 'body' department.body.id %}">{{ department.body }}</a></p>
-            {% for term in legislative_terms %}
-                <p>{{ term }}</p>
-            {% endfor %}
-            <p>{{ department.location }}</p>
-        </div>
-    </div>
+{% comment %}We don't store that kind of data for a departemt{% endcomment %}
+{% block exttendmeta %}
 {% endblock %}
