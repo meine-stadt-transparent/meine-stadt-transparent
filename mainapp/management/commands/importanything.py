@@ -9,7 +9,6 @@ class Command(ImportOParlCommand):
     def add_arguments(self, parser, add_entrypoint=True):
         super().add_arguments(parser, add_entrypoint)
         parser.add_argument('url', type=str)
-        parser.set_defaults(ignore_modified=True)
 
     def handle(self, *args, **options):
         importer = self.import_importer(options)

@@ -29,9 +29,9 @@ class Command(BaseCommand):
         # Remove gi requirement for running tests
         try:
             if options["use_sternberg"]:
-                from importer import SternbergImport as Importer
+                from importer.sternberg_import import SternbergImport as Importer
             else:
-                from importer import OParlImport as Importer
+                from importer.oparl_import import OParlImport as Importer
         except ImportError as e:
             if str(e) == "No module named 'gi'":
                 raise ImportError("You need to install liboparl for the importer. The readme contains the installation "
