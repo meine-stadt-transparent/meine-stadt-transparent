@@ -1,890 +1,911 @@
 [
-    {
-        "model": "mainapp.legislativeterm",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z",
-            "deleted": false,
-            "name": "42th Term",
-            "short_name": "42th Term",
-            "start": "2013-01-01",
-            "end": "2016-12-31"
-        }
-    },
-    {
-        "model": "mainapp.legislativeterm",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T13:56:50.114Z",
-            "modified": "2017-09-10T17:04:39.906Z",
-            "deleted": false,
-            "name": "43th Term",
-            "short_name": "43th Term",
-            "start": "2017-01-01",
-            "end": "2020-12-31"
-        }
-    },
-    {
-        "model": "mainapp.location",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:05:54.213Z",
-            "modified": "2017-09-10T14:06:17.065Z",
-            "deleted": false,
-            "name": "Francis Underwood's House",
-            "short_name": "Frank's Home",
-            "description": "The place where frank lives. Somewhere in Washington D.C.",
-            "is_official": false,
-            "osm_id": null,
-            "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
-            "bodies": []
-        }
-    },
-    {
-        "model": "mainapp.location",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:25:19.417Z",
-            "modified": "2017-09-10T14:25:19.417Z",
-            "deleted": false,
-            "name": "Badly drawn outline of Washington",
-            "short_name": "Bad outline of Washington",
-            "description": "",
-            "is_official": false,
-            "osm_id": null,
-            "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
-            "bodies": [
-                3
-            ]
-        }
-    },
-    {
-        "model": "mainapp.location",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:27:34.693Z",
-            "modified": "2017-09-10T14:27:34.693Z",
-            "deleted": false,
-            "name": "Lincoln Memorial in Washington D.C.",
-            "short_name": "Lincoln Memorial",
-            "description": "That look kinda centerish enough for what is needed",
-            "is_official": false,
-            "osm_id": null,
-            "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
-            "bodies": []
-        }
-    },
-    {
-        "model": "mainapp.location",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:34:03.309Z",
-            "modified": "2017-09-10T14:34:03.309Z",
-            "deleted": false,
-            "name": "The Captiol",
-            "short_name": "Capitol",
-            "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
-            "is_official": true,
-            "osm_id": null,
-            "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
-            "bodies": []
-        }
-    },
-    {
-        "model": "mainapp.body",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T13:41:52.637Z",
-            "modified": "2017-09-10T13:41:52.637Z",
-            "deleted": false,
-            "name": "United States House of Representatives",
-            "short_name": "House of Representatives",
-            "center": null,
-            "outline": null,
-            "legislative_terms": []
-        }
-    },
-    {
-        "model": "mainapp.body",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T13:42:16.803Z",
-            "modified": "2017-09-10T14:27:36.879Z",
-            "deleted": false,
-            "name": "United States Senate",
-            "short_name": "Senate",
-            "center": 3,
-            "outline": 2,
-            "legislative_terms": []
-        }
-    },
-    {
-        "model": "mainapp.body",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:10:25.755Z",
-            "modified": "2017-09-10T14:10:25.755Z",
-            "deleted": false,
-            "name": "Government of the USA",
-            "short_name": "USA",
-            "center": null,
-            "outline": null,
-            "legislative_terms": [
-                1,
-                2
-            ]
-        }
-    },
-    {
-        "model": "mainapp.body",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T09:41:52.637Z",
-            "modified": "2017-09-11T09:41:52.637Z",
-            "deleted": false,
-            "name": "K\u00f6ln",
-            "short_name": "K\u00f6ln",
-            "center": null,
-            "outline": null,
-            "legislative_terms": []
-        }
-    },
-    {
-        "model": "mainapp.committee",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:11:33.538Z",
-            "modified": "2017-09-11T10:02:34.860Z",
-            "deleted": false,
-            "name": "Committee of Inquiry",
-            "short_name": "Inquiry",
-            "body": 1,
-            "start": "2017-09-11",
-            "end": "2017-09-23",
-            "location": null,
-            "legislative_terms": []
-        }
-    },
-    {
-        "model": "mainapp.committee",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:57:17.627Z",
-            "modified": "2017-09-11T10:02:05.465Z",
-            "deleted": false,
-            "name": "Assembly of the House of Representatives",
-            "short_name": "House Assembly",
-            "body": 1,
-            "start": "2013-01-01",
-            "end": "2016-12-31",
-            "location": null,
-            "legislative_terms": []
-        }
-    },
-    {
-        "model": "mainapp.file",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:44:54.977Z",
-            "modified": "2017-09-10T16:48:36.760Z",
-            "deleted": false,
-            "name": "",
-            "storage_filename": "the_complexity_of_songs_donald_knuth.pdf",
-            "displayed_filename": "The Complexity of Songs.pdf",
-            "mime_type": "",
-            "legal_date": "1984-04-01",
-            "filesize": 153996,
-            "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
-            "license": null,
-            "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
-            "locations": []
-        }
-    },
-    {
-        "model": "mainapp.file",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:47:54.207Z",
-            "modified": "2017-09-22T09:44:57.868Z",
-            "deleted": false,
-            "name": "",
-            "storage_filename": "file.txt",
-            "displayed_filename": "File.txt",
-            "mime_type": "",
-            "legal_date": "2017-09-12",
-            "filesize": 49,
-            "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
-            "license": null,
-            "description": "It's a plaintext file containing the results of overwhelming creativity.",
-            "locations": []
-        }
-    },
-    {
-        "model": "mainapp.file",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T09:47:54.207Z",
-            "modified": "2017-09-11T09:47:54.207Z",
-            "deleted": false,
-            "name": "",
-            "storage_filename": "streettest.text",
-            "displayed_filename": "streettest.txt",
-            "mime_type": "",
-            "legal_date": "2017-09-10",
-            "filesize": 123,
-            "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\n/ Diversity herbeigef\u00fchrt.\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\nKarlstr. 7, 76133\nKarlsruhe\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\nist daher gering.\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
-            "license": null,
-            "description": "It's a plaintext file containing some addresses for address recognition",
-            "locations": []
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:12:03.011Z",
-            "modified": "2017-09-10T14:12:03.011Z",
-            "deleted": false,
-            "name": "Frank Unwerwood",
-            "given_name": "Francis",
-            "family_name": "Underwood",
-            "location": 1
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:19:22.326Z",
-            "modified": "2017-09-10T14:19:22.326Z",
-            "deleted": false,
-            "name": "Garrett Walker",
-            "given_name": "Garrett",
-            "family_name": "Walker",
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:31:29.297Z",
-            "modified": "2017-09-10T14:31:29.297Z",
-            "deleted": false,
-            "name": "Remy Danton",
-            "given_name": "Remy",
-            "family_name": "Danton",
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:26:49.060Z",
-            "modified": "2017-09-10T16:26:49.060Z",
-            "deleted": false,
-            "name": "Doug Stamper",
-            "given_name": "Doug",
-            "family_name": "Stamper",
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 5,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:35:57.250Z",
-            "modified": "2017-09-10T16:35:57.250Z",
-            "deleted": false,
-            "name": "Claire Underwood",
-            "given_name": "Claire",
-            "family_name": "Underwood",
-            "location": 1
-        }
-    },
-    {
-        "model": "mainapp.person",
-        "pk": 6,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T08:58:30.934Z",
-            "modified": "2017-09-11T08:58:30.934Z",
-            "deleted": false,
-            "name": "Jackie Sharp",
-            "given_name": "Jaqueline",
-            "family_name": "Sharp",
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:34:49.744Z",
-            "modified": "2017-09-10T14:34:49.744Z",
-            "deleted": false,
-            "name": "Meeting with Remy Danton",
-            "short_name": "Meeting with Remy",
-            "cancelled": false,
-            "start": "2017-09-10T10:00:00Z",
-            "end": "2017-09-10T16:00:00Z",
-            "location": 4,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 2,
-            "committees": [
-                1
-            ],
-            "persons": [],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T16:58:16.847Z",
-            "modified": "2017-10-07T20:51:41.833Z",
-            "deleted": false,
-            "name": "Meeting of the Congress of the USA 1",
-            "short_name": "Congress Meeting 1",
-            "cancelled": false,
-            "start": "2014-09-10T12:00:00Z",
-            "end": "2014-09-10T14:00:00Z",
-            "location": 4,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 1,
-            "committees": [
-                1
-            ],
-            "persons": [
-                2,
-                5,
-                6
-            ],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T13:48:29.482Z",
-            "modified": "2017-09-11T13:53:00.917Z",
-            "deleted": false,
-            "name": "House Assembly Meeting 1",
-            "short_name": "House Assembly 1",
-            "cancelled": false,
-            "start": "2017-09-01T10:00:00Z",
-            "end": "2017-09-01T12:00:00Z",
-            "location": null,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 1,
-            "committees": [
-                2
-            ],
-            "persons": [],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T13:49:05.723Z",
-            "modified": "2017-10-07T21:35:21.897Z",
-            "deleted": false,
-            "name": "House Assembly Meeting 2",
-            "short_name": "House Assembly 2",
-            "cancelled": false,
-            "start": "2017-09-08T10:00:00Z",
-            "end": "2017-09-08T12:00:00Z",
-            "location": null,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 1,
-            "committees": [
-                2
-            ],
-            "persons": [],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 5,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T13:49:34.981Z",
-            "modified": "2017-10-07T22:13:05.739Z",
-            "deleted": false,
-            "name": "House Assembly Meeting 3 - Joint Meeting with Inquiry",
-            "short_name": "House Assembly 3",
-            "cancelled": false,
-            "start": "2017-09-15T10:00:00Z",
-            "end": "2017-09-15T12:00:00Z",
-            "location": null,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 1,
-            "committees": [
-                1,
-                2
-            ],
-            "persons": [],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.meeting",
-        "pk": 6,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T13:50:01.662Z",
-            "modified": "2017-09-11T13:52:41.031Z",
-            "deleted": false,
-            "name": "House Assembly Meeting 4",
-            "short_name": "House Assembly 4",
-            "cancelled": false,
-            "start": "2017-09-22T10:00:00Z",
-            "end": "2017-09-22T12:00:00Z",
-            "location": null,
-            "invitation": null,
-            "results_protocol": null,
-            "verbatim_protocol": null,
-            "public": 1,
-            "committees": [
-                2
-            ],
-            "persons": [],
-            "auxiliary_files": []
-        }
-    },
-    {
-        "model": "mainapp.department",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:10:42.351Z",
-            "modified": "2017-09-10T14:10:42.351Z",
-            "deleted": false,
-            "name": "State Department of the USA",
-            "short_name": "State Department",
-            "body": 3,
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.department",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:16:20.399Z",
-            "modified": "2017-09-10T14:16:20.399Z",
-            "deleted": false,
-            "name": "Department of Defense",
-            "short_name": "DoD",
-            "body": 3,
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.department",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:20:09.166Z",
-            "modified": "2017-09-10T14:20:09.166Z",
-            "deleted": false,
-            "name": "Office of the President of the United States",
-            "short_name": "Office of the POTUS",
-            "body": 3,
-            "location": null
-        }
-    },
-    {
-        "model": "mainapp.parliamentarygroup",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:08:06.831Z",
-            "modified": "2017-09-10T14:08:06.831Z",
-            "deleted": false,
-            "name": "Democrats in the Congress",
-            "short_name": "Democrats",
-            "start": "2017-09-10",
-            "end": "2017-09-27",
-            "body": 1,
-            "location": null,
-            "legislative_terms": [
-                1
-            ]
-        }
-    },
-    {
-        "model": "mainapp.parliamentarygroup",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:08:31.146Z",
-            "modified": "2017-09-10T14:08:31.146Z",
-            "deleted": false,
-            "name": "Republicans in the Congress",
-            "short_name": "Republicans",
-            "start": "2017-09-10",
-            "end": "2017-09-27",
-            "body": 1,
-            "location": null,
-            "legislative_terms": [
-                1
-            ]
-        }
-    },
-    {
-        "model": "mainapp.parliamentarygroup",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:08:31.146Z",
-            "modified": "2017-09-10T14:08:31.146Z",
-            "deleted": false,
-            "name": "K\u00f6lner Testgruppe",
-            "short_name": "Testgruppe",
-            "start": "2017-09-10",
-            "end": "2017-09-27",
-            "body": 4,
-            "location": null,
-            "legislative_terms": [
-                1
-            ]
-        }
-    },
-    {
-        "model": "mainapp.paper",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:38:04.044Z",
-            "modified": "2017-10-07T18:36:26.478Z",
-            "deleted": false,
-            "reference_number": "Edu 1",
-            "name": "Bill for Education",
-            "short_name": "Education Bill",
-            "description": "That teachers' thing",
-            "change_request_of": null,
-            "legal_date": null,
-            "main_file": null,
-            "submitter_parliamentary_groups": [
-                1
-            ],
-            "submitter_committees": [],
-            "submitter_departments": [],
-            "submitter_persons": [],
-            "files": [
-                2
-            ]
-        }
-    },
-    {
-        "model": "mainapp.paper",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T15:35:04.454Z",
-            "modified": "2017-10-07T18:36:33.375Z",
-            "deleted": false,
-            "reference_number": "Edu 1/ Changerequest 1",
-            "name": "Changerequest for the bill about eduction",
-            "short_name": "Change the education bill",
-            "description": "",
-            "change_request_of": 1,
-            "legal_date": null,
-            "main_file": null,
-            "submitter_parliamentary_groups": [
-                2
-            ],
-            "submitter_committees": [],
-            "submitter_departments": [],
-            "submitter_persons": [],
-            "files": [
-                1
-            ]
-        }
-    },
-    {
-        "model": "mainapp.paper",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T18:36:50.965Z",
-            "modified": "2017-09-10T18:36:50.965Z",
-            "deleted": false,
-            "reference_number": "Submitters 1",
-            "name": "Many Submitters",
-            "short_name": "Many Submitters",
-            "description": "",
-            "change_request_of": null,
-            "legal_date": null,
-            "main_file": null,
-            "submitter_parliamentary_groups": [
-                1,
-                2
-            ],
-            "submitter_committees": [
-                1,
-                2
-            ],
-            "submitter_departments": [
-                1,
-                2,
-                3
-            ],
-            "submitter_persons": [
-                1,
-                2,
-                3,
-                4
-            ],
-            "files": []
-        }
-    },
-    {
-        "model": "mainapp.paper",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T15:35:04.454Z",
-            "modified": "2017-10-07T18:36:47.959Z",
-            "deleted": false,
-            "reference_number": "2017-09-10/1",
-            "name": "Stra\u00dfen in K\u00f6ln",
-            "short_name": "Stra\u00dfen in K\u00f6ln",
-            "description": "",
-            "change_request_of": null,
-            "legal_date": null,
-            "main_file": null,
-            "submitter_parliamentary_groups": [
-                3
-            ],
-            "submitter_committees": [],
-            "submitter_departments": [],
-            "submitter_persons": [],
-            "files": [
-                3
-            ]
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "key": "I.1.0.0 ff uws.",
-            "title": "",
-            "meeting": 1,
-            "position": 1,
-            "public": true,
-            "paper": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "key": "2",
-            "title": "",
-            "meeting": 1,
-            "position": 2,
-            "public": false,
-            "paper": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 3,
-        "fields": {
-            "oparl_id": null,
-            "key": "1.1",
-            "title": "Discussing the education Bill",
-            "meeting": 2,
-            "position": 2,
-            "public": true,
-            "paper": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 4,
-        "fields": {
-            "oparl_id": null,
-            "key": "1",
-            "title": "Education Bill",
-            "meeting": 2,
-            "position": 1,
-            "public": true,
-            "paper": 1,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 5,
-        "fields": {
-            "oparl_id": null,
-            "key": "1.2",
-            "title": "Voting on the Education Bill",
-            "meeting": 2,
-            "position": 3,
-            "public": null,
-            "paper": 2,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 6,
-        "fields": {
-            "oparl_id": null,
-            "key": "2",
-            "title": "personnel matters",
-            "meeting": 2,
-            "position": 5,
-            "public": false,
-            "paper": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.agendaitem",
-        "pk": 7,
-        "fields": {
-            "oparl_id": null,
-            "key": "1.3",
-            "title": "More agenda",
-            "meeting": 2,
-            "position": 4,
-            "public": null,
-            "paper": null,
-            "created": "2017-09-10T13:56:31.960Z",
-            "modified": "2017-09-10T13:57:02.058Z"
-        }
-    },
-    {
-        "model": "mainapp.committeemembership",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:14:06.896Z",
-            "modified": "2017-09-10T14:14:06.896Z",
-            "deleted": false,
-            "person": 1,
-            "committee": 1,
-            "start": "2013-01-01",
-            "end": "2017-12-31",
-            "role": "Chairman"
-        }
-    },
-    {
-        "model": "mainapp.committeemembership",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-11T08:58:59.570Z",
-            "modified": "2017-09-11T08:58:59.570Z",
-            "deleted": false,
-            "person": 6,
-            "committee": 2,
-            "start": "2013-01-01",
-            "end": "2016-12-31",
-            "role": "Congresswoman"
-        }
-    },
-    {
-        "model": "mainapp.departmentmembership",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:17:29.758Z",
-            "modified": "2017-09-10T14:17:29.758Z",
-            "deleted": false,
-            "person": 1,
-            "department": 1,
-            "start": "2013-01-01",
-            "end": "2016-12-31",
-            "role": "promised"
-        }
-    },
-    {
-        "model": "mainapp.departmentmembership",
-        "pk": 2,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:20:46.681Z",
-            "modified": "2017-09-10T14:20:46.681Z",
-            "deleted": false,
-            "person": 2,
-            "department": 3,
-            "start": "2013-01-01",
-            "end": "2020-09-10",
-            "role": "POTUS"
-        }
-    },
-    {
-        "model": "mainapp.parliamentarygroupmembership",
-        "pk": 1,
-        "fields": {
-            "oparl_id": null,
-            "created": "2017-09-10T14:12:42.637Z",
-            "modified": "2017-09-10T14:12:42.637Z",
-            "deleted": false,
-            "person": 1,
-            "parliamentary_group": 1,
-            "start": "2013-01-01",
-            "end": "2017-12-31",
-            "role": "Member"
-        }
+{
+    "model": "mainapp.legislativeterm",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
+        "name": "42th Term",
+        "short_name": "42th Term",
+        "start": "2013-01-01",
+        "end": "2016-12-31"
     }
+},
+{
+    "model": "mainapp.legislativeterm",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T13:56:50.114Z",
+        "modified": "2017-09-10T17:04:39.906Z",
+        "deleted": false,
+        "name": "43th Term",
+        "short_name": "43th Term",
+        "start": "2017-01-01",
+        "end": "2020-12-31"
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:05:54.213Z",
+        "modified": "2017-09-10T14:06:17.065Z",
+        "deleted": false,
+        "name": "Francis Underwood's House",
+        "short_name": "Frank's Home",
+        "description": "The place where frank lives. Somewhere in Washington D.C.",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:25:19.417Z",
+        "modified": "2017-09-10T14:25:19.417Z",
+        "deleted": false,
+        "name": "Badly drawn outline of Washington",
+        "short_name": "Bad outline of Washington",
+        "description": "",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
+        "bodies": [
+            3
+        ]
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:27:34.693Z",
+        "modified": "2017-09-10T14:27:34.693Z",
+        "deleted": false,
+        "name": "Lincoln Memorial in Washington D.C.",
+        "short_name": "Lincoln Memorial",
+        "description": "That look kinda centerish enough for what is needed",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:34:03.309Z",
+        "modified": "2017-09-10T14:34:03.309Z",
+        "deleted": false,
+        "name": "The Captiol",
+        "short_name": "Capitol",
+        "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
+        "is_official": true,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.body",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T13:41:52.637Z",
+        "modified": "2017-09-10T13:41:52.637Z",
+        "deleted": false,
+        "name": "United States House of Representatives",
+        "short_name": "House of Representatives",
+        "center": null,
+        "outline": null,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.body",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T13:42:16.803Z",
+        "modified": "2017-09-10T14:27:36.879Z",
+        "deleted": false,
+        "name": "United States Senate",
+        "short_name": "Senate",
+        "center": 3,
+        "outline": 2,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.body",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:10:25.755Z",
+        "modified": "2017-09-10T14:10:25.755Z",
+        "deleted": false,
+        "name": "Government of the USA",
+        "short_name": "USA",
+        "center": null,
+        "outline": null,
+        "legislative_terms": [
+            1,
+            2
+        ]
+    }
+},
+{
+    "model": "mainapp.body",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T09:41:52.637Z",
+        "modified": "2017-09-11T09:41:52.637Z",
+        "deleted": false,
+        "name": "K\u00f6ln",
+        "short_name": "K\u00f6ln",
+        "center": null,
+        "outline": null,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.committee",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:11:33.538Z",
+        "modified": "2017-09-11T10:02:34.860Z",
+        "deleted": false,
+        "name": "Committee of Inquiry",
+        "short_name": "Inquiry",
+        "body": 1,
+        "start": "2017-09-11",
+        "end": "2017-09-23",
+        "location": null,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.committee",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:57:17.627Z",
+        "modified": "2017-09-11T10:02:05.465Z",
+        "deleted": false,
+        "name": "Assembly of the House of Representatives",
+        "short_name": "House Assembly",
+        "body": 1,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "location": null,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-09-10T16:48:36.760Z",
+        "deleted": false,
+        "name": "",
+        "storage_filename": "the_complexity_of_songs_donald_knuth.pdf",
+        "displayed_filename": "The Complexity of Songs.pdf",
+        "mime_type": "",
+        "legal_date": "1984-04-01",
+        "filesize": 153996,
+        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
+        "license": null,
+        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
+        "locations": []
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:47:54.207Z",
+        "modified": "2017-09-22T09:44:57.868Z",
+        "deleted": false,
+        "name": "",
+        "storage_filename": "file.txt",
+        "displayed_filename": "File.txt",
+        "mime_type": "",
+        "legal_date": "2017-09-12",
+        "filesize": 49,
+        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
+        "license": null,
+        "description": "It's a plaintext file containing the results of overwhelming creativity.",
+        "locations": []
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T09:47:54.207Z",
+        "modified": "2017-09-11T09:47:54.207Z",
+        "deleted": false,
+        "name": "",
+        "storage_filename": "streettest.text",
+        "displayed_filename": "streettest.txt",
+        "mime_type": "",
+        "legal_date": "2017-09-10",
+        "filesize": 123,
+        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\n/ Diversity herbeigef\u00fchrt.\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\nKarlstr. 7, 76133\nKarlsruhe\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\nist daher gering.\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
+        "license": null,
+        "description": "It's a plaintext file containing some addresses for address recognition",
+        "locations": []
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:03.011Z",
+        "modified": "2017-09-10T14:12:03.011Z",
+        "deleted": false,
+        "name": "Frank Unwerwood",
+        "given_name": "Francis",
+        "family_name": "Underwood",
+        "location": 1
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:19:22.326Z",
+        "modified": "2017-09-10T14:19:22.326Z",
+        "deleted": false,
+        "name": "Garrett Walker",
+        "given_name": "Garrett",
+        "family_name": "Walker",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:31:29.297Z",
+        "modified": "2017-09-10T14:31:29.297Z",
+        "deleted": false,
+        "name": "Remy Danton",
+        "given_name": "Remy",
+        "family_name": "Danton",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:26:49.060Z",
+        "modified": "2017-09-10T16:26:49.060Z",
+        "deleted": false,
+        "name": "Doug Stamper",
+        "given_name": "Doug",
+        "family_name": "Stamper",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:35:57.250Z",
+        "modified": "2017-09-10T16:35:57.250Z",
+        "deleted": false,
+        "name": "Claire Underwood",
+        "given_name": "Claire",
+        "family_name": "Underwood",
+        "location": 1
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Jackie Sharp",
+        "given_name": "Jaqueline",
+        "family_name": "Sharp",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:34:49.744Z",
+        "modified": "2017-09-10T14:34:49.744Z",
+        "deleted": false,
+        "name": "Meeting with Remy Danton",
+        "short_name": "Meeting with Remy",
+        "cancelled": false,
+        "start": "2017-09-10T10:00:00Z",
+        "end": "2017-09-10T16:00:00Z",
+        "location": 4,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 2,
+        "committees": [
+            1
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:58:16.847Z",
+        "modified": "2017-10-07T20:51:41.833Z",
+        "deleted": false,
+        "name": "Meeting of the Congress of the USA 1",
+        "short_name": "Congress Meeting 1",
+        "cancelled": false,
+        "start": "2014-09-10T12:00:00Z",
+        "end": "2014-09-10T14:00:00Z",
+        "location": 4,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            1
+        ],
+        "persons": [
+            2,
+            5,
+            6
+        ],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:48:29.482Z",
+        "modified": "2017-09-11T13:53:00.917Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 1",
+        "short_name": "House Assembly 1",
+        "cancelled": false,
+        "start": "2017-09-01T10:00:00Z",
+        "end": "2017-09-01T12:00:00Z",
+        "location": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:49:05.723Z",
+        "modified": "2017-10-07T21:35:21.897Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 2",
+        "short_name": "House Assembly 2",
+        "cancelled": false,
+        "start": "2017-09-08T10:00:00Z",
+        "end": "2017-09-08T12:00:00Z",
+        "location": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:49:34.981Z",
+        "modified": "2017-10-07T22:13:05.739Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 3 - Joint Meeting with Inquiry",
+        "short_name": "House Assembly 3",
+        "cancelled": false,
+        "start": "2017-09-15T10:00:00Z",
+        "end": "2017-09-15T12:00:00Z",
+        "location": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            1,
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.meeting",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T13:50:01.662Z",
+        "modified": "2017-09-11T13:52:41.031Z",
+        "deleted": false,
+        "name": "House Assembly Meeting 4",
+        "short_name": "House Assembly 4",
+        "cancelled": false,
+        "start": "2017-09-22T10:00:00Z",
+        "end": "2017-09-22T12:00:00Z",
+        "location": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
+    "model": "mainapp.department",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:10:42.351Z",
+        "modified": "2017-09-10T14:10:42.351Z",
+        "deleted": false,
+        "name": "State Department of the USA",
+        "short_name": "State Department",
+        "body": 3,
+        "location": null
+    }
+},
+{
+    "model": "mainapp.department",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:16:20.399Z",
+        "modified": "2017-09-10T14:16:20.399Z",
+        "deleted": false,
+        "name": "Department of Defense",
+        "short_name": "DoD",
+        "body": 3,
+        "location": null
+    }
+},
+{
+    "model": "mainapp.department",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:20:09.166Z",
+        "modified": "2017-09-10T14:20:09.166Z",
+        "deleted": false,
+        "name": "Office of the President of the United States",
+        "short_name": "Office of the POTUS",
+        "body": 3,
+        "location": null
+    }
+},
+{
+    "model": "mainapp.papertype",
+    "pk": 1,
+    "fields": {
+        "paper_type": "Very Full Paper Type"
+    }
+},
+{
+    "model": "mainapp.parliamentarygroup",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:08:06.831Z",
+        "modified": "2017-09-10T14:08:06.831Z",
+        "deleted": false,
+        "name": "Democrats in the Congress",
+        "short_name": "Democrats",
+        "start": "2017-09-10",
+        "end": "2017-09-27",
+        "body": 1,
+        "location": null,
+        "legislative_terms": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.parliamentarygroup",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:08:31.146Z",
+        "modified": "2017-09-10T14:08:31.146Z",
+        "deleted": false,
+        "name": "Republicans in the Congress",
+        "short_name": "Republicans",
+        "start": "2017-09-10",
+        "end": "2017-09-27",
+        "body": 1,
+        "location": null,
+        "legislative_terms": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.parliamentarygroup",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:08:31.146Z",
+        "modified": "2017-09-10T14:08:31.146Z",
+        "deleted": false,
+        "name": "K\u00f6lner Testgruppe",
+        "short_name": "Testgruppe",
+        "start": "2017-09-10",
+        "end": "2017-09-27",
+        "body": 4,
+        "location": null,
+        "legislative_terms": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.paper",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:38:04.044Z",
+        "modified": "2017-10-07T18:36:26.478Z",
+        "reference_number": "Edu 1",
+        "name": "Bill for Education",
+        "short_name": "Education Bill",
+        "description": "That teachers' thing",
+        "change_request_of": null,
+        "legal_date": null,
+        "main_file": null,
+        "paper_type": null,
+        "deleted": false,
+        "submitter_parliamentary_groups": [
+            1
+        ],
+        "submitter_committees": [],
+        "submitter_departments": [],
+        "submitter_persons": [],
+        "files": [
+            2
+        ]
+    }
+},
+{
+    "model": "mainapp.paper",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T15:35:04.454Z",
+        "modified": "2017-10-07T18:36:33.375Z",
+        "reference_number": "Edu 1/ Changerequest 1",
+        "name": "Changerequest for the bill about eduction",
+        "short_name": "Change the education bill",
+        "description": "",
+        "change_request_of": 1,
+        "legal_date": null,
+        "main_file": null,
+        "paper_type": null,
+        "deleted": false,
+        "submitter_parliamentary_groups": [
+            2
+        ],
+        "submitter_committees": [],
+        "submitter_departments": [],
+        "submitter_persons": [],
+        "files": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.paper",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T18:36:50.965Z",
+        "modified": "2017-11-10T13:27:34.844Z",
+        "reference_number": "Submitters 1",
+        "name": "Many Submitters",
+        "short_name": "Many Submitters",
+        "description": "",
+        "change_request_of": null,
+        "legal_date": "2017-11-10",
+        "main_file": 1,
+        "paper_type": 1,
+        "deleted": false,
+        "submitter_parliamentary_groups": [
+            1,
+            2
+        ],
+        "submitter_committees": [
+            1,
+            2
+        ],
+        "submitter_departments": [
+            1,
+            2,
+            3
+        ],
+        "submitter_persons": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "files": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "mainapp.paper",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T15:35:04.454Z",
+        "modified": "2017-10-07T18:36:47.959Z",
+        "reference_number": "2017-09-10/1",
+        "name": "Stra\u00dfen in K\u00f6ln",
+        "short_name": "Stra\u00dfen in K\u00f6ln",
+        "description": "",
+        "change_request_of": null,
+        "legal_date": null,
+        "main_file": null,
+        "paper_type": null,
+        "deleted": false,
+        "submitter_parliamentary_groups": [
+            3
+        ],
+        "submitter_committees": [],
+        "submitter_departments": [],
+        "submitter_persons": [],
+        "files": [
+            3
+        ]
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "key": "I.1.0.0 ff uws.",
+        "title": "",
+        "meeting": 1,
+        "position": 1,
+        "public": true,
+        "paper": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "key": "2",
+        "title": "",
+        "meeting": 1,
+        "position": 2,
+        "public": false,
+        "paper": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "key": "1.1",
+        "title": "Discussing the education Bill",
+        "meeting": 2,
+        "position": 2,
+        "public": true,
+        "paper": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "key": "1",
+        "title": "Education Bill",
+        "meeting": 2,
+        "position": 1,
+        "public": true,
+        "paper": 1,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "key": "1.2",
+        "title": "Voting on the Education Bill",
+        "meeting": 2,
+        "position": 3,
+        "public": null,
+        "paper": 2,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "key": "2",
+        "title": "personnel matters",
+        "meeting": 2,
+        "position": 5,
+        "public": false,
+        "paper": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.agendaitem",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "key": "1.3",
+        "title": "More agenda",
+        "meeting": 2,
+        "position": 4,
+        "public": null,
+        "paper": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false
+    }
+},
+{
+    "model": "mainapp.committeemembership",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:14:06.896Z",
+        "modified": "2017-09-10T14:14:06.896Z",
+        "deleted": false,
+        "person": 1,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Chairman",
+        "committee": 1
+    }
+},
+{
+    "model": "mainapp.committeemembership",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 6,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Congresswoman",
+        "committee": 2
+    }
+},
+{
+    "model": "mainapp.departmentmembership",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:17:29.758Z",
+        "modified": "2017-09-10T14:17:29.758Z",
+        "deleted": false,
+        "person": 1,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "promised",
+        "department": 1
+    }
+},
+{
+    "model": "mainapp.departmentmembership",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:20:46.681Z",
+        "modified": "2017-09-10T14:20:46.681Z",
+        "deleted": false,
+        "person": 2,
+        "start": "2013-01-01",
+        "end": "2020-09-10",
+        "role": "POTUS",
+        "department": 3
+    }
+},
+{
+    "model": "mainapp.parliamentarygroupmembership",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:42.637Z",
+        "modified": "2017-09-10T14:12:42.637Z",
+        "deleted": false,
+        "person": 1,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Member",
+        "parliamentary_group": 1
+    }
+}
 ]
