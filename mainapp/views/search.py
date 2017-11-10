@@ -87,7 +87,7 @@ def search_autosuggest(_, query):
         results = [{'name': _('search disabled'), 'url': reverse('index')}]
         return HttpResponse(json.dumps(results), content_type='application/json')
 
-    response = Search(index='ris_files').query("match", autocomplete=query).extra(min_score=1).execute()
+    response = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete=query).extra(min_score=1).execute()
 
     bodies = Body.objects.count()
 
