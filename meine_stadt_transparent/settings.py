@@ -28,6 +28,7 @@ PRODUCT_NAME = "Meine Stadt Transparent"
 
 TEMPLATE_META = {
     "logo_name": "MST",
+    "product_name": PRODUCT_NAME,
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
 }

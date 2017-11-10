@@ -50,7 +50,7 @@ def meeting(request, pk):
         time = "{} - {}".format(begin, end)
 
     # Try to find a previous or following meetings using the committee
-    # TODO: Can we do that with meeting with two committees ?
+    # Excludes meetings with more than one committee
     context = {"meeting": selected_meeting, "time": time}
     if selected_meeting.committees.all().count() == 1:
         committee = selected_meeting.committees.first()
@@ -82,12 +82,7 @@ def build_ical(events, filename):
 def meeting_ical(_, pk):
     meeting = get_object_or_404(Meeting, id=pk)
 
-    if meeting.short_name:
-        filename = meeting.short_name
-    elif meeting.name:
-        filename = meeting.name
-    else:
-        filename = _("Meeting")
+    filename = meeting.short_name or meeting.name or _("Meeting")
 
     return build_ical([meeting.as_ical_event()], filename)
 
@@ -96,11 +91,6 @@ def committee_ical(_, pk):
     committee = get_object_or_404(Committee, id=pk)
     events = [meeting.as_ical_event() for meeting in committee.meeting_set.all()]
 
-    if committee.short_name:
-        filename = committee.short_name
-    elif committee.name:
-        filename = committee.name
-    else:
-        filename = _("Meeting Series")
+    filename = committee.short_name or committee.name or _("Meeting Series")
 
     return build_ical(events, filename)

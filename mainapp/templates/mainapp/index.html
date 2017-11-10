@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Meine Stadt Transparent" %}{% endblock %}
+{% block title %}{{ settings.TEMPLATE_META.product_name }}{% endblock %}
 
 {% block header %}
     {% with True as disable_header_search %}
@@ -14,7 +14,7 @@
     <div class="container">
         <p>
         <div class=" d-flex flex-wrap">
-            <div>Meine Stadt Transparent liefert Informationen zu ihrem Stadtrat.&nbsp;</div>
+            <div>{{ settings.TEMPLATE_META.product_name }} liefert Informationen zu ihrem Stadtrat.&nbsp;</div>
             <div><a href="{% url 'info_about' %}">Mehr erfahren</a></div>
         </div>
         </p>
