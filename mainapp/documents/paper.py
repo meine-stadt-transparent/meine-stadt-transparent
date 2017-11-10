@@ -21,4 +21,5 @@ class PaperDocument(DocType):
             'description',
             'legal_date',
             'created',
+            'modified',
         ]

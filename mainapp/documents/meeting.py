@@ -30,4 +30,5 @@ class MeetingDocument(DocType):
             'start',
             'end',
             'created',
+            'modified',
         ]

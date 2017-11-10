@@ -181,6 +181,19 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
+### Notifying users about new documents
+
+The following script is meant to be run as a cron job:
+```bash
+./manage.py notifyusers
+``` 
+
+However, for debugging purposes, it can be called stand alone, skipping the actual e-mail-sending and using a custom date range. The following commands dumps the search results of all users since 2017-09-10:
+```bash
+./manage.py notifyusers --debug --override-since 2017-09-10
+``` 
+
+
 ### Creating a page with additional JS libraries
 
 If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:

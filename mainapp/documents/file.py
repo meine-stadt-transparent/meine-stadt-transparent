@@ -18,4 +18,5 @@ class FileDocument(DocType):
             'displayed_filename',
             'parsed_text',
             'created',
+            'modified',
         ]

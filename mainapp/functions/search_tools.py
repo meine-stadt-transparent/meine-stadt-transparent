@@ -18,6 +18,11 @@ def add_date(s, raw, operator, options, errors):
     return s
 
 
+def add_modified_since(s, since: datetime):
+    s = s.filter(Q('range', modified={'gte': since}))
+    return s
+
+
 def params_to_query(params: dict):
     s = Search(index=settings.ELASTICSEARCH_INDEX)
     options = {}
@@ -25,9 +30,7 @@ def params_to_query(params: dict):
     if 'searchterm' in params and params['searchterm'] is not "":
         s = s.query('query_string', query=params['searchterm'])
         options['searchterm'] = params['searchterm']
-    if 'query' in params:
-        s = s.filter("match", parsed_text=params['query'])
-        s = s.highlight('parsed_text', fragment_size=50)  # @TODO Does not work yet
+
     try:
         lat = float(params.get('lat', ''))
         lng = float(params.get('lng', ''))
