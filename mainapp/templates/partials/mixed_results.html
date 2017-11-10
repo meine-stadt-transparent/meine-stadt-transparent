@@ -7,16 +7,18 @@
                 <div class="py-2 container">
                     <div class="row">
                         <div class="col-auto p-2">
-                            <i class="fa fa-fw fa-3
+                            <i class="fa fa-fw fa-3x
                             {% include "partials/type_to_fa_icon.html" with type=result.type %}" aria-hidden="true">
                             </i>
                         </div>
                         <div class="col text-truncate">
                             <div class="lead text-truncate">{{ result.name }}</div>
-                            <div class="text-muted text-truncate">{{ result.type_translated }}
-                            {% if result.legal_date %}
-                                | {{ result.legal_date }}
-                            {% endif %}
+                            <div class="text-muted text-truncate">
+                                <span>{% firstof result.paper_type.paper_type result.type_translated %}</span>
+                                {% if result.legal_date %}
+                                    <span>|</span>
+                                    <span>{{ result.legal_date }}</span>
+                                {% endif %}
                             </div>
                             <div class="text-muted text-truncate">{{ result.body.name }}</div>
                         </div>

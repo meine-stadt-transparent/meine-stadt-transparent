@@ -42,18 +42,20 @@
         <nav class="home-main-links">
             <div class="row">
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'info_about' %}" class="btn btn-outline-dark btn-block">Über das Projekt</a>
+                    <a href="{% url 'info_about' %}" class="btn btn-outline-dark btn-block">
+                        {% trans "About the project" %}
+                    </a>
                 </div>
                 <div class="col-sm-6 pt-3">
-                    <a href="" class="btn btn-outline-dark btn-block">Wie funktioniert Stadtpolitik?</a>
+                    <a href="" class="btn btn-outline-dark btn-block">{% trans "How do city politics work?" %}</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'persons' %}" class="btn btn-outline-dark btn-block">Personen</a>
+                    <a href="{% url 'persons' %}" class="btn btn-outline-dark btn-block">{% trans "Persons" %}</a>
                 </div>
                 <div class="col-sm-6 pt-3">
-                    <a href="{% url 'calendar' %}" class="btn btn-outline-dark btn-block">Termine</a>
+                    <a href="{% url 'calendar' %}" class="btn btn-outline-dark btn-block">{% trans "Calendar" %}</a>
                 </div>
             </div>
             <div class="row">
@@ -67,14 +69,15 @@
                     {% endif %}
                 </div>
                 <div class="col-sm-6 pt-3">
-                    <a href="" class="btn btn-outline-dark btn-block">Wie funktioniert Stadtpolitik?</a>
+                    <a href="{% url 'organizations' %}" class="btn btn-outline-dark btn-block">
+                        {% trans 'Organizations' %}</a>
                 </div>
             </div>
         </nav>
     </div>
 
     <div class="container pt-3">
-        <h2>Aktuelle Dokumente</h2>
+        <h2>{% trans "Latest Documents" context "Header" %}</h2>
         {% include "partials/mixed_results.html" with results=latest_paper %}
     </div>
 {% endblock %}
