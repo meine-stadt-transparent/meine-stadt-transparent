@@ -171,7 +171,7 @@ Gemeindeschlüssel (examples):
 
 To bootstrap a city, two pieces of information are required: the URL of the OParl-Endpoint, and (for now) the German "Gemeindeschlüssel".
 
-The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the "use-sternberg-workarounds" to mitigate issues with server-side implementations.  
+The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the `--use-sternberg-workarounds` to mitigate issues with the current server-side implementations.
 
 ```bash
 ./manage.py migrate

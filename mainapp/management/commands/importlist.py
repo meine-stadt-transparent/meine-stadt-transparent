@@ -1,5 +1,3 @@
-import re
-
 from .importoparl import Command as ImportOParlCommand
 
 

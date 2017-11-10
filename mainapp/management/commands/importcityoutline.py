@@ -1,10 +1,7 @@
-import json
-import os
-import subprocess
-
 import requests
 from django.core.management.base import BaseCommand
 
+from importer.citytools import convert_to_geojson, import_outline
 from mainapp.models import Body, Location
 
 
@@ -14,20 +11,10 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('gemeindeschluessel', type=str)
         parser.add_argument('body-id', type=int)
-
-    def convert_to_geojson(self, osm):
-        tmpfile = '/tmp/city-outline.json'
-        file = open(tmpfile, 'w')
-        file.write(osm)
-        file.close()
-
-        result = subprocess.run(['node_modules/.bin/osmtogeojson', '-f', 'json', '-m', tmpfile], stdout=subprocess.PIPE)
-        geojson = json.loads(result.stdout.decode('utf-8'))
-
-        os.remove(tmpfile)
-        return geojson
+        parser.add_argument('--tmpfile', type=str, default='/tmp/city-outline.json')
 
     def handle(self, *args, **options):
+        import_outline(options["body-id"], options["gemeindeschluessel"], options["tmpfile"])
         body = Body.objects.get(id=options['body-id'])
         if not body:
             self.stderr.write("Body not found: %s" % options['body-id'])
@@ -48,9 +35,11 @@ class Command(BaseCommand):
 
         r = requests.post('http://overpass-api.de/api/interpreter', data={'data': query})
 
-        geojson = self.convert_to_geojson(r.text)
+        geojson = convert_to_geojson(r.text, options["tmpfile"])
         outline.geometry = geojson
         outline.save()
 
         body.outline = outline
         body.save()
+
+
