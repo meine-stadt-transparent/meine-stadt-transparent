@@ -260,6 +260,8 @@ SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
 SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
 SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
 SITE_DEFAULT_COMMITTEE = env.int('SITE_DEFAULT_COMMITTEE', 1)
+SITE_MAPBOX_TILE_URL = env.str('SITE_MAPBOX_TILE_URL', None)
+SITE_MAPBOX_ACCESS_TOKEN = env.str('SITE_MAPBOX_ACCESS_TOKEN')
 
 # The documents of the last SITE_INDEX_DOCUMENT_DAY days will be shown on the home page
 SITE_INDEX_DOCUMENT_DAY = env.int('SITE_INDEX_DOCUMENT_DAY', 7)
@@ -271,7 +273,7 @@ CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com")
+CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
 
 if DEBUG:
     # Debug Toolbar

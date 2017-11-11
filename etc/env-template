@@ -21,5 +21,11 @@ SITE_DEFAULT_BODY=1
 SITE_GEO_LIMITS={"min": {"lat": 47.965, "lng": 11.286}, "max": {"lat": 48.296, "lng": 11.871}}
 SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
 SITE_GEO_INIT_ZOOM=12
+SITE_MAPBOX_ACCESS_TOKEN=pk...
+
+# Custom map styles can be used like this:
+# SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/tobiashoessl/cj9bafqs84zfl2snxt9o2p65r/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
+
+
 SITE_INDEX_DOCUMENT_DAY=7
 CALENDAR_DEFAULT_VIEW=listMonth

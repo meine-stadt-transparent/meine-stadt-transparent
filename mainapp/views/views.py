@@ -49,7 +49,9 @@ def _build_map_object(body: Body, geo_papers):
         'zoom': settings.SITE_GEO_INIT_ZOOM,
         'limit': settings.SITE_GEO_LIMITS,
         'outline': outline,
-        'documents': index_papers_to_geodata(geo_papers)
+        'documents': index_papers_to_geodata(geo_papers),
+        'mapboxKey': settings.SITE_MAPBOX_ACCESS_TOKEN,
+        'tileUrl': settings.SITE_MAPBOX_TILE_URL,
     })
 
 
