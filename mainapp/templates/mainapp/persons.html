@@ -38,7 +38,7 @@
     <section class="container d-flex flex-column">
         <ul class="persons-list list-unstyled">
             {% for member in members %}
-                <li class="col-3 person {{ member.groups_css_classes }}">
+                <li class="col-md-3 col-sm-6 col-xs-12 person {{ member.groups_css_classes }}">
                     <div>
                         <a href="{% url 'person' member.id %}">
                             <div class="name">{{ member.name }}</div>
