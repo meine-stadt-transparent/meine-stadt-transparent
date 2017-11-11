@@ -7,31 +7,36 @@
 
 {% block content %}
     <section class="container filter-sorter">
-        <label>Sortieren nach:
-            <select name="sort_by" size="1">
-                <option value="name" selected>Name</option>
-                <option value="party">Partei</option>
-            </select>
-        </label>
 
-        <ul class="nav nav-pills" id="filter-parliamentary-groups">
-            <li class="nav-item">
-                <a class="nav-link active" data-group-id="all" href="#">
-                    {% trans "All" %}
-                </a>
-            </li>
+        <div class="btn-group pull-right sort-selector" role="group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    id="btnSortDropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa-custom fa-sort-alpha-asc"></span>
+                <span class="current-mode">{% trans "Name" context "persons-list" %}</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnSortDropdown">
+                <h6 class="dropdown-header">{% trans "Sort by" context "persons-list" %}</h6>
+                <a class="dropdown-item" href="#" data-sort="name">{% trans "Name" context "persons-list" %}</a>
+                <a class="dropdown-item" href="#" data-sort="party">{% trans "Party" context "persons-list" %}</a>
+            </div>
+        </div>
+
+        <div class="btn-group filter-parliamentary-groups" data-toggle="buttons">
+            <label class="btn btn-primary active">
+                <input type="radio" name="party" value="all">
+                {% trans "All" context "persons-list" %}
+            </label>
             {% for group in parliamentary_groups %}
-                <li class="nav-item">
-                    <a class="nav-link" data-group-id="{{ group.id }}" href="#">
-                        {{ group.name }}
-                    </a>
-                </li>
+                <label class="btn btn-secondary">
+                    <input type="radio" name="party" value="{{ group.id }}">
+                {{ group.short_name }}
+                </label>
             {% endfor %}
-        </ul>
+        </div>
     </section>
 
     <section class="container d-flex flex-column">
-        <ul class="persons-list row list-unstyled">
+        <ul class="persons-list list-unstyled">
             {% for member in members %}
                 <li class="col-3 person {{ member.groups_css_classes }}">
                     <div>
@@ -41,9 +46,9 @@
                             <div class="role">{{ member.role }}</div>
                             <div class="date">
                                 {% if member.end %}
-                                    Von {{ member.start }} bis {{ member.end }}
+                                    {% trans "From" context "persons-list" %} {{ member.start }} {% trans "until" context "persons-list" %} {{ member.end }}
                                 {% else %}
-                                    Seit {{ member.start }}
+                                    {% trans "Since" context "persons-list" %} {{ member.start }}
                                 {% endif %}
                             </div>
                         </a>

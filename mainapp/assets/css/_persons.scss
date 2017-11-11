@@ -21,6 +21,7 @@
       background: #eee;
       color: #262524;
       margin: 5px;
+      min-height: 120px;
 
       > a {
         display: inline-block;
@@ -38,17 +39,11 @@
     }
   }
 
-  .name {
-    white-space: nowrap;
-    overflow: hidden; // TODO
-
-  }
-
   .parliamentary-group, .role, .date {
     color: #777;
     font-size: 0.8em;
     white-space: nowrap;
-    overflow: hidden; // TODO
-
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

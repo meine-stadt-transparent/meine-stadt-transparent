@@ -12,8 +12,14 @@ $(function () {
     });
     window.$grid = $grid;
 
-    $("select[name=sort_by]").change(function () {
-        let sort = $(this).val();
+    $grid.css("min-height", $grid.height() + "px");
+
+    let $sortSelector = $(".sort-selector");
+    $sortSelector.find("a").click((ev) => {
+        ev.preventDefault();
+        let $selectedNode = $(ev.currentTarget),
+            sort = $selectedNode.data("sort");
+        $sortSelector.find(".current-mode").text($selectedNode.text());
         if (sort === 'name') {
             $grid.isotope({sortBy: 'name'});
         }
@@ -22,14 +28,14 @@ $(function () {
         }
     });
 
-    $("#filter-parliamentary-groups").find("a").click(function () {
-        let filter = $(this).data("group-id");
+    let $parliamentaryGroups = $(".filter-parliamentary-groups input[type=radio]");
+    $parliamentaryGroups.change(() => {
+        let $selected = $parliamentaryGroups.filter(":checked"),
+            filter = $selected.val();
         if (filter === 'all') {
             $grid.isotope({filter: null});
         } else {
             $grid.isotope({filter: '.parliamentary-group-' + filter});
         }
-        $("#filter-parliamentary-groups").find(".active").removeClass("active");
-        $(this).addClass("active")
     });
 });
