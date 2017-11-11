@@ -20,7 +20,7 @@ class TestDocumentAccess(TestCase):
         paper.save()
 
         file_papers = file.paper_set.all()
-        self.assertEqual(0, len(file_papers))
+        self.assertEqual(self.base_paper_len - 1, len(file_papers))
 
         with self.assertRaises(Paper.DoesNotExist):
             Paper.objects.get(pk=1)
@@ -33,4 +33,4 @@ class TestDocumentAccess(TestCase):
         paper = Paper.objects.get(pk=1)
         self.assertEqual(1, paper.id)
         file_papers = file.paper_set.all()
-        self.assertEqual(1, len(file_papers))
+        self.assertEqual(self.base_paper_len, len(file_papers))
