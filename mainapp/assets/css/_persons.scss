@@ -2,15 +2,6 @@
   @extend .pb-3;
 }
 
-.filter-parliamentary-groups {
-  a {
-    outline: 0;
-    color: $nav-pills-link-active-color;
-    background-color: $nav-pills-link-active-bg;
-    @extend .px-2;
-  }
-}
-
 .persons-list {
   padding: 0;
 

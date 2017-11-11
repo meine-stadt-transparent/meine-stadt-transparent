@@ -28,14 +28,29 @@ $(function () {
         }
     });
 
-    let $parliamentaryGroups = $(".filter-parliamentary-groups input[type=radio]");
-    $parliamentaryGroups.change(() => {
-        let $selected = $parliamentaryGroups.filter(":checked"),
-            filter = $selected.val();
-        if (filter === 'all') {
+
+    let $groupRadios = $(".filter-parliamentary-groups input[type=radio]"),
+        $groupDropdownLinks = $(".filter-parliamentary-groups a"),
+        $currentFilterLabel = $(".filter-parliamentary-groups .current-mode");
+
+    // Update Isotope, set the label on the drop-down menu and the state of the radio-button-group
+    let setParliamentaryGroup = (group) => {
+        if (group === 'all') {
             $grid.isotope({filter: null});
         } else {
-            $grid.isotope({filter: '.parliamentary-group-' + filter});
+            $grid.isotope({filter: '.parliamentary-group-' + group});
         }
+        let name = $groupDropdownLinks.filter("[data-filter=" + group + "]").text();
+        $currentFilterLabel.text(name);
+        $groupRadios.filter("[value=" + group + "]:not(:checked)").prop("checked", true).trigger("click");
+    };
+    // Radio-Button-Group version
+    $groupRadios.change(() => {
+        setParliamentaryGroup($groupRadios.filter(":checked").val());
+    });
+    // Drop-Down version
+    $groupDropdownLinks.click((ev) => {
+        ev.preventDefault();
+        setParliamentaryGroup($(ev.currentTarget).data("filter"));
     });
 });

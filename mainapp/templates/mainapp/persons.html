@@ -8,6 +8,7 @@
 {% block content %}
     <section class="container filter-sorter">
 
+        <!-- Sorting by name or party -->
         <div class="btn-group pull-right sort-selector" role="group">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
                     id="btnSortDropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,17 +22,34 @@
             </div>
         </div>
 
-        <div class="btn-group filter-parliamentary-groups" data-toggle="buttons">
+        <!-- Filtering by parliamentary group - large screens -->
+        <div class="btn-group filter-parliamentary-groups d-none d-md-inline-flex" data-toggle="buttons">
             <label class="btn btn-primary active">
-                <input type="radio" name="party" value="all">
+                <input type="radio" name="parliamentary-group" value="all">
                 {% trans "All" context "persons-list" %}
             </label>
             {% for group in parliamentary_groups %}
                 <label class="btn btn-secondary">
-                    <input type="radio" name="party" value="{{ group.id }}">
-                {{ group.short_name }}
+                    <input type="radio" name="parliamentary-group" value="{{ group.id }}">
+                    {{ group.short_name }}
                 </label>
             {% endfor %}
+        </div>
+
+        <!-- Filtering by parliamentary group - small/medium screens -->
+        <div class="btn-group filter-parliamentary-groups d-md-none" role="group">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    id="btnFilterDropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="fa-custom fa-filter"></span>
+                <span class="current-mode">{% trans "All" context "persons-list" %}</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnFilterDropdown">
+                <h6 class="dropdown-header">{% trans "Party" context "persons-list" %}</h6>
+                <a class="dropdown-item" href="#" data-filter="all">{% trans "All" context "persons-list" %}</a>
+                {% for group in parliamentary_groups %}
+                    <a class="dropdown-item" href="#" data-filter="{{ group.id }}">{{ group.short_name }}</a>
+                {% endfor %}
+            </div>
         </div>
     </section>
 
