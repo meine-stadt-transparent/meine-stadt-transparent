@@ -5,6 +5,7 @@ webpack-stats.json
 storage/
 static/
 .env
+urls-to-import.txt
 
 # Python Stuff
 __pycache__/

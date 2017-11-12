@@ -9,7 +9,7 @@ class Command(OParlImport):
 
     def add_arguments(self, parser, add_entrypoint=False):
         super().add_arguments(parser, add_entrypoint)
-        parser.add_argument('urlfile', type=str, default="urls.txt")
+        parser.add_argument('urlfile', type=str, default="urls-to-import.txt")
 
     def handle(self, *args, **options):
         importer = self.import_importer(options)
