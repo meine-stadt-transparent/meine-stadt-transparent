@@ -1,7 +1,7 @@
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.chrome.webdriver import WebDriver
-from splinter import Browser
 import time
+
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from splinter import Browser
 
 
 class PersonsTest(StaticLiveServerTestCase):
@@ -11,7 +11,7 @@ class PersonsTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.browser = Browser('chrome', headless=True)
+        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver")
         super(PersonsTest, cls).setUpClass()
         # cls.selenium = WebDriver()
         # cls.selenium.implicitly_wait(10)

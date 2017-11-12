@@ -1,10 +1,10 @@
-addons:
-  chrome: stable
-
 language: python
 python:
   - "3.5"
   - "3.6"
+
+addons:
+  chrome: stable
 
 cache:
  - pip
@@ -13,12 +13,6 @@ cache:
 install:
  - npm install
  - pip install -r requirements.txt
- - wget -N http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip -P ~/
- - unzip ~/chromedriver_linux64.zip -d ~/
- - rm ~/chromedriver_linux64.zip
- - sudo mv -f ~/chromedriver /usr/local/share/
- - sudo chmod +x /usr/local/share/chromedriver
- - sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
 
 before_script:
  # Add pygobject to the virtualenv

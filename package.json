@@ -35,6 +35,7 @@
   "dependencies": {
     "bootstrap": "^4.0.0-beta.2",
     "bootstrap-datepicker": "^1.7.1",
+    "chromedriver": "^2.33.2",
     "corejs-typeahead": "^1.2.1",
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.6.2",
