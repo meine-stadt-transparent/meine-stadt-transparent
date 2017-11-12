@@ -13,8 +13,6 @@ class PersonsTest(StaticLiveServerTestCase):
     def setUpClass(cls):
         cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver")
         super(PersonsTest, cls).setUpClass()
-        # cls.selenium = WebDriver()
-        # cls.selenium.implicitly_wait(10)
 
     @classmethod
     def tearDownClass(cls):

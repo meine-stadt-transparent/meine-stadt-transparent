@@ -381,6 +381,20 @@
     }
 },
 {
+    "model": "mainapp.person",
+    "pk": 10,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Peter Russo",
+        "given_name": "Peter",
+        "family_name": "Russo",
+        "location": null
+    }
+},
+{
     "model": "mainapp.meeting",
     "pk": 1,
     "fields": {
@@ -951,6 +965,21 @@
     }
 },
 {
+    "model": "mainapp.committeemembership",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 10,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Member",
+        "committee": 1
+    }
+},
+{
     "model": "mainapp.departmentmembership",
     "pk": 1,
     "fields": {
@@ -1038,6 +1067,21 @@
         "end": "2017-12-31",
         "role": "Member",
         "parliamentary_group": 2
+    }
+},
+{
+    "model": "mainapp.parliamentarygroupmembership",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:42.637Z",
+        "modified": "2017-09-10T14:12:42.637Z",
+        "deleted": false,
+        "person": 10,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Member",
+        "parliamentary_group": 1
     }
 }
 ]
