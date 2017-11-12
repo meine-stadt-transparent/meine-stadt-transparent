@@ -262,7 +262,7 @@
         "created": "2017-09-10T14:12:03.011Z",
         "modified": "2017-09-10T14:12:03.011Z",
         "deleted": false,
-        "name": "Frank Unwerwood",
+        "name": "Frank Underwood",
         "given_name": "Francis",
         "family_name": "Underwood",
         "location": 1
@@ -335,6 +335,48 @@
         "name": "Jackie Sharp",
         "given_name": "Jaqueline",
         "family_name": "Sharp",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "William Conway",
+        "given_name": "William",
+        "family_name": "Conway",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 8,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Hector Mendoza",
+        "given_name": "Hector",
+        "family_name": "Mendoza",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 9,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Bob Birch",
+        "given_name": "Bob",
+        "family_name": "Birch",
         "location": null
     }
 },
@@ -864,6 +906,51 @@
     }
 },
 {
+    "model": "mainapp.committeemembership",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 7,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Member",
+        "committee": 1
+    }
+},
+{
+    "model": "mainapp.committeemembership",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 8,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Member",
+        "committee": 1
+    }
+},
+{
+    "model": "mainapp.committeemembership",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:59.570Z",
+        "modified": "2017-09-11T08:58:59.570Z",
+        "deleted": false,
+        "person": 9,
+        "start": "2013-01-01",
+        "end": "2016-12-31",
+        "role": "Member",
+        "committee": 1
+    }
+},
+{
     "model": "mainapp.departmentmembership",
     "pk": 1,
     "fields": {
@@ -906,6 +993,51 @@
         "end": "2017-12-31",
         "role": "Member",
         "parliamentary_group": 1
+    }
+},
+{
+    "model": "mainapp.parliamentarygroupmembership",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:42.637Z",
+        "modified": "2017-09-10T14:12:42.637Z",
+        "deleted": false,
+        "person": 9,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Member",
+        "parliamentary_group": 1
+    }
+},
+{
+    "model": "mainapp.parliamentarygroupmembership",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:42.637Z",
+        "modified": "2017-09-10T14:12:42.637Z",
+        "deleted": false,
+        "person": 7,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Member",
+        "parliamentary_group": 2
+    }
+},
+{
+    "model": "mainapp.parliamentarygroupmembership",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:42.637Z",
+        "modified": "2017-09-10T14:12:42.637Z",
+        "deleted": false,
+        "person": 8,
+        "start": "2013-01-01",
+        "end": "2017-12-31",
+        "role": "Member",
+        "parliamentary_group": 2
     }
 }
 ]
