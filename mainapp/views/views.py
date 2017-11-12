@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, Department, Committee, AgendaItem
+from mainapp.models import Body, Department, Committee, AgendaItem, Meeting
 from mainapp.models.paper import Paper
 from mainapp.models.parliamentary_group import ParliamentaryGroup
 
@@ -89,6 +89,7 @@ def committee(request, pk):
         "organization": organization,
         "memberships": organization.committeemembership_set.all(),
         "papers": Paper.objects.filter(submitter_committees__in=pk)[:25],
+        "meetings": Meeting.objects.filter(committees__in=pk)[:25],
     }
     return render(request, "mainapp/committee.html", context)
 

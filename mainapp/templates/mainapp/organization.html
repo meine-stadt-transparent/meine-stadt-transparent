@@ -31,5 +31,8 @@
 
         {% trans "Paper" as name context "Header" %}
         {% include "partials/header_list.html" with objects=papers link="paper" icon="user" %}
+
+        {% trans "Meetings" as name context "Header" %}
+        {% include "partials/header_list.html" with objects=meetings link="meeting" icon="calendar" %}
     </div>
 {% endblock %}
