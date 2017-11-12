@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
@@ -33,7 +35,7 @@ def persons(request):
             'end': membership.end,
             'role': membership.role,
             'groups_ids': ','.join(groups_ids),
-            'groups_css_classes': ' '.join(groups_css_classes),
+            'groups_classes': json.dumps(groups_css_classes),
             'groups_names': ', '.join(groups_names),
         })
 

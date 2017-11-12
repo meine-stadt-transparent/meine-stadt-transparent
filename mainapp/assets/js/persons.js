@@ -1,18 +1,20 @@
-require('isotope-layout/dist/isotope.pkgd');
+import Shuffle from "shufflejs/src/shuffle";
 
 $(function () {
-    // init Isotope
-    let $grid = $('.persons-list').isotope({
-        itemSelector: '.person',
-        sortBy: 'name',
-        getSortData: {
-            name: '.name',
-            parliamentary_group: '.parliamentary-group'
+    let $gridEl = $('.persons-list'),
+        sortByName = (el) => {
+            return el.getAttribute('data-name').toLowerCase();
         },
-    });
-    window.$grid = $grid;
+        sortByGroup = (el) => {
+            return el.getAttribute('data-group-names').toLowerCase();
+        },
+        grid = new Shuffle($gridEl, {
+            itemSelector: 'li.person',
+            isCentered: false,
+            initialSort: {by: sortByName}
+        });
 
-    $grid.css("min-height", $grid.height() + "px");
+    $gridEl.css("min-height", $gridEl.height() + "px");
 
     let $sortSelector = $(".sort-selector");
     $sortSelector.find("a").click((ev) => {
@@ -21,10 +23,10 @@ $(function () {
             sort = $selectedNode.data("sort");
         $sortSelector.find(".current-mode").text($selectedNode.text());
         if (sort === 'name') {
-            $grid.isotope({sortBy: 'name'});
+            grid.sort({by: sortByName});
         }
-        if (sort === 'party') {
-            $grid.isotope({sortBy: 'parliamentary_group'});
+        if (sort === 'group') {
+            grid.sort({by: sortByGroup});
         }
     });
 
@@ -36,9 +38,9 @@ $(function () {
     // Update Isotope, set the label on the drop-down menu and the state of the radio-button-group
     let setParliamentaryGroup = (group) => {
         if (group === 'all') {
-            $grid.isotope({filter: null});
+            grid.filter(null);
         } else {
-            $grid.isotope({filter: '.parliamentary-group-' + group});
+            grid.filter('parliamentary-group-' + group);
         }
         let name = $groupDropdownLinks.filter("[data-filter=" + group + "]").text();
         $currentFilterLabel.text(name);
@@ -52,5 +54,45 @@ $(function () {
     $groupDropdownLinks.click((ev) => {
         ev.preventDefault();
         setParliamentaryGroup($(ev.currentTarget).data("filter"));
+    });
+
+
+    /* Functions used by frontend testing to query the grid */
+
+    // Returns the current filtered, sorted items
+    $gridEl.data("get-items", () => {
+        let items = [];
+        $gridEl.find(".person").each((i, el) => {
+            let $item = $(el);
+            if ($item.hasClass("shuffle-item--visible")) {
+                items.push($(el));
+            }
+        });
+        return items.sort(($it1, $it2) => {
+            let pos1 = $it1.position(),
+                pos2 = $it2.position();
+            if (pos1.top < pos2.top) {
+                return -1;
+            } else if (pos1.top > pos2.top) {
+                return 1;
+            } else if (pos1.left < pos2.left) {
+                return -1;
+            } else if (pos1.left > pos2.left) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+    });
+    // Given a name of a person, this function returns the position in the list of the corresponding item
+    // Returns null if no person exists with that name of the person is currently not visible
+    $gridEl.data("get-item-pos-by-name", (name) => {
+        let positions = $gridEl.data("get-items")();
+        for (let i = 0; i < positions.length; i++) {
+            if (positions[i].data("name") === name) {
+                return i;
+            }
+        }
+        return null;
     });
 });

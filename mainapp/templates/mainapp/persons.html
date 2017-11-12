@@ -8,7 +8,7 @@
 {% block content %}
     <section class="container mb-3">
 
-        <!-- Sorting by name or party -->
+        <!-- Sorting by name or parliamentary group -->
         <div class="btn-group pull-right sort-selector" role="group">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
                     id="btnSortDropdown" aria-haspopup="true" aria-expanded="false">
@@ -18,7 +18,7 @@
             <div class="dropdown-menu" aria-labelledby="btnSortDropdown">
                 <h6 class="dropdown-header">{% trans "Sort by" context "persons-list" %}</h6>
                 <a class="dropdown-item" href="#" data-sort="name">{% trans "Name" context "persons-list" %}</a>
-                <a class="dropdown-item" href="#" data-sort="party">{% trans "Party" context "persons-list" %}</a>
+                <a class="dropdown-item" href="#" data-sort="group">{% trans "Party" context "persons-list" %}</a>
             </div>
         </div>
 
@@ -56,7 +56,9 @@
     <section class="container d-flex flex-column">
         <ul class="persons-list list-unstyled">
             {% for member in members %}
-                <li class="col-md-3 col-sm-6 col-xs-12 person {{ member.groups_css_classes }}">
+                <li class="col-md-3 col-sm-6 col-xs-12 person"
+                    data-name="{{ member.name }}" data-group-names="{{ member.groups_names }}"
+                    data-groups="{{ member.groups_classes }}">
                     <div>
                         <a href="{% url 'person' member.id %}">
                             <div class="name">{{ member.name }}</div>
