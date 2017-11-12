@@ -24,12 +24,12 @@
 
         <!-- Filtering by parliamentary group - large screens -->
         <div class="btn-group filter-parliamentary-groups d-none d-md-inline-flex" data-toggle="buttons">
-            <label class="btn btn-primary active">
+            <label class="btn btn-primary active parliamentary-group-all">
                 <input type="radio" name="parliamentary-group" value="all">
                 {% trans "All" context "persons-list" %}
             </label>
             {% for group in parliamentary_groups %}
-                <label class="btn btn-secondary">
+                <label class="btn btn-secondary parliamentary-group-{{ group.id }}">
                     <input type="radio" name="parliamentary-group" value="{{ group.id }}">
                     {{ group.short_name }}
                 </label>
@@ -56,7 +56,7 @@
     <section class="container d-flex flex-column">
         <ul class="persons-list list-unstyled">
             {% for member in members %}
-                <li class="col-md-3 col-sm-6 col-xs-12 person"
+                <li class="col-md-3 col-sm-6 col-xs-12 person person-{{ member.id }}"
                     data-name="{{ member.name }}" data-group-names="{{ member.groups_names }}"
                     data-groups="{{ member.groups_classes }}">
                     <div>
