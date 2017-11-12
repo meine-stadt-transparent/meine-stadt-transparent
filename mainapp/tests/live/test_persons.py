@@ -11,7 +11,7 @@ class PersonsTest(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.browser = Browser('chrome')
+        cls.browser = Browser('chrome', headless=True)
         super(PersonsTest, cls).setUpClass()
         # cls.selenium = WebDriver()
         # cls.selenium.implicitly_wait(10)
