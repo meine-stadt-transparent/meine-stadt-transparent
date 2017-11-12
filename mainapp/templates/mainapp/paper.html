@@ -48,7 +48,7 @@
                 </div>
             {% endif %}
 
-            <h2 class="h4 pt-3">{% trans "Attached Files" %}</h2>
+            <h2 class="h4">{% trans "Attached Files" %}</h2>
             {% if paper.main_file or paper.files.count > 0 %}
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
@@ -70,7 +70,7 @@
                 <p class="lead">{% trans "No files attached" %}</p>
             {% endif %}
 
-            <h2 class="h4 pt-3">{% trans "History" %}</h2>
+            <h2 class="h4">{% trans "History" %}</h2>
             <dl class="row">
                 {% for entry in history %}
                     <dt class="col-3">{{ entry.meeting.start|date }}</dt>

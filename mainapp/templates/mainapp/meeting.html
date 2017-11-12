@@ -46,37 +46,39 @@
                     <a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a>
                 </p>
             {% endif %}
-            <ul>
-                {% for file in meeting.auxiliary_files.all %}
-                    <li>
-                        <a href="{% url 'file' file.id %}">
-                            <i class="fa-custom fa-file" aria-hidden="true"></i>{{ file }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+            {% if meeting.auxiliary_files|length > 0 %}
+                <ul>
+                    {% for file in meeting.auxiliary_files.all %}
+                        <li>
+                            <a href="{% url 'file' file.id %}">
+                                <i class="fa-custom fa-file" aria-hidden="true"></i>{{ file }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
-            <div class="d-flex justify-content-between pb-3">
-                <div class="w-100 text-left">
+            <div class="d-flex justify-content-between1">
+                <p class="w-100 text-left">
                     {% if previous %}
                         <a href="{% url 'meeting' previous.id %}">
                             <i class="fa fa-chevron-left" aria-hidden="true"></i> {% trans 'Previous Meeting' %}
                         </a>
                     {% endif %}
-                </div>
-                <div class="w-100 text-center">
+                </p>
+                <p class="w-100 text-center">
                     <a href="{% url 'meeting-ical' meeting.id %}">
                         <i class="fa fa-download" aria-hidden="true"></i> {% trans 'Export' %}
                     </a>
-                </div>
-                <div class="w-100 text-right">
+                </p>
+                <p class="w-100 text-right">
                     {% if following %}
                         <a href="{% url 'meeting' following.id %}">
                             {% trans 'Following Meeting' %}
                             <i class="fa fa-chevron-right" aria-hidden="true"></i>
                         </a>
                     {% endif %}
-                </div>
+                </p>
             </div>
 
             <h3>{% trans 'Agenda' %}</h3>

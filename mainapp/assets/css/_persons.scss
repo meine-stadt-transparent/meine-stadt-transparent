@@ -1,7 +1,3 @@
-.filter-sorter {
-  @extend .pb-3;
-}
-
 .persons-list {
   padding: 0;
 
@@ -9,8 +5,7 @@
     padding: 0;
 
     > div {
-      background: #eee;
-      color: #262524;
+      background: map_get($theme-colors, light);
       margin: 5px;
       min-height: 120px;
 
