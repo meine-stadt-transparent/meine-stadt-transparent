@@ -51,16 +51,15 @@ export default class FacettedSearch {
     }
 
     initDocumentTypeSelector() {
-        $(".facet-dropdown .dropdown-item").click((ev) => {
-            let $checkbox = $(ev.target).find("input");
+        $(".facet-dropdown .dropdown-item").click((event) => {
+            let $checkbox = $(event.target).find("input");
             $checkbox.prop("checked", !$checkbox.prop("checked"));
             this.search();
 
-            ev.stopPropagation();
-            ev.preventDefault();
+            event.stopPropagation();
+            event.preventDefault();
         });
     }
-
 
     setLocation(pos) {
         if (this.currMarker) {
@@ -69,6 +68,7 @@ export default class FacettedSearch {
         this.currPosition = pos;
         this.currMarker = new L.Marker(pos);
         this.currMarker.addTo(this.leaflet);
+        this.search();
     }
 
     initLocationSelector() {
@@ -90,15 +90,14 @@ export default class FacettedSearch {
                 this.leaflet = create_map($mapElement, initData);
                 mapIsInitialized = true;
 
-                this.leaflet.on("click", (ev) => {
-                    this.setLocation(ev.latlng)
+                this.leaflet.on("click", (event) => {
+                    this.setLocation(event.latlng)
                 });
             }
-            if (this.$locationSelector.find("input[name=lat]").val() && this.$locationSelector.find("input[name=lng]").val()) {
-                this.setLocation(new L.LatLng(
-                    this.$locationSelector.find("input[name=lat]").val(),
-                    this.$locationSelector.find("input[name=lng]").val()
-                ));
+            let latVal = this.$locationSelector.find("input[name=lat]").val();
+            let lngVal = this.$locationSelector.find("input[name=lng]").val();
+            if (latVal && lngVal) {
+                this.setLocation(new L.LatLng(latVal, lngVal));
             }
         });
         this.$locationSelector.find(".select-btn").click(() => {
@@ -110,9 +109,9 @@ export default class FacettedSearch {
                 this.search();
             }
         });
-        this.$locationSelector.find(".dropdown-menu").click((ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
+        this.$locationSelector.find(".dropdown-menu").click((event) => {
+            event.preventDefault();
+            event.stopPropagation();
         });
     }
 
@@ -140,18 +139,22 @@ export default class FacettedSearch {
         let searchterm = "";
         let querystring = "";
         let documentTypes = [];
-        this.$form.find(':input[name]').each(function () {
-            let val = $(this).val();
-            let name = this.name;
+        this.$form.find(':input[name]').each((_, input) => {
+            let val = $(input).val();
+            let name = input.name;
             // Skip empty values
-            if (name === "" || val === "" || (Array.isArray(val) && val.length === 0)) {
+            if (name === "" || val === "") {
+                return;
+            }
+
+            if (Array.isArray(val) && val.length === 0) {
                 return;
             }
 
             if (name === "searchterm") {
                 searchterm = val
             } else if (name === 'document-type[]') {
-                if ($(this).prop("checked")) {
+                if ($(input).prop("checked")) {
                     documentTypes.push(val);
                 }
             } else {
@@ -175,7 +178,7 @@ export default class FacettedSearch {
             let current = $data.find("> li").length;
             let $nothingFound = $('.nothing-found');
             let $subscribeWidget = $(".subscribe-widget"); // Outside of this form to prevent nested forms
-            if (parseInt(data['total_results']) === 0) {
+            if (parseInt(data['total_results'], 10) === 0) {
                 console.log("Zero", $nothingFound);
                 $btn.attr('hidden', 'hidden');
                 $nothingFound.removeAttr('hidden');

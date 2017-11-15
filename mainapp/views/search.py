@@ -1,5 +1,6 @@
 import json
 
+import logging
 from csp.decorators import csp_update
 from django.conf import settings
 from django.contrib import messages
@@ -16,12 +17,14 @@ from mainapp.models import Body
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
 from mainapp.views.views import _build_map_object
 
+logger = logging.getLogger(__name__)
 
-def _search_to_context(query, params: dict, options, s):
+
+def _search_to_context(query, params: dict, options, search):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
     results = []
-    executed = s.execute()
+    executed = search.execute()
     for hit in executed:
         result = hit.__dict__['_d_']  # Extract the raw fields from the hit
         result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
@@ -45,9 +48,9 @@ def _search_to_context(query, params: dict, options, s):
 
 
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
-def search(request, query):
+def search_index(request, query):
     params = search_string_to_params(query)
-    options, s, errors = params_to_query(params)
+    options, search, errors = params_to_query(params)
     for error in errors:
         messages.error(request, error)
 
@@ -56,7 +59,7 @@ def search(request, query):
                               _('You will no longer receive notifications.'),
                               _('You have already subscribed to this search.'))
 
-    context = _search_to_context(query, params, options, s)
+    context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)
 
@@ -66,10 +69,10 @@ def search(request, query):
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
     params = search_string_to_params(query)
-    options, s, _ = params_to_query(params)
+    options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    s = s[after:after + 10]
-    context = _search_to_context(query, params, options, s)
+    search = search[after - 1:after - 1 + 20]
+    context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)
 
@@ -87,24 +90,23 @@ def search_autosuggest(_, query):
         results = [{'name': _('search disabled'), 'url': reverse('index')}]
         return HttpResponse(json.dumps(results), content_type='application/json')
 
-    response = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete=query).extra(min_score=1).execute()
+    search = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete=query).extra(min_score=1)
+    response = search.execute()
 
-    bodies = Body.objects.count()
+    multibody = Body.objects.count() > 1
 
     results = []
     num_persons = num_parliamentary_groups = 0
     limit_per_type = 5
 
-    print(response.hits)
     for hit in response.hits:
-        print(hit.meta.score)
         if hit.meta.doc_type == 'person_document':
             if num_persons < limit_per_type:
                 results.append({'name': hit.name, 'url': reverse('person', args=[hit.id])})
                 num_persons += 1
         elif hit.meta.doc_type == 'parliamentary_group_document':
             if num_parliamentary_groups < limit_per_type:
-                if bodies > 1:
+                if multibody:
                     name = hit.name + " (" + hit.body.name + ")"
                 else:
                     name = hit.name
@@ -120,6 +122,6 @@ def search_autosuggest(_, query):
             name = hit.name
             results.append({'name': name, 'url': reverse('meeting', args=[hit.id])})
         else:
-            print("Unknown type: %s" % hit.meta.doc_type)
+            logger.error("Unknown document type in elastic search response: %s" % hit.meta.doc_type)
 
     return JsonResponse(results, safe=False)

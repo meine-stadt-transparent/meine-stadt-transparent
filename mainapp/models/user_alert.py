@@ -36,4 +36,3 @@ class UserAlert(models.Model):
             return True
         else:
             return False
-

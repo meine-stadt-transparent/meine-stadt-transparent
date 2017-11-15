@@ -9,4 +9,3 @@ class CommitteeMembership(GenericMembership):
 
     def __str__(self):
         return "{}: {}".format(self.person.__str__(), self.committee.__str__())
-

@@ -3,7 +3,6 @@ from django.conf import settings
 from django.test import Client
 from django.test import TestCase
 
-
 expected_meeting = """
 BEGIN:VCALENDAR
 VERSION:2.0

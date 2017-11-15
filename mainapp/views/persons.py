@@ -3,6 +3,7 @@ import json
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
+
 from mainapp.models import Committee, Person, Paper
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
 

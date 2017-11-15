@@ -1,5 +1,7 @@
 from datetime import datetime
+
 from django.contrib import messages
+
 from mainapp.models import UserAlert
 
 
