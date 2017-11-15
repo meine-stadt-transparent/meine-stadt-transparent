@@ -71,7 +71,7 @@ def search_results_only(request, query):
     params = search_string_to_params(query)
     options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    search = search[after - 1:after - 1 + 20]
+    search = search[after:after + 20]
     context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)

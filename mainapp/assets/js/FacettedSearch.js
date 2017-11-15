@@ -9,23 +9,32 @@ require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
 export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
-        this.$form.submit(this.search.bind(this));
+
         this.initLocationSelector();
         this.initDocumentTypeSelector();
         this.initAutocomplete();
         this.initDatePicker();
+
+        this.$form.submit(this.search.bind(this));
+        this.$form.find("input").change(this.search.bind(this));
+        this.$form.find("input").keyup(this.search.bind(this));
+        this.$form.find("select").change(this.search.bind(this));
     }
 
     initDatePicker() {
-        $("input#after").datepicker({
-            format: "yyyy-mm-dd"
+        this.$form.find("input#after").datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true
         });
-        $("input#before").datepicker({
-            format: "yyyy-mm-dd"
+        this.$form.find("input#before").datepicker({
+            format: "yyyy-mm-dd",
+            autoclose: true
         });
+
         $(".searchclear").click((event) => {
-            $(event.target).parent().parent().find("input").val("");
-            this.search();
+            let $input = $(event.target).parent().parent().find("input");
+            $input.val("");
+            $input.change();
         });
     }
 
@@ -54,21 +63,11 @@ export default class FacettedSearch {
         $(".facet-dropdown .dropdown-item").click((event) => {
             let $checkbox = $(event.target).find("input");
             $checkbox.prop("checked", !$checkbox.prop("checked"));
-            this.search();
+            $checkbox.change();
 
             event.stopPropagation();
             event.preventDefault();
         });
-    }
-
-    setLocation(pos) {
-        if (this.currMarker) {
-            this.leaflet.removeLayer(this.currMarker);
-        }
-        this.currPosition = pos;
-        this.currMarker = new L.Marker(pos);
-        this.currMarker.addTo(this.leaflet);
-        this.search();
     }
 
     initLocationSelector() {
@@ -91,7 +90,8 @@ export default class FacettedSearch {
                 mapIsInitialized = true;
 
                 this.leaflet.on("click", (event) => {
-                    this.setLocation(event.latlng)
+                    this.setLocation(event.latlng);
+                    this.updateLocationData();
                 });
             }
             let latVal = this.$locationSelector.find("input[name=lat]").val();
@@ -100,19 +100,38 @@ export default class FacettedSearch {
                 this.setLocation(new L.LatLng(latVal, lngVal));
             }
         });
+
+        this.$locationSelector.find("input.new-radius").keyup((event) => {
+            this.updateLocationData();
+            event.preventDefault();
+            event.stopPropagation();
+        });
         this.$locationSelector.find(".select-btn").click(() => {
-            if (this.currPosition && this.$locationSelector.find(".new-radius").val() > 0) {
-                this.$locationSelector.find("input[name=lat]").val(this.currPosition.lat);
-                this.$locationSelector.find("input[name=lng]").val(this.currPosition.lng);
-                this.$locationSelector.find("input[name=radius]").val(this.$locationSelector.find(".new-radius").val());
-                this.$locationSelector.find(".dropdown").dropdown("toggle");
-                this.search();
-            }
+            this.updateLocationData();
+            this.$locationSelector.find(".dropdown").dropdown("toggle");
         });
         this.$locationSelector.find(".dropdown-menu").click((event) => {
             event.preventDefault();
             event.stopPropagation();
         });
+    }
+
+    setLocation(pos) {
+        if (this.currMarker) {
+            this.leaflet.removeLayer(this.currMarker);
+        }
+        this.currPosition = pos;
+        this.currMarker = new L.Marker(pos);
+        this.currMarker.addTo(this.leaflet);
+    }
+
+    updateLocationData() {
+        if (this.currPosition && this.$locationSelector.find(".new-radius").val() > 0) {
+            this.$locationSelector.find("input[name=lat]").val(this.currPosition.lat);
+            this.$locationSelector.find("input[name=lng]").val(this.currPosition.lng);
+            this.$locationSelector.find("input[name=radius]").val(this.$locationSelector.find(".new-radius").val());
+            this.$locationSelector.find("input[name=radius]").change();
+        }
     }
 
     updateLocationString() {
@@ -179,7 +198,6 @@ export default class FacettedSearch {
             let $nothingFound = $('.nothing-found');
             let $subscribeWidget = $(".subscribe-widget"); // Outside of this form to prevent nested forms
             if (parseInt(data['total_results'], 10) === 0) {
-                console.log("Zero", $nothingFound);
                 $btn.attr('hidden', 'hidden');
                 $nothingFound.removeAttr('hidden');
             } else if (data['total_results'] > current) {

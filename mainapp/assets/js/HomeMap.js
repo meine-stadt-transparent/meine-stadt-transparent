@@ -29,7 +29,8 @@ export default class IndexView {
         this.locationMarkers = [];
         for (let location of Object.values(documents)) {
             if (Object.values(location.papers).length > 1) {
-                console.warn('Multiple papers in this location', location); // @TODO Handle colliding markers and multiple papers
+                // @TODO Handle colliding markers and multiple papers
+                console.warn('Multiple papers in this location', location);
             }
             for (let paper of Object.values(location.papers)) {
                 let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
