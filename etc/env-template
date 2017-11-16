@@ -1,21 +1,23 @@
-DEBUG=True
+DEBUG=False
 REAL_HOST=opensourceris.local
-ABSOLUTE_URI_BASE=https://opensourceris.local
-# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+SECRET_KEY=notsosecretkey
+
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
 ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
 ELASTICSEARCH_URL_PUBLIC=https://opensourceris.local/elasticsearch/
-SECRET_KEY=notsosecretkey
-OPENCAGEDATA_KEY=alsonotsosecretkey
-GEOEXTRACT_DEFAULT_CITY=Köln
-MAILJET_API_KEY=
-MAILJET_SECRET_KEY=
+
 USE_ELASTICSEARCH=False
 # Use DATABASE_URL=mysql://username:password@localhost/databasename in production
 DATABASE_URL=sqlite:///db.sqlite3
-SITE_SEO_NOINDEX=True
 DEFAULT_FROM_EMAIL=info@example.org
 DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
 
+MAILJET_API_KEY=
+MAILJET_SECRET_KEY=
+ABSOLUTE_URI_BASE=https://opensourceris.local
+
+OPENCAGEDATA_KEY=alsonotsosecretkey
+GEOEXTRACT_DEFAULT_CITY=Köln
 SITE_DEFAULT_COMMITTEE=1
 SITE_DEFAULT_BODY=1
 SITE_GEO_LIMITS={"min": {"lat": 47.965, "lng": 11.286}, "max": {"lat": 48.296, "lng": 11.871}}
@@ -26,6 +28,5 @@ SITE_MAPBOX_ACCESS_TOKEN=pk...
 # Custom map styles can be used like this:
 # SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/tobiashoessl/cj9bafqs84zfl2snxt9o2p65r/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
 
-
-SITE_INDEX_DOCUMENT_DAY=7
-CALENDAR_DEFAULT_VIEW=listMonth
+# Note: A lot of options are omitted here as they have proper defaults.
+# You can find them at meine_stadt_transparent/settings.py

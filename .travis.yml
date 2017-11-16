@@ -13,14 +13,11 @@ cache:
 install:
  - npm install
  - pip install -r requirements.txt
-
-before_script:
  # Add pygobject to the virtualenv
  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
- - cp etc/env-template .env
 
 script:
-  - ./manage.py migrate
+  - ENV_PATH=etc/env-test ./manage.py migrate
   - npm run build:dev
   - npm run build:prod
-  - ./manage.py test --settings=meine_stadt_transparent.settings_test
+  - ENV_PATH=etc/env-test ./manage.py test

@@ -1,0 +1,22 @@
+DEBUG=False
+REAL_HOST=meine-stadt-transparent.local
+SECRET_KEY=notsosecretkey
+
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
+USE_ELASTICSEARCH=False
+ELASTICSEARCH_URL_PRIVATE=
+ELASTICSEARCH_URL_PUBLIC=
+
+USE_ELASTICSEARCH=False
+# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
+DATABASE_URL=sqlite:///db.sqlite3
+
+MAILJET_API_KEY=
+MAILJET_SECRET_KEY=
+ABSOLUTE_URI_BASE=https://opensourceris.local
+
+OPENCAGEDATA_KEY=
+GEOEXTRACT_DEFAULT_CITY=
+SITE_GEO_LIMITS={}
+SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
+SITE_MAPBOX_ACCESS_TOKEN=

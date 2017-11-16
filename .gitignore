@@ -4,7 +4,7 @@ node_modules/
 webpack-stats.json
 storage/
 static/
-.env
+.env*
 urls-to-import.txt
 
 # Python Stuff

@@ -45,7 +45,7 @@ urlpatterns = [
     simple_model_view('location', Location),
     url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
     # TODO: Warn in production because one should use nginx directly. Also, mime types
-    url(r'^resource/(?P<path>.*)$', serve, {'document_root': settings.FILE_STORAGE}, name="resource"),
+    url(r'^resource/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name="resource"),
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]

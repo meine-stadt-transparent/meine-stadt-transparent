@@ -15,7 +15,7 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 ### Requirements:
  - Python 3 with pip
  - A recent node version with npm
- - A webserver (nginx/apache)
+ - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
  - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
@@ -25,8 +25,7 @@ On Debian/Ubuntu:
 sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext
 ```
 
-Add a local domain https://opensourceris.local/ with self-signed certificates in your webserver which redirects to
-localhost:8080
+Install dependencies
 
 ```bash
 python3 -m venv venv
@@ -35,22 +34,16 @@ pip install -r requirements.txt
 npm install
 ```
 
-The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
-Example configurations:
+Copy `etc/env-template` to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
+
+Configure your webserver. Example configurations:
 
  - [Apache](etc/apache.conf)
  - [nginx](etc/nginx.conf)
-
-Docker installation instructions can be found [here](https://docs.docker.com/engine/installation/linux/docker-ce/debian/).
-If you hit problems regarding memory, please have a look at this
-[documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
-
-If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed,
-with Barracuda being set as the default format for new InnoDB-Tables (default), otherwise you will run into errors about too long Indexes.
-
+ 
 ### pygobject (gi) and liboparl
 
-This is currently only required to use the importer.
+This is currently only required to use the importer. You can step it if you don't use the importer.
 
 GObject needs to be installed system-wide.
 
@@ -73,7 +66,17 @@ For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/O
 
 Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this is for your os)
 
-## Development
+### Development
+
+The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
+
+Use `./manage.py runserver` to start the server.
+
+### Production
+
+Follow the [the official guide](https://docs.djangoproject.com/en/1.11/howto/deployment/). Unlike the guide, we recommend gunicorn over wsgi as gunicorn is much simpler to configure.
+
+## Important Commands
 
 ### Starting the development server
 
@@ -207,12 +210,10 @@ If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would 
 - Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
 - Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
 
-### Multi-Database setup
+### Known Problems
 
-When developing you might want to have multiple databases, e.g. one for the dummy data, one for an official OParl provider and another for mixing everything up. With debug enabled you can easily do this with the following command:
+If you hit problems regarding memory, please have a look at this
+[documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-```bash
-export DATABASE_URL=mysql://otheruser:otherpassword@localhost/otherdatabase
-```
-
-TODO (LOWPRIO): Also alter elastic search index.
+If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed,
+with Barracuda being set as the default format for new InnoDB-Tables (default), otherwise you will run into errors about too long Indexes.
