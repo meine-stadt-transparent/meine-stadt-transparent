@@ -1,11 +1,13 @@
 from django.conf.urls import url
 from django.views.generic import DetailView
+from django.views.static import serve
 
 import mainapp.views.views
 from mainapp.views_profile import ProfileHomeView
+from meine_stadt_transparent import settings
 from . import views
 from .models import File, Location, Body
-from .models import Paper, ParliamentaryGroup, Committee, Department, LegislativeTerm
+from .models import LegislativeTerm
 
 
 def simple_model_view(name: str, model):
@@ -42,6 +44,8 @@ urlpatterns = [
     simple_model_view('legislative term', LegislativeTerm),
     simple_model_view('location', Location),
     url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
+    # TODO: Warn in production because one should use nginx directly. Also, mime types
+    url(r'^resource/(?P<path>.*)$', serve, {'document_root': settings.FILE_STORAGE}, name="resource"),
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]

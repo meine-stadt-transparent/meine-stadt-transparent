@@ -1,22 +1,47 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
 
 {% block title %}{{ file.name }}{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="section">
-            <ul>
-                <li>name: {{ file.name }}</li>
-                <li>storage_filename: {{ file.storage_filename }}</li>
-                <li>displayed_filename: {{ file.displayed_filename }}</li>
-                <li>mime_type: {{ file.mime_type }}</li>
-                <li>legal_date: {{ file.legal_date }}</li>
-                <li>filesize: {{ file.filesize }}</li>
-                <li>locations: {{ file.locations }}</li>
-                <li>parsed_text: {{ file.parsed_text }}</li>
-                <li>license: {{ file.license }}</li>
-                <li>description: {{ file.description }}</li>
-            </ul>
+    <div class="file-main-content">
+        <div class="container">
+            <div class="section">
+                <ul style="max-height: 300px; overflow: scroll">
+                    <li>name: {{ file.name }}</li>
+                    <li>storage_filename: {{ file.storage_filename }}</li>
+                    <li>displayed_filename: {{ file.displayed_filename }}</li>
+                    <li>mime_type: {{ file.mime_type }}</li>
+                    <li>legal_date: {{ file.legal_date }}</li>
+                    <li>filesize: {{ file.filesize }}</li>
+                    <li>locations: {{ file.locations }}</li>
+                    <li>license: {{ file.license }}</li>
+                </ul>
+            </div>
         </div>
+
+        {% if file.filesize and file.filesize > 0 %}
+            {% if file.mime_type == "application/pdf" %}
+                <div class="embed-responsive container pdfjs-wrapper">
+                    <iframe class="embed-responsive-item"
+                            src="{% static 'vendored/web/viewer.html' %}?file={% url 'resource' file.storage_filename %}">
+                    </iframe>
+                </div>
+            {% else %}
+                <div class="container">
+                    <p class="lead">{% trans "The file can not be shown" %}</p>
+                    <a class="btn btn-primary btn-lg" role="button" href="{% url 'resource' file.storage_filename %}"
+                       download>
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        {% trans "Download" %}
+                    </a>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="container">
+                <p class="lead">{% trans "The file is not available" %}</p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

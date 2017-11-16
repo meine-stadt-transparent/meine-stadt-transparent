@@ -220,6 +220,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
 )
 
+FILE_STORAGE = env.str('FILE_STORAGE', '../mst-storage/files/')
+
 WEBPACK_LOADER = {
     'DEFAULT': {
         'BUNDLE_DIR_NAME': 'bundles/',

@@ -35,3 +35,13 @@
 .twitter-typeahead {
   width: 100%;
 }
+
+.file-main-content {
+  height: calc(100vh - #{$header-height} - 2 * #{$main-content-margin-top});
+  display: flex;
+  flex-direction: column;
+
+  .pdfjs-wrapper {
+    flex: 1;
+  }
+}
