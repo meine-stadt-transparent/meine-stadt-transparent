@@ -1,6 +1,7 @@
 DEBUG=False
 REAL_HOST=opensourceris.local
 SECRET_KEY=notsosecretkey
+MEDIA_ROOT=/var/storage/meine-stadt-transparent
 
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
 ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
