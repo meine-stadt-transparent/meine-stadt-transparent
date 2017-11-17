@@ -238,7 +238,7 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-ELASTICSEARCH_INDEX = 'meine_stadt_transparent_documents'
+ELASTICSEARCH_INDEX = env.str('ELASTICSEARCH_INDEX', 'meine_stadt_transparent_documents')
 
 OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
 

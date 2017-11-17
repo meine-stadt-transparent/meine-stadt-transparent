@@ -6,6 +6,7 @@ MEDIA_ROOT=/var/storage/meine-stadt-transparent
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
 ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
 ELASTICSEARCH_URL_PUBLIC=https://opensourceris.local/elasticsearch/
+ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
 USE_ELASTICSEARCH=False
 # Use DATABASE_URL=mysql://username:password@localhost/databasename in production
