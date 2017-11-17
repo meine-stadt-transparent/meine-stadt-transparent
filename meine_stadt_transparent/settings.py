@@ -54,8 +54,6 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.twitter',
     'widget_tweaks',
     # Note: The elasticsearch integration is added further below
 ]
@@ -158,8 +156,13 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SOCIALACCOUNT_PROVIDERS = {
-    'facebook': {
+
+SOCIALACCOUNT_USE_FACEBOOK = env.bool('SOCIALACCOUNT_USE_FACEBOOK', True)
+SOCIALACCOUNT_USE_TWITTER = env.bool('SOCIALACCOUNT_USE_TWITTER', True)
+
+SOCIALACCOUNT_PROVIDERS = {}
+if SOCIALACCOUNT_USE_FACEBOOK:
+    SOCIALACCOUNT_PROVIDERS['facebook'] = {
         'METHOD': 'js_sdk',
         'SCOPE': ['email', 'public_profile'],
         'INIT_PARAMS': {'cookie': True},
@@ -180,7 +183,10 @@ SOCIALACCOUNT_PROVIDERS = {
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.10',
     }
-}
+    INSTALLED_APPS.append('allauth.socialaccount.providers.facebook')
+
+if SOCIALACCOUNT_USE_TWITTER:
+    INSTALLED_APPS.append('allauth.socialaccount.providers.twitter')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -264,6 +270,15 @@ SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_FRAME_SRC = ("'self'",)
+
+if SOCIALACCOUNT_USE_FACEBOOK:
+    CSP_IMG_SRC = CSP_IMG_SRC + ("www.facebook.com",)
+    CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ("connect.facebook.net", "'unsafe-eval'", "'unsafe-inline'")
+    CSP_STYLE_SRC = CSP_STYLE_SRC + ("*.facebook.com", "*.facebook.net", "'unsafe-inline'")
+    CSP_FRAME_SRC = CSP_FRAME_SRC + ("*.facebook.com",)
 
 if DEBUG:
     # Debug Toolbar
@@ -281,7 +296,7 @@ if DEBUG:
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
     if DEBUG_STYLES:
-        CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+        CSP_STYLE_SRC = CSP_STYLE_SRC + ("'unsafe-inline'",)
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")
