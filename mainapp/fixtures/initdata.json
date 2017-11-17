@@ -567,9 +567,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
-            2
-        ],
+        "committees": [],
         "persons": [],
         "auxiliary_files": []
     }

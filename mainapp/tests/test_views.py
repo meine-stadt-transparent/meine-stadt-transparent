@@ -19,6 +19,4 @@ class TestViews(TestCase):
         self.assertTrue("previous" not in contexts[5])
         self.assertTrue("previous" not in contexts[5])
         self.assertEqual(contexts[6]["previous"].id, 4)
-        self.assertEqual(contexts[6]["following"].id, 7)
-        self.assertEqual(contexts[7]["previous"].id, 6)
-        self.assertEqual(contexts[7]["following"], None)
+        self.assertEqual(contexts[6]["following"], None)
