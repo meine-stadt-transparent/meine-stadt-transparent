@@ -15,16 +15,16 @@
                 <i class="fa-custom fa-map-marker" aria-hidden="true"></i>{{ meeting.location }}
             </p>
 
-            {% if meeting.committees.all|length == 1 %}
-                <p title="{% trans 'Main committee of the meeting' %}">
-                    <a href="{% url 'committee' meeting.committees.all.0.id %}">
+            {% if meeting.organizations.all|length == 1 %}
+                <p title="{% trans 'Main organization of the meeting' %}">
+                    <a href="{% url 'organization' meeting.organizations.all.0.id %}">
                         <i class="fa-custom fa-users"
-                           aria-hidden="true"></i>{{ meeting.committees.all.0 }}
+                           aria-hidden="true"></i>{{ meeting.organizations.all.0 }}
                     </a>
                 </p>
-            {% elif meeting.committees.all|length > 1 %}
-                {% trans "Participating committees:" as name %}
-                {% include "partials/inline_list.html" with objects=meeting.committees.all icon="users" link="committee" %}
+            {% elif meeting.organizations.all|length > 1 %}
+                {% trans "Participating organizations:" as name %}
+                {% include "partials/inline_list.html" with objects=meeting.organizations.all icon="users" link="organizations" %}
             {% endif %}
 
             {% trans "Further Attendees:" as name %}

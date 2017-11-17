@@ -69,6 +69,6 @@ class TestICal(TestCase):
         self.assertEqual(event.get("dtend").dt.hour, 18)
 
     def test_meeting_series(self):
-        reponse = self.c.get('/committee/2/ical/').content.decode('utf-8').strip()
-        self.assertEqual(reponse, expected_meeting_series)
-        self.assertEqual(len(icalendar.cal.Component.from_ical(reponse).subcomponents[0]), 5)
+        response = self.c.get('/organization/2/ical/').content.decode('utf-8').strip()
+        self.assertEqual(response, expected_meeting_series)
+        self.assertEqual(len(icalendar.cal.Component.from_ical(response).subcomponents[0]), 5)

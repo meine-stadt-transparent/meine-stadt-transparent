@@ -24,6 +24,7 @@ class Command(BaseCommand):
         parser.set_defaults(ignore_modified=False)
         parser.set_defaults(no_threads=False)
 
+    # noinspection PyUnresolvedReferences
     @staticmethod
     def import_importer(options):
         # Remove gi requirement for running tests

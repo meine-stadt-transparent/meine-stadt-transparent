@@ -12,7 +12,7 @@ from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 
 from mainapp.functions.document_parsing import extract_text_from_pdf
 from mainapp.models import DefaultFields, File
-from mainapp.models import Department, Committee, ParliamentaryGroup
+from mainapp.models import Department, Committee, Organization
 
 gi.require_version('OParl', '0.2')
 gi.require_version('Json', '1.0')
@@ -42,7 +42,7 @@ class OParlHelper:
         self.organization_classification = {
             Department: ["Referat"],
             Committee: ["Stadtratsgremium", "BA-Gremium", "Gremien"],
-            ParliamentaryGroup: ["Fraktion", "Fraktionen"],
+            Organization: ["Fraktion", "Fraktionen"],
         }
 
         self.errorlist = []
@@ -106,7 +106,7 @@ class OParlHelper:
     def get_organization_by_oparl_id(oparl_id):
         return Department.objects.filter(oparl_id=oparl_id).first() or \
                Committee.objects.filter(oparl_id=oparl_id).first() or \
-               ParliamentaryGroup.objects.filter(oparl_id=oparl_id).first()
+               Organization.objects.filter(oparl_id=oparl_id).first()
 
     # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
     # TODO: Check the pycharm bug tracker for that

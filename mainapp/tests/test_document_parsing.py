@@ -17,6 +17,7 @@ values = {
 }
 
 
+# noinspection PyUnusedLocal
 def geocode_mock(self, search_str, language, exactly_one):
     ResponseMock = namedtuple('ResponseMock', 'latitude longitude')
     for key, value in values.items():

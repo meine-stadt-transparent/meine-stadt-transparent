@@ -40,7 +40,7 @@
         "description": "The place where frank lives. Somewhere in Washington D.C.",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.04946875572205,38.95611336793506]}",
         "bodies": []
     }
 },
@@ -57,7 +57,7 @@
         "description": "",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
+        "geometry": "{\"type\":\"Polygon\",\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]]}",
         "bodies": [
             3
         ]
@@ -76,7 +76,7 @@
         "description": "That look kinda centerish enough for what is needed",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.05016613006592,38.88931256197531]}",
         "bodies": []
     }
 },
@@ -93,7 +93,7 @@
         "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
         "is_official": true,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.00895667076111,38.889788561664936]}",
         "bodies": []
     }
 },
@@ -161,37 +161,168 @@
     }
 },
 {
-    "model": "mainapp.committee",
+    "model": "mainapp.organizationtype",
+    "pk": 1,
+    "fields": {
+        "name": "committee"
+    }
+},
+{
+    "model": "mainapp.organizationtype",
+    "pk": 2,
+    "fields": {
+        "name": "department"
+    }
+},
+{
+    "model": "mainapp.organizationtype",
+    "pk": 3,
+    "fields": {
+        "name": "parliamentary groups"
+    }
+},
+{
+    "model": "mainapp.organization",
     "pk": 1,
     "fields": {
         "oparl_id": null,
-        "created": "2017-09-10T14:11:33.538Z",
-        "modified": "2017-09-11T10:02:34.860Z",
+        "created": "2017-11-17T16:03:59.730Z",
+        "modified": "2017-11-17T16:03:59.730Z",
         "deleted": false,
         "name": "Committee of Inquiry",
         "short_name": "Inquiry",
-        "body": 1,
         "start": "2017-09-11",
         "end": "2017-09-23",
+        "body": 1,
         "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 1,
         "legislative_terms": []
     }
 },
 {
-    "model": "mainapp.committee",
+    "model": "mainapp.organization",
     "pk": 2,
     "fields": {
         "oparl_id": null,
-        "created": "2017-09-10T16:57:17.627Z",
-        "modified": "2017-09-11T10:02:05.465Z",
+        "created": "2017-11-17T16:04:32.609Z",
+        "modified": "2017-11-17T16:04:32.609Z",
         "deleted": false,
         "name": "Assembly of the House of Representatives",
         "short_name": "House Assembly",
-        "body": 1,
         "start": "2013-01-01",
         "end": "2016-12-31",
+        "body": 1,
         "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 1,
         "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.organization",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T16:06:09.899Z",
+        "modified": "2017-11-17T16:06:09.899Z",
+        "deleted": false,
+        "name": "State Department of the USA",
+        "short_name": "State Department",
+        "start": null,
+        "end": null,
+        "body": 3,
+        "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 2,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.organization",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T16:06:44.807Z",
+        "modified": "2017-11-17T16:06:44.807Z",
+        "deleted": false,
+        "name": "Department of Defense",
+        "short_name": "DoD",
+        "start": null,
+        "end": null,
+        "body": 3,
+        "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 2,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.organization",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T16:07:06.531Z",
+        "modified": "2017-11-17T16:07:06.531Z",
+        "deleted": false,
+        "name": "Office of the President of the United States",
+        "short_name": "Office of the POTUS",
+        "start": null,
+        "end": null,
+        "body": 3,
+        "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 2,
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.organization",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T16:08:03.139Z",
+        "modified": "2017-11-17T16:08:03.139Z",
+        "deleted": false,
+        "name": "Democrats in the Congress",
+        "short_name": "Democrats",
+        "start": null,
+        "end": null,
+        "body": 1,
+        "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 3,
+        "legislative_terms": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.organization",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T16:08:29.271Z",
+        "modified": "2017-11-17T16:08:29.271Z",
+        "deleted": false,
+        "name": "Republicans in the Congress",
+        "short_name": "Republicans",
+        "start": null,
+        "end": null,
+        "body": 1,
+        "location": null,
+        "color": null,
+        "logo": null,
+        "organization_type": 3,
+        "legislative_terms": [
+            1
+        ]
     }
 },
 {
@@ -400,7 +531,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T14:34:49.744Z",
-        "modified": "2017-09-10T14:34:49.744Z",
+        "modified": "2017-11-17T16:29:16.062Z",
         "deleted": false,
         "name": "Meeting with Remy Danton",
         "short_name": "Meeting with Remy",
@@ -412,7 +543,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 2,
-        "committees": [
+        "organizations": [
             1
         ],
         "persons": [],
@@ -437,9 +568,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
-            1
-        ],
+        "organizations": [],
         "persons": [
             2,
             5,
@@ -454,7 +583,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-11T13:48:29.482Z",
-        "modified": "2017-09-11T13:53:00.917Z",
+        "modified": "2017-11-17T17:02:31.616Z",
         "deleted": false,
         "name": "House Assembly Meeting 1",
         "short_name": "House Assembly 1",
@@ -466,7 +595,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
+        "organizations": [
             2
         ],
         "persons": [],
@@ -479,7 +608,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-11T13:49:05.723Z",
-        "modified": "2017-10-07T21:35:21.897Z",
+        "modified": "2017-11-17T16:59:48.082Z",
         "deleted": false,
         "name": "House Assembly Meeting 2",
         "short_name": "House Assembly 2",
@@ -491,7 +620,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
+        "organizations": [
             2
         ],
         "persons": [],
@@ -504,7 +633,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-11T13:49:34.981Z",
-        "modified": "2017-10-07T22:13:05.739Z",
+        "modified": "2017-11-17T16:52:05.671Z",
         "deleted": false,
         "name": "House Assembly Meeting 3 - Joint Meeting with Inquiry",
         "short_name": "House Assembly 3",
@@ -516,7 +645,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
+        "organizations": [
             1,
             2
         ],
@@ -530,7 +659,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-11T13:50:01.662Z",
-        "modified": "2017-09-11T13:52:41.031Z",
+        "modified": "2017-11-17T16:51:45.818Z",
         "deleted": false,
         "name": "House Assembly Meeting 4",
         "short_name": "House Assembly 4",
@@ -542,7 +671,7 @@
         "results_protocol": null,
         "verbatim_protocol": null,
         "public": 1,
-        "committees": [
+        "organizations": [
             2
         ],
         "persons": [],
@@ -554,64 +683,22 @@
     "pk": 7,
     "fields": {
         "oparl_id": null,
-        "created": "2017-11-11T13:50:01.662Z",
-        "modified": "2017-11-11T13:52:41.031Z",
+        "created": "2017-11-17T17:09:19.046Z",
+        "modified": "2017-11-17T17:18:36.867Z",
         "deleted": false,
         "name": "House Assembly Meeting November",
         "short_name": "House Assembly November",
         "cancelled": false,
-        "start": "2017-11-11T10:00:00Z",
-        "end": "2017-11-11T12:00:00Z",
+        "start": "2017-11-11T17:09:14Z",
+        "end": "2017-11-11T17:09:15Z",
         "location": null,
         "invitation": null,
         "results_protocol": null,
         "verbatim_protocol": null,
-        "public": 1,
-        "committees": [],
+        "public": 0,
+        "organizations": [],
         "persons": [],
         "auxiliary_files": []
-    }
-},
-{
-    "model": "mainapp.department",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:10:42.351Z",
-        "modified": "2017-09-10T14:10:42.351Z",
-        "deleted": false,
-        "name": "State Department of the USA",
-        "short_name": "State Department",
-        "body": 3,
-        "location": null
-    }
-},
-{
-    "model": "mainapp.department",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:16:20.399Z",
-        "modified": "2017-09-10T14:16:20.399Z",
-        "deleted": false,
-        "name": "Department of Defense",
-        "short_name": "DoD",
-        "body": 3,
-        "location": null
-    }
-},
-{
-    "model": "mainapp.department",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:20:09.166Z",
-        "modified": "2017-09-10T14:20:09.166Z",
-        "deleted": false,
-        "name": "Office of the President of the United States",
-        "short_name": "Office of the POTUS",
-        "body": 3,
-        "location": null
     }
 },
 {
@@ -622,69 +709,13 @@
     }
 },
 {
-    "model": "mainapp.parliamentarygroup",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:08:06.831Z",
-        "modified": "2017-09-10T14:08:06.831Z",
-        "deleted": false,
-        "name": "Democrats in the Congress",
-        "short_name": "Democrats",
-        "start": "2017-09-10",
-        "end": "2017-09-27",
-        "body": 1,
-        "location": null,
-        "legislative_terms": [
-            1
-        ]
-    }
-},
-{
-    "model": "mainapp.parliamentarygroup",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:08:31.146Z",
-        "modified": "2017-09-10T14:08:31.146Z",
-        "deleted": false,
-        "name": "Republicans in the Congress",
-        "short_name": "Republicans",
-        "start": "2017-09-10",
-        "end": "2017-09-27",
-        "body": 1,
-        "location": null,
-        "legislative_terms": [
-            1
-        ]
-    }
-},
-{
-    "model": "mainapp.parliamentarygroup",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:08:31.146Z",
-        "modified": "2017-09-10T14:08:31.146Z",
-        "deleted": false,
-        "name": "K\u00f6lner Testgruppe",
-        "short_name": "Testgruppe",
-        "start": "2017-09-10",
-        "end": "2017-09-27",
-        "body": 4,
-        "location": null,
-        "legislative_terms": [
-            1
-        ]
-    }
-},
-{
     "model": "mainapp.paper",
     "pk": 1,
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T14:38:04.044Z",
         "modified": "2017-10-07T18:36:26.478Z",
+        "deleted": false,
         "reference_number": "Edu 1",
         "name": "Bill for Education",
         "short_name": "Education Bill",
@@ -693,13 +724,8 @@
         "legal_date": null,
         "main_file": null,
         "paper_type": null,
-        "deleted": false,
-        "submitter_parliamentary_groups": [
-            1
-        ],
-        "submitter_committees": [],
-        "submitter_departments": [],
-        "submitter_persons": [],
+        "organization": [],
+        "persons": [],
         "files": [
             2
         ]
@@ -712,6 +738,7 @@
         "oparl_id": null,
         "created": "2017-09-10T15:35:04.454Z",
         "modified": "2017-10-07T18:36:33.375Z",
+        "deleted": false,
         "reference_number": "Edu 1/ Changerequest 1",
         "name": "Changerequest for the bill about eduction",
         "short_name": "Change the education bill",
@@ -720,13 +747,8 @@
         "legal_date": null,
         "main_file": null,
         "paper_type": null,
-        "deleted": false,
-        "submitter_parliamentary_groups": [
-            2
-        ],
-        "submitter_committees": [],
-        "submitter_departments": [],
-        "submitter_persons": [],
+        "organization": [],
+        "persons": [],
         "files": [
             1
         ]
@@ -739,6 +761,7 @@
         "oparl_id": null,
         "created": "2017-09-10T18:36:50.965Z",
         "modified": "2017-11-10T13:27:34.844Z",
+        "deleted": false,
         "reference_number": "Submitters 1",
         "name": "Many Submitters",
         "short_name": "Many Submitters",
@@ -747,21 +770,8 @@
         "legal_date": "2017-11-10",
         "main_file": 1,
         "paper_type": 1,
-        "deleted": false,
-        "submitter_parliamentary_groups": [
-            1,
-            2
-        ],
-        "submitter_committees": [
-            1,
-            2
-        ],
-        "submitter_departments": [
-            1,
-            2,
-            3
-        ],
-        "submitter_persons": [
+        "organization": [],
+        "persons": [
             1,
             2,
             3,
@@ -780,6 +790,7 @@
         "oparl_id": null,
         "created": "2017-09-10T15:35:04.454Z",
         "modified": "2017-10-07T18:36:47.959Z",
+        "deleted": false,
         "reference_number": "2017-09-10/1",
         "name": "Stra\u00dfen in K\u00f6ln",
         "short_name": "Stra\u00dfen in K\u00f6ln",
@@ -788,13 +799,8 @@
         "legal_date": null,
         "main_file": null,
         "paper_type": null,
-        "deleted": false,
-        "submitter_parliamentary_groups": [
-            3
-        ],
-        "submitter_committees": [],
-        "submitter_departments": [],
-        "submitter_persons": [],
+        "organization": [],
+        "persons": [],
         "files": [
             3
         ]
@@ -985,198 +991,18 @@
     }
 },
 {
-    "model": "mainapp.committeemembership",
+    "model": "mainapp.organizationmembership",
     "pk": 1,
     "fields": {
         "oparl_id": null,
-        "created": "2017-09-10T14:14:06.896Z",
-        "modified": "2017-09-10T14:14:06.896Z",
+        "created": "2017-11-17T16:10:01.193Z",
+        "modified": "2017-11-17T16:10:01.193Z",
         "deleted": false,
         "person": 1,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
+        "start": null,
+        "end": null,
         "role": "Chairman",
-        "committee": 1
-    }
-},
-{
-    "model": "mainapp.committeemembership",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:59.570Z",
-        "modified": "2017-09-11T08:58:59.570Z",
-        "deleted": false,
-        "person": 6,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "Congresswoman",
-        "committee": 2
-    }
-},
-{
-    "model": "mainapp.committeemembership",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:59.570Z",
-        "modified": "2017-09-11T08:58:59.570Z",
-        "deleted": false,
-        "person": 7,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "Member",
-        "committee": 1
-    }
-},
-{
-    "model": "mainapp.committeemembership",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:59.570Z",
-        "modified": "2017-09-11T08:58:59.570Z",
-        "deleted": false,
-        "person": 8,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "Member",
-        "committee": 1
-    }
-},
-{
-    "model": "mainapp.committeemembership",
-    "pk": 5,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:59.570Z",
-        "modified": "2017-09-11T08:58:59.570Z",
-        "deleted": false,
-        "person": 9,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "Member",
-        "committee": 1
-    }
-},
-{
-    "model": "mainapp.committeemembership",
-    "pk": 6,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:59.570Z",
-        "modified": "2017-09-11T08:58:59.570Z",
-        "deleted": false,
-        "person": 10,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "Member",
-        "committee": 1
-    }
-},
-{
-    "model": "mainapp.departmentmembership",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:17:29.758Z",
-        "modified": "2017-09-10T14:17:29.758Z",
-        "deleted": false,
-        "person": 1,
-        "start": "2013-01-01",
-        "end": "2016-12-31",
-        "role": "promised",
-        "department": 1
-    }
-},
-{
-    "model": "mainapp.departmentmembership",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:20:46.681Z",
-        "modified": "2017-09-10T14:20:46.681Z",
-        "deleted": false,
-        "person": 2,
-        "start": "2013-01-01",
-        "end": "2020-09-10",
-        "role": "POTUS",
-        "department": 3
-    }
-},
-{
-    "model": "mainapp.parliamentarygroupmembership",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:42.637Z",
-        "modified": "2017-09-10T14:12:42.637Z",
-        "deleted": false,
-        "person": 1,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
-        "role": "Member",
-        "parliamentary_group": 1
-    }
-},
-{
-    "model": "mainapp.parliamentarygroupmembership",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:42.637Z",
-        "modified": "2017-09-10T14:12:42.637Z",
-        "deleted": false,
-        "person": 9,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
-        "role": "Member",
-        "parliamentary_group": 1
-    }
-},
-{
-    "model": "mainapp.parliamentarygroupmembership",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:42.637Z",
-        "modified": "2017-09-10T14:12:42.637Z",
-        "deleted": false,
-        "person": 7,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
-        "role": "Member",
-        "parliamentary_group": 2
-    }
-},
-{
-    "model": "mainapp.parliamentarygroupmembership",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:42.637Z",
-        "modified": "2017-09-10T14:12:42.637Z",
-        "deleted": false,
-        "person": 8,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
-        "role": "Member",
-        "parliamentary_group": 2
-    }
-},
-{
-    "model": "mainapp.parliamentarygroupmembership",
-    "pk": 5,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:42.637Z",
-        "modified": "2017-09-10T14:12:42.637Z",
-        "deleted": false,
-        "person": 10,
-        "start": "2013-01-01",
-        "end": "2017-12-31",
-        "role": "Member",
-        "parliamentary_group": 1
+        "organization": 1
     }
 }
 ]

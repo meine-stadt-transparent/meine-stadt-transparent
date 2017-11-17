@@ -1,20 +1,24 @@
 from django.db import models
 
+from .organization_type import OrganizationType
 from .body import Body
 from .default_fields import DefaultFields
 from .legislative_term import LegislativeTerm
 from .location import Location
 
 
-class ParliamentaryGroup(DefaultFields):
+class Organization(DefaultFields):
     name = models.CharField(max_length=200)
     short_name = models.CharField(max_length=50)
-    # start and end shouldn't be nullable, but e.g. München Transparent doesn't have this data
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
-    body = models.ForeignKey(Body, related_name='parliamentarygroup')
+    body = models.ForeignKey(Body)
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True)
+    # html color without the hash
+    color = models.CharField(max_length=6, null=True, blank=True)
+    logo = models.CharField(max_length=255, null=True, blank=True)
+    organization_type = models.ForeignKey(OrganizationType)
 
     def __str__(self):
         return self.short_name

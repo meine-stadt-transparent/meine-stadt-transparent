@@ -7,9 +7,8 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, Department, Committee, AgendaItem, Meeting, File, Consultation
-from mainapp.models.paper import Paper
-from mainapp.models.parliamentary_group import ParliamentaryGroup
+from mainapp.models import Body, File, Consultation, Organization, Paper
+from mainapp.models.organization_type import OrganizationType
 
 
 def index(request):
@@ -57,11 +56,21 @@ def _build_map_object(body: Body, geo_papers):
 
 
 def organizations(request):
+    organizations_ordered = []
+    for organization_type in OrganizationType.objects.all():
+        organizations_ordered.append({
+            "type": organization_type,
+            "all": Organization.objects.filter(organization_type=organization_type).all(),
+        })
+
+    for i in settings.ORGANIZATION_TYPE_SORTING:
+        for j in range(0, len(organizations_ordered)):
+            if organizations_ordered[j]["type"].id == i:
+                popped = organizations_ordered.pop(j)
+                organizations_ordered.insert(0, popped)
+
     context = {
-        "committees": Committee.objects.all(),
-        "departments": Department.objects.all(),
-        "organizations": [],  # TODO
-        "parliamentary_groups": ParliamentaryGroup.objects.all(),
+        "organizations": organizations_ordered,
     }
     return render(request, "mainapp/organizations.html", context)
 
@@ -75,35 +84,14 @@ def paper(request, pk):
     return render(request, "mainapp/paper.html", context)
 
 
-def department(request, pk):
-    organization = Department.objects.get(id=pk)
+def organization(request, pk):
+    organization = Organization.objects.get(id=pk)
     context = {
         "organization": organization,
-        "memberships": organization.departmentmembership_set.all(),
-        "papers": Paper.objects.filter(submitter_departments__in=pk)[:25],
+        "memberships": organization.organizationmembership_set.all(),
+        "papers": Paper.objects.filter(organization__in=pk)[:25],
     }
-    return render(request, "mainapp/department.html", context)
-
-
-def committee(request, pk):
-    organization = Committee.objects.get(id=pk)
-    context = {
-        "organization": organization,
-        "memberships": organization.committeemembership_set.all(),
-        "papers": Paper.objects.filter(submitter_committees__in=pk)[:25],
-        "meetings": Meeting.objects.filter(committees__in=pk)[:25],
-    }
-    return render(request, "mainapp/committee.html", context)
-
-
-def parliamentary_group(request, pk):
-    organization = ParliamentaryGroup.objects.get(id=pk)
-    context = {
-        "organization": organization,
-        "memberships": organization.parliamentarygroupmembership_set.all(),
-        "papers": Paper.objects.filter(submitter_parliamentary_groups__in=pk)[:25],
-    }
-    return render(request, "mainapp/parliamentary_group.html", context)
+    return render(request, "mainapp/organization.html", context)
 
 
 def file(request, pk):

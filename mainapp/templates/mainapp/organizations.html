@@ -3,21 +3,8 @@
 
 {% block content %}
     <div class="container">
-        {% trans "Parliamentary Groups" context "Header" as name %}
-        {% include "partials/header_list.html" with objects=parliamentary_groups name=name link="parliamentary-group" %}
-
-        {% trans "Committees" context "Header" as name %}
-        {% include "partials/header_list.html" with objects=committees name=name link="committee" %}
-
-        {% trans "Department" context "Header" as name %}
-        {% include "partials/header_list.html" with objects=departments name=name link="department" %}
-
-        <h2 class="h3">{% trans "Other Organizations" context "Header" %}</h2>
-        <ul>
-            <li>TODO</li>
-            {% for organization in organizations %}
-                <li><a href="{% url "organization" organization.id %}">{{ organization }}</a></li>
-            {% endfor %}
-        </ul>
+        {% for organization in organizations %}
+            {% include "partials/header_list.html" with objects=organization.all name=organization.type.name link="organization" %}
+        {% endfor %}
     </div>
 {% endblock %}

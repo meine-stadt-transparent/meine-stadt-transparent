@@ -4,15 +4,15 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Committee, Person, Paper
+from mainapp.models import Organization, Person, Paper
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
 
 
 def persons(request):
-    pk = settings.SITE_DEFAULT_COMMITTEE
-    committee = get_object_or_404(Committee, id=pk)
+    pk = settings.SITE_DEFAULT_ORGANIZATION
+    organizations = get_object_or_404(Organization, id=pk)
 
-    memberships = committee.committeemembership_set.all()
+    memberships = organizations.organizationmembership_set.all()
     parliamentarygroups = []
     members = []
     for membership in memberships:
@@ -41,7 +41,7 @@ def persons(request):
         })
 
     context = {
-        "current_committee": committee,
+        "current_committee": organizations,
         "members": members,
         "parliamentary_groups": parliamentarygroups,
     }

@@ -9,11 +9,11 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, null=True, related_name="profile", verbose_name=_(u'User'))
 
     class Meta:
-        verbose_name = _(u'User profile')
-        verbose_name_plural = _(u'User profiles')
+        verbose_name = _('User profile')
+        verbose_name_plural = _('User profiles')
 
     def __unicode__(self):
-        return u"User profile: %s" % self.user.username
+        return "User profile: %s" % self.user.username
 
     def has_unverified_email_adresses(self):
         for email in self.user.emailaddress_set.all():

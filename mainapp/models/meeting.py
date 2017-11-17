@@ -3,7 +3,7 @@ from django.db import models
 from django.utils import timezone
 from icalendar import Event
 
-from .committee import Committee
+from .organization import Organization
 from .default_fields import DefaultFields
 from .file import File
 from .location import Location
@@ -25,8 +25,8 @@ class Meeting(DefaultFields):
     start = models.DateTimeField()
     end = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(Location, null=True, blank=True)
-    # There are cases where mutliple committes have a joined official meeting
-    committees = models.ManyToManyField(Committee, blank=True)
+    # There are cases where mutliple organizations have a joined official meeting
+    organizations = models.ManyToManyField(Organization, blank=True)
     # Only applicable when there are participants without an organization
     persons = models.ManyToManyField(Person, blank=True)
     invitation = models.ForeignKey(File, null=True, blank=True, related_name="meeting_invitation")

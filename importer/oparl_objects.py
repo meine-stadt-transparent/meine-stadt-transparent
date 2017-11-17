@@ -12,8 +12,8 @@ from django.utils.translation import ugettext as _
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
-from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
-    File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
+from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, Organization, Meeting, Location, \
+    File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, OrganizationMembership
 from mainapp.models.consultation import Consultation
 from mainapp.models.default_fields import DefaultFields
 from mainapp.models.paper_type import PaperType
@@ -114,7 +114,7 @@ class OParlObjects(OParlHelper):
                 paper.submitter_committees.add(organization)
             elif isinstance(organization, Department):
                 paper.submitter_departments.add(organization)
-            elif isinstance(organization, ParliamentaryGroup):
+            elif isinstance(organization, Organization):
                 paper.submitter_parliamentary_groups.add(organization)
             else:
                 message = "Failed to find organization for {}".format(org)
@@ -130,8 +130,8 @@ class OParlObjects(OParlHelper):
             return Department
         elif classification in self.organization_classification[Committee]:
             return Committee
-        elif classification in self.organization_classification[ParliamentaryGroup]:
-            return ParliamentaryGroup
+        elif classification in self.organization_classification[Organization]:
+            return Organization
         else:
             message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
             self.errorlist.append(message)
@@ -155,7 +155,7 @@ class OParlObjects(OParlHelper):
         elif org_type == Committee:
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
-        elif org_type == ParliamentaryGroup:
+        elif org_type == Organization:
             organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
             organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
         else:
@@ -374,10 +374,10 @@ class OParlObjects(OParlHelper):
             defaults["committee"] = organization
             membership = CommitteeMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
                                                                                 defaults=defaults)
-        elif classification in self.organization_classification[ParliamentaryGroup]:
+        elif classification in self.organization_classification[Organization]:
             defaults["parliamentary_group"] = organization
-            membership = ParliamentaryGroupMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                         defaults=defaults)
+            membership = OrganizationMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
+                                                                                   defaults=defaults)
         else:
             message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
             self.errorlist.append(message)

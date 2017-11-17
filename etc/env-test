@@ -13,7 +13,7 @@ DATABASE_URL=sqlite:///db.sqlite3
 
 MAILJET_API_KEY=
 MAILJET_SECRET_KEY=
-ABSOLUTE_URI_BASE=https://opensourceris.local
+ABSOLUTE_URI_BASE=https://meine-stadt-transparent.local
 
 OPENCAGEDATA_KEY=
 GEOEXTRACT_DEFAULT_CITY=

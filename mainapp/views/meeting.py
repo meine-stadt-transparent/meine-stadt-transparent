@@ -9,7 +9,7 @@ from icalendar import Calendar
 # noinspection PyPackageRequirements
 from slugify import slugify
 
-from mainapp.models import Meeting, Committee
+from mainapp.models import Meeting, Organization
 
 
 def calendar(request):
@@ -49,15 +49,15 @@ def meeting(request, pk):
     else:
         time = "{} - {}".format(begin, end)
 
-    # Try to find a previous or following meetings using the committee
-    # Excludes meetings with more than one committee
+    # Try to find a previous or following meetings using the organization
+    # Excludes meetings with more than one organization
     context = {"meeting": selected_meeting, "time": time}
-    if selected_meeting.committees.all().count() == 1:
-        committee = selected_meeting.committees.first()
+    if selected_meeting.organizations.count() == 1:
+        organization = selected_meeting.organizations.first()
         query = Meeting.objects \
-            .annotate(count=Count("committees")) \
+            .annotate(count=Count("organizations")) \
             .filter(count=1) \
-            .filter(committees__id=committee.id) \
+            .filter(organizations=organization) \
             .order_by("start")
 
         context["previous"] = query.filter(start__lt=selected_meeting.start).last()
@@ -88,7 +88,7 @@ def meeting_ical(_, pk):
 
 
 def committee_ical(_, pk):
-    committee = get_object_or_404(Committee, id=pk)
+    committee = get_object_or_404(Organization, id=pk)
     events = [meeting.as_ical_event() for meeting in committee.meeting_set.all()]
 
     filename = committee.short_name or committee.name or _("Meeting Series")

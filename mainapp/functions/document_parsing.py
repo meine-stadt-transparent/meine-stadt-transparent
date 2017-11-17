@@ -2,9 +2,10 @@ import os
 import re
 
 import geoextract
-import pdfminer.high_level
+# noinspection PyPackageRequirements
 import pdfminer.layout
-import pdfminer.settings
+# noinspection PyPackageRequirements
+import pdfminer.high_level
 from django.conf import settings
 from django.urls import reverse
 from geopy import OpenCage
@@ -13,12 +14,12 @@ from mainapp.models import SearchStreet, Body, Location
 
 
 def _extract_text(filename, outfile='-',
-                 all_texts=None, detect_vertical=None,  # LAParams
-                 word_margin=None, char_margin=None, line_margin=None, boxes_flow=None,  # LAParams
-                 output_type='text', codec='utf-8', strip_control=False,
-                 maxpages=0, page_numbers=None, password="", scale=1.0, rotation=0,
-                 layoutmode='normal', output_dir=None, debug=False,
-                 disable_caching=False, **other):
+                  all_texts=None, detect_vertical=None,  # LAParams
+                  word_margin=None, char_margin=None, line_margin=None, boxes_flow=None,  # LAParams
+                  output_type='text', codec='utf-8', strip_control=False,
+                  maxpages=0, page_numbers=None, password="", scale=1.0, rotation=0,
+                  layoutmode='normal', output_dir=None, debug=False,
+                  disable_caching=False, **other):
     laparams = pdfminer.layout.LAParams()
     for param in ("all_texts", "detect_vertical", "word_margin", "char_margin", "line_margin", "boxes_flow"):
         paramv = locals().get(param, None)
