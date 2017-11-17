@@ -28,4 +28,5 @@ ratings:
 exclude_paths:
 - mainapp/migrations/
 - mainapp/fixtures/
+- mainapp/assets/vendored/
 - manage.py
