@@ -2,6 +2,7 @@ from .agenda_item import AgendaItem
 from .body import Body
 from .committee import Committee
 from .committee_membership import CommitteeMembership
+from .consultation import Consultation
 from .default_fields import DefaultFields
 from .department import Department
 from .department_membership import DepartmentMembership

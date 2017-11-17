@@ -778,19 +778,55 @@
     }
 },
 {
+    "model": "mainapp.consultation",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T13:32:40.237Z",
+        "modified": "2017-11-17T13:32:40.237Z",
+        "deleted": false,
+        "title": "",
+        "meeting": 2,
+        "paper": 1,
+        "authoritative": null,
+        "role": "Diskussion"
+    }
+},
+{
+    "model": "mainapp.consultation",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T13:36:26.721Z",
+        "modified": "2017-11-17T13:36:26.721Z",
+        "deleted": false,
+        "title": "",
+        "meeting": 2,
+        "paper": 3,
+        "authoritative": null,
+        "role": null
+    }
+},
+{
     "model": "mainapp.agendaitem",
     "pk": 1,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
         "key": "I.1.0.0 ff uws.",
         "title": "",
         "meeting": 1,
+        "consultation": null,
         "position": 1,
         "public": true,
-        "paper": null,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": null,
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -798,15 +834,21 @@
     "pk": 2,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
         "key": "2",
         "title": "",
         "meeting": 1,
+        "consultation": null,
         "position": 2,
         "public": false,
-        "paper": null,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": null,
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -814,15 +856,21 @@
     "pk": 3,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-11-17T13:32:52.577Z",
+        "deleted": false,
         "key": "1.1",
         "title": "Discussing the education Bill",
         "meeting": 2,
+        "consultation": 1,
         "position": 2,
         "public": true,
-        "paper": null,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": "",
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -830,15 +878,21 @@
     "pk": 4,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
         "key": "1",
         "title": "Education Bill",
         "meeting": 2,
+        "consultation": null,
         "position": 1,
         "public": true,
-        "paper": 1,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": null,
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -846,15 +900,21 @@
     "pk": 5,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
         "key": "1.2",
         "title": "Voting on the Education Bill",
         "meeting": 2,
+        "consultation": null,
         "position": 3,
         "public": null,
-        "paper": 2,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": null,
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -862,15 +922,21 @@
     "pk": 6,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-11-17T13:36:30.690Z",
+        "deleted": false,
         "key": "2",
         "title": "personnel matters",
         "meeting": 2,
+        "consultation": 2,
         "position": 5,
         "public": false,
-        "paper": null,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": "",
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
@@ -878,15 +944,21 @@
     "pk": 7,
     "fields": {
         "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2017-09-10T13:57:02.058Z",
+        "deleted": false,
         "key": "1.3",
         "title": "More agenda",
         "meeting": 2,
+        "consultation": null,
         "position": 4,
         "public": null,
-        "paper": null,
-        "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-09-10T13:57:02.058Z",
-        "deleted": false
+        "result": null,
+        "resolution_text": null,
+        "resolution_file": null,
+        "start": null,
+        "end": null,
+        "auxiliary_file": []
     }
 },
 {
