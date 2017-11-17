@@ -2,6 +2,7 @@ import json
 from datetime import date, timedelta
 
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
@@ -109,7 +110,7 @@ def file(request, pk):
     is_available = file.filesize and file.filesize > 0
     context = {
         "file": file,
-        "paper": Paper.objects.filter(files__in=[file]),
+        "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
         "is_available": is_available,
         "is_renderable": is_available and file.mime_type == "application/pdf",
     }

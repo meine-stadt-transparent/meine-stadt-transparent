@@ -41,14 +41,25 @@
   margin-top: -#{$main-content-margin-top};
   @extend .py-3;
 
-  span:after {
-    @extend .mx-2;
-    content: '/';
-  }
+  > div {
+    > div {
+      display: inline-block;
 
-  span:last-child:after {
-    @extend .mx-0;
-    content: '';
+      &:after {
+        @extend .mx-2;
+        content: '/';
+      }
+
+      &:last-child:after {
+        @extend .mx-0;
+        content: '';
+      }
+    }
+
+    .dropdown-menu {
+      max-height: 300px;
+      overflow-y: scroll;
+    }
   }
 }
 

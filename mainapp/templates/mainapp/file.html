@@ -11,32 +11,51 @@
                 <div class="file-header d-flex justify-content-between flex-wrap">
                     <div>
                         {% if file.name %}
-                            <span>{{ file.name }}</span>
+                            <div>{{ file.name }}</div>
                         {% endif %}
                         {% if file.displayed_filename %}
-                            <span>{{ file.displayed_filename }}</span>
+                            <div>{{ file.displayed_filename }}</div>
                         {% endif %}
                         {% if file.legal_date %}
-                            <span>{{ file.legal_date }}</span>
+                            <div>{{ file.legal_date }}</div>
                         {% endif %}
                         {% if file.license %}
-                            <span>{{ file.license }}</span>
+                            <div>{{ file.license }}</div>
                         {% endif %}
                     </div>
                     <div>
                         {% if is_renderable %}
-                            <span>
-                            <a href="{% url 'resource' file.storage_filename %}">
-                           <i class="fa-custom fa-download no-link-color" aria-hidden="true"></i>Download
-                            </a>
-                        </span>
+                            <div>
+                                <a href="{% url 'resource' file.storage_filename %}">
+                                    <i class="fa-custom fa-download" aria-hidden="true"></i>Download
+                                </a>
+                            </div>
                         {% endif %}
-                        {% if paper|length == 1 %}
-                            <span>
-                                <a href="{% url 'paper' paper.0.id %}" title="{{ paper.0.name }}">
+                        {% if papers|length == 1 %}
+                            <div>
+                                <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
                                     <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans "Paper" %}
                                 </a>
-                            </span>
+                            </div>
+                        {% endif %}
+                        {% if papers|length > 1 %}
+                            <div>
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle" role="button" href="#"
+                                       data-toggle="dropdown"
+                                       aria-haspopup="true" aria-expanded="false">
+                                        {% trans "Paper" %}
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        {% for paper in papers %}
+                                            <a class="dropdown-item" href="{% url 'paper' paper.id %}"
+                                               title="{{ paper.name }}">
+                                                <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans "Paper" %}
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
