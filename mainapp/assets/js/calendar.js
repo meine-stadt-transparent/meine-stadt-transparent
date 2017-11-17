@@ -13,7 +13,7 @@ $(function () {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay,listMonth'
+            right: 'month,agendaWeek,agendaDay,listYear'
         },
         weekNumbers: true,
         navLinks: true, // can click day/week names to navigate views

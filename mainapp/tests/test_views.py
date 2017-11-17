@@ -10,7 +10,7 @@ class TestViews(TestCase):
     def test_meeting_navigation(self):
         """ 5 is joined with another committee, so it's skipped in this meeting series """
         contexts = {}
-        for i in [3, 4, 5, 6]:
+        for i in [3, 4, 5, 6, 7]:
             contexts[i] = self.client.get('/meeting/{}/'.format(i)).context
         self.assertEqual(contexts[3]["previous"], None)
         self.assertEqual(contexts[3]["following"].id, 4)
@@ -19,4 +19,6 @@ class TestViews(TestCase):
         self.assertTrue("previous" not in contexts[5])
         self.assertTrue("previous" not in contexts[5])
         self.assertEqual(contexts[6]["previous"].id, 4)
-        self.assertEqual(contexts[6]["following"], None)
+        self.assertEqual(contexts[6]["following"].id, 7)
+        self.assertEqual(contexts[7]["previous"].id, 6)
+        self.assertEqual(contexts[7]["following"], None)

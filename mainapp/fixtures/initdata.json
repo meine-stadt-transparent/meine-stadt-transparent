@@ -550,6 +550,31 @@
     }
 },
 {
+    "model": "mainapp.meeting",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-11T13:50:01.662Z",
+        "modified": "2017-11-11T13:52:41.031Z",
+        "deleted": false,
+        "name": "House Assembly Meeting November",
+        "short_name": "House Assembly November",
+        "cancelled": false,
+        "start": "2017-11-11T10:00:00Z",
+        "end": "2017-11-11T12:00:00Z",
+        "location": null,
+        "invitation": null,
+        "results_protocol": null,
+        "verbatim_protocol": null,
+        "public": 1,
+        "committees": [
+            2
+        ],
+        "persons": [],
+        "auxiliary_files": []
+    }
+},
+{
     "model": "mainapp.department",
     "pk": 1,
     "fields": {
