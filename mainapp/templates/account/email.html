@@ -10,8 +10,6 @@
         <article class="card">
             <h1 class="card-header">{% trans "E-mail Addresses" %}</h1>
             <main class="card-body">
-                {% include 'partials/messages.html' %}
-
                 {% if user.emailaddress_set.all %}
                     <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
 

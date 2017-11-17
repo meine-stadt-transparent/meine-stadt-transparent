@@ -1,0 +1,9 @@
+{% extends "base_single_panel.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Your account has been deleted" %}{% endblock %}
+{% block panel_title %}{% trans "Your account has been deleted" %}{% endblock %}
+
+{% block panel_content %}
+    <p class="alert alert-success">{% trans "Your account has been deleted." %}</p>
+{% endblock %}

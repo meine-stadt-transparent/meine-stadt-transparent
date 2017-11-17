@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, null=True, related_name="profile", verbose_name=_(u'User'))
-    email_is_verified = models.BooleanField(default=False, verbose_name=_(u'Email is verified'))
 
     class Meta:
         verbose_name = _(u'User profile')
@@ -15,3 +14,9 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return u"User profile: %s" % self.user.username
+
+    def has_unverified_email_adresses(self):
+        for email in self.user.emailaddress_set.all():
+            if not email.verified:
+                return True
+        return False

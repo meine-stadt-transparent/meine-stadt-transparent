@@ -1,0 +1,16 @@
+{% extends "base_single_panel.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete account" %}{% endblock %}
+{% block panel_title %}{% trans "Delete account" %}{% endblock %}
+
+{% block panel_content %}
+    <form method="POST">
+        {% csrf_token %}
+        <p class="alert alert-danger">{% trans "Do you really want to delete your account? This cannot be undone." %}</p>
+        <div>
+            <a href="{% url 'profile-home' %}" class="btn btn-secondary">{% trans "No, go back" %}</a>
+            <button type="submit" class="btn btn-danger" name="do_delete">{% trans "Yes, delete the account" %}</button>
+        </div>
+    </form>
+{% endblock %}

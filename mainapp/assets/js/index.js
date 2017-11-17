@@ -32,8 +32,10 @@ let REGISTERED_CLASSES = {
 
 $(function () {
     for (let selector in REGISTERED_CLASSES) {
-        $(selector).each(function () {
-            $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
-        });
+        if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
+            $(selector).each(function () {
+                $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
+            });
+        }
     }
 });

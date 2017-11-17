@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container mst-container-account">
-        {% if not profile.email_is_verified %}
+        {% if profile.has_unverified_email_adresses %}
             <section class="alert alert-warning mst-account-section">
                 <p>{% trans 'Your email address has not been verified' %}</p>
                 <a class="btn btn-primary" href="{% url 'account_email' %}">
@@ -42,7 +42,7 @@
             </h2>
             <div class="card-body">
                 {% if not profile.email_is_verified %}
-                    <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Verify email" %}</a>
+                    <a href="{% url 'account_email' %}" class="btn btn-primary">{% trans "Manage email addresses" %}</a>
                 {% else %}
                     <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
                 {% endif %}
@@ -51,7 +51,9 @@
                     {% trans "Change your password" %}
                 </a>
 
-                @TODO {% trans 'Account löschen' %}
+                <a href="{% url 'profile-delete' %}" class="pull-right btn btn-danger">
+                    {% trans 'Delete account' %}
+                </a>
             </div>
         </section>
     </div>

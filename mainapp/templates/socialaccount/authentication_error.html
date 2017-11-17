@@ -1,0 +1,14 @@
+{% extends "base_single_panel.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+{% block panel_title %}{% trans "Social Network Login Failure" %}{% endblock %}
+
+{% block panel_content %}
+    <p class="alert alert-danger">{% trans "An error occurred while attempting to login via your social network account." %}</p>
+    <div class="btn-row">
+        <a href="{% url 'account_login' %}" class="btn btn-primary"><span class="fa fa-chevron-left"></span> {% trans "Back to the login" %}</a>
+    </div>
+{% endblock %}
