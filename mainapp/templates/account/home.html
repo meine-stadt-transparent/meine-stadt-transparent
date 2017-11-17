@@ -39,6 +39,8 @@
                                         class="btn btn-outline-danger pull-right">
                                     <span class="fa fa-remove"></span> {% trans 'Remove' %}
                                 </button>
+
+                                <a href="{% url 'search' query=alert.search_string %}" class="pull-left btn btn-light"><span class="fa fa-search"></span></a>
                                 {{ alert }}
                             </li>
                         {% endfor %}
