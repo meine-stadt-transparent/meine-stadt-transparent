@@ -68,7 +68,7 @@ export default function ($map_element, initData) {
     if (initData['limit']) {
         let bounds = L.latLngBounds(
             L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
-            L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng']),
+            L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng'])
         );
         leaflet.setMaxBounds(bounds);
     }
