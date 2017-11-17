@@ -66,15 +66,16 @@ export default function ($map_element, initData) {
     leaflet.setView(initCenter, initZoom);
 
     if (initData['limit']) {
-        leaflet.setMaxBounds(L.latLngBounds(
+        let bounds = L.latLngBounds(
             L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
             L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng']),
-        ));
+        );
+        leaflet.setMaxBounds(bounds);
     }
 
     if (initData['outline'] && initData['limit']) {
         let polygon = getPolygonCoveringExterior(initData['limit'], initData['outline']);
-        leaflet.addLayer(L.polygon(polygon, {
+        let polygonLayer = L.polygon(polygon, {
             weight: 1,
             fillColor: "#ffffff",
             fillOpacity: 0.75,
@@ -82,7 +83,8 @@ export default function ($map_element, initData) {
             color: '#0000ff',
             opacity: 0.5,
             dashArray: [2, 4]
-        }));
+        });
+        leaflet.addLayer(polygonLayer);
     }
 
     return leaflet;

@@ -12,22 +12,31 @@ import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
 import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
 
 
+/*
+ Convention: Each widget has an assigned object that handles the behavior.
+ The object SHOULD only modify elements that lie within the root element,
+ though there are several cases where this is not feasible.
+
+ In case the widget should be modified from another object, a method on the object should be used,
+ using the $(el).data("widget")-reference
+ */
+
 window.jQuery = require('jquery');
 
 $(function () {
     $(".js-home-map").each(function () {
-        new HomeMap($(this));
+        $(this).data("widget", new HomeMap($(this)));
     });
 
     $(".search-autocomplete").each(function () {
-        new SearchBar($(this));
+        $(this).data("widget", new SearchBar($(this)));
     });
 
     $(".detailed-searchform").each(function() {
-        new FacettedSearch($(this));
+        $(this).data("widget", new FacettedSearch($(this)));
     });
 
     $("#start-endless-scroll").each(function() {
-        new EnlessScrolling($(this));
+        $(this).data("widget", new EnlessScrolling($(this)));
     });
 });
