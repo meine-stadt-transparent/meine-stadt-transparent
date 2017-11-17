@@ -230,6 +230,7 @@ class OParlObjects(OParlHelper):
         if not item.key:
             item.key = "-"
 
+        item.oparl_id = libobject.get_id()
         item.key = libobject.get_number()
         item.title = libobject.get_name()
         item.position = index
@@ -256,21 +257,22 @@ class OParlObjects(OParlHelper):
         if not consultation:
             return
 
+        consultation.oparl_id = libobject.get_id()
         consultation.authoritative = libobject.get_authoritative()
         consultation.role = libobject.get_role()
 
         if libobject.get_meeting():
-            meeting = Meeting.objects.filter(oparl_id=libobject.get_meeting()).first()
+            meeting = Meeting.objects.filter(oparl_id=libobject.get_meeting().get_id()).first()
             if not meeting:
-                self.consultation_meeting_queue.append((consultation, libobject.get_meeting()))
+                self.consultation_meeting_queue.append((consultation, libobject.get_meeting().get_id()))
             else:
-                consultation.meeting = Meeting.objects.get(oparl_id=libobject.get_meeting())
+                consultation.meeting = meeting
         if libobject.get_paper():
-            paper = Meeting.objects.filter(oparl_id=libobject.get_paper()).first()
+            paper = Meeting.objects.filter(oparl_id=libobject.get_paper().get_id()).first()
             if not paper:
-                self.consultation_paper_queue.append((consultation, libobject.get_paper()))
+                self.consultation_paper_queue.append((consultation, libobject.get_paper().get_id()))
             else:
-                consultation.paper = Meeting.objects.get(oparl_id=libobject.get_paper())
+                consultation.paper = paper
 
         consultation.save()
 
@@ -403,12 +405,12 @@ class OParlObjects(OParlHelper):
         for classification, organization, libobject in self.membership_queue:
             self.membership(classification, organization, libobject)
 
-        print("Adding missing meetings to consultations")
-        for consultation, meeting in self.consultation_meeting_queue:
-            consultation.meeting = meeting
-            consultation.save()
-
         print("Adding missing papper to consultations")
         for consultation, paper in self.consultation_paper_queue:
-            consultation.paper = paper
+            consultation.paper = Paper.by_oparl_id(paper)
+            consultation.save()
+
+        print("Adding missing meetings to consultations")
+        for consultation, meeting in self.consultation_meeting_queue:
+            consultation.meeting = Meeting.by_oparl_id(meeting)
             consultation.save()
