@@ -2,7 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext, pgettext
 from elasticsearch_dsl import Search, Q
 
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
@@ -30,7 +30,7 @@ def add_date(s, raw, operator, options, errors):
         s = s.filter(Q('range', start={operator: after}) | Q('range', legal_date={operator: after}))
         options["after"] = after
     except ValueError or OverflowError:
-        errors.append(_('The value for after is invalid. The correct format is YYYY-MM-DD'))
+        errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
     return s
 
 
@@ -132,3 +132,34 @@ def search_result_for_notification(result):
         type_id=result["type"],
         type_name=DOCUMENT_TYPE_NAMES[result["type"]]
     )
+
+
+def params_to_human_string(params: dict):
+    from mainapp.documents import DOCUMENT_TYPE_NAMES_PL
+
+    if 'document-type' in params:
+        split = params['document-type'].split(",")
+        what = []
+        for el in split:
+            what.append(DOCUMENT_TYPE_NAMES_PL[el])
+        description = ', '.join(what)
+    else:
+        description = pgettext('Search query', 'Documents')
+
+    if 'searchterm' in params:
+        description += ' ' + pgettext('Search query', 'containing "%STR%"').replace('%STR%', params['searchterm'])
+
+    if 'person' in params:
+        description += ', ' + pgettext('Search query', 'created by %FROM%').replace('%BY%', params['person'])
+
+    if 'radius' in params:
+        description += ', ' + pgettext('Search query', 'with a location around a given point')
+
+    if 'before' in params and 'after' in params:
+        description += ', ' + pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%', params['before'])
+    elif 'before' in params:
+        description += ', ' + pgettext('Search query', 'published before %TO%').replace('%TO%', params['before'])
+    elif 'after' in params:
+        description += ', ' + pgettext('Search query', 'published after %FROM%').replace('%FROM%', params['after'])
+
+    return description

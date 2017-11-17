@@ -21,7 +21,7 @@
                     <input type="hidden" name="{{ redirect_field_name }}"
                            value="{{ redirect_field_value }}">
                 {% endif %}
-                <button type="submit" class="btn btn-primary">{% trans 'Sign Out' %}</button>
+                <button type="submit" class="btn btn-secondary">{% trans 'Sign Out' %}</button>
             </form>
         </div>
 
@@ -29,11 +29,26 @@
             <h2 class="card-header">
                 {% trans 'Notifications' %}
             </h2>
-            <div class="card-body">
-                {% for alert in alerts %}
-                    {{ alert }}
-                {% endfor %}
-            </div>
+            <form method="post" class="card-body" action="{% url 'profile-home' %}">
+                {% csrf_token %}
+                {% if alerts|length > 0 %}
+                    <ul class="list-group">
+                        {% for alert in alerts %}
+                            <li class="list-group-item">
+                                <button type="submit" name="removenotification" value="{{ alert.id }}"
+                                        class="btn btn-outline-danger pull-right">
+                                    <span class="fa fa-remove"></span> {% trans 'Remove' %}
+                                </button>
+                                {{ alert }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="alert alert-info">
+                        {% trans "You can get notified about new documents that might be of interest for you. Simple enter any search query in our search above, like keywords or locations in your city, and you will be able to subscribe to this search and therefore get notified by e-mail about new results." %}
+                    </p>
+                {% endif %}
+            </form>
         </section>
 
         <section class="card mst-accountsettings mst-account-section">

@@ -1,29 +1,30 @@
 # -*- coding: utf-8 -*-
 
-from braces.views import LoginRequiredMixin
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.utils.translation import ugettext as _
 
 from mainapp.models import UserProfile
 from mainapp.models.user_alert import UserAlert
 
 
-class ProfileHomeView(LoginRequiredMixin, TemplateView):
-    template_name = 'account/home.html'
+@login_required
+def profile_view(request):
+    user = request.user
 
-    @staticmethod
-    def check_user(user):
-        if user.is_active:
-            return True
-        return False
+    if 'removenotification' in request.POST:
+        alerts = UserAlert.objects.filter(user_id=user.id, id=request.POST['removenotification']).all()
+        if len(alerts) > 0:
+            for alert in alerts:
+                alert.delete()
+            messages.success(request, _('You will now receive notifications about new search results.'))
 
-    def get_context_data(self, **kwargs):
-        context = super(ProfileHomeView, self).get_context_data(**kwargs)
-        profile = UserProfile.objects.get_or_create(user=self.request.user)[0]
-        context['alerts'] = UserAlert.objects.filter(user_id=profile.user_id).all()
-        context['profile'] = profile
-        return context
+    context = {
+        'alerts': UserAlert.objects.filter(user_id=user.id).all(),
+        'profile': UserProfile.objects.get_or_create(user=user)[0]
+    }
+    return render(request, "account/home.html", context)
 
 
 @login_required

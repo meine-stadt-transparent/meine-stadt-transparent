@@ -15,6 +15,16 @@ DOCUMENT_TYPE_NAMES = {
     "file": _('Document Type Name', 'File'),
     "meeting": _('Document Type Name', 'Meeting'),
     "paper": _('Document Type Name', 'Paper'),
-    "parliamentary_group": _('Document Type Name', 'Parliamentary Group'),
+    "parliamentary_group": _('Document Type Name', 'Parliamentary group'),
     "person": _('Document Type Name', 'Person'),
+}
+
+DOCUMENT_TYPE_NAMES_PL = {
+    "committee": _('Document Type Name', 'Committees'),
+    "department": _('Document Type Name', 'Departments'),
+    "file": _('Document Type Name', 'Files'),
+    "meeting": _('Document Type Name', 'Meetings'),
+    "paper": _('Document Type Name', 'Papers'),
+    "parliamentary_group": _('Document Type Name', 'Parliamentary groups'),
+    "person": _('Document Type Name', 'Persons'),
 }

@@ -3,7 +3,7 @@ from django.views.generic import DetailView
 from django.views.static import serve
 
 import mainapp.views.views
-from mainapp.views.profile import ProfileHomeView, profile_delete
+from mainapp.views.profile import profile_view, profile_delete
 from meine_stadt_transparent import settings
 from . import views
 from .models import Location, Body
@@ -43,7 +43,7 @@ urlpatterns = [
     simple_model_view('body', Body),
     simple_model_view('legislative term', LegislativeTerm),
     simple_model_view('location', Location),
-    url(r'^profile/$', ProfileHomeView.as_view(), name='profile-home'),
+    url(r'^profile/$', profile_view, name='profile-home'),
     url(r'^profile/delete/$', profile_delete, name='profile-delete'),
     # TODO: Warn in production because one should use nginx directly. Also, mime types
     url(r'^resource/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name="resource"),
