@@ -6,7 +6,7 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, Department, Committee, AgendaItem, Meeting
+from mainapp.models import Body, Department, Committee, AgendaItem, Meeting, File
 from mainapp.models.paper import Paper
 from mainapp.models.parliamentary_group import ParliamentaryGroup
 
@@ -102,6 +102,18 @@ def parliamentary_group(request, pk):
         "papers": Paper.objects.filter(submitter_parliamentary_groups__in=pk)[:25],
     }
     return render(request, "mainapp/parliamentary_group.html", context)
+
+
+def file(request, pk):
+    file = File.objects.get(id=pk)
+    is_available = file.filesize and file.filesize > 0
+    context = {
+        "file": file,
+        "paper": Paper.objects.filter(files__in=[file]),
+        "is_available": is_available,
+        "is_renderable": is_available and file.mime_type == "application/pdf",
+    }
+    return render(request, "mainapp/file.html", context)
 
 
 def info_privacy(request):

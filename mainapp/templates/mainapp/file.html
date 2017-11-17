@@ -7,26 +7,50 @@
 {% block content %}
     <div class="file-main-content">
         <div class="container">
-            <div class="section">
-                <ul style="max-height: 300px; overflow: scroll">
-                    <li>name: {{ file.name }}</li>
-                    <li>storage_filename: {{ file.storage_filename }}</li>
-                    <li>displayed_filename: {{ file.displayed_filename }}</li>
-                    <li>mime_type: {{ file.mime_type }}</li>
-                    <li>legal_date: {{ file.legal_date }}</li>
-                    <li>filesize: {{ file.filesize }}</li>
-                    <li>locations: {{ file.locations }}</li>
-                    <li>license: {{ file.license }}</li>
-                </ul>
-            </div>
+            {% spaceless %}
+                <div class="file-header d-flex justify-content-between flex-wrap">
+                    <div>
+                        {% if file.name %}
+                            <span>{{ file.name }}</span>
+                        {% endif %}
+                        {% if file.displayed_filename %}
+                            <span>{{ file.displayed_filename }}</span>
+                        {% endif %}
+                        {% if file.legal_date %}
+                            <span>{{ file.legal_date }}</span>
+                        {% endif %}
+                        {% if file.license %}
+                            <span>{{ file.license }}</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if is_renderable %}
+                            <span>
+                            <a href="{% url 'resource' file.storage_filename %}">
+                           <i class="fa-custom fa-download no-link-color" aria-hidden="true"></i>Download
+                            </a>
+                        </span>
+                        {% endif %}
+                        {% if paper|length == 1 %}
+                            <span>
+                                <a href="{% url 'paper' paper.0.id %}" title="{{ paper.0.name }}">
+                                    <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans "Paper" %}
+                                </a>
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endspaceless %}
         </div>
 
-        {% if file.filesize and file.filesize > 0 %}
-            {% if file.mime_type == "application/pdf" %}
-                <div class="embed-responsive container pdfjs-wrapper">
-                    <iframe class="embed-responsive-item"
-                            src="{% static 'vendored/web/viewer.html' %}?file={% url 'resource' file.storage_filename %}">
-                    </iframe>
+        {% if is_available %}
+            {% if is_renderable %}
+                <div class="container pdfjs-wrapper">
+                    <div class="embed-responsive h-100">
+                        <iframe class="embed-responsive-item"
+                                src="{% static 'vendored/web/viewer.html' %}?file={% url 'resource' file.storage_filename %}">
+                        </iframe>
+                    </div>
                 </div>
             {% else %}
                 <div class="container">
