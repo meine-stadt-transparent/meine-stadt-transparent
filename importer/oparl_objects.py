@@ -14,6 +14,7 @@ from slugify.slugify import slugify
 from importer.oparl_helper import OParlHelper
 from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, ParliamentaryGroup, Meeting, Location, \
     File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, ParliamentaryGroupMembership
+from mainapp.models.consultation import Consultation
 from mainapp.models.default_fields import DefaultFields
 from mainapp.models.paper_type import PaperType
 
@@ -32,6 +33,8 @@ class OParlObjects(OParlHelper):
         self.meeting_person_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
         self.membership_queue = []
+        self.consultation_meeting_queue = []
+        self.consultation_paper_queue = []
 
     def body(self, libobject: OParl.Body):
         body = self.check_existing(libobject, Body)
@@ -102,8 +105,11 @@ class OParlObjects(OParlHelper):
         paper.files = [file for file in files if file is not None]
         paper.main_file = self.file(libobject.get_main_file())
 
-        for i in libobject.get_under_direction_of_url():
-            organization = self.get_organization_by_oparl_id(i)
+        for i in libobject.get_consultation():
+            self.consultation(i)
+
+        for org in libobject.get_under_direction_of_url():
+            organization = self.get_organization_by_oparl_id(org)
             if isinstance(organization, Committee):
                 paper.submitter_committees.add(organization)
             elif isinstance(organization, Department):
@@ -111,7 +117,7 @@ class OParlObjects(OParlHelper):
             elif isinstance(organization, ParliamentaryGroup):
                 paper.submitter_parliamentary_groups.add(organization)
             else:
-                message = "Failed to find organization for {}".format(i)
+                message = "Failed to find organization for {}".format(org)
                 self.errorlist.append(message)
 
         paper.save()
@@ -216,32 +222,62 @@ class OParlObjects(OParlHelper):
         return location
 
     def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
-        if not libobject:
-            return None
+        item = self.check_existing(libobject, AgendaItem, add_defaults=False)
+        if not item:
+            return
 
-        paper = None
-        if libobject.get_consultation_url() != "" and libobject.get_consultation().get_paper_url() != "":
-            paper = Paper.objects_with_deleted.filter(oparl_id=libobject.get_consultation().get_paper_url()).first()
-            if not paper:
-                self.agenda_item_paper_queue[libobject.get_id()] = libobject.get_consultation().get_paper_url()
+        item.key = libobject.get_number()
+        if not item.key:
+            item.key = "-"
 
-        item_key = libobject.get_number()
-        if not item_key:
-            item_key = "-"
+        item.key = libobject.get_number()
+        item.title = libobject.get_name()
+        item.position = index
+        item.public = libobject.get_public()
+        item.result = libobject.get_result()
+        item.resolution_text = libobject.get_resolution_text()
+        item.start = libobject.get_start()
+        item.end = libobject.get_end()
 
-        values = {
-            "title": libobject.get_name(),
-            "position": index,
-            "meeting": meeting,
-            "oparl_id": libobject.get_id(),
-            "key": item_key,
-            "public": libobject.get_public(),
-            "paper": paper,
-        }
+        item.save()
 
-        item, created = AgendaItem.objects_with_deleted.update_or_create(oparl_id=libobject.get_id(), defaults=values)
+        item.resolution_file = self.file(libobject.get_resolution_file())
+        item.meeting = meeting
+        if len(libobject.get_auxiliary_file()) > 0:
+            item.auxiliary_files = [self.file(i) for i in libobject.get_auxiliary_file()]
+        item.consultation = self.consultation(libobject.get_consultation())
+
+        item.save()
 
         return item
+
+    def consultation(self, libobject: OParl.Consultation):
+        consultation = self.check_existing(libobject, Consultation, add_defaults=False)
+        if not consultation:
+            return
+
+        consultation.authoritative = libobject.get_authoritative()
+        consultation.role = libobject.get_role()
+
+        if libobject.get_meeting():
+            meeting = Meeting.objects.filter(oparl_id=libobject.get_meeting()).first()
+            if not meeting:
+                self.consultation_meeting_queue.append((consultation, libobject.get_meeting()))
+            else:
+                consultation.meeting = Meeting.objects.get(oparl_id=libobject.get_meeting())
+        if libobject.get_paper():
+            paper = Meeting.objects.filter(oparl_id=libobject.get_paper()).first()
+            if not paper:
+                self.consultation_paper_queue.append((consultation, libobject.get_paper()))
+            else:
+                consultation.paper = Meeting.objects.get(oparl_id=libobject.get_paper())
+
+        consultation.save()
+
+        # TODO consultation.organization = libobject.get_organization()
+
+        # consultation.save()
+        return consultation
 
     def download_file(self, file: File, libobject: OParl.File):
         url = libobject.get_download_url() or libobject.get_access_url()
@@ -366,3 +402,13 @@ class OParlObjects(OParlHelper):
         print("Adding missing memberships")
         for classification, organization, libobject in self.membership_queue:
             self.membership(classification, organization, libobject)
+
+        print("Adding missing meetings to consultations")
+        for consultation, meeting in self.consultation_meeting_queue:
+            consultation.meeting = meeting
+            consultation.save()
+
+        print("Adding missing papper to consultations")
+        for consultation, paper in self.consultation_paper_queue:
+            consultation.paper = paper
+            consultation.save()

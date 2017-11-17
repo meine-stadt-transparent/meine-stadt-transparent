@@ -7,7 +7,7 @@ from django.shortcuts import render
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, Department, Committee, AgendaItem, Meeting, File
+from mainapp.models import Body, Department, Committee, AgendaItem, Meeting, File, Consultation
 from mainapp.models.paper import Paper
 from mainapp.models.parliamentary_group import ParliamentaryGroup
 
@@ -67,9 +67,10 @@ def organizations(request):
 
 
 def paper(request, pk):
+    paper = Paper.objects.get(id=pk)
     context = {
-        "paper": Paper.objects.get(id=pk),
-        "history": AgendaItem.objects.filter(consultation__paper_id=pk).all(),
+        "paper": paper,
+        "history": Consultation.objects.filter(paper=paper).all(),
     }
     return render(request, "mainapp/paper.html", context)
 

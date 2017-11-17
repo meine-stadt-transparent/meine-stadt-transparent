@@ -26,7 +26,6 @@ class Paper(DefaultFields):
     main_file = models.ForeignKey(File, null=True, blank=True, related_name="paper_main_file")
     files = models.ManyToManyField(File, blank=True)
     paper_type = models.ForeignKey(PaperType, null=True, blank=True)
-    deleted = models.BooleanField(default=False)
 
     def reference_number_autocomplete(self):
         """ A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error """
