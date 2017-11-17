@@ -1,8 +1,9 @@
 from django.db import models
 
+from mainapp.models.file import File
+from mainapp.models.consultation import Consultation
 from .default_fields import SoftDeleteModelManager, SoftDeleteModelManagerWithDeleted
 from .meeting import Meeting
-from .paper import Paper
 
 
 class AgendaItem(models.Model):
@@ -10,14 +11,20 @@ class AgendaItem(models.Model):
     key = models.CharField(max_length=20)
     title = models.TextField()
     meeting = models.ForeignKey(Meeting)
+    consultation = models.ForeignKey(Consultation, null=True, blank=True)
     # The agenda items of a meeting are ordered by this field
     position = models.IntegerField()
     public = models.NullBooleanField(blank=True)
-    paper = models.ForeignKey(Paper, null=True, blank=True)
+    result = models.CharField(max_length=200, null=True, blank=True)
+    resolution_text = models.TextField(null=True, blank=True)
+    resolution_file = models.ForeignKey(File, null=True, blank=True, related_name="resolution_file")
+    auxiliary_file = models.ManyToManyField(File, blank=True, related_name="auxiliary_file")
+    start = models.DateTimeField(null=True, blank=True)
+    end = models.DateTimeField(null=True, blank=True)
+
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     deleted = models.BooleanField(default=False)
-    # TODO: Modelling the resolution which can be both file and plain text
 
     objects = SoftDeleteModelManager()
     objects_with_deleted = SoftDeleteModelManagerWithDeleted()

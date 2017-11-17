@@ -69,7 +69,7 @@ def organizations(request):
 def paper(request, pk):
     context = {
         "paper": Paper.objects.get(id=pk),
-        "history": AgendaItem.objects.filter(paper_id=pk).all(),
+        "history": AgendaItem.objects.filter(consultation__paper_id=pk).all(),
     }
     return render(request, "mainapp/paper.html", context)
 
