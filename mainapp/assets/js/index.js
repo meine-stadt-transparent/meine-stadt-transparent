@@ -4,12 +4,14 @@ import style from '../css/mainapp.scss';
 import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
 import FacettedSearch from "./FacettedSearch";
-import EnlessScrolling from "./EndlessScrolling";
+import EndlessScrolling from "./EndlessScrolling";
 // Force loading these images, as they are not referenced in the stylesheet but required by the JS library
 // noinspection ES6UnusedImports
 import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
 // noinspection ES6UnusedImports
 import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
+
+window.jQuery = require('jquery');
 
 
 /*
@@ -21,22 +23,17 @@ import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
  using the $(el).data("widget")-reference
  */
 
-window.jQuery = require('jquery');
+let REGISTERED_CLASSES = {
+    ".js-home-map": HomeMap,
+    ".search-autocomplete": SearchBar,
+    ".detailed-searchform": FacettedSearch,
+    "#start-endless-scroll": EndlessScrolling
+};
 
 $(function () {
-    $(".js-home-map").each(function () {
-        $(this).data("widget", new HomeMap($(this)));
-    });
-
-    $(".search-autocomplete").each(function () {
-        $(this).data("widget", new SearchBar($(this)));
-    });
-
-    $(".detailed-searchform").each(function() {
-        $(this).data("widget", new FacettedSearch($(this)));
-    });
-
-    $("#start-endless-scroll").each(function() {
-        $(this).data("widget", new EnlessScrolling($(this)));
-    });
+    for (let selector in REGISTERED_CLASSES) {
+        $(selector).each(function () {
+            $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
+        });
+    }
 });

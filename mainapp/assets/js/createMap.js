@@ -40,21 +40,16 @@ let getPolygonCoveringExterior = function (limitRect, outline) {
     return polygons;
 };
 
-
-export default function ($map_element, initData) {
-    let leaflet = L.map($map_element.attr("id"), {
-        maxBoundsViscosity: 1,
-        minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
-        maxZoom: 19,
-    });
-
+let setTiles = function (leaflet, initData) {
     let tileUrl = (initData['tileUrl'] ? initData['tileUrl'] : 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}');
     L.tileLayer(tileUrl, {
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         accessToken: initData['mapboxKey'],
         highres: (window.devicePixelRatio > 1.5 ? '@2x' : '')
     }).addTo(leaflet);
+};
 
+let setInitView = function (leaflet, initData) {
     let initCenter = L.latLng(35.658611, 139.745556); // If nothing else is said explicitly, we're probably talking about the Tokyo Tower
     let initZoom = 15;
     if (initData['center']) {
@@ -64,15 +59,9 @@ export default function ($map_element, initData) {
         initZoom = initData['zoom'];
     }
     leaflet.setView(initCenter, initZoom);
+};
 
-    if (initData['limit']) {
-        let bounds = L.latLngBounds(
-            L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
-            L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng'])
-        );
-        leaflet.setMaxBounds(bounds);
-    }
-
+let setOutline = function (leaflet, initData) {
     if (initData['outline'] && initData['limit']) {
         let polygon = getPolygonCoveringExterior(initData['limit'], initData['outline']);
         let polygonLayer = L.polygon(polygon, {
@@ -86,6 +75,29 @@ export default function ($map_element, initData) {
         });
         leaflet.addLayer(polygonLayer);
     }
+};
+
+let setBounds = function (leaflet, initData) {
+    if (initData['limit']) {
+        let bounds = L.latLngBounds(
+            L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
+            L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng'])
+        );
+        leaflet.setMaxBounds(bounds);
+    }
+};
+
+export default function ($map_element, initData) {
+    let leaflet = L.map($map_element.attr("id"), {
+        maxBoundsViscosity: 1,
+        minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
+        maxZoom: 19,
+    });
+
+    setTiles(leaflet, initData);
+    setInitView(leaflet, initData);
+    setBounds(leaflet, initData);
+    setOutline(leaflet, initData);
 
     return leaflet;
 }

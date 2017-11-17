@@ -162,11 +162,7 @@ export default class FacettedSearch {
             let val = $(input).val();
             let name = input.name;
             // Skip empty values
-            if (name === "" || val === "") {
-                return;
-            }
-
-            if (Array.isArray(val) && val.length === 0) {
+            if (name === "" || val === "" || (Array.isArray(val) && val.length === 0)) {
                 return;
             }
 

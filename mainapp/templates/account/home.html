@@ -5,8 +5,6 @@
 
 {% block content %}
     <div class="container mst-container-account">
-        {% include 'partials/messages.html' %}
-
         {% if not profile.email_is_verified %}
             <section class="alert alert-warning mst-account-section">
                 <p>{% trans 'Your email address has not been verified' %}</p>
