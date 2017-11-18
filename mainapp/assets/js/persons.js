@@ -31,16 +31,16 @@ $(function () {
     });
 
 
-    let $groupRadios = $(".filter-parliamentary-groups input[type=radio]"),
-        $groupDropdownLinks = $(".filter-parliamentary-groups a"),
-        $currentFilterLabel = $(".filter-parliamentary-groups .current-mode");
+    let $groupRadios = $(".filter-organizations input[type=radio]"),
+        $groupDropdownLinks = $(".filter-organizations a"),
+        $currentFilterLabel = $(".filter-organizations .current-mode");
 
     // Update Isotope, set the label on the drop-down menu and the state of the radio-button-group
     let setParliamentaryGroup = (group) => {
         if (group === 'all') {
             grid.filter(null);
         } else {
-            grid.filter('parliamentary-group-' + group);
+            grid.filter('organization-' + group);
         }
         let name = $groupDropdownLinks.filter("[data-filter=" + group + "]").text();
         $currentFilterLabel.text(name);

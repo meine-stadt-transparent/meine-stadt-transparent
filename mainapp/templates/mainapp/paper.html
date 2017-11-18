@@ -26,7 +26,7 @@
 
             {% with paper.submitter_parliamentary_groups.all as objects %}
                 {% trans "Submitting Parliamentary Groups:" as name %}
-                {% include "partials/inline_list.html" with icon="users" link="parliamentary-group" %}
+                {% include "partials/inline_list.html" with icon="users" link="organization" %}
             {% endwith %}
             {% with paper.submitter_committees.all as objects %}
                 {% trans "Submitting Committees:" as name %}

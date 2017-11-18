@@ -9,25 +9,28 @@ from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_sear
 
 
 def persons(request):
+    """ Shows all members of the default organization, which are made filterable by the parliamentary group
+    memberships """
     pk = settings.SITE_DEFAULT_ORGANIZATION
     organizations = get_object_or_404(Organization, id=pk)
 
-    memberships = organizations.organizationmembership_set.all()
     parliamentarygroups = []
     members = []
+    memberships = organizations.organizationmembership_set.all()
     for membership in memberships:
         pers = membership.person
         groups_ids = []
         groups_css_classes = []
         groups_names = []
 
-        for parlmember in pers.parliamentarygroupmembership_set.all():
-            group = parlmember.parliamentary_group
-            groups_ids.append(str(group.id))
-            groups_css_classes.append("parliamentary-group-%i" % group.id)
-            groups_names.append(group.name)
-            if group not in parliamentarygroups:
-                parliamentarygroups.append(group)
+        id = settings.PARLIAMENTARY_GROUPS_TYPE[0]
+        for parlmember in pers.organizationmembership_set.filter(organization__organization_type_id=id):
+            organization = parlmember.organization
+            groups_ids.append(str(organization.id))
+            groups_css_classes.append("organization-%i" % organization.id)
+            groups_names.append(organization.name)
+            if organization not in parliamentarygroups:
+                parliamentarygroups.append(organization)
 
         members.append({
             'id': pers.id,
@@ -60,7 +63,7 @@ def person(request, pk):
     # That will become a shiny little query with just 7 joins
     filter_self = Paper.objects.filter(submitter_persons__id=pk)
     filter_committee = Paper.objects.filter(submitter_committees__committeemembership__person__id=pk)
-    filer_group = Paper.objects.filter(submitter_parliamentary_groups__parliamentarygroupmembership__id=pk)
+    filer_group = Paper.objects.filter(submitter_parliamentary_groups__organizationmembership__id=pk)
     paper = (filter_self | filter_committee | filer_group).distinct()
 
     context = {

@@ -97,7 +97,7 @@ def search_autosuggest(_, query):
     multibody = Body.objects.count() > 1
 
     results = []
-    num_persons = num_parliamentary_groups = 0
+    num_persons = num_organizations = 0
     limit_per_type = 5
 
     for hit in response.hits:
@@ -105,17 +105,14 @@ def search_autosuggest(_, query):
             if num_persons < limit_per_type:
                 results.append({'name': hit.name, 'url': reverse('person', args=[hit.id])})
                 num_persons += 1
-        elif hit.meta.doc_type == 'parliamentary_group_document':
-            if num_parliamentary_groups < limit_per_type:
-                if multibody:
+        elif hit.meta.doc_type == 'organization':
+            if num_organizations < limit_per_type:
+                if multibody and hit.body:
                     name = hit.name + " (" + hit.body.name + ")"
                 else:
                     name = hit.name
-                results.append({'name': name, 'url': reverse('parliamentary-group', args=[hit.id])})
-                num_parliamentary_groups += 1
-        elif hit.meta.doc_type == 'committee_document':
-            name = hit.name
-            results.append({'name': name, 'url': reverse('committee', args=[hit.id])})
+                results.append({'name': name, 'url': reverse('organization', args=[hit.id])})
+                num_organizations += 1
         elif hit.meta.doc_type == 'paper_document':
             name = hit.name
             results.append({'name': name, 'url': reverse('paper', args=[hit.id])})

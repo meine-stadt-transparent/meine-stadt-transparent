@@ -23,21 +23,21 @@
         </div>
 
         <!-- Filtering by parliamentary group - large screens -->
-        <div class="btn-group filter-parliamentary-groups d-none d-md-inline-flex" data-toggle="buttons">
-            <label class="btn btn-primary active parliamentary-group-all">
-                <input type="radio" name="parliamentary-group" value="all">
+        <div class="btn-group filter-organizations d-none d-md-inline-flex" data-toggle="buttons">
+            <label class="btn btn-primary active organization-all">
+                <input type="radio" name="organization" value="all">
                 {% trans "All" context "persons-list" %}
             </label>
             {% for group in parliamentary_groups %}
-                <label class="btn btn-secondary parliamentary-group-{{ group.id }}">
-                    <input type="radio" name="parliamentary-group" value="{{ group.id }}">
+                <label class="btn btn-secondary organization-{{ group.id }}">
+                    <input type="radio" name="organization" value="{{ group.id }}">
                     {{ group.short_name }}
                 </label>
             {% endfor %}
         </div>
 
         <!-- Filtering by parliamentary group - small/medium screens -->
-        <div class="btn-group filter-parliamentary-groups d-md-none" role="group">
+        <div class="btn-group filter-organizations d-md-none" role="group">
             <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
                     id="btnFilterDropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa-custom fa-filter"></span>
@@ -62,7 +62,7 @@
                     <div>
                         <a href="{% url 'person' member.id %}">
                             <div class="name">{{ member.name }}</div>
-                            <div class="parliamentary-group">{{ member.groups_names }}</div>
+                            <div class="organization">{{ member.groups_names }}</div>
                             <div class="role">{{ member.role }}</div>
                             <div class="date">
                                 {% if member.end %}

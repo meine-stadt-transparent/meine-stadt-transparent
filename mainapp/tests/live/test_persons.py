@@ -33,7 +33,7 @@ class PersonsTest(StaticLiveServerTestCase):
         self.assertIsNotNone(pos_hector)
 
         # Filter for democrats
-        self.browser.find_by_css('.filter-parliamentary-groups .parliamentary-group-1').first.click()
+        self.browser.find_by_css('.filter-organizations .organization-6').first.click()
         time.sleep(1)
         pos_peter = self._get_pos_by_name('Peter Russo')
         pos_hector = self._get_pos_by_name('Hector Mendoza')
@@ -41,7 +41,7 @@ class PersonsTest(StaticLiveServerTestCase):
         self.assertIsNone(pos_hector)
 
         # Filter for republicans
-        self.browser.find_by_css('.filter-parliamentary-groups .parliamentary-group-2').first.click()
+        self.browser.find_by_css('.filter-organizations .organization-7').first.click()
         time.sleep(1)
         pos_peter = self._get_pos_by_name('Peter Russo')
         pos_hector = self._get_pos_by_name('Hector Mendoza')

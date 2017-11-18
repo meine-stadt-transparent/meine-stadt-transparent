@@ -164,7 +164,7 @@
     "model": "mainapp.organizationtype",
     "pk": 1,
     "fields": {
-        "name": "committee"
+        "name": "parliamentary group"
     }
 },
 {
@@ -178,7 +178,7 @@
     "model": "mainapp.organizationtype",
     "pk": 3,
     "fields": {
-        "name": "parliamentary groups"
+        "name": "committee"
     }
 },
 {
@@ -189,15 +189,15 @@
         "created": "2017-11-17T16:03:59.730Z",
         "modified": "2017-11-17T16:03:59.730Z",
         "deleted": false,
-        "name": "Committee of Inquiry",
-        "short_name": "Inquiry",
+        "name": "Assembly of the House of Representatives",
+        "short_name": "House Assembly",
         "start": "2017-09-11",
         "end": "2017-09-23",
         "body": 1,
         "location": null,
         "color": null,
         "logo": null,
-        "organization_type": 1,
+        "organization_type": 3,
         "legislative_terms": []
     }
 },
@@ -209,15 +209,15 @@
         "created": "2017-11-17T16:04:32.609Z",
         "modified": "2017-11-17T16:04:32.609Z",
         "deleted": false,
-        "name": "Assembly of the House of Representatives",
-        "short_name": "House Assembly",
+        "name": "Committee of Inquiry",
+        "short_name": "Inquiry",
         "start": "2013-01-01",
         "end": "2016-12-31",
         "body": 1,
         "location": null,
         "color": null,
         "logo": null,
-        "organization_type": 1,
+        "organization_type": 3,
         "legislative_terms": []
     }
 },
@@ -297,7 +297,7 @@
         "location": null,
         "color": null,
         "logo": null,
-        "organization_type": 3,
+        "organization_type": 1,
         "legislative_terms": [
             1
         ]
@@ -309,7 +309,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-11-17T16:08:29.271Z",
-        "modified": "2017-11-17T16:08:29.271Z",
+        "modified": "2017-11-17T20:56:37.938Z",
         "deleted": false,
         "name": "Republicans in the Congress",
         "short_name": "Republicans",
@@ -319,7 +319,7 @@
         "location": null,
         "color": null,
         "logo": null,
-        "organization_type": 3,
+        "organization_type": 1,
         "legislative_terms": [
             1
         ]
@@ -1002,6 +1002,81 @@
         "start": null,
         "end": null,
         "role": "Chairman",
+        "organization": 1
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T20:52:20.395Z",
+        "modified": "2017-11-17T20:52:20.395Z",
+        "deleted": false,
+        "person": 10,
+        "start": null,
+        "end": null,
+        "role": "Congressman",
+        "organization": 6
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T20:52:43.312Z",
+        "modified": "2017-11-17T20:52:43.313Z",
+        "deleted": false,
+        "person": 8,
+        "start": null,
+        "end": null,
+        "role": "Congressman",
+        "organization": 7
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-17T21:07:18.197Z",
+        "modified": "2017-11-17T21:07:18.197Z",
+        "deleted": false,
+        "person": 10,
+        "start": null,
+        "end": null,
+        "role": "Member",
+        "organization": 2
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-18T14:56:03.232Z",
+        "modified": "2017-11-18T14:57:38.397Z",
+        "deleted": false,
+        "person": 8,
+        "start": null,
+        "end": null,
+        "role": null,
+        "organization": 1
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-11-18T14:57:59.984Z",
+        "modified": "2017-11-18T14:57:59.984Z",
+        "deleted": false,
+        "person": 10,
+        "start": null,
+        "end": null,
+        "role": null,
         "organization": 1
     }
 }

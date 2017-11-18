@@ -9,7 +9,7 @@ class OrganizationMembership(DefaultFields):
     person = models.ForeignKey(Person)
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
-    role = models.CharField(max_length=200)
+    role = models.CharField(max_length=200, null=True, blank=True)
     organization = models.ForeignKey(Organization)
 
     def __str__(self):
