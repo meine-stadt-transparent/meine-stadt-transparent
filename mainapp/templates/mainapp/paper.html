@@ -24,20 +24,12 @@
                       aria-hidden="true"></i>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
             {% endif %}
 
-            {% with paper.submitter_parliamentary_groups.all as objects %}
-                {% trans "Submitting Parliamentary Groups:" as name %}
+            {% with paper.organization.all as objects %}
+                {% trans "Submitting Organizations:" as name %}
                 {% include "partials/inline_list.html" with icon="users" link="organization" %}
             {% endwith %}
-            {% with paper.submitter_committees.all as objects %}
-                {% trans "Submitting Committees:" as name %}
-                {% include "partials/inline_list.html" with icon="users" link="committee" %}
-            {% endwith %}
-            {% with paper.submitter_departments.all as objects %}
-                {% trans "Submitting Departments:" as name %}
-                {% include "partials/inline_list.html" with icon="users" link="department" %}
-            {% endwith %}
 
-            {% with paper.submitter_persons.all as objects %}
+            {% with paper.persons.all as objects %}
                 {% trans "Submitting Persons:" as name %}
                 {% include "partials/inline_list.html" with link="person" icon="user" %}
             {% endwith %}

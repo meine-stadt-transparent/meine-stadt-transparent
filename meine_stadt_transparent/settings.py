@@ -156,7 +156,6 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-
 SOCIALACCOUNT_USE_FACEBOOK = env.bool('SOCIALACCOUNT_USE_FACEBOOK', True)
 SOCIALACCOUNT_USE_TWITTER = env.bool('SOCIALACCOUNT_USE_TWITTER', True)
 
@@ -256,10 +255,15 @@ SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
 SITE_GEO_INIT_ZOOM = env.int('SITE_GEO_INIT_ZOOM', 11)
 SITE_DEFAULT_BODY = env.int('SITE_DEFAULT_BODY', 1)
 SITE_DEFAULT_ORGANIZATION = env.int('SITE_DEFAULT_ORGANIZATION', 1)
-ORGANIZATION_TYPE_SORTING = env.list('ORGANIZATION_TYPE_SORTING', int, [1, 2, 3])
-PARLIAMENTARY_GROUPS_TYPE = (1, "parliamentary group")
+
 SITE_MAPBOX_TILE_URL = env.str('SITE_MAPBOX_TILE_URL', None)
 SITE_MAPBOX_ACCESS_TOKEN = env.str('SITE_MAPBOX_ACCESS_TOKEN')
+
+PARLIAMENTARY_GROUPS_TYPE = (1, "parliamentary group")
+COMMITTEE_TYPE = (2, "committee")
+DEPARTMENT_TYPE = (3, "department")
+ORGANIZATION_TYPE_SORTING = env.list('ORGANIZATION_TYPE_SORTING', int,
+                                     [PARLIAMENTARY_GROUPS_TYPE, COMMITTEE_TYPE, DEPARTMENT_TYPE])
 
 # The documents of the last SITE_INDEX_DOCUMENT_DAY days will be shown on the home page
 SITE_INDEX_DOCUMENT_DAY = env.int('SITE_INDEX_DOCUMENT_DAY', 7)
@@ -302,4 +306,3 @@ if DEBUG:
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")
-

@@ -2,20 +2,20 @@ import hashlib
 import mimetypes
 import os
 from collections import defaultdict
-from typing import Optional, Type
 
 # noinspection PyPackageRequirements
 import gi
 import requests
+from django.conf import settings
 from django.utils.translation import ugettext as _
 # noinspection PyPackageRequirements
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
-from mainapp.models import Body, LegislativeTerm, Paper, Department, Committee, Organization, Meeting, Location, \
-    File, Person, AgendaItem, CommitteeMembership, DepartmentMembership, OrganizationMembership
+from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
+    OrganizationMembership, Organization
 from mainapp.models.consultation import Consultation
-from mainapp.models.default_fields import DefaultFields
+from mainapp.models.organization_type import OrganizationType
 from mainapp.models.paper_type import PaperType
 
 gi.require_version('OParl', '0.2')
@@ -35,6 +35,16 @@ class OParlObjects(OParlHelper):
         self.membership_queue = []
         self.consultation_meeting_queue = []
         self.consultation_paper_queue = []
+
+        # Ensure the existence of the three predefined organization types
+        group = settings.PARLIAMENTARY_GROUPS_TYPE
+        OrganizationType.objects.get_or_create(id=group[0], defaults={"name": group[1]})
+
+        committee = settings.COMMITTEE_TYPE
+        OrganizationType.objects.get_or_create(id=committee[0], defaults={"name": committee[1]})
+
+        department = settings.DEPARTMENT_TYPE
+        OrganizationType.objects.get_or_create(id=department[0], defaults={"name": department[1]})
 
     def body(self, libobject: OParl.Body):
         body = self.check_existing(libobject, Body)
@@ -110,59 +120,36 @@ class OParlObjects(OParlHelper):
 
         for org in libobject.get_under_direction_of_url():
             organization = self.get_organization_by_oparl_id(org)
-            if isinstance(organization, Committee):
-                paper.submitter_committees.add(organization)
-            elif isinstance(organization, Department):
-                paper.submitter_departments.add(organization)
-            elif isinstance(organization, Organization):
-                paper.submitter_parliamentary_groups.add(organization)
-            else:
-                message = "Failed to find organization for {}".format(org)
-                self.errorlist.append(message)
+            paper.submitter_organizations.add(organization)
 
         paper.save()
 
         return paper
 
-    def organization_to_class(self, libobject: OParl.Organization) -> Optional[Type[DefaultFields]]:
-        classification = libobject.get_classification()
-        if classification in self.organization_classification[Department]:
-            return Department
-        elif classification in self.organization_classification[Committee]:
-            return Committee
-        elif classification in self.organization_classification[Organization]:
-            return Organization
-        else:
-            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
-            self.errorlist.append(message)
-            return None
-
     def organization(self, libobject: OParl.Organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
         if not libobject:
             return
-        org_type = self.organization_to_class(libobject)
-        if not org_type:
-            return
 
-        organization = self.check_existing(libobject, org_type)
+        organization = self.check_existing(libobject, Organization)
         if not organization:
             return
 
-        organization.body = Body.by_oparl_id(libobject.get_body().get_id())
-        if org_type == Department:
-            assert not libobject.get_start_date() and not libobject.get_end_date()
-        elif org_type == Committee:
-            organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
-            organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
-        elif org_type == Organization:
-            organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
-            organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
+        type_id = self.organization_classification.get(libobject.get_organization_type())
+        if type_id:
+            orgtype = OrganizationType.objects.get(id=type_id)
         else:
-            assert False
+            orgtype, _ = OrganizationType.objects.get_or_create(name=libobject.get_organization_type())
+
+        organization.organization_type = orgtype
+        organization.body = Body.by_oparl_id(libobject.get_body().get_id())
+        organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
+        organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
+
+        organization.save()
 
         for membership in libobject.get_membership():
-            self.membership(org_type, organization, membership)
+            self.membership(organization, membership)
 
         organization.save()
 
@@ -349,39 +336,27 @@ class OParlObjects(OParlHelper):
         person.location = self.location(libobject.get_location())
         person.save()
 
-    def membership(self, classification, organization, libobject: OParl.Membership):
+    def membership(self, organization, libobject: OParl.Membership):
+        membership = self.check_existing(libobject, OrganizationMembership, add_defaults=False)
+        if not membership:
+            return
+
         person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
         if not person:
-            self.membership_queue.append((classification, organization, libobject))
+            self.membership_queue.append((organization, libobject))
             return None
 
         role = libobject.get_role()
         if not role:
             role = _("Unknown")
 
-        defaults = {
-            "person": person,
-            "start": self.glib_datetime_to_python_date(libobject.get_start_date()),
-            "end": self.glib_datetime_to_python_date(libobject.get_end_date()),
-            "role": role,
-        }
+        membership.start = self.glib_datetime_to_python_date(libobject.get_start_date())
+        membership.end = self.glib_datetime_to_python_date(libobject.get_end_date())
+        membership.role = role
+        membership.person = person
+        membership.organization = organization
 
-        if classification in self.organization_classification[Department]:
-            defaults["department"] = organization
-            membership = DepartmentMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                 defaults=defaults)
-        elif classification in self.organization_classification[Committee]:
-            defaults["committee"] = organization
-            membership = CommitteeMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                defaults=defaults)
-        elif classification in self.organization_classification[Organization]:
-            defaults["parliamentary_group"] = organization
-            membership = OrganizationMembership.objects_with_deleted.get_or_create(oparl_id=libobject.get_id(),
-                                                                                   defaults=defaults)
-        else:
-            message = "Unknown Classification: {} ({})".format(classification, libobject.get_id())
-            self.errorlist.append(message)
-            return
+        membership.save()
 
         return membership
 
@@ -402,8 +377,8 @@ class OParlObjects(OParlHelper):
             item.save()
 
         print("Adding missing memberships")
-        for classification, organization, libobject in self.membership_queue:
-            self.membership(classification, organization, libobject)
+        for organization, libobject in self.membership_queue:
+            self.membership(organization, libobject)
 
         print("Adding missing papper to consultations")
         for consultation, paper in self.consultation_paper_queue:

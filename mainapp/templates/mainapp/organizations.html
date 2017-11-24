@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
         {% for organization in organizations %}
-            {% include "partials/header_list.html" with objects=organization.all name=organization.type.name link="organization" %}
+            {% include "partials/header_list.html" with objects=organization.all name=organization.type link="organization" %}
         {% endfor %}
     </div>
 {% endblock %}

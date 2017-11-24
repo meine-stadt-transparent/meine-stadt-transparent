@@ -8,6 +8,7 @@ from django.shortcuts import render
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
 from mainapp.models import Body, File, Consultation, Organization, Paper
+from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
 
 
@@ -59,15 +60,18 @@ def organizations(request):
     organizations_ordered = []
     for organization_type in OrganizationType.objects.all():
         organizations_ordered.append({
-            "type": organization_type,
+            "organization_type": organization_type,
+            "type": ORGANIZATION_TYPE_NAMES.get(organization_type.name, organization_type.name),
             "all": Organization.objects.filter(organization_type=organization_type).all(),
         })
 
     for i in settings.ORGANIZATION_TYPE_SORTING:
-        for j in range(0, len(organizations_ordered)):
-            if organizations_ordered[j]["type"].id == i:
+        j = 0
+        while j < len(organizations_ordered):
+            if organizations_ordered[j]["organization_type"].id == i:
                 popped = organizations_ordered.pop(j)
                 organizations_ordered.insert(0, popped)
+            j += 1
 
     context = {
         "organizations": organizations_ordered,

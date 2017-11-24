@@ -1,10 +1,18 @@
 from django.db import models
+from django.utils.translation import pgettext as _
 
-from .organization_type import OrganizationType
 from .body import Body
 from .default_fields import DefaultFields
 from .legislative_term import LegislativeTerm
 from .location import Location
+from .organization_type import OrganizationType
+
+ORGANIZATION_TYPE_NAMES = {
+    "parliamentary group": _('Document Type Name', 'Parliamentary Group'),
+    "committee": _('Document Type Name', 'Committee'),
+    "department": _('Document Type Name', 'Deparment'),
+    "organization": _('Document Type Name', 'Organization'),
+}
 
 
 class Organization(DefaultFields):

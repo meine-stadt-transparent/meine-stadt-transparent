@@ -6,13 +6,13 @@ from datetime import date, datetime
 from typing import Optional, Type
 
 import gi
+from django.conf import settings
 from django.utils import dateparse
 # noinspection PyPackageRequirements
 from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 
 from mainapp.functions.document_parsing import extract_text_from_pdf
-from mainapp.models import DefaultFields, File
-from mainapp.models import Department, Committee, Organization
+from mainapp.models import DefaultFields, File, Organization
 
 gi.require_version('OParl', '0.2')
 gi.require_version('Json', '1.0')
@@ -40,9 +40,13 @@ class OParlHelper:
         self.official_geojson = False
         self.filename_length_cutoff = 100
         self.organization_classification = {
-            Department: ["Referat"],
-            Committee: ["Stadtratsgremium", "BA-Gremium", "Gremien"],
-            Organization: ["Fraktion", "Fraktionen"],
+            "Fraktion": settings.PARLIAMENTARY_GROUPS_TYPE,
+            "Fraktionen": settings.PARLIAMENTARY_GROUPS_TYPE,
+            "Stadtratsgremium": settings.COMMITTEE_TYPE,
+            "BA-Gremium": settings.COMMITTEE_TYPE,
+            "Gremien": settings.COMMITTEE_TYPE,
+            "Gremium": settings.COMMITTEE_TYPE,
+            "Referat": settings.DEPARTMENT_TYPE,
         }
 
         self.errorlist = []
@@ -104,9 +108,7 @@ class OParlHelper:
 
     @staticmethod
     def get_organization_by_oparl_id(oparl_id):
-        return Department.objects.filter(oparl_id=oparl_id).first() or \
-               Committee.objects.filter(oparl_id=oparl_id).first() or \
-               Organization.objects.filter(oparl_id=oparl_id).first()
+        return Organization.objects.filter(oparl_id=oparl_id).first()
 
     # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
     # TODO: Check the pycharm bug tracker for that
@@ -135,7 +137,8 @@ class OParlHelper:
         if not libobject.get_modified():
             error_message = "Modified missing on {}".format(libobject.get_id())
             self.errorlist.append(error_message)
-        if not self.ignore_modified and libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(libobject.get_modified()):
+        if not self.ignore_modified and libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(
+                libobject.get_modified()):
             self.logger.debug("Not Modified")
             return None
 
