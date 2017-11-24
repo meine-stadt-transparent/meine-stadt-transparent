@@ -7,13 +7,14 @@ from unittest import skipIf
 
 from django.test import TestCase
 
-from importer.oparl_helper import default_options
-from importer.oparl_import import OParlImport
 from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, \
     Paper, Consultation, Location, File
 
-print("GI_AVIALABLE", importlib.util.find_spec("gi"))
 gi_not_available = importlib.util.find_spec("gi") is None
+if not gi_not_available:
+    # Those two require importing gi
+    from importer.oparl_helper import default_options
+    from importer.oparl_import import OParlImport
 
 
 @skipIf(gi_not_available, "gi is not available")
