@@ -40,13 +40,13 @@ class OParlHelper:
         self.official_geojson = False
         self.filename_length_cutoff = 100
         self.organization_classification = {
-            "Fraktion": settings.PARLIAMENTARY_GROUPS_TYPE,
-            "Fraktionen": settings.PARLIAMENTARY_GROUPS_TYPE,
-            "Stadtratsgremium": settings.COMMITTEE_TYPE,
-            "BA-Gremium": settings.COMMITTEE_TYPE,
-            "Gremien": settings.COMMITTEE_TYPE,
-            "Gremium": settings.COMMITTEE_TYPE,
-            "Referat": settings.DEPARTMENT_TYPE,
+            "Fraktion": settings.PARLIAMENTARY_GROUPS_TYPE[0],
+            "Fraktionen": settings.PARLIAMENTARY_GROUPS_TYPE[0],
+            "Stadtratsgremium": settings.COMMITTEE_TYPE[0],
+            "BA-Gremium": settings.COMMITTEE_TYPE[0],
+            "Gremien": settings.COMMITTEE_TYPE[0],
+            "Gremium": settings.COMMITTEE_TYPE[0],
+            "Referat": settings.DEPARTMENT_TYPE[0],
         }
 
         self.errorlist = []
