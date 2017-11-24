@@ -1,0 +1,17 @@
+{
+    "id": "https://oparl.example.org/",
+    "type": "https://schema.oparl.org/1.1/System",
+    "oparlVersion": "https://schema.oparl.org/1.1/",
+    "body": "https://oparl.example.org/bodies",
+    "name": "Beispiel-System",
+    "contactEmail": "info@example.org",
+    "contactName": "Allgemeiner OParl Kontakt",
+    "website": "http://www.example.org/",
+    "vendor": "http://example-software.com/",
+    "product": "http://example-software.com/oparl-server/",
+    "otherOparlVersions": [
+        "https://oparl2.example.org/"
+    ],
+    "created": "2011-11-11T11:11:00+01:00",
+    "modified": "2012-11-11T11:11:00+01:00"
+}

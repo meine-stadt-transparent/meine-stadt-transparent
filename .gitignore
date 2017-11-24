@@ -6,6 +6,7 @@ storage/
 static/
 .env*
 urls-to-import.txt
+testdata/fake_cache
 
 # Python Stuff
 __pycache__/
