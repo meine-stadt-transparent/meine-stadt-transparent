@@ -12,4 +12,3 @@ class Command(ImportOParlCommand):
             importer.bodies_singlethread(bodies)
         else:
             importer.bodies_multithread(bodies)
-

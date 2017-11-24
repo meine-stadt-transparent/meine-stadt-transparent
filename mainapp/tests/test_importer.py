@@ -12,10 +12,10 @@ from importer.oparl_import import OParlImport
 from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, \
     Paper, Consultation, Location, File
 
-gi_available = importlib.util.find_spec("gi") is None
+gi_not_available = importlib.util.find_spec("gi") is None
 
 
-@skipIf(gi_available, "gi is not available")
+@skipIf(gi_not_available, "gi is not available")
 class TestImporter(TestCase):
     dummy_data = "testdata/oparl"
     fake_cache = "testdata/fake_cache"

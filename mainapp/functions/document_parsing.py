@@ -3,9 +3,9 @@ import re
 
 import geoextract
 # noinspection PyPackageRequirements
-import pdfminer.layout
-# noinspection PyPackageRequirements
 import pdfminer.high_level
+# noinspection PyPackageRequirements
+import pdfminer.layout
 from django.conf import settings
 from django.urls import reverse
 from geopy import OpenCage

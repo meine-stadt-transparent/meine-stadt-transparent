@@ -2,8 +2,8 @@ from django.utils.translation import pgettext as _
 
 from .file import FileDocument
 from .meeting import MeetingDocument
-from .paper import PaperDocument
 from .organization import OrganizationDocument
+from .paper import PaperDocument
 from .person import PersonDocument
 
 DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
