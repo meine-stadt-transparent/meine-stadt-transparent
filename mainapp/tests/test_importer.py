@@ -1,18 +1,23 @@
 import hashlib
+import importlib
 import json
 import os
 import shutil
+from unittest import skipIf
 
 from django.test import TestCase
 
 from importer.oparl_helper import default_options
 from importer.oparl_import import OParlImport
 
+gi_available = importlib.util.find_spec("gi") is not None
+
 
 def sha1(data):
     return hashlib.sha1(data.encode("utf-8")).hexdigest()
 
 
+@skipIf(gi_available, "gi is not available")
 class TestImporter(TestCase):
     dummy_data = "testdata/oparl"
     fake_cache = "testdata/fake_cache"
