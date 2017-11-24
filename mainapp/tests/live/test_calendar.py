@@ -1,22 +1,10 @@
 import time
 
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from splinter import Browser
+from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
-class CalendarTest(StaticLiveServerTestCase):
+class CalendarTest(ChromeDriverTestCase):
     fixtures = ['initdata.json']
-    browser = None
-
-    @classmethod
-    def setUpClass(cls):
-        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver")
-        super(CalendarTest, cls).setUpClass()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.browser.quit()
-        super(CalendarTest, cls).tearDownClass()
 
     def test_list_year(self):
         self.browser.visit('%s%s' % (self.live_server_url, '/calendar/'))

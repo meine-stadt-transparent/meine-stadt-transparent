@@ -1,22 +1,10 @@
 import time
 
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from splinter import Browser
+from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
-class PersonsTest(StaticLiveServerTestCase):
+class PersonsTest(ChromeDriverTestCase):
     fixtures = ['initdata.json']
-    browser = None
-
-    @classmethod
-    def setUpClass(cls):
-        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver")
-        super(PersonsTest, cls).setUpClass()
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.browser.quit()
-        super(PersonsTest, cls).tearDownClass()
 
     def _get_pos_by_name(self, name):
         js = 'window.jQuery(".persons-list").data("get-item-pos-by-name")("' + name + '");'
