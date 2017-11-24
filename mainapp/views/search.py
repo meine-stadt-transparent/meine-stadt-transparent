@@ -6,7 +6,7 @@ from csp.decorators import csp_update
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import ugettext as _
@@ -16,7 +16,7 @@ from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable
 from mainapp.models import Body
-from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
+from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
 
 logger = logging.getLogger(__name__)
@@ -56,10 +56,13 @@ def search_index(request, query):
     for error in errors:
         messages.error(request, error)
 
-    handle_subscribe_requests(request, params,
-                              _('You will now receive notifications about new search results.'),
-                              _('You will no longer receive notifications.'),
-                              _('You have already subscribed to this search.'))
+    try:
+        handle_subscribe_requests(request, params,
+                                  _('You will now receive notifications about new search results.'),
+                                  _('You will no longer receive notifications.'),
+                                  _('You have already subscribed to this search.'))
+    except NeedsLoginError as err:
+        return redirect(err.redirect_url)
 
     context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
@@ -132,4 +135,3 @@ def search_format_geo(_, lat, lng):
         "lng": lng,
         "formatted": latlng_to_address(lat, lng)
     }, safe=False)
-

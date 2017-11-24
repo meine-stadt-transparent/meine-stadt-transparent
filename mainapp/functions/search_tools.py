@@ -146,8 +146,6 @@ def params_to_human_string(params: dict):
             what.append(DOCUMENT_TYPE_NAMES_PL[el])
         if len(what) > 1:
             last_el = what.pop()
-            print(last_el)
-            print(what)
             description = ", ".join(what)
             description += " " + pgettext('Search query', 'and') + " " + last_el
         else:

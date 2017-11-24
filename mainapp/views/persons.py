@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 
 from mainapp.models import Organization, Person, Paper
-from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
+from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 
 
 def persons(request):
@@ -55,10 +55,13 @@ def person(request, pk):
     selected_person = get_object_or_404(Person, id=pk)
     search_params = {"person": pk}
 
-    handle_subscribe_requests(request, search_params,
-                              _('You will now receive notifications about new documents.'),
-                              _('You will no longer receive notifications.'),
-                              _('You have already subscribed to this person.'))
+    try:
+        handle_subscribe_requests(request, search_params,
+                                  _('You will now receive notifications about new documents.'),
+                                  _('You will no longer receive notifications.'),
+                                  _('You have already subscribed to this person.'))
+    except NeedsLoginError as err:
+        return redirect(err.redirect_url)
 
     # That will become a shiny little query with just 7 joins
     filter_self = Paper.objects.filter(submitter_persons__id=pk)
