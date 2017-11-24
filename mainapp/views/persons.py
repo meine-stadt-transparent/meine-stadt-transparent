@@ -63,11 +63,9 @@ def person(request, pk):
     except NeedsLoginError as err:
         return redirect(err.redirect_url)
 
-    # That will become a shiny little query with just 7 joins
-    filter_self = Paper.objects.filter(submitter_persons__id=pk)
-    filter_committee = Paper.objects.filter(submitter_committees__committeemembership__person__id=pk)
-    filer_group = Paper.objects.filter(submitter_parliamentary_groups__organizationmembership__id=pk)
-    paper = (filter_self | filter_committee | filer_group).distinct()
+    filter_self = Paper.objects.filter(persons__id=pk)
+    filter_organization = Paper.objects.filter(organizations__organizationmembership__person__id=pk)
+    paper = (filter_self | filter_organization).distinct()
 
     context = {
         "person": selected_person,

@@ -12,6 +12,7 @@ from importer.oparl_import import OParlImport
 from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, \
     Paper, Consultation, Location, File
 
+print("GI_AVIALABLE", importlib.util.find_spec("gi"))
 gi_not_available = importlib.util.find_spec("gi") is None
 
 
@@ -91,3 +92,7 @@ class TestImporter(TestCase):
             self.assertEqual(table.objects.count(), 1)
 
         self.assertEqual(File.objects.count(), 2)
+
+    def tearDown(self):
+        if os.path.isdir(self.fake_cache):
+            shutil.rmtree(self.fake_cache)
