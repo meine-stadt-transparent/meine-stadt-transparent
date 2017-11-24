@@ -12,7 +12,7 @@ class Paper(DefaultFields):
     name = models.CharField(max_length=300)
     short_name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
-    organization = models.ManyToManyField(Organization, blank=True)
+    organizations = models.ManyToManyField(Organization, blank=True)
     # Only relevant if a person acts independently from one of the submitting organizations
     persons = models.ManyToManyField(Person, blank=True)
     # There isn't any logic built on change requests, so higher order change requests are allowed

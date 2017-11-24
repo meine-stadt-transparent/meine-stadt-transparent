@@ -119,8 +119,7 @@ class OParlObjects(OParlHelper):
             self.consultation(i)
 
         for org in libobject.get_under_direction_of_url():
-            organization = self.get_organization_by_oparl_id(org)
-            paper.submitter_organizations.add(organization)
+            paper.submitter_organizations.add(self.get_organization_by_oparl_id(org))
 
         paper.save()
 

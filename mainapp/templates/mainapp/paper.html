@@ -24,7 +24,7 @@
                       aria-hidden="true"></i>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
             {% endif %}
 
-            {% with paper.organization.all as objects %}
+            {% with paper.organizations.all as objects %}
                 {% trans "Submitting Organizations:" as name %}
                 {% include "partials/inline_list.html" with icon="users" link="organization" %}
             {% endwith %}
