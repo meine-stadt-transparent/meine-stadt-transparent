@@ -1,5 +1,5 @@
 import hashlib
-import importlib
+import importlib.util
 import json
 import os
 import shutil
@@ -9,6 +9,8 @@ from django.test import TestCase
 
 from importer.oparl_helper import default_options
 from importer.oparl_import import OParlImport
+from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, \
+    Paper, Consultation, Location, File
 
 gi_available = importlib.util.find_spec("gi") is None
 
@@ -82,4 +84,10 @@ class TestImporter(TestCase):
         importer = OParlImport(options)
         importer.run_singlethread()
 
-        self.assertEqual(18, 18)
+        tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, Paper,
+                  Consultation, Location]
+
+        for table in tables:
+            self.assertEqual(table.objects.count(), 1)
+
+        self.assertEqual(File.objects.count(), 2)
