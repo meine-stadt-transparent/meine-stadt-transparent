@@ -93,7 +93,7 @@ def organization(request, pk):
     context = {
         "organization": organization,
         "memberships": organization.organizationmembership_set.all(),
-        "papers": Paper.objects.filter(organization__in=pk)[:25],
+        "papers": Paper.objects.filter(organizations__in=pk)[:25],
     }
     return render(request, "mainapp/organization.html", context)
 

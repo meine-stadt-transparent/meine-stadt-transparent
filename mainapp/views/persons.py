@@ -1,7 +1,7 @@
 import json
 
 from django.conf import settings
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.translation import ugettext as _
 
 from mainapp.models import Organization, Person, Paper
@@ -12,7 +12,7 @@ def persons(request):
     """ Shows all members of the default organization, which are made filterable by the parliamentary group
     memberships """
     pk = settings.SITE_DEFAULT_ORGANIZATION
-    organizations = get_object_or_404(Organization, id=pk)
+    organizations = Organization.objects.get(id=pk)
 
     parliamentarygroups = []
     members = []
@@ -23,8 +23,8 @@ def persons(request):
         groups_css_classes = []
         groups_names = []
 
-        id = settings.PARLIAMENTARY_GROUPS_TYPE[0]
-        for parlmember in pers.organizationmembership_set.filter(organization__organization_type_id=id):
+        group_id = settings.PARLIAMENTARY_GROUPS_TYPE[0]
+        for parlmember in pers.organizationmembership_set.filter(organization__organization_type_id=group_id):
             organization = parlmember.organization
             groups_ids.append(str(organization.id))
             groups_css_classes.append("organization-%i" % organization.id)

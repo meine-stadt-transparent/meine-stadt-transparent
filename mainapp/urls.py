@@ -6,8 +6,8 @@ import mainapp.views.views
 from mainapp.views.profile import profile_view, profile_delete
 from meine_stadt_transparent import settings
 from . import views
-from .models import Location, Body
 from .models import LegislativeTerm
+from .models import Location, Body
 
 
 def simple_model_view(name: str, model):
@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^organizations/$', mainapp.views.views.organizations, name='organizations'),
     url(r'^calendar/$', views.calendar, name='calendar'),
     url(r'^calendar/data/$', views.calendar_data, name='calendar_data'),
-    url(r'^organizazion/(?P<pk>[0-9]+)/$', views.organization, name='organization'),
+    url(r'^organization/(?P<pk>[0-9]+)/$', views.organization, name='organization'),
     url(r'^person/(?P<pk>[0-9]+)/$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/$', views.meeting, name='meeting'),
     url(r'^paper/(?P<pk>[0-9]+)/$', views.paper, name='paper'),
