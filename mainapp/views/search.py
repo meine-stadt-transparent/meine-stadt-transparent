@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
+from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable
 from mainapp.models import Body
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search
@@ -123,3 +124,12 @@ def search_autosuggest(_, query):
             logger.error("Unknown document type in elastic search response: %s" % hit.meta.doc_type)
 
     return JsonResponse(results, safe=False)
+
+
+def search_format_geo(_, lat, lng):
+    return JsonResponse({
+        "lat": lat,
+        "lng": lng,
+        "formatted": latlng_to_address(lat, lng)
+    }, safe=False)
+

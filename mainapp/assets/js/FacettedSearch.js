@@ -142,10 +142,13 @@ export default class FacettedSearch {
 
         if (lat !== "" && lng !== "" && radius > 0) {
             this.$locationSelector.find(".location-not-set").attr('hidden', 'hidden');
-            let latText = (Math.round(parseFloat(lat) * 1000) / 1000).toLocaleString();
-            $desc.find(".lat").text(latText);
-            let lngText = (Math.round(parseFloat(lng) * 1000) / 1000).toLocaleString();
-            $desc.find(".lng").text(lngText);
+
+            $desc.find(".location").text("").attr("title", "");
+            let url = this.$locationSelector.data('format-geo-url').replace(/\/23/, '/' + lat).replace(/42\//, lng + '/')
+            $.get(url, (data) => {
+                $desc.find(".location").text(data['formatted']);
+                this.$locationSelector.find("button").attr("title", data['formatted']);
+            });
             $desc.find(".radius").text(radius);
             this.$locationSelector.find(".location-description").removeAttr('hidden');
         } else {

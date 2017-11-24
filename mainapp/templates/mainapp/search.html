@@ -38,18 +38,17 @@
                 </div>
                 <div class="form-row align-items-center">
                     <!-- Location -->
-                    <div class="col-auto search-facet location-col">
+                    <div class="col-auto search-facet location-col" data-format-geo-url="{% url 'search_format_geo' 23 42 %}">
                         <div class="sr-only">{% trans "Location" context "search_form" %}</div>
 
                         <div class="dropdown">
                             <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                    id="locationSelectButton"
+                                    id="locationSelectButton" title="{{ options.location_formatted }}"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="location-description"
                                       {% if not options.radius %}hidden="hidden"{% endif %}>
-                                    <span class="radius">{{ options.radius }}</span>{% trans "m around" %}
-                                    <span class="lat">{{ options.lat|floatformat:3 }}</span>
-                                    <span class="lng">{{ options.lng|floatformat:3 }}</span>
+                                    <span class="radius">{{ options.radius }}</span><span>{% trans "m around" %}</span>
+                                    <span class="location">{{ options.location_formatted }}</span>
                                 </span>
                                 <span class="location-not-set" {% if options.radius %}hidden="hidden"{% endif %}>
                                     Location
@@ -107,9 +106,9 @@
                     </div>
 
                     <!-- Date after -->
-                    <div class="col-auto search-facet">
+                    <div class="col-auto search-facet search-date">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-addon btn btn-secondary">
+                            <span class="input-group-addon">
                                 {% trans "after" %}
                             </span>
 
@@ -123,7 +122,7 @@
                     </div>
 
                     <!-- Date before -->
-                    <div class="col-auto search-facet">
+                    <div class="col-auto search-facet search-date">
                         <div class="input-group input-group-sm">
                             <span class="input-group-addon">
                                 {% trans "before" %}

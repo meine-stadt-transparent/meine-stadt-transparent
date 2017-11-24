@@ -34,8 +34,25 @@
       padding-top: 0;
     }
   }
+  .location-description {
+    vertical-align: middle;
+    > * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .location {
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
   .radius-select-row {
     padding: 0 7px;
+  }
+  .search-date {
+    input.form-control {
+      max-width: 95px;
+    }
   }
 }
 

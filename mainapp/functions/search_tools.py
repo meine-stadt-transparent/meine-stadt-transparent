@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext, pgettext
 from elasticsearch_dsl import Search, Q
 
+from mainapp.functions.geo_functions import latlng_to_address
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "after", "before"]
@@ -58,6 +59,7 @@ def params_to_query(params: dict):
         options['lat'] = str(lat)
         options['lng'] = str(lng)
         options['radius'] = str(radius)
+        options['location_formatted'] = latlng_to_address(lat, lng)
     except ValueError:
         pass
     if 'document-type' in params:
@@ -142,24 +144,39 @@ def params_to_human_string(params: dict):
         what = []
         for el in split:
             what.append(DOCUMENT_TYPE_NAMES_PL[el])
-        description = ', '.join(what)
+        if len(what) > 1:
+            last_el = what.pop()
+            print(last_el)
+            print(what)
+            description = ", ".join(what)
+            description += " " + pgettext('Search query', 'and') + " " + last_el
+        else:
+            description = what[0]
+
     else:
         description = pgettext('Search query', 'Documents')
 
-    if 'searchterm' in params:
-        description += ' ' + pgettext('Search query', 'containing "%STR%"').replace('%STR%', params['searchterm'])
+    strs = []
+
+    if 'searchterm' in params and params['searchterm'] != '':
+        strs.append(pgettext('Search query', 'containing "%STR%"').replace('%STR%', params['searchterm']))
 
     if 'person' in params:
-        description += ', ' + pgettext('Search query', 'created by %FROM%').replace('%BY%', params['person'])
+        strs.append(pgettext('Search query', 'created by %FROM%').replace('%BY%', params['person']))
 
     if 'radius' in params:
-        description += ', ' + pgettext('Search query', 'with a location around a given point')
+        place_name = latlng_to_address(params['lat'], params['lng'])
+        locstr = pgettext('Search query', 'with a location within %DISTANCE%m around "%PLACE%"')
+        strs.append(locstr.replace('%DISTANCE%', params['radius']).replace('%PLACE%', place_name))
 
     if 'before' in params and 'after' in params:
-        description += ', ' + pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%', params['before'])
+        strs.append(pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%', params['before']))
     elif 'before' in params:
-        description += ', ' + pgettext('Search query', 'published before %TO%').replace('%TO%', params['before'])
+        strs.append(pgettext('Search query', 'published before %TO%').replace('%TO%', params['before']))
     elif 'after' in params:
-        description += ', ' + pgettext('Search query', 'published after %FROM%').replace('%FROM%', params['after'])
+        strs.append(pgettext('Search query', 'published after %FROM%').replace('%FROM%', params['after']))
+
+    if len(strs) > 0:
+        description += " " + ", ".join(strs)
 
     return description

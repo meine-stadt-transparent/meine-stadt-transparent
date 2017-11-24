@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^search/query/(?P<query>.*)/$', views.search_index, name='search'),
     url(r'^search/suggest/(?P<query>.*)/$', views.search_autosuggest, name='search_autosuggest'),
+    url(r'^search/format_geo/(?P<lat>[\d.]+),(?P<lng>[\d.]+)/$', views.search_format_geo, name='search_format_geo'),
     url(r'^search/results_only/(?P<query>.*)/$', views.search_results_only,
         name='search_results_only'),
     url(r'^info/contact/$', views.info_contact, name='info_contact'),
