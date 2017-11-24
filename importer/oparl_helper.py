@@ -18,6 +18,20 @@ gi.require_version('OParl', '0.2')
 gi.require_version('Json', '1.0')
 from gi.repository import Json, GLib, OParl
 
+# You can use those as defaults to inialize the importer. Or inline them when you're already here
+# Note that paths are relative to the project root
+default_options = {
+    "download_files": False,
+    "use_cache": True,
+    "use_sternberg": False,
+    "ignore_modified": False,
+    "no_threads": False,
+    "cachefolder": "../mst-storage/import-oparl-cache",
+    "storagefolder": "../mst-storage/files",
+    "batchsize": 100,
+    "threadcount": 10,
+}
+
 
 class OParlHelper:
     """ A collection of helper function for the oparl importer.

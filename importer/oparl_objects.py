@@ -230,11 +230,11 @@ class OParlObjects(OParlHelper):
         item.resolution_text = libobject.get_resolution_text()
         item.start = libobject.get_start()
         item.end = libobject.get_end()
+        item.meeting = meeting
 
         item.save()
 
         item.resolution_file = self.file(libobject.get_resolution_file())
-        item.meeting = meeting
         if len(libobject.get_auxiliary_file()) > 0:
             item.auxiliary_files = [self.file(i) for i in libobject.get_auxiliary_file()]
         item.consultation = self.consultation(libobject.get_consultation())
