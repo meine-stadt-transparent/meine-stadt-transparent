@@ -12,7 +12,7 @@ from django.utils import dateparse
 from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 
 from mainapp.functions.document_parsing import extract_text_from_pdf
-from mainapp.models import DefaultFields, File, Organization
+from mainapp.models import DefaultFields, File
 
 gi.require_version('OParl', '0.2')
 gi.require_version('Json', '1.0')
@@ -105,10 +105,6 @@ class OParlHelper:
             dbitem.name = dbitem.name[:200]
 
         return dbitem
-
-    @staticmethod
-    def get_organization_by_oparl_id(oparl_id):
-        return Organization.objects.filter(oparl_id=oparl_id).first()
 
     # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
     # TODO: Check the pycharm bug tracker for that

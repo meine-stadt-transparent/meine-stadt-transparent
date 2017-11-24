@@ -35,6 +35,7 @@ class OParlObjects(OParlHelper):
         self.membership_queue = []
         self.consultation_meeting_queue = []
         self.consultation_paper_queue = []
+        self.paper_organization_queue = []
 
         # Ensure the existence of the three predefined organization types
         group = settings.PARLIAMENTARY_GROUPS_TYPE
@@ -118,8 +119,12 @@ class OParlObjects(OParlHelper):
         for i in libobject.get_consultation():
             self.consultation(i)
 
-        for org in libobject.get_under_direction_of_url():
-            paper.submitter_organizations.add(self.get_organization_by_oparl_id(org))
+        for org_url in libobject.get_under_direction_of_url():
+            organization = Organization.objects.filter(oparl_id=org_url).first()
+            if organization:
+                paper.organizations.add(organization)
+            else:
+                self.paper_organization_queue.append((paper, org_url))
 
         paper.save()
 
@@ -194,10 +199,10 @@ class OParlObjects(OParlHelper):
         return meeting
 
     def location(self, libobject: OParl.Location):
-        self.logger.info("Processing Location {}".format(libobject.get_id()))
         location = self.check_existing(libobject, Location, name_fixup=_("Unknown"))
         if not location:
             return None
+        self.logger.info("Processing Location {}".format(libobject.get_id()))
 
         location.oparl_id = libobject.get_id()
         location.description = libobject.get_description()
@@ -388,3 +393,7 @@ class OParlObjects(OParlHelper):
         for consultation, meeting in self.consultation_meeting_queue:
             consultation.meeting = Meeting.by_oparl_id(meeting)
             consultation.save()
+
+        print("Adding missing organizations to papers")
+        for paper, organization_url in self.paper_organization_queue:
+            paper.organizations.add(Organization.by_oparl_id(organization_url))
