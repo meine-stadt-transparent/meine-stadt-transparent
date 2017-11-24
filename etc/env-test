@@ -1,6 +1,7 @@
 DEBUG=False
 REAL_HOST=meine-stadt-transparent.local
 SECRET_KEY=notsosecretkey
+LANGUAGE_CODE=en
 
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
 USE_ELASTICSEARCH=False

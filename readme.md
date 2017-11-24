@@ -101,7 +101,7 @@ npm run watch
 
 Running the test cases:
 ```bash
-./manage.py test --settings=meine_stadt_transparent.settings_test
+ENV_PATH=./etc/env-test ./manage.py test
 ```
 
 ### Important URLs:
