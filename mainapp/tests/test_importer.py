@@ -10,11 +10,7 @@ from django.test import TestCase
 from importer.oparl_helper import default_options
 from importer.oparl_import import OParlImport
 
-gi_available = importlib.util.find_spec("gi") is not None
-
-
-def sha1(data):
-    return hashlib.sha1(data.encode("utf-8")).hexdigest()
+gi_available = importlib.util.find_spec("gi") is None
 
 
 @skipIf(gi_available, "gi is not available")
@@ -23,12 +19,15 @@ class TestImporter(TestCase):
     fake_cache = "testdata/fake_cache"
     entrypoint = None
 
+    def sha1(self, data):
+        return hashlib.sha1(data.encode("utf-8")).hexdigest()
+
     def load(self, name):
         with open(os.path.join(self.dummy_data, name)) as f:
             return json.load(f)
 
     def dump(self, name, obj):
-        with open(os.path.join(self.fake_cache, sha1(self.entrypoint), name), 'w') as f:
+        with open(os.path.join(self.fake_cache, self.sha1(self.entrypoint), self.sha1(name)), 'w') as f:
             json.dump(obj, f, indent=4)
 
     def external_list(self, obj):
@@ -43,34 +42,34 @@ class TestImporter(TestCase):
         # Discard old data
         if os.path.isdir(self.fake_cache):
             shutil.rmtree(self.fake_cache)
-        os.makedirs(os.path.join(self.fake_cache, sha1(self.entrypoint)))
+        os.makedirs(os.path.join(self.fake_cache, self.sha1(self.entrypoint)))
 
-        self.dump(sha1(system["id"]), system)
+        self.dump(system["id"], system)
         body = self.load("Body.json")
-        self.dump(sha1(system["body"]), self.external_list(body))
-        self.dump(sha1(body["id"]), body)
+        self.dump(system["body"], self.external_list(body))
+        self.dump(body["id"], body)
 
         organization = self.load("Organization.json")
-        self.dump(sha1(body["organization"]), self.external_list(organization))
+        self.dump(body["organization"], self.external_list(organization))
         person = self.load("Person.json")
-        self.dump(sha1(body["person"]), self.external_list(person))
+        self.dump(body["person"], self.external_list(person))
         meeting = self.load("Meeting.json")
-        self.dump(sha1(body["meeting"]), self.external_list(meeting))
+        self.dump(body["meeting"], self.external_list(meeting))
         paper = self.load("Paper.json")
-        self.dump(sha1(body["paper"]), self.external_list(paper))
+        self.dump(body["paper"], self.external_list(paper))
 
-        self.dump(sha1(meeting["id"]), meeting)
-        self.dump(sha1(person["id"]), person)
+        self.dump(meeting["id"], meeting)
+        self.dump(person["id"], person)
 
         consultation = paper["consultation"][0]
-        self.dump(sha1(consultation["id"]), consultation)
+        self.dump(consultation["id"], consultation)
 
         item = meeting["agendaItem"][0]
-        self.dump(sha1(item["id"]), item)
+        self.dump(item["id"], item)
 
         membership = person["membership"][0].copy()
         membership["person"] = person["id"]
-        self.dump(sha1(membership["id"]), membership)
+        self.dump(membership["id"], membership)
 
     def test_importer(self):
         options = default_options.copy()
