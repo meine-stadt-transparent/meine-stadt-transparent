@@ -66,7 +66,7 @@ class SternbergImport(OParlImport):
         url = libobject.get_download_url().replace(r"files//rim", r"files/rim")
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
-        if file.filesize > 0 and file.modified and last_modified < file.modified:
+        if file.filesize > 0 and file.modified and last_modified and last_modified < file.modified:
             self.logger.info("Skipping cached Download: {}".format(url))
             return
 
