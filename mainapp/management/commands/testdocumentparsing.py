@@ -1,3 +1,5 @@
+import logging
+
 from django.core.management.base import BaseCommand
 
 from mainapp.models import File
@@ -11,5 +13,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         file = File.objects.get(id=options['file-id'])
-        print(file.displayed_filename)
+        logging.info(file.displayed_filename)
         file.rebuild_locations()

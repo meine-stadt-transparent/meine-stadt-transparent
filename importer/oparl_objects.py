@@ -1,4 +1,5 @@
 import hashlib
+import logging
 import mimetypes
 import os
 from collections import defaultdict
@@ -51,7 +52,7 @@ class OParlObjects(OParlHelper):
         body = self.check_existing(libobject, Body)
         if not body:
             return
-        print("Processing {}".format(libobject.get_id()))
+        logging.info("Processing {}".format(libobject.get_id()))
 
         body.save()
 
@@ -80,14 +81,14 @@ class OParlObjects(OParlHelper):
 
     def term(self, libobject: OParl.LegislativeTerm):
         if not libobject.get_start_date() or not libobject.get_end_date():
-            print("Term has no start or end date - skipping")
+            logging.error("Term has no start or end date - skipping")
             return
 
         term = self.check_existing(libobject, LegislativeTerm)
         if not term:
             return
 
-        self.logger.info("Processing {}".format(libobject.get_name()))
+        logging.info("Processing {}".format(libobject.get_name()))
 
         term.start = self.glib_datetime_to_python_date(libobject.get_start_date())
         term.end = self.glib_datetime_to_python_date(libobject.get_end_date())
@@ -100,7 +101,7 @@ class OParlObjects(OParlHelper):
         paper = self.check_existing(libobject, Paper)
         if not paper:
             return
-        self.logger.info("Processing Paper {}".format(libobject.get_id()))
+        logging.info("Processing Paper {}".format(libobject.get_id()))
 
         if libobject.get_paper_type():
             paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
@@ -131,7 +132,7 @@ class OParlObjects(OParlHelper):
         return paper
 
     def organization(self, libobject: OParl.Organization):
-        self.logger.info("Processing Organization {}".format(libobject.get_id()))
+        logging.info("Processing Organization {}".format(libobject.get_id()))
         if not libobject:
             return
 
@@ -163,7 +164,7 @@ class OParlObjects(OParlHelper):
         meeting = self.check_existing(libobject, Meeting)
         if not meeting:
             return
-        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
+        logging.info("Processing Meeting {}".format(libobject.get_id()))
 
         meeting.start = self.glib_datetime_to_python(libobject.get_start())
         meeting.end = self.glib_datetime_to_python(libobject.get_end())
@@ -202,7 +203,7 @@ class OParlObjects(OParlHelper):
         location = self.check_existing(libobject, Location, name_fixup=_("Unknown"))
         if not location:
             return None
-        self.logger.info("Processing Location {}".format(libobject.get_id()))
+        logging.info("Processing Location {}".format(libobject.get_id()))
 
         location.oparl_id = libobject.get_id()
         location.description = libobject.get_description()
@@ -277,10 +278,10 @@ class OParlObjects(OParlHelper):
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
         if file.filesize > 0 and file.modified and last_modified < file.modified:
-            self.logger.info("Skipping cached Download: {}".format(url))
+            logging.info("Skipping cached Download: {}".format(url))
             return
 
-        print("Downloading {}".format(url))
+        logging.info("Downloading {}".format(url))
 
         urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
         path = os.path.join(self.storagefolder, urlhash)
@@ -296,7 +297,7 @@ class OParlObjects(OParlHelper):
         file = self.check_existing(libobject, File, add_defaults=False)
         if not file:
             return
-        self.logger.info("Processing File {}".format(libobject.get_id()))
+        logging.info("Processing File {}".format(libobject.get_id()))
 
         if libobject.get_file_name():
             displayed_filename = libobject.get_file_name()
@@ -329,7 +330,7 @@ class OParlObjects(OParlHelper):
         return file
 
     def person(self, libobject: OParl.Person):
-        self.logger.info("Processing Person {}".format(libobject.get_id()))
+        logging.info("Processing Person {}".format(libobject.get_id()))
         person = self.check_existing(libobject, Person)
         if not person:
             return
@@ -365,13 +366,13 @@ class OParlObjects(OParlHelper):
         return membership
 
     def add_missing_associations(self):
-        print("Adding missing meeting <-> persons associations")
+        logging.info("Adding missing meeting <-> persons associations")
         for meeting_id, person_ids in self.meeting_person_queue.items():
             meeting = Meeting.by_oparl_id(meeting_id)
             meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
             meeting.save()
 
-        print("Adding missing agenda item <-> paper associations")
+        logging.info("Adding missing agenda item <-> paper associations")
         for item_id, paper_id in self.agenda_item_paper_queue.items():
             item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
             item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
@@ -380,20 +381,20 @@ class OParlObjects(OParlHelper):
                 self.errorlist.append(message)
             item.save()
 
-        print("Adding missing memberships")
+        logging.info("Adding missing memberships")
         for organization, libobject in self.membership_queue:
             self.membership(organization, libobject)
 
-        print("Adding missing papper to consultations")
+        logging.info("Adding missing papper to consultations")
         for consultation, paper in self.consultation_paper_queue:
             consultation.paper = Paper.by_oparl_id(paper)
             consultation.save()
 
-        print("Adding missing meetings to consultations")
+        logging.info("Adding missing meetings to consultations")
         for consultation, meeting in self.consultation_meeting_queue:
             consultation.meeting = Meeting.by_oparl_id(meeting)
             consultation.save()
 
-        print("Adding missing organizations to papers")
+        logging.info("Adding missing organizations to papers")
         for paper, organization_url in self.paper_organization_queue:
             paper.organizations.add(Organization.by_oparl_id(organization_url))

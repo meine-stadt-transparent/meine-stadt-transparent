@@ -1,3 +1,4 @@
+import logging
 import sys
 from multiprocessing import Pool
 
@@ -26,15 +27,15 @@ class Command(OParlImport):
         with Pool(len(options_per_process)) as executor:
             results = executor.map(importer.run_static, options_per_process)
 
-        print("\nAll processes finished\n")
+        logging.info("\nAll processes finished\n")
 
         for success, options in zip(results, options_per_process):
             if success:
-                print("SUCCESS: {}".format(options["entrypoint"]))
+                logging.info("SUCCESS: {}".format(options["entrypoint"]))
             else:
-                print("FAILED: {}".format(options["entrypoint"]))
+                logging.error("FAILED: {}".format(options["entrypoint"]))
 
-        print("\nFinal results: {} successes and {} failures\n".format(results.count(True), results.count(False)))
+        logging.info("\nFinal results: {} successes and {} failures\n".format(results.count(True), results.count(False)))
 
         if results.count(False) > 0:
             sys.exit(1)

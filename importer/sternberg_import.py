@@ -1,5 +1,6 @@
 import hashlib
 import json
+import logging
 import os
 
 import gi
@@ -69,7 +70,7 @@ class SternbergImport(OParlImport):
             self.logger.info("Skipping cached Download: {}".format(url))
             return
 
-        print("Downloading {}".format(url))
+        logging.info("Downloading {}".format(url))
 
         urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
         path = os.path.join(self.storagefolder, urlhash)

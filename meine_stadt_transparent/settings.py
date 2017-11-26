@@ -2,6 +2,7 @@ import os
 import warnings
 
 import environ
+import sys
 
 env = environ.Env()
 env.read_env(env.str('ENV_PATH', '.env'))
@@ -287,6 +288,22 @@ if SOCIALACCOUNT_USE_FACEBOOK:
     CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ("connect.facebook.net", "'unsafe-eval'", "'unsafe-inline'")
     CSP_STYLE_SRC = CSP_STYLE_SRC + ("*.facebook.com", "*.facebook.net", "'unsafe-inline'")
     CSP_FRAME_SRC = CSP_FRAME_SRC + ("*.facebook.com",)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'mainapp.management.commands': {
+            'handlers': ['console'],
+            'level': env.str('DJANGO_LOG_LEVEL', 'DEBUG'),
+        }
+    }
+}
 
 if DEBUG:
     # Debug Toolbar

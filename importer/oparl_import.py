@@ -1,5 +1,6 @@
 import concurrent
 import hashlib
+import logging
 import os
 import sys
 import traceback
@@ -41,13 +42,13 @@ class OParlImport(OParlObjects):
     def resolve(self, _, url: str):
         cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
         if self.use_cache and os.path.isfile(cachepath):
-            print("Cached: " + url)
+            logging.info("Cached: " + url)
             with open(cachepath) as file:
                 data = file.read()
                 return OParl.ResolveUrlResult(resolved_data=data, success=True, status_code=304)
 
         try:
-            print("Loading: " + url)
+            logging.info("Loading: " + url)
             req = requests.get(url)
         except Exception as e:
             self.logger.error("Error loading url: ", e)
@@ -73,10 +74,11 @@ class OParlImport(OParlObjects):
             with transaction.atomic():
                 for item in objectlist[i:i + self.batchsize]:
                     fn(item)
-            print("Batch finished")
+            logging.info("Batch finished")
 
     def list_caught(self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]) -> int:
-        """ Downloads and parses a body list and prints all errors immediately.
+        """ Downloads and parses a body list and llogs all errors immediately.
+
         This is a fixup for python's broken error handling with threadpools.
         """
         err_count = 0
@@ -85,8 +87,8 @@ class OParlImport(OParlObjects):
             try:
                 fn(item)
             except Exception as e:
-                print("An error occured:", e, file=sys.stderr)
-                print(traceback.format_exc(), file=sys.stderr)
+                logging.error("An error occured:", e, file=sys.stderr)
+                logging.error(traceback.format_exc(), file=sys.stderr)
                 self.errorlist.append((item.get_id(), e, traceback.format_exc()))
                 err_count += 1
 
@@ -96,27 +98,27 @@ class OParlImport(OParlObjects):
         return self.system.get_body()
 
     def bodies_singlethread(self, bodies):
-        print("Creating bodies")
+        logging.info("Creating bodies")
         for body in bodies:
             self.body(body)
-        print("Finished creating bodies")
+        logging.info("Finished creating bodies")
 
     def run_singlethread(self):
         bodies = self.get_bodies()
         self.bodies_singlethread(bodies)
 
-        print("Creating objects")
+        logging.info("Creating objects")
         for body in bodies:
             self.list_batched(body.get_paper, self.paper)
             self.list_batched(body.get_person, self.person)
             self.list_batched(body.get_organization, self.organization)
             self.list_batched(body.get_meeting, self.meeting)
 
-        print("Finished creating objects")
+        logging.info("Finished creating objects")
         self.add_missing_associations()
 
     def bodies_multithread(self, bodies):
-        print("Creating bodies")
+        logging.info("Creating bodies")
         # Ensure all bodies exist when calling the other methods
 
         with Pool(self.threadcount) as executor:
@@ -124,14 +126,14 @@ class OParlImport(OParlObjects):
 
         # Raise those exceptions
         list(results)
-        print("Finished creating bodies")
+        logging.info("Finished creating bodies")
 
     def run_multithreaded(self):
         bodies = self.get_bodies()
         self.bodies_multithread(bodies)
 
         with Pool(self.threadcount) as executor:
-            print("Submitting concurrent tasks")
+            logging.info("Submitting concurrent tasks")
             futures = {}
             for body in bodies:
                 future = executor.submit(self.list_caught, body.get_paper, self.paper)
@@ -142,19 +144,19 @@ class OParlImport(OParlObjects):
                 futures[future] = body.get_short_name() or body.get_name() + ": Organization"
                 future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
                 futures[future] = body.get_short_name() or body.get_name() + ": Meeting"
-            print("Finished submitting concurrent tasks")
+            logging.info("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
                 if err_count == 0:
-                    print("Finished Successfully: ", futures[future])
+                    logging.info("Finished Successfully: ", futures[future])
                 else:
-                    print("Finished with {} errors: {}".format(err_count, futures[future]))
+                    logging.info("Finished with {} errors: {}".format(err_count, futures[future]))
 
-        print("Finished creating objects")
+        logging.info("Finished creating objects")
         self.add_missing_associations()
 
         for i in self.errorlist:
-            print(i)
+            logging.error(i)
 
     def run(self):
         if self.no_threads:
@@ -169,7 +171,7 @@ class OParlImport(OParlObjects):
             runner = cls(config)
             runner.run_multithreaded()
         except Exception:
-            print("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
-            print(traceback.format_exc(), file=sys.stderr)
+            logging.error("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
+            logging.error(traceback.format_exc(), file=sys.stderr)
             return False
         return True
