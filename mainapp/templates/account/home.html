@@ -15,7 +15,7 @@
         {% endif %}
 
         <div class="p-3">
-            <form method="post" action="{% url 'account_logout' %}">
+            <form method="post" action="{% url 'account_logout' %}" class="logout-form">
                 {% csrf_token %}
                 {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}"
@@ -64,7 +64,7 @@
                     <a href="{% url 'account_email' %}" class="btn btn-default">{% trans "Edit email" %}</a>
                 {% endif %}
 
-                <a href="{% url 'account_change_password' %}" class="btn btn-primary">
+                <a href="{% url 'account_change_password' %}" class="btn btn-primary change-password-link">
                     {% trans "Change your password" %}
                 </a>
 
