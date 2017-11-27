@@ -103,10 +103,8 @@ class OParlHelper:
 
     @staticmethod
     def add_default_fields(libobject: OParl.Object, dbitem: DefaultFields, name_fixup=None):
-        dbitem.oparl_id = libobject.get_id()
         dbitem.name = libobject.get_name() or name_fixup
         dbitem.short_name = libobject.get_short_name() or dbitem.name
-        dbitem.deleted = libobject.get_deleted()
 
         # Add an ellipsis to not-so-short short names
         if len(dbitem.short_name) > 50:
@@ -134,6 +132,8 @@ class OParlHelper:
                 return None
             self.logger.debug("New")
             dbobject = constructor()
+            dbobject.oparl_id = libobject.get_id()
+            dbobject.deleted = libobject.get_deleted()
             if add_defaults:
                 self.add_default_fields(libobject, dbobject, name_fixup)
             return dbobject
@@ -142,7 +142,7 @@ class OParlHelper:
             dbobject.deleted = True
             dbobject.save()
             self.logger.debug("Deleted")
-            return None
+            return False
 
         if not libobject.get_modified():
             error_message = "Modified missing on {}".format(libobject.get_id())
@@ -153,6 +153,8 @@ class OParlHelper:
             return None
 
         self.logger.debug("Modified")
+        dbobject.oparl_id = libobject.get_id()
+        dbobject.deleted = libobject.get_deleted()
         if add_defaults:
             self.add_default_fields(libobject, dbobject, name_fixup)
         return dbobject
