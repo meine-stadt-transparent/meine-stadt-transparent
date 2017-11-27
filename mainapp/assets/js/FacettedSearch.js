@@ -77,6 +77,24 @@ export default class FacettedSearch {
         let mapIsInitialized = false;
         this.currMarker = null;
         this.currPosition = null;
+        this.initDropdownListener(mapIsInitialized);
+
+        this.$locationSelector.find("input.new-radius").keyup((event) => {
+            this.updateLocationData();
+            event.preventDefault();
+            event.stopPropagation();
+        });
+        this.$locationSelector.find(".select-btn").click(() => {
+            this.updateLocationData();
+            this.$locationSelector.find(".dropdown").dropdown("toggle");
+        });
+        this.$locationSelector.find(".dropdown-menu").click((event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+    }
+
+    initDropdownListener(mapIsInitialized) {
         this.$locationSelector.find(".dropdown").on("shown.bs.dropdown", () => {
             let $radius = this.$locationSelector.find(".new-radius");
             if ($radius.val() < 1) {
@@ -99,20 +117,6 @@ export default class FacettedSearch {
             if (latVal && lngVal) {
                 this.setLocation(new L.LatLng(latVal, lngVal));
             }
-        });
-
-        this.$locationSelector.find("input.new-radius").keyup((event) => {
-            this.updateLocationData();
-            event.preventDefault();
-            event.stopPropagation();
-        });
-        this.$locationSelector.find(".select-btn").click(() => {
-            this.updateLocationData();
-            this.$locationSelector.find(".dropdown").dropdown("toggle");
-        });
-        this.$locationSelector.find(".dropdown-menu").click((event) => {
-            event.preventDefault();
-            event.stopPropagation();
         });
     }
 
