@@ -13,4 +13,4 @@ class OrganizationMembership(DefaultFields):
     organization = models.ForeignKey(Organization)
 
     def __str__(self):
-        return "{}: {}".format(self.person.__str__(), self.organization.__str__())
+        return "{}: {}".format(self.person, self.organization)

@@ -24,7 +24,7 @@
                 </p>
             {% elif meeting.organizations.all|length > 1 %}
                 {% trans "Participating organizations:" as name %}
-                {% include "partials/inline_list.html" with objects=meeting.organizations.all icon="users" link="organizations" %}
+                {% include "partials/inline_list.html" with objects=meeting.organizations.all icon="users" link="organization" %}
             {% endif %}
 
             {% trans "Further Attendees:" as name %}
