@@ -13,13 +13,14 @@ engines:
     checks:
       comma-dangle:
         enabled: false
-  fixme:
-    enabled: true
   radon:
     enabled: true
     checks:
       Complexity:
         enabled: false
+checks:
+  method-complexity:
+    enabled: false
 ratings:
   paths:
   - "**.css"
