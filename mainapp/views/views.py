@@ -1,9 +1,10 @@
 import json
-from datetime import date, timedelta
+from datetime import timedelta
 
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render
+from django.utils.timezone import localtime, now
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
@@ -15,7 +16,8 @@ from mainapp.models.organization_type import OrganizationType
 def index(request):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
-    document_end_date = date.today() + timedelta(days=1)
+    today = localtime(now()).replace(hour=0, minute=0, second=0, microsecond=0)
+    document_end_date = today + timedelta(days=1)
     document_start_date = document_end_date - timedelta(days=settings.SITE_INDEX_DOCUMENT_DAY)
     latest_paper = Paper \
                        .objects \

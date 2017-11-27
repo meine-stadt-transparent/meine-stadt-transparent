@@ -1,5 +1,6 @@
 from datetime import date
 
+import dateutil.parser
 from django.conf import settings
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
@@ -7,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from icalendar import Calendar
 # noinspection PyPackageRequirements
+from pytz import timezone
 from slugify import slugify
 
 from mainapp.models import Meeting, Organization
@@ -21,8 +23,11 @@ def calendar(request):
 
 
 def calendar_data(request):
-    start = request.GET['start']
-    end = request.GET['end']
+    """ Callback for the javascript library to get the meetings. """
+    # We assume that if the user chose a date he meant the date in the timezone of the data
+    local_time_zone = timezone(settings.TIME_ZONE)
+    start = local_time_zone.localize(dateutil.parser.parse(request.GET['start']))
+    end = local_time_zone.localize(dateutil.parser.parse(request.GET['end']))
     meetings = Meeting.objects.filter(start__gte=start, start__lte=end)
     data = []
     for meeting in meetings:

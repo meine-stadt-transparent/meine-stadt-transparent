@@ -195,7 +195,7 @@ if SOCIALACCOUNT_USE_TWITTER:
 
 LANGUAGE_CODE = env.str('LANGUAGE_CODE', 'de-de')
 
-TIME_ZONE = 'Europe/Berlin'
+TIME_ZONE = env.str('TIME_ZONE', 'Europe/Berlin')
 
 USE_I18N = True
 
