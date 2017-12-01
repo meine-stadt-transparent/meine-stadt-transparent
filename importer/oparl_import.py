@@ -87,8 +87,8 @@ class OParlImport(OParlObjects):
             try:
                 fn(item)
             except Exception as e:
-                logging.error("An error occured:", e, file=sys.stderr)
-                logging.error(traceback.format_exc(), file=sys.stderr)
+                logging.error("An error occured:", e)
+                logging.error(traceback.format_exc())
                 self.errorlist.append((item.get_id(), e, traceback.format_exc()))
                 err_count += 1
 
@@ -171,7 +171,7 @@ class OParlImport(OParlObjects):
             runner = cls(config)
             runner.run_multithreaded()
         except Exception:
-            logging.error("There was an error in the Process for {}".format(config["entrypoint"]), file=sys.stderr)
-            logging.error(traceback.format_exc(), file=sys.stderr)
+            logging.error("There was an error in the Process for {}".format(config["entrypoint"]))
+            logging.error(traceback.format_exc())
             return False
         return True
