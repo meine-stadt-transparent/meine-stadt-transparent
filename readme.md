@@ -184,6 +184,16 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
+### Setting up Social Login
+
+To enable login via Twitter or Facebook, first you need to enable the functionality by adding these two lines to your .env-file:
+``
+SOCIALACCOUNT_USE_FACEBOOK=True
+SOCIALACCOUNT_USE_TWITTER=True
+``
+
+Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to create the necessary tokens and register the tokens using the /admin/-backend.
+
 ### Notifying users about new documents
 
 The following script is meant to be run as a cron job:
