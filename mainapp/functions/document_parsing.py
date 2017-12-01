@@ -1,50 +1,24 @@
-import os
 import re
-
+import shlex
 import geoextract
-# noinspection PyPackageRequirements
-import pdfminer.high_level
-# noinspection PyPackageRequirements
-import pdfminer.layout
+
 from django.conf import settings
 from django.urls import reverse
 from geopy import OpenCage
+from pdfbox import PDFBox
 
 from mainapp.models import SearchStreet, Body, Location
 
 
-def _extract_text(filename, outfile='-',
-                  all_texts=None, detect_vertical=None,  # LAParams
-                  word_margin=None, char_margin=None, line_margin=None, boxes_flow=None,  # LAParams
-                  output_type='text', codec='utf-8', strip_control=False,
-                  maxpages=0, page_numbers=None, password="", scale=1.0, rotation=0,
-                  layoutmode='normal', output_dir=None, debug=False,
-                  disable_caching=False, **other):
-    laparams = pdfminer.layout.LAParams()
-    for param in ("all_texts", "detect_vertical", "word_margin", "char_margin", "line_margin", "boxes_flow"):
-        paramv = locals().get(param, None)
-        if paramv is not None:
-            setattr(laparams, param, paramv)
-
-    outfp = open(outfile, "wb")
-    with open(filename, "rb") as fp:
-        pdfminer.high_level.extract_text_to_fp(fp, **locals())
-
-    outfp.close()
-
-
-def extract_text_from_pdf(pdf_file, cachefolder):
+def extract_text_from_pdf(pdf_file):
     """
     :param pdf_file: str
-    :param cachefolder: str
     :return: str
     """
-    tmp_file = os.path.join(cachefolder, 'pdf-extract.txt')
-    _extract_text(pdf_file, outfile=tmp_file)
-    fp = open(tmp_file, "r")
-    text = fp.read()
-    fp.close()
-    return text
+    escaped_filename = shlex.quote(pdf_file)
+    parser = PDFBox()
+    parsed_text = parser.extract_text(escaped_filename)
+    return parsed_text
 
 
 def create_geoextract_data(bodies=None):

@@ -1,10 +1,12 @@
+import os
+
 from collections import namedtuple
 from unittest import mock
 
 from django.test import TestCase, override_settings
 from geopy import OpenCage
 
-from mainapp.functions.document_parsing import extract_locations
+from mainapp.functions.document_parsing import extract_locations, extract_text_from_pdf
 from mainapp.models import File
 
 values = {
@@ -42,3 +44,9 @@ class TestDocumentParsing(TestCase):
         self.assertTrue('Tel-Aviv-Straße 12' in location_names)
         self.assertTrue('Karlstraße 7' in location_names)
         self.assertFalse('Wolfsweg' in location_names)
+
+    def test_pdf_parsing(self):
+        file = os.path.abspath(os.path.dirname(__name__))
+        file = file + '/etc/Donald Knuth - The Complexity of Songs.pdf'
+        parsed_text = extract_text_from_pdf(file)
+        self.assertTrue('bottles of beer' in parsed_text)

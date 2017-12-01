@@ -17,12 +17,13 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
  - A recent node version with npm
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
+ - A Java Runtime (for PDF Text extraction)
  - If you want to use elasticsearch: docker and docker compose.
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
 On Debian/Ubuntu:
 ```bash
-sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext
+sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre
 ```
 
 Install dependencies
