@@ -4,9 +4,8 @@
 
 {% block content %}
     <div class="container">
-        <div class="section">
-            <p>{{ body }}</p>
-            <p>An overview for a body, linking to all the associated items</p>
-        </div>
+        {% include "partials/header_name.html" with object=body %}
+        <p>TODO: An overview for a body, linking to all the associated items</p>
+        <p>Also a nice map</p>
     </div>
 {% endblock %}

@@ -724,7 +724,9 @@
         "legal_date": null,
         "main_file": null,
         "paper_type": null,
-        "organizations": [],
+        "organizations": [
+            1
+        ],
         "persons": [],
         "files": [
             2
