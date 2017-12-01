@@ -70,6 +70,7 @@ def person(request, pk):
     context = {
         "person": selected_person,
         "papers": paper,
+        "memberships": selected_person.organizationmembership_set.all(),
         "subscribable": True,
         "is_subscribed": is_subscribed_to_search(request.user, search_params),
     }

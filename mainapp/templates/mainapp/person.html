@@ -12,14 +12,31 @@
             </h1>
             <div class="card-body">
                 {% if papers %}
-                    <p>{% trans "Submitted Papers" %}:</p>
+                    <h2 class="h3">{% trans "Submitted Papers" %}:</h2>
                     <ul>
                         {% for paper in papers %}
                             <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p class="lead">{% trans "No papers submitted" %}</p>
+                    <p class="lead">{% trans "No papers found" %}</p>
+                {% endif %}
+                {% if memberships %}
+                    <h2 class="h3">{% trans "Memberships" %}</h2>
+                    <ul>
+                        {% for membership in memberships %}
+                            <li>
+                                {% if membership.start and membership.end %}
+                                    {{ membership.start }} - {{ membership.end }}
+                                {% elif membership.start %}
+                                    {{ membership.start }}
+                                {% endif %}
+                                <a href="{% url "organization" membership.organization.id %}">
+                                    {{ membership.organization.short_name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </div>
         </article>
