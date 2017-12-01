@@ -9,6 +9,7 @@ require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
 export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
+        this.$refreshSpinner = $(".search-refreshing-spinner");
 
         this.initLocationSelector();
         this.initDocumentTypeSelector();
@@ -220,6 +221,7 @@ export default class FacettedSearch {
         if (event) {
             event.preventDefault();
         }
+        this.$refreshSpinner.removeAttr("hidden");
         let querystring = this.getQuerystring();
 
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
@@ -227,5 +229,6 @@ export default class FacettedSearch {
         window.history.pushState({}, "", url);
         this.updateSearchResults(querystring);
         this.updateLocationString();
+        this.$refreshSpinner.attr("hidden", "hidden");
     }
 }
