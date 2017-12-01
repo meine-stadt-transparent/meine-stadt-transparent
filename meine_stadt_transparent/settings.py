@@ -17,7 +17,7 @@ PRODUCT_NAME = "Meine Stadt Transparent"
 ABSOLUTE_URI_BASE = env.str('ABSOLUTE_URI_BASE', 'https://' + REAL_HOST)
 
 TEMPLATE_META = {
-    "logo_name": "MST",
+    "logo_name": env.str('TEMPLATE_LOGO_NAME', 'MST'),
     "product_name": PRODUCT_NAME,
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",

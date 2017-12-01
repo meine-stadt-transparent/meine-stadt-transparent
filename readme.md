@@ -187,10 +187,10 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ### Setting up Social Login
 
 To enable login via Twitter or Facebook, first you need to enable the functionality by adding these two lines to your .env-file:
-``
+````
 SOCIALACCOUNT_USE_FACEBOOK=True
 SOCIALACCOUNT_USE_TWITTER=True
-``
+```
 
 Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to create the necessary tokens and register the tokens using the /admin/-backend.
 
@@ -222,7 +222,7 @@ If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would 
 
 ### Known Problems
 
-If you hit problems regarding memory, please have a look at this
+If you hit problems regarding memory when starting elasticsearch, please have a look at this
 [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
 If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed,
