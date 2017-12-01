@@ -35,6 +35,9 @@
 .twitter-typeahead {
   width: 100%;
 }
+.navbar .search-autocomplete .form-control {
+  max-width: $header-search-max-width;
+}
 
 .file-header {
   // We need to be space efficient on that page, so we remove the default top margin
