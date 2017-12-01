@@ -12,7 +12,7 @@ def persons(request):
     """ Shows all members of the default organization, which are made filterable by the parliamentary group
     memberships. """
     pk = settings.SITE_DEFAULT_ORGANIZATION
-    organizations = Organization.objects.get(id=pk)
+    organizations = get_object_or_404(Organization, id=pk)
 
     parliamentarygroups = []
     members = []

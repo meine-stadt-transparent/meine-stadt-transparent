@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import localtime, now
 
 
@@ -83,7 +83,7 @@ def organizations(request):
 
 
 def paper(request, pk):
-    paper = Paper.objects.get(id=pk)
+    paper = get_object_or_404(Paper, id=pk)
     context = {
         "paper": paper,
         "history": Consultation.objects.filter(paper=paper).all(),
@@ -92,7 +92,7 @@ def paper(request, pk):
 
 
 def organization(request, pk):
-    organization = Organization.objects.get(id=pk)
+    organization = get_object_or_404(Organization, id=pk)
     context = {
         "organization": organization,
         "memberships": organization.organizationmembership_set.all(),
@@ -103,7 +103,7 @@ def organization(request, pk):
 
 
 def file(request, pk):
-    file = File.objects.get(id=pk)
+    file = get_object_or_404(File, id=pk)
     is_available = file.filesize and file.filesize > 0
     context = {
         "file": file,

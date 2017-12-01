@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.urls import reverse
 
 from mainapp.models import UserAlert
