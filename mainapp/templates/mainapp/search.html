@@ -41,12 +41,12 @@
                 </div>
                 <div class="form-row align-items-center">
                     <!-- Location -->
-                    <div class="col-auto search-facet location-col"
-                         data-format-geo-url="{% url 'search_format_geo' 23 42 %}">
+                    <section class="col-auto search-facet location-col"
+                             data-format-geo-url="{% url 'search_format_geo' 23 42 %}">
                         <div class="sr-only">{% trans "Location" context "search_form" %}</div>
 
                         <div class="dropdown">
-                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
+                            <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                                     id="locationSelectButton" title="{{ options.location_formatted }}"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="location-description"
@@ -55,7 +55,7 @@
                                     <span class="location">{{ options.location_formatted }}</span>
                                 </span>
                                 <span class="location-not-set" {% if options.radius %}hidden="hidden"{% endif %}>
-                                    Location
+                                    {% trans "Location" context "search_form" %}
                                 </span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="locationSelectButton">
@@ -79,18 +79,18 @@
                         <input type="hidden" name="lat" value="{{ options.lat }}">
                         <input type="hidden" name="lng" value="{{ options.lng }}">
                         <input type="hidden" name="radius" value="{{ options.radius }}">
-                    </div>
+                    </section>
 
                     <!-- Document Type -->
-                    <div class="col-auto search-facet">
+                    <section class="col-auto search-facet">
                         <div class="sr-only">{% trans "Document Type" context "search_form" %}</div>
                         <div class="dropdown facet-dropdown">
-                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button"
-                                    id="dropdownMenuButton"
+                            <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
+                                    id="documentTypeButton"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {% trans "Document Type" context "search_form" %}
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <div class="dropdown-menu" aria-labelledby="documentTypeButton">
                                 {% for document_type_id, document_type_name in document_types.items %}
                                     <div class="dropdown-item">
                                         <label>
@@ -107,39 +107,22 @@
                                 {% endfor %}
                             </div>
                         </div>
-                    </div>
+                    </section>
 
-                    <!-- Date after -->
-                    <div class="col-auto search-facet search-date">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-addon">
-                                {% trans "after" %}
-                            </span>
-
-                            <label for="after" class="sr-only">Find only those after this date</label>
-                            <input id="after" name="after" type="text" class="form-control"
-                                   value="{{ options.after|date:"Y-m-d" }}">
-                            <span class="input-group-addon searchclear btn">
-                                <i class="fa fa-close fa"></i>
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Date before -->
-                    <div class="col-auto search-facet search-date">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-addon">
-                                {% trans "before" %}
-                            </span>
-
-                            <label for="before" class="sr-only">Find only those before this date</label>
-                            <input id="before" name="before" type="text" class="form-control"
-                                   value="{{ options.before|date:"Y-m-d" }}">
-                            <span class="input-group-addon searchclear btn">
-                                <i class="fa fa-close fa"></i>
-                            </span>
-                        </div>
-                    </div>
+                    <!-- Time range -->
+                    <section class="col-auto search-facet search-facet-daterange">
+                        <div class="sr-only">{% trans "Time range" context "search_form" %}</div>
+                        <div class="facet-dropdown">
+                            <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="timeRangeButton"
+                              data-default-text="">
+                                <span class="time-description">{{ options.after|date:"Y-m-d" }} - {{ options.before|date:"Y-m-d" }}</span>
+                                <span class="time-not-set" {% if options.after or options.before %}hidden="hidden"{% endif %}>
+                                    {% trans "Time range" context "search_form" %}
+                                </span>
+                            </button>
+                            <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}">
+                            <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}">
+                    </section>
                 </div>
             </form>
 

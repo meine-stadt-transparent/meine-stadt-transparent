@@ -1,4 +1,13 @@
 @import "vars";
+@import "~bootstrap-daterangepicker/daterangepicker";
+
+.twitter-typeahead {
+  width: 100%;
+}
+.navbar .search-autocomplete .form-control {
+  max-width: $header-search-max-width;
+}
+
 
 .search-autocomplete {
   position: relative;

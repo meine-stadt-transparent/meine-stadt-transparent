@@ -16,6 +16,7 @@ module.exports = {
             'leaflet/src/Leaflet',
             'bootstrap/dist/js/bootstrap.js',
             'corejs-typeahead/dist/typeahead.jquery',
+            'bootstrap-daterangepicker/daterangepicker'
         ]
     },
     output: {
@@ -52,6 +53,7 @@ module.exports = {
             })
         }, {
             test: /\.js$/,
+            exclude: /(node_modules\/bootstrap\-daterangepicker\/)/,
             use: {
                 loader: 'babel-loader',
                 options: {

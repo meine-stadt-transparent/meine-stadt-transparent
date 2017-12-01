@@ -24,12 +24,23 @@ class NotificationSearchResult:
         self.type_name = type_name
 
 
-def add_date(s, raw, operator, options, errors):
+def _add_date_after(s, raw, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        after = datetime.datetime.strptime(raw, '%Y-%m-%d')
-        s = s.filter(Q('range', start={operator: after}) | Q('range', legal_date={operator: after}))
+        after = datetime.datetime.strptime(raw['after'], '%Y-%m-%d')
+        s = s.filter(Q('range', start={"gte": after}) | Q('range', legal_date={"gte": after}))
         options["after"] = after
+    except ValueError or OverflowError:
+        errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
+    return s
+
+
+def _add_date_before(s, raw, options, errors):
+    """ Filters by a date given a string, catching parsing errors. """
+    try:
+        before = datetime.datetime.strptime(raw['before'], '%Y-%m-%d')
+        s = s.filter(Q('range', start={"lte": before}) | Q('range', legal_date={"lte": before}))
+        options["before"] = before
     except ValueError or OverflowError:
         errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
     return s
@@ -62,14 +73,17 @@ def params_to_query(params: dict):
         options['location_formatted'] = latlng_to_address(lat, lng)
     except ValueError:
         pass
+
+    print(options)
+
     if 'document-type' in params:
         split = params['document-type'].split(",")
         s = s.filter('terms', _type=[i + "_document" for i in split])
         options["document_type"] = split
     if 'after' in params:
-        s = add_date(s, params['after'], "gte", options, errors)
+        s = _add_date_after(s, params, options, errors)
     if 'before' in params:
-        s = add_date(s, params['before'], "lte", options, errors)
+        s = _add_date_before(s, params, options, errors)
 
     return options, s, errors
 

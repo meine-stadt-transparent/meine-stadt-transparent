@@ -4,3 +4,7 @@ $header-search-max-width: 200px;
 $main-content-margin-top: 30px;
 $border-radius: 0;
 $fa-font-path: "~font-awesome/fonts/";
+
+$theme-colors: (
+  "navbar": #343a40, // $gray-800 - hardcoded as _variables.scss of bootstrap is not yet loaded here
+)

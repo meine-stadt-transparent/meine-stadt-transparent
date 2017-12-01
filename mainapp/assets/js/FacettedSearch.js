@@ -3,8 +3,7 @@ import create_map from "./createMap";
 // noinspection ES6UnusedImports
 import style from "../css/datepicker.scss";
 
-require("bootstrap-datepicker/dist/js/bootstrap-datepicker");
-
+const moment = require('moment');
 
 export default class FacettedSearch {
     constructor($form) {
@@ -23,19 +22,56 @@ export default class FacettedSearch {
     }
 
     initDatePicker() {
-        this.$form.find("input#after").datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true
-        });
-        this.$form.find("input#before").datepicker({
-            format: "yyyy-mm-dd",
-            autoclose: true
+        let $openerBtn = this.$form.find('#timeRangeButton'),
+            $inputBefore = this.$form.find('input[name=before]'),
+            $inputAfter = this.$form.find('input[name=after]');
+
+        let ranges = {
+            'Today': [moment(), moment()],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            'This Year': [moment().startOf('year'), moment().endOf('year')],
+            'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+        };
+
+        $openerBtn.daterangepicker({
+            locale: {
+                format: 'YYYY-MM-DD'
+            },
+            opens: 'center',
+            showDropdowns: true,
+            showCustomRangeLabel: true,
+            ranges: ranges
+        }, (start, end, label) => {
+            if (ranges[label] !== undefined) {
+                $openerBtn.find(".time-description").text(label);
+            } else {
+                $openerBtn.find(".time-description").text(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+            }
+            $openerBtn.find(".time-not-set").attr('hidden', 'hidden');
+            $inputBefore.val(end.format('YYYY-MM-DD'));
+            $inputAfter.val(start.format('YYYY-MM-DD'));
+            $inputAfter.change();
         });
 
-        $(".searchclear").click((event) => {
-            let $input = $(event.target).parent().parent().find("input");
-            $input.val("");
-            $input.change();
+        $openerBtn.on('cancel.daterangepicker', () => {
+            $openerBtn.find(".time-description").text('');
+            $openerBtn.find(".time-not-set").removeAttr('hidden');
+            $inputBefore.val('');
+            $inputAfter.val('');
+            $inputAfter.change();
+        });
+
+        // Workaround to create a "toggling" behavior
+        let closeOnClick = () => {
+            $(document).trigger("mousedown.daterangepicker");
+        };
+        $openerBtn.on("show.daterangepicker", () => {
+            $openerBtn.on("click", closeOnClick);
+        });
+        $openerBtn.on("hide.daterangepicker", () => {
+            $openerBtn.off("click", closeOnClick);
         });
     }
 
