@@ -6,9 +6,10 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.utils.timezone import localtime, now
 
+
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Consultation, Organization, Paper
+from mainapp.models import Body, File, Consultation, Organization, Paper, Meeting
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
 
@@ -96,6 +97,7 @@ def organization(request, pk):
         "organization": organization,
         "memberships": organization.organizationmembership_set.all(),
         "papers": Paper.objects.filter(organizations__in=[pk])[:25],
+        "meetings": Meeting.objects.filter(organizations__in=[pk])[:25],
     }
     return render(request, "mainapp/organization.html", context)
 

@@ -20,7 +20,8 @@
         {% endblock %}
 
         <p title="{% trans 'Belongs to this body' %}">
-            <i class="fa-custom fa-globe" aria-hidden="true"></i>{{ organization.body }}
+            <i class="fa-custom fa-globe" aria-hidden="true"></i>
+            <a href="{% url "body" organization.body.id %}">{{ organization.body }}</a>
         </p>
         {% if organization.location %}
             <p title="{% trans 'Is located there' %}">

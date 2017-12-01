@@ -44,8 +44,15 @@ def meeting(request, pk):
     selected_meeting = get_object_or_404(Meeting, id=pk)
 
     # Format the time frame
-    begin = selected_meeting.start.strftime(settings.DATETIME_FORMAT)
-    end = selected_meeting.end.strftime(settings.DATETIME_FORMAT)
+    if selected_meeting.start:
+        begin = selected_meeting.start.strftime(settings.DATETIME_FORMAT)
+    else:
+        begin = None
+    if selected_meeting.end:
+        end = selected_meeting.end.strftime(settings.DATETIME_FORMAT)
+    else:
+        end = None
+
     if not selected_meeting.end:
         time = begin
     elif selected_meeting.start.date() == selected_meeting.end.date():
