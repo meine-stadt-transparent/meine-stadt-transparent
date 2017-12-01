@@ -31,7 +31,7 @@
     }
     .dropdown-menu {
       width: 420px;
-      padding-top: 0;
+      padding: 0;
     }
   }
   .location-description {
@@ -47,7 +47,7 @@
     }
   }
   .radius-select-row {
-    padding: 0 7px;
+    @extend .m-1;
   }
   .search-date {
     input.form-control {
