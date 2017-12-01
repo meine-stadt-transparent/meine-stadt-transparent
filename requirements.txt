@@ -8,7 +8,7 @@ django-anymail==1.2
 django-braces==1.11.0
 django-csp==3.3
 django-debug-toolbar==1.9.1
-django-elasticsearch-dsl==0.4.1
+django-elasticsearch-dsl==0.4.2
 django-environ==0.4.4
 django-geojson==2.10.0
 django-settings-export==1.2.1
@@ -31,7 +31,7 @@ nltk==3.2.5
 numpy==1.13.3
 oauthlib==2.0.6
 pdfminer.six==20170720
-pyahocorasick==1.1.4
+pyahocorasick==1.1.6
 pycryptodome==3.4.7
 python-dateutil==2.6.1
 python-slugify==1.2.4
@@ -41,7 +41,7 @@ pyxdg==0.25
 requests==2.18.4
 requests-oauthlib==0.8.0
 scipy==1.0.0
-selenium==3.7.0
+selenium==3.8.0
 six==1.11.0
 splinter==0.7.7
 sqlparse==0.2.4
