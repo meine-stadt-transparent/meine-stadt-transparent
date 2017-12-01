@@ -41,7 +41,8 @@ class SternbergImport(OParlImport):
                     if "location" in oparl_object and isinstance(oparl_object["location"], dict):
                         oparl_object["location"] = oparl_object["location"]["id"]
 
-            response.set_resolved_data(json.dumps(oparl_list))
+            response = OParl.ResolveUrlResult(resolved_data=json.dumps(oparl_list), success=True,
+                                              status_code=response.get_status_code())
 
         if "/membership" in url:
             oparl_list = json.loads(response.get_resolved_data())
@@ -50,14 +51,16 @@ class SternbergImport(OParlImport):
             if isinstance(oparl_list, list):
                 oparl_list = oparl_list[0]
 
-            response.set_resolved_data(json.dumps(oparl_list))
+            response = OParl.ResolveUrlResult(resolved_data=json.dumps(oparl_list), success=True,
+                                              status_code=response.get_status_code())
 
         if "/person" in url:
             oparl_object = json.loads(response.get_resolved_data())
             if "location" in oparl_object and not isinstance(oparl_object["location"], str):
                 oparl_object["location"] = oparl_object["location"]["id"]
 
-            response.set_resolved_data(json.dumps(oparl_object))
+            response = OParl.ResolveUrlResult(resolved_data=json.dumps(oparl_object), success=True,
+                                              status_code=response.get_status_code())
 
         return response
 
