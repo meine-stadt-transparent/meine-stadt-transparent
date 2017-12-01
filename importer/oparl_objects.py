@@ -36,6 +36,7 @@ class OParlObjects(OParlHelper):
         self.membership_queue = []
         self.consultation_meeting_queue = []
         self.consultation_paper_queue = []
+        self.consultation_organization_queue = defaultdict(list)
         self.paper_organization_queue = []
 
         # Ensure the existence of the three predefined organization types
@@ -253,12 +254,15 @@ class OParlObjects(OParlHelper):
         consultation.authoritative = libobject.get_authoritative()
         consultation.role = libobject.get_role()
 
+        consultation.save()
+
         if libobject.get_meeting():
             meeting = Meeting.objects.filter(oparl_id=libobject.get_meeting().get_id()).first()
             if not meeting:
                 self.consultation_meeting_queue.append((consultation, libobject.get_meeting().get_id()))
             else:
                 consultation.meeting = meeting
+
         if libobject.get_paper():
             paper = Meeting.objects.filter(oparl_id=libobject.get_paper().get_id()).first()
             if not paper:
@@ -266,11 +270,17 @@ class OParlObjects(OParlHelper):
             else:
                 consultation.paper = paper
 
+        orgas = []
+        for org_url in libobject.get_organization_url():
+            organization = Meeting.objects.filter(oparl_id=org_url).first()
+            if not organization:
+                self.consultation_organization_queue[consultation].append(org_url)
+            else:
+                orgas.append(organization)
+        consultation.organizations = orgas
+
         consultation.save()
 
-        # TODO consultation.organization = libobject.get_organization()
-
-        # consultation.save()
         return consultation
 
     def download_file(self, file: File, libobject: OParl.File):
@@ -393,6 +403,14 @@ class OParlObjects(OParlHelper):
         logging.info("Adding missing meetings to consultations")
         for consultation, meeting in self.consultation_meeting_queue:
             consultation.meeting = Meeting.by_oparl_id(meeting)
+            consultation.save()
+
+        logging.info("Adding missing organizations to consultations")
+        for consultation, organizations in self.consultation_organization_queue.items():
+            orgas = []
+            for org in organizations:
+                orgas.append(Organization.by_oparl_id(org))
+            consultation.organizations = orgas
             consultation.save()
 
         logging.info("Adding missing organizations to papers")

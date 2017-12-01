@@ -187,7 +187,7 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ### Setting up Social Login
 
 To enable login via Twitter or Facebook, first you need to enable the functionality by adding these two lines to your .env-file:
-````
+```
 SOCIALACCOUNT_USE_FACEBOOK=True
 SOCIALACCOUNT_USE_TWITTER=True
 ```

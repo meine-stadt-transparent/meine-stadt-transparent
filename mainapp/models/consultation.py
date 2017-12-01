@@ -1,5 +1,6 @@
 from django.db import models
 
+from .organization import Organization
 from .default_fields import DefaultFields
 from .meeting import Meeting
 from .paper import Paper
@@ -13,7 +14,7 @@ class Consultation(DefaultFields):
     meeting = models.ForeignKey(Meeting, null=True, blank=True)
     paper = models.ForeignKey(Paper, null=True, blank=True)
     authoritative = models.NullBooleanField(blank=True)
-    # TODO organization = models.ManyToManyField()
+    organizations = models.ManyToManyField(Organization, blank=True)
     role = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):

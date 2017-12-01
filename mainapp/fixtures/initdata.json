@@ -818,7 +818,8 @@
         "meeting": 2,
         "paper": 1,
         "authoritative": null,
-        "role": "Diskussion"
+        "role": "Diskussion",
+        "organizations": []
     }
 },
 {
@@ -833,7 +834,8 @@
         "meeting": 2,
         "paper": 3,
         "authoritative": null,
-        "role": null
+        "role": null,
+        "organizations": []
     }
 },
 {

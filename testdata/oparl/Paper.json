@@ -70,7 +70,7 @@
             "agendaItem": "https://oparl.example.org/agendaitem/15569",
             "meeting": "https://oparl.example.org/meeting/281",
             "organization": [
-              "https://oparl.example.org/organization/96"
+              "https://oparl.example.org/organization/34"
             ],
             "authoritative": false,
             "role": "Beschlussfassung"
