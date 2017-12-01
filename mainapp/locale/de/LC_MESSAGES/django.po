@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-01 09:27+0100\n"
+"POT-Creation-Date: 2017-12-01 13:42+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,7 +72,6 @@ msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
 #: management/commands/notifyusers.py:74
-#| msgid "Search results"
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
@@ -95,7 +94,9 @@ msgstr "Account löschen"
 
 #: templates/account/delete.html:10
 msgid "Do you really want to delete your account? This cannot be undone."
-msgstr "Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig gemacht werden."
+msgstr ""
+"Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig "
+"gemacht werden."
 
 #: templates/account/delete.html:12
 msgid "No, go back"
@@ -114,8 +115,6 @@ msgid "Your account has been deleted."
 msgstr "Der Account wurde gelöscht."
 
 #: templates/account/email.html:6
-#| msgctxt "navigation"
-#| msgid "My Account"
 msgid "Account"
 msgstr "Mein Zugang"
 
@@ -207,8 +206,7 @@ msgid ""
 "request</a>."
 msgstr ""
 "Der Link aus der Bestätigungs-E-Mail ist veraltet. Bitte\n"
-"            <a href=\"%(email_url)s\">fordern Sie einen neuen Link "
-"an</a>."
+"            <a href=\"%(email_url)s\">fordern Sie einen neuen Link an</a>."
 
 #: templates/account/home.html:4
 msgid "My profile"
@@ -223,8 +221,6 @@ msgid "Verify now"
 msgstr "Jetzt bestätigen"
 
 #: templates/account/home.html:24
-#| msgctxt "navigation"
-#| msgid "Sign Out"
 msgid "Sign Out"
 msgstr "Ausloggen"
 
@@ -239,10 +235,12 @@ msgid ""
 "locations in your city, and you will be able to subscribe to this search and "
 "therefore get notified by e-mail about new results."
 msgstr ""
-"Sie können sich über neue Dokumente benachrichtigen lassen, die für Sie von Interesse sein könnten. "
-"Suchen Sie einfach normal nach Dokumenten, mit Suchbegriffen, Ortsbezug oder dergleichen, "
-"dann haben Sie die Möglichkeit, neue Suchergebnisse zu abonnieren und folglich E-Mail-Benachrichtigungen zu erhalten, "
-"sobald neue Dokumente veröffentlicht werden, die Ihrer Suchanfrage entsprechen."
+"Sie können sich über neue Dokumente benachrichtigen lassen, die für Sie von "
+"Interesse sein könnten. Suchen Sie einfach normal nach Dokumenten, mit "
+"Suchbegriffen, Ortsbezug oder dergleichen, dann haben Sie die Möglichkeit, "
+"neue Suchergebnisse zu abonnieren und folglich E-Mail-Benachrichtigungen zu "
+"erhalten, sobald neue Dokumente veröffentlicht werden, die Ihrer Suchanfrage "
+"entsprechen."
 
 #: templates/account/home.html:58
 msgid "Account Settings"
@@ -265,7 +263,6 @@ msgid "Sign In"
 msgstr "Einloggen"
 
 #: templates/account/login.html:13
-#| msgid "Sign In"
 msgctxt "login"
 msgid "Sign in"
 msgstr "Einloggen"
@@ -297,7 +294,6 @@ msgstr "Social Media Login"
 #: templates/account/password_reset_from_key.html:7
 #: templates/account/password_reset_from_key_done.html:5
 #: templates/account/password_reset_from_key_done.html:6
-#| msgid "Forgot Password?"
 msgid "Change Password"
 msgstr "Passwort vergessen"
 
@@ -313,11 +309,10 @@ msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll send you "
 "an e-mail allowing you to reset it."
 msgstr ""
-"Passwort vergessen? Geben Sie hier Ihre E-Mail-Adresse ein und wir schicken Ihnen eine Mail "
-"mit einem Link, mit dem Sie ein neues Passwort setzen können."
+"Passwort vergessen? Geben Sie hier Ihre E-Mail-Adresse ein und wir schicken "
+"Ihnen eine Mail mit einem Link, mit dem Sie ein neues Passwort setzen können."
 
 #: templates/account/password_reset.html:34
-#| msgid "Forgot Password?"
 msgid "Reset My Password"
 msgstr "Passwort vergessen"
 
@@ -325,8 +320,7 @@ msgstr "Passwort vergessen"
 msgid ""
 "We have sent you an e-mail. Please contact us if you do not receive it "
 "within a few minutes."
-msgstr ""
-"Wir haben soeben eine E-Mail an Sie geschickt."
+msgstr "Wir haben soeben eine E-Mail an Sie geschickt."
 
 #: templates/account/password_reset_from_key.html:7
 msgid "Bad Token"
@@ -340,9 +334,10 @@ msgid ""
 "\"%(passwd_reset_url)s\">new password reset</a>\n"
 "            ."
 msgstr ""
-"Der aufgerufene Link ist ungültig. Möglicherweise wurde er bereits verwendet.\n"
-"            Bitte rufen Sie die <a href="
-"\"%(passwd_reset_url)s\">Passwort-Ändern-Funktion</a> erneut auf\n"
+"Der aufgerufene Link ist ungültig. Möglicherweise wurde er bereits "
+"verwendet.\n"
+"            Bitte rufen Sie die <a href=\"%(passwd_reset_url)s\">Passwort-"
+"Ändern-Funktion</a> erneut auf\n"
 "            ."
 
 #: templates/account/password_reset_from_key.html:48
@@ -356,7 +351,6 @@ msgstr "Ihr Passwort wurde"
 
 #: templates/account/password_set.html:6 templates/account/password_set.html:7
 #: templates/account/password_set.html:40
-#| msgid "Forgot Password?"
 msgid "Set Password"
 msgstr "Passwort vergessen"
 
@@ -365,7 +359,8 @@ msgstr "Passwort vergessen"
 msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr ""
-"Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie sich ein</a>."
+"Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie "
+"sich ein</a>."
 
 #: templates/base.html:28
 msgctxt "navigation"
@@ -373,7 +368,6 @@ msgid "About"
 msgstr "Diese Seite"
 
 #: templates/base.html:32
-#| msgid "Calendar"
 msgctxt "navigation"
 msgid "Calendar"
 msgstr "Kalender"
@@ -383,7 +377,7 @@ msgctxt "navigation"
 msgid "People"
 msgstr "Personen"
 
-#: templates/base.html:40 # TODO
+#: templates/base.html:40
 msgctxt "navigation"
 msgid "Organizations"
 msgstr "Gremien"
@@ -410,7 +404,6 @@ msgid "Search"
 msgstr "Suchen"
 
 #: templates/base.html:61 templates/mainapp/index.html:33
-#| msgid "Search results"
 msgctxt "aria label"
 msgid "Show search results"
 msgstr "Suchergebnisse"
@@ -487,8 +480,9 @@ msgstr "Kalender"
 #: templates/mainapp/file.html:37 templates/mainapp/file.html:47
 #: templates/mainapp/file.html:53
 msgid "Paper"
-msgstr "Vorlage" #TODO
+msgstr "Vorlage"
 
+# TODO
 #: templates/mainapp/file.html:76
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
@@ -503,14 +497,13 @@ msgstr "Die Datei is nicht verfügbar"
 
 #: templates/mainapp/index.html:18
 msgid "informs you about your local city council."
-msgstr "informiert Sie über den "
+msgstr "informiert Sie über ihren Stadtrat"
 
 #: templates/mainapp/index.html:20
 msgid "More information"
 msgstr "Weitere Informationen"
 
 #: templates/mainapp/index.html:46
-#| msgid "About this project"
 msgid "About the project"
 msgstr "Über dieses Projekt"
 
@@ -545,8 +538,9 @@ msgstr "Träger der Sitzung"
 
 #: templates/mainapp/meeting.html:26
 msgid "Participating organizations:"
-msgstr "Teilnehmende Gremien:" # TODO
+msgstr "Teilnehmende Gremien:"
 
+# TODO
 #: templates/mainapp/meeting.html:30
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
@@ -592,21 +586,21 @@ msgstr "Legislaturperiode"
 msgid "Belongs to this body"
 msgstr "Gehört zur Körperschaft"
 
-#: templates/mainapp/organization.html:26
+#: templates/mainapp/organization.html:27
 msgid "Is located there"
 msgstr ""
 
-#: templates/mainapp/organization.html:31
+#: templates/mainapp/organization.html:32
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: templates/mainapp/organization.html:34
+#: templates/mainapp/organization.html:35
 msgctxt "Header"
 msgid "Paper"
 msgstr ""
 
-#: templates/mainapp/organization.html:37
+#: templates/mainapp/organization.html:38
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
@@ -640,91 +634,97 @@ msgid "Submitted Papers"
 msgstr ""
 
 #: templates/mainapp/person.html:22
-msgid "No papers submitted"
-msgstr ""
+#, fuzzy
+#| msgid "m around"
+msgid "No papers found"
+msgstr "m um"
 
-#: templates/mainapp/persons.html:16 templates/mainapp/persons.html:20
-msgctxt "persons-list"
-msgid "Name"
-msgstr "Name"
+#: templates/mainapp/person.html:25
+#, fuzzy
+#| msgctxt "Header"
+#| msgid "Members"
+msgid "Memberships"
+msgstr "Mitglieder"
 
-#: templates/mainapp/persons.html:19
-msgctxt "persons-list"
-msgid "Sort by"
-msgstr "Sortieren"
-
-#: templates/mainapp/persons.html:21 templates/mainapp/persons.html:47
-msgctxt "persons-list"
-msgid "Party"
-msgstr "Partei"
-
-#: templates/mainapp/persons.html:29 templates/mainapp/persons.html:44
-#: templates/mainapp/persons.html:48
+#: templates/mainapp/persons.html:14 templates/mainapp/persons.html:29
+#: templates/mainapp/persons.html:33
 msgctxt "persons-list"
 msgid "All"
 msgstr "Alle"
 
-#: templates/mainapp/persons.html:69
+#: templates/mainapp/persons.html:32 templates/mainapp/persons.html:50
+msgctxt "persons-list"
+msgid "Party"
+msgstr "Partei"
+
+#: templates/mainapp/persons.html:45 templates/mainapp/persons.html:49
+msgctxt "persons-list"
+msgid "Name"
+msgstr "Name"
+
+#: templates/mainapp/persons.html:48
+msgctxt "persons-list"
+msgid "Sort by"
+msgstr "Sortieren"
+
+#: templates/mainapp/persons.html:68
 msgctxt "persons-list"
 msgid "From"
 msgstr "Von"
 
-#: templates/mainapp/persons.html:69
+#: templates/mainapp/persons.html:68
 msgctxt "persons-list"
 msgid "until"
 msgstr "bis"
 
-#: templates/mainapp/persons.html:71
+#: templates/mainapp/persons.html:70
 msgctxt "persons-list"
 msgid "Since"
 msgstr "Seit"
 
-#: templates/mainapp/search.html:27 templates/mainapp/search.html:31
-#: templates/mainapp/search.html:32
-#| msgid "Search"
+#: templates/mainapp/search.html:30 templates/mainapp/search.html:34
+#: templates/mainapp/search.html:35
 msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: templates/mainapp/search.html:35
-#| msgid "Search"
+#: templates/mainapp/search.html:38
 msgctxt "search_form"
 msgid "Search"
 msgstr "Suche"
 
-#: templates/mainapp/search.html:42
+#: templates/mainapp/search.html:46
 msgctxt "search_form"
 msgid "Location"
 msgstr "Ort"
 
-#: templates/mainapp/search.html:50
+#: templates/mainapp/search.html:54
 msgid "m around"
 msgstr "m um"
 
-#: templates/mainapp/search.html:67
+#: templates/mainapp/search.html:71
 msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
 
-#: templates/mainapp/search.html:82 templates/mainapp/search.html:87
+#: templates/mainapp/search.html:86 templates/mainapp/search.html:91
 msgctxt "search_form"
 msgid "Document Type"
 msgstr "Dokumententyp"
 
-#: templates/mainapp/search.html:112
+#: templates/mainapp/search.html:116
 msgid "after"
 msgstr "nach"
 
-#: templates/mainapp/search.html:128
+#: templates/mainapp/search.html:132
 msgid "before"
 msgstr "vor"
 
-#: templates/mainapp/search.html:148
+#: templates/mainapp/search.html:152
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: templates/mainapp/search.html:153
-#| msgid "Not Found"
+#: templates/mainapp/search.html:157
 msgid "Nothing Found"
 msgstr "Nicht gefunden"
 
@@ -741,9 +741,8 @@ msgid ""
 "This normally happend when something has been incorrectly published or had "
 "to be depublished."
 msgstr ""
-"Dies passiert üblicherweise dann, wenn etwas fehlerhafterweise veröffentlicht wurde oder "
-"depubliziert werden musste."
-
+"Dies passiert üblicherweise dann, wenn etwas fehlerhafterweise "
+"veröffentlicht wurde oder depubliziert werden musste."
 
 #: templates/partials/deleted_note.html:10
 msgid "All information on this page is void."
@@ -785,14 +784,10 @@ msgid "Back to the login"
 msgstr "Zurück zum Login"
 
 #: templates/socialaccount/signup.html:6
-#| msgctxt "login"
-#| msgid "Sign Up"
 msgid "Signup"
 msgstr "Registrieren"
 
 #: templates/socialaccount/signup.html:7 templates/socialaccount/signup.html:34
-#| msgctxt "login"
-#| msgid "Sign Up"
 msgid "Sign Up"
 msgstr "Registrieren"
 
@@ -804,14 +799,15 @@ msgid ""
 "        %(site_name)s. As a final step, please complete the following form:"
 msgstr ""
 "Sie wollen Ihren\n"
-"        %(provider_name)s-Account nutzen, um sich bei %(site_name)s einzuloggen.\n"
+"        %(provider_name)s-Account nutzen, um sich bei %(site_name)s "
+"einzuloggen.\n"
 "        Geben Sie bitte abschließend folgende Information ein:"
 
-#: views/meeting.py:90
+#: views/meeting.py:97
 msgid "Meeting"
 msgstr "Sitzung"
 
-#: views/meeting.py:99
+#: views/meeting.py:106
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
@@ -821,7 +817,9 @@ msgstr "Sie werden nun über neue Dokumente informiert,"
 
 #: views/persons.py:61 views/search.py:62
 msgid "You will no longer receive notifications."
-msgstr "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche erhalten."
+msgstr ""
+"Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
+"erhalten."
 
 #: views/persons.py:62
 msgid "You have already subscribed to this person."
