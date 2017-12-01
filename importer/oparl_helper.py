@@ -8,8 +8,6 @@ from typing import Optional, Type
 import gi
 from django.conf import settings
 from django.utils import dateparse
-# noinspection PyPackageRequirements
-from pdfminer.pdfdocument import PDFTextExtractionNotAllowed
 
 from mainapp.functions.document_parsing import extract_text_from_pdf
 from mainapp.models import DefaultFields, File
@@ -164,7 +162,7 @@ class OParlHelper:
         if file.mime_type == "application/pdf":
             self.logger.info("Extracting text from PDF: " + path)
             try:
-                text = extract_text_from_pdf(path, self.cachefolder)
+                text = extract_text_from_pdf(path)
                 file.parsed_text = text
             except PDFTextExtractionNotAllowed:
                 message = "The pdf {} is encrypted".format(path)
