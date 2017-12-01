@@ -301,7 +301,11 @@ LOGGING = {
         'mainapp.management.commands': {
             'handlers': ['console'],
             'level': env.str('DJANGO_LOG_LEVEL', 'DEBUG'),
-        }
+        },
+        'importer': {
+            'handlers': ['console'],
+            'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
+        },
     }
 }
 
