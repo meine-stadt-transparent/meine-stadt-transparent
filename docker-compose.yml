@@ -1,5 +1,30 @@
-version: '2'
+version: '3'
 services:
+  django:
+    build: .
+    container_name: django
+    command: ["/app-env/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
+    volumes:
+      - django_media:/media
+      - django_static:/static
+      - django_cache:/cache
+      - "./.env-docker-compose:/config/.env"
+    ports:
+      - 8000:8000
+    networks:
+      - meinestadttransparent_net
+
+  mariadb:
+    image: mariadb:10
+    container_name: mariadb
+    environment:
+      - MYSQL_DATABASE=meinestadttransparent
+      - MYSQL_USER=meinestadttransparent
+      - MYSQL_PASSWORD=meinestadttransparent
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    networks:
+      - meinestadttransparent_net
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
     container_name: elasticsearch
@@ -10,21 +35,27 @@ services:
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
 
-    ulimits:
+    ulimits: # Elastic search needs those
       memlock:
         soft: -1
         hard: -1
-    mem_limit: 1g
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
-      - esnet
+      - meinestadttransparent_net
 
 volumes:
   elasticsearch_data:
     driver: local
+  django_media:
+    driver: local
+  django_static:
+    driver: local
+  django_cache:
+    driver: local
+
 
 networks:
-  esnet:
+  meinestadttransparent_net:

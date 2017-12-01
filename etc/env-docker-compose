@@ -1,15 +1,15 @@
-DEBUG=False
-REAL_HOST=opensourceris.local
+DEBUG=True
+REAL_HOST=http://localhost:8000
 SECRET_KEY=notsosecretkey
-MEDIA_ROOT=/var/storage/meine-stadt-transparent
+MEDIA_ROOT=/media
+STATIC_ROOT=/static
 
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
-ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
+ELASTICSEARCH_URL_PRIVATE=elastic:changeme@elasticsearch:9200
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
-USE_ELASTICSEARCH=False
-# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
-DATABASE_URL=sqlite:///db.sqlite3
+USE_ELASTICSEARCH=True
+DATABASE_URL=mysql://meinestadttransparent:meinestadttransparent@mariadb/meinestadttransparent
 DEFAULT_FROM_EMAIL=info@example.org
 DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
 

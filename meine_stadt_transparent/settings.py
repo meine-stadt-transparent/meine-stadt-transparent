@@ -210,7 +210,7 @@ TIME_FORMAT = "%H:%M"
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = env.str('STATIC_ROOT', os.path.join(BASE_DIR, 'static/'))
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
@@ -232,7 +232,6 @@ if USE_ELASTICSEARCH:
     INSTALLED_APPS.append('django_elasticsearch_dsl')
 
 ELASTICSEARCH_URL_PRIVATE = env.str('ELASTICSEARCH_URL_PRIVATE')
-ELASTICSEARCH_URL_PUBLIC = env.str('ELASTICSEARCH_URL_PUBLIC')
 
 ELASTICSEARCH_DSL = {
     'default': {
@@ -298,6 +297,10 @@ LOGGING = {
         },
     },
     'loggers': {
+        'mainapp': {
+            'handlers': ['console'],
+            'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
+        },
         'mainapp.management.commands': {
             'handlers': ['console'],
             'level': env.str('DJANGO_LOG_LEVEL', 'DEBUG'),

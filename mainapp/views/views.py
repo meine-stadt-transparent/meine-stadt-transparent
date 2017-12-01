@@ -6,7 +6,6 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import localtime, now
 
-
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
 from mainapp.models import Body, File, Consultation, Organization, Paper, Meeting

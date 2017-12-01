@@ -1,0 +1,4 @@
+node_modules/
+venv/
+static/
+webpack-stats.json
