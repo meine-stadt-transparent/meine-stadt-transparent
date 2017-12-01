@@ -2,13 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tobias Hößl <tobias@hoessl.eu>, 2017.
+# Konstantin Schütze <konstantin@schuetze.link>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-15 18:46+0200\n"
+"POT-Creation-Date: 2017-12-01 09:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,34 +19,166 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: documents/__init__.py:12 documents/__init__.py:13 documents/__init__.py:14
+#: documents/__init__.py:15 documents/__init__.py:16 documents/__init__.py:20
+#: documents/__init__.py:21 documents/__init__.py:22 documents/__init__.py:23
+#: documents/__init__.py:24 models/organization.py:11 models/organization.py:12
+#: models/organization.py:13 models/organization.py:14
+msgid "Document Type Name"
+msgstr "Name des Dokumententyps"
+
+#: functions/search_tools.py:34
+msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
+msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
+
+#: functions/search_tools.py:150
+msgctxt "Search query"
+msgid "and"
+msgstr "und"
+
+#: functions/search_tools.py:155
+msgctxt "Search query"
+msgid "Documents"
+msgstr "Dokumente"
+
+#: functions/search_tools.py:160
+msgctxt "Search query"
+msgid "containing \"%STR%\""
+msgstr " mit \"%STR%\""
+
+#: functions/search_tools.py:163
+msgctxt "Search query"
+msgid "created by %FROM%"
+msgstr "erstellt von %FROM%"
+
+#: functions/search_tools.py:167
+msgctxt "Search query"
+msgid "with a location within %DISTANCE%m around \"%PLACE%\""
+msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
+
+#: functions/search_tools.py:171
+msgctxt "Search query"
+msgid "published from %FROM% to %TO%"
+msgstr "veröffentlicht von %FROM% bis %TO%"
+
+#: functions/search_tools.py:173
+msgctxt "Search query"
+msgid "published before %TO%"
+msgstr "veröffentlicht vor %TO%"
+
+#: functions/search_tools.py:175
+msgctxt "Search query"
+msgid "published after %FROM%"
+msgstr "veröffentlicht nach %FROM%"
+
+#: management/commands/notifyusers.py:74
+#| msgid "Search results"
+msgid "New search results"
+msgstr "Neue Suchergebnisse"
+
 #: models/user_profile.py:9
 msgid "User"
-msgstr ""
-
-#: models/user_profile.py:11
-msgid "Profile completion percentage"
-msgstr ""
+msgstr "Account"
 
 #: models/user_profile.py:12
-msgid "Email is verified"
-msgstr ""
+msgid "User profile"
+msgstr "Profil"
 
 #: models/user_profile.py:13
-msgid "Personal info completed"
-msgstr ""
-
-#: models/user_profile.py:16
-msgid "User profile"
-msgstr ""
-
-#: models/user_profile.py:17
 msgid "User profiles"
+msgstr "Profil"
+
+#: templates/account/delete.html:4 templates/account/delete.html:5
+#: templates/account/home.html:72
+msgid "Delete account"
+msgstr "Account löschen"
+
+#: templates/account/delete.html:10
+msgid "Do you really want to delete your account? This cannot be undone."
+msgstr "Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig gemacht werden."
+
+#: templates/account/delete.html:12
+msgid "No, go back"
+msgstr "Nein, zurück"
+
+#: templates/account/delete.html:13
+msgid "Yes, delete the account"
+msgstr "Ja, Account löschen"
+
+#: templates/account/delete_done.html:4 templates/account/delete_done.html:5
+msgid "Your account has been deleted"
+msgstr "Der Account wurde gelöscht"
+
+#: templates/account/delete_done.html:8
+msgid "Your account has been deleted."
+msgstr "Der Account wurde gelöscht."
+
+#: templates/account/email.html:6
+#| msgctxt "navigation"
+#| msgid "My Account"
+msgid "Account"
+msgstr "Mein Zugang"
+
+#: templates/account/email.html:11
+msgid "E-mail Addresses"
+msgstr "E-Mail-Adressen"
+
+#: templates/account/email.html:14
+msgid "The following e-mail addresses are associated with your account:"
+msgstr "Der folgenden E-Mail-Adressen sind Ihrem Account zugeordnet:"
+
+#: templates/account/email.html:31
+msgid "Verified"
+msgstr "Bestätigt"
+
+#: templates/account/email.html:33
+msgid "Unverified"
+msgstr "Unbestätigt"
+
+#: templates/account/email.html:36
+msgid "Primary"
+msgstr "Haupt-Adresse"
+
+#: templates/account/email.html:43
+msgid "Make Primary"
+msgstr "Zur Haupt-Adresse machen"
+
+#: templates/account/email.html:45
+msgid "Re-send Verification"
+msgstr "E-Mail-Bestätigung erneut schicken"
+
+#: templates/account/email.html:47 templates/account/home.html:40
+msgid "Remove"
+msgstr "Entfernen"
+
+#: templates/account/email.html:55
+msgid "Warning:"
+msgstr "Warnung"
+
+#: templates/account/email.html:55
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
 msgstr ""
+"Sie haben noch keine E-Mail-Adresse hinterlegt. Das wäre sehr zu empfehlen, "
+"um Benachrichtigungen zu erhalten, das Passwort ändern zu können, usw."
+
+#: templates/account/email.html:62
+msgid "Add E-mail Address"
+msgstr "E-Mail-Adresse hinzufügen"
+
+#: templates/account/email.html:73
+msgid "Add E-mail"
+msgstr "E-Mail-Adresse hinzufügen"
+
+#: templates/account/email.html:89
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr "Wollen Sie die E-Mail-Adresse wirklich entfernen?"
 
 #: templates/account/email_confirm.html:6
 #: templates/account/email_confirm.html:7
 msgid "Confirm E-mail Address"
-msgstr ""
+msgstr "E-Mail-Adresse bestätigen"
 
 #: templates/account/email_confirm.html:15
 #, python-format
@@ -56,10 +189,15 @@ msgid ""
 "            %(user_display)s\n"
 "            ."
 msgstr ""
+"Bitte bestätigen Sie, dass\n"
+"            <a href=\"mailto:%(email)s\">%(email)s</a> eine E-Mail-Adresse "
+"des Accounts\n"
+"            %(user_display)s\n"
+"            ist."
 
 #: templates/account/email_confirm.html:22
 msgid "Confirm"
-msgstr ""
+msgstr "Bestätigen"
 
 #: templates/account/email_confirm.html:29
 #, python-format
@@ -68,74 +206,240 @@ msgid ""
 "            <a href=\"%(email_url)s\">issue a new e-mail confirmation "
 "request</a>."
 msgstr ""
+"Der Link aus der Bestätigungs-E-Mail ist veraltet. Bitte\n"
+"            <a href=\"%(email_url)s\">fordern Sie einen neuen Link "
+"an</a>."
+
+#: templates/account/home.html:4
+msgid "My profile"
+msgstr "Mein Zugang"
+
+#: templates/account/home.html:10
+msgid "Your email address has not been verified"
+msgstr "Ihre E-Mail-Adresse ist nun bestätigt"
+
+#: templates/account/home.html:12
+msgid "Verify now"
+msgstr "Jetzt bestätigen"
+
+#: templates/account/home.html:24
+#| msgctxt "navigation"
+#| msgid "Sign Out"
+msgid "Sign Out"
+msgstr "Ausloggen"
+
+#: templates/account/home.html:30
+msgid "Notifications"
+msgstr "Benachrichtigungen"
+
+#: templates/account/home.html:50
+msgid ""
+"You can get notified about new documents that might be of interest for you. "
+"Simple enter any search query in our search above, like keywords or "
+"locations in your city, and you will be able to subscribe to this search and "
+"therefore get notified by e-mail about new results."
+msgstr ""
+"Sie können sich über neue Dokumente benachrichtigen lassen, die für Sie von Interesse sein könnten. "
+"Suchen Sie einfach normal nach Dokumenten, mit Suchbegriffen, Ortsbezug oder dergleichen, "
+"dann haben Sie die Möglichkeit, neue Suchergebnisse zu abonnieren und folglich E-Mail-Benachrichtigungen zu erhalten, "
+"sobald neue Dokumente veröffentlicht werden, die Ihrer Suchanfrage entsprechen."
+
+#: templates/account/home.html:58
+msgid "Account Settings"
+msgstr "Account-Einstellungen"
+
+#: templates/account/home.html:62
+msgid "Manage email addresses"
+msgstr "E-Mail-Adressen verwalten"
+
+#: templates/account/home.html:64
+msgid "Edit email"
+msgstr "E-Mail-Adresse bearbeiten"
+
+#: templates/account/home.html:68
+msgid "Change your password"
+msgstr "Passwort ändern"
 
 #: templates/account/login.html:7
 msgid "Sign In"
 msgstr "Einloggen"
 
 #: templates/account/login.html:13
+#| msgid "Sign In"
 msgctxt "login"
-msgid "Sign in with..."
-msgstr "Einloggen mit..."
+msgid "Sign in"
+msgstr "Einloggen"
 
-#: templates/account/login.html:27
-msgctxt "login"
-msgid "Sign in with your e-mail-address"
-msgstr "Mit der E-Mail-Adresse einloggen"
-
-#: templates/account/login.html:32
+#: templates/account/login.html:16 templates/account/signup.html:6
+#: templates/account/signup.html:8 templates/account/signup.html:46
 msgctxt "login"
 msgid "Sign Up"
 msgstr "Registrieren"
 
-#: templates/account/login.html:55
+#: templates/account/login.html:41 templates/account/signup.html:37
 msgid "Forgot Password?"
 msgstr "Passwort vergessen"
 
-#: templates/account/login.html:63
+#: templates/account/login.html:50
 msgctxt "login"
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: templates/base.html:26
+#: templates/account/login.html:57
+msgctxt "login"
+msgid "Social Login"
+msgstr "Social Media Login"
+
+#: templates/account/password_change.html:6
+#: templates/account/password_change.html:7
+#: templates/account/password_change.html:51
+#: templates/account/password_reset_from_key.html:6
+#: templates/account/password_reset_from_key.html:7
+#: templates/account/password_reset_from_key_done.html:5
+#: templates/account/password_reset_from_key_done.html:6
+#| msgid "Forgot Password?"
+msgid "Change Password"
+msgstr "Passwort vergessen"
+
+#: templates/account/password_reset.html:7
+#: templates/account/password_reset.html:8
+#: templates/account/password_reset_done.html:6
+#: templates/account/password_reset_done.html:7
+msgid "Password Reset"
+msgstr "Passwort zurücksetzen"
+
+#: templates/account/password_reset.html:16
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+"Passwort vergessen? Geben Sie hier Ihre E-Mail-Adresse ein und wir schicken Ihnen eine Mail "
+"mit einem Link, mit dem Sie ein neues Passwort setzen können."
+
+#: templates/account/password_reset.html:34
+#| msgid "Forgot Password?"
+msgid "Reset My Password"
+msgstr "Passwort vergessen"
+
+#: templates/account/password_reset_done.html:14
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Wir haben soeben eine E-Mail an Sie geschickt."
+
+#: templates/account/password_reset_from_key.html:7
+msgid "Bad Token"
+msgstr "Ungültiger Code"
+
+#: templates/account/password_reset_from_key.html:13
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has\n"
+"            already been used.  Please request a <a href="
+"\"%(passwd_reset_url)s\">new password reset</a>\n"
+"            ."
+msgstr ""
+"Der aufgerufene Link ist ungültig. Möglicherweise wurde er bereits verwendet.\n"
+"            Bitte rufen Sie die <a href="
+"\"%(passwd_reset_url)s\">Passwort-Ändern-Funktion</a> erneut auf\n"
+"            ."
+
+#: templates/account/password_reset_from_key.html:48
+msgid "change password"
+msgstr "Passwort ändern"
+
+#: templates/account/password_reset_from_key.html:52
+#: templates/account/password_reset_from_key_done.html:9
+msgid "Your password is now changed."
+msgstr "Ihr Passwort wurde"
+
+#: templates/account/password_set.html:6 templates/account/password_set.html:7
+#: templates/account/password_set.html:40
+#| msgid "Forgot Password?"
+msgid "Set Password"
+msgstr "Passwort vergessen"
+
+#: templates/account/signup.html:11
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+"Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie sich ein</a>."
+
+#: templates/base.html:28
+msgctxt "navigation"
+msgid "About"
+msgstr "Diese Seite"
+
+#: templates/base.html:32
+#| msgid "Calendar"
+msgctxt "navigation"
+msgid "Calendar"
+msgstr "Kalender"
+
+#: templates/base.html:36
+msgctxt "navigation"
+msgid "People"
+msgstr "Personen"
+
+#: templates/base.html:40 # TODO
+msgctxt "navigation"
+msgid "Organizations"
+msgstr "Gremien"
+
+#: templates/base.html:45 templates/mainapp/index.html:65
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
 
-#: templates/base.html:34
-msgctxt "navigation"
-msgid "Sign Out"
-msgstr "Ausloggen"
-
-#: templates/base.html:39
+#: templates/base.html:48 templates/mainapp/index.html:68
 msgctxt "navigation"
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: templates/base.html:47 templates/mainapp/index.html:23
-#: templates/mainapp/search.html:5
+#: templates/base.html:58 templates/mainapp/index.html:29
+#: templates/mainapp/search.html:5 templates/mainapp/search.html:20
 msgctxt "page_title"
 msgid "Search"
 msgstr "Suche"
 
-#: templates/base.html:47 templates/base.html:48
-#: templates/mainapp/index.html:24 templates/mainapp/index.html:26
-#: templates/mainapp/search.html:32
+#: templates/base.html:59 templates/mainapp/index.html:30
 msgctxt "perform search"
 msgid "Search"
 msgstr "Suchen"
 
-#: templates/base.html:62
+#: templates/base.html:61 templates/mainapp/index.html:33
+#| msgid "Search results"
+msgctxt "aria label"
+msgid "Show search results"
+msgstr "Suchergebnisse"
+
+#: templates/base.html:86
 msgctxt "navigation"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/base.html:63
+#: templates/base.html:91
 msgctxt "navigation"
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/error/404.html:6 templates/error/500.html:6
+#: templates/base.html:105
+msgid "is a private project and not authorized by any city council"
+msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
+
+#: templates/email/new_documents.html:5
+msgctxt "email-new-documents"
+msgid "New documents on Meine Stadt Transparent"
+msgstr "Neue Dokumente auf Meine Stadt Transparent"
+
+#: templates/email/new_documents.html:7
+msgctxt "email-new-documents"
+msgid "Notification"
+msgstr "Benachrichtigungen"
+
+#: templates/error/404.html:6
 msgid "Not Found"
 msgstr "Nicht gefunden"
 
@@ -145,7 +449,11 @@ msgstr "Es tut uns Leid. Die angeforderte Seite wurde nicht gefunden."
 
 #: templates/error/404.html:12
 msgid "Error 404"
-msgstr ""
+msgstr "Fehler 404"
+
+#: templates/error/500.html:6
+msgid "Internal Error"
+msgstr "Interner Fehler"
 
 #: templates/error/500.html:11
 msgid "Sorry, there has been an internal error"
@@ -153,124 +461,394 @@ msgstr "Es tut uns Leid. Es gab leider einen internen Fehler."
 
 #: templates/error/500.html:12
 msgid "Error 500"
-msgstr ""
+msgstr "Fehler 400"
 
 #: templates/error/500.html:20
 msgctxt "figure caption"
 msgid "Photography by Luigi Rosa, CC-BY-SA"
 msgstr ""
 
-#: templates/mainapp/about.html:5
+#: templates/info/about.html:5
 msgid "About this project"
 msgstr "Über dieses Projekt"
 
-#: templates/mainapp/calendar.html:6
-msgid "Calendar"
-msgstr "Kalender"
-
-#: templates/mainapp/index.html:5
-msgid "Open Source Ratsinformationssystem"
-msgstr ""
-
-#: templates/mainapp/info_contact.html:5
+#: templates/info/contact.html:5
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/mainapp/info_privacy.html:5
+#: templates/info/privacy.html:5
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/mainapp/meeting.html:10
-msgid "Previous Meeting"
-msgstr ""
+#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:58
+msgid "Calendar"
+msgstr "Kalender"
 
-#: templates/mainapp/meeting.html:16
-msgid "Export"
-msgstr ""
+#: templates/mainapp/file.html:37 templates/mainapp/file.html:47
+#: templates/mainapp/file.html:53
+msgid "Paper"
+msgstr "Vorlage" #TODO
 
-#: templates/mainapp/meeting.html:22
-msgid "Following Meeting"
-msgstr ""
+#: templates/mainapp/file.html:76
+msgid "The file can not be shown"
+msgstr "Die Datei kann nicht angezeigt werden"
 
-#: templates/mainapp/meeting.html:34
-msgid "Time of the Meeting"
-msgstr ""
+#: templates/mainapp/file.html:80
+msgid "Download"
+msgstr "Herunterladen"
 
-#: templates/mainapp/meeting.html:37
-msgid "Place of the meeting"
-msgstr ""
+#: templates/mainapp/file.html:86
+msgid "The file is not available"
+msgstr "Die Datei is nicht verfügbar"
 
-#: templates/mainapp/meeting.html:42
-msgid "Main committee of the meeting"
-msgstr ""
+#: templates/mainapp/index.html:18
+msgid "informs you about your local city council."
+msgstr "informiert Sie über den "
 
-#: templates/mainapp/meeting.html:48
-msgid "Committees participating in the meeting"
-msgstr ""
+#: templates/mainapp/index.html:20
+msgid "More information"
+msgstr "Weitere Informationen"
 
-#: templates/mainapp/meeting.html:62
-msgid "Further Attendees"
-msgstr ""
+#: templates/mainapp/index.html:46
+#| msgid "About this project"
+msgid "About the project"
+msgstr "Über dieses Projekt"
 
-#: templates/mainapp/meeting.html:70
-msgid "Invitation: "
-msgstr ""
+#: templates/mainapp/index.html:50
+msgid "How do city politics work?"
+msgstr "Wie funktioniert Stadtpolitik?"
 
-#: templates/mainapp/meeting.html:75
-msgid "Results protocol: "
-msgstr ""
-
-#: templates/mainapp/meeting.html:80
-msgid "Verbatim protocol: "
-msgstr ""
-
-#: templates/mainapp/meeting.html:90
-msgid "Agenda"
-msgstr ""
-
-#: templates/mainapp/meeting.html:104
-msgid "Not agenda available"
-msgstr ""
-
-#: templates/mainapp/persons.html:6
+#: templates/mainapp/index.html:55 templates/mainapp/persons.html:6
 msgid "Persons"
 msgstr "Personen"
 
-#: templates/mainapp/search.html:40
-msgid "Search results"
-msgstr "Suchergebnisse"
+#: templates/mainapp/index.html:73
+msgid "Organizations"
+msgstr "Gremien"
 
-#: templates/mainapp/userprofiles/home.html:14
-msgid "Log out"
-msgstr "Ausloggen"
+#: templates/mainapp/index.html:80
+msgctxt "Header"
+msgid "Latest Documents"
+msgstr "Neueste Dokumente"
 
-#: templates/mainapp/userprofiles/home.html:29
-msgid "Email adress verification"
+#: templates/mainapp/meeting.html:11
+msgid "Time of the Meeting"
+msgstr "Zeitpunkt der Sitzung"
+
+#: templates/mainapp/meeting.html:14
+msgid "Place of the meeting"
+msgstr "Ort der Sitzung"
+
+#: templates/mainapp/meeting.html:19
+msgid "Main organization of the meeting"
+msgstr "Träger der Sitzung"
+
+#: templates/mainapp/meeting.html:26
+msgid "Participating organizations:"
+msgstr "Teilnehmende Gremien:" # TODO
+
+#: templates/mainapp/meeting.html:30
+msgid "Further Attendees:"
+msgstr "Weitere Teilnehmende:"
+
+#: templates/mainapp/meeting.html:35
+msgid "Invitation: "
+msgstr "Einladung:"
+
+#: templates/mainapp/meeting.html:41
+msgid "Results protocol: "
+msgstr "Ergebnisprotokoll: "
+
+#: templates/mainapp/meeting.html:47
+msgid "Verbatim protocol: "
+msgstr "Wortprotokoll: "
+
+#: templates/mainapp/meeting.html:67
+msgid "Previous Meeting"
+msgstr "Vorige Sitzung"
+
+#: templates/mainapp/meeting.html:73
+msgid "Export"
+msgstr "Exportieren"
+
+#: templates/mainapp/meeting.html:79
+msgid "Following Meeting"
+msgstr "Folgende Sitzung"
+
+#: templates/mainapp/meeting.html:86
+msgid "Agenda"
+msgstr "Tagesordnung"
+
+#: templates/mainapp/meeting.html:103
+msgid "An Agenda has not been published"
+msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
+
+#: templates/mainapp/organization.html:18
+msgctxt "List name"
+msgid "Legislative Terms:"
+msgstr "Legislaturperiode"
+
+#: templates/mainapp/organization.html:22
+msgid "Belongs to this body"
+msgstr "Gehört zur Körperschaft"
+
+#: templates/mainapp/organization.html:26
+msgid "Is located there"
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:33
-msgid "Verify email"
+#: templates/mainapp/organization.html:31
+msgctxt "Header"
+msgid "Members"
+msgstr "Mitglieder"
+
+#: templates/mainapp/organization.html:34
+msgctxt "Header"
+msgid "Paper"
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:35
-msgid "Edit email"
+#: templates/mainapp/organization.html:37
+msgctxt "Header"
+msgid "Meetings"
+msgstr "Sitzungen"
+
+#: templates/mainapp/paper.html:24
+msgid "Legal date: "
 msgstr ""
 
-#: templates/mainapp/userprofiles/home.html:45
-msgid "Change your password"
+#: templates/mainapp/paper.html:28
+msgid "Submitting Organizations:"
 msgstr ""
 
-#: views.py:292
+#: templates/mainapp/paper.html:33
+msgid "Submitting Persons:"
+msgstr ""
+
+#: templates/mainapp/paper.html:44
+msgid "Attached Files"
+msgstr ""
+
+#: templates/mainapp/paper.html:63
+msgid "No files attached"
+msgstr ""
+
+#: templates/mainapp/paper.html:66
+msgid "History"
+msgstr "Historie"
+
+#: templates/mainapp/person.html:15
+msgid "Submitted Papers"
+msgstr ""
+
+#: templates/mainapp/person.html:22
+msgid "No papers submitted"
+msgstr ""
+
+#: templates/mainapp/persons.html:16 templates/mainapp/persons.html:20
+msgctxt "persons-list"
+msgid "Name"
+msgstr "Name"
+
+#: templates/mainapp/persons.html:19
+msgctxt "persons-list"
+msgid "Sort by"
+msgstr "Sortieren"
+
+#: templates/mainapp/persons.html:21 templates/mainapp/persons.html:47
+msgctxt "persons-list"
+msgid "Party"
+msgstr "Partei"
+
+#: templates/mainapp/persons.html:29 templates/mainapp/persons.html:44
+#: templates/mainapp/persons.html:48
+msgctxt "persons-list"
+msgid "All"
+msgstr "Alle"
+
+#: templates/mainapp/persons.html:69
+msgctxt "persons-list"
+msgid "From"
+msgstr "Von"
+
+#: templates/mainapp/persons.html:69
+msgctxt "persons-list"
+msgid "until"
+msgstr "bis"
+
+#: templates/mainapp/persons.html:71
+msgctxt "persons-list"
+msgid "Since"
+msgstr "Seit"
+
+#: templates/mainapp/search.html:27 templates/mainapp/search.html:31
+#: templates/mainapp/search.html:32
+#| msgid "Search"
+msgctxt "search_form"
+msgid "Search term"
+msgstr "Suche"
+
+#: templates/mainapp/search.html:35
+#| msgid "Search"
+msgctxt "search_form"
+msgid "Search"
+msgstr "Suche"
+
+#: templates/mainapp/search.html:42
+msgctxt "search_form"
+msgid "Location"
+msgstr "Ort"
+
+#: templates/mainapp/search.html:50
+msgid "m around"
+msgstr "m um"
+
+#: templates/mainapp/search.html:67
+msgctxt "search_form"
+msgid "Select"
+msgstr "Auswählen"
+
+#: templates/mainapp/search.html:82 templates/mainapp/search.html:87
+msgctxt "search_form"
+msgid "Document Type"
+msgstr "Dokumententyp"
+
+#: templates/mainapp/search.html:112
+msgid "after"
+msgstr "nach"
+
+#: templates/mainapp/search.html:128
+msgid "before"
+msgstr "vor"
+
+#: templates/mainapp/search.html:148
+msgid "Load More"
+msgstr "Mehr laden"
+
+#: templates/mainapp/search.html:153
+#| msgid "Not Found"
+msgid "Nothing Found"
+msgstr "Nicht gefunden"
+
+#: templates/partials/deleted_note.html:4
+msgid "Deleted"
+msgstr "Gelöscht"
+
+#: templates/partials/deleted_note.html:6
+msgid "This object has been deleted. "
+msgstr "Dieser Eintrag wurde gelöscht."
+
+#: templates/partials/deleted_note.html:7
+msgid ""
+"This normally happend when something has been incorrectly published or had "
+"to be depublished."
+msgstr ""
+"Dies passiert üblicherweise dann, wenn etwas fehlerhafterweise veröffentlicht wurde oder "
+"depubliziert werden musste."
+
+
+#: templates/partials/deleted_note.html:10
+msgid "All information on this page is void."
+msgstr " "
+
+#: templates/partials/deleted_note.html:11
+msgid "This page exists solely to inform about the deletion."
+msgstr "Diese Seite existiert nur, um auf diese Löschung hinzuweisen."
+
+#: templates/partials/messages.html:14
+msgid "close message"
+msgstr "Nachricht schließen"
+
+#: templates/partials/subscribe_widget.html:9
+msgid "Unsubscribe"
+msgstr "Benachrichtigung deaktivieren"
+
+#: templates/partials/subscribe_widget.html:13
+msgid "Get notified about new documents"
+msgstr "Über neue Dokumente informiert werden"
+
+#: templates/partials/subscribe_widget.html:14
+msgid "Subscribe"
+msgstr "Benachrichtigungen abonnieren"
+
+#: templates/socialaccount/authentication_error.html:5
+#: templates/socialaccount/authentication_error.html:7
+msgid "Social Network Login Failure"
+msgstr "Fehler beim Social-Media Login"
+
+#: templates/socialaccount/authentication_error.html:10
+msgid ""
+"An error occurred while attempting to login via your social network account."
+msgstr ""
+"Leider ist ein Fehler beim Login mit Ihrem Social-Media-Account aufgetreten."
+
+#: templates/socialaccount/authentication_error.html:12
+msgid "Back to the login"
+msgstr "Zurück zum Login"
+
+#: templates/socialaccount/signup.html:6
+#| msgctxt "login"
+#| msgid "Sign Up"
+msgid "Signup"
+msgstr "Registrieren"
+
+#: templates/socialaccount/signup.html:7 templates/socialaccount/signup.html:34
+#| msgctxt "login"
+#| msgid "Sign Up"
+msgid "Sign Up"
+msgstr "Registrieren"
+
+#: templates/socialaccount/signup.html:11
+#, python-format
+msgid ""
+"You are about to use your\n"
+"        %(provider_name)s account to login to\n"
+"        %(site_name)s. As a final step, please complete the following form:"
+msgstr ""
+"Sie wollen Ihren\n"
+"        %(provider_name)s-Account nutzen, um sich bei %(site_name)s einzuloggen.\n"
+"        Geben Sie bitte abschließend folgende Information ein:"
+
+#: views/meeting.py:90
 msgid "Meeting"
-msgstr ""
+msgstr "Sitzung"
 
-#: views.py:306
+#: views/meeting.py:99
 msgid "Meeting Series"
-msgstr ""
+msgstr "Sitzungs-Reihe"
+
+#: views/persons.py:60
+msgid "You will now receive notifications about new documents."
+msgstr "Sie werden nun über neue Dokumente informiert,"
+
+#: views/persons.py:61 views/search.py:62
+msgid "You will no longer receive notifications."
+msgstr "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche erhalten."
+
+#: views/persons.py:62
+msgid "You have already subscribed to this person."
+msgstr "Sie haben diese Person bereits abonniert"
+
+#: views/profile.py:21 views/search.py:61
+msgid "You will now receive notifications about new search results."
+msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
+
+#: views/search.py:63
+msgid "You have already subscribed to this search."
+msgstr "Sie haben diese Abfrage bereits abonniert."
+
+#: views/search.py:95
+msgid "search disabled"
+msgstr "Suche deaktiviert"
+
+#~ msgctxt "login"
+#~ msgid "Sign in with..."
+#~ msgstr "Einloggen mit..."
+
+#~ msgctxt "login"
+#~ msgid "Sign in with your e-mail-address"
+#~ msgstr "Mit der E-Mail-Adresse einloggen"
+
+#~ msgid "Log out"
+#~ msgstr "Ausloggen"
 
 #~ msgid "Home"
 #~ msgstr "Start"
-
-#~| msgid "Search"
-#~ msgid "Search"
-#~ msgstr "Suche"
