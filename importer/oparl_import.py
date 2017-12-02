@@ -146,7 +146,7 @@ class OParlImport(OParlObjects):
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
                 if err_count == 0:
-                    self.logger.info("Finished Successfully: {}", futures[future])
+                    self.logger.info("Finished Successfully: {}".format(futures[future]))
                 else:
                     self.logger.info("Finished with {} errors: {}".format(err_count, futures[future]))
 
