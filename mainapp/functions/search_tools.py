@@ -51,12 +51,17 @@ def add_modified_since(s, since: datetime):
     return s
 
 
+def _escape_elasticsearch_query(query):
+    escaped = query.replace('/', '\/')
+    return escaped
+
+
 def params_to_query(params: dict):
     s = Search(index=settings.ELASTICSEARCH_INDEX)
     options = {}
     errors = []
     if 'searchterm' in params and params['searchterm'] is not "":
-        s = s.query('query_string', query=params['searchterm'])
+        s = s.query('query_string', query=_escape_elasticsearch_query(params['searchterm']))
         options['searchterm'] = params['searchterm']
 
     try:
