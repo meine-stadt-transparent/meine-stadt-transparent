@@ -21,57 +21,96 @@ export default class FacettedSearch {
         this.$form.find("select").change(this.search.bind(this));
     }
 
+    onDatePickerChanged(start, end) {
+        this.$form.find("input[name=before]").val(end.format("YYYY-MM-DD"));
+        this.$form.find("input[name=after]").val(start.format("YYYY-MM-DD"));
+        this.$form.find("input[name=after]").change();
+        this.setDateRangeStr();
+    }
+
+    setDateRangeStr() {
+        let before = this.$form.find("input[name=before]").val(),
+            after = this.$form.find("input[name=after]").val(),
+            found = false;
+
+        if (after && before) {
+            this.$openerBtn.find(".time-not-set").attr("hidden", "hidden");
+            this.$openerBtn.find(".time-description").removeAttr("hidden");
+
+            // Find an entry in this.dateRanges whose dates matches the selected values.
+            // If an entry is found, the key is the descriptive string to be shown, ...
+            Object.keys(this.dateRanges).forEach(dateRange => {
+                if (
+                    this.dateRanges[dateRange][0].format('YYYY-MM-DD') === after &&
+                    this.dateRanges[dateRange][1].format('YYYY-MM-DD') === before
+                ) {
+                    found = true;
+                    this.$openerBtn.find(".time-description").text(dateRange);
+                }
+            });
+
+            // ...otherwise we just show the explicit date
+            if (!found) {
+                this.$openerBtn.find(".time-description").text(after + ' - ' + before);
+            }
+        } else {
+            this.$openerBtn.find(".time-not-set").removeAttr("hidden");
+            this.$openerBtn.find(".time-description").text("").attr("hidden", "hidden");
+        }
+    }
+
+    onDatePickerCanceled() {
+        this.$form.find('input[name=before]').val('');
+        this.$form.find('input[name=after]').val('');
+        this.$form.find('input[name=after]').change();
+        this.setDateRangeStr();
+    }
+
+    buildDateRanges(strings) {
+        this.dateRanges = {};
+        this.dateRanges[strings['today']] = [moment(), moment()];
+        this.dateRanges[strings['last_7d']] = [moment().subtract(6, 'days'), moment()];
+        this.dateRanges[strings['this_month']] = [moment().startOf('month'), moment().endOf('month')];
+        this.dateRanges[strings['last_month']] = [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')];
+        this.dateRanges[strings['this_year']] = [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')];
+    }
+
     initDatePicker() {
-        let $openerBtn = this.$form.find('#timeRangeButton'),
-            $inputBefore = this.$form.find('input[name=before]'),
-            $inputAfter = this.$form.find('input[name=after]');
+        this.$openerBtn = this.$form.find('#timeRangeButton');
+        let strings = this.$openerBtn.data("strings");
+        this.buildDateRanges(strings);
+        this.setDateRangeStr();
 
-        let ranges = {
-            'Today': [moment(), moment()],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-            'This Year': [moment().startOf('year'), moment().endOf('year')],
-            'Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
-        };
-
-        $openerBtn.daterangepicker({
+        this.$openerBtn.daterangepicker({
             locale: {
-                format: 'YYYY-MM-DD'
+                format: 'YYYY-MM-DD',
+                applyLabel: strings['apply'],
+                cancelLabel: strings['na'],
+                customRangeLabel: strings['custom'],
+                monthNames: strings['month_names'].split('|'),
+                daysOfWeek: strings['day_names'].split('|'),
+                firstDay: 1
             },
             opens: 'center',
             showDropdowns: true,
             showCustomRangeLabel: true,
-            ranges: ranges
-        }, (start, end, label) => {
-            if (ranges[label] !== undefined) {
-                $openerBtn.find(".time-description").text(label);
-            } else {
-                $openerBtn.find(".time-description").text(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-            }
-            $openerBtn.find(".time-not-set").attr('hidden', 'hidden');
-            $inputBefore.val(end.format('YYYY-MM-DD'));
-            $inputAfter.val(start.format('YYYY-MM-DD'));
-            $inputAfter.change();
-        });
+            ranges: this.dateRanges
+        }, this.onDatePickerChanged.bind(this));
 
-        $openerBtn.on('cancel.daterangepicker', () => {
-            $openerBtn.find(".time-description").text('');
-            $openerBtn.find(".time-not-set").removeAttr('hidden');
-            $inputBefore.val('');
-            $inputAfter.val('');
-            $inputAfter.change();
-        });
+        this.$openerBtn.on('cancel.daterangepicker', this.onDatePickerCanceled.bind(this));
 
         // Workaround to create a "toggling" behavior
         let closeOnClick = () => {
             $(document).trigger("mousedown.daterangepicker");
         };
-        $openerBtn.on("show.daterangepicker", () => {
-            $openerBtn.on("click", closeOnClick);
+        this.$openerBtn.on("show.daterangepicker", () => {
+            // Wait until the current click event is safely gone
+            window.setTimeout(() => {
+                this.$openerBtn.on("click", closeOnClick);
+            }, 500);
         });
-        $openerBtn.on("hide.daterangepicker", () => {
-            $openerBtn.off("click", closeOnClick);
+        this.$openerBtn.on("hide.daterangepicker", () => {
+            this.$openerBtn.off("click", closeOnClick);
         });
     }
 
@@ -188,18 +227,24 @@ export default class FacettedSearch {
 
         if (lat !== "" && lng !== "" && radius > 0) {
             this.$locationSelector.find(".location-not-set").attr('hidden', 'hidden');
+            this.$locationSelector.find(".location-description").removeAttr("hidden");
 
-            $desc.find(".location").text("").attr("title", "");
-            let url = this.$locationSelector.data('format-geo-url').replace(/\/23/, '/' + lat).replace(/42\//, lng + '/')
+            let $location = $desc.find(".location");
+            if ($location.data("lat") == lat && $location.data("lng") == lng) {
+                // The location has not changed, so just leave the text label untouched
+                return;
+            }
+
+            $location.text("").data("lat", "").data("lng", "").attr("title", "");
+            let url = this.$locationSelector.data("format-geo-url").replace(/\/23/, "/" + lat).replace(/42\//, lng + "/");
             $.get(url, (data) => {
-                $desc.find(".location").text(data['formatted']);
-                this.$locationSelector.find("button").attr("title", data['formatted']);
+                $location.text(data["formatted"]).data("lat", lat).data("lng", lng);
+                this.$locationSelector.find("button").attr("title", data["formatted"]);
             });
             $desc.find(".radius").text(radius);
-            this.$locationSelector.find(".location-description").removeAttr('hidden');
         } else {
-            this.$locationSelector.find(".location-not-set").removeProp('hidden');
-            $desc.attr('hidden', 'hidden');
+            this.$locationSelector.find(".location-not-set").removeProp("hidden");
+            $desc.attr("hidden", "hidden");
         }
     }
 
