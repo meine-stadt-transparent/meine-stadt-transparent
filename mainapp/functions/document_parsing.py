@@ -219,21 +219,24 @@ def extract_locations(text, fallback_city=None):
             location = Location.objects.get(name=location_name)
             locations.append(location)
         except Location.DoesNotExist:
-            geodata = get_geodata(found_location, fallback_city)
-
             location = Location()
             location.name = location_name
             location.short_name = location_name
             location.is_official = False
             location.osm_id = None  # @TODO
+            location.geometry = None
+            location.save()
+
+            # as get_geodata takes a while, we save the location before calling it to prevent other threads
+            # of the importer to create a second instance of this location in the meantime.
+            # This is not 100% perfect thread-safe, but at least a lot better than nothing. @TODO True thread-safety
+            geodata = get_geodata(found_location, fallback_city)
             if geodata:
                 location.geometry = {
                     "type": "Point",
                     "coordinates": [geodata['lng'], geodata['lat']]
                 }
-            else:
-                location.geometry = None
-            location.save()
+                location.save()
 
             bodies = detect_relevant_bodies(location)
             for body in bodies:
