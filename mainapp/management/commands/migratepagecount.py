@@ -12,8 +12,11 @@ class Command(BaseCommand):
         files = File.objects.all()
         for file in files:
             if file.storage_filename and file.mime_type == "application/pdf":
-                path = os.path.join("../mst-storage/files", file.storage_filename)
-                page_count = get_page_count_from_pdf(path)
-                print(path + ": " + page_count)
-                file.page_count = page_count
-                file.save()
+                try:
+                    path = os.path.join("../mst-storage/files", file.storage_filename)
+                    page_count = get_page_count_from_pdf(path)
+                    print(path + ": " + str(page_count))
+                    file.page_count = page_count
+                    file.save()
+                except OSError:
+                    pass
