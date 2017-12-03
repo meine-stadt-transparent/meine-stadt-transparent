@@ -3,16 +3,18 @@ services:
   django:
     build: .
     container_name: django
-    command: ["/app-env/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
     volumes:
       - django_media:/media
       - django_static:/static
       - django_cache:/cache
       - "./.env-docker-compose:/config/.env"
     ports:
-      - 8000:8000
+      - ${DJANGO_PORT:-8000}:8000
     networks:
       - meinestadttransparent_net
+    depends_on:
+      - mariadb
+      - elasticsearch
 
   mariadb:
     image: mariadb:10
@@ -41,20 +43,14 @@ services:
         hard: -1
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
-    ports:
-      - 9200:9200
     networks:
       - meinestadttransparent_net
 
 volumes:
   elasticsearch_data:
-    driver: local
   django_media:
-    driver: local
   django_static:
-    driver: local
   django_cache:
-    driver: local
 
 
 networks:

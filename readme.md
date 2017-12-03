@@ -10,7 +10,38 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
 
-## Setup
+## Quickstart with docker
+
+Install [docker]((https://docs.docker.com/engine/installation/)
+) and [docker compose](https://docs.docker.com/compose/install/)
+
+Copy `etc/env-docker-compose` to `.env-docker-compose` and change the setting to your desires.
+
+Build the docker container (This will take some time):
+
+```bash
+docker-compose build
+```
+
+Run the migrations:
+
+```bash
+docker-compose run django ./manage.py migrate
+```
+
+Before starting, you'll need some data. You can either import (See the import section) or just use some dummy data:
+
+```bash
+docker-compose exec django ./manage.py loaddata mainapp/fixtures/initdata.json
+```
+
+You can now start everything with
+```bash
+docker-compose up
+```
+
+
+## Manual Setup
 
 ### Requirements:
  - Python 3 with pip
@@ -44,9 +75,9 @@ Configure your webserver. Example configurations:
  
 ### pygobject (gi) and liboparl
 
-This is currently only required to use the importer. You can step it if you don't use the importer.
+This is currently only required to use the importer. You can skip it if you don't use the importer.
 
-GObject needs to be installed system-wide.
+pygobject needs to be installed system-wide and only works with the system python. If you have any better solution for using a vala library in python we would be extremely happy to use it.
 
  -  Debian/Ubuntu:
     ```bash
