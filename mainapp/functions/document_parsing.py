@@ -6,6 +6,7 @@ from django.conf import settings
 from django.urls import reverse
 from geopy import OpenCage
 from pdfbox import PDFBox
+from PyPDF2 import PdfFileReader
 
 from mainapp.models import SearchStreet, Body, Location
 
@@ -19,6 +20,15 @@ def extract_text_from_pdf(pdf_file):
     parser = PDFBox()
     parsed_text = parser.extract_text(escaped_filename)
     return parsed_text
+
+
+def get_page_count_from_pdf(pdf_file):
+    """
+    :param pdf_file: str
+    :return: int
+    """
+    pdf = PdfFileReader(open(pdf_file, 'rb'))
+    return pdf.getNumPages()
 
 
 def create_geoextract_data(bodies=None):

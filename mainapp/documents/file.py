@@ -16,6 +16,7 @@ class FileDocument(DocType):
             'name',
             'description',
             'displayed_filename',
+            'page_count',
             'parsed_text',
             'created',
             'modified',

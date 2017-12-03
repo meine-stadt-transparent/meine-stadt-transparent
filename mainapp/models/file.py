@@ -13,6 +13,7 @@ class File(DefaultFields):
     legal_date = models.DateField(null=True, blank=True)
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
+    page_count = models.IntegerField(null=True, blank=True)
     parsed_text = models.TextField(null=True, blank=True)
     # In case the license is different than the rest of the system, e.g. a CC-licensed picture
     license = models.CharField(max_length=200, null=True, blank=True)

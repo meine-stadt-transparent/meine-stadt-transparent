@@ -32,6 +32,7 @@ nltk==3.2.5
 numpy==1.13.3
 oauthlib==2.0.6
 pyahocorasick==1.1.6
+PyPDF2==1.26.0
 python-dateutil==2.6.1
 python-pdfbox==0.1.0
 python-slugify==1.2.4

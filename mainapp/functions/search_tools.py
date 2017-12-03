@@ -79,8 +79,6 @@ def params_to_query(params: dict):
     except ValueError:
         pass
 
-    print(options)
-
     if 'document-type' in params:
         split = params['document-type'].split(",")
         s = s.filter('terms', _type=[i + "_document" for i in split])

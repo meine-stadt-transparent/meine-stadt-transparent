@@ -9,7 +9,7 @@ import gi
 from django.conf import settings
 from django.utils import dateparse
 
-from mainapp.functions.document_parsing import extract_text_from_pdf
+from mainapp.functions.document_parsing import extract_text_from_pdf, get_page_count_from_pdf
 from mainapp.models import DefaultFields, File
 
 gi.require_version('OParl', '0.2')
@@ -162,8 +162,8 @@ class OParlHelper:
         if file.mime_type == "application/pdf":
             self.logger.info("Extracting text from PDF: " + path)
             try:
-                text = extract_text_from_pdf(path)
-                file.parsed_text = text
+                file.parsed_text = extract_text_from_pdf(path)
+                file.page_count = get_page_count_from_pdf(path)
             except PDFTextExtractionNotAllowed:
                 message = "The pdf {} is encrypted".format(path)
                 self.errorlist.append(message)
