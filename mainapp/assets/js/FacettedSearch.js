@@ -300,6 +300,8 @@ export default class FacettedSearch {
             }
             $subscribeWidget.html(data['subscribe_widget']);
             $("#endless-scroll-target").html($data.find("> li"));
+            this.updateLocationString();
+            this.$refreshSpinner.attr("hidden", "hidden");
         });
     }
 
@@ -307,14 +309,16 @@ export default class FacettedSearch {
         if (event) {
             event.preventDefault();
         }
-        this.$refreshSpinner.removeAttr("hidden");
         let querystring = this.getQuerystring();
+        if (querystring === "") {
+            // This would fail on the backend side (and it also wouldn't give reasonable results)
+            return;
+        }
+        this.$refreshSpinner.removeAttr("hidden");
 
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
 
         window.history.pushState({}, "", url);
         this.updateSearchResults(querystring);
-        this.updateLocationString();
-        this.$refreshSpinner.attr("hidden", "hidden");
     }
 }
