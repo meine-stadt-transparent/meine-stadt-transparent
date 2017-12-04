@@ -23,7 +23,7 @@ RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -y python3-numpy python3-scipy nodejs python3-pip python3-venv python3-gi \
-    json-glib-1.0 gir1.2-json-1.0 git libmariadb-client-lgpl-dev
+    json-glib-1.0 gir1.2-json-1.0 git libmysqlclient-dev
 
 # liboparl
 COPY --from=0 /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo
