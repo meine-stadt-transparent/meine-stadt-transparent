@@ -22,27 +22,37 @@ Build the docker container (This will take some time):
 docker-compose build
 ```
 
-Before starting the Stack, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
+Before starting, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-The database is still empty, so we need to run the migrations.
+Now we can launch the docker containers:
+
+```bash
+docker-compose up mariadb elasticsearch
+```
+
+Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 
+
+The database is still empty, so now we need to run the migrations:
 
 ```bash
 docker-compose run django ./manage.py migrate
 ```
 
-Before starting, you'll need some data. You can either import (See the corresponding section below) or just use some dummy data.
+Before starting, you'll need some data. You can either import from an oparl api (See the corresponding section below) or use our dummy data for a quickstart:
 
 ```bash
 docker-compose run django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
-Start the whole stack. Stop with `ctrl+c` or add `-d` to run in background. Note that elaasticsearch will take some time to start
+Finally, we can launch everything. Add `-d` to run it in background:
 
 ```bash
 docker-compose up
 ```
- 
-You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. (Note for advanced users: The python in the virtualenv is configured as entrypoint.)
+
+Meine Stadt Transparent should now be running at [localhost:8000](http://localhost:8000).
+
+You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: The python in the virtualenv is configured as entrypoint.
 
 ## Manual Setup
 

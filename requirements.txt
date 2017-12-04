@@ -18,8 +18,9 @@ django-widget-tweaks==1.4.1
 elasticsearch==5.5.1
 elasticsearch-dsl==5.3.0
 Flask==0.12.2
--e git://github.com/stadt-karlsruhe/geoextract.git@v0.3.0#egg=geoextract
+-e git://github.com/stadt-karlsruhe/geoextract.git@b18296b54e79b664388ad71804e64bdd50161b85#egg=geoextract
 geopy==1.11.0
+gunicorn==19.7.1
 html2text==2017.10.4
 icalendar==4.0.0
 idna==2.6
