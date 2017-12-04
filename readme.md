@@ -25,7 +25,7 @@ docker-compose build
 Start the whole stack.
 
 ```bash
-docker-compose up
+docker-compose up -d
 ```
 
 The database is still empty, so we need to run the migrations.

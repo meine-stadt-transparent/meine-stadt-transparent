@@ -23,7 +23,7 @@ RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -y python3-numpy python3-scipy nodejs python3-pip python3-venv python3-gi \
-    json-glib-1.0  gir1.2-json-1.0 git libmariadbclient-dev
+    json-glib-1.0 gir1.2-json-1.0 git libmariadb-client-lgpl-dev
 
 # liboparl
 COPY --from=0 /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo
@@ -38,7 +38,6 @@ RUN ln -s /usr/lib/python3/dist-packages/gi /app-env/lib/python*/site-packages/
 # Activate the virtualenv in a docker compatible way
 ENV PATH "/app-env/bin:$PATH"
 RUN pip install --upgrade pip
-RUN pip install gunicorn
 # The default locale breaks python 3 < python 3.7. https://bugs.python.org/issue28180
 RUN pip install -r requirements.txt
 
