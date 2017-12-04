@@ -22,11 +22,7 @@ Build the docker container (This will take some time):
 docker-compose build
 ```
 
-Start the whole stack.
-
-```bash
-docker-compose up -d
-```
+Before starting the Stack, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
 The database is still empty, so we need to run the migrations.
 
@@ -37,10 +33,16 @@ docker-compose run django ./manage.py migrate
 Before starting, you'll need some data. You can either import (See the corresponding section below) or just use some dummy data.
 
 ```bash
-docker-compose exec django ./manage.py loaddata mainapp/fixtures/initdata.json
+docker-compose run django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
-You can now execute all the other commands from this readme by prepending them with `docker-compose exec django`. (Note for advanced users: The python in the virtualenv is configured as entrypoint.)
+Start the whole stack. Stop with `ctrl+c` or add `-d` to run in background. Note that elaasticsearch will take some time to start
+
+```bash
+docker-compose up
+```
+ 
+You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. (Note for advanced users: The python in the virtualenv is configured as entrypoint.)
 
 ## Manual Setup
 
