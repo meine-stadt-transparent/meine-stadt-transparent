@@ -10,10 +10,9 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
 
-## Quickstart with docker
+## Quickstart with docker compose
 
-Install [docker]((https://docs.docker.com/engine/installation/)
-) and [docker compose](https://docs.docker.com/compose/install/)
+Install [docker](https://docs.docker.com/engine/installation/) and [docker compose](https://docs.docker.com/compose/install/)
 
 Copy `etc/env-docker-compose` to `.env-docker-compose` and change the setting to your desires.
 
@@ -23,23 +22,25 @@ Build the docker container (This will take some time):
 docker-compose build
 ```
 
-Run the migrations:
+Start the whole stack.
+
+```bash
+docker-compose up
+```
+
+The database is still empty, so we need to run the migrations.
 
 ```bash
 docker-compose run django ./manage.py migrate
 ```
 
-Before starting, you'll need some data. You can either import (See the import section) or just use some dummy data:
+Before starting, you'll need some data. You can either import (See the corresponding section below) or just use some dummy data.
 
 ```bash
 docker-compose exec django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
-You can now start everything with
-```bash
-docker-compose up
-```
-
+You can now execute all the other commands from this readme by prepending them with `docker-compose exec django`. (Note for advanced users: The python in the virtualenv is configured as entrypoint.)
 
 ## Manual Setup
 
@@ -53,6 +54,7 @@ docker-compose up
  [Docker installation instructions](https://docs.docker.com/engine/installation/)
 
 On Debian/Ubuntu:
+
 ```bash
 sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre
 ```
@@ -60,8 +62,8 @@ sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettex
 Install dependencies
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv venv # You can change the latter `venv` to whatever you like ..
+source venv/bin/activate # .. but you also need to change it in this line 
 pip install -r requirements.txt
 npm install
 ```
@@ -96,7 +98,11 @@ Try `python3 -c "import gi"` inside your virtualenv to ensure everything is work
 
 For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions.
 
-Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this is for your os)
+Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this is for your os). For Ubuntu 64-bit you need 
+
+```bash
+sudo cp OParl-0.2.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib
+```
 
 ### Development
 
@@ -108,72 +114,10 @@ Use `./manage.py runserver` to start the server.
 
 Follow the [the official guide](https://docs.djangoproject.com/en/1.11/howto/deployment/). Unlike the guide, we recommend gunicorn over wsgi as gunicorn is much simpler to configure.
 
-## Important Commands
+## Import
 
-### Starting the development server
+Import a whole RIS from an OParl-instance. See `--help` for options:
 
-```bash
-docker-compose up # For elasticsearch
-```
-
-```bash
-source venv/bin/activate
-./manage.py migrate
-./manage.py createsuperuser
-./manage.py runserver
-```
-
-For compiling SCSS/JS automatically:
-
-```bash
-npm run watch
-```
-
-### Testing
-
-Running the test cases:
-```bash
-ENV_PATH=./etc/env-test ./manage.py test
-```
-
-### Important URLs:
-
-- https://opensourceris.local/
-- https://opensourceris.local/admin/
-- https://opensourceris.local/elasticsearch_admin/ (default password for elasticsearch: ``elastic`` / ``changeme``)
-
-### Dummy Data
-
-To load the dummy data for development:
-
-```bash
-./manage.py loaddata mainapp/fixtures/initdata.json mainapp/fixtures/socialapps.json
-```
-
-To reindex the elasticsearch index (requires elastic search to be enabled):
-
-```bash
-./manage.py search_index --rebuild
-```
-
-To save the modified dummy data
-
-```bash
-./manage.py dumpdata mainapp -e mainapp.UserProfile --indent 4 > mainapp/fixtures/initdata.json
-```
-
-### Translating strings
-
-```bash
-cd mainapp/
-django-admin makemessages -a
-# translate django.po
-django-admin compilemessages
-```
-
-### Import
-
-Import a whole RIS from an OParl-instance. See `--help` for options
 ```bash
 ./manage.py importoparl https://www.muenchen-transparent.de/oparl/v1.0
 ```
@@ -213,7 +157,64 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importbodies --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ./manage.py importcityoutline 05358024 1
 ./manage.py importstreets 05358024 1
-./manage.py importoparl --use-sternberg-workarounds --threadcount 1 https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+```
+
+## Important Commands
+
+### Starting the development server
+
+```bash
+source venv/bin/activate
+./manage.py migrate
+./manage.py createsuperuser
+./manage.py runserver
+```
+
+For compiling SCSS/JS automatically:
+
+```bash
+npm run watch
+```
+
+### Testing
+
+Running the test cases:
+```bash
+ENV_PATH=./etc/env-test ./manage.py test
+```
+
+### Dummy data
+
+The dummy data is used for the tests, but can also be used for developement.
+
+Loading:
+
+```bash
+./manage.py loaddata mainapp/fixtures/initdata.json mainapp/fixtures/socialapps.json
+```
+
+Saving:
+
+```bash
+./manage.py dumpdata mainapp -e mainapp.UserProfile --indent 4 > mainapp/fixtures/initdata.json
+```
+
+### Elasticsearch
+
+To reindex the elasticsearch index (requires elastic search to be enabled):
+
+```bash
+./manage.py search_index --rebuild
+```
+
+### Translating strings
+
+```bash
+cd mainapp/
+django-admin makemessages -a
+# translate django.po
+django-admin compilemessages
 ```
 
 ### Setting up Social Login
@@ -237,7 +238,6 @@ However, for debugging purposes, it can be called stand alone, skipping the actu
 ```bash
 ./manage.py notifyusers --debug --override-since 2017-09-10
 ``` 
-
 
 ### Creating a page with additional JS libraries
 
