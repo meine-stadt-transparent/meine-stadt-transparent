@@ -12,7 +12,7 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ## Quickstart with docker compose
 
-Install [docker](https://docs.docker.com/engine/installation/) and [docker compose](https://docs.docker.com/compose/install/)
+Install [docker ce](https://www.docker.com/community-edition) and [docker compose](https://docs.docker.com/compose/install/)
 
 Copy `etc/env-docker-compose` to `.env-docker-compose` and change the setting to your desires.
 
