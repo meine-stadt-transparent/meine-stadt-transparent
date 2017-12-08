@@ -76,6 +76,8 @@
   padding-left: 0;
 
   .result {
+    margin-top: 15px;
+
     i {
       color: map_get($theme-colors, dark);
     }
@@ -108,8 +110,8 @@
     margin: 0;
   }
   .result-highlights {
-    border-left: solid 5px #ddd;
-    padding: 8px;
+    font-size: 0.8rem;
+    color: #545454;
 
     mark {
       font-weight: bold;

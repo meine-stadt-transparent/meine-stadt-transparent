@@ -37,12 +37,21 @@ def _search_to_context(query, params: dict, options, search):
         if hasattr(hit.meta, "highlight"):
             for field_name, field_highlights in hit.meta.highlight.to_dict().items():
                 for field_highlight in field_highlights:
-                    highlights.append(field_highlight)
+                    if field_name == "name":
+                        result["name"] = field_highlight
+                    elif field_name == "short_name":
+                        pass
+                    else:
+                        if "Fotoausstellung" in field_highlight:
+                            print(field_name, field_highlight)
+                        highlights.append(field_highlight)
 
         if len(highlights) > 0:
             result["highlight"] = html_escape_highlight(highlights[0])
         else:
             result["highlight"] = None
+
+        result["name"] = html_escape_highlight(result["name"])
 
         results.append(result)
 

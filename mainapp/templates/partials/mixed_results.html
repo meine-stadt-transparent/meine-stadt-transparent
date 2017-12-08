@@ -12,7 +12,7 @@
                             </i>
                         </div>
                         <div class="col">
-                            <h2 class="text-truncate result-title">{{ result.name }}</h2>
+                            <h2 class="text-truncate result-title">{{ result.name | safe }}</h2>
                             <div class="text-muted text-truncate">
                                 <span>{% firstof result.paper_type.paper_type result.type_translated %}</span>
                                 {% if result.legal_date %}
