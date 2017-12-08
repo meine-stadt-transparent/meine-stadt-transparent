@@ -35,10 +35,10 @@
             {% endwith %}
 
             {% if paper.change_request_of %}
-                <div>
+                <p>
                     <i class="fa-custom fa-pencil"></i>Change Request of
                     <a href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a>
-                </div>
+                </p>
             {% endif %}
 
             <h2 class="h4">{% trans "Attached Files" %}</h2>
@@ -47,7 +47,8 @@
                     {% if paper.main_file %}
                         <li class="font-weight-bold">
                             <a href="{% url 'file' paper.main_file.id %}">
-                                <i class="fa-custom fa-file"></i>{% firstof paper.main_file.name paper.main_file.displayed_filename %}
+                                <i class="fa-custom fa-file"></i>
+                                {% firstof paper.main_file.name paper.main_file.displayed_filename %}
                             </a>
                         </li>
                     {% endif %}

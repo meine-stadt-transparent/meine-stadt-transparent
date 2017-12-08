@@ -22,7 +22,7 @@
                 {% else %}
                     <p class="lead">{% trans "No papers found" %}</p>
                 {% endif %}
-                {% if memberships_active or memberships_no_end or memberships_ended %}
+                {% if memberships %}
                     <h2 class="h3">{% trans "Memberships" %}</h2>
                     {% for membership_list in memberships %}
                         <dl>
