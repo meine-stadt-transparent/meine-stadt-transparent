@@ -32,8 +32,17 @@ def _search_to_context(query, params: dict, options, search):
         result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
         result["type_translated"] = DOCUMENT_TYPE_NAMES[result["type"]]
 
+        highlights = []
         if hasattr(hit.meta, "highlight"):
-            result["highlight"] = hit.meta.highlight.parsed_text
+            for field_name, field_highlights in hit.meta.highlight.to_dict().items():
+                for field_highlight in field_highlights:
+                    highlights.append(field_highlight)
+
+        if len(highlights) > 0:
+            result["highlight"] = highlights[0]
+        else:
+            result["highlight"] = None
+
         results.append(result)
 
     context = {

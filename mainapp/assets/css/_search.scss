@@ -69,13 +69,14 @@
   list-style: none;
   padding-left: 0;
 
-  li {
+  .result {
     i {
       color: map_get($theme-colors, dark);
     }
 
     .col {
       padding: 0;
+      min-width: 0; // Workaround for word-wrapping-problem: https://css-tricks.com/flexbox-truncated-text/
     }
 
     a:hover {
@@ -93,6 +94,22 @@
 
     &:last-child {
       border-bottom: none;
+    }
+  }
+  .result-title {
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin: 0;
+  }
+  .result-highlights {
+    border-left: solid 5px #ddd;
+    padding: 8px;
+
+    mark {
+      font-weight: bold;
+    }
+    p {
+      margin-bottom: 0;
     }
   }
 }

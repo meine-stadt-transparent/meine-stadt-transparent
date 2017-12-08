@@ -61,7 +61,14 @@ def params_to_query(params: dict):
     options = {}
     errors = []
     if 'searchterm' in params and params['searchterm'] is not "":
-        s = s.query('query_string', query=_escape_elasticsearch_query(params['searchterm']))
+        s = s.query('match', _all={
+            'query': _escape_elasticsearch_query(params['searchterm']),
+            'operator': 'and',
+            'fuzziness': 'AUTO',
+            'prefix_length': 1
+        })
+        s = s.highlight_options(require_field_match=False)
+        s = s.highlight('*', fragment_size=150, pre_tags='<mark>', post_tags='</mark>')
         options['searchterm'] = params['searchterm']
 
     try:

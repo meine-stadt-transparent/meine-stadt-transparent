@@ -2,17 +2,17 @@
 
 <ul class="results-list" id="endless-scroll-target" data-total-hits="{{ total_hits }}">
     {% for result in results %}
-        <li class="clearfix">
+        <li class="clearfix result">
             <a href="{% url result.type result.id %}" class="no-link-color">
-                <div class="py-2 container">
+                <article class="py-2 container">
                     <div class="row">
                         <div class="col-auto p-2">
-                            <i class="fa fa-fw fa-3x
+                            <i class="fa fa-fw fa-3x result-icon
                             {% include "partials/type_to_fa_icon.html" with type=result.type %}" aria-hidden="true">
                             </i>
                         </div>
-                        <div class="col text-truncate">
-                            <div class="lead text-truncate">{{ result.name }}</div>
+                        <div class="col">
+                            <h2 class="text-truncate result-title">{{ result.name }}</h2>
                             <div class="text-muted text-truncate">
                                 <span>{% firstof result.paper_type.paper_type result.type_translated %}</span>
                                 {% if result.legal_date %}
@@ -21,9 +21,15 @@
                                 {% endif %}
                             </div>
                             <div class="text-muted text-truncate">{{ result.body.name }}</div>
+
+                            {% if result.highlight %}
+                                <section class="result-highlights">
+                                    <p>{{ result.highlight | safe }}</p>
+                                </section>
+                            {% endif %}
                         </div>
                     </div>
-                </div>
+                </article>
             </a>
         </li>
     {% endfor %}
