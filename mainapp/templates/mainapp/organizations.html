@@ -2,14 +2,14 @@
 {% load i18n %}
 
 {% block content %}
-    <div class="container" id="organizations-list">
+    <div class="container multi-list-filter">
         <div class="mb-3 position-relative">
-            <input id="organizations-list-filter" class="form-control" placeholder="{% trans "Filter" %}">
+            <input class="multi-list-filter-input form-control" placeholder="{% trans "Filter" %}" name="filter">
             <i class="search-icon fa fa-filter" aria-hidden="true"></i>
         </div>
         {% for organization in organizations %}
             {% if organization.all|length > 0 %}
-                <div class="organizations-list-sublist">
+                <div class="multi-list-filter-sublist">
                     {% include "partials/header_list.html" with objects=organization.all name=organization.type link="organization" %}
                 </div>
             {% endif %}

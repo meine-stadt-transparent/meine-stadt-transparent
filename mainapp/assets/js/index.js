@@ -5,7 +5,7 @@ import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
 import FacettedSearch from "./FacettedSearch";
 import EndlessScrolling from "./EndlessScrolling";
-import init_list_for_organizations from "./list.js"
+import MultiListFilter from "./MultiListFilter.js"
 // Force loading these images, as they are not referenced in the stylesheet but required by the JS library
 // noinspection ES6UnusedImports
 import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
@@ -28,12 +28,11 @@ let REGISTERED_CLASSES = {
     ".js-home-map": HomeMap,
     ".search-autocomplete": SearchBar,
     ".detailed-searchform": FacettedSearch,
-    "#start-endless-scroll": EndlessScrolling
+    "#start-endless-scroll": EndlessScrolling,
+    ".multi-list-filter": MultiListFilter
 };
 
 $(function () {
-    init_list_for_organizations();
-
     for (let selector in REGISTERED_CLASSES) {
         if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
             $(selector).each(function () {

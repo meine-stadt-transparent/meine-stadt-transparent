@@ -3,11 +3,13 @@
     <ul class="list">
         {% for object in objects %}
             <li>
-                {% if link %}
-                    <span class="value-in-list"><a href="{% url link object.id %}">{{ object }}</a></span>
-                {% else %}
-                    <span class="value-in-list">{{ object }}</span>
-                {% endif %}
+                <span class="multi-list-filter-value">
+                    {% if link %}
+                        <a href="{% url link object.id %}">{{ object }}</a>
+                    {% else %}
+                        {{ object }}
+                    {% endif %}
+                </span>
             </li>
         {% endfor %}
     </ul>
