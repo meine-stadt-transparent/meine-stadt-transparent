@@ -94,6 +94,7 @@ export default class FacettedSearch {
             opens: 'center',
             showDropdowns: true,
             showCustomRangeLabel: true,
+            linkedCalendars: false,
             ranges: this.dateRanges
         }, this.onDatePickerChanged.bind(this));
 
