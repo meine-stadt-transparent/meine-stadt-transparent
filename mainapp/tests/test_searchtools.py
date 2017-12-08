@@ -17,12 +17,23 @@ expected_params = {
             ],
             'must': [
                 {
-                    'query_string': {
-                        'query': 'word radius anotherword'
+                    'match': {
+                        '_all': {
+                            'query': 'word radius anotherword',
+                            'operator': 'and',
+                            'fuzziness': 'AUTO',
+                            'prefix_length': 1
+                        }
                     }
                 }
             ]
         }
+    },
+    'highlight': {
+        'fields': {
+            '*': {'fragment_size': 150, 'pre_tags': '<mark>', 'post_tags': '</mark>'}
+        },
+        'require_field_match': False
     }
 }
 
@@ -37,6 +48,7 @@ class TestSearchtools(TestCase):
     def test_params_to_query(self):
         options, query, errors = params_to_query(self.params)
         self.assertEqual(errors, [])
+        print(query.to_dict())
         self.assertEqual(query.to_dict(), expected_params)
 
     def test_params_to_search_string(self):
