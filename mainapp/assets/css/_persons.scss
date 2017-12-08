@@ -33,3 +33,13 @@
     text-overflow: ellipsis;
   }
 }
+
+.membership-info {
+  &::before {
+    content: '|';
+    }
+
+  &:first-child::before {
+    content: '';
+  }
+}

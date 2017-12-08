@@ -40,7 +40,7 @@
         "description": "The place where frank lives. Somewhere in Washington D.C.",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.04946875572205,38.95611336793506]}",
         "bodies": []
     }
 },
@@ -57,7 +57,7 @@
         "description": "",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
+        "geometry": "{\"type\":\"Polygon\",\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]]}",
         "bodies": [
             3
         ]
@@ -76,7 +76,7 @@
         "description": "That look kinda centerish enough for what is needed",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.05016613006592,38.88931256197531]}",
         "bodies": []
     }
 },
@@ -93,7 +93,7 @@
         "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
         "is_official": true,
         "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
+        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.00895667076111,38.889788561664936]}",
         "bodies": []
     }
 },
@@ -339,7 +339,7 @@
         "mime_type": "application/pdf",
         "legal_date": "1984-04-01",
         "filesize": 153996,
-        "page_count": 3,
+        "page_count": null,
         "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
         "license": null,
         "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",

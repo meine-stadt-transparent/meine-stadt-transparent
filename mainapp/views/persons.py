@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
@@ -67,10 +68,17 @@ def person(request, pk):
     filter_organization = Paper.objects.filter(organizations__organizationmembership__person__id=pk)
     paper = (filter_self | filter_organization).distinct()
 
+    memberships_active = selected_person.organizationmembership_set.filter(end__gte=datetime.now().date())
+    memberships_no_end = selected_person.organizationmembership_set.filter(end__isnull=True)
+    memberships_ended = selected_person.organizationmembership_set.filter(end__lt=datetime.now().date())
+
     context = {
         "person": selected_person,
         "papers": paper,
-        "memberships": selected_person.organizationmembership_set.all(),
+        "memberships_active": memberships_active,
+        "memberships_no_end": memberships_no_end,
+        "memberships_ended": memberships_ended,
+        "memberships": [memberships_active, memberships_no_end, memberships_ended],
         "subscribable": True,
         "is_subscribed": is_subscribed_to_search(request.user, search_params),
     }

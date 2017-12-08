@@ -11,7 +11,7 @@ services:
     ports:
       - ${DJANGO_PORT:-8000}:8000
     networks:
-      - meinestadttransparent_net
+      - network
     depends_on:
       - mariadb
       - elasticsearch
@@ -25,7 +25,7 @@ services:
       - MYSQL_PASSWORD=meinestadttransparent
       - MYSQL_RANDOM_ROOT_PASSWORD=true
     networks:
-      - meinestadttransparent_net
+      - network
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.4
@@ -37,14 +37,14 @@ services:
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
 
-    ulimits: # Elastic search needs those
+    ulimits: # Elasticsearch needs those
       memlock:
         soft: -1
         hard: -1
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     networks:
-      - meinestadttransparent_net
+      - network
 
 volumes:
   elasticsearch_data:
@@ -54,4 +54,4 @@ volumes:
 
 
 networks:
-  meinestadttransparent_net:
+  network:

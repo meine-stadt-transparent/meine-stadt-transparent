@@ -4,7 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
 [![Dependency Status](https://gemnasium.com/badges/github.com/meine-stadt-transparent/meine-stadt-transparent.svg)](https://gemnasium.com/github.com/meine-stadt-transparent/meine-stadt-transparent)
 
-Meine Stadt Transparent is a council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinforamtionssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources. 
+Meine Stadt Transparent is a free council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinforamtionssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources. 
 
 The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
