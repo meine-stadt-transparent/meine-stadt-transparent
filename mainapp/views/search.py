@@ -42,8 +42,6 @@ def _search_to_context(query, params: dict, options, search):
                     elif field_name == "short_name":
                         pass
                     else:
-                        if "Fotoausstellung" in field_highlight:
-                            print(field_name, field_highlight)
                         highlights.append(field_highlight)
 
         if len(highlights) > 0:
