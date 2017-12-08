@@ -281,7 +281,7 @@ export default class FacettedSearch {
     }
 
     updateSearchResults(querystring) {
-        let url = this.$form.data("results-only-url").slice(0, -1) + querystring;
+        let url = this.$form.data("results-only-url").slice(0, -1) + querystring + "/";
         $.get(url, (data) => {
             let $data = $(data['results']);
             let $btn = $("#start-endless-scroll");

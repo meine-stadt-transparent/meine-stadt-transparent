@@ -54,7 +54,7 @@
                     <form class="form-inline search-autocomplete" method="GET"
                           action="{% url 'search' '' %}">
                         <input class="form-control" type="text" name="query" value="" autocomplete="off"
-                               data-suggest-url="{% url 'search_autosuggest' '' %}"
+                               data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
                                placeholder="{% trans "Search" context "page_title" %}"
                                aria-label="{% trans "Search" context "perform search" %}">
                         <button class="search-icon fa fa-search" type="submit"

@@ -30,7 +30,7 @@
                     <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
                     <input name="searchterm" type="text" class="form-control"
                            value="{{ options.searchterm }}" id="searchterm" autocomplete="off"
-                           data-suggest-url="{% url 'search_autosuggest' '' %}"
+                           data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
                            placeholder="{% trans "Search term" context "search_form" %}"
                            aria-label="{% trans "Search term" context "search_form" %}">
                     <span class="input-group-btn">

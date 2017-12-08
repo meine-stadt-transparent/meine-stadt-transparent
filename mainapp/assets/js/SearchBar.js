@@ -4,14 +4,15 @@ export default class SearchBar {
     constructor($widget) {
         this.$widget = $widget;
         this.$input = $widget.find("input");
-        let url = this.$input.data('suggest-url');
+        let urlTemplate = this.$input.data('suggest-url');
 
         this.$input.typeahead(null,
             {
                 name: 'name',
                 display: 'name',
-                source: function (query, syncResults, asyncResults) {
-                    $.get(url + query, function (data) {
+                source: (query, syncResults, asyncResults) => {
+                    let url = urlTemplate.replace(/SEARCH_TERM/, query);
+                    $.get(url, (data) => {
                         asyncResults(data);
                     });
                 },
