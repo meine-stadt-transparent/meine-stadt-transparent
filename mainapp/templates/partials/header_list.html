@@ -1,12 +1,12 @@
 {% if objects|length > 0 %}
     <h2 class="h3">{{ name }}</h2>
-    <ul>
+    <ul class="list">
         {% for object in objects %}
             <li>
                 {% if link %}
-                    <a href="{% url link object.id %}">{{ object }}</a>
+                    <span class="value-in-list"><a href="{% url link object.id %}">{{ object }}</a></span>
                 {% else %}
-                    {{ object }}
+                    <span class="value-in-list">{{ object }}</span>
                 {% endif %}
             </li>
         {% endfor %}
