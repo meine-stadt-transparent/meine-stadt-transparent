@@ -12,22 +12,26 @@
 
 {% block content %}
     <div class="container">
-        <div class="card">
-            <h1 class="card-header">
+        <div class="search-card card">
+            <div class="card-header">
                 <div class="subscribe-widget">
                     {% include 'partials/subscribe_widget.html' %}
                 </div>
-                {% trans "Search" context "page_title" %}
-                <span class="search-refreshing-spinner" hidden="hidden">
-                    <i class="fa fa-spinner fa-spin" aria-label="The search is refreshing ..."></i>
-                </span>
-            </h1>
+                <h1>
+                    {% trans "Search" context "page_title" %}
+                    <span class="search-refreshing-spinner" hidden="hidden">
+                        <i class="fa fa-spinner fa-spin" aria-label="The search is refreshing ..."></i>
+                    </span>
+                </h1>
+            </div>
             <form id="detailed-searchform" class="section detailed-searchform p-2 mb-0" method="GET"
                   action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
 
                 <!-- Searchterm -->
-                <div class="input-group">
-                    <label for="searchterm" class="sr-only">{% trans "Search term" context "search_form" %}</label>
+                <section class="input-group">
+                    <h2 class="sr-only"><label for="searchterm">
+                        {% trans "Search term" context "search_form" %}
+                    </label></h2>
                     <input name="searchterm" type="text" class="form-control"
                            value="{{ options.searchterm }}" id="searchterm" autocomplete="off"
                            data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
@@ -38,12 +42,12 @@
                             {% trans "Search" context "search_form" %}
                         </button>
                     </span>
-                </div>
+                </section>
                 <div class="form-row align-items-center">
                     <!-- Location -->
                     <section class="col-auto search-facet location-col"
                              data-format-geo-url="{% url 'search_format_geo' 23 42 %}">
-                        <div class="sr-only">{% trans "Location" context "search_form" %}</div>
+                        <h2 class="sr-only">{% trans "Location" context "search_form" %}</h2>
 
                         <div class="dropdown">
                             <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
@@ -84,7 +88,7 @@
 
                     <!-- Document Type -->
                     <section class="col-auto search-facet">
-                        <div class="sr-only">{% trans "Document Type" context "search_form" %}</div>
+                        <h2 class="sr-only">{% trans "Document Type" context "search_form" %}</h2>
                         <div class="dropdown facet-dropdown">
                             <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                                     id="documentTypeButton"
@@ -96,10 +100,10 @@
                                     <div class="dropdown-item">
                                         <label>
                                             {% if document_type_id in options.document_type %}
-                                                <input type="checkbox" name="document-type[]" checked autocomplete="off"
+                                                <input type="checkbox" name="document-type[]" checked
                                                        value="{{ document_type_id }}">
                                             {% else %}
-                                                <input type="checkbox" name="document-type[]" autocomplete="off"
+                                                <input type="checkbox" name="document-type[]"
                                                        value="{{ document_type_id }}">
                                             {% endif %}
                                             {{ document_type_name }}
@@ -112,7 +116,7 @@
 
                     <!-- Time range -->
                     <section class="col-auto search-facet search-facet-daterange">
-                        <div class="sr-only">{% trans "Time range" context "search_form" %}</div>
+                        <h2 class="sr-only">{% trans "Time range" context "search_form" %}</h2>
                         <div class="facet-dropdown">
                             <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                                     id="timeRangeButton"
@@ -136,6 +140,7 @@
                             </button>
                             <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}">
                             <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}">
+                        </div>
                     </section>
                 </div>
             </form>

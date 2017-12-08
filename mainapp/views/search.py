@@ -14,7 +14,8 @@ from elasticsearch_dsl import Search
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
-from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable
+from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable, \
+    html_escape_highlight
 from mainapp.models import Body
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
@@ -39,7 +40,7 @@ def _search_to_context(query, params: dict, options, search):
                     highlights.append(field_highlight)
 
         if len(highlights) > 0:
-            result["highlight"] = highlights[0]
+            result["highlight"] = html_escape_highlight(highlights[0])
         else:
             result["highlight"] = None
 

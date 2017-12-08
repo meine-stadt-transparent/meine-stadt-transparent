@@ -2,6 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.urls import reverse
+from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
 from elasticsearch_dsl import Search, Q
 
@@ -53,6 +54,12 @@ def add_modified_since(s, since: datetime):
 
 def _escape_elasticsearch_query(query):
     escaped = query.replace('/', '\/')
+    return escaped
+
+
+def html_escape_highlight(highlight):
+    escaped = escape(highlight)
+    escaped = escaped.replace('&lt;mark&gt;', '<mark>').replace('&lt;/mark&gt;', '</mark>')
     return escaped
 
 
