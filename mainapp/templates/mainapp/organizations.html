@@ -7,10 +7,22 @@
             <input class="multi-list-filter-input form-control" placeholder="{% trans "Filter" %}" name="filter">
             <i class="search-icon fa fa-filter" aria-hidden="true"></i>
         </div>
-        {% for organization in organizations %}
-            {% if organization.all|length > 0 %}
+        {% for organization_group in organizations %}
+            {% if organization_group.all|length > 0 %}
                 <div class="multi-list-filter-sublist">
-                    {% include "partials/header_list.html" with objects=organization.all name=organization.type %}
+                    {% if organization_group.all|length > 0 %}
+                        <h2 class="h3">{{ organization_group.type }}</h2>
+                        <ul class="list">
+                            {% for organization in organization_group.all %}
+                                <li>
+                                    <span class="multi-list-filter-value
+{% if organization.id == main_organization %}font-weight-bold{% endif %}">
+                                            <a href="{% url "organization" organization.id %}">{{ organization.name }}</a>
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
             {% endif %}
         {% endfor %}

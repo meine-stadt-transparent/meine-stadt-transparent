@@ -8,7 +8,7 @@ from django.utils.timezone import localtime, now
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Consultation, Organization, Paper, Meeting
+from mainapp.models import Body, File, Consultation, Organization, Paper, Meeting, Person
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
 
@@ -77,6 +77,7 @@ def organizations(request):
 
     context = {
         "organizations": organizations_ordered,
+        "main_organization": settings.SITE_DEFAULT_ORGANIZATION,
     }
     return render(request, "mainapp/organizations.html", context)
 
@@ -94,9 +95,9 @@ def organization(request, pk):
     organization = get_object_or_404(Organization, id=pk)
     context = {
         "organization": organization,
-        "memberships": organization.organizationmembership_set.all(),
-        "papers": Paper.objects.filter(organizations__in=[pk])[:25],
-        "meetings": Meeting.objects.filter(organizations__in=[pk])[:25],
+        "memberships": Person.objects.filter(organizationmembership__organization_id=pk),
+        "papers": Paper.objects.filter(organizations__in=[pk]).order_by('legal_date', 'modified')[:25],
+        "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by('start', 'modified')[:25],
     }
     return render(request, "mainapp/organization.html", context)
 

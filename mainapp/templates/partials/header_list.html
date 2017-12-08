@@ -1,15 +1,13 @@
 {% if objects|length > 0 %}
     <h2 class="h3">{{ name }}</h2>
-    <ul class="list">
+    <ul>
         {% for object in objects %}
             <li>
-                <span class="multi-list-filter-value">
-                    {% if object.get_default_link %}
-                        <a href="{{ object.get_default_link }}">{{ object }}</a>
-                    {% else %}
-                        {{ object }}
-                    {% endif %}
-                </span>
+                {% if object.get_default_link %}
+                    <a href="{{ object.get_default_link }}">{{ object }}</a>
+                {% else %}
+                    {{ object }}
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
