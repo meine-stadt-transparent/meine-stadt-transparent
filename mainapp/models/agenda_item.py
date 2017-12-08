@@ -7,7 +7,7 @@ from .meeting import Meeting
 
 
 class AgendaItem(DefaultFields):
-    key = models.CharField(max_length=20)
+    key = models.CharField(max_length=20, null=True, blank=True)
     title = models.TextField()
     meeting = models.ForeignKey(Meeting)
     consultation = models.ForeignKey(Consultation, null=True, blank=True)
