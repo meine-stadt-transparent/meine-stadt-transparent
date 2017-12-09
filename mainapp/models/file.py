@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from .default_fields import DefaultFields
 from .location import Location
@@ -39,3 +40,6 @@ class File(DefaultFields):
                 coordinates.append(coordinate)
 
         return coordinates
+
+    def get_default_link(self):
+        return reverse('file', args=[self.id])

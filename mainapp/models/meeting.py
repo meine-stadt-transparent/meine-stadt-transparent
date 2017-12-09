@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from icalendar import Event
 
@@ -55,3 +56,6 @@ class Meeting(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    def get_default_link(self):
+        return reverse('meeting', args=[self.id])

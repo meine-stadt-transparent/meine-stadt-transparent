@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 from .default_fields import DefaultFields
 from .legislative_term import LegislativeTerm
@@ -16,3 +18,9 @@ class Body(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    def get_default_link(self):
+        if settings.SITE_DEFAULT_BODY == self.id:
+            return reverse('index')
+        else:
+            return reverse('body', args=[self.id])

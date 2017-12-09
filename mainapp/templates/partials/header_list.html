@@ -4,8 +4,8 @@
         {% for object in objects %}
             <li>
                 <span class="multi-list-filter-value">
-                    {% if link %}
-                        <a href="{% url link object.id %}">{{ object }}</a>
+                    {% if object.get_default_link %}
+                        <a href="{{ object.get_default_link }}">{{ object }}</a>
                     {% else %}
                         {{ object }}
                     {% endif %}

@@ -10,7 +10,7 @@
         {% for organization in organizations %}
             {% if organization.all|length > 0 %}
                 <div class="multi-list-filter-sublist">
-                    {% include "partials/header_list.html" with objects=organization.all name=organization.type link="organization" %}
+                    {% include "partials/header_list.html" with objects=organization.all name=organization.type %}
                 </div>
             {% endif %}
         {% endfor %}

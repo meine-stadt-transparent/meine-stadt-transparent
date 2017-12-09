@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from .default_fields import DefaultFields
 from .location import Location
@@ -16,3 +17,6 @@ class Person(DefaultFields):
     def name_autocomplete(self):
         """ A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error """
         return self.name if len(self.name) > 0 else ' '
+
+    def get_default_link(self):
+        return reverse('person', args=[self.id])

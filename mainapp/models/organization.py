@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import pgettext as _
 
 from .body import Body
@@ -34,3 +35,6 @@ class Organization(DefaultFields):
     # A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error
     def name_autocomplete(self):
         return self.name if len(self.name) > 0 else ' '
+
+    def get_default_link(self):
+        return reverse('organization', args=[self.id])

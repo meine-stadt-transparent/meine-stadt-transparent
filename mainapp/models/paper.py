@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from .default_fields import DefaultFields
 from .file import File
@@ -29,3 +30,6 @@ class Paper(DefaultFields):
 
     def __str__(self):
         return self.short_name
+
+    def get_default_link(self):
+        return reverse('paper', args=[self.id])

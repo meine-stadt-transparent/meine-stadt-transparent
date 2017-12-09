@@ -21,7 +21,7 @@
 
         <p title="{% trans 'Belongs to this body' %}">
             <i class="fa-custom fa-globe" aria-hidden="true"></i>
-            <a href="{% url "body" organization.body.id %}">{{ organization.body }}</a>
+            <a href="{{ organization.body.get_default_link }}">{{ organization.body }}</a>
         </p>
         {% if organization.location %}
             <p title="{% trans 'Is located there' %}">
@@ -30,12 +30,12 @@
         {% endif %}
 
         {% trans "Members" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=memberships link="person" icon="user" %}
+        {% include "partials/header_list.html" with objects=memberships icon="user" %}
 
         {% trans "Paper" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=papers link="paper" icon="user" %}
+        {% include "partials/header_list.html" with objects=papers icon="user" %}
 
         {% trans "Meetings" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=meetings link="meeting" icon="calendar" %}
+        {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
     </div>
 {% endblock %}

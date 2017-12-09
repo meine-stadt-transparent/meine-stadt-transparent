@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from mainapp.models.default_fields import DefaultFields
 from .person import Person
@@ -14,3 +15,6 @@ class OrganizationMembership(DefaultFields):
 
     def __str__(self):
         return "{}: {}".format(self.person, self.organization)
+
+    def get_default_link(self):
+        return reverse('person', args=[self.person_id])
