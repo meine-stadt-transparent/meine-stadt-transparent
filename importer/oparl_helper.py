@@ -164,8 +164,8 @@ class OParlHelper:
             try:
                 file.parsed_text = extract_text_from_pdf(path)
                 file.page_count = get_page_count_from_pdf(path)
-            except PDFTextExtractionNotAllowed:
-                message = "The pdf {} is encrypted".format(path)
+            except Exception:
+                message = "Could not parse pdf file {}".format(path)
                 self.errorlist.append(message)
         elif file.mime_type == "text/text":
             with open(path) as f:
