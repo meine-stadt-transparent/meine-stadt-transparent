@@ -11,6 +11,7 @@ from django.utils import dateparse
 
 from mainapp.functions.document_parsing import extract_text_from_pdf, get_page_count_from_pdf
 from mainapp.models import DefaultFields, File
+from mainapp.models.default_fields import ShortableNameFields
 
 gi.require_version('OParl', '0.2')
 gi.require_version('Json', '1.0')
@@ -100,25 +101,14 @@ class OParlHelper:
         return None
 
     @staticmethod
-    def add_default_fields(libobject: OParl.Object, dbitem: DefaultFields, name_fixup=None):
+    def set_names(libobject: OParl.Object, dbitem: ShortableNameFields, name_fixup=None):
         dbitem.name = libobject.get_name() or name_fixup
-        dbitem.short_name = libobject.get_short_name() or dbitem.name
-
-        # Add an ellipsis to not-so-short short names
-        if len(dbitem.short_name) > 50:
-            dbitem.short_name = dbitem.short_name[:47] + "\u2026"
-
-        # FIXME: We can't just cut off official texts
-        if len(dbitem.name) > 200:
-            dbitem.name = dbitem.name.split("\n")[0]
-        if len(dbitem.name) > 200:
-            dbitem.name = dbitem.name[:200]
-
+        dbitem.set_short_name(libobject.get_short_name() or dbitem.name)
         return dbitem
 
     # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
     # TODO: Check the pycharm bug tracker for that
-    def check_existing(self, libobject: OParl.Object, constructor: Type[DefaultFields], add_defaults=True,
+    def check_existing(self, libobject: OParl.Object, constructor: Type[DefaultFields], add_names=True,
                        name_fixup=None):
         """ Checks common criterias for oparl objects. """
         if not libobject:
@@ -132,8 +122,8 @@ class OParlHelper:
             dbobject = constructor()
             dbobject.oparl_id = libobject.get_id()
             dbobject.deleted = libobject.get_deleted()
-            if add_defaults:
-                self.add_default_fields(libobject, dbobject, name_fixup)
+            if add_names:
+                self.set_names(libobject, dbobject, name_fixup)
             return dbobject
 
         if libobject.get_deleted():
@@ -153,8 +143,8 @@ class OParlHelper:
         self.logger.debug("Modified")
         dbobject.oparl_id = libobject.get_id()
         dbobject.deleted = libobject.get_deleted()
-        if add_defaults:
-            self.add_default_fields(libobject, dbobject, name_fixup)
+        if add_names:
+            self.set_names(libobject, dbobject, name_fixup)
         return dbobject
 
     def extract_text_from_file(self, file: File):

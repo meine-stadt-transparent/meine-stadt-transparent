@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.translation import pgettext as _
 
 from .body import Body
-from .default_fields import DefaultFields
+from .default_fields import DefaultFields, ShortableNameFields
 from .legislative_term import LegislativeTerm
 from .location import Location
 from .organization_type import OrganizationType
@@ -16,9 +16,7 @@ ORGANIZATION_TYPE_NAMES = {
 }
 
 
-class Organization(DefaultFields):
-    name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=50)
+class Organization(DefaultFields, ShortableNameFields):
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
     body = models.ForeignKey(Body)

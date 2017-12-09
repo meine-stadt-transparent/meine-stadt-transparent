@@ -1,4 +1,6 @@
 from django.db import models
+import re
+import textwrap
 
 
 class SoftDeleteModelManager(models.Manager):
@@ -33,6 +35,32 @@ class DefaultFields(models.Model):
     @classmethod
     def by_oparl_id(cls, oparl_id):
         return cls.objects.get(oparl_id=oparl_id)
+
+    class Meta:
+        abstract = True
+
+
+class ShortableNameFields(models.Model):
+    name = models.TextField()
+    short_name = models.CharField(max_length=50)
+
+    def has_alternative_short_name(self):
+        """
+        Returns True, if short_name (minus the … at the end) is NOT the beginning of name,
+        i.e. contains really individual content
+        :return: bool
+        """
+        short_normalized = re.sub(r"\u2026$", "", self.short_name)
+        position = self.name.find(short_normalized)
+        if position == 0:
+            return False
+        else:
+            return True
+
+    def set_short_name(self, name):
+        if len(name) > 50:
+            name = textwrap.wrap(name, 49)[0] + "\u2026"
+        self.short_name = name
 
     class Meta:
         abstract = True
