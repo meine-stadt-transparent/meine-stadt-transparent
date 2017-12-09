@@ -49,7 +49,7 @@ def _search_to_context(query, params: dict, options, search):
         else:
             result["highlight"] = None
 
-        result["name"] = html_escape_highlight(result["name"])
+        result["name_escaped"] = html_escape_highlight(result["name"])
 
         results.append(result)
 
