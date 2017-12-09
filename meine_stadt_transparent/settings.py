@@ -277,6 +277,7 @@ CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
 CSP_SCRIPT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'",)
@@ -311,6 +312,8 @@ LOGGING = {
         },
     }
 }
+
+OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
 
 if DEBUG:
     # Debug Toolbar
