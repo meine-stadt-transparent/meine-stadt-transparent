@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from importer.citytools import import_streets
+from mainapp.models import Body
 
 
 class Command(BaseCommand):
@@ -11,4 +12,6 @@ class Command(BaseCommand):
         parser.add_argument('body-id', type=int)
 
     def handle(self, *args, **options):
-        import_streets(options["body-id"], options['gemeindeschluessel'])
+        body = Body.objects.get(id="body-id")
+
+        import_streets(body, options['gemeindeschluessel'])

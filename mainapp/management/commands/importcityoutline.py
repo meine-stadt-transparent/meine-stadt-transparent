@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from importer.citytools import import_outline
+from mainapp.models import Body
 
 
 class Command(BaseCommand):
@@ -12,4 +13,6 @@ class Command(BaseCommand):
         parser.add_argument('--tmpfile', type=str, default='/tmp/city-outline.json')
 
     def handle(self, *args, **options):
-        import_outline(options["body-id"], options["gemeindeschluessel"], options["tmpfile"])
+        body = Body.objects.get(id="body-id")
+
+        import_outline(body, options["gemeindeschluessel"], options["tmpfile"])

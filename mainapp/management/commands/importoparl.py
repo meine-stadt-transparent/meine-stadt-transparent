@@ -1,5 +1,8 @@
 from django.core.management.base import BaseCommand
 
+from importer.functions import get_importer
+from importer.oparl_auto import OParlAuto
+
 
 class Command(BaseCommand):
     help = 'Import the data from an oparl api into the database'
@@ -21,24 +24,6 @@ class Command(BaseCommand):
         parser.add_argument('--batchsize', type=int)
         parser.set_defaults(**default_options)
 
-    # noinspection PyUnresolvedReferences
-    @staticmethod
-    def import_importer(options):
-        # Remove gi requirement for running tests
-        try:
-            if options["use_sternberg"]:
-                from importer.sternberg_import import SternbergImport as Importer
-            else:
-                from importer.oparl_import import OParlImport as Importer
-        except ImportError as e:
-            if str(e) == "No module named 'gi'":
-                raise ImportError("You need to install liboparl for the importer. The readme contains the installation "
-                                  "instructions")
-            else:
-                raise e
-
-        return Importer
-
     def handle(self, *args, **options):
-        importer = self.import_importer(options)(options)
+        importer = get_importer(options)(options)
         importer.run()

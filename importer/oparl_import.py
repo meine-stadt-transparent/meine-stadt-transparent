@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
 
 import gi
+import logging
 import requests
 from django.db import transaction
 
@@ -92,7 +93,7 @@ class OParlImport(OParlObjects):
 
         return err_count
 
-    def get_bodies(self):
+    def get_bodies(self) -> List[OParl.Body]:
         return self.system.get_body()
 
     def bodies_singlethread(self, bodies):
@@ -165,11 +166,12 @@ class OParlImport(OParlObjects):
     @classmethod
     def run_static(cls, config):
         """ This method is requried as instances of this class can't be moved to other processes """
+        logger = logging.getLogger(__name__)
         try:
             runner = cls(config)
             runner.run_multithreaded()
         except Exception:
-            self.logger.error("There was an error in the Process for {}".format(config["entrypoint"]))
-            self.logger.error(traceback.format_exc())
+            logger.error("There was an error in the Process for {}".format(config["entrypoint"]))
+            logger.error(traceback.format_exc())
             return False
         return True

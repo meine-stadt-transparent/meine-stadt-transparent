@@ -28,9 +28,7 @@ out geom;
 """
 
 
-def import_streets(body_id, gemeindeschluessel):
-    body = Body.objects.get(id=body_id)
-
+def import_streets(body, gemeindeschluessel):
     logger.info('Importing streets from {}'.format(gemeindeschluessel))
 
     query = streets_query_template.format(gemeindeschluessel)
@@ -51,8 +49,7 @@ def import_streets(body_id, gemeindeschluessel):
                 logger.info("Created: %s" % node['tags']['name'])
 
 
-def import_outline(body_id, gemeindeschluessel, tmpfile):
-    body = Body.objects.get(id=body_id)
+def import_outline(body, gemeindeschluessel, tmpfile):
     if not body.outline:
         outline = Location()
         outline.name = 'Outline of ' + body.name
