@@ -276,6 +276,8 @@ CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
+SEARCH_PAGINATION_LENGTH = 20
+
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")

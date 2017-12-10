@@ -4,32 +4,32 @@
  */
 export default class EndlessScrolling {
     constructor($button) {
-        this.endlessScrollEnded = false;
-        this.isLoading = false;
         this.$button = $button;
+        this.reset();
         this.$target = $("#endless-scroll-target");
-        this.$baseUrl = this.$button.data("url");
-        this.$button.click(() => {
-            this.$button.hide();
-            this.checkAndLoad($button);
-            this.scrollListener();
-        });
+        this.$button.click(this.activate.bind(this));
     }
 
-    checkAndLoad($button) {
-        if (this.isLoading) {
+    activate() {
+        this.$button.hide();
+        this.isActive = true;
+        this.checkAndLoad();
+        this.scrollListener();
+    }
+
+    checkAndLoad() {
+        if (this.isLoading || !this.isActive) {
             return;
         }
         if ($(window).scrollTop() >= $(document).height() - $(window).height() - 500) {
             this.isLoading = true;
-            //let url = $button.data("url") + "?after=" + (this.$target.find("> li").length - 1);
-            let url = this.$baseUrl + "?after=" + this.$target.find("> li").length;
+            let url = this.$button.data("url") + "?after=" + this.$target.find("> li").length;
             $.get(url, (data) => {
                 let $data = $(data["results"]);
                 if ($data.length > 0) {
                     $("#endless-scroll-target").append($data.find("> li"));
                 } else {
-                    this.endlessScrollEnded = true;
+                    this.isActive = false;
                 }
                 this.isLoading = false;
             });
@@ -39,9 +39,16 @@ export default class EndlessScrolling {
     scrollListener() {
         $(window).one("scroll", () => {
             this.checkAndLoad();
-            if (!this.endlessScrollEnded) {
+            if (this.isActive) {
                 setTimeout(this.scrollListener.bind(this), 100);
             }
         });
+    }
+
+    // Called from external sources like FacettedSearch.js
+    reset() {
+        this.isActive = false;
+        this.isLoading = false;
+        this.$button.show();
     }
 }

@@ -10,6 +10,8 @@ export default class FacettedSearch {
         this.$form = $form;
         this.$refreshSpinner = $(".search-refreshing-spinner");
 
+        this.currentQueryString = null;
+
         this.initLocationSelector();
         this.initDocumentTypeSelector();
         this.initAutocomplete();
@@ -283,6 +285,11 @@ export default class FacettedSearch {
     updateSearchResults(querystring) {
         let url = this.$form.data("results-only-url").slice(0, -1) + querystring + "/";
         $.get(url, (data) => {
+            if (querystring !== this.currentQueryString) {
+                // This request probably had too much latency and there is another request going on (or completed) already
+                return;
+            }
+
             let $data = $(data['results']);
             let $btn = $("#start-endless-scroll");
             let current = $data.find("> li").length;
@@ -299,6 +306,8 @@ export default class FacettedSearch {
                 $btn.attr('hidden', 'hidden');
                 $nothingFound.attr('hidden', 'hidden');
             }
+            $btn.data('url', data['more_link']);
+            $btn.data('widget').reset();
             $subscribeWidget.html(data['subscribe_widget']);
             $("#endless-scroll-target").html($data.find("> li"));
             this.updateLocationString();
@@ -311,15 +320,22 @@ export default class FacettedSearch {
             event.preventDefault();
         }
         let querystring = this.getQuerystring();
-        if (querystring === "") {
-            // This would fail on the backend side (and it also wouldn't give reasonable results)
+        if (querystring === this.currentQueryString) {
+            // Prevents double loading of the same result when additional change-events occur
             return;
         }
+        this.currentQueryString = querystring;
+
         this.$refreshSpinner.removeAttr("hidden");
 
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
 
         window.history.pushState({}, "", url);
+
+        if (querystring === "") {
+            // This would fail on the backend side (and it also wouldn't give reasonable results)
+            return;
+        }
         this.updateSearchResults(querystring);
     }
 }

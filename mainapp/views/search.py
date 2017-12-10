@@ -59,6 +59,7 @@ def _search_to_context(query, params: dict, options, search):
         "options": options,
         "document_types": DOCUMENT_TYPE_NAMES,
         "map": _build_map_object(main_body, []),
+        "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
         "total_hits": executed.hits.total,
         "subscribable": params_are_subscribable(params),
     }
@@ -81,6 +82,7 @@ def search_index(request, query):
     except NeedsLoginError as err:
         return redirect(err.redirect_url)
 
+    search = search[0:settings.SEARCH_PAGINATION_LENGTH]
     context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)
@@ -93,7 +95,7 @@ def search_results_only(request, query):
     params = search_string_to_params(query)
     options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    search = search[after:after + 20]
+    search = search[after:after + settings.SEARCH_PAGINATION_LENGTH]
     context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)
@@ -102,6 +104,7 @@ def search_results_only(request, query):
         'results': loader.render_to_string('partials/mixed_results.html', context, request),
         'total_results': context['total_hits'],
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
+        'more_link': reverse("search_results_only", args=[query]),
     }
 
     return JsonResponse(result, safe=False)

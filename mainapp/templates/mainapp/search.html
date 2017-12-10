@@ -150,6 +150,7 @@
 
                 <button class="btn btn-secondary w-100" id="start-endless-scroll"
                         data-url="{% url "search_results_only" query %}"
+                        data-pagination-length="{{ pagination_length }}"
                         {% if total_hits == results|length %} hidden="hidden" {% endif %}>
                     <span>{% trans "Load More" %}</span>
                     <span class="total-hits badge badge-light">{{ total_hits }}</span>
