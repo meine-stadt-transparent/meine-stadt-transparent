@@ -1,17 +1,15 @@
 from django.db import models
 from django.urls import reverse
 
-from .default_fields import DefaultFields
+from .default_fields import DefaultFields, ShortableNameFields
 from .file import File
 from .organization import Organization
 from .paper_type import PaperType
 from .person import Person
 
 
-class Paper(DefaultFields):
+class Paper(DefaultFields, ShortableNameFields):
     reference_number = models.CharField(max_length=50)
-    name = models.CharField(max_length=300)
-    short_name = models.CharField(max_length=50)
     description = models.TextField(null=True, blank=True)
     organizations = models.ManyToManyField(Organization, blank=True)
     # Only relevant if a person acts independently from one of the submitting organizations

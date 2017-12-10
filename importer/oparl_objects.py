@@ -214,7 +214,7 @@ class OParlObjects(OParlHelper):
         return location
 
     def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
-        item = self.check_existing(libobject, AgendaItem, add_defaults=False)
+        item = self.check_existing(libobject, AgendaItem, add_names=False)
         if not item:
             return
 
@@ -245,7 +245,7 @@ class OParlObjects(OParlHelper):
         return item
 
     def consultation(self, libobject: OParl.Consultation):
-        consultation = self.check_existing(libobject, Consultation, add_defaults=False)
+        consultation = self.check_existing(libobject, Consultation, add_names=False)
         if not consultation:
             return
 
@@ -303,7 +303,7 @@ class OParlObjects(OParlHelper):
         file.storage_filename = urlhash
 
     def file(self, libobject: OParl.File):
-        file = self.check_existing(libobject, File, add_defaults=False)
+        file = self.check_existing(libobject, File, add_names=False)
         if not file:
             return
         self.logger.info("Processing File {}".format(libobject.get_id()))
@@ -340,7 +340,7 @@ class OParlObjects(OParlHelper):
 
     def person(self, libobject: OParl.Person):
         self.logger.info("Processing Person {}".format(libobject.get_id()))
-        person = self.check_existing(libobject, Person)
+        person = self.check_existing(libobject, Person, add_names=False)
         if not person:
             return
 
@@ -351,7 +351,7 @@ class OParlObjects(OParlHelper):
         person.save()
 
     def membership(self, organization, libobject: OParl.Membership):
-        membership = self.check_existing(libobject, OrganizationMembership, add_defaults=False)
+        membership = self.check_existing(libobject, OrganizationMembership, add_names=False)
         if not membership:
             return
 

@@ -5,7 +5,7 @@ from django.utils import timezone
 from icalendar import Event
 
 from .organization import Organization
-from .default_fields import DefaultFields
+from .default_fields import DefaultFields, ShortableNameFields
 from .file import File
 from .location import Location
 from .person import Person
@@ -19,9 +19,7 @@ PUBLICALITY = (
 )
 
 
-class Meeting(DefaultFields):
-    name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=50)
+class Meeting(DefaultFields, ShortableNameFields):
     cancelled = models.BooleanField()
     start = models.DateTimeField()
     end = models.DateTimeField(null=True, blank=True)
