@@ -128,19 +128,42 @@ Follow the [the official guide](https://docs.djangoproject.com/en/1.11/howto/dep
 
 ## Import
 
+### The automagic
+
+```bash
+./manage.py import [mycitiesname]
+```
+
+You need to use the official German name with the right capitalization, e.g. `München` or `Jülich` and not `münchen` or `Juelich`. The [service](https://www.wikidata.org) we're using is a bit picky on those names.
+
+### The manual way
+
 Import a whole RIS from an OParl-instance. See `--help` for options:
 
 ```bash
 ./manage.py importoparl https://www.muenchen-transparent.de/oparl/v1.0
 ```
 
-Import streets of a given city (identified by the german "Gemeindeschlüssel"):
+Next you'll need the German "Gemeindeschlüssel", which is a 8 letter value that each communality has. You might find your's with
+
+```bash
+./manage.py citytoags [mycitiesname]
+```
+
+Examples:
+- München: 09162000
+- Augsburg: 09761000
+- Neumarkt-Sankt Veit: 09183129
+- Köln: 05315000
+- Jülich: 05358024
+
+Then import the streets of that city:
 
 ```bash
 ./manage.py importstreets 05315000 1 # Gemeindeschlüssel of Köln, Body-ID 1
 ```
 
-Import OpenStreetMap-Amenities of a given city (identified by the german "Gemeindeschlüssel"):
+Import OpenStreetMap-Amenities of a given city (Not required yet):
 
 ```bash
 ./manage.py importamenities 05315000 school 1 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
@@ -151,12 +174,9 @@ Import the outer shape of a city from OpenStreetMap and write it into an existin
 ./manage.py importcityoutline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
 
-Gemeindeschlüssel (examples):
-- München: 09162000
-- Augsburg: 09761000
-- Neumarkt-Sankt Veit: 09183129
-- Köln: 05315000
-- Jülich: 05358024
+### Using the OParl Importer programmatically
+
+`importer.oparl_import.OParlImport` has all the top level methods which are e.g. used by the import commands. It inherits `importer.oparl_objects.OParlObjects` which has methods to import the individual OParl objects except System. You need to pass the constructor an option set based on `importer.oparl_helper.default_options` with the correct value for `entrypoint` set. Note that error handling with mutlithreading and liboparl is weird to non-functional.
 
 ### A complete installation for a city, starting from an empty database
 
