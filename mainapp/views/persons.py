@@ -35,7 +35,7 @@ def persons(request):
 
         members.append({
             'id': pers.id,
-            'name': pers.name,
+            'name': pers.name_without_salutation(),
             'start': membership.start,
             'end': membership.end,
             'role': membership.role,
