@@ -11,7 +11,7 @@ django-csp==3.3
 django-debug-toolbar==1.9.1
 django-elasticsearch-dsl==0.4.2
 django-environ==0.4.4
-django-geojson==2.10.0
+django-geojson==2.11.0
 django-settings-export==1.2.1
 django-webpack-loader==0.5.0
 django-widget-tweaks==1.4.1
