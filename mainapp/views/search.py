@@ -15,7 +15,7 @@ from elasticsearch_dsl import Search
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable, \
-    html_escape_highlight
+    html_escape_highlight, _escape_elasticsearch_query
 from mainapp.models import Body
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
@@ -115,7 +115,17 @@ def search_autosuggest(_, query):
         results = [{'name': _('search disabled'), 'url': reverse('index')}]
         return HttpResponse(json.dumps(results), content_type='application/json')
 
-    search = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete=query).extra(min_score=1)
+    # https://www.elastic.co/guide/en/elasticsearch/guide/current/_index_time_search_as_you_type.html
+    # We use the ngram-based autocomplete-analyzer for indexing, but the standard analyzer for searching
+    # This way we enforce that the whole entered word has to be matched (save for some fuzziness) and the algorithm
+    # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
+    # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
+    search = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete={
+        'query': _escape_elasticsearch_query(query),
+        'analyzer': 'standard',
+        'fuzziness': 'AUTO',
+        'prefix_length': 1
+    }).extra(min_score=1)
     response = search.execute()
 
     multibody = Body.objects.count() > 1
@@ -129,7 +139,7 @@ def search_autosuggest(_, query):
             if num_persons < limit_per_type:
                 results.append({'name': hit.name, 'url': reverse('person', args=[hit.id])})
                 num_persons += 1
-        elif hit.meta.doc_type == 'organization':
+        elif hit.meta.doc_type == 'organization_document':
             if num_organizations < limit_per_type:
                 if multibody and hit.body:
                     name = hit.name + " (" + hit.body.name + ")"
