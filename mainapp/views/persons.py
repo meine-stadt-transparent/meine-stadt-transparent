@@ -20,14 +20,12 @@ def persons(request):
     memberships = organizations.organizationmembership_set.all()
     for membership in memberships:
         pers = membership.person
-        groups_ids = []
         groups_css_classes = []
         groups_names = []
 
         group_id = settings.PARLIAMENTARY_GROUPS_TYPE[0]
         for parlmember in pers.organizationmembership_set.filter(organization__organization_type_id=group_id):
             organization = parlmember.organization
-            groups_ids.append(str(organization.id))
             groups_css_classes.append("organization-%i" % organization.id)
             groups_names.append(organization.name)
             if organization not in parliamentarygroups:
@@ -39,7 +37,6 @@ def persons(request):
             'start': membership.start,
             'end': membership.end,
             'role': membership.role,
-            'groups_ids': ','.join(groups_ids),
             'groups_classes': json.dumps(groups_css_classes),
             'groups_names': ', '.join(groups_names),
         })
