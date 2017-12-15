@@ -264,12 +264,12 @@ Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthe
 The following script is meant to be run as a cron job:
 ```bash
 ./manage.py notifyusers
-``` 
+```
 
 However, for debugging purposes, it can be called stand alone, skipping the actual e-mail-sending and using a custom date range. The following commands dumps the search results of all users since 2017-09-10:
 ```bash
 ./manage.py notifyusers --debug --override-since 2017-09-10
-``` 
+```
 
 ### Creating a page with additional JS libraries
 

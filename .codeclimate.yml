@@ -18,11 +18,6 @@ engines:
     checks:
       Complexity:
         enabled: false
-  markdownlint:
-    enabled: true
-    checks:
-      MD002: # "First header should be a h1 header"
-        enabled: false
 checks:
   method-complexity:
     enabled: false

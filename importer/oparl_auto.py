@@ -44,7 +44,7 @@ class OParlAuto:
 
         ags = cls.get_ags(liboparl_body, userinput)
 
-        cls.do_import(ags, endpoint_id, importer, liboparl_body)
+        cls.do_import(ags, importer, liboparl_body)
 
     @classmethod
     def get_importer_with_body(cls, endpoint_id, endpoint_system):
@@ -64,10 +64,9 @@ class OParlAuto:
         return importer, liboparl_body
 
     @classmethod
-    def do_import(cls, ags, endpoint_id, importer, liboparl_body):
+    def do_import(cls, ags, importer, liboparl_body):
         logger.info("Importing {}".format(liboparl_body.get_id()))
-        importer.body(liboparl_body)
-        main_body = Body.by_oparl_id(endpoint_id)
+        main_body = importer.body(liboparl_body)
         logger.info("We're done with the OParl import. We just need some metadata now")
         import_streets(main_body, ags)
         import_outline(main_body, ags)
