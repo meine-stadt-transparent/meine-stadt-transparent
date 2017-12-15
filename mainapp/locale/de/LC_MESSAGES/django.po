@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-02 16:37+0100\n"
+"POT-Creation-Date: 2017-12-15 15:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,51 +22,51 @@ msgstr ""
 #: documents/__init__.py:12 documents/__init__.py:13 documents/__init__.py:14
 #: documents/__init__.py:15 documents/__init__.py:16 documents/__init__.py:20
 #: documents/__init__.py:21 documents/__init__.py:22 documents/__init__.py:23
-#: documents/__init__.py:24 models/organization.py:11 models/organization.py:12
-#: models/organization.py:13 models/organization.py:14
+#: documents/__init__.py:24 models/organization.py:12 models/organization.py:13
+#: models/organization.py:14 models/organization.py:15
 msgid "Document Type Name"
 msgstr "Name des Dokumententyps"
 
-#: functions/search_tools.py:34 functions/search_tools.py:45
+#: functions/search_tools.py:35 functions/search_tools.py:46
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:164
+#: functions/search_tools.py:181
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:169
+#: functions/search_tools.py:186
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:174
+#: functions/search_tools.py:191
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:177
+#: functions/search_tools.py:194
 msgctxt "Search query"
 msgid "created by %FROM%"
 msgstr "erstellt von %FROM%"
 
-#: functions/search_tools.py:181
+#: functions/search_tools.py:198
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:185
+#: functions/search_tools.py:202
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:187
+#: functions/search_tools.py:204
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:189
+#: functions/search_tools.py:206
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -393,7 +393,7 @@ msgid "Sign In"
 msgstr "Einloggen"
 
 #: templates/base.html:58 templates/mainapp/index.html:29
-#: templates/mainapp/search.html:5 templates/mainapp/search.html:20
+#: templates/mainapp/search.html:5 templates/mainapp/search.html:21
 msgctxt "page_title"
 msgid "Search"
 msgstr "Suche"
@@ -459,7 +459,7 @@ msgstr "Fehler 400"
 #: templates/error/500.html:20
 msgctxt "figure caption"
 msgid "Photography by Luigi Rosa, CC-BY-SA"
-msgstr ""
+msgstr "Fotografiert von Luigi Rosa, CC-BY-SA"
 
 #: templates/info/about.html:5
 msgid "About this project"
@@ -477,21 +477,21 @@ msgstr "Datenschutz"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: templates/mainapp/file.html:37 templates/mainapp/file.html:47
-#: templates/mainapp/file.html:53
+#: templates/mainapp/file.html:34 templates/mainapp/file.html:44
+#: templates/mainapp/file.html:50
 msgid "Paper"
 msgstr "Vorlage"
 
 # TODO
-#: templates/mainapp/file.html:76
+#: templates/mainapp/file.html:73
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
 
-#: templates/mainapp/file.html:80
+#: templates/mainapp/file.html:77
 msgid "Download"
 msgstr "Herunterladen"
 
-#: templates/mainapp/file.html:86
+#: templates/mainapp/file.html:83
 msgid "The file is not available"
 msgstr "Die Datei is nicht verfügbar"
 
@@ -588,7 +588,7 @@ msgstr "Gehört zur Körperschaft"
 
 #: templates/mainapp/organization.html:27
 msgid "Is located there"
-msgstr ""
+msgstr "Standort"
 
 #: templates/mainapp/organization.html:32
 msgctxt "Header"
@@ -598,48 +598,63 @@ msgstr "Mitglieder"
 #: templates/mainapp/organization.html:35
 msgctxt "Header"
 msgid "Paper"
-msgstr ""
+msgstr "Dokument"
 
 #: templates/mainapp/organization.html:38
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
 
+#: templates/mainapp/organizations.html:7
+msgid "Filter"
+msgstr "Filter"
+
 #: templates/mainapp/paper.html:24
 msgid "Legal date: "
-msgstr ""
+msgstr "Offizielles Datum: "
 
 #: templates/mainapp/paper.html:28
 msgid "Submitting Organizations:"
-msgstr ""
+msgstr "Eingereicht von: "
 
 #: templates/mainapp/paper.html:33
 msgid "Submitting Persons:"
-msgstr ""
+msgstr "Eingereicht von: "
 
 #: templates/mainapp/paper.html:44
-msgid "Attached Files"
-msgstr ""
+msgid "Files"
+msgstr "Dateien"
 
-#: templates/mainapp/paper.html:63
+#: templates/mainapp/paper.html:64
 msgid "No files attached"
-msgstr ""
+msgstr "Keine Dateien angehägnt"
 
-#: templates/mainapp/paper.html:66
+#: templates/mainapp/paper.html:67
 msgid "History"
 msgstr "Historie"
 
-#: templates/mainapp/person.html:15
+#: templates/mainapp/person.html:16
 msgid "Submitted Papers"
-msgstr ""
+msgstr "Eingereichte Dokumente"
 
-#: templates/mainapp/person.html:22
+#: templates/mainapp/person.html:23
 msgid "No papers found"
-msgstr ""
+msgstr "Keine Dokumente gefunden"
 
-#: templates/mainapp/person.html:25
+#: templates/mainapp/person.html:26
 msgid "Memberships"
 msgstr "Mitgliedschaften"
+
+#: templates/mainapp/person.html:40
+msgid " - "
+msgstr " - "
+
+#: templates/mainapp/person.html:42
+#, fuzzy
+#| msgctxt "persons-list"
+#| msgid "Since"
+msgid "Since "
+msgstr "Seit"
 
 #: templates/mainapp/persons.html:14 templates/mainapp/persons.html:29
 #: templates/mainapp/persons.html:33
@@ -677,87 +692,87 @@ msgctxt "persons-list"
 msgid "Since"
 msgstr "Seit"
 
-#: templates/mainapp/search.html:30 templates/mainapp/search.html:34
-#: templates/mainapp/search.html:35
+#: templates/mainapp/search.html:33 templates/mainapp/search.html:38
+#: templates/mainapp/search.html:39
 msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: templates/mainapp/search.html:38
+#: templates/mainapp/search.html:42
 msgctxt "search_form"
 msgid "Search"
 msgstr "Suche"
 
-#: templates/mainapp/search.html:46 templates/mainapp/search.html:59
+#: templates/mainapp/search.html:50 templates/mainapp/search.html:63
 msgctxt "search_form"
 msgid "Location"
 msgstr "Ort"
 
-#: templates/mainapp/search.html:54
+#: templates/mainapp/search.html:58
 msgid "m around"
 msgstr "m um"
 
-#: templates/mainapp/search.html:72
+#: templates/mainapp/search.html:76
 msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
 
-#: templates/mainapp/search.html:87 templates/mainapp/search.html:92
+#: templates/mainapp/search.html:91 templates/mainapp/search.html:96
 msgctxt "search_form"
 msgid "Document Type"
 msgstr "Dokumententyp"
 
-#: templates/mainapp/search.html:115 templates/mainapp/search.html:134
+#: templates/mainapp/search.html:119 templates/mainapp/search.html:138
 msgctxt "search_form"
 msgid "Time range"
 msgstr "Zeitraum"
 
-#: templates/mainapp/search.html:120
+#: templates/mainapp/search.html:124
 msgctxt "search_form"
 msgid "Today"
 msgstr "Heute"
 
-#: templates/mainapp/search.html:121
+#: templates/mainapp/search.html:125
 msgctxt "search_form"
 msgid "Last 7 days"
 msgstr "Letzte 7 Tage"
 
-#: templates/mainapp/search.html:122
+#: templates/mainapp/search.html:126
 msgctxt "search_form"
 msgid "This month"
 msgstr "Dieser Monat"
 
-#: templates/mainapp/search.html:123
+#: templates/mainapp/search.html:127
 msgctxt "search_form"
 msgid "Last month"
 msgstr "Letzter Monat"
 
-#: templates/mainapp/search.html:124
+#: templates/mainapp/search.html:128
 msgctxt "search_form"
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: templates/mainapp/search.html:125
+#: templates/mainapp/search.html:129
 msgctxt "search_form"
 msgid "Custom range"
 msgstr "Eigener Zeitraum"
 
-#: templates/mainapp/search.html:126
+#: templates/mainapp/search.html:130
 msgctxt "search_form"
 msgid "Apply"
 msgstr "Auswählen"
 
-#: templates/mainapp/search.html:127
+#: templates/mainapp/search.html:131
 msgctxt "search_form"
 msgid "na"
 msgstr "Egal"
 
-#: templates/mainapp/search.html:128
+#: templates/mainapp/search.html:132
 msgctxt "search_form"
 msgid "Su|Mo|Tu|We|Th|Fr|Sa"
 msgstr "So|Mo|Di|Mi|Do|Fr|Sa"
 
-#: templates/mainapp/search.html:129
+#: templates/mainapp/search.html:133
 msgctxt "search_form"
 msgid ""
 "January|February|March|April|May|June|July|August|September|October|November|"
@@ -766,11 +781,11 @@ msgstr ""
 "Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|"
 "Dezember"
 
-#: templates/mainapp/search.html:149
+#: templates/mainapp/search.html:155
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: templates/mainapp/search.html:154
+#: templates/mainapp/search.html:160
 msgid "Nothing Found"
 msgstr "Nichts gefunden"
 
@@ -857,29 +872,29 @@ msgstr "Sitzung"
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: views/persons.py:60
+#: views/persons.py:58
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert,"
 
-#: views/persons.py:61 views/search.py:62
+#: views/persons.py:59 views/search.py:80
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: views/persons.py:62
+#: views/persons.py:60
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
-#: views/profile.py:21 views/search.py:61
+#: views/profile.py:21 views/search.py:79
 msgid "You will now receive notifications about new search results."
 msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
 
-#: views/search.py:63
+#: views/search.py:81
 msgid "You have already subscribed to this search."
 msgstr "Sie haben diese Abfrage bereits abonniert."
 
-#: views/search.py:95
+#: views/search.py:115
 msgid "search disabled"
 msgstr "Suche deaktiviert"
 

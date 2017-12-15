@@ -37,7 +37,7 @@
                                         <span class="membership-info">{{ membership.role }}</span>
                                     {% endif %}
                                     {% if membership.start and membership.end %}
-                                        <span class="membership-info"> {{ membership.start }}{% trans " - " %}{{ membership.end }}</span>
+                                        <span class="membership-info"> {{ membership.start }}{% trans " - " context "Date range separator"%}{{ membership.end }}</span>
                                     {% elif membership.start %}
                                         <span class="membership-info"> {% trans "Since " %}{{ membership.start }}</span>
                                     {% endif %}
