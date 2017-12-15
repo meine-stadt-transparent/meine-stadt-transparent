@@ -42,7 +42,7 @@ def persons(request):
         })
 
     context = {
-        "current_committee": organizations,
+        "current_committee": organization,
         "members": members,
         "parliamentary_groups": parliamentarygroups,
     }
