@@ -335,6 +335,7 @@ class OParlObjects(OParlHelper):
 
         file.save()
         file.rebuild_locations()
+        file.rebuild_persons()
 
         return file
 

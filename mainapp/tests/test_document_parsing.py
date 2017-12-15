@@ -6,8 +6,9 @@ from unittest import mock
 from django.test import TestCase, override_settings
 from geopy import OpenCage
 
-from mainapp.functions.document_parsing import extract_locations, extract_text_from_pdf, get_page_count_from_pdf
-from mainapp.models import File
+from mainapp.functions.document_parsing import extract_locations, extract_text_from_pdf, get_page_count_from_pdf, \
+    extract_persons
+from mainapp.models import File, Person
 
 values = {
     "Tel-Aviv-Straße, Köln, Deutschland": {'longitude': 6.9541377, 'latitude': 50.9315404},
@@ -33,7 +34,7 @@ class TestDocumentParsing(TestCase):
     fixtures = ['initdata', 'cologne-pois-test']
 
     @mock.patch.object(OpenCage, 'geocode', new=geocode_mock)
-    def test_extraction(self):
+    def test_location_extraction(self):
         file = File.objects.get(id=3)
         locations = extract_locations(file.parsed_text, 'Köln')
         location_names = []
@@ -44,6 +45,23 @@ class TestDocumentParsing(TestCase):
         self.assertTrue('Tel-Aviv-Straße 12' in location_names)
         self.assertTrue('Karlstraße 7' in location_names)
         self.assertFalse('Wolfsweg' in location_names)
+
+    def test_person_extraction(self):
+        frank = Person.objects.get(pk=1)
+        doug = Person.objects.get(pk=4)
+        will = Person.objects.get(pk=7)
+
+        text = "A text \nabout Frank Underwood, Stamper, Doug, and a \nmisspelled WilliamConway."
+        persons = extract_persons(text)
+        self.assertTrue(doug in persons)
+        self.assertTrue(frank in persons)
+        self.assertFalse(will in persons)
+
+        text = "Also the more formal name, \"Underwood, Francis\" should be found."
+        persons = extract_persons(text)
+        self.assertFalse(doug in persons)
+        self.assertTrue(frank in persons)
+        self.assertFalse(will in persons)
 
     def test_pdf_parsing(self):
         file = os.path.abspath(os.path.dirname(__name__))

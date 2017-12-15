@@ -5,8 +5,8 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Organization, Person, Paper
-from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
+from mainapp.models import Organization, Person, Paper, File
+from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError, FilesGroupedByPaper
 
 
 def persons(request):
@@ -68,6 +68,9 @@ def person(request, pk):
     filter_organization = Paper.objects.filter(organizations__organizationmembership__person__id=pk)
     paper = (filter_self | filter_organization).distinct()
 
+    mentioned_in_files = File.objects.filter(mentioned_persons__id=pk)
+    mentioned = FilesGroupedByPaper.group_files_by_paper(mentioned_in_files, FilesGroupedByPaper.SORT_MODIFIED)
+
     memberships_active = selected_person.organizationmembership_set.filter(end__gte=datetime.now().date()).all()
     memberships_no_end = selected_person.organizationmembership_set.filter(end__isnull=True).all()
     memberships_ended = selected_person.organizationmembership_set.filter(end__lt=datetime.now().date()).all()
@@ -82,6 +85,7 @@ def person(request, pk):
     context = {
         "person": selected_person,
         "papers": paper,
+        "mentioned_in": mentioned,
         "memberships": memberships,
         "subscribable": True,
         "is_subscribed": is_subscribed_to_search(request.user, search_params),
