@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+from .person import Person
 from .default_fields import DefaultFields
 from .location import Location
 
@@ -14,6 +15,7 @@ class File(DefaultFields):
     legal_date = models.DateField(null=True, blank=True)
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
+    mentioned_persons = models.ManyToManyField(Person, blank=True)
     page_count = models.IntegerField(null=True, blank=True)
     parsed_text = models.TextField(null=True, blank=True)
     # In case the license is different than the rest of the system, e.g. a CC-licensed picture
@@ -32,6 +34,17 @@ class File(DefaultFields):
         self.locations = extract_locations(self.parsed_text)
         self.save()
 
+    def rebuild_persons(self):
+        from mainapp.functions.document_parsing import extract_persons
+
+        # The title of this paper, and the titles and full text of all assigned files will be searched for persons
+        full_text = self.name + "\n"
+        if self.parsed_text:
+            full_text += self.parsed_text + "\n"
+
+        self.mentioned_persons = extract_persons(full_text)
+        self.save()
+
     def coordinates(self):
         coordinates = []
         for location in self.locations.all():
@@ -40,6 +53,9 @@ class File(DefaultFields):
                 coordinates.append(coordinate)
 
         return coordinates
+
+    def person_ids(self):
+        return list(self.mentioned_persons.values_list('id', flat=True))
 
     def get_default_link(self):
         return reverse('file', args=[self.id])

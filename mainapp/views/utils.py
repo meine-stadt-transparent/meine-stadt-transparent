@@ -11,6 +11,29 @@ class NeedsLoginError(Exception):
         self.redirect_url = redirect_url
 
 
+class FilesGroupedByPaper:
+    SORT_MODIFIED = "modified"
+
+    def __init__(self, paper, files):
+        self.paper = paper
+        self.files = files
+
+    @staticmethod
+    def group_files_by_paper(files, sort=None):
+        groups = {}
+        for file in files:
+            for paper in file.paper_set.all():
+                if paper.id not in groups.keys():
+                    groups[paper.id] = FilesGroupedByPaper(paper, [])
+                groups[paper.id].files.append(file)
+        groups_arr = list(groups.values())
+
+        if sort == FilesGroupedByPaper.SORT_MODIFIED:
+            groups_arr = sorted(groups_arr, key=lambda group: group.paper.modified, reverse=True)
+
+        return groups_arr
+
+
 def handle_subscribe_requests(request, search_params: dict, msg_subscribed, msg_unsubscribed, msg_already_subscribed):
     if 'subscribe' in request.POST:
         if request.user.is_anonymous:

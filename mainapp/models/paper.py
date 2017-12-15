@@ -31,3 +31,6 @@ class Paper(DefaultFields, ShortableNameFields):
 
     def get_default_link(self):
         return reverse('paper', args=[self.id])
+
+    def person_ids(self):
+        return list(self.persons.values_list('id', flat=True))

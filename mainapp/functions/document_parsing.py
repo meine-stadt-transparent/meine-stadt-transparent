@@ -8,7 +8,7 @@ from geopy import OpenCage
 from pdfbox import PDFBox
 from PyPDF2 import PdfFileReader
 
-from mainapp.models import SearchStreet, Body, Location
+from mainapp.models import SearchStreet, Body, Location, Person
 
 
 def extract_text_from_pdf(pdf_file):
@@ -287,3 +287,27 @@ def index_papers_to_geodata(papers):
                 })
 
     return geodata
+
+
+def extract_persons(text):
+    """
+    :type text: str
+    :return: list of mainapp.models.Person
+    """
+    persons = Person.objects.all()
+    found_persons = []
+    text = " " + text + " "  # Workaround to find names at the very beginning or end
+
+    def match(name_parts):
+        escaped_parts = []
+        for part in name_parts:
+            escaped_parts.append(re.escape(part))
+        matcher = r"[^\w]" + r"[\s,]+".join(escaped_parts) + r"[^\w]"
+        return re.search(matcher, text, re.I | re.S | re.U | re.MULTILINE)
+
+    for person in persons:
+        if match([person.name]) or match([person.given_name, person.family_name]) or \
+                match([person.family_name, person.given_name]):
+            found_persons.append(person)
+
+    return found_persons
