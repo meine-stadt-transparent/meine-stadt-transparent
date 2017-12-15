@@ -13,7 +13,7 @@
             <div class="card-body">
                 {% if papers %}
                     <section>
-                    <h2 class="h3">{% trans "Submitted Papers" %}:</h2>
+                    <h2 class="h3">{% trans "Submitted Papers" %}</h2>
                     <ul>
                         {% for paper in papers %}
                             <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
@@ -37,7 +37,9 @@
                                         <span class="membership-info">{{ membership.role }}</span>
                                     {% endif %}
                                     {% if membership.start and membership.end %}
-                                        <span class="membership-info"> {{ membership.start }}{% trans " - " context "Date range separator"%}{{ membership.end }}</span>
+                                        <span class="membership-info">
+                                            {{ membership.start }}{% trans " - " context "Date range separator"%}{{ membership.end }}
+                                        </span>
                                     {% elif membership.start %}
                                         <span class="membership-info"> {% trans "Since " %}{{ membership.start }}</span>
                                     {% endif %}
@@ -51,11 +53,12 @@
                 {% endif %}
                 {% if mentioned_in %}
                     <section>
-                    <h2 class="h3">{% trans "Mentioned in" %}:</h2>
+                    <h2 class="h3">{% trans "Mentioned in" %}</h2>
                     <ul class="papers">
                         {% for group in mentioned_in %}
                             <li class="paper">
-                                <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a> ({{group.paper.modified}})
+                                <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
+                                    <span class="text-muted">{{ group.paper.modified|date }}</span>
                                 <ul class="files">
                                     {% for file in group.files %}
                                         <li class="file">

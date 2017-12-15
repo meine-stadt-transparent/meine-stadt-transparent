@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-15 15:16+0100\n"
+"POT-Creation-Date: 2017-12-15 16:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -637,15 +637,14 @@ msgstr "Historie"
 msgid "Submitted Papers"
 msgstr "Eingereichte Dokumente"
 
-#: templates/mainapp/person.html:23
-msgid "No papers found"
-msgstr "Keine Dokumente gefunden"
-
 #: templates/mainapp/person.html:26
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
 #: templates/mainapp/person.html:40
+#, fuzzy
+#| msgid " - "
+msgctxt "Date range separator"
 msgid " - "
 msgstr " - "
 
@@ -655,6 +654,10 @@ msgstr " - "
 #| msgid "Since"
 msgid "Since "
 msgstr "Seit"
+
+#: templates/mainapp/person.html:54
+msgid "Mentioned in"
+msgstr "Namentliche Erwähnungen"
 
 #: templates/mainapp/persons.html:14 templates/mainapp/persons.html:29
 #: templates/mainapp/persons.html:33
@@ -897,6 +900,9 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: views/search.py:115
 msgid "search disabled"
 msgstr "Suche deaktiviert"
+
+#~ msgid "No papers found"
+#~ msgstr "Keine Dokumente gefunden"
 
 #~ msgid "after"
 #~ msgstr "nach"

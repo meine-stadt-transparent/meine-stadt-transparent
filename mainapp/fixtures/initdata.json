@@ -40,7 +40,7 @@
         "description": "The place where frank lives. Somewhere in Washington D.C.",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.04946875572205,38.95611336793506]}",
+        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
         "bodies": []
     }
 },
@@ -57,7 +57,7 @@
         "description": "",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"type\":\"Polygon\",\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]]}",
+        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
         "bodies": [
             3
         ]
@@ -76,7 +76,7 @@
         "description": "That look kinda centerish enough for what is needed",
         "is_official": false,
         "osm_id": null,
-        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.05016613006592,38.88931256197531]}",
+        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
         "bodies": []
     }
 },
@@ -93,7 +93,7 @@
         "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
         "is_official": true,
         "osm_id": null,
-        "geometry": "{\"type\":\"Point\",\"coordinates\":[-77.00895667076111,38.889788561664936]}",
+        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
         "bodies": []
     }
 },
@@ -326,69 +326,6 @@
     }
 },
 {
-    "model": "mainapp.file",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-09-10T16:48:36.760Z",
-        "deleted": false,
-        "name": "",
-        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
-        "displayed_filename": "The Complexity of Songs.pdf",
-        "mime_type": "application/pdf",
-        "legal_date": "1984-04-01",
-        "filesize": 153996,
-        "page_count": null,
-        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
-        "license": null,
-        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
-        "locations": []
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:47:54.207Z",
-        "modified": "2017-09-22T09:44:57.868Z",
-        "deleted": false,
-        "name": "",
-        "storage_filename": "",
-        "displayed_filename": "File not Downloaded.txt",
-        "mime_type": "",
-        "legal_date": "2017-09-12",
-        "filesize": -1,
-        "page_count": null,
-        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
-        "license": null,
-        "description": "It's a plaintext file containing the results of overwhelming creativity.",
-        "locations": []
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T09:47:54.207Z",
-        "modified": "2017-09-11T09:47:54.207Z",
-        "deleted": false,
-        "name": "",
-        "storage_filename": "env-test",
-        "displayed_filename": "env-test",
-        "mime_type": "unknown/unknown",
-        "legal_date": "2017-09-10",
-        "filesize": 123,
-        "page_count": null,
-        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\n/ Diversity herbeigef\u00fchrt.\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\nKarlstr. 7, 76133\nKarlsruhe\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\nist daher gering.\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
-        "license": null,
-        "description": "It's a plaintext file containing some addresses for address recognition",
-        "locations": []
-    }
-},
-{
     "model": "mainapp.person",
     "pk": 1,
     "fields": {
@@ -526,6 +463,78 @@
         "given_name": "Peter",
         "family_name": "Russo",
         "location": null
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Donald Knuth - The Complexity of Songs - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
+        "displayed_filename": "The Complexity of Songs.pdf",
+        "mime_type": "application/pdf",
+        "legal_date": "1984-04-01",
+        "filesize": 153996,
+        "page_count": null,
+        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
+        "license": null,
+        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:47:54.207Z",
+        "modified": "2017-12-15T15:49:06.776Z",
+        "deleted": false,
+        "name": "File not downloaded",
+        "storage_filename": "File not downloaded",
+        "displayed_filename": "File not Downloaded.txt",
+        "mime_type": "File not downloaded",
+        "legal_date": "2017-09-12",
+        "filesize": -1,
+        "page_count": null,
+        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
+        "license": null,
+        "description": "It's a plaintext file containing the results of overwhelming creativity.",
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T09:47:54.207Z",
+        "modified": "2017-12-15T15:17:02.307Z",
+        "deleted": false,
+        "name": "env-test",
+        "storage_filename": "env-test",
+        "displayed_filename": "env-test",
+        "mime_type": "unknown/unknown",
+        "legal_date": "2017-09-10",
+        "filesize": 123,
+        "page_count": null,
+        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\r\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\r\n/ Diversity herbeigef\u00fchrt.\r\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\r\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\r\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\r\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\r\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\r\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\r\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\r\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\r\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\r\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\r\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\r\nKarlstr. 7, 76133\r\nKarlsruhe\r\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\r\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\r\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\r\nist daher gering.\r\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\r\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\r\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\r\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\r\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\r\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\r\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\r\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\r\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\r\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
+        "license": null,
+        "description": "It's a plaintext file containing some addresses for address recognition",
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
     }
 },
 {
@@ -719,9 +728,9 @@
         "created": "2017-09-10T14:38:04.044Z",
         "modified": "2017-10-07T18:36:26.478Z",
         "deleted": false,
-        "reference_number": "Edu 1",
         "name": "Bill for Education",
         "short_name": "Education Bill",
+        "reference_number": "Edu 1",
         "description": "That teachers' thing",
         "change_request_of": null,
         "legal_date": null,
@@ -744,9 +753,9 @@
         "created": "2017-09-10T15:35:04.454Z",
         "modified": "2017-10-07T18:36:33.375Z",
         "deleted": false,
-        "reference_number": "Edu 1/ Changerequest 1",
         "name": "Changerequest for the bill about eduction",
         "short_name": "Change the education bill",
+        "reference_number": "Edu 1/ Changerequest 1",
         "description": "",
         "change_request_of": 1,
         "legal_date": null,
@@ -765,17 +774,21 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T18:36:50.965Z",
-        "modified": "2017-11-10T13:27:34.844Z",
+        "modified": "2017-12-08T10:39:51.637Z",
         "deleted": false,
-        "reference_number": "Submitters 1",
         "name": "Many Submitters",
         "short_name": "Many Submitters",
+        "reference_number": "Submitters 1",
         "description": "",
         "change_request_of": null,
         "legal_date": "2017-11-10",
         "main_file": 1,
         "paper_type": 1,
-        "organizations": [],
+        "organizations": [
+            1,
+            2,
+            6
+        ],
         "persons": [
             1,
             2,
@@ -794,11 +807,11 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T15:35:04.454Z",
-        "modified": "2017-10-07T18:36:47.959Z",
+        "modified": "2017-12-15T15:50:05.134Z",
         "deleted": false,
-        "reference_number": "2017-09-10/1",
         "name": "Stra\u00dfen in K\u00f6ln",
         "short_name": "Stra\u00dfen in K\u00f6ln",
+        "reference_number": "2017-09-10/1",
         "description": "",
         "change_request_of": null,
         "legal_date": null,
@@ -806,9 +819,7 @@
         "paper_type": null,
         "organizations": [],
         "persons": [],
-        "files": [
-            3
-        ]
+        "files": []
     }
 },
 {
@@ -1018,7 +1029,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-11-17T20:52:20.395Z",
-        "modified": "2017-11-17T20:52:20.395Z",
+        "modified": "2017-12-08T09:04:28.699Z",
         "deleted": false,
         "person": 10,
         "start": null,
@@ -1048,11 +1059,11 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-11-17T21:07:18.197Z",
-        "modified": "2017-11-17T21:07:18.197Z",
+        "modified": "2017-12-08T09:25:29.826Z",
         "deleted": false,
         "person": 10,
-        "start": null,
-        "end": null,
+        "start": "2017-01-01",
+        "end": "2118-12-31",
         "role": "Member",
         "organization": 2
     }
@@ -1078,13 +1089,28 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-11-18T14:57:59.984Z",
-        "modified": "2017-11-18T14:57:59.984Z",
+        "modified": "2017-12-08T09:04:25.068Z",
         "deleted": false,
         "person": 10,
-        "start": null,
+        "start": "2017-12-01",
         "end": null,
         "role": null,
         "organization": 1
+    }
+},
+{
+    "model": "mainapp.organizationmembership",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-12-08T10:07:33.774Z",
+        "modified": "2017-12-08T10:07:33.774Z",
+        "deleted": false,
+        "person": 10,
+        "start": "2016-01-01",
+        "end": "2016-12-01",
+        "role": null,
+        "organization": 3
     }
 }
 ]
