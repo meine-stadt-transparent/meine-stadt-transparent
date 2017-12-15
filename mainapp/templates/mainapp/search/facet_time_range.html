@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<section class="col-auto search-facet search-facet-daterange">
+    <h2 class="sr-only">{% trans "Time range" context "search_form" %}</h2>
+    <div class="facet-dropdown">
+        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="timeRangeButton" data-strings='{
+            "today": "{% trans "Today" context "search_form" %}",
+            "last_7d":"{% trans "Last 7 days" context "search_form" %}",
+            "this_month":"{% trans "This month" context "search_form" %}",
+            "last_month":"{% trans "Last month" context "search_form" %}",
+            "this_year":"{% trans "This year" context "search_form" %}",
+            "custom":"{% trans "Custom range" context "search_form" %}",
+            "apply":"{% trans "Apply" context "search_form" %}",
+            "na":"{% trans "na" context "search_form" %}",
+            "day_names":"{% trans "Su|Mo|Tu|We|Th|Fr|Sa" context "search_form" %}",
+            "month_names":"{% trans "January|February|March|April|May|June|July|August|September|October|November|December" context "search_form" %}"
+        }'>
+            <span class="time-description" hidden="hidden">{{ options.after|date:"Y-m-d" }} - {{ options.before|date:"Y-m-d" }}</span>
+            <span class="time-not-set">{% trans "Time range" context "search_form" %}</span>
+        </button>
+        <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}">
+        <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}">
+    </div>
+</section>

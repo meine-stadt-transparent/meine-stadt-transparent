@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument('--id', type=int, help="Parse only the file with the given ID")
 
     def parse_file(self, file: File):
-        logging.error("- Parsing: " + str(file.id) + " (" + file.name + ")")
+        logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
         file.rebuild_persons()
 
     def handle(self, *args, **options):

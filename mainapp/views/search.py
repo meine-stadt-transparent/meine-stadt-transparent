@@ -16,7 +16,7 @@ from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable, \
     html_escape_highlight, _escape_elasticsearch_query
-from mainapp.models import Body
+from mainapp.models import Body, Organization
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
 
@@ -67,6 +67,25 @@ def _search_to_context(query, params: dict, options, search):
     return context
 
 
+def _searchable_persons():
+    pk = settings.SITE_DEFAULT_ORGANIZATION
+    organization = Organization.objects.get(pk=pk)
+    if not organization:
+        return []
+
+    persons = []
+    memberships = organization.organizationmembership_set.all()
+    for membership in memberships:
+        if membership.person not in persons:
+            persons.append(membership.person)
+
+    return persons
+
+
+def _searchable_organizations():
+    return Organization.objects.all()
+
+
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def search_index(request, query):
     params = search_string_to_params(query)
@@ -86,8 +105,10 @@ def search_index(request, query):
     context = _search_to_context(query, params, options, search)
     context['subscribable'] = params_are_subscribable(params)
     context['is_subscribed'] = is_subscribed_to_search(request.user, params)
+    context['searchable_organizations'] = _searchable_organizations()
+    context['searchable_persons'] = _searchable_persons()
 
-    return render(request, "mainapp/search.html", context)
+    return render(request, "mainapp/search/search.html", context)
 
 
 def search_results_only(request, query):

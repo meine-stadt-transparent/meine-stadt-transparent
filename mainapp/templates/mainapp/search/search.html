@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Search" context "page_title" %}{% endblock %}
+
+{% block header %}
+    {% with True as disable_header_search %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="search-card card">
+            <div class="card-header">
+                <div class="subscribe-widget">
+                    {% include 'partials/subscribe_widget.html' %}
+                </div>
+                <h1>
+                    {% trans "Search" context "page_title" %}
+                    <span class="search-refreshing-spinner" hidden="hidden">
+                        <i class="fa fa-spinner fa-spin" aria-label="The search is refreshing ..."></i>
+                    </span>
+                </h1>
+            </div>
+            <form id="detailed-searchform" class="section detailed-searchform p-2 mb-0" method="GET"
+                  action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
+
+                <!-- Searchterm -->
+                <section class="input-group">
+                    <h2 class="sr-only"><label for="searchterm">
+                        {% trans "Search term" context "search_form" %}
+                    </label></h2>
+                    <input name="searchterm" type="text" class="form-control"
+                           value="{{ options.searchterm }}" id="searchterm" autocomplete="off"
+                           data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
+                           placeholder="{% trans "Search term" context "search_form" %}"
+                           aria-label="{% trans "Search term" context "search_form" %}">
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary">
+                            {% trans "Search" context "search_form" %}
+                        </button>
+                    </span>
+                </section>
+                <div class="form-row align-items-center">
+                    {% include "mainapp/search/facet_location_selector.html" %}
+                    {% include "mainapp/search/facet_document_type.html" %}
+                    {% include "mainapp/search/facet_time_range.html" %}
+                </div>
+            </form>
+
+            <section class="section">
+                {% include "partials/mixed_results.html" %}
+
+                <button class="btn btn-secondary w-100" id="start-endless-scroll"
+                        data-url="{% url "search_results_only" query %}"
+                        data-pagination-length="{{ pagination_length }}"
+                        {% if total_hits == results|length %} hidden="hidden" {% endif %}>
+                    <span>{% trans "Load More" %}</span>
+                    <span class="total-hits badge badge-light">{{ total_hits }}</span>
+                </button>
+
+                <div class="p-2 nothing-found" {% if results|length > 0 %} hidden="hidden" {% endif %}>
+                    <p class="alert alert-danger">{% trans "Nothing Found" %}</p>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

@@ -13,11 +13,11 @@ def persons(request):
     """ Shows all members of the default organization, which are made filterable by the parliamentary group
     memberships. """
     pk = settings.SITE_DEFAULT_ORGANIZATION
-    organizations = get_object_or_404(Organization, id=pk)
+    organization = get_object_or_404(Organization, id=pk)
 
     parliamentarygroups = []
     members = []
-    memberships = organizations.organizationmembership_set.all()
+    memberships = organization.organizationmembership_set.all()
     for membership in memberships:
         pers = membership.person
         groups_css_classes = []

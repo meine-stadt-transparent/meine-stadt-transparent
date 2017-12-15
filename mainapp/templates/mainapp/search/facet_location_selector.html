@@ -1,0 +1,41 @@
+{% load i18n %}
+
+<section class="col-auto search-facet location-col search-facet-location"
+         data-format-geo-url="{% url 'search_format_geo' 23 42 %}">
+
+    <h2 class="sr-only">{% trans "Location" context "search_form" %}</h2>
+
+    <div class="dropdown">
+        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
+                id="locationSelectButton" title="{{ options.location_formatted }}"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="location-description" {% if not options.radius %}hidden="hidden"{% endif %}>
+                <span class="radius">{{ options.radius }}</span><span>{% trans "m around" %}</span>
+                <span class="location" data-lat="{{ options.lat }}"
+                                          data-lng="{{ options.lng }}">{{ options.location_formatted }}</span>
+            </span>
+            <span class="location-not-set" {% if options.radius %}hidden="hidden"{% endif %}>
+                {% trans "Location" context "search_form" %}
+            </span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="locationSelectButton">
+            <div class="location-select-map" id="location-select-map" data-map-data="{{ map }}"></div>
+            <div class="radius-select-row">
+                <div class="input-group">
+                    <label for="new-radius" class="input-group-addon">Entfernung in m:</label>
+                    <input type="number" class="form-control new-radius" id="new-radius"
+                           data-default="500" value="{{ options.radius }}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary select-btn" type="button">
+                            {% trans "Select" context "search_form" %}
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="lat" value="{{ options.lat }}">
+    <input type="hidden" name="lng" value="{{ options.lng }}">
+    <input type="hidden" name="radius" value="{{ options.radius }}">
+</section>

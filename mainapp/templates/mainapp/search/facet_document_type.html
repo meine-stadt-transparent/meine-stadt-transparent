@@ -1,0 +1,28 @@
+{% load i18n %}
+
+<section class="col-auto search-facet search-facet-document-type">
+    <h2 class="sr-only">{% trans "Document Type" context "search_form" %}</h2>
+    <div class="dropdown facet-dropdown">
+        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
+                id="documentTypeButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% trans "Document Type" context "search_form" %}
+        </button>
+        <div class="dropdown-menu" aria-labelledby="documentTypeButton">
+            {% for document_type_id, document_type_name in document_types.items %}
+                <div class="dropdown-item">
+                    <label>
+                        {% if document_type_id in options.document_type %}
+                            <input type="checkbox" name="document-type[]" checked
+                                   value="{{ document_type_id }}">
+                        {% else %}
+                            <input type="checkbox" name="document-type[]"
+                                   value="{{ document_type_id }}">
+                        {% endif %}
+                        {{ document_type_name }}
+                    </label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
