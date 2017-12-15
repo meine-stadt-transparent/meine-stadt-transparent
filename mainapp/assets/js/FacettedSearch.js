@@ -233,7 +233,7 @@ export default class FacettedSearch {
             this.$locationSelector.find(".location-description").removeAttr("hidden");
 
             let $location = $desc.find(".location");
-            if ($location.data("lat") == lat && $location.data("lng") == lng) {
+            if ($location.data("lat") === lat && $location.data("lng") === lng) {
                 // The location has not changed, so just leave the text label untouched
                 return;
             }
