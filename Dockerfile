@@ -1,16 +1,5 @@
-# TODO: Get liboparl published on docker hub and copy from that image instead
-FROM ubuntu:17.10
-RUN apt-get update
-RUN apt install -y valac valadoc gobject-introspection libjson-glib-dev libgirepository1.0-dev meson gettext git
-
-RUN git clone https://github.com/oparl/liboparl
-RUN mkdir liboparl/build
-WORKDIR /liboparl/build
-RUN meson ..
-RUN ninja
-RUN ninja install
-RUN cp OParl-0.*.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/
-
+# We just need some files from this image
+FROM oparl/liboparl
 # We can't use the python image because pygobject only works with system python
 FROM ubuntu:16.04
 ENV PYTHONUNBUFFERED 1
@@ -53,7 +42,8 @@ RUN npm run build:dev
 
 # Collect static files
 COPY . /app/
-COPY .env-docker-compose /config/.env
+# Allow overriding the default env
+RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true)
 ENV ENV_PATH "/config/.env"
 RUN python manage.py collectstatic --noinput
 

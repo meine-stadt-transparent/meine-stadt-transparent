@@ -7,7 +7,7 @@ services:
       - django_media:/media
       - django_static:/static
       - django_cache:/cache
-      - "./.env-docker-compose:/config/.env"
+      - "${DOKER_COMPOSE_ENV:-./etc/env-docker-compose}:/config/.env"
     ports:
       - ${DJANGO_PORT:-8000}:8000
     networks:
@@ -19,6 +19,8 @@ services:
   mariadb:
     image: mariadb:10
     container_name: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
     environment:
       - MYSQL_DATABASE=meinestadttransparent
       - MYSQL_USER=meinestadttransparent
@@ -47,11 +49,11 @@ services:
       - network
 
 volumes:
-  elasticsearch_data:
   django_media:
   django_static:
   django_cache:
-
+  mariadb_data:
+  elasticsearch_data:
 
 networks:
   network:

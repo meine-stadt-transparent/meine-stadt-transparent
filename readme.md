@@ -14,8 +14,6 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 Install [docker ce](https://www.docker.com/community-edition) and [docker compose](https://docs.docker.com/compose/install/)
 
-Copy `etc/env-docker-compose` to `.env-docker-compose` and change the setting to your desires.
-
 Build the docker container (This will take some time):
 
 ```bash
@@ -51,6 +49,8 @@ docker-compose up
 ```
 
 Meine Stadt Transparent should now be running at [localhost:8000](http://localhost:8000).
+
+Want to change the settings? Make `DOKER_COMPOSE_ENV` point to you custom env file, e.g. with `export DOKER_COMPOSE_ENV=/path/to/my/dotenv`. 
 
 You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: The python in the virtualenv is configured as entrypoint.
 

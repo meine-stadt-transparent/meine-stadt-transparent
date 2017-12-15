@@ -1,6 +1,8 @@
 node_modules/
 venv/
+.venv/
 static/
+testdata/
 webpack-stats.json
 Dockerfile
 docker-compose.yml
