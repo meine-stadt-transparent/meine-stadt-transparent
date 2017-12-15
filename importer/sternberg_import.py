@@ -47,7 +47,7 @@ class SternbergImport(OParlImport):
         if "/membership" in url:
             oparl_list = json.loads(response.get_resolved_data())
 
-            # If an array is resturned instead of an object, we just skip all list entries except for the last one
+            # If an array is returned instead of an object, we just skip all list entries except for the last one
             if isinstance(oparl_list, list):
                 oparl_list = oparl_list[0]
 

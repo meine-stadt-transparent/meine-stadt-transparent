@@ -2,7 +2,9 @@
 FROM oparl/liboparl
 # We can't use the python image because pygobject only works with system python
 FROM ubuntu:16.04
+
 ENV PYTHONUNBUFFERED 1
+# The default locale breaks python 3 < python 3.7. https://bugs.python.org/issue28180
 ENV LANG C.UTF-8
 
 RUN mkdir /app
@@ -15,9 +17,9 @@ RUN apt-get update && \
     json-glib-1.0 gir1.2-json-1.0 git libmysqlclient-dev
 
 # liboparl
-COPY --from=0 /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/local/share/locale/en_US/LC_MESSAGES/liboparl.mo
-COPY --from=0 /usr/local/share/locale/de_DE/LC_MESSAGES/liboparl.mo /usr/local/share/locale/de_DE/LC_MESSAGES/liboparl.mo
-COPY --from=0 /usr/local/lib/x86_64-linux-gnu/liboparl-0.2.so /usr/local/lib/x86_64-linux-gnu/liboparl-0.2.so
+COPY --from=0 /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo
+COPY --from=0 /usr/share/locale/de_DE/LC_MESSAGES/liboparl.mo /usr/share/locale/de_DE/LC_MESSAGES/liboparl.mo
+COPY --from=0 /usr/lib/x86_64-linux-gnu/liboparl-0.2.so /usr/lib/x86_64-linux-gnu/liboparl-0.2.so
 COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib
 
 # Python dependencies
@@ -26,9 +28,7 @@ RUN python3 -m venv /app-env
 RUN ln -s /usr/lib/python3/dist-packages/gi /app-env/lib/python*/site-packages/
 # Activate the virtualenv in a docker compatible way
 ENV PATH "/app-env/bin:$PATH"
-RUN pip install --upgrade pip
-# The default locale breaks python 3 < python 3.7. https://bugs.python.org/issue28180
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Javascript dependencies
 COPY package.json /app/package.json
