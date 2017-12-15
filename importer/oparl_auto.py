@@ -70,7 +70,7 @@ class OParlAuto:
         main_body = Body.by_oparl_id(endpoint_id)
         logger.info("We're done with the OParl import. We just need some metadata now")
         import_streets(main_body, ags)
-        import_outline(main_body, ags, "/tmp/city-outline.json")
+        import_outline(main_body, ags)
         logger.info("Done! Please add the following line to your dotenv file: \nSITE_DEFAULT_BODY={}"
                     .format(main_body.id))
 

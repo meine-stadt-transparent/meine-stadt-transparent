@@ -12,6 +12,6 @@ class Command(BaseCommand):
         parser.add_argument('body-id', type=int)
 
     def handle(self, *args, **options):
-        body = Body.objects.get(id="body-id")
+        body = Body.objects.get(id=options["body-id"])
 
         import_streets(body, options['gemeindeschluessel'])

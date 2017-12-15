@@ -10,9 +10,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('gemeindeschluessel', type=str)
         parser.add_argument('body-id', type=int)
-        parser.add_argument('--tmpfile', type=str, default='/tmp/city-outline.json')
 
     def handle(self, *args, **options):
-        body = Body.objects.get(id="body-id")
+        body = Body.objects.get(id=options["body-id"])
 
-        import_outline(body, options["gemeindeschluessel"], options["tmpfile"])
+        import_outline(body, options["gemeindeschluessel"])

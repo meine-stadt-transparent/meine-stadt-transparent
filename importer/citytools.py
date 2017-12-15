@@ -1,11 +1,12 @@
 import json
+import logging
 import os
 import subprocess
+import tempfile
 
 import requests
 
-from mainapp.models import Body, SearchStreet, Location
-import logging
+from mainapp.models import SearchStreet, Location
 
 overpass_api = 'http://overpass-api.de/api/interpreter'
 
@@ -35,6 +36,8 @@ def import_streets(body, gemeindeschluessel):
 
     r = requests.post(overpass_api, data={'data': query})
 
+    logger.info('Found {} streets'.format(len([node for node in r.json()['elements'] if node['type'] == 'way'])))
+
     for node in r.json()['elements']:
         if node['type'] == 'way':
             obj = SearchStreet.objects.filter(osm_id=node['id'])
@@ -49,7 +52,7 @@ def import_streets(body, gemeindeschluessel):
                 logger.info("Created: %s" % node['tags']['name'])
 
 
-def import_outline(body, gemeindeschluessel, tmpfile):
+def import_outline(body, gemeindeschluessel):
     if not body.outline:
         outline = Location()
         outline.name = 'Outline of ' + body.name
@@ -64,7 +67,7 @@ def import_outline(body, gemeindeschluessel, tmpfile):
 
     r = requests.post(overpass_api, data={'data': query})
 
-    geojson = convert_to_geojson(r.text, tmpfile)
+    geojson = convert_to_geojson(r.text)
     outline.geometry = geojson
     outline.save()
 
@@ -72,13 +75,14 @@ def import_outline(body, gemeindeschluessel, tmpfile):
     body.save()
 
 
-def convert_to_geojson(osm, tmpfile):
-    with open(tmpfile, 'w') as file:
+def convert_to_geojson(osm):
+    with tempfile.NamedTemporaryFile(delete=False, mode="w") as file:
         file.write(osm)
+        filename = file.name
 
-    result = subprocess.run(['node_modules/.bin/osmtogeojson', '-f', 'json', '-m', tmpfile], stdout=subprocess.PIPE)
+    result = subprocess.run(['node_modules/.bin/osmtogeojson', '-f', 'json', '-m', filename], stdout=subprocess.PIPE)
     geojson = json.loads(result.stdout.decode('utf-8'))
 
-    os.remove(tmpfile)
+    os.remove(filename)
 
     return geojson
