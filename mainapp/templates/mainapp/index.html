@@ -26,13 +26,12 @@
             <div class="input-group">
                 <input name="query" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
-                       placeholder="{% trans "Search" context "page_title" %}"
+                       placeholder="{% trans "Search for documents, persons, topics and more" context "page_title" %}"
                        aria-label="{% trans "Search" context "perform search" %}">
 
                 <button class="search-icon fa fa-search" type="submit"
                         title="{% trans 'Show search results' context 'aria label' %}"></button>
             </div>
-
         </form>
     </div>
 

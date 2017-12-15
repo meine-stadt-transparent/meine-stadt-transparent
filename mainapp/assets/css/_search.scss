@@ -5,6 +5,11 @@
   width: 100%;
 }
 
+.dropdown-item, span.twitter-typeahead .tt-suggestion {
+  padding-left: 0.75em;
+  padding-right: 0.75em;
+}
+
 .navbar .search-autocomplete .form-control {
   max-width: $header-search-max-width;
 }
