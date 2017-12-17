@@ -23,7 +23,7 @@ export default class FacettedSearchSorter {
     }
 
     getQueryString() {
-        if (this.$input.val() !== this.$widget.data("default")) {
+        if (this.$input.val() !== this.$widget.data("default") && this.$input.val() !== "") {
             return "sort:" + this.$input.val() + " ";
         } else {
             return "";

@@ -103,6 +103,9 @@
   }
   .remove-filter {
     border-bottom: 1px solid $card-border-color;
+    a:hover {
+      text-decoration: none;
+    }
   }
 }
 

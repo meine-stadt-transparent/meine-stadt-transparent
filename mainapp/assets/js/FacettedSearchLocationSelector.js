@@ -28,6 +28,7 @@ export default class FacettedSearchLocationSelector {
             event.preventDefault();
             event.stopPropagation();
         });
+        this.$facet.find(".discard-btn").click(this.discardLocation.bind(this));
     }
 
     initDropdownListener(mapIsInitialized) {
@@ -98,7 +99,7 @@ export default class FacettedSearchLocationSelector {
             });
             $desc.find(".radius").text(radius);
         } else {
-            this.$facet.find(".location-not-set").removeProp("hidden");
+            this.$facet.find(".location-not-set").removeAttr("hidden");
             $desc.attr("hidden", "hidden");
         }
     }
@@ -110,5 +111,16 @@ export default class FacettedSearchLocationSelector {
         } else {
             return '';
         }
+    }
+
+    discardLocation() {
+        if (this.currMarker) {
+            this.leaflet.removeLayer(this.currMarker);
+            this.currMarker = null;
+        }
+        this.currPosition = null;
+        this.$inputRadius.val(0).change();
+        this.updateLocationString();
+        this.$facet.find(".dropdown").dropdown("toggle");
     }
 }

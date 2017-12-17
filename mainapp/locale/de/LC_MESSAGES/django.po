@@ -10,6 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-17 20:27+0100\n"
+"POT-Creation-Date: 2017-12-17 19:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,47 +32,47 @@ msgstr "Name des Dokumententyps"
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:200
+#: functions/search_tools.py:189
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:205
+#: functions/search_tools.py:194
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:210
+#: functions/search_tools.py:199
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:213
+#: functions/search_tools.py:202
 msgctxt "Search query"
 msgid "created by %FROM%"
 msgstr "erstellt von %FROM%"
 
-#: functions/search_tools.py:216
+#: functions/search_tools.py:205
 msgctxt "Search query"
 msgid "assigned to %TO%"
-msgstr ""
+msgstr "%TO% zugewiesen"
 
-#: functions/search_tools.py:220
+#: functions/search_tools.py:209
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:224
+#: functions/search_tools.py:213
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:226
+#: functions/search_tools.py:215
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:228
+#: functions/search_tools.py:217
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -99,8 +100,7 @@ msgstr "Account löschen"
 
 #: templates/account/delete.html:10
 msgid "Do you really want to delete your account? This cannot be undone."
-msgstr ""
-"Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig "
+msgstr "Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig "
 "gemacht werden."
 
 #: templates/account/delete.html:12
@@ -652,12 +652,14 @@ msgid "Memberships"
 msgstr "Mitgliedschaften"
 
 #: templates/mainapp/person.html:41
+#, fuzzy
 #| msgid " - "
 msgctxt "Date range separator"
 msgid " - "
 msgstr " - "
 
 #: templates/mainapp/person.html:44
+#, fuzzy
 #| msgctxt "persons-list"
 #| msgid "Since"
 msgid "Since "
@@ -686,6 +688,7 @@ msgstr "Name"
 #: templates/mainapp/persons.html:48
 #: templates/mainapp/search/sorter_widget.html:5
 #: templates/mainapp/search/sorter_widget.html:13
+#, fuzzy
 #| msgctxt "persons-list"
 #| msgid "Sort by"
 msgid "Sort by"
@@ -714,6 +717,7 @@ msgstr "Dokumententyp"
 
 #: templates/mainapp/search/facet_filter_dropdown.html:15
 #: templates/mainapp/search/facet_filter_dropdown.html:16
+#, fuzzy
 #| msgid "Filter"
 msgctxt "search_form"
 msgid "Filter"
@@ -721,8 +725,8 @@ msgstr "Filter"
 
 #: templates/mainapp/search/facet_filter_dropdown.html:21
 msgctxt "Remove search filter"
-msgid "Any"
-msgstr ""
+msgid "Cancel selection"
+msgstr "Auswahl aufheben"
 
 #: templates/mainapp/search/facet_location_selector.html:6
 #: templates/mainapp/search/facet_location_selector.html:18
@@ -827,12 +831,12 @@ msgstr ""
 #: templates/mainapp/search/sorter_widget.html:15
 msgctxt "search_form"
 msgid "Newest first"
-msgstr ""
+msgstr "Neuste zuerst"
 
 #: templates/mainapp/search/sorter_widget.html:16
 msgctxt "search_form"
 msgid "Oldest first"
-msgstr ""
+msgstr "Älteste zuerst"
 
 #: templates/partials/deleted_note.html:4
 msgid "Deleted"
@@ -852,7 +856,7 @@ msgstr ""
 
 #: templates/partials/deleted_note.html:10
 msgid "All information on this page is void."
-msgstr " "
+msgstr "Die Informationen auf dieser Seite sind ungfültig."
 
 #: templates/partials/deleted_note.html:11
 msgid "This page exists solely to inform about the deletion."

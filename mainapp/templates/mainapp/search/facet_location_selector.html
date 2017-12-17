@@ -9,10 +9,11 @@
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                 id="locationSelectButton" title="{{ options.location_formatted }}"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
             <span class="location-description" {% if not options.radius %}hidden="hidden"{% endif %}>
-                <span class="radius">{{ options.radius }}</span><span>{% trans "m around" %}</span>
+                <span class="radius">{{ options.radius }}</span><span>{% trans "m around" context "Selecting a range in meters" %}</span>
                 <span class="location" data-lat="{{ options.lat }}"
-                                          data-lng="{{ options.lng }}">{{ options.location_formatted }}</span>
+                      data-lng="{{ options.lng }}">{{ options.location_formatted }}</span>
             </span>
             <span class="location-not-set" {% if options.radius %}hidden="hidden"{% endif %}>
                 {% trans "Location" context "search_form" %}
@@ -25,13 +26,17 @@
                     <label for="new-radius" class="input-group-addon">Entfernung in m:</label>
                     <input type="number" class="form-control new-radius" id="new-radius"
                            data-default="500" value="{{ options.radius }}">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary select-btn" type="button">
-                            {% trans "Select" context "search_form" %}
-                        </button>
-                    </span>
                 </div>
             </div>
+            <div class="input-group">
+                <button class="btn btn-danger w-50 discard-btn" type="button">
+                    <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
+                </button>
+                <button class="btn btn-primary w-50 select-btn" type="button">
+                    <i class="fa-custom fa-check"></i>{% trans "Select" context "search_form" %}
+                </button>
+            </div>
+
         </div>
     </div>
 

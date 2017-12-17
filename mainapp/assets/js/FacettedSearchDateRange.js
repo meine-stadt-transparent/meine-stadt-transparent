@@ -12,22 +12,7 @@ export default class FacettedSearchDateRange {
         this.buildDateRanges(strings);
         this.setDateRangeStr();
 
-        this.$openerBtn.daterangepicker({
-            locale: {
-                format: 'YYYY-MM-DD',
-                applyLabel: strings['apply'],
-                cancelLabel: strings['na'],
-                customRangeLabel: strings['custom'],
-                monthNames: strings['month_names'].split('|'),
-                daysOfWeek: strings['day_names'].split('|'),
-                firstDay: 1
-            },
-            opens: 'center',
-            showDropdowns: true,
-            showCustomRangeLabel: true,
-            linkedCalendars: false,
-            ranges: this.dateRanges
-        }, this.onDatePickerChanged.bind(this));
+        this.$openerBtn.daterangepicker(this.getDateRangePickerOptions(strings), this.onDatePickerChanged.bind(this));
 
         this.$openerBtn.on('cancel.daterangepicker', this.onDatePickerCanceled.bind(this));
 
@@ -44,6 +29,25 @@ export default class FacettedSearchDateRange {
         this.$openerBtn.on("hide.daterangepicker", () => {
             this.$openerBtn.off("click", closeOnClick);
         });
+    }
+
+    getDateRangePickerOptions(strings) {
+        return {
+            locale: {
+                format: 'YYYY-MM-DD',
+                applyLabel: strings['apply'],
+                cancelLabel: strings['na'],
+                customRangeLabel: strings['custom'],
+                monthNames: strings['month_names'].split('|'),
+                daysOfWeek: strings['day_names'].split('|'),
+                firstDay: 1
+            },
+            opens: 'center',
+            showDropdowns: true,
+            showCustomRangeLabel: true,
+            linkedCalendars: false,
+            ranges: this.dateRanges
+        };
     }
 
     onDatePickerChanged(start, end) {
