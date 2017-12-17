@@ -13,11 +13,6 @@ engines:
     checks:
       comma-dangle:
         enabled: false
-  radon:
-    enabled: true
-    checks:
-      Complexity:
-        enabled: false
 checks:
   method-complexity:
     enabled: false

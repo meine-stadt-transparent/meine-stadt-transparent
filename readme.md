@@ -25,8 +25,7 @@ Before starting, you'll likely need to [adjust max_map_count on the host system]
 Now we can launch the docker containers:
 
 ```bash
-docker-compose up mariadb e
-lasticsearch
+docker-compose up mariadb elasticsearch
 ```
 
 Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 
@@ -80,13 +79,19 @@ On Debian/Ubuntu:
 sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre
 ```
 
-Install dependencies
+Install dependencies. 
 
 ```bash
-python3 -m venv venv # You can change the latter `venv` to whatever you like ..
-source venv/bin/activate # .. but you also need to change it in this line 
-pip install -r requirements.txt
+pip install --upgrade pipenv
+export PIPENV_VENV_IN_PROJECT=True # This is not mandatory, yet quite useful
+pipenv install 
 npm install
+```
+
+Activate the virtualenv created by pipenv. You either need to run this in your shell before running any other python command or prefix abny python command with `pipenv run`.
+
+```bash
+pipenv shell 
 ```
 
 Copy `etc/env-template` to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
@@ -105,25 +110,19 @@ pygobject needs to be installed system-wide and only works with the system pytho
  -  Debian/Ubuntu:
     ```bash
     sudo apt install python3-gi
-    ln -s /usr/lib/python3/dist-packages/gi venv/lib/python*/site-packages/
+    ln -s /usr/lib/python3/dist-packages/gi .venv/lib/python*/site-packages/
     ```
 
  -  macOS:
     ```bash
     brew install pygobject3 --with-python3
     # Replace 3.26.0 and projectdir by the real paths
-    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* /projectdir/venv/lib/python3.6/site-packages/ 
+    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* .venv/lib/python3.6/site-packages/ 
     ```
 
 Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
 
-For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions.
-
-Remember setting the environment variables or copy the typelib to an autodiscovery directory (whichever this is for your os). For Ubuntu 64-bit you need 
-
-```bash
-sudo cp OParl-0.2.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib
-```
+For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Be sure to use `--prefix=/usr --buildtype=release` on `meson`.
 
 ### Development
 
@@ -207,7 +206,6 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ### Starting the development server
 
 ```bash
-source venv/bin/activate
 ./manage.py migrate
 ./manage.py createsuperuser
 ./manage.py runserver

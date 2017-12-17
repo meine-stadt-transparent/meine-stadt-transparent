@@ -13,6 +13,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+.venv/
 pip-log.txt
 pip-delete-this-directory.txt
 

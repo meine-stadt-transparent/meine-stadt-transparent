@@ -3,21 +3,27 @@ python:
   - "3.5"
   - "3.6"
 
+env:
+ - PIPENV_VENV_IN_PROJECT=True
+
 addons:
   chrome: stable
 
 cache:
  - pip
  - npm
+ directories:
+  .venv
 
 install:
  - npm install
- - pip install -r requirements.txt
+ - pip install pipenv --upgrade
+ - pipenv install
  # Add pygobject to the virtualenv
  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
 
 script:
-  - ENV_PATH=etc/env-test ./manage.py migrate
+  - ENV_PATH=etc/env-test pipenv run ./manage.py migrate
   - npm run build:dev
   - npm run build:prod
-  - ENV_PATH=etc/env-test ./manage.py test
+  - ENV_PATH=etc/env-test pipenv run ./manage.py test
