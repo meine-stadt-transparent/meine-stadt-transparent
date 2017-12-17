@@ -39,21 +39,21 @@
   .search-facet {
     @extend .pt-2;
   }
+}
 
-  .location-col {
-    .location-select-map {
-      height: 300px;
-    }
-    .dropdown-menu {
-      width: 420px;
-      padding: 0;
-    }
+.search-facet-location {
+  .location-select-map {
+    height: 300px;
+  }
+  .dropdown-menu {
+    width: 420px;
+    padding: 0;
   }
   .location-description {
-    vertical-align: middle;
+    vertical-align: bottom;
     > * {
       display: inline-block;
-      vertical-align: middle;
+      vertical-align: bottom;
     }
     .location {
       max-width: 100px;
@@ -64,10 +64,33 @@
   .radius-select-row {
     @extend .m-1;
   }
-  .search-date {
-    input.form-control {
-      max-width: 95px;
-    }
+}
+
+.search-facet-filter-dropdown {
+  .dropdown-toggle .selection {
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  .dropdown-menu {
+    padding-top: 0;
+    width: 14rem; // Stops changing the width while filtering
+    min-height: 5rem;
+  }
+  .dropdown-scroller {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+  }
+  .dropdown-item {
+    padding: $dropdown-item-padding-y calc(#{$input-btn-padding-x} + 2px); // align with search filter
+  }
+  .dropdown-filter {
+    padding: 2px;
   }
 }
 

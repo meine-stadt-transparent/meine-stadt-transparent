@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<section class="col-auto search-facet search-facet-filter-dropdown" data-filter-key="{{ key }}">
+    <input type="hidden" value="{{ init_value }}" name="{{ key }}" class="value">
+    <h2 class="sr-only">{% trans label context "search_form" %}</h2>
+    <div class="dropdown facet-dropdown">
+        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="{{ key }}Button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="nothing-selected">{% trans label context "search_form" %}</span>
+            <span class="selection"></span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="{{ key }}Button">
+            <div class="dropdown-item dropdown-filter">
+                <input type="text" class="form-control filter-input facet-internal"
+                       title="{% trans "Search" context "search_form" %}"
+                       value="" autocomplete="off" placeholder="{% trans "Search" context "search_form" %}">
+            </div>
+            <div class="dropdown-scroller filter-list">
+                {% for item in items %}
+                    <a class="dropdown-item filter-item" href="#" data-id="{{ item.id }}">
+                        <span class="name sort">{{ item }}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>

@@ -9,25 +9,25 @@ export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
         this.$refreshSpinner = $(".search-refreshing-spinner");
-
         this.currentQueryString = null;
 
         this.initAutocomplete();
 
         this.locationSelector = new FacettedSearchLocationSelector($form.find(".search-facet-location"));
-        this.daterangePicker = new FacettedSearchDateRange($form.find(".search-facet-daterange"));
-        this.documentTypeWidget = new FacettedSearchDocumentTypes($form.find(".search-facet-document-type"));
-        this.personSelector = new FacettedSearchFilterDropdown($form.find(".search-facet-persons"));
+        this.facets = [
+            this.locationSelector,
+            new FacettedSearchDateRange($form.find(".search-facet-daterange")),
+            new FacettedSearchDocumentTypes($form.find(".search-facet-document-type")),
+        ];
+        $form.find(".search-facet-filter-dropdown").each((_, el) => {
+            this.facets.push(new FacettedSearchFilterDropdown($(el)));
+        });
 
         this.$form.submit(this.search.bind(this));
-        this.$form.find("input").change(this.search.bind(this));
-        this.$form.find("input").keyup(this.search.bind(this));
-        this.$form.find("select").change(this.search.bind(this));
+        this.$form.find("input:not(.facet-internal)").change(this.search.bind(this));
+        this.$form.find("input:not(.facet-internal)").keyup(this.search.bind(this));
+        this.$form.find("select:not(.facet-internal)").change(this.search.bind(this));
     }
-
-
-
-
 
     initAutocomplete() {
         let $widget = this.$form.find(".searchterm-row input[name=searchterm]");
@@ -50,14 +50,11 @@ export default class FacettedSearch {
         });
     }
 
-
-
     getQuerystring() {
         let querystring = "";
-        querystring += this.locationSelector.getQueryString();
-        querystring += this.documentTypeWidget.getQueryString();
-        querystring += this.daterangePicker.getQueryString();
-        querystring += this.personSelector.getQueryString();
+        this.facets.forEach((facet) => {
+            querystring += facet.getQueryString();
+        });
         querystring += this.$form.find("input[name=searchterm]").val();
         querystring = querystring.replace(/^\s/, '').replace(/\s$/, '');
 

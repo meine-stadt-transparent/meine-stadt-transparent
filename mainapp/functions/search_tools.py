@@ -9,7 +9,7 @@ from elasticsearch_dsl import Search, Q
 from mainapp.functions.geo_functions import latlng_to_address
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
-QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "after", "before"]
+QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before"]
 
 
 class NotificationSearchResult:
@@ -191,7 +191,10 @@ def params_to_human_string(params: dict):
         strs.append(pgettext('Search query', 'containing "%STR%"').replace('%STR%', params['searchterm']))
 
     if 'person' in params:
-        strs.append(pgettext('Search query', 'created by %FROM%').replace('%BY%', params['person']))
+        strs.append(pgettext('Search query', 'created by %FROM%').replace('%FROM%', params['person']))
+
+    if 'organization' in params:
+        strs.append(pgettext('Search query', 'assigned to %TO%').replace('%TO%', params['organization']))
 
     if 'radius' in params:
         place_name = latlng_to_address(params['lat'], params['lng'])
