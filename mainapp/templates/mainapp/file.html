@@ -23,7 +23,7 @@
                     <div>
                         {% if is_renderable %}
                             <div>
-                                <a href="{% url 'resource' file.storage_filename %}">
+                                <a href="{% url 'media' file.storage_filename %}">
                                     <i class="fa-custom fa-download" aria-hidden="true"></i>Download
                                 </a>
                             </div>
@@ -64,14 +64,14 @@
                 <div class="container pdfjs-wrapper">
                     <div class="embed-responsive h-100">
                         <iframe class="embed-responsive-item"
-                                src="{% static 'vendored/web/viewer.html' %}?file={% url 'resource' file.storage_filename %}">
+                                src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
                         </iframe>
                     </div>
                 </div>
             {% else %}
                 <div class="container">
                     <p class="lead">{% trans "The file can not be shown" %}</p>
-                    <a class="btn btn-primary btn-lg" role="button" href="{% url 'resource' file.storage_filename %}"
+                    <a class="btn btn-primary btn-lg" role="button" href="{% url 'media' file.storage_filename %}"
                        download>
                         <i class="fa fa-download" aria-hidden="true"></i>
                         {% trans "Download" %}

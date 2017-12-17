@@ -36,11 +36,20 @@ The database is still empty, so now we need to run the migrations:
 docker-compose run django ./manage.py migrate
 ```
 
-Before starting, you'll need some data. You can either import from an oparl api (See the corresponding section below) or use our dummy data for a quickstart:
+Before starting, you'll need some data.
+
+Option 1: Dummy data. Fast import and has all the relations.
 
 ```bash
 docker-compose run django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
+
+Option 2: Real data. Slow, see the import section below for details.
+
+```bash
+./manage.py import [mycitiesname]
+```
+
 
 Finally, we can launch everything. Add `-d` to run it in background:
 
@@ -48,7 +57,7 @@ Finally, we can launch everything. Add `-d` to run it in background:
 docker-compose up
 ```
 
-Meine Stadt Transparent should now be running at [localhost:8000](http://localhost:8000).
+Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000).
 
 Want to change the settings? Make `DOKER_COMPOSE_ENV` point to you custom env file, e.g. with `export DOKER_COMPOSE_ENV=/path/to/my/dotenv`. 
 
@@ -170,6 +179,7 @@ Import OpenStreetMap-Amenities of a given city (Not required yet):
 ```
 
 Import the outer shape of a city from OpenStreetMap and write it into an existing body:
+
 ```bash
 ./manage.py importcityoutline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
 ```

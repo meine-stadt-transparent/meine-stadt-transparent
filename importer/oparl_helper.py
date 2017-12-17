@@ -25,12 +25,11 @@ default_options = {
     "use_sternberg": False,
     "ignore_modified": False,
     "no_threads": False,
-    "cachefolder": "../mst-storage/import-oparl-cache",
-    "storagefolder": "../mst-storage/files",
+    "cachefolder": settings.CACHE_ROOT,
+    "storagefolder": settings.MEDIA_ROOT,
     "batchsize": 100,
     "threadcount": 10,
 }
-
 
 class OParlHelper:
     """ A collection of helper function for the oparl importer.

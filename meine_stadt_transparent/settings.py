@@ -216,7 +216,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
 )
 
-MEDIA_ROOT = env.str('MEDIA_ROOT', '../mst-storage/files/')
+MEDIA_ROOT = env.str('MEDIA_ROOT', './storage/files/')
+CACHE_ROOT = env.str('CACHE_ROOT', './storage/cache/')
 
 WEBPACK_LOADER = {
     'DEFAULT': {

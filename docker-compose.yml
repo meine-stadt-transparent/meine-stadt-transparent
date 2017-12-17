@@ -8,8 +8,6 @@ services:
       - django_static:/static
       - django_cache:/cache
       - "${DOKER_COMPOSE_ENV:-./etc/env-docker-compose}:/config/.env"
-    ports:
-      - ${DJANGO_PORT:-8000}:8000
     networks:
       - network
     depends_on:
@@ -48,10 +46,25 @@ services:
     networks:
       - network
 
+  nginx:
+    image: nginx
+    container_name: nginx
+    volumes:
+     - django_static:/static:ro
+     - django_media:/media:ro
+     - django_cache:/cache:ro
+     - ./etc/nginx-docker-compose.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+     - "7000:80"
+    networks:
+      - network
+    depends_on:
+      - django
+
 volumes:
   django_media:
-  django_static:
   django_cache:
+  django_static:
   mariadb_data:
   elasticsearch_data:
 

@@ -45,7 +45,7 @@ urlpatterns = [
     url(r'^profile/$', profile_view, name='profile-home'),
     url(r'^profile/delete/$', profile_delete, name='profile-delete'),
     # TODO: Warn in production because one should use nginx directly. Also, mime types
-    url(r'^resource/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name="resource"),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name="media"),
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]
