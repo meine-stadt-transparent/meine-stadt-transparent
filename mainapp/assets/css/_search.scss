@@ -6,8 +6,8 @@
 }
 
 .dropdown-item, span.twitter-typeahead .tt-suggestion {
-  padding-left: 0.75em;
-  padding-right: 0.75em;
+  padding-left: $dropdown-item-padding-x;
+  padding-right: $dropdown-item-padding-x;
 }
 
 .navbar .search-autocomplete .form-control {
@@ -95,7 +95,14 @@
     padding: $dropdown-item-padding-y calc(#{$input-btn-padding-x} + 2px); // align with search filter
   }
   .dropdown-filter {
-    padding: 2px;
+    padding: 0;
+    border-bottom: 1px solid $card-border-color;
+    input {
+      border: none;
+    }
+  }
+  .remove-filter {
+    border-bottom: 1px solid $card-border-color;
   }
 }
 

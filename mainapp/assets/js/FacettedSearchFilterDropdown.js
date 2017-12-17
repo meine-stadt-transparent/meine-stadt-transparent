@@ -12,9 +12,10 @@ export default class FacettedSearchFilterDropdown {
             listClass: 'filter-list',
             searchClass: 'filter-input'
         });
-        this.filterlist.sort('name', { order: "asc" });
+        this.filterlist.sort('name', {order: "asc"});
         this.$items.click(this.itemSelected.bind(this));
         this.setLabel();
+        this.$facet.find(".remove-filter > a").click(this.removeFilter.bind(this));
     }
 
     setLabel() {
@@ -23,9 +24,13 @@ export default class FacettedSearchFilterDropdown {
             let name = this.$items.filter("[data-id=" + id + "]").find(".name").text();
             this.$facet.find(".nothing-selected").hide();
             this.$facet.find(".selection").show().text(name);
+
+            this.$facet.find(".remove-filter").show();
         } else {
             this.$facet.find(".nothing-selected").show();
             this.$facet.find(".selection").hide().text("");
+
+            this.$facet.find(".remove-filter").hide();
         }
     }
 
@@ -34,6 +39,7 @@ export default class FacettedSearchFilterDropdown {
             id = $item.data("id");
         this.$input.val(id).trigger("change");
         this.setLabel();
+        ev.preventDefault();
     }
 
     getQueryString() {
@@ -42,5 +48,11 @@ export default class FacettedSearchFilterDropdown {
         } else {
             return '';
         }
+    }
+
+    removeFilter(event) {
+        this.$input.val("").trigger("change");
+        this.setLabel();
+        event.preventDefault();
     }
 }
