@@ -46,7 +46,9 @@ export default class FacettedSearchDateRange {
             showDropdowns: true,
             showCustomRangeLabel: true,
             linkedCalendars: false,
-            ranges: this.dateRanges
+            ranges: this.dateRanges,
+            applyClass: "btn-primary",
+            cancelClass: "btn-danger"
         };
     }
 
@@ -54,7 +56,6 @@ export default class FacettedSearchDateRange {
         this.$inputBefore.val(end.format("YYYY-MM-DD"));
         this.$inputAfter.val(start.format("YYYY-MM-DD"));
         this.$inputAfter.change();
-        console.log("change", this.$inputAfter);
         this.setDateRangeStr();
     }
 

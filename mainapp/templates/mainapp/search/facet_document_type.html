@@ -9,6 +9,11 @@
             {% trans "Document Type" context "search_form" %}
         </button>
         <div class="dropdown-menu" aria-labelledby="documentTypeButton">
+            <div class="dropdown-item cancel-selection">
+                <a href role="button">
+                    <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
+                </a>
+            </div>
             {% for document_type_id, document_type_name in document_types.items %}
                 <div class="dropdown-item">
                     <label>

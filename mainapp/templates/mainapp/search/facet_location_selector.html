@@ -21,10 +21,10 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="locationSelectButton">
             <div class="location-select-map" id="location-select-map" data-map-data="{{ map }}"></div>
-            <div class="radius-select-row">
+            <div>
                 <div class="input-group">
-                    <label for="new-radius" class="input-group-addon">Entfernung in m:</label>
-                    <input type="number" class="form-control new-radius" id="new-radius"
+                    <label for="new-radius" class="input-group-addon w-50 border-left-0">Entfernung in m:</label>
+                    <input type="number" class="form-control new-radius w-50 border-right-0" id="new-radius"
                            data-default="500" value="{{ options.radius }}">
                 </div>
             </div>

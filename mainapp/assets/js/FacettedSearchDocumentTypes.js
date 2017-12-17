@@ -1,10 +1,12 @@
 export default class FacettedSearchDocumentTypes {
     constructor($facet) {
         this.$facet = $facet;
-        $facet.find(".dropdown-item").click(this.onClick.bind(this));
+        this.$facet.find(".dropdown-item").click(this.selectType.bind(this));
+        this.toogleCancel();
+        this.$facet.find(".cancel-selection").click(this.cancelSelection.bind(this));
     }
 
-    onClick(event) {
+    selectType(event) {
         if (event.target && event.target.nodeName === 'INPUT') {
             // Default behavior for the checkbox, however...
         } else {
@@ -16,6 +18,19 @@ export default class FacettedSearchDocumentTypes {
             $checkbox.prop("checked", !$checkbox.prop("checked"));
             $checkbox.change();
         }
+        this.toogleCancel();
+    }
+
+    toogleCancel() {
+        if (this.$facet.find("input:checked").length > 0) {
+            this.$facet.find(".cancel-selection").show();
+        } else {
+            this.$facet.find(".cancel-selection").hide();
+        }
+    }
+
+    cancelSelection() {
+        this.$facet.find("input").prop("checked", false);
     }
 
     getQueryString() {
