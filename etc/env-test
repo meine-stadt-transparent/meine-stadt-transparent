@@ -4,13 +4,10 @@ SECRET_KEY=notsosecretkey
 LANGUAGE_CODE=en
 DJANGO_LOG_LEVEL="WARN"
 
-# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
-USE_ELASTICSEARCH=False
-ELASTICSEARCH_URL_PRIVATE=
+DATABASE_URL=sqlite:///db.sqlite3
 
 USE_ELASTICSEARCH=False
-# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
-DATABASE_URL=sqlite:///db.sqlite3
+ELASTICSEARCH_URL_PRIVATE=
 
 MAILJET_API_KEY=
 MAILJET_SECRET_KEY=

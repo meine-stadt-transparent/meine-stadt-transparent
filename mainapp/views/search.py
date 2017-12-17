@@ -15,7 +15,7 @@ from elasticsearch_dsl import Search
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable, \
-    html_escape_highlight, _escape_elasticsearch_query
+    html_escape_highlight, escape_elasticsearch_query
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
@@ -23,48 +23,49 @@ from mainapp.views.views import _build_map_object
 logger = logging.getLogger(__name__)
 
 
-def _search_to_context(query, params: dict, options, search):
-    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
+def _parse_hit(hit):
+    parsed = hit.__dict__['_d_']  # Extract the raw fields from the hit
+    parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
+    parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
+    highlights = []
+    if hasattr(hit.meta, "highlight"):
+        for field_name, field_highlights in hit.meta.highlight.to_dict().items():
+            for field_highlight in field_highlights:
+                if field_name == "name":
+                    parsed["name"] = field_highlight
+                elif field_name == "short_name":
+                    pass
+                else:
+                    highlights.append(field_highlight)
+    if len(highlights) > 0:
+        parsed["highlight"] = html_escape_highlight(highlights[0])
+    else:
+        parsed["highlight"] = None
+    parsed["name_escaped"] = html_escape_highlight(parsed["name"])
+    return parsed
 
-    results = []
-    executed = search.execute()
-    for hit in executed:
-        result = hit.__dict__['_d_']  # Extract the raw fields from the hit
-        result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
-        result["type_translated"] = DOCUMENT_TYPE_NAMES[result["type"]]
 
-        highlights = []
-        if hasattr(hit.meta, "highlight"):
-            for field_name, field_highlights in hit.meta.highlight.to_dict().items():
-                for field_highlight in field_highlights:
-                    if field_name == "name":
-                        result["name"] = field_highlight
-                    elif field_name == "short_name":
-                        pass
-                    else:
-                        highlights.append(field_highlight)
-
-        if len(highlights) > 0:
-            result["highlight"] = html_escape_highlight(highlights[0])
-        else:
-            result["highlight"] = None
-
-        result["name_escaped"] = html_escape_highlight(result["name"])
-
-        results.append(result)
-
+def _search_to_context(query, params: dict, options, results, total_hits, request):
     context = {
         "query": query,
         "results": results,
         "options": options,
         "document_types": DOCUMENT_TYPE_NAMES,
-        "map": _build_map_object(main_body, []),
+        "map": _build_map_object(Body.objects.get(id=settings.SITE_DEFAULT_BODY), []),
         "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
-        "total_hits": executed.hits.total,
+        "total_hits": total_hits,
         "subscribable": params_are_subscribable(params),
+        'is_subscribed': is_subscribed_to_search(request.user, params)
     }
 
     return context
+
+
+def _search_to_results(search):
+    """ Extracted to allow mocking in tests """
+    executed = search.execute()
+    results = [_parse_hit(hit) for hit in executed]
+    return results, executed.hits.total
 
 
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
@@ -82,10 +83,10 @@ def search_index(request, query):
     except NeedsLoginError as err:
         return redirect(err.redirect_url)
 
-    search = search[0:settings.SEARCH_PAGINATION_LENGTH]
-    context = _search_to_context(query, params, options, search)
-    context['subscribable'] = params_are_subscribable(params)
-    context['is_subscribed'] = is_subscribed_to_search(request.user, params)
+    search = search[:settings.SEARCH_PAGINATION_LENGTH]
+    results, total_hits = _search_to_results(search)
+    context = _search_to_context(query, params, options, results, total_hits, request)
+
     context['searchable_organizations'] = Organization.objects.all()
     org = settings.SITE_DEFAULT_ORGANIZATION
     context['searchable_persons'] = Person.objects.filter(organizationmembership__organization=org).distinct()
@@ -98,16 +99,15 @@ def search_results_only(request, query):
     params = search_string_to_params(query)
     options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    search = search[after:after + settings.SEARCH_PAGINATION_LENGTH]
-    context = _search_to_context(query, params, options, search)
-    context['subscribable'] = params_are_subscribable(params)
-    context['is_subscribed'] = is_subscribed_to_search(request.user, params)
+    search = search[after:][:settings.SEARCH_PAGINATION_LENGTH]
+    results, total_hits = _search_to_results(search)
+    context = _search_to_context(query, params, options, results, total_hits, request)
 
     result = {
         'results': loader.render_to_string('partials/mixed_results.html', context, request),
-        'total_results': context['total_hits'],
+        'total_results': total_hits,
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
-        'more_link': reverse("search_results_only", args=[query]),
+        'more_link': reverse(search_results_only, args=[query]),
     }
 
     return JsonResponse(result, safe=False)
@@ -124,7 +124,7 @@ def search_autosuggest(_, query):
     # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
     # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
     search = Search(index=settings.ELASTICSEARCH_INDEX).query("match", autocomplete={
-        'query': _escape_elasticsearch_query(query),
+        'query': escape_elasticsearch_query(query),
         'analyzer': 'standard',
         'fuzziness': 'AUTO',
         'prefix_length': 1

@@ -52,9 +52,8 @@ def add_modified_since(s, since: datetime):
     return s
 
 
-def _escape_elasticsearch_query(query):
-    escaped = query.replace('/', '\/')
-    return escaped
+def escape_elasticsearch_query(query):
+    return query.replace('/', '\/')
 
 
 def html_escape_highlight(highlight):
@@ -69,7 +68,7 @@ def params_to_query(params: dict):
     errors = []
     if 'searchterm' in params and params['searchterm'] is not "":
         s = s.query('match', _all={
-            'query': _escape_elasticsearch_query(params['searchterm']),
+            'query': escape_elasticsearch_query(params['searchterm']),
             'operator': 'and',
             'fuzziness': 'AUTO',
             'prefix_length': 1

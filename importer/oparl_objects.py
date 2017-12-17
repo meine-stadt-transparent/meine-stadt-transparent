@@ -286,7 +286,7 @@ class OParlObjects(OParlHelper):
         url = libobject.get_download_url() or libobject.get_access_url()
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
-        if file.filesize > 0 and file.modified and last_modified and last_modified < file.modified:
+        if file.filesize and file.filesize > 0 and file.modified and last_modified and last_modified < file.modified:
             self.logger.info("Skipping cached Download: {}".format(url))
             return
 
