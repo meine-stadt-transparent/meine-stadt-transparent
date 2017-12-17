@@ -320,7 +320,9 @@ LOGGING = {
 
 OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
 
-if DEBUG:
+TESTING = sys.argv[1:2] == ['test']
+
+if DEBUG and not TESTING:
     # Debug Toolbar
     INSTALLED_APPS.append('debug_toolbar')
     MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
@@ -328,10 +330,6 @@ if DEBUG:
         '127.0.0.1'
     ]
     DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
-
-    # For using runserver with multiple databases
-    if os.environ.get('DATABASE_URL'):
-        DATABASES['default'] = env.db_url_config(os.environ.get('DATABASE_URL'))
 
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
