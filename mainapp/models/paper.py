@@ -34,3 +34,6 @@ class Paper(DefaultFields, ShortableNameFields):
 
     def person_ids(self):
         return list(self.persons.values_list('id', flat=True))
+
+    def organization_ids(self):
+        return list(self.organizations.values_list('id', flat=True))

@@ -29,3 +29,6 @@ class Person(DefaultFields):
         for prefix in settings.SITE_STRIP_NAME_SALUTATIONS:
             name = re.sub(r"^" + re.escape(prefix) + " ", "", name)
         return name
+
+    def organization_ids(self):
+        return list(self.organizationmembership_set.values_list('organization_id', flat=True))

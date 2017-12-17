@@ -98,9 +98,17 @@ def params_to_query(params: dict):
         s = s.filter('terms', _type=[i + "_document" for i in split])
         options["document_type"] = split
     if 'after' in params:
+        # options['after'] added by _add_date_after
         s = _add_date_after(s, params, options, errors)
     if 'before' in params:
+        # options['before'] added by _add_date_before
         s = _add_date_before(s, params, options, errors)
+    if 'person' in params:
+        s = s.filter('match', person_ids=params['person'])
+        options['person'] = params['person']
+    if 'organization' in params:
+        s = s.filter('match', organization_ids=params['organization'])
+        options['organization'] = params['organization']
 
     return options, s, errors
 
