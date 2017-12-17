@@ -110,6 +110,17 @@ def params_to_query(params: dict):
         s = s.filter('match', organization_ids=params['organization'])
         options['organization'] = params['organization']
 
+    if 'sort' in params:
+        if params['sort'] == 'date_newest':
+            s = s.sort({"modified": {"order": "desc"}})
+        elif params['sort'] == 'date_oldest':
+            s = s.sort({"modified": {"order": "asc"}})
+        else:
+            s = s.sort("_score")
+        options['sort'] = params['sort']
+    else:
+        s = s.sort("_score")
+
     return options, s, errors
 
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-15 16:08+0100\n"
+"POT-Creation-Date: 2017-12-17 20:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,42 +31,47 @@ msgstr "Name des Dokumententyps"
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:181
+#: functions/search_tools.py:200
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:186
+#: functions/search_tools.py:205
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:191
+#: functions/search_tools.py:210
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:194
+#: functions/search_tools.py:213
 msgctxt "Search query"
 msgid "created by %FROM%"
 msgstr "erstellt von %FROM%"
 
-#: functions/search_tools.py:198
+#: functions/search_tools.py:216
+msgctxt "Search query"
+msgid "assigned to %TO%"
+msgstr ""
+
+#: functions/search_tools.py:220
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:202
+#: functions/search_tools.py:224
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:204
+#: functions/search_tools.py:226
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:206
+#: functions/search_tools.py:228
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -382,18 +387,18 @@ msgctxt "navigation"
 msgid "Organizations"
 msgstr "Gremien"
 
-#: templates/base.html:45 templates/mainapp/index.html:65
+#: templates/base.html:45 templates/mainapp/index.html:64
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
 
-#: templates/base.html:48 templates/mainapp/index.html:68
+#: templates/base.html:48 templates/mainapp/index.html:67
 msgctxt "navigation"
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: templates/base.html:58 templates/mainapp/index.html:29
-#: templates/mainapp/search.html:5 templates/mainapp/search.html:21
+#: templates/base.html:58 templates/mainapp/search/search.html:5
+#: templates/mainapp/search/search.html:21
 msgctxt "page_title"
 msgid "Search"
 msgstr "Suche"
@@ -473,7 +478,7 @@ msgstr "Kontakt"
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:58
+#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:57
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -503,23 +508,28 @@ msgstr "informiert Sie über ihren Stadtrat"
 msgid "More information"
 msgstr "Weitere Informationen"
 
-#: templates/mainapp/index.html:46
+#: templates/mainapp/index.html:29
+msgctxt "page_title"
+msgid "Search for documents, persons, topics and more"
+msgstr "Suche nach Dokumenten, Personen, Themen..."
+
+#: templates/mainapp/index.html:45
 msgid "About the project"
 msgstr "Über dieses Projekt"
 
-#: templates/mainapp/index.html:50
+#: templates/mainapp/index.html:49
 msgid "How do city politics work?"
 msgstr "Wie funktioniert Stadtpolitik?"
 
-#: templates/mainapp/index.html:55 templates/mainapp/persons.html:6
+#: templates/mainapp/index.html:54 templates/mainapp/persons.html:6
 msgid "Persons"
 msgstr "Personen"
 
-#: templates/mainapp/index.html:73
+#: templates/mainapp/index.html:72
 msgid "Organizations"
 msgstr "Gremien"
 
-#: templates/mainapp/index.html:80
+#: templates/mainapp/index.html:79
 msgctxt "Header"
 msgid "Latest Documents"
 msgstr "Neueste Dokumente"
@@ -641,21 +651,19 @@ msgstr "Eingereichte Dokumente"
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
-#: templates/mainapp/person.html:40
-#, fuzzy
+#: templates/mainapp/person.html:41
 #| msgid " - "
 msgctxt "Date range separator"
 msgid " - "
 msgstr " - "
 
-#: templates/mainapp/person.html:42
-#, fuzzy
+#: templates/mainapp/person.html:44
 #| msgctxt "persons-list"
 #| msgid "Since"
 msgid "Since "
-msgstr "Seit"
+msgstr "Seit "
 
-#: templates/mainapp/person.html:54
+#: templates/mainapp/person.html:56
 msgid "Mentioned in"
 msgstr "Namentliche Erwähnungen"
 
@@ -676,7 +684,10 @@ msgid "Name"
 msgstr "Name"
 
 #: templates/mainapp/persons.html:48
-msgctxt "persons-list"
+#: templates/mainapp/search/sorter_widget.html:5
+#: templates/mainapp/search/sorter_widget.html:13
+#| msgctxt "persons-list"
+#| msgid "Sort by"
 msgid "Sort by"
 msgstr "Sortieren"
 
@@ -695,87 +706,91 @@ msgctxt "persons-list"
 msgid "Since"
 msgstr "Seit"
 
-#: templates/mainapp/search.html:33 templates/mainapp/search.html:38
-#: templates/mainapp/search.html:39
-msgctxt "search_form"
-msgid "Search term"
-msgstr "Suche"
-
-#: templates/mainapp/search.html:42
-msgctxt "search_form"
-msgid "Search"
-msgstr "Suche"
-
-#: templates/mainapp/search.html:50 templates/mainapp/search.html:63
-msgctxt "search_form"
-msgid "Location"
-msgstr "Ort"
-
-#: templates/mainapp/search.html:58
-msgid "m around"
-msgstr "m um"
-
-#: templates/mainapp/search.html:76
-msgctxt "search_form"
-msgid "Select"
-msgstr "Auswählen"
-
-#: templates/mainapp/search.html:91 templates/mainapp/search.html:96
+#: templates/mainapp/search/facet_document_type.html:4
+#: templates/mainapp/search/facet_document_type.html:9
 msgctxt "search_form"
 msgid "Document Type"
 msgstr "Dokumententyp"
 
-#: templates/mainapp/search.html:119 templates/mainapp/search.html:138
+#: templates/mainapp/search/facet_filter_dropdown.html:15
+#: templates/mainapp/search/facet_filter_dropdown.html:16
+#| msgid "Filter"
+msgctxt "search_form"
+msgid "Filter"
+msgstr "Filter"
+
+#: templates/mainapp/search/facet_filter_dropdown.html:21
+msgctxt "Remove search filter"
+msgid "Any"
+msgstr ""
+
+#: templates/mainapp/search/facet_location_selector.html:6
+#: templates/mainapp/search/facet_location_selector.html:18
+msgctxt "search_form"
+msgid "Location"
+msgstr "Ort"
+
+#: templates/mainapp/search/facet_location_selector.html:13
+msgid "m around"
+msgstr "m um"
+
+#: templates/mainapp/search/facet_location_selector.html:30
+msgctxt "search_form"
+msgid "Select"
+msgstr "Auswählen"
+
+#: templates/mainapp/search/facet_time_range.html:4
+#: templates/mainapp/search/facet_time_range.html:19
 msgctxt "search_form"
 msgid "Time range"
 msgstr "Zeitraum"
 
-#: templates/mainapp/search.html:124
+#: templates/mainapp/search/facet_time_range.html:7
 msgctxt "search_form"
 msgid "Today"
 msgstr "Heute"
 
-#: templates/mainapp/search.html:125
+#: templates/mainapp/search/facet_time_range.html:8
 msgctxt "search_form"
 msgid "Last 7 days"
 msgstr "Letzte 7 Tage"
 
-#: templates/mainapp/search.html:126
+#: templates/mainapp/search/facet_time_range.html:9
 msgctxt "search_form"
 msgid "This month"
 msgstr "Dieser Monat"
 
-#: templates/mainapp/search.html:127
+#: templates/mainapp/search/facet_time_range.html:10
 msgctxt "search_form"
 msgid "Last month"
 msgstr "Letzter Monat"
 
-#: templates/mainapp/search.html:128
+#: templates/mainapp/search/facet_time_range.html:11
 msgctxt "search_form"
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: templates/mainapp/search.html:129
+#: templates/mainapp/search/facet_time_range.html:12
 msgctxt "search_form"
 msgid "Custom range"
 msgstr "Eigener Zeitraum"
 
-#: templates/mainapp/search.html:130
+#: templates/mainapp/search/facet_time_range.html:13
 msgctxt "search_form"
 msgid "Apply"
 msgstr "Auswählen"
 
-#: templates/mainapp/search.html:131
+#: templates/mainapp/search/facet_time_range.html:14
 msgctxt "search_form"
 msgid "na"
 msgstr "Egal"
 
-#: templates/mainapp/search.html:132
+#: templates/mainapp/search/facet_time_range.html:15
 msgctxt "search_form"
 msgid "Su|Mo|Tu|We|Th|Fr|Sa"
 msgstr "So|Mo|Di|Mi|Do|Fr|Sa"
 
-#: templates/mainapp/search.html:133
+#: templates/mainapp/search/facet_time_range.html:16
 msgctxt "search_form"
 msgid ""
 "January|February|March|April|May|June|July|August|September|October|November|"
@@ -784,13 +799,40 @@ msgstr ""
 "Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|"
 "Dezember"
 
-#: templates/mainapp/search.html:155
+#: templates/mainapp/search/search.html:33
+#: templates/mainapp/search/search.html:38
+#: templates/mainapp/search/search.html:39
+msgctxt "search_form"
+msgid "Search term"
+msgstr "Suche"
+
+#: templates/mainapp/search/search.html:42
+msgctxt "search_form"
+msgid "Search"
+msgstr "Suche"
+
+#: templates/mainapp/search/search.html:63
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: templates/mainapp/search.html:160
+#: templates/mainapp/search/search.html:68
 msgid "Nothing Found"
 msgstr "Nichts gefunden"
+
+#: templates/mainapp/search/sorter_widget.html:14
+msgctxt "search_form"
+msgid "Relevance"
+msgstr ""
+
+#: templates/mainapp/search/sorter_widget.html:15
+msgctxt "search_form"
+msgid "Newest first"
+msgstr ""
+
+#: templates/mainapp/search/sorter_widget.html:16
+msgctxt "search_form"
+msgid "Oldest first"
+msgstr ""
 
 #: templates/partials/deleted_note.html:4
 msgid "Deleted"
@@ -897,7 +939,7 @@ msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
 msgid "You have already subscribed to this search."
 msgstr "Sie haben diese Abfrage bereits abonniert."
 
-#: views/search.py:115
+#: views/search.py:118
 msgid "search disabled"
 msgstr "Suche deaktiviert"
 

@@ -1,3 +1,4 @@
+// noinspection ES6UnusedImports
 import style from '../css/calendar.scss';
 
 require('fullcalendar');
