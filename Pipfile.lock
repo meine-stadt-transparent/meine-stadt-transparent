@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ff61eb85391efeca33b0258f981fa14d561b55fb2e4cd24cd18b27fee318a340"
+            "sha256": "42f1abbfb6d7efa1b0cf956dd21c4e2c0f0e3064ae6cbcd905a4d32046effaf8"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -160,6 +160,13 @@
             "editable": true,
             "git": "git://github.com/stadt-karlsruhe/geoextract.git",
             "ref": "b18296b54e79b664388ad71804e64bdd50161b85"
+        },
+        "geopy": {
+            "hashes": [
+                "sha256:5215b360f524118a468c13bf97ecbff6136a1876bf4b11d624916e9c9e0f7c17",
+                "sha256:4250e5a9e9f7abb990eddf01d1491fc112755e14f76060011c607ba759a74112"
+            ],
+            "version": "==1.11.0"
         },
         "gunicorn": {
             "hashes": [

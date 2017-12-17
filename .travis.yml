@@ -10,10 +10,10 @@ addons:
   chrome: stable
 
 cache:
- - pip
- - npm
+ pip: true
+ npm: true
  directories:
-  .venv
+  - .venv
 
 install:
  - npm install
