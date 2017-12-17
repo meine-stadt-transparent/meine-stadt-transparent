@@ -25,7 +25,8 @@ Before starting, you'll likely need to [adjust max_map_count on the host system]
 Now we can launch the docker containers:
 
 ```bash
-docker-compose up mariadb elasticsearch
+docker-compose up mariadb e
+lasticsearch
 ```
 
 Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 
@@ -58,7 +59,7 @@ docker-compose up
 
 Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000).
 
-Want to change the settings? Make `DOKER_COMPOSE_ENV` point to you custom env file, e.g. with `export DOKER_COMPOSE_ENV=/path/to/my/dotenv`. 
+**Before using this in production,** use a custom dotenv by setting `DOKER_COMPOSE_ENV` to the file's location, e.g. with `export DOKER_COMPOSE_ENV=/path/to/my/dotenv`. Make sure that you at least changed `REAL_HOST` and `SECRET_KEY` to proper values.
 
 You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: The python in the virtualenv is configured as entrypoint.
 
