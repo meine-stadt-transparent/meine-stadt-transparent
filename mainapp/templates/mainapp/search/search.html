@@ -49,6 +49,7 @@
                     {% include "mainapp/search/facet_time_range.html" %}
                     {% include "mainapp/search/facet_filter_dropdown.html" with key="person" items=searchable_persons label="Person" init_value=options.person %}
                     {% include "mainapp/search/facet_filter_dropdown.html" with key="organization" items=searchable_organizations label="Organization" init_value=options.organization %}
+                    {% include "mainapp/search/sorter_widget.html" %}
                 </div>
             </form>
 

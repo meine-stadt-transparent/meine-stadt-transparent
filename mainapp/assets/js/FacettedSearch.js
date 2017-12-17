@@ -4,6 +4,7 @@ import FacettedSearchFilterDropdown from "./FacettedSearchFilterDropdown";
 import FacettedSearchDateRange from "./FacettedSearchDateRange";
 import FacettedSearchLocationSelector from "./FacettedSearchLocationSelector";
 import FacettedSearchDocumentTypes from "./FacettedSearchDocumentTypes";
+import FacettedSearchSorter from "./FacettedSearchSorter";
 
 export default class FacettedSearch {
     constructor($form) {
@@ -15,6 +16,7 @@ export default class FacettedSearch {
 
         this.locationSelector = new FacettedSearchLocationSelector($form.find(".search-facet-location"));
         this.facets = [
+            new FacettedSearchSorter($form.find(".search-sort")),
             this.locationSelector,
             new FacettedSearchDateRange($form.find(".search-facet-daterange")),
             new FacettedSearchDocumentTypes($form.find(".search-facet-document-type")),

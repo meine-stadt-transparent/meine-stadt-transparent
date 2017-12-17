@@ -9,7 +9,7 @@ from elasticsearch_dsl import Search, Q
 from mainapp.functions.geo_functions import latlng_to_address
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
-QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before"]
+QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
 
 
 class NotificationSearchResult:
