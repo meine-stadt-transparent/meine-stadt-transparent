@@ -9,8 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-17 20:27+0100\n"
-"POT-Creation-Date: 2017-12-17 19:48+0100\n"
+"POT-Creation-Date: 2017-12-17 20:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,47 +31,47 @@ msgstr "Name des Dokumententyps"
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:189
+#: functions/search_tools.py:200
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:194
+#: functions/search_tools.py:205
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:199
+#: functions/search_tools.py:210
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:202
+#: functions/search_tools.py:213
 msgctxt "Search query"
 msgid "created by %FROM%"
 msgstr "erstellt von %FROM%"
 
-#: functions/search_tools.py:205
+#: functions/search_tools.py:216
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: functions/search_tools.py:209
+#: functions/search_tools.py:220
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:213
+#: functions/search_tools.py:224
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:215
+#: functions/search_tools.py:226
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:217
+#: functions/search_tools.py:228
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -100,7 +99,8 @@ msgstr "Account löschen"
 
 #: templates/account/delete.html:10
 msgid "Do you really want to delete your account? This cannot be undone."
-msgstr "Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig "
+msgstr ""
+"Wollen Sie diesen Account wirklich löschen? Das kann nicht rückgängig "
 "gemacht werden."
 
 #: templates/account/delete.html:12
@@ -709,6 +709,69 @@ msgctxt "persons-list"
 msgid "Since"
 msgstr "Seit"
 
+#: templates/mainapp/search/facet_date_range.html:4
+#: templates/mainapp/search/facet_date_range.html:19
+msgctxt "search_form"
+msgid "Time range"
+msgstr "Zeitraum"
+
+#: templates/mainapp/search/facet_date_range.html:7
+msgctxt "search_form"
+msgid "Today"
+msgstr "Heute"
+
+#: templates/mainapp/search/facet_date_range.html:8
+msgctxt "search_form"
+msgid "Last 7 days"
+msgstr "Letzte 7 Tage"
+
+#: templates/mainapp/search/facet_date_range.html:9
+msgctxt "search_form"
+msgid "This month"
+msgstr "Dieser Monat"
+
+#: templates/mainapp/search/facet_date_range.html:10
+msgctxt "search_form"
+msgid "Last month"
+msgstr "Letzter Monat"
+
+#: templates/mainapp/search/facet_date_range.html:11
+msgctxt "search_form"
+msgid "This year"
+msgstr "Dieses Jahr"
+
+#: templates/mainapp/search/facet_date_range.html:12
+msgctxt "search_form"
+msgid "Custom range"
+msgstr "Eigener Zeitraum"
+
+#: templates/mainapp/search/facet_date_range.html:13
+msgctxt "search_form"
+msgid "Apply"
+msgstr "Auswählen"
+
+#: templates/mainapp/search/facet_date_range.html:14
+#, fuzzy
+#| msgctxt "Remove search filter"
+#| msgid "Cancel selection"
+msgctxt "search_form"
+msgid "Cancel Selection"
+msgstr "Auswahl aufheben"
+
+#: templates/mainapp/search/facet_date_range.html:15
+msgctxt "search_form"
+msgid "Su|Mo|Tu|We|Th|Fr|Sa"
+msgstr "So|Mo|Di|Mi|Do|Fr|Sa"
+
+#: templates/mainapp/search/facet_date_range.html:16
+msgctxt "search_form"
+msgid ""
+"January|February|March|April|May|June|July|August|September|October|November|"
+"December"
+msgstr ""
+"Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|"
+"Dezember"
+
 #: templates/mainapp/search/facet_document_type.html:4
 #: templates/mainapp/search/facet_document_type.html:9
 msgctxt "search_form"
@@ -723,85 +786,35 @@ msgctxt "search_form"
 msgid "Filter"
 msgstr "Filter"
 
-#: templates/mainapp/search/facet_filter_dropdown.html:21
+#: templates/mainapp/search/facet_filter_dropdown.html:22
 msgctxt "Remove search filter"
 msgid "Cancel selection"
 msgstr "Auswahl aufheben"
 
 #: templates/mainapp/search/facet_location_selector.html:6
-#: templates/mainapp/search/facet_location_selector.html:18
+#: templates/mainapp/search/facet_location_selector.html:19
 msgctxt "search_form"
 msgid "Location"
 msgstr "Ort"
 
-#: templates/mainapp/search/facet_location_selector.html:13
+#: templates/mainapp/search/facet_location_selector.html:14
+#, fuzzy
+#| msgid "m around"
+msgctxt "Selecting a range in meters"
 msgid "m around"
 msgstr "m um"
 
-#: templates/mainapp/search/facet_location_selector.html:30
+#: templates/mainapp/search/facet_location_selector.html:33
+#, fuzzy
+#| msgctxt "Remove search filter"
+#| msgid "Cancel selection"
+msgid "Cancel Selection"
+msgstr "Auswahl aufheben"
+
+#: templates/mainapp/search/facet_location_selector.html:36
 msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
-
-#: templates/mainapp/search/facet_time_range.html:4
-#: templates/mainapp/search/facet_time_range.html:19
-msgctxt "search_form"
-msgid "Time range"
-msgstr "Zeitraum"
-
-#: templates/mainapp/search/facet_time_range.html:7
-msgctxt "search_form"
-msgid "Today"
-msgstr "Heute"
-
-#: templates/mainapp/search/facet_time_range.html:8
-msgctxt "search_form"
-msgid "Last 7 days"
-msgstr "Letzte 7 Tage"
-
-#: templates/mainapp/search/facet_time_range.html:9
-msgctxt "search_form"
-msgid "This month"
-msgstr "Dieser Monat"
-
-#: templates/mainapp/search/facet_time_range.html:10
-msgctxt "search_form"
-msgid "Last month"
-msgstr "Letzter Monat"
-
-#: templates/mainapp/search/facet_time_range.html:11
-msgctxt "search_form"
-msgid "This year"
-msgstr "Dieses Jahr"
-
-#: templates/mainapp/search/facet_time_range.html:12
-msgctxt "search_form"
-msgid "Custom range"
-msgstr "Eigener Zeitraum"
-
-#: templates/mainapp/search/facet_time_range.html:13
-msgctxt "search_form"
-msgid "Apply"
-msgstr "Auswählen"
-
-#: templates/mainapp/search/facet_time_range.html:14
-msgctxt "search_form"
-msgid "na"
-msgstr "Egal"
-
-#: templates/mainapp/search/facet_time_range.html:15
-msgctxt "search_form"
-msgid "Su|Mo|Tu|We|Th|Fr|Sa"
-msgstr "So|Mo|Di|Mi|Do|Fr|Sa"
-
-#: templates/mainapp/search/facet_time_range.html:16
-msgctxt "search_form"
-msgid ""
-"January|February|March|April|May|June|July|August|September|October|November|"
-"December"
-msgstr ""
-"Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|"
-"Dezember"
 
 #: templates/mainapp/search/search.html:33
 #: templates/mainapp/search/search.html:38
@@ -946,6 +959,10 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: views/search.py:118
 msgid "search disabled"
 msgstr "Suche deaktiviert"
+
+#~ msgctxt "search_form"
+#~ msgid "na"
+#~ msgstr "Egal"
 
 #~ msgid "No papers found"
 #~ msgstr "Keine Dokumente gefunden"
