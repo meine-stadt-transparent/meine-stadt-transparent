@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 
 from importer.functions import get_importer
-from importer.oparl_auto import OParlAuto
 
 
 class Command(BaseCommand):

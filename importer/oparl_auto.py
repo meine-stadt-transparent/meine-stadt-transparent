@@ -8,14 +8,12 @@ from importer import CityToAGS
 from importer.citytools import import_streets, import_outline
 from importer.functions import get_importer
 from importer.oparl_helper import default_options
-from mainapp.models import Body
 from meine_stadt_transparent import settings
 
 logger = logging.getLogger(__name__)
 
 
 class OParlAuto:
-
     @staticmethod
     def endpoints():
         next_page = settings.OPARL_ENDPOINTS_LIST
@@ -34,11 +32,10 @@ class OParlAuto:
         except ValidationError:
             is_url = False
 
-        if is_url:
-            logging.info("Found url, importing url")
-            raise NotImplementedError()
-
-        endpoint_id, endpoint_system = cls.get_endpoint(userinput)
+        if not is_url:
+            endpoint_id, endpoint_system = cls.get_endpoint_from_cityname(userinput)
+        else:
+            endpoint_id, endpoint_system = cls.get_endpoint_from_body_url(userinput)
 
         importer, liboparl_body = cls.get_importer_with_body(endpoint_id, endpoint_system)
 
@@ -47,26 +44,51 @@ class OParlAuto:
         cls.do_import(ags, importer, liboparl_body)
 
     @classmethod
+    def get_endpoint_from_body_url(cls, userinput):
+        logging.info("Found url, importing url")
+        response = requests.get(userinput)
+        response.raise_for_status()
+        if response.json().get("type") != "https://schema.oparl.org/1.0/Body":
+            raise Exception("The url you provided didn't point to an oparl body")
+        endpoint_system = response.json()["system"]
+        endpoint_id = userinput
+        return endpoint_id, endpoint_system
+
+    @classmethod
     def get_importer_with_body(cls, endpoint_id, endpoint_system):
         """ Get the oparl importer and the body as liboparl object """
         liboparl_body = None
         options = default_options.copy()
+        # Quick'n'dirty cause Sternberg OParl is faulty
+        # TODO: Wait for Sternberg to fix their stuff and remove this
+        if "sdnetrim.kdvz-frechen.de" in endpoint_id:
+            options["use_sternberg"] = True
         options["entrypoint"] = endpoint_system
-        importer = get_importer()(options)
+        importer = get_importer(options)(options)
         bodies = importer.get_bodies()
         for body in bodies:
             if body.get_id() == endpoint_id:
                 liboparl_body = body
                 break
         if not liboparl_body:
-            raise Exception("Failed to find body {} in {} even though the {} says it is there"
-                            .format(endpoint_id, endpoint_system, settings.OPARL_ENDPOINTS_LIST))
+            raise Exception("Failed to find body {} in {}"
+                            .format(endpoint_id, endpoint_system))
         return importer, liboparl_body
 
     @classmethod
     def do_import(cls, ags, importer, liboparl_body):
         logger.info("Importing {}".format(liboparl_body.get_id()))
         main_body = importer.body(liboparl_body)
+
+        logger.info("Finished importing body")
+        importer.list_batched(liboparl_body.get_paper, importer.paper)
+        importer.list_batched(liboparl_body.get_person, importer.person)
+        importer.list_batched(liboparl_body.get_organization, importer.organization)
+        importer.list_batched(liboparl_body.get_meeting, importer.meeting)
+
+        logger.info("Finished importing objects")
+        importer.add_missing_associations()
+
         logger.info("We're done with the OParl import. We just need some metadata now")
         import_streets(main_body, ags)
         import_outline(main_body, ags)
@@ -84,7 +106,7 @@ class OParlAuto:
         return ags
 
     @classmethod
-    def get_endpoint(cls, userinput):
+    def get_endpoint_from_cityname(cls, userinput):
         matching = []
         for system in cls.endpoints():
             for body in system["bodies"]:

@@ -50,7 +50,6 @@ Option 2: Real data. Slow, see the import section below for details.
 ./manage.py import [mycitiesname]
 ```
 
-
 Finally, we can launch everything. Add `-d` to run it in background:
 
 ```bash
