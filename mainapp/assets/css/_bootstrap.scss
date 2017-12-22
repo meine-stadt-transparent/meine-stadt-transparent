@@ -11,6 +11,6 @@ $container-max-widths: (
   }
 }
 
-.btn {
-  cursor: pointer; // Logout-Button in the navbar
+.btn, button {
+  cursor: pointer; // u.a. Logout-Button in the navbar
 }

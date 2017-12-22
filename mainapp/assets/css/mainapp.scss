@@ -28,15 +28,20 @@
   @extend .no-link-color;
 }
 
-.navbar-dark .navbar-toggler {
-  border: none;
-  outline: 0;
+#main-menu {
+  .navbar-toggler {
+    border: none;
+    outline: 0;
+  }
+  .logout-button {
+    padding: 0;
+    text-align: left;
+  }
 }
 
 .btn-transparent {
   background-color: transparent;
 }
-
 
 .file-header {
   // We need to be space efficient on that page, so we remove the default top margin

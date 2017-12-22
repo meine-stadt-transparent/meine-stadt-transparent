@@ -14,17 +14,6 @@
             </section>
         {% endif %}
 
-        <div class="p-3">
-            <form method="post" action="{% url 'account_logout' %}" class="logout-form">
-                {% csrf_token %}
-                {% if redirect_field_value %}
-                    <input type="hidden" name="{{ redirect_field_name }}"
-                           value="{{ redirect_field_value }}">
-                {% endif %}
-                <button type="submit" class="btn btn-secondary">{% trans 'Sign Out' %}</button>
-            </form>
-        </div>
-
         <section class="card mst-notifications mst-account-section">
             <h2 class="card-header">
                 {% trans 'Notifications' %}
