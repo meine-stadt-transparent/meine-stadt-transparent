@@ -1,0 +1,121 @@
+{% load i18n %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" />
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+  <head> </head>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <!--[if !mso]><!-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!--<![endif]-->
+    <style type="text/css">
+      * {
+        text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        -moz-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      html {
+        height: 100%;
+        width: 100%;
+      }
+
+      body {
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        mso-line-height-rule: exactly;
+      }
+
+      div[style*="margin: 16px 0"] {
+        margin: 0 !important;
+      }
+
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+
+      img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+        -ms-interpolation-mode: bicubic;
+      }
+
+      .ReadMsgBody,
+      .ExternalClass {
+        width: 100%;
+      }
+
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%;
+      }
+    </style>
+    <!--[if gte mso 9]>
+      <style type="text/css">
+      li { text-indent: -1em; }
+      table td { border-collapse: collapse; }
+      </style>
+      <![endif]-->
+    <title>{% trans "New documents on Meine Stadt Transparent" context 'email-new-documents' %}</title>
+    <!-- content -->
+    <!--[if gte mso 9]><xml>
+       <o:OfficeDocumentSettings>
+        <o:AllowPNG/>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+       </o:OfficeDocumentSettings>
+      </xml><![endif]-->
+  </head>
+  <body class="body" style="background-color: #EEEEEE; margin: 0; width: 100%;">
+    <table class="bodyTable" role="presentation" width="100%" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; background-color: #EEEEEE; margin: 0;" bgcolor="#EEEEEE">
+      <tr>
+        <td class="body__content" align="left" width="100%" valign="top" style="color: #000000; font-size: 16px; line-height: 20px; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;">
+          <nav class="navbar" style="background-color: #343A40; padding: 13px 16px;">
+            <div class="container" style="width: 100%; margin: 0 auto; max-width: 700px;"> <!--[if mso | IE]>
+              <table class="container__table__ie" role="presentation" border="0" cellpadding="0" cellspacing="0" style=" margin-right: auto; margin-left: auto;width: 700px" width="700" align="center">
+                <tr>
+                  <td> <![endif]-->
+                    <table class="container__table" role="presentation" border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
+                      <tr class="container__row">
+                        <td class="container__cell" width="100%" align="left" valign="top"> <a class="navbar-brand a" href="{{ base_url }}{% url 'index' %}" style="text-decoration: none; font-size: 20px; color: #FFFFFF; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; margin-right: 16px; line-height: 30px; font-weight: 400;"><span class="a__text" style="text-decoration: none; color: #FFFFFF;">{{ site_name }}</span></a>                          <a class="nav-link a" href="{{ base_url }}{% url 'calendar' %}" style="text-decoration: none; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; margin-right: 16px; line-height: 30px; font-weight: 400; font-size: 16px; color: #FFFFFF; color: rgba(255, 255, 255, .5);"><span class="a__text" style="text-decoration: none; color: #FFFFFF; color: rgba(255, 255, 255, .5);">{% trans "Calendar" context 'navigation' %}</span></a>                          <a class="nav-link a" href="{{ base_url }}{% url 'persons' %}" style="text-decoration: none; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; margin-right: 16px; line-height: 30px; font-weight: 400; font-size: 16px; color: #FFFFFF; color: rgba(255, 255, 255, .5);"><span class="a__text" style="text-decoration: none; color: #FFFFFF; color: rgba(255, 255, 255, .5);">{% trans "People" context 'navigation' %}</span></a>                          <a class="nav-link a" href="{{ base_url }}{% url 'organizations' %}" style="text-decoration: none; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; margin-right: 16px; line-height: 30px; font-weight: 400; font-size: 16px; color: #FFFFFF; color: rgba(255, 255, 255, .5);"><span class="a__text" style="text-decoration: none; color: #FFFFFF; color: rgba(255, 255, 255, .5);">{% trans "Organizations" context 'navigation' %}</span></a>                          <a class="nav-link a" href="{{ base_url }}{% url 'profile-home' %}" style="text-decoration: none; vertical-align: middle; padding-top: 5px; padding-bottom: 5px; margin-right: 16px; line-height: 30px; font-weight: 400; font-size: 16px; color: #FFFFFF; color: rgba(255, 255, 255, .5);"><span class="a__text" style="text-decoration: none; color: #FFFFFF; color: rgba(255, 255, 255, .5);">{% trans "My Account" context 'navigation' %}</span></a>                          </td>
+                      </tr>
+                    </table> <!--[if mso | IE]> </td>
+                </tr>
+              </table> <![endif]--> </div>
+          </nav>
+          <div class="body-container container" style="width: 100%; margin: 0 auto; max-width: 700px; background-color: #FFFFFF; padding: 10px; margin-top: 20px;"> <!--[if mso | IE]>
+            <table class="container__table__ie" role="presentation" border="0" cellpadding="0" cellspacing="0" style=" margin-right: auto; margin-left: auto;width: 700px" width="700" align="center">
+              <tr>
+                <td> <![endif]-->
+                  <table class="container__table" role="presentation" border="0" align="center" cellpadding="0" cellspacing="0" width="100%">
+                    <tr class="container__row">
+                      <td class="container__cell" width="100%" align="left" valign="top" style="background-color: #FFFFFF; padding: 10px;" bgcolor="#FFFFFF">
+                        <h1 class="header h1" style="margin: 20px 0; line-height: 40px; color: #000000; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif; margin-top: 0;">{% trans "New documents on Meine Stadt Transparent" context 'email-new-documents' %}</h1>
+                        <!-- START -->{% for alert in alerts %}
+                        <h2 class="header h2" style="margin: 20px 0; line-height: 30px; color: #000000; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;">{% trans "Notification" context 'email-new-documents' %}: {{ alert.title }}</h2>
+                        <ul class="text ul" style="margin-left: 20px; margin-top: 16px; margin-bottom: 16px; padding: 0; list-style-type: disc; color: #000000; font-size: 16px; line-height: 20px; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;">
+                        {% for result in alert.results %}
+                          <li class="text li" style="color: #000000; font-size: 16px; line-height: 20px; font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;"> {{ result.type_name }}: <a href="{{ result.url }}" class="a" style="text-decoration: none;"><span class="a__text" style="text-decoration: none;">{{ result.title }}</span></a> </li> {% endfor %} </ul> {% endfor %}
+                        <!-- END -->
+                      </td>
+                    </tr>
+                  </table> <!--[if mso | IE]> </td>
+              </tr>
+            </table> <![endif]--> </div>
+        </td>
+      </tr>
+    </table>
+    <div style="display:none; white-space:nowrap; font-size:15px; line-height:0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </div>
+  </body>
+</html>

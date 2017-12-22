@@ -289,6 +289,13 @@ If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would 
 - Require the SCSS-file from the corresponding JS entry script. This will automatically generate a compiled CSS-bundle with the name of the JS-bundle.
 - Load this new CSS-file in a Django-template within the ``additional_css``-block using the ``render_bundle``-tag. (See [calendar.html](mainapp/templates/mainapp/calendar.html) for an example)
 
+### E-Mail-Notifications
+
+The templates for the e-mail-notifications are created using [HEML](https://heml.io/). So we don't edit the HTML/Django-templates like [user-alert.html](mainapp/templates/email/user-alert.html) directly, but the source .heml-files like [user-alert.heml](mainapp/assets/email/user-alert.heml) and compile them using:
+```bash
+npm run build:email
+```
+
 ## Known Problems
 
 If you hit problems regarding memory when starting elasticsearch, please have a look at this

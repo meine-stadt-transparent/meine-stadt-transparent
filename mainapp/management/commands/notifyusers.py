@@ -5,13 +5,12 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.core.management.base import BaseCommand
 from django.template.loader import get_template
-from django.utils import timezone
+from django.utils import timezone, translation
 from django.utils.translation import ugettext as _
 from html2text import html2text
 
 from mainapp.functions.search_tools import params_to_query, add_modified_since, search_result_for_notification
 from mainapp.models import UserAlert
-from meine_stadt_transparent.settings import DEFAULT_FROM_EMAIL_NAME
 
 
 class Command(BaseCommand):
@@ -39,7 +38,11 @@ class Command(BaseCommand):
         return results
 
     def notify_user(self, user: User, override_since: datetime, debug: bool):
+        print(settings.TEMPLATE_META)
+
         context = {
+            "base_url": settings.ABSOLUTE_URI_BASE,
+            "site_name": settings.TEMPLATE_META['logo_name'],
             "alerts": [],
             "email": user.email,
         }
@@ -64,14 +67,14 @@ class Command(BaseCommand):
         if len(context['alerts']) == 0:
             return
 
-        message_html = get_template('email/new_documents.html').render(context)
+        message_html = get_template('email/user-alert.html').render(context)
         message_text = html2text(message_html)
 
         if debug:
             self.stdout.write(message_text)
         else:
             self.stdout.write("Sending notification to: %s" % user.email)
-            mail_from = DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
+            mail_from = settings.DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
             send_mail(_("New search results"), message_text, mail_from, [user.email], html_message=message_html)
 
         if not override_since:
@@ -84,6 +87,9 @@ class Command(BaseCommand):
         parser.add_argument('--debug', action='store_true')
 
     def handle(self, *args, **options):
+        from django.conf import settings
+        translation.activate(settings.LANGUAGE_CODE)
+
         override_since = options['override_since']
         if override_since is not None:
             override_since = datetime.datetime.strptime(override_since, '%Y-%m-%d')
