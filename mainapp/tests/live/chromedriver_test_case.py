@@ -5,7 +5,6 @@ from splinter import Browser
 
 chromedriver_path = "node_modules/.bin/chromedriver"
 
-
 """
 Specifics of ChromeDriverTestCase:
 - Chrome Headless is used
@@ -22,9 +21,12 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        # For debugging purposes you can define a fixed port
+        # cls.port = 12345
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
-        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver", options=options)
+        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver",
+                              options=options)
         super(ChromeDriverTestCase, cls).setUpClass()
 
     @classmethod
@@ -47,6 +49,12 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
 
     def assertElementDoesNotExists(self, css_selector):
         self.assertFalse(self.browser.is_element_present_by_css(css_selector))
+
+    def click_by_id(self, id):
+        self.browser.find_by_id(id).first.click()
+
+    def click_by_text(self, id):
+        self.browser.find_by_text(id).first.click()
 
     """
     Functions for behaviors used by several test cases

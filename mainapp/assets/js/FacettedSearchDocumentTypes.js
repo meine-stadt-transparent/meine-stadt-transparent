@@ -41,6 +41,7 @@ export default class FacettedSearchDocumentTypes {
                 documentTypes.push($(input).val());
             }
         });
+        documentTypes.sort();
         if (documentTypes.length > 0) {
             return 'document-type:' + documentTypes.join(',') + ' ';
         } else {
