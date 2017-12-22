@@ -71,7 +71,7 @@ volumes:
   django_config:
     driver_opts:
       type: none
-      device: ${PWD}/config
+      device: "${PWD}/config"
       o: bind
 
 networks:

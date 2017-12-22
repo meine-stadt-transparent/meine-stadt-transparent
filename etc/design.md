@@ -19,3 +19,6 @@ This document shall explain the important design decision, assumptions and trade
  * It is expected that the site is deployed for users of only one language, e.g. there is no dynamically imported data that has to be translated. This is propably safe to assume for quite some time in the future as currently the comercial vendors afaik can't do localization at all.
  * You don't want to apply your cities (most likely crappy) corporate design. It will be possible to replace header and footer and it's easy to do some bootstrap theming, but we won't do that tight-yet-ugly integration into cities' websites.
  * No support for ancient servers. I'd even call that a feature and not a trade-off
+ 
+## Keyboard Shortcuts
+ * `alt+f` focuses the search 

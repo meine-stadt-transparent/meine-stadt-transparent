@@ -17,12 +17,14 @@ Install [docker ce](https://www.docker.com/community-edition) and [docker compos
 
 Before starting, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-You can either clone this repository or only download [docker-compose.yml](docker-compose.yml).
+You can either clone this repository or download only [docker-compose.yml](docker-compose.yml).
 
 Then you launch the docker containers with:
 
 ```bash
-docker-compose up
+docker-compose pull
+mkdir config
+docker-compose up --no-build
 ```
 
 Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 

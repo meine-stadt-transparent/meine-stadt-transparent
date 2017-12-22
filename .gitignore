@@ -4,6 +4,7 @@ node_modules/
 webpack-stats.json
 storage/
 static/
+config/
 .env*
 urls-to-import.txt
 testdata/fake_cache
