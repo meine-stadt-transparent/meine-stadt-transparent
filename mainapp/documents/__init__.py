@@ -1,4 +1,4 @@
-from django.utils.translation import pgettext as _
+from django.utils.translation import pgettext
 
 from .file import FileDocument
 from .meeting import MeetingDocument
@@ -9,17 +9,17 @@ from .person import PersonDocument
 DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
 
 DOCUMENT_TYPE_NAMES = {
-    "file": _('Document Type Name', 'File'),
-    "meeting": _('Document Type Name', 'Meeting'),
-    "paper": _('Document Type Name', 'Paper'),
-    "organization": _('Document Type Name', 'Organization'),
-    "person": _('Document Type Name', 'Person'),
+    "file": pgettext('Document Type Name', 'File'),
+    "meeting": pgettext('Document Type Name', 'Meeting'),
+    "paper": pgettext('Document Type Name', 'Paper'),
+    "organization": pgettext('Document Type Name', 'Organization'),
+    "person": pgettext('Document Type Name', 'Person'),
 }
 
 DOCUMENT_TYPE_NAMES_PL = {
-    "file": _('Document Type Name', 'Files'),
-    "meeting": _('Document Type Name', 'Meetings'),
-    "paper": _('Document Type Name', 'Papers'),
-    "organization": _('Document Type Name', 'Organizations'),
-    "person": _('Document Type Name', 'Persons'),
+    "file": pgettext('Document Type Name', 'Files'),
+    "meeting": pgettext('Document Type Name', 'Meetings'),
+    "paper": pgettext('Document Type Name', 'Papers'),
+    "organization": pgettext('Document Type Name', 'Organizations'),
+    "person": pgettext('Document Type Name', 'Persons'),
 }
