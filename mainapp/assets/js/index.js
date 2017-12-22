@@ -5,12 +5,14 @@ import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
 import FacettedSearch from "./FacettedSearch";
 import EndlessScrolling from "./EndlessScrolling";
-import MultiListFilter from "./MultiListFilter.js"
+import MultiListFilter from "./MultiListFilter";
+import trapMice from "./mousetrap";
 // Force loading these images, as they are not referenced in the stylesheet but required by the JS library
 // noinspection ES6UnusedImports
 import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
 // noinspection ES6UnusedImports
 import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
+
 
 window.jQuery = require('jquery');
 
@@ -44,4 +46,6 @@ $(function () {
             });
         }
     }
+
+    trapMice();
 });
