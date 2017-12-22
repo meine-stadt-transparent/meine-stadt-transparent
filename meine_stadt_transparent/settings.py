@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
+    'mainapp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
@@ -287,12 +288,6 @@ CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
 CSP_SCRIPT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
-
-if SOCIALACCOUNT_USE_FACEBOOK:
-    CSP_IMG_SRC = CSP_IMG_SRC + ("www.facebook.com",)
-    CSP_SCRIPT_SRC = CSP_SCRIPT_SRC + ("connect.facebook.net", "'unsafe-eval'", "'unsafe-inline'")
-    CSP_STYLE_SRC = CSP_STYLE_SRC + ("*.facebook.com", "*.facebook.net", "'unsafe-inline'")
-    CSP_FRAME_SRC = CSP_FRAME_SRC + ("*.facebook.com",)
 
 LOGGING = {
     'version': 1,
