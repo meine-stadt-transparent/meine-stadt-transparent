@@ -24,7 +24,7 @@
     <div class="container pt-3">
         <form class="form search-autocomplete search-autocomplete-home" method="GET" action="{% url 'search' '' %}">
             <div class="input-group">
-                <input name="query" type="text" class="form-control" value="" autocomplete="off"
+                <input name="search-query" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
                        placeholder="{% trans "Search for documents, persons, topics and more" context "page_title" %}"
                        aria-label="{% trans "Search" context "perform search" %}">

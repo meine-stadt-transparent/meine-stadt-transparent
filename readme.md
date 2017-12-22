@@ -45,10 +45,10 @@ Option 1: Dummy data. Fast import and has all the relations.
 docker-compose run django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
-Option 2: Real data. Slow, see the import section below for details.
+Option 2: Real data, which means this is slow. See the import section below for details.
 
 ```bash
-./manage.py import [mycitiesname]
+docker-compose run django ./manage.py import [mycitiesname]
 ```
 
 Finally, we can launch everything. Add `-d` to run it in background:

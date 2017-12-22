@@ -31,6 +31,7 @@ export default class FacettedSearchDocumentTypes {
 
     cancelSelection() {
         this.$facet.find("input").prop("checked", false);
+        this.$facet.find("input").change();
     }
 
     getQueryString() {

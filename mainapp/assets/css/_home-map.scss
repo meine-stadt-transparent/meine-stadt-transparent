@@ -7,10 +7,6 @@ $search-icon-zindex: $typeahead-zindex + 10;
   span.twitter-typeahead {
     z-index: $typeahead-zindex;
   }
-
-  .search-icon {
-    z-index: $search-icon-zindex;
-  }
 }
 
 #leaflet-map {

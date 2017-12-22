@@ -10,7 +10,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="documentTypeButton">
             <div class="dropdown-item cancel-selection">
-                <a href role="button">
+                <a href role="button" name="document-type-cancel-selection">
                     <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
                 </a>
             </div>
@@ -18,10 +18,10 @@
                 <div class="dropdown-item">
                     <label>
                         {% if document_type_id in options.document_type %}
-                            <input type="checkbox" name="document-type[]" checked
+                            <input type="checkbox" name="document-type[{{ document_type_id }}]" checked
                                    value="{{ document_type_id }}">
                         {% else %}
-                            <input type="checkbox" name="document-type[]"
+                            <input type="checkbox" name="document-type[{{ document_type_id }}]"
                                    value="{{ document_type_id }}">
                         {% endif %}
                         {{ document_type_name }}
