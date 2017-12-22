@@ -16,10 +16,6 @@ from django.db import migrations, models
 # RunPython operations to refer to the local versions:
 # mainapp.migrations.0012_site
 
-def update_site(apps, schema_editor):
-    Site.objects.create(name=settings.PRODUCT_NAME, domain=settings.REAL_HOST)
-
-
 class Migration(migrations.Migration):
 
     initial = True
@@ -535,9 +531,6 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'User profiles',
                 'verbose_name': 'User profile',
             },
-        ),
-        migrations.RunPython(
-            code=update_site,
         ),
         migrations.AddField(
             model_name='meetingseries',
