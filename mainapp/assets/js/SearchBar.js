@@ -6,8 +6,11 @@ export default class SearchBar {
         this.$input = $widget.find("input");
         let urlTemplate = this.$input.data('suggest-url');
 
-        this.$input.typeahead(null,
-            {
+        this.$input.typeahead({
+                hint: false, // Hinting is kind of irritating if you are using the full-text search;
+                             // probably only makes sense when the first option is auto-selected on pressing enter.
+                autoselect: false
+            }, {
                 name: 'name',
                 display: 'name',
                 source: (query, syncResults, asyncResults) => {
