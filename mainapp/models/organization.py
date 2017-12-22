@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from django.utils.translation import pgettext as _
+from django.utils.translation import pgettext
 
 from .body import Body
 from .default_fields import DefaultFields, ShortableNameFields
@@ -9,10 +9,10 @@ from .location import Location
 from .organization_type import OrganizationType
 
 ORGANIZATION_TYPE_NAMES = {
-    "parliamentary group": _('Document Type Name', 'Parliamentary Group'),
-    "committee": _('Document Type Name', 'Committee'),
-    "department": _('Document Type Name', 'Deparment'),
-    "organization": _('Document Type Name', 'Organization'),
+    "parliamentary group": pgettext('Document Type Name', 'Parliamentary Group'),
+    "committee": pgettext('Document Type Name', 'Committee'),
+    "department": pgettext('Document Type Name', 'Deparment'),
+    "organization": pgettext('Document Type Name', 'Organization'),
 }
 
 

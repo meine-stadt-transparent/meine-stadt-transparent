@@ -23,7 +23,7 @@
                                 {% endif %}
                             </h2>
                             <div class="text-muted text-truncate">
-                                <span>{% firstof result.paper_type.paper_type result.type_translated %}</span>
+                                <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
                                 {% if result.legal_date %}
                                     <span>|</span>
                                     <span>{{ result.legal_date }}</span>

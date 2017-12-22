@@ -4,7 +4,8 @@
     <form class="pull-right" method="POST">
         {% csrf_token %}
         {% if is_subscribed %}
-            <span class="fa fa-check"></span> You receive updates
+            <span class="subscribed-icon fa fa-check"></span>
+            <span class="subscribed-str">{% trans "You receive updates" %}</span>
             <button class="btn btn-secondary btn-sm" name="unsubscribe" value="unsubscribe">
                 <span class="fa fa-minus"></span> {% trans "Unsubscribe" %}
             </button>
