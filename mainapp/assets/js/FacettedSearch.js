@@ -107,8 +107,6 @@ export default class FacettedSearch {
         }
         this.currentQueryString = querystring;
 
-        this.$refreshSpinner.removeAttr("hidden");
-
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
 
         window.history.pushState({}, "", url);
@@ -117,6 +115,7 @@ export default class FacettedSearch {
             // This would fail on the backend side (and it also wouldn't give reasonable results)
             return;
         }
+        this.$refreshSpinner.removeAttr("hidden");
         this.updateSearchResults(querystring);
     }
 }
