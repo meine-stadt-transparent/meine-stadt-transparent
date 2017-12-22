@@ -37,6 +37,14 @@
     padding: 0;
     text-align: left;
   }
+  @media screen and (max-width: map_get($grid-breakpoints, 'md') - 1) {
+    .navbar-brand {
+      flex: 1; // Pushes the search-button to the right
+    }
+    .search-autocomplete {
+      display: none;
+    }
+  }
 }
 
 .btn-transparent {

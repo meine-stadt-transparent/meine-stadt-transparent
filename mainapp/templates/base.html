@@ -16,6 +16,10 @@
          id="main-menu">
         <div class="container">
             <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
+            <a href="{% url 'search' '' %}" class="navbar-toggler" type="button">
+                <span class="fa fa-search"></span>
+                <span class="sr-only">Search</span>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
                     aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
