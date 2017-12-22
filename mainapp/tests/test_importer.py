@@ -144,6 +144,7 @@ class TestImporter(TestCase):
             shutil.rmtree(options["storagefolder"])
         options["entrypoint"] = self.entrypoint
         options["batchsize"] = 1
+        options["download_files"] = False  # TODO
         return options
 
     def tearDown(self):
