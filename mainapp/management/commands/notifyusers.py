@@ -29,7 +29,6 @@ class Command(BaseCommand):
         options, s, errors = params_to_query(alert.get_search_params())
         s = add_modified_since(s, since)
 
-        self.stdout.write("Alert: %s since %s" % (alert.search_string, since))
         results = []
         executed = s.execute()
         for hit in executed:
@@ -40,8 +39,6 @@ class Command(BaseCommand):
         return results
 
     def notify_user(self, user: User, override_since: datetime, debug: bool):
-        self.stdout.write("Notifying user: %s\n===============\n" % user.email)
-
         context = {
             "alerts": [],
             "email": user.email,
@@ -61,15 +58,19 @@ class Command(BaseCommand):
                     "results": results
                 })
 
+        if debug:
+            self.stdout.write("User %s: %i results\n" % (user.email, len(context['alerts'])))
+
+        if len(context['alerts']) == 0:
+            return
+
         message_html = get_template('email/new_documents.html').render(context)
         message_text = html2text(message_html)
 
         if debug:
-            if len(context["alerts"]) > 0:
-                self.stdout.write(message_text)
-            else:
-                self.stdout.write("-> NOTHING FOUND")
+            self.stdout.write(message_text)
         else:
+            self.stdout.write("Sending notification to: %s" % user.email)
             mail_from = DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
             send_mail(_("New search results"), message_text, mail_from, [user.email], html_message=message_html)
 

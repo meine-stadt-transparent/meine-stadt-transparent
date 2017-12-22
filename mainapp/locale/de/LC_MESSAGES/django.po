@@ -90,8 +90,8 @@ msgstr " mit \"%STR%\""
 
 #: functions/search_tools.py:212
 msgctxt "Search query"
-msgid "created by %FROM%"
-msgstr "erstellt von %FROM%"
+msgid "mentioning %FROM%"
+msgstr "mit Erwähnung von %FROM%"
 
 #: functions/search_tools.py:215
 msgctxt "Search query"
