@@ -15,7 +15,9 @@ RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get install -y python3-numpy python3-scipy nodejs python3-pip python3-venv python3-gi \
-    json-glib-1.0 gir1.2-json-1.0 git libmysqlclient-dev
+    json-glib-1.0 gir1.2-json-1.0 git libmysqlclient-dev && \
+    apt-get autoremove -y && \
+    apt-get clean
 
 # liboparl
 COPY --from=0 /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo
@@ -36,16 +38,16 @@ RUN npm install
 # Build assets
 COPY mainapp/assets /app/mainapp/assets
 COPY etc /app/etc
-RUN npm run build:dev
+RUN npm run build:dev && rm -rf node_modules
 
 # Collect static files
 COPY . /app/
 # Allow overriding the default env
-RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true)
+RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true) && rm -f .env
 ENV ENV_PATH "/config/.env"
 RUN pipenv run python manage.py collectstatic --noinput
 
 EXPOSE 8000
 
-ENTRYPOINT ["pipenv", "run", "python"]
-CMD ["pipenv", "run", "gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
+ENTRYPOINT ["pipenv", "run"]
+CMD ["gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--env", "ENV_PATH=/config/.env", "--capture-output"]

@@ -1,13 +1,14 @@
 version: '3'
 services:
   django:
+    image: konstin2/meine-stadt-transparent
     build: .
     container_name: django
     volumes:
       - django_media:/media
       - django_static:/static
       - django_cache:/cache
-      - "${DOKER_COMPOSE_ENV:-./etc/env-docker-compose}:/config/.env"
+      - django_config:/config
     networks:
       - network
     depends_on:
@@ -67,6 +68,11 @@ volumes:
   django_static:
   mariadb_data:
   elasticsearch_data:
+  django_config:
+    driver_opts:
+      type: none
+      device: ${PWD}/config
+      o: bind
 
 networks:
   network:

@@ -15,29 +15,25 @@ The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 Install [docker ce](https://www.docker.com/community-edition) and [docker compose](https://docs.docker.com/compose/install/)
 
-Build the docker container (This will take some time):
-
-```bash
-docker-compose build
-```
-
 Before starting, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-Now we can launch the docker containers:
+You can either clone this repository or only download [docker-compose.yml](docker-compose.yml).
+
+Then you launch the docker containers with:
 
 ```bash
-docker-compose up mariadb elasticsearch
+docker-compose up
 ```
 
 Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 
 
-The database is still empty, so now we need to run the migrations:
+Then we can run the migrations:
 
 ```bash
 docker-compose run django ./manage.py migrate
 ```
 
-Before starting, you'll need some data.
+The database is still empty, so you'll need some data.
 
 Option 1: Dummy data. Fast import and has all the relations.
 
@@ -59,9 +55,9 @@ docker-compose up
 
 Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000).
 
-**Before using this in production,** use a custom dotenv by setting `DOKER_COMPOSE_ENV` to the file's location, e.g. with `export DOKER_COMPOSE_ENV=/path/to/my/dotenv`. Make sure that you at least changed `REAL_HOST` and `SECRET_KEY` to proper values.
+**Before using this in production** set proper config values in `config/.env`. Make sure that you at least changed `REAL_HOST` and `SECRET_KEY` to proper values.
 
-You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: The python in the virtualenv is configured as entrypoint.
+You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: `pipenv run` is configured as entrypoint.
 
 ## Manual Setup
 
