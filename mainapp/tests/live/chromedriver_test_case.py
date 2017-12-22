@@ -61,8 +61,8 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     """
 
     def logout(self):
-        self.browser.find_by_css('#main-menu-content .my-account-link').click()
-        self.browser.find_by_css('.logout-form button').click()
+        self.browser.find_by_css('#main-menu-content #navbarMyAccount').click()
+        self.browser.find_by_css('#main-menu-content .logout-button').click()
         self.assertTextIsPresent('You have signed out.')
         self.assertElementDoesExists('#main-menu-content .login-link')
         self.assertElementDoesNotExists('#main-menu-content .my-account-link')

@@ -19,8 +19,8 @@ class AccountTest(ChromeDriverTestCase):
         self.assertElementDoesExists('.my-account-link')
 
     def check_change_password(self, password):
-        self.browser.find_by_css('#main-menu-content .my-account-link').click()
-        self.browser.find_by_css('.change-password-link').click()
+        self.browser.find_by_css('#main-menu-content #navbarMyAccount').click()
+        self.browser.find_by_css('#main-menu-content .change-password-link').click()
         # First, try it with an invalid password
         self.browser.fill('oldpassword', 'wrongpassword')
         self.browser.fill('password1', self.password2)
