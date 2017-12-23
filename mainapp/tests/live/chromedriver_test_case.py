@@ -22,7 +22,7 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         # For debugging purposes you can define a fixed port
-        # cls.port = 12345
+        cls.port = 12346
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
         cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver",

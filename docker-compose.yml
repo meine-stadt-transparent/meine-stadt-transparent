@@ -37,7 +37,6 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
-
     ulimits: # Elasticsearch needs those
       memlock:
         soft: -1
@@ -68,11 +67,7 @@ volumes:
   django_static:
   mariadb_data:
   elasticsearch_data:
-  django_config:
-    driver_opts:
-      type: none
-      device: "${PWD}/config"
-      o: bind
+  django_config: # Mount that volume into a folder following the readme
 
 networks:
   network:

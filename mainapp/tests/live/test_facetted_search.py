@@ -23,6 +23,14 @@ def mock_search_to_results(search: Search) -> (List[Any], int):
     return [template], 1
 
 
+def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
+    out = []
+    for position in range(0, 30):
+        result = template.copy()
+        result["name"] = position
+        out.append(result)
+
+
 class FacettedSearchTest(ChromeDriverTestCase):
     fixtures = ['initdata.json']
 
@@ -83,6 +91,34 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
+    def test_person_filter(self, _):
+        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.click_by_id("personButton")
+        self.click_by_text("Frank Underwood")
+
+        self.assertEqual("person:1 word", self.get_search_string_from_url())
+
+        self.click_by_id("personButton")
+        self.click_by_text("Cancel Selection")
+
+        self.assertEqual("word", self.get_search_string_from_url())
+
+    @override_settings(USE_ELASTICSEARCH=True)
+    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
+    def test_sorting(self, _):
+        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.click_by_id("btnSortDropdown")
+        self.click_by_text("Newest first")
+
+        self.assertEqual("sort:date_newest word", self.get_search_string_from_url())
+
+        self.click_by_id("btnSortDropdown")
+        self.click_by_text("Relevance")
+
+        self.assertEqual("word", self.get_search_string_from_url())
+
+    @override_settings(USE_ELASTICSEARCH=True)
+    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_for_endless_scroll)
     def test_endless_scroll(self, _):
         self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
         pass

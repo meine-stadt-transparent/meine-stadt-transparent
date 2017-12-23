@@ -17,17 +17,17 @@ Install [docker ce](https://www.docker.com/community-edition) and [docker compos
 
 Before starting, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-You can either clone this repository or download only [docker-compose.yml](docker-compose.yml).
+Clone this repository and `cd` into it.
 
-Then you launch the docker containers with:
+Then assemble everything with:
 
 ```bash
 docker-compose pull
-mkdir config
+docker volume create --opt type=none --opt device=`pwd`/config --opt o=bind django_config
 docker-compose up --no-build
 ```
 
-Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Than quit with `ctrl+c`. 
+Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Then open a new terminal for the following commands.1
 
 Then we can run the migrations:
 
@@ -47,12 +47,6 @@ Option 2: Real data, which means this is slow. See the import section below for 
 
 ```bash
 docker-compose run django ./manage.py import [mycitiesname]
-```
-
-Finally, we can launch everything. Add `-d` to run it in background:
-
-```bash
-docker-compose up
 ```
 
 Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000).
