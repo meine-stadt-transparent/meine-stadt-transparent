@@ -12,7 +12,7 @@
         <div class="dropdown-menu" aria-labelledby="{{ key }}Button">
             <div class="dropdown-item dropdown-filter">
                 <input type="text" class="form-control filter-input facet-internal"
-                       title="{% trans "Filter" context "search_form" %}"
+                       title="{% trans "Filter" context "search_form" %}" name="filter-{{ key }}"
                        value="" autocomplete="off" placeholder="{% trans "Filter" context "search_form" %}">
             </div>
             <div class="dropdown-item remove-filter">

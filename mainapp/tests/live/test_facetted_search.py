@@ -7,7 +7,9 @@ from django.test import override_settings
 from elasticsearch_dsl import Search
 from selenium.webdriver.common.keys import Keys
 
+from mainapp.models import Person
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
+from meine_stadt_transparent import settings
 
 template = {
     "id": 0,
@@ -99,7 +101,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("person:1 word", self.get_search_string_from_url())
 
         self.click_by_id("personButton")
-        self.click_by_text("Cancel Selection")
+        self.browser.find_by_css(".show .remove-filter > a").first.click()
 
         self.assertEqual("word", self.get_search_string_from_url())
 
@@ -118,7 +120,19 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
+    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
+    def test_dropdown_filter(self, _):
+        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.click_by_id("personButton")
+        count = len(self.browser.find_by_css("[data-filter-key='person'] .filter-item"))
+        org = settings.SITE_DEFAULT_ORGANIZATION
+        persons = Person.objects.filter(organizationmembership__organization=org).distinct().count()
+        self.assertEqual(count, persons)
+        self.browser.fill("filter-person", "Frank")
+        count = len(self.browser.find_by_css("[data-filter-key='person'] .filter-item"))
+        self.assertEqual(count, 1)
+
+    @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_for_endless_scroll)
     def test_endless_scroll(self, _):
         self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
-        pass

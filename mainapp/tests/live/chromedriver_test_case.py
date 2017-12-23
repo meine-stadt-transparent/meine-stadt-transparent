@@ -22,7 +22,7 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         # For debugging purposes you can define a fixed port
-        cls.port = 12346
+        # cls.port = 12346
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
         cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver",
@@ -53,8 +53,11 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     def click_by_id(self, id):
         self.browser.find_by_id(id).first.click()
 
-    def click_by_text(self, id):
-        self.browser.find_by_text(id).first.click()
+    def click_by_text(self, text):
+        self.browser.find_by_text(text).first.click()
+
+    def click_by_css(self, css):
+        self.browser.find_by_css(css).first.click()
 
     """
     Functions for behaviors used by several test cases
