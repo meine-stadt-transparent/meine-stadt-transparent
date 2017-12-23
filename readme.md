@@ -27,7 +27,7 @@ docker volume create --opt type=none --opt device=`pwd`/config --opt o=bind djan
 docker-compose up --no-build
 ```
 
-Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Then open a new terminal for the following commands.1
+Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Then open a new terminal for the following commands.
 
 Then we can run the migrations:
 
