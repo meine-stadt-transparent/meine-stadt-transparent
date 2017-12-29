@@ -2,6 +2,7 @@ import logging
 import sys
 from multiprocessing import Pool
 
+from importer.functions import get_importer
 from .importoparl import Command as OParlImport
 
 
@@ -13,7 +14,7 @@ class Command(OParlImport):
         parser.add_argument('urlfile', type=str, default="urls-to-import.txt")
 
     def handle(self, *args, **options):
-        importer = self.import_importer(options)
+        importer = get_importer(options)(options)
 
         urls = open(options["urlfile"]).readlines()
         urls = [url.strip() for url in urls]

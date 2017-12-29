@@ -1,3 +1,4 @@
+from importer.functions import get_importer
 from .importoparl import Command as ImportOParlCommand
 
 
@@ -9,8 +10,7 @@ class Command(ImportOParlCommand):
         parser.add_argument('list', choices=["paper", "person", "organization", "meeting"])
 
     def handle(self, *args, **options):
-        importer = self.import_importer(options)
-        importer = importer(options)
+        importer = get_importer(options)(options)
 
         bodies = importer.get_bodies()
         for body in bodies:

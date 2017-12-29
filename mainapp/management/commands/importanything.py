@@ -1,5 +1,6 @@
 import re
 
+from importer.functions import get_importer
 from .importoparl import Command as ImportOParlCommand
 
 
@@ -11,8 +12,7 @@ class Command(ImportOParlCommand):
         parser.add_argument('url', type=str)
 
     def handle(self, *args, **options):
-        importer = self.import_importer(options)
-        importer = importer(options)
+        importer = get_importer(options)(options)
 
         def convert(name):
             """ https://stackoverflow.com/a/1176023/3549270 """
