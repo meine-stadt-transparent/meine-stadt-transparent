@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^organizations/$', mainapp.views.views.organizations, name='organizations'),
     url(r'^calendar/$', views.calendar, name='calendar'),
     url(r'^calendar/data/$', views.calendar_data, name='calendar_data'),
+    url(r'^calendar/(?P<init_view>\w+)/(?P<init_date>[\d\-]+)/$', views.calendar, name='calendar_specific'),
     url(r'^organization/(?P<pk>[0-9]+)/$', views.organization, name='organization'),
     url(r'^person/(?P<pk>[0-9]+)/$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/$', views.meeting, name='meeting'),

@@ -7,7 +7,14 @@
 
 {% block content %}
     <div class="container">
-        <div id='calendar' data-src="{% url 'calendar_data' %}" data-date="{{ default_date }}" data-default-view="{{ default_view }}"></div>
+        <div id='calendar'
+             data-src="{% url 'calendar_data' %}"
+             data-init-date="{{ init_date }}"
+             data-init-view="{{ init_view }}"
+             data-default-date="{{ default_date }}"
+             data-default-view="{{ default_view }}"
+             data-url-default="{% url 'calendar' %}"
+             data-url-template="{% url 'calendar_specific' 'VIEW' '0000-00-00' %}"></div>
     </div>
 {% endblock %}
 

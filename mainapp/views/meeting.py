@@ -14,11 +14,19 @@ from slugify import slugify
 from mainapp.models import Meeting, Organization
 
 
-def calendar(request):
+def calendar(request, init_view=None, init_date=None):
     context = {
         'default_date': date.today().strftime("%Y-%m-%d"),
         'default_view': settings.CALENDAR_DEFAULT_VIEW,
     }
+
+    if init_view and init_date:
+        context['init_date'] = init_date
+        context['init_view'] = init_view
+    else:
+        context['init_date'] = context['default_date']
+        context['init_view'] = context['default_view']
+
     return render(request, 'mainapp/calendar.html', context)
 
 
