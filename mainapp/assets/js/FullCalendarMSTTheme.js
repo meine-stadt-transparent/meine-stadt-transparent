@@ -71,7 +71,6 @@ export class FullCalendarMSTTheme {
     }
 
     getClass(key) {
-        console.log("getClass", key);
         return this.classes[key] || ''
     }
 
