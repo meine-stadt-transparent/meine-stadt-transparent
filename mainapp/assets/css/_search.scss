@@ -41,9 +41,18 @@
 #detailed-searchform {
   margin-bottom: 30px;
   border-bottom: solid 1px $card-border-color;
+}
 
-  .search-facet {
-    @extend .pt-2;
+.search-facet {
+  @extend .pt-2;
+
+  .discard-btn {
+    @extend .btn-danger;
+    width: 50%;
+  }
+  .select-btn {
+    @extend .btn-primary;
+    width: 50%;
   }
 }
 
@@ -65,6 +74,22 @@
       max-width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+  }
+  .distance-select {
+    label {
+      margin: 0;
+      width: 100%;
+      text-align: left;
+    }
+    > * {
+      width: 50%;
+    }
+    :first-child {
+      border-left: 0;
+    }
+    :last-child {
+      border-right: 0;
     }
   }
   .radius-select-row {

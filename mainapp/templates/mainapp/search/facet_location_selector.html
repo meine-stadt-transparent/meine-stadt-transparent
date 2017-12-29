@@ -22,17 +22,19 @@
         <div class="dropdown-menu" aria-labelledby="locationSelectButton">
             <div class="location-select-map" id="location-select-map" data-map-data="{{ map }}"></div>
             <div>
-                <div class="input-group">
-                    <label for="new-radius" class="input-group-addon w-50 border-left-0">Entfernung in m:</label>
-                    <input type="number" class="form-control new-radius w-50 border-right-0" id="new-radius"
+                <div class="input-group distance-select">
+                    <div class="input-group-prepend">
+                        <label for="new-radius" class="input-group-text">{% trans "Distance in m" context "Selecting a range in meters" %}:</label>
+                    </div>
+                    <input type="number" class="form-control new-radius" id="new-radius"
                            data-default="500" value="{{ options.radius }}">
                 </div>
             </div>
             <div class="input-group">
-                <button class="btn btn-danger w-50 discard-btn" type="button">
+                <button class="btn discard-btn" type="button">
                     <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
                 </button>
-                <button class="btn btn-primary w-50 select-btn" type="button">
+                <button class="btn select-btn" type="button">
                     <i class="fa-custom fa-check"></i>{% trans "Select" context "search_form" %}
                 </button>
             </div>
