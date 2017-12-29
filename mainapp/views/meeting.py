@@ -18,6 +18,7 @@ def calendar(request, init_view=None, init_date=None):
     context = {
         'default_date': date.today().strftime("%Y-%m-%d"),
         'default_view': settings.CALENDAR_DEFAULT_VIEW,
+        'hide_weekends': settings.CALENDAR_HIDE_WEEKENDS,
     }
 
     if init_view and init_date:

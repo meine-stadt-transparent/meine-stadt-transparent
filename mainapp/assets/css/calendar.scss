@@ -1,3 +1,4 @@
+@import "vars";
 @import "~fullcalendar/dist/fullcalendar";
 
 .fc-list-item {
@@ -6,4 +7,11 @@
 
 .fc-scroller {
   height: 100% !important;
+}
+
+.fc {
+  .btn {
+    padding: $content-switcher-btn-padding;
+    height: auto;
+  }
 }

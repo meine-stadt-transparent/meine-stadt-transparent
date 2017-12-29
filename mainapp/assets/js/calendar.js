@@ -2,8 +2,11 @@
 import style from '../css/calendar.scss';
 import moment from "moment";
 
-require('fullcalendar');
-require('fullcalendar/dist/locale/de');
+import * as fullcalendar from "fullcalendar";
+require("fullcalendar/dist/locale/de");
+import {FullCalendarMSTTheme} from "./FullCalendarMSTTheme";
+
+fullcalendar.defineThemeSystem('mst', FullCalendarMSTTheme);
 
 $(function () {
     let $calendar = $('#calendar'),
@@ -20,7 +23,9 @@ $(function () {
             center: 'title',
             right: 'month,agendaWeek,agendaDay,listYear'
         },
+        themeSystem: 'mst',
         weekNumbers: true,
+        weekends: !$calendar.data('hide-weekends'),
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         defaultView: initView,

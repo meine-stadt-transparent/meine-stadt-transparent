@@ -6,7 +6,7 @@
 {% block title %}{% trans "Persons" %}{% endblock %}
 
 {% block content %}
-    <section class="container mb-3 d-flex justify-content-between">
+    <section class="container mb-3 d-flex justify-content-between persons-list-filter">
         <!-- Filtering by parliamentary group - large screens -->
         <div class="btn-group filter-organizations d-none d-md-flex flex-wrap btn-group-toggle" data-toggle="buttons">
             <label class="btn btn-primary active organization-all">
@@ -14,7 +14,7 @@
                 {% trans "All" context "persons-list" %}
             </label>
             {% for group in parliamentary_groups %}
-                <label class="btn btn-secondary organization-{{ group.id }}">
+                <label class="btn btn-content-switcher organization-{{ group.id }}">
                     <input type="radio" name="organization" value="{{ group.id }}">
                     {{ group.short_name }}
                 </label>
@@ -23,7 +23,7 @@
 
         <!-- Filtering by parliamentary group - small/medium screens -->
         <div class="btn-group filter-organizations d-md-none pr-3" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+            <button type="button" class="btn btn-content-switcher dropdown-toggle" data-toggle="dropdown"
             id="btnFilterDropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa-custom fa-filter"></span>
                 <span class="current-mode">{% trans "All" context "persons-list" %}</span>
@@ -39,7 +39,7 @@
 
         <!-- Sorting by name or parliamentary group -->
         <div class="btn-group sort-selector d-flex align-content-start flex-wrap" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+            <button type="button" class="btn btn-content-switcher dropdown-toggle" data-toggle="dropdown"
                     id="btnSortDropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa-custom fa-sort-alpha-asc"></span>
                 <span class="current-mode">{% trans "Name" context "persons-list" %}</span>

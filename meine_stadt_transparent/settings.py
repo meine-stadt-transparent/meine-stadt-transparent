@@ -276,6 +276,7 @@ SITE_INDEX_DOCUMENT_DAY = env.int('SITE_INDEX_DOCUMENT_DAY', 7)
 
 # Possible values: month, listYear, listMonth, listDay, basicWeek, basicDay, agendaWeek, agendaDay
 CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
+CALENDAR_HIDE_WEEKENDS = env.bool('CALENDAR_HIDE_WEEKENDS', True)
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)

@@ -5,8 +5,14 @@ $main-content-margin-top: 30px;
 $border-radius: 0;
 $fa-font-path: "~font-awesome/fonts/";
 
+$container-max-widths: (
+  md: 800px,
+);
+
+// Color aliases; hardcoded, as _variables.scss of bootstrap is not yet loaded here
 $theme-colors: (
-  "navbar": #343a40, // $gray-800 - hardcoded as _variables.scss of bootstrap is not yet loaded here
+  "navbar": #343a40, // $gray-800
+  "content-switcher": #868e96, // $gray-600 / secondary
 );
 
 // There's one element with 800 and an outer with 10000
@@ -14,3 +20,5 @@ $leaflet-controls-zindex: 1000;
 $typeahead-zindex: $leaflet-controls-zindex + 10;
 $search-icon-zindex: $typeahead-zindex + 10;
 $zindex-dropdown: $typeahead-zindex + 1; // The User-menu should be above the search on the home page
+$content-switcher-btn-padding: .375rem .75rem;
+$persons-list-background: #f8f9fa; // $gray-100

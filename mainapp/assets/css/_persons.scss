@@ -1,3 +1,11 @@
+@import "vars";
+
+.persons-list-filter {
+  .btn {
+    padding: $content-switcher-btn-padding;
+  }
+}
+
 .persons-list {
   padding: 0;
 
@@ -5,7 +13,7 @@
     padding: 0;
 
     > div {
-      background: map_get($theme-colors, light);
+      background: $persons-list-background;
       margin: 5px;
       min-height: 120px;
 
