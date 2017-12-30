@@ -6,7 +6,7 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="robots" content="{{ seo_robotos_index }},follow"/>
-    {% render_bundle 'mainapp' 'css' %}
+    {% render_bundle settings.TEMPLATE_META.main_css 'css' %}
     {% block additional_css %}{% endblock %}
 </head>
 <body>

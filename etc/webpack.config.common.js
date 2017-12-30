@@ -1,7 +1,9 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const merge = require('webpack-merge');
 
 module.exports = {
     context: path.resolve(__dirname),
@@ -96,3 +98,18 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin('vendor')
     ]
 };
+
+
+fs.readdirSync('./').forEach((dir) => {
+    let configFile = './' + dir + '/webpack.config.js';
+    if (dir !== 'etc' && fs.existsSync('./' + dir + '/webpack.config.js')) {
+        try {
+            // Hint: require works relative to the directory of this file (etc/),
+            // while fs.readdirSync relative to the project root, therefore this . -> .. trick
+            module.exports = merge(module.exports, require('.' + configFile));
+            console.log("Found extra configuration: " + configFile);
+        } catch (e) {
+            console.error('Could not read file: ' + configFile)
+        }
+    }
+});

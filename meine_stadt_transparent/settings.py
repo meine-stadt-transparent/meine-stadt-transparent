@@ -68,12 +68,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
 
+TEMPLATE_DIRS = []
+if env.str('TEMPLATE_DIRS', None):
+    TEMPLATE_DIRS.append(env.str('TEMPLATE_DIRS'))
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            'mainapp/templates',
-        ],
+        'DIRS': TEMPLATE_DIRS,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -331,6 +333,7 @@ TEMPLATE_META = {
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
     "contact_mail": DEFAULT_FROM_EMAIL,
+    "main_css": env.str('TEMPLATE_MAIN_CSS', "mainapp"),
     "location_limit_lng": 42,
     "location_limit_lat": 23,
 }

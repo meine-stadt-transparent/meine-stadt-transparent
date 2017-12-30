@@ -1,0 +1,32 @@
+DEBUG=False
+REAL_HOST=bedburg.meine-stadt-transparent.de
+LANGUAGE_CODE=de
+# HTTP is used during development, as self-signed certificates seem to make some problems with urllib3
+ELASTICSEARCH_URL_PRIVATE=http://opensourceris.local:80/elasticsearch/
+ELASTICSEARCH_URL_PUBLIC=https://opensourceris.local/elasticsearch/
+ELASTICSEARCH_INDEX=mst_bedburg
+SECRET_KEY=############
+OPENCAGEDATA_KEY=############
+GEOEXTRACT_DEFAULT_CITY=Bedburg
+MAILJET_API_KEY=############
+MAILJET_SECRET_KEY=############
+USE_ELASTICSEARCH=True
+# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
+DATABASE_URL=mysql://############:############@localhost/mst_bedburg
+SITE_SEO_NOINDEX=False
+SITE_INDEX_DOCUMENT_DAY=28
+DEFAULT_FROM_EMAIL=info@meine-stadt-transparent.de
+SITE_MAPBOX_ACCESS_TOKEN=############
+SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/############/############/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
+
+SITE_DEFAULT_ORGANIZATION=75
+SITE_DEFAULT_BODY=1
+SITE_GEO_LIMITS={"min": {"lat": 50.9431, "lng": 6.3693}, "max": {"lat": 51.0856, "lng": 6.7435}}
+SITE_GEO_CENTER={"lat": 51.01258, "lng": 6.551057}
+SITE_GEO_INIT_ZOOM=12
+CALENDAR_DEFAULT_VIEW=listYear
+ELASTICSEARCH_INDEX=juelich_documents
+SITE_STRIP_NAME_SALUTATIONS=Frau,Herr,Herrn
+
+TEMPLATE_DIRS=bedburg_transparent/templates
+TEMPLATE_MAIN_CSS=mainapp-bedburg

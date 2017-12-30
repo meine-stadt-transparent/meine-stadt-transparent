@@ -214,6 +214,26 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
+### Overriding templates, styles
+
+We provide a mechanism for overriding parts of the template and custom styles for a specific city without having to mess with the core of this application, therefore maintaining easy updatability. For example, one obvious page you would want to override is the [contact.html](mainapp/templates/info/contact.html). 
+
+Two examples are provided to illustrate how to use this:
+- [juelich_transparent](juelich_transparent/): Only one template is overridden
+- [bedburg_transparent](bedburg_transparent/): Some more templates are overridden and a custum style is provided (though the style isn't really different from the main style)
+
+Please note the following hints:
+- The name of the city directory is arbitrary, but it needs to be in the project root.
+- Within a directory, there needs to be a configuration file based on the [env-template](etc/env-template). Usually it is called ``.env``.
+- You need to provide the location of this ``.env`` file to Django as a environment-variable, e.g. by calling manage.py with ``ENV_PATH=juelich_transparent/.env ./manage.py``
+- To override a templates, the ``.env`` file needs to define the directory of the overriding templates. Usually that's the ``templates```-folder within the city directory: ``TEMPLATE_DIRS=juelich_transparent/templates``
+- To change the styles, some files need to be created or modified:
+  - A ``webpack.config.js``-file registering an entry point for Webpack. The entry point needs to point to a JS-File.
+  - The JS-File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file.
+  - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
+  - The new CSS-File needs to be registered in the ``.env``-file: ``TEMPLATE_MAIN_CSS=mainapp-mycity```
+
+
 ## Important Commands
 
 ### Starting the development server
