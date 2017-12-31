@@ -27,10 +27,13 @@ def mock_search_to_results(search: Search) -> (List[Any], int):
 
 def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
     out = []
-    for position in range(0, 30):
+    for position in range(search.to_dict()["from"], search.to_dict()["from"] + search.to_dict()["size"]):
         result = template.copy()
         result["name"] = position
+        result["name_escaped"] = position
+        result["id"] = position
         out.append(result)
+    return out, len(out)
 
 
 class FacettedSearchTest(ChromeDriverTestCase):
@@ -136,3 +139,11 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_for_endless_scroll)
     def test_endless_scroll(self, _):
         self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+
+        self.assertEqual(20, len(self.browser.find_by_css(".results-list > li")))
+        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .result-title")]
+        numbers.sort()
+        self.assertEqual(numbers, list(range(0, 20)))
+
+        self.click_by_id1
+

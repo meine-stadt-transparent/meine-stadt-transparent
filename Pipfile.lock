@@ -424,10 +424,10 @@
         },
         "werkzeug": {
             "hashes": [
-                "sha256:f3000aa146ce8a9da8ca3e978e0e931c2a58eb56c323a5efb6b4307f7832b549",
-                "sha256:6246e5fc98a505824113fb6aca993d45ea284a2bcffdc2c65d0c538e53e4abd3"
+                "sha256:322b15deb0e503c3e96c267b676d47ca069edccbf6338549bea7916583822a55",
+                "sha256:4aea27a9513b056346e9c8b49107f4ee7927f7bcf0be63024ecee39d5b87e9ef"
             ],
-            "version": "==0.13"
+            "version": "==0.14"
         }
     },
     "develop": {}
