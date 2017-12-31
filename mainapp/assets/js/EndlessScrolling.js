@@ -3,9 +3,8 @@
  * https://stackoverflow.com/a/4842226/3549270
  */
 export default class EndlessScrolling {
-    loadFurtherHeight = 500;
-
     constructor($button) {
+        this.loadFurtherHeight = 500;
         this.$button = $button;
         this.reset();
         this.$target = $("#endless-scroll-target");
