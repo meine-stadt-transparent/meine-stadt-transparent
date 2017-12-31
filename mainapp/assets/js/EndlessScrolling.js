@@ -3,6 +3,8 @@
  * https://stackoverflow.com/a/4842226/3549270
  */
 export default class EndlessScrolling {
+    loadFurtherHeight = 500;
+
     constructor($button) {
         this.$button = $button;
         this.reset();
@@ -21,7 +23,8 @@ export default class EndlessScrolling {
         if (this.isLoading || !this.isActive) {
             return;
         }
-        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 500) {
+
+        if ($(window).scrollTop() >= $(document).height() - $(window).height() - this.loadFurtherHeight) {
             this.isLoading = true;
             let url = this.$button.data("url") + "?after=" + this.$target.find("> li").length;
             $.get(url, (data) => {

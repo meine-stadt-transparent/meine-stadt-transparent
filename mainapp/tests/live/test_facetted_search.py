@@ -1,3 +1,4 @@
+import time
 from datetime import date
 from typing import Any, List
 from unittest import mock
@@ -21,11 +22,12 @@ template = {
 }
 
 
-def mock_search_to_results(search: Search) -> (List[Any], int):
+def mock_search_to_results(_) -> (List[Any], int):
     return [template], 1
 
 
 def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
+    print(search.to_dict()["from"], search.to_dict()["from"])
     out = []
     for position in range(search.to_dict()["from"], search.to_dict()["from"] + search.to_dict()["size"]):
         result = template.copy()
@@ -33,7 +35,7 @@ def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
         result["name_escaped"] = position
         result["id"] = position
         out.append(result)
-    return out, len(out)
+    return out, len(out) * 2
 
 
 class FacettedSearchTest(ChromeDriverTestCase):
@@ -140,10 +142,20 @@ class FacettedSearchTest(ChromeDriverTestCase):
     def test_endless_scroll(self, _):
         self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
 
-        self.assertEqual(20, len(self.browser.find_by_css(".results-list > li")))
+        single_length = settings.SEARCH_PAGINATION_LENGTH
+        self.assertEqual(single_length, len(self.browser.find_by_css(".results-list > li")))
         numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .result-title")]
         numbers.sort()
-        self.assertEqual(numbers, list(range(0, 20)))
+        self.assertEqual(numbers, list(range(0, single_length)))
 
-        self.click_by_id1
+        self.click_by_id("start-endless-scroll")
 
+        # semi-busy waiting
+        # (it does work without wating on my machine, but I won't risk having any timing based test failures)
+        while single_length == len(self.browser.find_by_css(".results-list > li")):
+            time.sleep(0.01)
+
+        self.assertEqual(single_length * 2, len(self.browser.find_by_css(".results-list > li")))
+        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .result-title")]
+        numbers.sort()
+        self.assertEqual(numbers, list(range(0, single_length * 2)))

@@ -99,7 +99,7 @@ def search_results_only(request, query):
     params = search_string_to_params(query)
     options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    search = search[after:][:settings.SEARCH_PAGINATION_LENGTH]
+    search = search[after:settings.SEARCH_PAGINATION_LENGTH+after]
     results, total_hits = _search_to_results(search)
     context = _search_to_context(query, params, options, results, total_hits, request)
 
