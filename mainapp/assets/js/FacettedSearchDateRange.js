@@ -93,6 +93,7 @@ export default class FacettedSearchDateRange {
     onDatePickerCanceled() {
         this.$inputBefore.val('');
         this.$inputAfter.val('');
+        this.$inputBefore.change();
         this.$inputAfter.change();
         this.setDateRangeStr();
     }
@@ -108,7 +109,7 @@ export default class FacettedSearchDateRange {
 
     getQueryString() {
         let str = '';
-        if (this.$inputBefore.val() !== '') {
+        if (this.$inputAfter.val() !== '') {
             str += 'after:' + this.$inputAfter.val() + ' ';
         }
         if (this.$inputBefore.val() !== '') {
