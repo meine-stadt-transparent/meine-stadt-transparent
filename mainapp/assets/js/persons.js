@@ -71,14 +71,10 @@ $(function () {
         return items.sort(($it1, $it2) => {
             let pos1 = $it1.position(),
                 pos2 = $it2.position();
-            if (pos1.top < pos2.top) {
-                return -1;
-            } else if (pos1.top > pos2.top) {
-                return 1;
-            } else if (pos1.left < pos2.left) {
-                return -1;
-            } else if (pos1.left > pos2.left) {
-                return 1;
+            if (pos1.top !== pos2.top) {
+                return pos1.top - pos2.top;
+            } else if (pos1.left !== pos2.left) {
+                return pos1.left - pos2.left;
             } else {
                 return 0;
             }
