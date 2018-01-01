@@ -1,18 +1,14 @@
 import * as L from "leaflet/src/Leaflet";
 
+let coordsToPolygon = function(coords) {
+    return coords[0].map((lnglat) => L.latLng(lnglat[1], lnglat[0]));
+};
+
 let getPolygonCoveringExterior = function (limitRect, outline) {
     let polygons = [];
     if (typeof(outline) === 'string') {
         outline = JSON.parse(outline);
     }
-
-    let coordsToPolygon = (coords) => {
-        let latlngs = [];
-        coords[0].forEach((lnglat) => {
-            latlngs.push(L.latLng(lnglat[1], lnglat[0]));
-        });
-        polygons.push(latlngs);
-    };
 
     // The limit of the view is the outer ring of the polygon
     polygons.push([
@@ -24,15 +20,15 @@ let getPolygonCoveringExterior = function (limitRect, outline) {
 
     // The shape of the city itself is the "hole" in the polygon
     if (outline['type'] && outline['type'] === 'Polygon') {
-        coordsToPolygon(outline['coordinates']);
+        polygons.push(coordsToPolygon(outline['coordinates']));
     }
     if (outline['features']) {
         outline['features'].forEach((feature) => {
             if (feature['geometry']['type'] === 'MultiPolygon') {
-                feature['geometry']['coordinates'].forEach(coordsToPolygon);
+                feature['geometry']['coordinates'].forEach((coords) => polygons.push(coordsToPolygon(coords)));
             }
             if (feature['geometry']['type'] === 'Polygon') {
-                coordsToPolygon(feature['geometry']['coordinates']);
+                polygons.push(coordsToPolygon(feature['geometry']['coordinates']));
             }
         });
     }

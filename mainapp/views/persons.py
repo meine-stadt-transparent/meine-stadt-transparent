@@ -49,6 +49,21 @@ def persons(request):
     return render(request, 'mainapp/persons.html', context)
 
 
+def get_ordered_memberships(selected_person):
+    """ Orders memberships so that the active ones are first, those with unknown end seconds and the ended last. """
+    memberships_active = selected_person.organizationmembership_set.filter(end__gte=datetime.now().date()).all()
+    memberships_no_end = selected_person.organizationmembership_set.filter(end__isnull=True).all()
+    memberships_ended = selected_person.organizationmembership_set.filter(end__lt=datetime.now().date()).all()
+    memberships = []
+    if len(memberships_active) > 0:
+        memberships.append(memberships_active)
+    if len(memberships_no_end) > 0:
+        memberships.append(memberships_no_end)
+    if len(memberships_ended) > 0:
+        memberships.append(memberships_ended)
+    return memberships
+
+
 def person(request, pk):
     selected_person = get_object_or_404(Person, id=pk)
     search_params = {"person": pk}
@@ -69,16 +84,7 @@ def person(request, pk):
     for paper_mentioned in Paper.objects.filter(files__mentioned_persons__in=[pk]).order_by('-modified').distinct():
         mentioned.append({"paper": paper_mentioned, "files": paper_mentioned.files.filter(mentioned_persons__in=[pk])})
 
-    memberships_active = selected_person.organizationmembership_set.filter(end__gte=datetime.now().date()).all()
-    memberships_no_end = selected_person.organizationmembership_set.filter(end__isnull=True).all()
-    memberships_ended = selected_person.organizationmembership_set.filter(end__lt=datetime.now().date()).all()
-    memberships = []
-    if len(memberships_active) > 0:
-        memberships.append(memberships_active)
-    if len(memberships_no_end) > 0:
-        memberships.append(memberships_no_end)
-    if len(memberships_ended) > 0:
-        memberships.append(memberships_ended)
+    memberships = get_ordered_memberships(selected_person)
 
     context = {
         "person": selected_person,
