@@ -27,7 +27,6 @@ def mock_search_to_results(_) -> (List[Any], int):
 
 
 def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
-    print(search.to_dict()["from"], search.to_dict()["from"])
     out = []
     for position in range(search.to_dict()["from"], search.to_dict()["from"] + search.to_dict()["size"]):
         result = template.copy()
