@@ -38,7 +38,7 @@ class Command(BaseCommand):
         return results
 
     def notify_user(self, user: User, override_since: datetime, debug: bool):
-        print(settings.TEMPLATE_META)
+        print(settings.TEMPLATE_META) # FIXME
 
         context = {
             "base_url": settings.ABSOLUTE_URI_BASE,

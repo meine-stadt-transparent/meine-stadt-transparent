@@ -4,7 +4,7 @@ from importer import CityToAGS
 
 
 class Command(CityToAGS, BaseCommand):
-    help = 'Queries wikidata to map a city name to an ags'
+    help = 'Queries wikidata to get the ags of a city'
 
     def add_arguments(self, parser):
         parser.add_argument('city-name', type=str)

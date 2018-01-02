@@ -5,7 +5,7 @@ class OrganizationsTest(ChromeDriverTestCase):
     fixtures = ['initdata.json']
 
     def test_organizations_filter(self):
-        self.browser.visit('%s%s' % (self.live_server_url, '/organizations/'))
+        self.visit('/organizations/')
         self.assertElementDoesNotExists('.my-account-link')
         self.assertEqual(len(self.browser.find_by_css(".multi-list-filter-sublist > h2")), 3)
         self.assertEqual(len(self.browser.find_by_css(".multi-list-filter-sublist > ul")), 3)

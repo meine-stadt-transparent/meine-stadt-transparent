@@ -1,8 +1,12 @@
 import os
+
+import logging
 from django.core.management.base import BaseCommand
 
 from mainapp.functions.document_parsing import get_page_count_from_pdf
 from mainapp.models import File
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -15,7 +19,7 @@ class Command(BaseCommand):
                 try:
                     path = os.path.join("../mst-storage/files", file.storage_filename)
                     page_count = get_page_count_from_pdf(path)
-                    print(path + ": " + str(page_count))
+                    logger.info(path + ": " + str(page_count))
                     file.page_count = page_count
                     file.save()
                 except OSError:

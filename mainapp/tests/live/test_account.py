@@ -8,7 +8,7 @@ class AccountTest(ChromeDriverTestCase):
     password2 = 'sdir23744!ä'
 
     def check_register_new_account(self, email, password):
-        self.browser.visit('%s%s' % (self.live_server_url, '/'))
+        self.visit('/')
         self.assertElementDoesNotExists('.my-account-link')
         self.browser.find_by_css('#main-menu-content .login-link').click()
         self.browser.find_by_css('.signup-link').click()

@@ -7,30 +7,30 @@ class CalendarTest(ChromeDriverTestCase):
     fixtures = ['initdata.json']
 
     def test_list_year(self):
-        self.browser.visit('%s%s' % (self.live_server_url, '/calendar/'))
-        self.assertTrue(self.browser.is_text_present(str(datetime.datetime.now().year)))
+        self.visit('/calendar/')
+        self.assertTextIsPresent(str(datetime.datetime.now().year))
         self.browser.find_by_css('.fc-listYear-button').first.click()
 
         # In 2017, both meetings are visible
         self.browser.execute_script("jQuery('#calendar').fullCalendar( 'gotoDate', '2017-01-01' )")
-        self.assertTrue(self.browser.is_text_present("House Assembly Meeting 1"))
-        self.assertTrue(self.browser.is_text_present("House Assembly Meeting November"))
+        self.assertTextIsPresent("House Assembly Meeting 1")
+        self.assertTextIsPresent("House Assembly Meeting November")
 
         # In 2016, both meetings are visible
         self.browser.execute_script("jQuery('#calendar').fullCalendar( 'gotoDate', '2016-01-01' )")
-        self.assertFalse(self.browser.is_text_present("House Assembly Meeting 1"))
-        self.assertFalse(self.browser.is_text_present("House Assembly Meeting November"))
+        self.assertTextIsNotPresent("House Assembly Meeting 1")
+        self.assertTextIsNotPresent("House Assembly Meeting November")
 
     def test_month(self):
-        self.browser.visit('%s%s' % (self.live_server_url, '/calendar/'))
+        self.visit('/calendar/')
         self.browser.find_by_css('.fc-month-button').first.click()
 
         # In september, the november-meeting is not visible
         self.browser.execute_script("jQuery('#calendar').fullCalendar( 'gotoDate', '2017-09-01' )")
-        self.assertTrue(self.browser.is_text_present("House Assembly Meeting 1"))
-        self.assertFalse(self.browser.is_text_present("House Assembly Meeting November"))
+        self.assertTextIsPresent("House Assembly Meeting 1")
+        self.assertTextIsNotPresent("House Assembly Meeting November")
 
         # In november, only the november-meeting is visible
         self.browser.execute_script("jQuery('#calendar').fullCalendar( 'gotoDate', '2017-11-01' )")
-        self.assertFalse(self.browser.is_text_present("House Assembly Meeting 1"))
-        self.assertTrue(self.browser.is_text_present("House Assembly Meeting November"))
+        self.assertTextIsNotPresent("House Assembly Meeting 1")
+        self.assertTextIsPresent("House Assembly Meeting November")

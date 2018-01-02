@@ -38,6 +38,9 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     Helper functions for a more convenient test syntax
     """
 
+    def visit(self, path):
+        self.browser.visit(self.live_server_url + path)
+
     def assertTextIsPresent(self, text):
         self.assertTrue(self.browser.is_text_present(text))
 

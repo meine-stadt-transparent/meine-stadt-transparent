@@ -50,7 +50,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_landing_page_redirect(self, _):
         """ There was a case where the redirect would lead to the wrong page """
-        self.browser.visit('%s%s' % (self.live_server_url, '/'))
+        self.visit('/')
         self.browser.fill("search-query", "word")
         self.browser.find_by_name("search-query").first._element.send_keys(Keys.ENTER)
         self.assertEqual("word", self.get_search_string_from_url())
@@ -58,7 +58,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_word(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.assertTrue(self.browser.is_text_present("Highlight"))
         self.assertTrue(self.browser.is_text_present("Title"))
         self.assertFalse(self.browser.is_text_present("<mark>"))
@@ -66,7 +66,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_document_type(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.assertTextIsPresent("Document Type")
         self.assertTextIsNotPresent("Meeting")
         self.browser.click_link_by_id("documentTypeButton")
@@ -83,7 +83,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_time_range(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.click_by_id("timeRangeButton")
         self.click_by_text("This year")
 
@@ -98,7 +98,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_person_filter(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.click_by_id("personButton")
         self.click_by_text("Frank Underwood")
 
@@ -112,7 +112,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_sorting(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.click_by_id("btnSortDropdown")
         self.click_by_text("Newest first")
 
@@ -126,7 +126,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
     def test_dropdown_filter(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
         self.click_by_id("personButton")
         count = len(self.browser.find_by_css("[data-filter-key='person'] .filter-item"))
         org = settings.SITE_DEFAULT_ORGANIZATION
@@ -139,7 +139,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_for_endless_scroll)
     def test_endless_scroll(self, _):
-        self.browser.visit('%s%s' % (self.live_server_url, '/search/query/word/'))
+        self.visit('/search/query/word/')
 
         single_length = settings.SEARCH_PAGINATION_LENGTH
         self.assertEqual(single_length, len(self.browser.find_by_css(".results-list > li")))

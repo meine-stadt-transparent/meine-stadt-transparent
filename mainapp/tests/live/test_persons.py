@@ -12,7 +12,7 @@ class PersonsTest(ChromeDriverTestCase):
         return pos
 
     def test_filter(self):
-        self.browser.visit('%s%s' % (self.live_server_url, '/persons/'))
+        self.visit('/persons/')
 
         # Both are visible
         pos_peter = self._get_pos_by_name('Peter Russo')
@@ -37,7 +37,7 @@ class PersonsTest(ChromeDriverTestCase):
         self.assertIsNotNone(pos_hector)
 
     def test_sort(self):
-        self.browser.visit('%s%s' % (self.live_server_url, '/persons/'))
+        self.visit('/persons/')
 
         # Default sorting: by name
         pos_peter = self._get_pos_by_name('Peter Russo')
