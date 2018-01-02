@@ -1,6 +1,6 @@
+from django.conf import settings
 from django.urls import resolve
 from django.utils.deprecation import MiddlewareMixin
-from django.conf import settings
 
 
 class CSPMiddleware(MiddlewareMixin):

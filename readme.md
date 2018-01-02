@@ -58,7 +58,7 @@ You can execute all the other commands from this readme by prepending them with 
 ## Manual Setup
 
 ### Requirements:
- - Python 3 with pip
+ - Python >= 3.5 with pip (We test with 3.5 and 3.6)
  - A recent node version with npm
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)

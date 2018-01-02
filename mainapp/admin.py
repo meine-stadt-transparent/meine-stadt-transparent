@@ -8,5 +8,3 @@ from mainapp import models
 for name, obj in inspect.getmembers(models):
     if inspect.isclass(obj) and name not in ["DefaultFields", "GenericMembership"]:
         admin.site.register(obj)
-
-
