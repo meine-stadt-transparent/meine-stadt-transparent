@@ -2,8 +2,9 @@ import hashlib
 import mimetypes
 import os
 from collections import defaultdict
-
 # noinspection PyPackageRequirements
+from typing import Tuple, Type, TypeVar, Callable
+
 import gi
 import requests
 from django.conf import settings
@@ -13,7 +14,7 @@ from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
-    OrganizationMembership, Organization
+    OrganizationMembership, Organization, DefaultFields
 from mainapp.models.consultation import Consultation
 from mainapp.models.organization_type import OrganizationType
 from mainapp.models.paper_type import PaperType
@@ -48,43 +49,62 @@ class OParlObjects(OParlHelper):
         department = settings.DEPARTMENT_TYPE
         OrganizationType.objects.get_or_create(id=department[0], defaults={"name": department[1]})
 
+    T = TypeVar("T", bound=DefaultFields)
+    U = TypeVar("U", bound=OParl.Object)
+
+    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[T, U], None],
+                       embedded: Callable[[T, U], bool]):
+        """
+        We split an object into two parts: It's value properties and the embedded objects. This is necessary because
+        the outer object might not have been modified while its embedded inner objects have.
+        """
+        outer_object, do_update = self.check_for_update(libobject, constructor)
+        if do_update:
+            core(outer_object, libobject)
+            outer_object.save()
+        associates_changed = embedded(outer_object, libobject)
+        if associates_changed:
+            outer_object.save()
+
+        return outer_object
+
     def body(self, libobject: OParl.Body):
-        body = self.check_existing(libobject, Body)
-        if not body:
-            return
+        self.process_object(libobject, Body, self.body_core, self.body_embedded)
+
+    def body_core(self, body, libobject):
         self.logger.info("Processing {}".format(libobject.get_id()))
 
-        body.save()
-
+    def body_embedded(self, body, libobject):
+        changed = False
         terms = []
         for term in libobject.get_legislative_term():
             saved_term = self.term(term)
             if saved_term:
                 terms.append(saved_term)
-
+        changed = changed or not self.is_queryset_equal_list(body.legislative_terms, terms)
         body.legislative_terms = terms
-
         location = self.location(libobject.get_location())
         if location and location.geometry:
             if location.geometry["type"] == "Point":
+                changed = changed or body.center != location
                 body.center = location
+                body.outline = None
             elif location.geometry["type"] == "Polygon":
+                changed = changed or body.outline != location
+                body.center = None
                 body.outline = location
             else:
                 message = "Location object is of type {}, which is neither 'Point' nor 'Polygon'." \
                           "Skipping this location.".format(location.geometry["type"])
                 self.errorlist.append(message)
-
-        body.save()
-
-        return body
+        return changed
 
     def term(self, libobject: OParl.LegislativeTerm):
         if not libobject.get_start_date() or not libobject.get_end_date():
             self.logger.error("Term has no start or end date - skipping")
             return
 
-        term = self.check_existing(libobject, LegislativeTerm)
+        term, do_update = self.check_for_update(libobject, LegislativeTerm)
         if not term:
             return
 
@@ -98,7 +118,7 @@ class OParlObjects(OParlHelper):
         return term
 
     def paper(self, libobject: OParl.Paper):
-        paper = self.check_existing(libobject, Paper)
+        paper, do_update = self.check_for_update(libobject, Paper)
         if not paper:
             return
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
@@ -136,7 +156,7 @@ class OParlObjects(OParlHelper):
         if not libobject:
             return
 
-        organization = self.check_existing(libobject, Organization)
+        organization, do_update = self.check_for_update(libobject, Organization)
         if not organization:
             return
 
@@ -161,7 +181,7 @@ class OParlObjects(OParlHelper):
         return organization
 
     def meeting(self, libobject: OParl.Meeting):
-        meeting = self.check_existing(libobject, Meeting)
+        meeting, do_update = self.check_for_update(libobject, Meeting)
         if not meeting:
             return
         self.logger.info("Processing Meeting {}".format(libobject.get_id()))
@@ -200,7 +220,7 @@ class OParlObjects(OParlHelper):
         return meeting
 
     def location(self, libobject: OParl.Location):
-        location = self.check_existing(libobject, Location, name_fixup=_("Unknown"))
+        location, do_update = self.check_for_update(libobject, Location, name_fixup=_("Unknown"))
         if not location:
             return None
         self.logger.info("Processing Location {}".format(libobject.get_id()))
@@ -214,7 +234,7 @@ class OParlObjects(OParlHelper):
         return location
 
     def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
-        item = self.check_existing(libobject, AgendaItem, add_names=False)
+        item, do_update = self.check_for_update(libobject, AgendaItem, add_names=False)
         if not item:
             return
 
@@ -245,7 +265,7 @@ class OParlObjects(OParlHelper):
         return item
 
     def consultation(self, libobject: OParl.Consultation):
-        consultation = self.check_existing(libobject, Consultation, add_names=False)
+        consultation, do_update = self.check_for_update(libobject, Consultation, add_names=False)
         if not consultation:
             return
 
@@ -303,7 +323,7 @@ class OParlObjects(OParlHelper):
         file.storage_filename = urlhash
 
     def file(self, libobject: OParl.File):
-        file = self.check_existing(libobject, File, add_names=False)
+        file, do_update = self.check_for_update(libobject, File, add_names=False)
         if not file:
             return
         self.logger.info("Processing File {}".format(libobject.get_id()))
@@ -341,7 +361,7 @@ class OParlObjects(OParlHelper):
 
     def person(self, libobject: OParl.Person):
         self.logger.info("Processing Person {}".format(libobject.get_id()))
-        person = self.check_existing(libobject, Person, add_names=False)
+        person, do_update = self.check_for_update(libobject, Person, add_names=False)
         if not person:
             return
 
@@ -352,7 +372,7 @@ class OParlObjects(OParlHelper):
         person.save()
 
     def membership(self, organization, libobject: OParl.Membership):
-        membership = self.check_existing(libobject, OrganizationMembership, add_names=False)
+        membership, do_update = self.check_for_update(libobject, OrganizationMembership, add_names=False)
         if not membership:
             return
 

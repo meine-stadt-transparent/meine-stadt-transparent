@@ -64,8 +64,7 @@ class TestImporter(TestCase):
         self.entrypoint = system["id"]
 
         # Discard old data
-        if os.path.isdir(self.fake_cache):
-            shutil.rmtree(self.fake_cache)
+        shutil.rmtree(self.fake_cache, ignore_errors=True)
         os.makedirs(os.path.join(self.fake_cache, self.sha1(self.entrypoint)))
 
         self.dump(system["id"], system)
@@ -130,23 +129,19 @@ class TestImporter(TestCase):
         importer = OParlImport(options)
         importer.run_singlethread()
 
-        # FIXME: Deletion isn't working properly. See #15
-        tables = [Body, Organization, Person, Meeting, Paper]
-
         for table in tables:
+            print(table)
             self.assertEqual(table.objects.count(), 0)
 
     def build_options(self):
         options = default_options.copy()
         options["cachefolder"] = self.fake_cache
         options["storagefolder"] = "/tmp/meine_stadt_transparent/storagefolder"
-        if os.path.isdir(options["storagefolder"]):
-            shutil.rmtree(options["storagefolder"])
+        shutil.rmtree(options["storagefolder"], ignore_errors=True)
         options["entrypoint"] = self.entrypoint
         options["batchsize"] = 1
         options["download_files"] = False  # TODO
         return options
 
     def tearDown(self):
-        if os.path.isdir(self.fake_cache):
-            shutil.rmtree(self.fake_cache)
+        shutil.rmtree(self.fake_cache, ignore_errors=True)

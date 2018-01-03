@@ -10,6 +10,7 @@ import logging
 import requests
 from django.db import transaction
 
+from mainapp.models import Body
 from .oparl_objects import OParlObjects
 
 gi.require_version('OParl', '0.2')
@@ -108,6 +109,14 @@ class OParlImport(OParlObjects):
 
         self.logger.info("Creating objects")
         for body in bodies:
+            if not Body.objects.filter(oparl_id=body.get_id()).first():
+                if body.get_deleted():
+                    self.logger.warning(
+                        "Body {} which has been deleted on the server side, skipping.".format(body.get_id()))
+                else:
+                    self.logger.error("Body {} is not in the database even it has not been deleted on the server "
+                                      "side. This looks fishy".format(body.get_id))
+                continue
             self.list_batched(body.get_paper, self.paper)
             self.list_batched(body.get_person, self.person)
             self.list_batched(body.get_organization, self.organization)

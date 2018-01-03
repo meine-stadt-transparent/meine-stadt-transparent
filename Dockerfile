@@ -28,7 +28,7 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib /usr/
 # Python dependencies
 COPY Pipfile* /app/
 RUN pip3 install --upgrade pipenv && \
-    pipenv install && \
+    pipenv install --deploy && \
     ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
 
 # Javascript dependencies

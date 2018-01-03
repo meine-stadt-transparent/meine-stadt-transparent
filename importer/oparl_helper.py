@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
-from typing import Optional, Type
+from typing import Optional, Type, Union, Tuple, TypeVar
 
 import gi
 from django.conf import settings
@@ -108,29 +108,32 @@ class OParlHelper:
 
     # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
     # TODO: Check the pycharm bug tracker for that
-    def check_existing(self, libobject: OParl.Object, constructor: Type[DefaultFields], add_names=True,
-                       name_fixup=None):
+    def check_for_update(self, libobject: OParl.Object, constructor: Type[DefaultFields], add_names=True,
+                         name_fixup=None) -> Tuple[Optional[DefaultFields], bool]:
+        # TODO: Replace add_names with isinstance(ShortableNameFields)
         """ Checks common criterias for oparl objects. """
         if not libobject:
-            return None
+            return None, False
 
         dbobject = constructor.objects_with_deleted.filter(oparl_id=libobject.get_id()).first()  # type: DefaultFields
         if not dbobject:
             if libobject.get_deleted():
-                return None
+                dbobject.deleted = True
+                dbobject.save()
+                return dbobject, False
             self.logger.debug("New")
             dbobject = constructor()
             dbobject.oparl_id = libobject.get_id()
             dbobject.deleted = libobject.get_deleted()
             if add_names:
                 self.set_names(libobject, dbobject, name_fixup)
-            return dbobject
+            return dbobject, True
 
         if libobject.get_deleted():
             dbobject.deleted = True
             dbobject.save()
             self.logger.debug("Deleted")
-            return False
+            return dbobject, False
 
         if not libobject.get_modified():
             error_message = "Modified missing on {}".format(libobject.get_id())
@@ -138,14 +141,14 @@ class OParlHelper:
         if not self.ignore_modified and libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(
                 libobject.get_modified()):
             self.logger.debug("Not Modified")
-            return None
+            return dbobject, False
 
         self.logger.debug("Modified")
         dbobject.oparl_id = libobject.get_id()
         dbobject.deleted = libobject.get_deleted()
         if add_names:
             self.set_names(libobject, dbobject, name_fixup)
-        return dbobject
+        return dbobject, True
 
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)
@@ -160,3 +163,8 @@ class OParlHelper:
         elif file.mime_type == "text/text":
             with open(path) as f:
                 file.parsed_text = f.read()
+
+    @staticmethod
+    def is_queryset_equal_list(queryset, other):
+        """ Sufficiently correct comparison of a querysets and a list, inspired by django's assertQuerysetEqual """
+        return list(queryset.order_by("id").all()) == sorted(other, key=id)

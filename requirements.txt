@@ -49,4 +49,4 @@ splinter==0.7.7
 sqlparse==0.2.4
 Unidecode==0.4.21
 urllib3==1.21.1
-Werkzeug==0.14
+Werkzeug==0.14.1
