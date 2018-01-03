@@ -323,6 +323,8 @@ LOGGING = {
     }
 }
 
+LOGGING.update(env.json("LOGGING", {}))
+
 OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
 
 TESTING = sys.argv[1:2] == ['test']
