@@ -37,7 +37,7 @@ class TestImporter(TestCase):
 
     def dump(self, name, obj):
         with open(os.path.join(self.fake_cache, self.sha1(self.entrypoint), self.sha1(name)), 'w') as f:
-            json.dump(obj, f, indent=4)
+            json.dump(obj, f, indent=4, sort_keys=True)
 
     def external_list(self, obj):
         return {"data": [obj], "links": {}, "pagination": {}}
@@ -69,6 +69,8 @@ class TestImporter(TestCase):
 
         self.dump(system["id"], system)
         body = self.load("Body.json")
+        # If we deleted the body, the other objects won't be imported
+        body["deleted"] = False
         self.dump(system["body"], self.external_list(body))
         self.dump(body["id"], body)
 
@@ -129,8 +131,9 @@ class TestImporter(TestCase):
         importer = OParlImport(options)
         importer.run_singlethread()
 
+        tables.remove(Body)
+
         for table in tables:
-            print(table)
             self.assertEqual(table.objects.count(), 0)
 
     def build_options(self):

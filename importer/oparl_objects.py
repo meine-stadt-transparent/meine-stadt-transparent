@@ -3,7 +3,7 @@ import mimetypes
 import os
 from collections import defaultdict
 # noinspection PyPackageRequirements
-from typing import Tuple, Type, TypeVar, Callable
+from typing import Type, TypeVar, Callable
 
 import gi
 import requests
@@ -52,29 +52,29 @@ class OParlObjects(OParlHelper):
     T = TypeVar("T", bound=DefaultFields)
     U = TypeVar("U", bound=OParl.Object)
 
-    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[T, U], None],
-                       embedded: Callable[[T, U], bool]):
+    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[U, T], None],
+                       embedded: Callable[[U, T], bool], add_names=True):
         """
         We split an object into two parts: It's value properties and the embedded objects. This is necessary because
         the outer object might not have been modified while its embedded inner objects have.
         """
-        outer_object, do_update = self.check_for_update(libobject, constructor)
+        outer_object, do_update = self.check_for_update(libobject, constructor, add_names)
         if do_update:
-            core(outer_object, libobject)
+            core(libobject, outer_object)
             outer_object.save()
-        associates_changed = embedded(outer_object, libobject)
+        associates_changed = embedded(libobject, outer_object)
         if associates_changed:
             outer_object.save()
 
         return outer_object
 
     def body(self, libobject: OParl.Body):
-        self.process_object(libobject, Body, self.body_core, self.body_embedded)
+        return self.process_object(libobject, Body, self.body_core, self.body_embedded)
 
-    def body_core(self, body, libobject):
+    def body_core(self, libobject, body):
         self.logger.info("Processing {}".format(libobject.get_id()))
 
-    def body_embedded(self, body, libobject):
+    def body_embedded(self, libobject, body):
         changed = False
         terms = []
         for term in libobject.get_legislative_term():
@@ -118,91 +118,73 @@ class OParlObjects(OParlHelper):
         return term
 
     def paper(self, libobject: OParl.Paper):
-        paper, do_update = self.check_for_update(libobject, Paper)
-        if not paper:
-            return
-        self.logger.info("Processing Paper {}".format(libobject.get_id()))
+        return self.process_object(libobject, Paper, self.paper_core, self.paper_embedded)
 
+    def paper_embedded(self, libobject, paper):
+        changed = False
+        files_with_none = [self.file(file) for file in libobject.get_auxiliary_file()]
+        files_without_none = [file for file in files_with_none if file is not None]
+        changed = changed or self.is_queryset_equal_list(paper.files, files_without_none)
+        paper.files = files_without_none
+        old_main_file = paper.main_file
+        paper.main_file = self.file(libobject.get_main_file())
+        changed = changed or old_main_file == paper.main_file
+        for i in libobject.get_consultation():
+            self.consultation(i)
+
+        organizations = []
+        for org_url in libobject.get_under_direction_of_url():
+            organization = Organization.objects.filter(oparl_id=org_url).first()
+            if organization:
+                organizations.append(organization)
+            else:
+                self.paper_organization_queue.append((paper, org_url))
+        changed = changed or self.is_queryset_equal_list(paper.organizations, organizations)
+        paper.organizations = organizations
+        return changed
+
+    def paper_core(self, libobject, paper):
+        self.logger.info("Processing Paper {}".format(libobject.get_id()))
         if libobject.get_paper_type():
             paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
         else:
             paper_type = None
-
         paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
         paper.reference_number = libobject.get_reference()
         paper.paper_type = paper_type
-        paper.save()
-
-        files = [self.file(file) for file in libobject.get_auxiliary_file()]
-        paper.files = [file for file in files if file is not None]
-        paper.main_file = self.file(libobject.get_main_file())
-
-        for i in libobject.get_consultation():
-            self.consultation(i)
-
-        for org_url in libobject.get_under_direction_of_url():
-            organization = Organization.objects.filter(oparl_id=org_url).first()
-            if organization:
-                paper.organizations.add(organization)
-            else:
-                self.paper_organization_queue.append((paper, org_url))
-
-        paper.save()
-
-        return paper
 
     def organization(self, libobject: OParl.Organization):
+        return self.process_object(libobject, Organization, self.organization_core, self.organization_embedded)
+
+    def organization_embedded(self, libobject, organization):
+        for membership in libobject.get_membership():
+            self.membership(organization, membership)
+        return False
+
+    def organization_core(self, libobject, organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
-        if not libobject:
-            return
-
-        organization, do_update = self.check_for_update(libobject, Organization)
-        if not organization:
-            return
-
         type_id = self.organization_classification.get(libobject.get_organization_type())
         if type_id:
             orgtype = OrganizationType.objects.get(id=type_id)
         else:
             orgtype, _ = OrganizationType.objects.get_or_create(name=libobject.get_organization_type())
-
         organization.organization_type = orgtype
         organization.body = Body.by_oparl_id(libobject.get_body().get_id())
         organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
         organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
 
-        organization.save()
-
-        for membership in libobject.get_membership():
-            self.membership(organization, membership)
-
-        organization.save()
-
-        return organization
-
     def meeting(self, libobject: OParl.Meeting):
-        meeting, do_update = self.check_for_update(libobject, Meeting)
-        if not meeting:
-            return
-        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
+        return self.process_object(libobject, Meeting, self.meeting_core, self.meeting_embedded)
 
-        meeting.start = self.glib_datetime_to_python(libobject.get_start())
-        meeting.end = self.glib_datetime_to_python(libobject.get_end())
-        meeting.location = self.location(libobject.get_location())
-        meeting.invitation = self.file(libobject.get_invitation())
-        meeting.verbatim_protocol = self.file(libobject.get_verbatim_protocol())
-        meeting.results_protocol = self.file(libobject.get_results_protocol())
-        meeting.cancelled = libobject.get_cancelled() or False
-
-        meeting.save()
-
+    def meeting_embedded(self, libobject, meeting):
+        changed = False
         auxiliary_files = []
         for oparlfile in libobject.get_auxiliary_file():
             djangofile = self.file(oparlfile)
             if djangofile:
                 auxiliary_files.append(djangofile)
+        changed = changed or self.is_queryset_equal_list(meeting.auxiliary_files, auxiliary_files)
         meeting.auxiliary_files = auxiliary_files
-
         persons = []
         for oparlperson in libobject.get_participant():
             djangoperson = Person.by_oparl_id(oparlperson.get_id())
@@ -210,14 +192,21 @@ class OParlObjects(OParlHelper):
                 persons.append(djangoperson)
             else:
                 self.meeting_person_queue[libobject.get_id()].append(oparlperson.get_id())
+        changed = changed or self.is_queryset_equal_list(meeting.persons, persons)
         meeting.persons = persons
-
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
             self.agendaitem(oparlitem, index, meeting)
+        return changed
 
-        meeting.save()
-
-        return meeting
+    def meeting_core(self, libobject, meeting):
+        self.logger.info("Processing Meeting {}".format(libobject.get_id()))
+        meeting.start = self.glib_datetime_to_python(libobject.get_start())
+        meeting.end = self.glib_datetime_to_python(libobject.get_end())
+        meeting.location = self.location(libobject.get_location())
+        meeting.invitation = self.file(libobject.get_invitation())
+        meeting.verbatim_protocol = self.file(libobject.get_verbatim_protocol())
+        meeting.results_protocol = self.file(libobject.get_results_protocol())
+        meeting.cancelled = libobject.get_cancelled() or False
 
     def location(self, libobject: OParl.Location):
         location, do_update = self.check_for_update(libobject, Location, name_fixup=_("Unknown"))
@@ -360,16 +349,18 @@ class OParlObjects(OParlHelper):
         return file
 
     def person(self, libobject: OParl.Person):
-        self.logger.info("Processing Person {}".format(libobject.get_id()))
-        person, do_update = self.check_for_update(libobject, Person, add_names=False)
-        if not person:
-            return
+        return self.process_object(libobject, Person, self.person_core, self.person_embedded, add_names=False)
 
+    def person_embedded(self, libobject, person):
+        old_location = person.location
+        person.location = self.location(libobject.get_location())
+        return old_location == person.location
+
+    def person_core(self, libobject, person):
+        self.logger.info("Processing Person {}".format(libobject.get_id()))
         person.name = libobject.get_name()
         person.given_name = libobject.get_given_name()
         person.family_name = libobject.get_family_name()
-        person.location = self.location(libobject.get_location())
-        person.save()
 
     def membership(self, organization, libobject: OParl.Membership):
         membership, do_update = self.check_for_update(libobject, OrganizationMembership, add_names=False)
@@ -417,22 +408,22 @@ class OParlObjects(OParlHelper):
 
         self.logger.info("Adding missing papper to consultations")
         for consultation, paper in self.consultation_paper_queue:
-            consultation.paper = Paper.by_oparl_id(paper)
+            consultation.paper = Paper.objects_with_deleted.filter(oparl_id=paper).first()
             consultation.save()
 
         self.logger.info("Adding missing meetings to consultations")
         for consultation, meeting in self.consultation_meeting_queue:
-            consultation.meeting = Meeting.by_oparl_id(meeting)
+            consultation.meeting = Meeting.objects_with_deleted.filter(oparl_id=meeting).first()
             consultation.save()
 
         self.logger.info("Adding missing organizations to consultations")
         for consultation, organizations in self.consultation_organization_queue.items():
             orgas = []
             for org in organizations:
-                orgas.append(Organization.by_oparl_id(org))
+                orgas.append(Organization.objects_with_deleted.filter(oparl_id=org).first())
             consultation.organizations = orgas
             consultation.save()
 
         self.logger.info("Adding missing organizations to papers")
         for paper, organization_url in self.paper_organization_queue:
-            paper.organizations.add(Organization.by_oparl_id(organization_url))
+            paper.organizations.add(Organization.objects_with_deleted.filter(oparl_id=organization_url).first())

@@ -111,7 +111,7 @@ class OParlImport(OParlObjects):
         for body in bodies:
             if not Body.objects.filter(oparl_id=body.get_id()).first():
                 if body.get_deleted():
-                    self.logger.warning(
+                    self.logger.error(
                         "Body {} which has been deleted on the server side, skipping.".format(body.get_id()))
                 else:
                     self.logger.error("Body {} is not in the database even it has not been deleted on the server "

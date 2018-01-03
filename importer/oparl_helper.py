@@ -106,10 +106,11 @@ class OParlHelper:
         dbitem.set_short_name(libobject.get_short_name() or dbitem.name)
         return dbitem
 
-    # It seems that pycharm doesn't understand generics as in https://github.com/python/typing/issues/107
-    # TODO: Check the pycharm bug tracker for that
-    def check_for_update(self, libobject: OParl.Object, constructor: Type[DefaultFields], add_names=True,
-                         name_fixup=None) -> Tuple[Optional[DefaultFields], bool]:
+    E = TypeVar("E", bound=DefaultFields)
+
+    # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161 (TODO: Wait for that to be fixed)
+    def check_for_update(self, libobject: OParl.Object, constructor: Type[E], add_names=True,
+                         name_fixup=None) -> Tuple[Optional[E], bool]:
         # TODO: Replace add_names with isinstance(ShortableNameFields)
         """ Checks common criterias for oparl objects. """
         if not libobject:
