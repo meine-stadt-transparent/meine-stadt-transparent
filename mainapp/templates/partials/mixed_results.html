@@ -12,15 +12,8 @@
                             </i>
                         </div>
                         <div class="col">
-                            <h2 class="text-truncate result-title">
-                                <!-- There are two variants of this list:  The one on the front page and the one on
-                                the search page. Only the latter may highlight the name and therefore sets name_escaped
-                                -->
-                                {% if result.name_escaped %}
-                                    {{ result.name_escaped | safe }}
-                                {% else %}
-                                    {{ result.name }}
-                                {% endif %}
+                            <h2 class="text-truncate result-title" title="{{ result.name_escaped | safe }}">
+                                {{ result.name_escaped | safe }}
                             </h2>
                             <div class="text-muted text-truncate">
                                 <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>

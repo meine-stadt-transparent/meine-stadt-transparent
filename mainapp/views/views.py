@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.utils import html
 from django.utils.timezone import localtime, now
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
@@ -16,21 +17,18 @@ from mainapp.models.organization_type import OrganizationType
 def index(request):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
-    today = localtime(now()).replace(hour=0, minute=0, second=0, microsecond=0)
-    document_end_date = today + timedelta(days=1)
-    document_start_date = document_end_date - timedelta(days=settings.SITE_INDEX_DOCUMENT_DAY)
     latest_paper = Paper \
                        .objects \
-                       .filter(modified__range=[document_start_date, document_end_date]) \
                        .order_by("-modified", "-legal_date")[:10]
     for paper in latest_paper:
         # The mixed results view needs those
         setattr(paper, "type", "paper")
+        setattr(paper, "name_escaped", html.escape(paper.name))
         setattr(paper, "type_translated", DOCUMENT_TYPE_NAMES[paper.type])
 
     geo_papers = Paper \
                      .objects \
-                     .filter(modified__range=[document_start_date, document_end_date]) \
+                     .order_by("-modified", "-legal_date") \
                      .prefetch_related('files') \
                      .prefetch_related('files__locations')[:50]
 
