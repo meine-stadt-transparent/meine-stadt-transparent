@@ -297,19 +297,28 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'mainapp': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'mainapp.log'),
+        },
+        'importer': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'importer.log'),
+        }
     },
     'loggers': {
         'mainapp': {
-            'handlers': ['console'],
+            'handlers': ['console', 'mainapp'],
             'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
         },
         'mainapp.management.commands': {
-            'handlers': ['console'],
             'level': env.str('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'propagate': True,
         },
         'importer': {
-            'handlers': ['console'],
+            'handlers': ['console', 'importer'],
             'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
         },
     }
 }
