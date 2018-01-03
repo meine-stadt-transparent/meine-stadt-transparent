@@ -4,6 +4,8 @@ name = "pypi"
 verify_ssl = true
 url = "https://pypi.python.org/simple"
 
+[requires]
+python_version = '3.5'
 
 [packages]
 
@@ -12,7 +14,6 @@ django-allauth = "==0.34.0"
 django-anymail = "==1.2"
 django-braces = "==1.12.0"
 django-csp = "==3.3"
-django-debug-toolbar = "==1.9.1"
 django-elasticsearch-dsl = "==0.4.4"
 django-environ = "==0.4.4"
 django-geojson = "==2.11.0"
@@ -25,7 +26,6 @@ icalendar = "==4.0.0"
 "pypdf2" = "==1.26.0"
 python-pdfbox = "==0.1.0"
 requests = "==2.18.4"
-selenium = "==3.8.0"
 django-widget-tweaks = "==1.4.1"
 mysqlclient = "==1.3.12"
 jsonfield = "==2.0.2"
@@ -36,4 +36,6 @@ splinter = "*"
 
 
 [dev-packages]
+selenium = "==3.8.0"
+django-debug-toolbar = "==1.9.1"
 
