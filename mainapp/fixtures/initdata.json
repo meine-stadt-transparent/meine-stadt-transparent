@@ -552,7 +552,7 @@
         "legal_date": "1984-04-01",
         "filesize": 49,
         "page_count": null,
-        "parsed_text": "That's some content\n\nAnd here's even more content",
+        "parsed_text": "That's some content\n\nAnd here's even more content\r\n\r\nThis is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around.",
         "license": null,
         "description": "",
         "locations": [],

@@ -41,3 +41,9 @@
     margin: 0 auto;
   }
 }
+
+.txt-wrapper .embed-responsive {
+  overflow-x: scroll;
+  border-color: $gray-800;
+  @extend .px-3;
+}
