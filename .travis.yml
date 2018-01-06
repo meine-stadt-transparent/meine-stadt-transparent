@@ -18,7 +18,7 @@ cache:
 install:
  - npm install
  - pip install pipenv --upgrade
- - pipenv install
+ - pipenv install --deploy
  # Add pygobject to the virtualenv
  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
 

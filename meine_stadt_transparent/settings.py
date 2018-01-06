@@ -327,7 +327,9 @@ TEMPLATE_META = {
     "product_name": PRODUCT_NAME,
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
-    "contact_mail": DEFAULT_FROM_EMAIL
+    "contact_mail": DEFAULT_FROM_EMAIL,
+    "location_limit_lng": 42,
+    "location_limit_lat": 23,
 }
 
 
