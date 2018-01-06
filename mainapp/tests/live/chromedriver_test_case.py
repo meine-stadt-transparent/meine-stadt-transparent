@@ -22,7 +22,7 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     @classmethod
     def setUpClass(cls):
         # For debugging purposes you can define a fixed port
-        # cls.port = 12346
+        # cls.port = 12345
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
         cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver",
@@ -31,6 +31,7 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
+        cls.browser.refresh()
         cls.browser.quit()
         super(ChromeDriverTestCase, cls).tearDownClass()
 

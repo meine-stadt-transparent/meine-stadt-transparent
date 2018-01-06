@@ -337,6 +337,8 @@ TEMPLATE_META = {
 
 TESTING = sys.argv[1:2] == ['test']
 
+DEBUG_TOOLBAR_ACTIVE = False
+
 if DEBUG and not TESTING:
     import pip
     installed_packages = [package.project_name for package in pip.get_installed_distributions()]
@@ -362,5 +364,3 @@ if DEBUG and not TESTING:
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")
-else:
-    DEBUG_TOOLBAR_ACTIVE = False
