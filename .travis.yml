@@ -6,9 +6,6 @@ python:
 env:
  - PIPENV_VENV_IN_PROJECT=True
 
-addons:
-  chrome: stable
-
 cache:
  pip: true
  npm: true

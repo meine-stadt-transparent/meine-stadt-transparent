@@ -39,7 +39,7 @@
     "bootstrap": "^4.0.0-beta.3",
     "bootstrap-datepicker": "^1.7.1",
     "bootstrap-daterangepicker": "^2.1.30",
-    "chromedriver": "2.33.2",
+    "chromedriver": "^2.34.0",
     "corejs-typeahead": "^1.2.1",
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.8.0",
