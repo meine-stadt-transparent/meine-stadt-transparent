@@ -10,6 +10,7 @@ This document shall explain the important design decision, assumptions and trade
  * There are mutliple factions / parliamentary groups in the main committee. The filters on the organization page are based on that assumption.
  * There are three main organizatin types: Committee, Department and Parliamentary Group. There are also others, though those three are the most important.
  * One deployment contains data which is in one timezone.
+ * No meeting starting before 8:00 or after 21:00 is a good default
 
 ## Design Decisions
  * We use docker-composer for quickly getting things up and running. Docker is becoming more and more of an industry standard in the whole server worlds, so this is a safe bet.

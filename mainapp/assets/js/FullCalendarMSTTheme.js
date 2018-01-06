@@ -84,7 +84,6 @@ export class FullCalendarMSTTheme {
         return ''
     }
 
-
     getCustomButtonIconClass(customButtonProps) {
         let className = customButtonProps["icon"];
 

@@ -271,6 +271,8 @@ SITE_INDEX_DOCUMENT_DAY = env.int('SITE_INDEX_DOCUMENT_DAY', 7)
 # Possible values: month, listYear, listMonth, listDay, basicWeek, basicDay, agendaWeek, agendaDay
 CALENDAR_DEFAULT_VIEW = env.str('CALENDAR_DEFAULT_VIEW', 'listMonth')
 CALENDAR_HIDE_WEEKENDS = env.bool('CALENDAR_HIDE_WEEKENDS', True)
+CALENDAR_MIN_TIME = env.bool('CALENDAR_MIN_TIME', "08:00:00")
+CALENDAR_MAX_TIME = env.bool('CALENDAR_MAX_TIME', "21:00:00")
 
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)

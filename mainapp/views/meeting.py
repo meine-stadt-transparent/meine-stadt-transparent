@@ -19,6 +19,8 @@ def calendar(request, init_view=None, init_date=None):
         'default_date': date.today().strftime("%Y-%m-%d"),
         'default_view': settings.CALENDAR_DEFAULT_VIEW,
         'hide_weekends': 1 if settings.CALENDAR_HIDE_WEEKENDS else 0,
+        'min_time': settings.CALENDAR_MIN_TIME,
+        'max_time': settings.CALENDAR_MAX_TIME,
     }
 
     if init_view and init_date:
@@ -33,10 +35,19 @@ def calendar(request, init_view=None, init_date=None):
 
 def calendar_data(request):
     """ Callback for the javascript library to get the meetings. """
+    # For some reason I do neither understand nor investigated fullcalendar sometimes send a date without timezone and
+    # sometimes a date with 00:00:00 and timezone.
+    start = dateutil.parser.parse(request.GET['start'])
+    end = dateutil.parser.parse(request.GET['end'])
+
     # We assume that if the user chose a date he meant the date in the timezone of the data
     local_time_zone = timezone(settings.TIME_ZONE)
-    start = local_time_zone.localize(dateutil.parser.parse(request.GET['start']))
-    end = local_time_zone.localize(dateutil.parser.parse(request.GET['end']))
+
+    if start.tzinfo is None or start.tzinfo.utcoffset(start) is None:
+        start = local_time_zone.localize(start)
+    if end.tzinfo is None or end.tzinfo.utcoffset(end) is None:
+        end = local_time_zone.localize(end)
+
     meetings = Meeting.objects.filter(start__gte=start, start__lte=end)
     data = []
     for meeting in meetings:

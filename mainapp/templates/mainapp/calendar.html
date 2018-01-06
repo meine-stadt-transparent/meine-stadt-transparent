@@ -15,6 +15,8 @@
              data-default-view="{{ default_view }}"
              data-url-default="{% url 'calendar' %}"
              data-hide-weekends="{{ hide_weekends }}"
+             data-min-time="{{ min_time }}"
+             data-max-time="{{ max_time }}"
              data-url-template="{% url 'calendar_specific' 'VIEW' '0000-00-00' %}"></div>
     </div>
 {% endblock %}
