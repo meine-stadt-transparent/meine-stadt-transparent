@@ -6,11 +6,12 @@
 
 {% block content %}
     <article class="container infopage-container">
-        <h1 class="infopage-title">Impressum</h1>
-
+        <h1 class="infopage-title">Kontakt</h1>
         <section class="infopage-section">
             <h2 class="infopage-header">Betreiber</h2>
-            <p>...</p>
+            <p>[TODO]</p>
+            <p>E-Mail: <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">
+                {{ settings.TEMPLATE_META.contact_mail }}</a></p>
         </section>
     </article>
 {% endblock %}

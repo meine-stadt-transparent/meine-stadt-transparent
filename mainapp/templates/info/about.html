@@ -10,12 +10,31 @@
 
         <section class="infopage-section">
             <h2 class="infopage-header">Wir sind keine offizielle Seite der Stadt</h2>
-            <p>...</p>
+            <p>Diese Seite verwendet zwar die offiziellen Daten der Stadt, ist aber ein privat betriebenes Projekt und nicht
+                durch die Stadt autorisiert.</p>
         </section>
 
         <section class="infopage-section">
             <h2 class="infopage-header">Die Entwicklung</h2>
-            <p>München Transparent, Prototype Fund, Links zu den Blogeinträgen</p>
+            <p>Meine Stadt Transparent ist ein Projekt von Tobias Hößl und Konstantin Schütze, das mit einer Förderung
+                des <a href="{{ settings.TEMPLATE_META.prototype_fund }}">Prototype Funds</a> entwickelt wurde.</p>
+            <p>Über die Entwicklung haben wir detailliert in unseren Blogbeiträgen geschrieben:</p>
+            <ul>
+                <li><a href="https://www.hoessl.eu/2017/09/stadtpolitik-transparent/">
+Stadtpolitik Transparent / Open Source Ratsinformationssystem</a></li>
+                <li><a href="https://blog.schuetze.link/2017/12/20/meine-stadt-transparent-teil-1.html">Meine Stadt Transparent, Teil 1: Was bisher geschah</a></li>
+                <li><a href="https://blog.schuetze.link/2017/12/20/meine-stadt-transparent-teil-2.html">Meine Stadt Transparent, Teil 2: Die Technik</a></li>
+            </ul>
+        </section>
+
+        <section class="infopage-section">
+            <h2 class="infopage-header">Mitmachen</h2>
+            <p>Du Entwickler und willst dich beteiligen? Auf <a href="{{ settings.TEMPLATE_META.github }}">Github</a>
+                findest du unser Projekt und alle wichtigen Informationen.</p>
+            <p>Du bist kein Entwickler, möchtest dich aber trotzdem gerne beteiligen? Schreib uns an
+                <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">
+                    {{ settings.TEMPLATE_META.contact_mail }}</a>!
+            </p>
         </section>
     </article>
 {% endblock %}
