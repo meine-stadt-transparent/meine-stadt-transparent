@@ -7,11 +7,11 @@ from .organization import Organization
 
 
 class OrganizationMembership(DefaultFields):
-    person = models.ForeignKey(Person)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
     role = models.CharField(max_length=200, null=True, blank=True)
-    organization = models.ForeignKey(Organization)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{}: {}".format(self.person, self.organization)

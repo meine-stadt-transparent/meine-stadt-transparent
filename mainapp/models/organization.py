@@ -19,13 +19,13 @@ ORGANIZATION_TYPE_NAMES = {
 class Organization(DefaultFields, ShortableNameFields):
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
-    body = models.ForeignKey(Body)
+    body = models.ForeignKey(Body, on_delete=models.CASCADE)
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
-    location = models.ForeignKey(Location, null=True, blank=True)
+    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
     # html color without the hash
     color = models.CharField(max_length=6, null=True, blank=True)
     logo = models.CharField(max_length=255, null=True, blank=True)
-    organization_type = models.ForeignKey(OrganizationType)
+    organization_type = models.ForeignKey(OrganizationType, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.short_name

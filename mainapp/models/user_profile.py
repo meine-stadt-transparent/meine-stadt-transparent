@@ -6,7 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True, related_name="profile", verbose_name=_(u'User'))
+    user = models.OneToOneField(User, null=True, related_name="profile", verbose_name=_(u'User'),
+                                on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _('User profile')

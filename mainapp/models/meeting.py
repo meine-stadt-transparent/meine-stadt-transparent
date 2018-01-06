@@ -23,14 +23,17 @@ class Meeting(DefaultFields, ShortableNameFields):
     cancelled = models.BooleanField()
     start = models.DateTimeField()
     end = models.DateTimeField(null=True, blank=True)
-    location = models.ForeignKey(Location, null=True, blank=True)
+    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
     # There are cases where mutliple organizations have a joined official meeting
     organizations = models.ManyToManyField(Organization, blank=True)
     # Only applicable when there are participants without an organization
     persons = models.ManyToManyField(Person, blank=True)
-    invitation = models.ForeignKey(File, null=True, blank=True, related_name="meeting_invitation")
-    results_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_results_protocol")
-    verbatim_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_verbatim_protocol")
+    invitation = models.ForeignKey(File, null=True, blank=True, related_name="meeting_invitation",
+                                   on_delete=models.CASCADE)
+    results_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_results_protocol",
+                                         on_delete=models.CASCADE)
+    verbatim_protocol = models.ForeignKey(File, null=True, blank=True, related_name="meeting_verbatim_protocol",
+                                          on_delete=models.CASCADE)
     # Sometimes there are additional files atttached to a meeting
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)

@@ -7,7 +7,7 @@ from mainapp.functions.search_tools import params_to_search_string, search_strin
 
 
 class UserAlert(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     search_string = models.TextField(null=False, blank=False)
     created = models.DateTimeField(auto_now_add=True)
     last_match = models.DateTimeField(null=True)
