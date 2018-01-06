@@ -111,8 +111,6 @@ def file(request, pk):
     elif file.mime_type in ["image/gif", "image/jpg", "image/jpeg", "image/png", "image/webp"]:
         renderer = "image"
 
-    print(renderer, is_available)
-
     context = {
         "file": file,
         "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
