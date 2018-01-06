@@ -115,7 +115,10 @@ def file(request, pk):
 
 
 def info_privacy(request):
-    return render(request, 'info/privacy.html', {})
+    return render(request, 'info/privacy.html', {
+        "use_facebook": settings.SOCIALACCOUNT_USE_FACEBOOK,
+        "use_twitter": settings.SOCIALACCOUNT_USE_TWITTER,
+    })
 
 
 def info_contact(request):
