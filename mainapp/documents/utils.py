@@ -23,6 +23,7 @@ autocomplete_filter = token_filter(
     max_gram=20,
 )
 
+# Using this analyzer with an empty field fails, so we're using methods instead that add a space
 autocomplete_analyzer = analyzer(
     'autocomplete',
     tokenizer="standard",

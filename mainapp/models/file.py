@@ -59,3 +59,6 @@ class File(DefaultFields):
 
     def get_default_link(self):
         return reverse('file', args=[self.id])
+
+    def name_autocomplete(self):
+        return self.name if len(self.name) > 0 else ' '

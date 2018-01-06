@@ -150,12 +150,9 @@ def search_autosuggest(_, query):
                     name = hit.name
                 results.append({'name': name, 'url': reverse('organization', args=[hit.id])})
                 num_organizations += 1
-        elif hit.meta.doc_type == 'paper_document':
+        elif hit.meta.doc_type in ['file_document', 'paper_document', 'meeting_document']:
             name = hit.name
-            results.append({'name': name, 'url': reverse('paper', args=[hit.id])})
-        elif hit.meta.doc_type == 'meeting_document':
-            name = hit.name
-            results.append({'name': name, 'url': reverse('meeting', args=[hit.id])})
+            results.append({'name': name, 'url': reverse(hit.meta.doc_type.split("_")[0], args=[hit.id])})
         else:
             logger.error("Unknown document type in elastic search response: %s" % hit.meta.doc_type)
 

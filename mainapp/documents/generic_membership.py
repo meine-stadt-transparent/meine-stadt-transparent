@@ -12,8 +12,4 @@ class GenericMembershipDocument:
     })
 
     class Meta:
-        fields = [
-            'id',
-            'name',
-            'short_name'
-        ]
+        fields = ['id', 'name', 'short_name']

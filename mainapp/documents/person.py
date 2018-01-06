@@ -12,9 +12,4 @@ class PersonDocument(DocType):
     class Meta:
         model = Person
 
-        fields = [
-            'id',
-            'name',
-            'given_name',
-            'family_name',
-        ]
+        fields = ['id', 'name', 'given_name', 'family_name',]
