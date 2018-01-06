@@ -31,7 +31,8 @@
                         {% if papers|length == 1 %}
                             <div>
                                 <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
-                                    <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans "Paper" %}
+                                    <i class="fa-custom fa-file" aria-hidden="true"></i>
+                                    {% trans "Superordinated paper" context "Singular" %}
                                 </a>
                             </div>
                         {% endif %}
@@ -41,7 +42,7 @@
                                     <a class="dropdown-toggle" role="button" href="#"
                                        data-toggle="dropdown"
                                        aria-haspopup="true" aria-expanded="false">
-                                        {% trans "Paper" %}
+                                        {% trans "Superordinated paper" context "Plural" %}
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         {% for paper in papers %}

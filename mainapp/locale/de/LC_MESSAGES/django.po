@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-22 11:50+0100\n"
+"POT-Creation-Date: 2018-01-06 19:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,56 +69,56 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: functions/search_tools.py:35 functions/search_tools.py:46
+#: functions/search_tools.py:36 functions/search_tools.py:47
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:199
+#: functions/search_tools.py:200
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:204
+#: functions/search_tools.py:205
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:209
+#: functions/search_tools.py:210
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:212
+#: functions/search_tools.py:215
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: functions/search_tools.py:215
+#: functions/search_tools.py:220
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: functions/search_tools.py:219
+#: functions/search_tools.py:224
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:223
+#: functions/search_tools.py:228
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:225
+#: functions/search_tools.py:230
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:227
+#: functions/search_tools.py:232
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: management/commands/notifyusers.py:74
+#: management/commands/notifyusers.py:78
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
@@ -141,16 +141,16 @@ msgstr ""
 msgid "User"
 msgstr "Account"
 
-#: models/user_profile.py:12
+#: models/user_profile.py:13
 msgid "User profile"
 msgstr "Profil"
 
-#: models/user_profile.py:13
+#: models/user_profile.py:14
 msgid "User profiles"
 msgstr "Profil"
 
 #: templates/account/delete.html:4 templates/account/delete.html:5
-#: templates/account/home.html:72
+#: templates/account/home.html:61
 msgid "Delete account"
 msgstr "Account löschen"
 
@@ -208,7 +208,7 @@ msgstr "Zur Haupt-Adresse machen"
 msgid "Re-send Verification"
 msgstr "E-Mail-Bestätigung erneut schicken"
 
-#: templates/account/email.html:47 templates/account/home.html:40
+#: templates/account/email.html:47 templates/account/home.html:29
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -282,15 +282,11 @@ msgstr "Ihre E-Mail-Adresse ist nun bestätigt"
 msgid "Verify now"
 msgstr "Jetzt bestätigen"
 
-#: templates/account/home.html:24
-msgid "Sign Out"
-msgstr "Ausloggen"
-
-#: templates/account/home.html:30
+#: templates/account/home.html:19 templates/base.html:60
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: templates/account/home.html:50
+#: templates/account/home.html:39
 msgid ""
 "You can get notified about new documents that might be of interest for you. "
 "Simple enter any search query in our search above, like keywords or "
@@ -304,19 +300,19 @@ msgstr ""
 "erhalten, sobald neue Dokumente veröffentlicht werden, die Ihrer Suchanfrage "
 "entsprechen."
 
-#: templates/account/home.html:58
+#: templates/account/home.html:47
 msgid "Account Settings"
 msgstr "Account-Einstellungen"
 
-#: templates/account/home.html:62
+#: templates/account/home.html:51
 msgid "Manage email addresses"
 msgstr "E-Mail-Adressen verwalten"
 
-#: templates/account/home.html:64
+#: templates/account/home.html:53
 msgid "Edit email"
 msgstr "E-Mail-Adresse bearbeiten"
 
-#: templates/account/home.html:68
+#: templates/account/home.html:57 templates/base.html:63
 msgid "Change your password"
 msgstr "Passwort ändern"
 
@@ -424,72 +420,83 @@ msgstr ""
 "Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie "
 "sich ein</a>."
 
-#: templates/base.html:28
+#: templates/base.html:32
 msgctxt "navigation"
 msgid "About"
 msgstr "Diese Seite"
 
-#: templates/base.html:32
+#: templates/base.html:36 templates/email/user-alert.html:91
 msgctxt "navigation"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: templates/base.html:36
+#: templates/base.html:40 templates/email/user-alert.html:91
 msgctxt "navigation"
 msgid "People"
 msgstr "Personen"
 
-#: templates/base.html:40
+#: templates/base.html:44 templates/email/user-alert.html:91
 msgctxt "navigation"
 msgid "Organizations"
 msgstr "Gremien"
 
-#: templates/base.html:45 templates/mainapp/index.html:64
+#: templates/base.html:50 templates/email/user-alert.html:91
+#: templates/mainapp/index.html:66
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
 
-#: templates/base.html:48 templates/mainapp/index.html:67
+#: templates/base.html:67
+msgid "Sign Out"
+msgstr "Ausloggen"
+
+#: templates/base.html:74 templates/mainapp/index.html:69
 msgctxt "navigation"
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: templates/base.html:58 templates/mainapp/search/search.html:5
-#: templates/mainapp/search/search.html:21
+#: templates/base.html:83 templates/mainapp/search/search.html:5
+#: templates/mainapp/search/search.html:18
 msgctxt "page_title"
 msgid "Search"
 msgstr "Suche"
 
-#: templates/base.html:59 templates/mainapp/index.html:30
+#: templates/base.html:84 templates/mainapp/index.html:30
 msgctxt "perform search"
 msgid "Search"
 msgstr "Suchen"
 
-#: templates/base.html:61 templates/mainapp/index.html:33
+#: templates/base.html:86 templates/mainapp/index.html:33
+#: templates/mainapp/search/search.html:41
 msgctxt "aria label"
 msgid "Show search results"
 msgstr "Suchergebnisse"
 
-#: templates/base.html:86
+#: templates/base.html:111
 msgctxt "navigation"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/base.html:91
+#: templates/base.html:116
 msgctxt "navigation"
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/base.html:105
+#: templates/base.html:121
+msgctxt "navigation"
+msgid "Feedback"
+msgstr ""
+
+#: templates/base.html:129
 msgid "is a private project and not authorized by any city council"
 msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
 
-#: templates/email/new_documents.html:5
+#: templates/email/user-alert.html:71 templates/email/user-alert.html:104
 msgctxt "email-new-documents"
 msgid "New documents on Meine Stadt Transparent"
 msgstr "Neue Dokumente auf Meine Stadt Transparent"
 
-#: templates/email/new_documents.html:7
+#: templates/email/user-alert.html:106
 msgctxt "email-new-documents"
 msgid "Notification"
 msgstr "Benachrichtigungen"
@@ -531,29 +538,56 @@ msgstr "Über dieses Projekt"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: templates/info/privacy.html:5
+#: templates/info/feedback.html:5 templates/info/feedback.html:9
+msgid "Feedback"
+msgstr ""
+
+#: templates/info/feedback.html:10
+msgid ""
+"This is only meant for feedback on this website. For feedback on the "
+"contents of the\n"
+"            documents please contact your local representatives."
+msgstr ""
+"Dieses Formular ist nur für Feedback zur Website gedacht. Für Meinung zum "
+"Inhalt der\n"
+"            Dokument wenden sie sich bitte an die zuständigen Abgeordneten."
+
+#: templates/info/privacy.html:5 templates/info/privacy.html:9
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:57
+#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:59
 msgid "Calendar"
 msgstr "Kalender"
 
-#: templates/mainapp/file.html:34 templates/mainapp/file.html:44
-#: templates/mainapp/file.html:50
+#: templates/mainapp/file.html:35
+#, fuzzy
+#| msgid "Submitted Papers"
+msgctxt "Singular"
+msgid "Superordinated paper"
+msgstr "Übergeordnete Vorlage"
+
+#: templates/mainapp/file.html:45
+#, fuzzy
+#| msgid "Submitted Papers"
+msgctxt "Plural"
+msgid "Superordinated paper"
+msgstr "Übergeordnete Vorlagen"
+
+#: templates/mainapp/file.html:51
 msgid "Paper"
 msgstr "Vorlage"
 
 # TODO
-#: templates/mainapp/file.html:73
+#: templates/mainapp/file.html:82
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
 
-#: templates/mainapp/file.html:77
+#: templates/mainapp/file.html:86
 msgid "Download"
 msgstr "Herunterladen"
 
-#: templates/mainapp/file.html:83
+#: templates/mainapp/file.html:92
 msgid "The file is not available"
 msgstr "Die Datei is nicht verfügbar"
 
@@ -570,23 +604,31 @@ msgctxt "page_title"
 msgid "Search for documents, persons, topics and more"
 msgstr "Suche nach Dokumenten, Personen, Themen..."
 
-#: templates/mainapp/index.html:45
+#: templates/mainapp/index.html:41
+msgid ""
+"The markers on the map show places which have been mentioned in the latest "
+"documents"
+msgstr ""
+"Die Marker auf der Karte zeigen Orte, die in den neusten Dokumenten erwähnt "
+"wurden"
+
+#: templates/mainapp/index.html:47
 msgid "About the project"
 msgstr "Über dieses Projekt"
 
-#: templates/mainapp/index.html:49
+#: templates/mainapp/index.html:51
 msgid "How do city politics work?"
 msgstr "Wie funktioniert Stadtpolitik?"
 
-#: templates/mainapp/index.html:54 templates/mainapp/persons.html:6
+#: templates/mainapp/index.html:56 templates/mainapp/persons.html:6
 msgid "Persons"
 msgstr "Personen"
 
-#: templates/mainapp/index.html:72
+#: templates/mainapp/index.html:74
 msgid "Organizations"
 msgstr "Gremien"
 
-#: templates/mainapp/index.html:79
+#: templates/mainapp/index.html:81
 msgctxt "Header"
 msgid "Latest Documents"
 msgstr "Neueste Dokumente"
@@ -644,30 +686,34 @@ msgstr "Tagesordnung"
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
-#: templates/mainapp/organization.html:18
+#: templates/mainapp/organization.html:13
+msgid "Timeframe of existence:"
+msgstr "Zeitraum des Bestehens:"
+
+#: templates/mainapp/organization.html:19
 msgctxt "List name"
 msgid "Legislative Terms:"
 msgstr "Legislaturperiode"
 
-#: templates/mainapp/organization.html:22
+#: templates/mainapp/organization.html:23
 msgid "Belongs to this body"
-msgstr "Gehört zur Körperschaft"
+msgstr "Gehört zu dieser Körperschaft"
 
-#: templates/mainapp/organization.html:27
+#: templates/mainapp/organization.html:28
 msgid "Is located there"
 msgstr "Standort"
 
-#: templates/mainapp/organization.html:32
+#: templates/mainapp/organization.html:33
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: templates/mainapp/organization.html:35
+#: templates/mainapp/organization.html:36
 msgctxt "Header"
 msgid "Paper"
 msgstr "Dokument"
 
-#: templates/mainapp/organization.html:38
+#: templates/mainapp/organization.html:39
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
@@ -708,16 +754,7 @@ msgstr "Eingereichte Dokumente"
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
-#: templates/mainapp/person.html:41
-msgctxt "Date range separator"
-msgid " - "
-msgstr " - "
-
-#: templates/mainapp/person.html:44
-msgid "Since "
-msgstr "Seit "
-
-#: templates/mainapp/person.html:56
+#: templates/mainapp/person.html:32
 msgid "Mentioned in"
 msgstr "Namentliche Erwähnungen"
 
@@ -825,7 +862,7 @@ msgid "Document Type"
 msgstr "Dokumententyp"
 
 #: templates/mainapp/search/facet_document_type.html:14
-#: templates/mainapp/search/facet_location_selector.html:33
+#: templates/mainapp/search/facet_location_selector.html:34
 msgid "Cancel Selection"
 msgstr "Auswahl aufheben"
 
@@ -841,17 +878,22 @@ msgid "Cancel selection"
 msgstr "Auswahl aufheben"
 
 #: templates/mainapp/search/facet_location_selector.html:6
-#: templates/mainapp/search/facet_location_selector.html:19
+#: templates/mainapp/search/facet_location_selector.html:18
 msgctxt "search_form"
 msgid "Location"
 msgstr "Ort"
 
-#: templates/mainapp/search/facet_location_selector.html:14
+#: templates/mainapp/search/facet_location_selector.html:13
 msgctxt "Selecting a range in meters"
 msgid "m around"
 msgstr "m um"
 
-#: templates/mainapp/search/facet_location_selector.html:36
+#: templates/mainapp/search/facet_location_selector.html:26
+msgctxt "Selecting a range in meters"
+msgid "Distance in m"
+msgstr "Abstand im m"
+
+#: templates/mainapp/search/facet_location_selector.html:37
 msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
@@ -863,16 +905,11 @@ msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: templates/mainapp/search/search.html:42
-msgctxt "search_form"
-msgid "Search"
-msgstr "Suche"
-
-#: templates/mainapp/search/search.html:63
+#: templates/mainapp/search/search.html:60
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: templates/mainapp/search/search.html:68
+#: templates/mainapp/search/search.html:65
 msgid "Nothing Found"
 msgstr "Nichts gefunden"
 
@@ -918,6 +955,15 @@ msgstr "Diese Seite existiert nur, um auf diese Löschung hinzuweisen."
 #: templates/partials/messages.html:14
 msgid "close message"
 msgstr "Nachricht schließen"
+
+#: templates/partials/person_membership_section.html:21
+msgctxt "Date range separator"
+msgid " - "
+msgstr " - "
+
+#: templates/partials/person_membership_section.html:25
+msgid "Since "
+msgstr "Seit "
 
 #: templates/partials/subscribe_widget.html:8
 msgid "You receive updates"
@@ -970,25 +1016,25 @@ msgstr ""
 "einzuloggen.\n"
 "        Geben Sie bitte abschließend folgende Information ein:"
 
-#: views/meeting.py:97
+#: views/meeting.py:117
 msgid "Meeting"
 msgstr "Sitzung"
 
-#: views/meeting.py:106
+#: views/meeting.py:126
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: views/persons.py:58
+#: views/persons.py:73
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert,"
 
-#: views/persons.py:59 views/search.py:81
+#: views/persons.py:74 views/search.py:81
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: views/persons.py:60
+#: views/persons.py:75
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
@@ -1003,6 +1049,10 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: views/search.py:118
 msgid "search disabled"
 msgstr "Suche deaktiviert"
+
+#~ msgctxt "search_form"
+#~ msgid "Search"
+#~ msgstr "Suche"
 
 #~ msgid "Document Type Name"
 #~ msgstr "Name des Dokumententyps"

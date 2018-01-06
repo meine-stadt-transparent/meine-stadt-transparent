@@ -38,7 +38,9 @@
     <div class="container pt-3">
         <div id="leaflet-map" class="js-home-map" data-map-data="{{ map }}"></div>
 
-        <nav class="home-main-links">
+        <p class="font-weight-light my-1">{% blocktrans %}The markers on the map show places which have been mentioned in the latest documents{% endblocktrans %}</p>
+
+        <div>
             <div class="row">
                 <div class="col-sm-6 pt-3">
                     <a href="{% url 'info_about' %}" class="btn btn-outline-dark btn-block">
@@ -72,7 +74,7 @@
                         {% trans 'Organizations' %}</a>
                 </div>
             </div>
-        </nav>
+        </div>
     </div>
 
     <div class="container pt-3">

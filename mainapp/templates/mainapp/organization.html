@@ -9,8 +9,9 @@
 
         {% block exttendmeta %}
             {% if organization.start %}
-                <p title="The timeframe in which the organization existed">
-                    <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{{ organization.start }}
+                <p>
+                    <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{% trans 'Timeframe of existence:' %}
+                    {{ organization.start }}
                     {% if organization.end %} - {{ organization.end }}{% endif %}
                 </p>
             {% endif %}
