@@ -30,6 +30,6 @@ python-slugify = "~=1.2.4"
 geopy = "~=1.11.0"
 splinter = "*"
 "html2text" = "*"
-selenium = "~=3.8.0"
+selenium = "==3.8.0"
 django-debug-toolbar = "~=1.9.1"
 
