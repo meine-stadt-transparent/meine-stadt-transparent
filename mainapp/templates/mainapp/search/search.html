@@ -14,15 +14,15 @@
     <div class="container">
         <div class="search-card card">
             <div class="card-header">
-                <div class="subscribe-widget">
-                    {% include 'partials/subscribe_widget.html' %}
-                </div>
-                <h1>
-                    {% trans "Search" context "page_title" %}
+
+                <h1 class="pull-left">
+                    <span class="text-nowrap">{% trans "Search" context "page_title" %}</span>
                     <span class="search-refreshing-spinner" hidden="hidden">
                         <i class="fa fa-spinner fa-spin" aria-label="The search is refreshing ..."></i>
                     </span>
-                </h1>
+                </h1>                <div class="subscribe-widget">
+                    {% include 'partials/subscribe_widget.html' %}
+                </div>
             </div>
             <form id="detailed-searchform" class="section detailed-searchform p-2 mb-0" method="GET"
                   action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
@@ -41,12 +41,12 @@
                             title="{% trans 'Show search results' context 'aria label' %}"></button>
                 </section>
                 <div class="form-row align-items-center">
+                    {% include "mainapp/search/sorter_widget.html" %}
                     {% include "mainapp/search/facet_location_selector.html" %}
                     {% include "mainapp/search/facet_document_type.html" %}
                     {% include "mainapp/search/facet_date_range.html" %}
                     {% include "mainapp/search/facet_filter_dropdown.html" with key="person" items=searchable_persons label="Person" init_value=options.person %}
                     {% include "mainapp/search/facet_filter_dropdown.html" with key="organization" items=searchable_organizations label="Organization" init_value=options.organization %}
-                    {% include "mainapp/search/sorter_widget.html" %}
                 </div>
             </form>
 

@@ -21,7 +21,7 @@ $(function () {
         header: {
             left: 'prev,next today',
             center: 'title',
-            right: 'month,agendaWeek,agendaDay,listYear'
+            right: 'month,agendaWeek,agendaDay listYear'
         },
         themeSystem: 'mst',
         weekNumbers: true,
