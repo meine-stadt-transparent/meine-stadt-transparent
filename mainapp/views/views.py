@@ -130,6 +130,9 @@ def info_privacy(request):
 def info_contact(request):
     return render(request, 'info/contact.html', {})
 
+def info_feedback(request):
+    return render(request, 'info/feedback.html', {})
+
 
 def info_about(request):
     return render(request, 'info/about.html', {})
