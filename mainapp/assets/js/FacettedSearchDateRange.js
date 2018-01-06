@@ -15,20 +15,6 @@ export default class FacettedSearchDateRange {
         this.$openerBtn.daterangepicker(this.getDateRangePickerOptions(strings), this.onDatePickerChanged.bind(this));
 
         this.$openerBtn.on('cancel.daterangepicker', this.onDatePickerCanceled.bind(this));
-
-        // Workaround to create a "toggling" behavior
-        let closeOnClick = () => {
-            $(document).trigger("mousedown.daterangepicker");
-        };
-        this.$openerBtn.on("show.daterangepicker", () => {
-            // Wait until the current click event is safely gone
-            window.setTimeout(() => {
-                this.$openerBtn.on("click", closeOnClick);
-            }, 500);
-        });
-        this.$openerBtn.on("hide.daterangepicker", () => {
-            this.$openerBtn.off("click", closeOnClick);
-        });
     }
 
     getDateRangePickerOptions(strings) {
@@ -46,6 +32,7 @@ export default class FacettedSearchDateRange {
             showDropdowns: true,
             showCustomRangeLabel: true,
             linkedCalendars: false,
+            alwaysToggle: true,
             ranges: this.dateRanges,
             applyClass: "btn-primary",
             cancelClass: "btn-danger"
