@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^', include('mainapp.urls')),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG_TOOLBAR_ACTIVE:
     import debug_toolbar
 
     urlpatterns += [

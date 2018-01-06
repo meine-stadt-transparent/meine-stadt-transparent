@@ -3,6 +3,7 @@ import warnings
 
 import environ
 import sys
+import logging
 
 env = environ.Env()
 env.read_env(env.str('ENV_PATH', '.env'))
@@ -330,13 +331,22 @@ OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
 TESTING = sys.argv[1:2] == ['test']
 
 if DEBUG and not TESTING:
-    # Debug Toolbar
-    INSTALLED_APPS.append('debug_toolbar')
-    MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    import pip
+    installed_packages = [package.project_name for package in pip.get_installed_distributions()]
+    if "django-debug-toolbar" in installed_packages:
+        # Debug Toolbar
+        INSTALLED_APPS.append('debug_toolbar')
+        MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+        DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
+        DEBUG_TOOLBAR_ACTIVE = True
+    else:
+        logger = logging.getLogger(__name__)
+        logger.warning('This is running in DEBUG mode, however the Django debug toolbar is not installed.')
+        DEBUG_TOOLBAR_ACTIVE = False
+
     INTERNAL_IPS = [
         '127.0.0.1'
     ]
-    DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
 
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
