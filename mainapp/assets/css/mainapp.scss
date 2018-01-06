@@ -1,90 +1,16 @@
 @import "vars";
+
 @import "bootstrap";
 @import "~leaflet/dist/leaflet.css";
+@import "~font-awesome/scss/font-awesome.scss";
+
+@import "account";
+@import "file";
 @import "home-map";
 @import "info";
-@import "typeahead";
 @import "persons";
-@import "account";
+@import "main";
 @import "meeting";
 @import "search";
 @import "subscribe-widget";
-@import "~font-awesome/scss/font-awesome.scss";
-
-#main-content {
-  margin: $main-content-margin-top auto;
-  min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top});
-  hyphens: auto;
-}
-
-.no-link-color {
-  // ideally, this would only remove the style of the a, but there's nothing avaible for that right now
-  color: black;
-}
-
-.fa-custom {
-  @extend .fa;
-  @extend .fa-fw;
-  @extend .mr-1;
-  @extend .no-link-color;
-}
-
-#main-menu {
-  .navbar-toggler {
-    border: none;
-    outline: 0;
-  }
-  .logout-button {
-    padding: 0;
-    text-align: left;
-  }
-  @media screen and (max-width: map_get($grid-breakpoints, 'md') - 1) {
-    .navbar-brand {
-      flex: 1; // Pushes the search-button to the right
-    }
-    .search-autocomplete {
-      display: none;
-    }
-  }
-}
-
-.btn-transparent {
-  background-color: transparent;
-}
-
-.file-header {
-  // We need to be space efficient on that page, so we remove the default top margin
-  margin-top: -#{$main-content-margin-top};
-  @extend .py-3;
-
-  > div {
-    > div {
-      display: inline-block;
-
-      &:after {
-        @extend .mx-2;
-        content: '/';
-      }
-
-      &:last-child:after {
-        @extend .mx-0;
-        content: '';
-      }
-    }
-
-    .dropdown-menu {
-      max-height: 300px;
-      overflow-y: scroll;
-    }
-  }
-}
-
-.file-main-content {
-  height: calc(100vh - #{$header-height} - 2 * #{$main-content-margin-top});
-  display: flex;
-  flex-direction: column;
-
-  .pdfjs-wrapper {
-    flex: 1;
-  }
-}
+@import "typeahead";

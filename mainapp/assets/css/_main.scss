@@ -1,0 +1,40 @@
+#main-content {
+  margin: $main-content-margin-top auto;
+  min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top});
+  hyphens: auto;
+}
+
+.no-link-color {
+  // ideally, this would only remove the style of the a, but there's nothing avaible for that right now
+  color: black;
+}
+
+.fa-custom {
+  @extend .fa;
+  @extend .fa-fw;
+  @extend .mr-1;
+  @extend .no-link-color;
+}
+
+#main-menu {
+  .navbar-toggler {
+    border: none;
+    outline: 0;
+  }
+  .logout-button {
+    padding: 0;
+    text-align: left;
+  }
+  @media screen and (max-width: map_get($grid-breakpoints, 'md') - 1) {
+    .navbar-brand {
+      flex: 1; // Pushes the search-button to the right
+    }
+    .search-autocomplete {
+      display: none;
+    }
+  }
+}
+
+.btn-transparent {
+  background-color: transparent;
+}

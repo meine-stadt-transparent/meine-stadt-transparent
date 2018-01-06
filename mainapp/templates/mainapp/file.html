@@ -5,7 +5,7 @@
 {% block title %}{{ file.name }}{% endblock %}
 
 {% block content %}
-    <div class="file-main-content">
+    <div class="file-main-content {{ renderer }}">
         <div class="container">
             {% spaceless %}
                 <div class="file-header d-flex justify-content-between flex-wrap">
@@ -60,13 +60,21 @@
         </div>
 
         {% if is_available %}
-            {% if is_renderable %}
+            {% if renderer == "pdf" %}
                 <div class="container pdfjs-wrapper">
                     <div class="embed-responsive h-100">
                         <iframe class="embed-responsive-item"
                                 src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
                         </iframe>
                     </div>
+                </div>
+            {% elif renderer == "txt" %}
+                <div class="container txt-wrapper">
+                    <pre class="embed-responsive h-100">{{ file.parsed_text }}</pre>
+                </div>
+            {% elif renderer == "image" %}
+                <div class="container img-wrapper">
+                    <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}" class="file-image">
                 </div>
             {% else %}
                 <div class="container">

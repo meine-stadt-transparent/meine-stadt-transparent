@@ -538,6 +538,50 @@
     }
 },
 {
+    "model": "mainapp.file",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "A plain text test file.",
+        "storage_filename": "file.txt",
+        "displayed_filename": "file.txt",
+        "mime_type": "text/plain",
+        "legal_date": "1984-04-01",
+        "filesize": 49,
+        "page_count": null,
+        "parsed_text": "That's some content\n\nAnd here's even more content",
+        "license": null,
+        "description": "",
+        "locations": [],
+        "mentioned_persons": []
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Some obligatory cat content.",
+        "storage_filename": "cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg",
+        "displayed_filename": "cat.jpg",
+        "mime_type": "image/jpeg",
+        "legal_date": "1984-04-01",
+        "filesize": 660565,
+        "page_count": null,
+        "parsed_text": "",
+        "license": "CC-BY-SA",
+        "description": "By Luigi Rosa",
+        "locations": [],
+        "mentioned_persons": []
+    }
+},
+{
     "model": "mainapp.meeting",
     "pk": 1,
     "fields": {
@@ -797,7 +841,9 @@
         ],
         "files": [
             2,
-            3
+            3,
+            4,
+            5
         ]
     }
 },

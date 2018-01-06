@@ -3,6 +3,7 @@ import os
 from collections import namedtuple
 from unittest import mock
 
+from django.conf import settings
 from django.test import TestCase, override_settings
 from geopy import OpenCage
 
@@ -65,12 +66,12 @@ class TestDocumentParsing(TestCase):
 
     def test_pdf_parsing(self):
         file = os.path.abspath(os.path.dirname(__name__))
-        file = os.path.join(file, 'etc', 'Donald Knuth - The Complexity of Songs.pdf')
+        file = os.path.join(file, settings.MEDIA_ROOT, 'Donald Knuth - The Complexity of Songs.pdf')
         parsed_text = extract_text_from_pdf(file)
         self.assertTrue('bottles of beer' in parsed_text)
 
     def test_pdf_page_numbers(self):
         file = os.path.abspath(os.path.dirname(__name__))
-        file = os.path.join(file, 'etc', 'Donald Knuth - The Complexity of Songs.pdf')
+        file = os.path.join(file, settings.MEDIA_ROOT, 'Donald Knuth - The Complexity of Songs.pdf')
         page_count = get_page_count_from_pdf(file)
         self.assertEqual(3, page_count)

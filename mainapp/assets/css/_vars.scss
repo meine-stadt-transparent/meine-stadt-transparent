@@ -1,24 +1,24 @@
-$footer-height: 96px;
-$header-height: 56px;
-$header-search-max-width: 200px;
-$main-content-margin-top: 30px;
-$border-radius: 0;
-$fa-font-path: "~font-awesome/fonts/";
+$footer-height: 96px !default;
+$header-height: 56px !default;
+$header-search-max-width: 200px !default;
+$main-content-margin-top: 30px !default;
+$border-radius: 0 !default;
+$fa-font-path: "~font-awesome/fonts/" !default;
 
 $container-max-widths: (
   md: 800px,
-);
+) !default;
 
 // Color aliases; hardcoded, as _variables.scss of bootstrap is not yet loaded here
 $theme-colors: (
   "navbar": #343a40, // $gray-800
   "content-switcher": #868e96, // $gray-600 / secondary
-);
+) !default;
 
 // There's one element with 800 and an outer with 10000
-$leaflet-controls-zindex: 1000;
-$typeahead-zindex: $leaflet-controls-zindex + 10;
-$search-icon-zindex: $typeahead-zindex + 10;
-$zindex-dropdown: $typeahead-zindex + 1; // The User-menu should be above the search on the home page
-$content-switcher-btn-padding: .375rem .75rem;
-$persons-list-background: #f8f9fa; // $gray-100
+$leaflet-controls-zindex: 1000 !default;
+$typeahead-zindex: $leaflet-controls-zindex + 10 !default;
+$search-icon-zindex: $typeahead-zindex + 10 !default;
+$zindex-dropdown: $typeahead-zindex + 1 !default; // The User-menu should be above the search on the home page
+$content-switcher-btn-padding: .375rem .75rem !default;
+$persons-list-background: #f8f9fa !default; // $gray-100

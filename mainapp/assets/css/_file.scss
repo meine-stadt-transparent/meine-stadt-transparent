@@ -1,0 +1,43 @@
+.file-header {
+  // We need to be space efficient on that page, so we remove the default top margin
+  margin-top: -#{$main-content-margin-top};
+  @extend .py-3;
+
+  > div {
+    > div {
+      display: inline-block;
+
+      &:after {
+        @extend .mx-2;
+        content: '/';
+      }
+
+      &:last-child:after {
+        @extend .mx-0;
+        content: '';
+      }
+    }
+
+    .dropdown-menu {
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+  }
+}
+
+.file-main-content {
+  &.pdf {
+    height: calc(100vh - #{$header-height} - 2 * #{$main-content-margin-top});
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pdfjs-wrapper {
+    flex: 1;
+  }
+
+  .file-image {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
