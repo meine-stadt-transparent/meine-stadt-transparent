@@ -27,7 +27,8 @@
                 <input name="search-query" type="text" class="form-control" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
                        placeholder="{% trans "Search for documents, persons, topics and more" context "page_title" %}"
-                       aria-label="{% trans "Search" context "perform search" %}">
+                       aria-label="{% trans "Search" context "perform search" %}"
+                       id="searchfield-mousetrap">
 
                 <button class="search-icon fa fa-search" type="submit"
                         title="{% trans 'Show search results' context 'aria label' %}"></button>
