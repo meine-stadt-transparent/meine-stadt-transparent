@@ -355,3 +355,5 @@ if DEBUG and not TESTING:
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")
+else:
+    DEBUG_TOOLBAR_ACTIVE = False
