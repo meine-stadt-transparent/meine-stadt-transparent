@@ -31,7 +31,6 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.browser.refresh()
         cls.browser.quit()
         super(ChromeDriverTestCase, cls).tearDownClass()
 
