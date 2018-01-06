@@ -711,7 +711,7 @@ msgstr "Mitglieder"
 #: templates/mainapp/organization.html:36
 msgctxt "Header"
 msgid "Paper"
-msgstr "Dokument"
+msgstr "Vorlagen"
 
 #: templates/mainapp/organization.html:39
 msgctxt "Header"

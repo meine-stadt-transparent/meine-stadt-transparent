@@ -1,11 +1,9 @@
 import json
-from datetime import timedelta
 
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils import html
-from django.utils.timezone import localtime, now
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
@@ -130,8 +128,13 @@ def info_privacy(request):
 def info_contact(request):
     return render(request, 'info/contact.html', {})
 
+
 def info_feedback(request):
     return render(request, 'info/feedback.html', {})
+
+
+def info_learn(request):
+    return render(request, 'info/learn.html', {})
 
 
 def info_about(request):

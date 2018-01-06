@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^info/about/$', views.info_about, name='info_about'),
     url(r'^info/privacy/$', views.info_privacy, name='info_privacy'),
     url(r'^info/feedback/$', views.info_feedback, name='info_feedback'),
+    url(r'^info/learn/$', views.info_learn, name='info_learn'),
     url(r'^persons/$', views.persons, name='persons'),
     url(r'^organizations/$', mainapp.views.views.organizations, name='organizations'),
     url(r'^calendar/$', views.calendar, name='calendar'),
