@@ -1,0 +1,8 @@
+.infopage-container {
+  .infopage-title {
+    @extend .display-4;
+  }
+  .infopage-header {
+    font-size: $h4-font-size;
+  }
+}
