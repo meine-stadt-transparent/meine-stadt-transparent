@@ -13,62 +13,38 @@
             <div class="card-body">
                 {% if papers %}
                     <section>
-                    <h2 class="h3">{% trans "Submitted Papers" %}</h2>
-                    <ul>
-                        {% for paper in papers %}
-                            <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
-                        {% endfor %}
-                    </ul>
+                        <h2 class="h3">{% trans "Submitted Papers" %}</h2>
+                        <ul>
+                            {% for paper in papers %}
+                                <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
+                            {% endfor %}
+                        </ul>
                     </section>
                 {% endif %}
                 {% if memberships %}
                     <section>
-                    <h2 class="h3">{% trans "Memberships" %}</h2>
-                    {% for membership_list in memberships %}
-                        <dl>
-                            {% for membership in membership_list %}
-                                <dt>
-                                    <a href="{% url "organization" membership.organization.id %}">
-                                        {{ membership.organization.short_name }}
-                                    </a>
-                                </dt>
-                                <dd>
-                                    {% if membership.role %}
-                                        <span class="membership-info">{{ membership.role }}</span>
-                                    {% endif %}
-                                    {% if membership.start and membership.end %}
-                                        <span class="membership-info">
-                                            {{ membership.start }}{% trans " - " context "Date range separator"%}{{ membership.end }}
-                                        </span>
-                                    {% elif membership.start %}
-                                        <span class="membership-info"> {% trans "Since " %}{{ membership.start }}</span>
-                                    {% endif %}
-                                </dd>
-                            {% endfor %}
-                        </dl>
-                        {% if not forloop.last %}
-                            <hr>{% endif %}
-                    {% endfor %}
+                        <h2 class="h3">{% trans "Memberships" %}</h2>
+                        {% include "partials/person_membership_section.html" %}
                     </section>
                 {% endif %}
                 {% if mentioned_in %}
                     <section>
-                    <h2 class="h3">{% trans "Mentioned in" %}</h2>
-                    <ul class="papers">
-                        {% for group in mentioned_in %}
-                            <li class="paper">
-                                <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
+                        <h2 class="h3">{% trans "Mentioned in" %}</h2>
+                        <ul class="papers">
+                            {% for group in mentioned_in %}
+                                <li class="paper">
+                                    <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
                                     <span class="text-muted">{{ group.paper.modified|date }}</span>
-                                <ul class="files">
-                                    {% for file in group.files %}
-                                        <li class="file">
-                                            <a class="file-link" href="{% url 'file' file.id %}">{{ file }}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                                    <ul class="files">
+                                        {% for file in group.files %}
+                                            <li class="file">
+                                                <a class="file-link" href="{% url 'file' file.id %}">{{ file }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </section>
                 {% endif %}
             </div>

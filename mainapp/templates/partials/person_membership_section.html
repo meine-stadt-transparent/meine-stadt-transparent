@@ -1,0 +1,34 @@
+{% load i18n %}
+
+{# Putting this in its own file to avoid deeply nested html #}
+
+{% for membership_list in memberships %}
+    <dl>
+        {% for membership in membership_list %}
+            <dt class="font-weight-normal">
+                <a href="{% url "organization" membership.organization.id %}">
+                    {% if membership.role %}
+                        <span class="membership-info">{{ membership.role }}</span> in
+                    {% endif %}
+                    {{ membership.organization.short_name }}
+                </a>
+                <span>({{ membership.organization.name }})</span>
+            </dt>
+            <dd class="font-weight-light">
+                <div>
+                    {% if membership.start and membership.end %}
+                        <span class="membership-info">
+                            {{ membership.start }}{% trans " - " context "Date range separator" %}{{ membership.end }}
+                        </span>
+                    {% elif membership.start %}
+                        <span class="membership-info">
+                            {% trans "Since " %}{{ membership.start }}
+                        </span>
+                    {% endif %}
+                </div>
+            </dd>
+        {% endfor %}
+    </dl>
+    {% if not forloop.last %}
+        <hr>{% endif %}
+{% endfor %}
