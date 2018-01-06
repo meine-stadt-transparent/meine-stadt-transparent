@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-06 19:11+0100\n"
+"POT-Creation-Date: 2018-01-06 19:32+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -441,7 +441,7 @@ msgid "Organizations"
 msgstr "Gremien"
 
 #: templates/base.html:50 templates/email/user-alert.html:91
-#: templates/mainapp/index.html:66
+#: templates/mainapp/index.html:69
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
@@ -450,7 +450,7 @@ msgstr "Mein Zugang"
 msgid "Sign Out"
 msgstr "Ausloggen"
 
-#: templates/base.html:74 templates/mainapp/index.html:69
+#: templates/base.html:74 templates/mainapp/index.html:72
 msgctxt "navigation"
 msgid "Sign In"
 msgstr "Einloggen"
@@ -530,7 +530,7 @@ msgctxt "figure caption"
 msgid "Photography by Luigi Rosa, CC-BY-SA"
 msgstr "Fotografiert von Luigi Rosa, CC-BY-SA"
 
-#: templates/info/about.html:5
+#: templates/info/about.html:5 templates/info/learn.html:5
 msgid "About this project"
 msgstr "Über dieses Projekt"
 
@@ -556,7 +556,7 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:59
+#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:62
 msgid "Calendar"
 msgstr "Kalender"
 
@@ -605,30 +605,34 @@ msgid "Search for documents, persons, topics and more"
 msgstr "Suche nach Dokumenten, Personen, Themen..."
 
 #: templates/mainapp/index.html:41
+#, fuzzy
+#| msgid ""
+#| "The markers on the map show places which have been mentioned in the "
+#| "latest documents"
 msgid ""
-"The markers on the map show places which have been mentioned in the latest "
-"documents"
+"The markers on the map show places which have been mentioned\n"
+"            in the latest documents"
 msgstr ""
 "Die Marker auf der Karte zeigen Orte, die in den neusten Dokumenten erwähnt "
 "wurden"
 
-#: templates/mainapp/index.html:47
+#: templates/mainapp/index.html:48
 msgid "About the project"
 msgstr "Über dieses Projekt"
 
-#: templates/mainapp/index.html:51
+#: templates/mainapp/index.html:53
 msgid "How do city politics work?"
 msgstr "Wie funktioniert Stadtpolitik?"
 
-#: templates/mainapp/index.html:56 templates/mainapp/persons.html:6
+#: templates/mainapp/index.html:59 templates/mainapp/persons.html:6
 msgid "Persons"
 msgstr "Personen"
 
-#: templates/mainapp/index.html:74
+#: templates/mainapp/index.html:77
 msgid "Organizations"
 msgstr "Gremien"
 
-#: templates/mainapp/index.html:81
+#: templates/mainapp/index.html:84
 msgctxt "Header"
 msgid "Latest Documents"
 msgstr "Neueste Dokumente"
