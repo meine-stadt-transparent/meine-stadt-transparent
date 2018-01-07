@@ -141,8 +141,9 @@ You need to use the official German name with the right capitalization, e.g. `M�
 
 Import a whole RIS from an OParl-instance. See `--help` for options:
 
+First of all, we need to import the Body in our database from the OParl backend
 ```bash
-./manage.py importoparl https://www.muenchen-transparent.de/oparl/v1.0
+./manage.py importbodies https://www.muenchen-transparent.de/oparl/v1.0
 ```
 
 Next you'll need the German "Gemeindeschlüssel", which is a 8 letter value that each communality has. You might find your's with
@@ -157,6 +158,8 @@ Examples:
 - Neumarkt-Sankt Veit: 09183129
 - Köln: 05315000
 - Jülich: 05358024
+
+In addition to the Gemeindeschlüssel, you well need the "Body-ID", the primary key of the database record corresponding to the main body. If the database has been newly created, this will usually be "1".
 
 Then import the streets of that city:
 
@@ -175,6 +178,23 @@ Import the outer shape of a city from OpenStreetMap and write it into an existin
 ```bash
 ./manage.py importcityoutline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
+
+Now we can import the actual data from the OParl backend. This is going to take quite a while:
+
+```bash
+./manage.py importoparl --download-files https://www.muenchen-transparent.de/oparl/v1.0
+```
+
+Now two variables have to be set in the ``.env``-File:
+- ``SITE_DEFAULT_BODY``: The Body-ID from above
+- ``SITE_DEFAULT_ORGANIZATION``: The ID of the central organization of the city council in the ``mainapp_organization`` table
+
+Now the site should be working. If the "Latest Documents"-Section on the home page shows random old entries after the initial import, you can try to fix the dates with the following command:
+
+```bash
+./manage.py fix-dates 2018-01-01 2000-01-01 # The date of the initial import and a fallback date far in the past so files without determinable date show up last
+./manage.py search_index --rebuild # Push the changed data to ElasticSearch
+``` 
 
 ### Using the OParl Importer programmatically
 

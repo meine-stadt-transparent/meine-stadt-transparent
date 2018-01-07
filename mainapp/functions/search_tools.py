@@ -112,9 +112,9 @@ def params_to_query(params: dict):
 
     if 'sort' in params:
         if params['sort'] == 'date_newest':
-            s = s.sort({"modified": {"order": "desc"}})
+            s = s.sort({"created": {"order": "desc"}})
         elif params['sort'] == 'date_oldest':
-            s = s.sort({"modified": {"order": "asc"}})
+            s = s.sort({"created": {"order": "asc"}})
         else:
             s = s.sort("_score")
         options['sort'] = params['sort']
