@@ -114,7 +114,17 @@ class TestImporter(TestCase):
 
         self.assertEqual(File.objects.count(), 2)
 
-        self.new_timestamp = "2020-01-01T00:00:00+01:00"
+        # Check that not-modified objects are ignored - See #41
+        tables_with_modified = [Body, Organization, Person, Meeting, Paper]  # others can omit modified in 1.0
+
+        newer_now = timezone.now()
+        importer = OParlImport(options)
+        importer.run_singlethread()
+
+        for table in tables_with_modified:
+            self.assertLess(table.objects.first().modified, newer_now)
+
+        self.new_timestamp = "2020-01-01T00:00:00+01:00"  # Fixme: Not futureproof
         self.create_fake_cache()
         importer = OParlImport(options)
         importer.run_singlethread()

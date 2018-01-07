@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
-from typing import Optional, Type, Union, Tuple, TypeVar
+from typing import Optional, Type, Tuple, TypeVar
 
 import gi
 from django.conf import settings
@@ -116,15 +116,16 @@ class OParlHelper:
         if not libobject:
             return None, False
 
-        dbobject = constructor.objects_with_deleted.filter(oparl_id=libobject.get_id()).first()  # type: DefaultFields
+        oparl_id = libobject.get_id()
+        dbobject = constructor.objects_with_deleted.filter(oparl_id=oparl_id).first()  # type: DefaultFields
         if not dbobject:
             if libobject.get_deleted():
                 dbobject.deleted = True
                 dbobject.save()
                 return dbobject, False
-            self.logger.debug("New")
+            self.logger.debug("New %s", oparl_id)
             dbobject = constructor()
-            dbobject.oparl_id = libobject.get_id()
+            dbobject.oparl_id = oparl_id
             dbobject.deleted = libobject.get_deleted()
             if add_names:
                 self.set_names(libobject, dbobject, name_fixup)
@@ -133,23 +134,29 @@ class OParlHelper:
         if libobject.get_deleted():
             dbobject.deleted = True
             dbobject.save()
-            self.logger.debug("Deleted")
+            self.logger.debug("Deleted %s: %s", dbobject.id, oparl_id)
             return dbobject, False
 
-        if not libobject.get_modified():
-            error_message = "Modified missing on {}".format(libobject.get_id())
-            self.errorlist.append(error_message)
-        if not self.ignore_modified and libobject.get_modified() and dbobject.modified > self.glib_datetime_to_python(
-                libobject.get_modified()):
-            self.logger.debug("Not Modified")
-            return dbobject, False
+        parsed_modified = self.glib_datetime_to_python(libobject.get_modified())
+        if self.ignore_modified:
+            is_modified = True
+        elif not libobject.get_modified():
+            self.logger.debug("No modified on {}".format(oparl_id))
+            is_modified = True
+        elif dbobject.modified > parsed_modified:
+            is_modified = False
+        else:
+            is_modified = True
 
-        self.logger.debug("Modified")
-        dbobject.oparl_id = libobject.get_id()
-        dbobject.deleted = libobject.get_deleted()
-        if add_names:
-            self.set_names(libobject, dbobject, name_fixup)
-        return dbobject, True
+        if is_modified:
+            self.logger.debug("Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id, oparl_id)
+            if add_names:
+                self.set_names(libobject, dbobject, name_fixup)
+            return dbobject, True
+        else:
+            self.logger.debug("Not Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id,
+                              oparl_id)
+            return dbobject, False
 
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)

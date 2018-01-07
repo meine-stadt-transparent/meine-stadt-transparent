@@ -124,11 +124,11 @@ class OParlObjects(OParlHelper):
         changed = False
         files_with_none = [self.file(file) for file in libobject.get_auxiliary_file()]
         files_without_none = [file for file in files_with_none if file is not None]
-        changed = changed or self.is_queryset_equal_list(paper.files, files_without_none)
+        changed = changed or not self.is_queryset_equal_list(paper.files, files_without_none)
         paper.files = files_without_none
         old_main_file = paper.main_file
         paper.main_file = self.file(libobject.get_main_file())
-        changed = changed or old_main_file == paper.main_file
+        changed = changed or old_main_file != paper.main_file
         for i in libobject.get_consultation():
             self.consultation(i)
 
@@ -139,7 +139,7 @@ class OParlObjects(OParlHelper):
                 organizations.append(organization)
             else:
                 self.paper_organization_queue.append((paper, org_url))
-        changed = changed or self.is_queryset_equal_list(paper.organizations, organizations)
+        changed = changed or not self.is_queryset_equal_list(paper.organizations, organizations)
         paper.organizations = organizations
         return changed
 
@@ -183,7 +183,7 @@ class OParlObjects(OParlHelper):
             djangofile = self.file(oparlfile)
             if djangofile:
                 auxiliary_files.append(djangofile)
-        changed = changed or self.is_queryset_equal_list(meeting.auxiliary_files, auxiliary_files)
+        changed = changed or not self.is_queryset_equal_list(meeting.auxiliary_files, auxiliary_files)
         meeting.auxiliary_files = auxiliary_files
         persons = []
         for oparlperson in libobject.get_participant():
@@ -192,7 +192,7 @@ class OParlObjects(OParlHelper):
                 persons.append(djangoperson)
             else:
                 self.meeting_person_queue[libobject.get_id()].append(oparlperson.get_id())
-        changed = changed or self.is_queryset_equal_list(meeting.persons, persons)
+        changed = changed or not self.is_queryset_equal_list(meeting.persons, persons)
         meeting.persons = persons
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
             self.agendaitem(oparlitem, index, meeting)
@@ -354,7 +354,7 @@ class OParlObjects(OParlHelper):
     def person_embedded(self, libobject, person):
         old_location = person.location
         person.location = self.location(libobject.get_location())
-        return old_location == person.location
+        return old_location != person.location
 
     def person_core(self, libobject, person):
         self.logger.info("Processing Person {}".format(libobject.get_id()))
@@ -387,13 +387,15 @@ class OParlObjects(OParlHelper):
         return membership
 
     def add_missing_associations(self):
-        self.logger.info("Adding missing meeting <-> persons associations")
+        self.logger.info(
+            "Adding {} missing meeting <-> persons associations".format(len(self.meeting_person_queue.items())))
         for meeting_id, person_ids in self.meeting_person_queue.items():
             meeting = Meeting.by_oparl_id(meeting_id)
             meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
             meeting.save()
 
-        self.logger.info("Adding missing agenda item <-> paper associations")
+        self.logger.info(
+            "Adding {} missing agenda item <-> paper associations".format(len(self.agenda_item_paper_queue.items())))
         for item_id, paper_id in self.agenda_item_paper_queue.items():
             item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
             item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
@@ -402,21 +404,22 @@ class OParlObjects(OParlHelper):
                 self.errorlist.append(message)
             item.save()
 
-        self.logger.info("Adding missing memberships")
+        self.logger.info("Adding {} missing memberships".format(len(self.membership_queue)))
         for organization, libobject in self.membership_queue:
             self.membership(organization, libobject)
 
-        self.logger.info("Adding missing papper to consultations")
+        self.logger.info("Adding {} missing paper to consultations".format(len(self.consultation_paper_queue)))
         for consultation, paper in self.consultation_paper_queue:
             consultation.paper = Paper.objects_with_deleted.filter(oparl_id=paper).first()
             consultation.save()
 
-        self.logger.info("Adding missing meetings to consultations")
+        self.logger.info("Adding {} missing meetings to consultations".format(len(self.consultation_meeting_queue)))
         for consultation, meeting in self.consultation_meeting_queue:
             consultation.meeting = Meeting.objects_with_deleted.filter(oparl_id=meeting).first()
             consultation.save()
 
-        self.logger.info("Adding missing organizations to consultations")
+        self.logger.info("Adding {} missing organizations to consultations".format(
+            len(self.consultation_organization_queue.items())))
         for consultation, organizations in self.consultation_organization_queue.items():
             orgas = []
             for org in organizations:
@@ -424,6 +427,6 @@ class OParlObjects(OParlHelper):
             consultation.organizations = orgas
             consultation.save()
 
-        self.logger.info("Adding missing organizations to papers")
+        self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
         for paper, organization_url in self.paper_organization_queue:
             paper.organizations.add(Organization.objects_with_deleted.filter(oparl_id=organization_url).first())

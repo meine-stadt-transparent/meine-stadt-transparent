@@ -22,5 +22,5 @@ install:
 script:
   - ENV_PATH=etc/env-test pipenv run ./manage.py migrate
   - npm run build:dev
-  - npm run build:prod
   - ENV_PATH=etc/env-test pipenv run ./manage.py test
+  - npm run build:prod

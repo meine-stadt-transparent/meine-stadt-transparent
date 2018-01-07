@@ -1,12 +1,12 @@
 import concurrent
 import hashlib
+import logging
 import os
 import traceback
 from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
 
 import gi
-import logging
 import requests
 from django.db import transaction
 

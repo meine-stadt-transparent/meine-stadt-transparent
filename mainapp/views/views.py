@@ -15,9 +15,7 @@ from mainapp.models.organization_type import OrganizationType
 def index(request):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
-    latest_paper = Paper \
-                       .objects \
-                       .order_by("-modified", "-legal_date")[:10]
+    latest_paper = Paper.objects.order_by("-modified", "-legal_date")[:10]
     for paper in latest_paper:
         # The mixed results view needs those
         setattr(paper, "type", "paper")
