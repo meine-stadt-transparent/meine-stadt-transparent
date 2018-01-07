@@ -105,8 +105,8 @@ class OParlObjects(OParlHelper):
             return
 
         term, do_update = self.check_for_update(libobject, LegislativeTerm)
-        if not term:
-            return
+        if not term or not do_update:
+            return term
 
         self.logger.info("Processing {}".format(libobject.get_name()))
 
@@ -210,8 +210,9 @@ class OParlObjects(OParlHelper):
 
     def location(self, libobject: OParl.Location):
         location, do_update = self.check_for_update(libobject, Location, name_fixup=_("Unknown"))
-        if not location:
-            return None
+        if not location or not do_update:
+            return location
+
         self.logger.info("Processing Location {}".format(libobject.get_id()))
 
         location.oparl_id = libobject.get_id()
@@ -224,8 +225,8 @@ class OParlObjects(OParlHelper):
 
     def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
         item, do_update = self.check_for_update(libobject, AgendaItem, add_names=False)
-        if not item:
-            return
+        if not item or not do_update:
+            return item
 
         item.key = libobject.get_number()
         if not item.key:
@@ -255,8 +256,8 @@ class OParlObjects(OParlHelper):
 
     def consultation(self, libobject: OParl.Consultation):
         consultation, do_update = self.check_for_update(libobject, Consultation, add_names=False)
-        if not consultation:
-            return
+        if not consultation or not do_update:
+            return consultation
 
         consultation.oparl_id = libobject.get_id()
         consultation.authoritative = libobject.get_authoritative()
@@ -313,8 +314,8 @@ class OParlObjects(OParlHelper):
 
     def file(self, libobject: OParl.File):
         file, do_update = self.check_for_update(libobject, File, add_names=False)
-        if not file:
-            return
+        if not file or not do_update:
+            return file
         self.logger.info("Processing File {}".format(libobject.get_id()))
 
         if libobject.get_file_name():
@@ -364,8 +365,8 @@ class OParlObjects(OParlHelper):
 
     def membership(self, organization, libobject: OParl.Membership):
         membership, do_update = self.check_for_update(libobject, OrganizationMembership, add_names=False)
-        if not membership:
-            return
+        if not membership or not do_update:
+            return membership
 
         person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
         if not person:

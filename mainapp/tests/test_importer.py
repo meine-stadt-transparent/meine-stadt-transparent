@@ -1,6 +1,7 @@
 import hashlib
 import importlib.util
 import json
+import logging
 import os
 import shutil
 from unittest import skipIf
@@ -16,6 +17,8 @@ if not gi_not_available:
     # Those two require importing gi
     from importer.oparl_helper import default_options
     from importer.oparl_import import OParlImport
+
+logger = logging.getLogger(__name__)
 
 
 @skipIf(gi_not_available, "gi is not available")
@@ -115,13 +118,14 @@ class TestImporter(TestCase):
         self.assertEqual(File.objects.count(), 2)
 
         # Check that not-modified objects are ignored - See #41
-        tables_with_modified = [Body, Organization, Person, Meeting, Paper]  # others can omit modified in 1.0
+        tables_with_modified = [Body, Organization, Person, Meeting, Paper, File]  # must have modified and File for #41
 
         newer_now = timezone.now()
         importer = OParlImport(options)
         importer.run_singlethread()
 
         for table in tables_with_modified:
+            logger.debug(table.__name__)
             self.assertLess(table.objects.first().modified, newer_now)
 
         self.new_timestamp = "2020-01-01T00:00:00+01:00"  # Fixme: Not futureproof
