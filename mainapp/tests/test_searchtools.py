@@ -5,7 +5,7 @@ from mainapp.functions.search_tools import search_string_to_params, params_to_qu
 expected_params = {
     'sort': [
         {
-            'modified': {"order": "desc"}
+            'created': {"order": "desc"}
         }
     ],
     'query': {
