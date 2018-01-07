@@ -2,8 +2,6 @@ import hashlib
 import mimetypes
 import os
 from collections import defaultdict
-# noinspection PyPackageRequirements
-from typing import Type, TypeVar, Callable
 
 import gi
 import requests
@@ -14,10 +12,12 @@ from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
-    OrganizationMembership, Organization, DefaultFields
+    OrganizationMembership, Organization
 from mainapp.models.consultation import Consultation
 from mainapp.models.organization_type import OrganizationType
 from mainapp.models.paper_type import PaperType
+
+# noinspection PyPackageRequirements
 
 gi.require_version('OParl', '0.2')
 from gi.repository import OParl
@@ -49,29 +49,10 @@ class OParlObjects(OParlHelper):
         department = settings.DEPARTMENT_TYPE
         OrganizationType.objects.get_or_create(id=department[0], defaults={"name": department[1]})
 
-    T = TypeVar("T", bound=DefaultFields)
-    U = TypeVar("U", bound=OParl.Object)
-
-    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[U, T], None],
-                       embedded: Callable[[U, T], bool], add_names=True):
-        """
-        We split an object into two parts: It's value properties and the embedded objects. This is necessary because
-        the outer object might not have been modified while its embedded inner objects have.
-        """
-        outer_object, do_update = self.check_for_update(libobject, constructor, add_names)
-        if do_update:
-            core(libobject, outer_object)
-            outer_object.save()
-        associates_changed = embedded(libobject, outer_object)
-        if associates_changed:
-            outer_object.save()
-
-        return outer_object
-
     def body(self, libobject: OParl.Body):
         return self.process_object(libobject, Body, self.body_core, self.body_embedded)
 
-    def body_core(self, libobject, body):
+    def body_core(self, libobject, _):
         self.logger.info("Processing {}".format(libobject.get_id()))
 
     def body_embedded(self, libobject, body):
@@ -104,7 +85,7 @@ class OParlObjects(OParlHelper):
             self.logger.error("Term has no start or end date - skipping")
             return
 
-        term, do_update = self.check_for_update(libobject, LegislativeTerm)
+        term, do_update = self.check_for_modification(libobject, LegislativeTerm)
         if not term or not do_update:
             return term
 
@@ -209,7 +190,7 @@ class OParlObjects(OParlHelper):
         meeting.cancelled = libobject.get_cancelled() or False
 
     def location(self, libobject: OParl.Location):
-        location, do_update = self.check_for_update(libobject, Location, name_fixup=_("Unknown"))
+        location, do_update = self.check_for_modification(libobject, Location, name_fixup=_("Unknown"))
         if not location or not do_update:
             return location
 
@@ -224,7 +205,7 @@ class OParlObjects(OParlHelper):
         return location
 
     def agendaitem(self, libobject: OParl.AgendaItem, index, meeting):
-        item, do_update = self.check_for_update(libobject, AgendaItem, add_names=False)
+        item, do_update = self.check_for_modification(libobject, AgendaItem)
         if not item or not do_update:
             return item
 
@@ -255,7 +236,7 @@ class OParlObjects(OParlHelper):
         return item
 
     def consultation(self, libobject: OParl.Consultation):
-        consultation, do_update = self.check_for_update(libobject, Consultation, add_names=False)
+        consultation, do_update = self.check_for_modification(libobject, Consultation)
         if not consultation or not do_update:
             return consultation
 
@@ -313,7 +294,7 @@ class OParlObjects(OParlHelper):
         file.storage_filename = urlhash
 
     def file(self, libobject: OParl.File):
-        file, do_update = self.check_for_update(libobject, File, add_names=False)
+        file, do_update = self.check_for_modification(libobject, File)
         if not file or not do_update:
             return file
         self.logger.info("Processing File {}".format(libobject.get_id()))
@@ -350,7 +331,7 @@ class OParlObjects(OParlHelper):
         return file
 
     def person(self, libobject: OParl.Person):
-        return self.process_object(libobject, Person, self.person_core, self.person_embedded, add_names=False)
+        return self.process_object(libobject, Person, self.person_core, self.person_embedded)
 
     def person_embedded(self, libobject, person):
         old_location = person.location
@@ -364,7 +345,7 @@ class OParlObjects(OParlHelper):
         person.family_name = libobject.get_family_name()
 
     def membership(self, organization, libobject: OParl.Membership):
-        membership, do_update = self.check_for_update(libobject, OrganizationMembership, add_names=False)
+        membership, do_update = self.check_for_modification(libobject, OrganizationMembership)
         if not membership or not do_update:
             return membership
 

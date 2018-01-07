@@ -30,6 +30,10 @@ class TestImporter(TestCase):
         self.dummy_data = "testdata/oparl"
         self.fake_cache = "testdata/fake_cache"
         self.entrypoint = None
+        self.tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
+                       Paper, Consultation, Location]
+        self.entrypoint = "https://oparl.example.org/"
+        self.options = self.build_options()
 
     def sha1(self, data):
         return hashlib.sha1(data.encode("utf-8")).hexdigest()
@@ -62,9 +66,7 @@ class TestImporter(TestCase):
 
     def create_fake_cache(self):
         """ Fakes an oparl server by a creating a prefilled cache. """
-        # Load the entrypoint first, we need the id for the remaining setup
         system = self.load("System.json")
-        self.entrypoint = system["id"]
 
         # Discard old data
         shutil.rmtree(self.fake_cache, ignore_errors=True)
@@ -100,53 +102,58 @@ class TestImporter(TestCase):
         self.dump(membership["id"], membership)
 
     def test_importer(self):
+        self.check_basic_import()
+        self.check_ignoring_unmodified()
+        self.check_update()
+        self.check_deletion()
+
+    def test_deletion(self):
+        self.check_deletion()
+
+    def test_update(self):
+        self.check_update()
+
+    def check_basic_import(self):
         self.new_timestamp = "2000-01-01T00:00:00+01:00"
         self.create_fake_cache()
-        options = self.build_options()
-        importer = OParlImport(options)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
-
         now = timezone.now()
 
-        tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, Paper,
-                  Consultation, Location]
-
-        for table in tables:
+        for table in self.tables:
             self.assertEqual(table.objects.count(), 1)
             self.assertLess(table.objects.first().modified, now)
-
         self.assertEqual(File.objects.count(), 2)
 
-        # Check that not-modified objects are ignored - See #41
+    def check_ignoring_unmodified(self):
+        """ Check that not-modified objects are ignored - See #41 """
         tables_with_modified = [Body, Organization, Person, Meeting, Paper, File]  # must have modified and File for #41
-
         newer_now = timezone.now()
-        importer = OParlImport(options)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
-
         for table in tables_with_modified:
             logger.debug(table.__name__)
             self.assertLess(table.objects.first().modified, newer_now)
 
+    def check_update(self):
+        now = timezone.now()
         self.new_timestamp = "2020-01-01T00:00:00+01:00"  # Fixme: Not futureproof
         self.create_fake_cache()
-        importer = OParlImport(options)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
-
-        for table in tables:
+        for table in self.tables:
             self.assertEqual(table.objects.count(), 1)
             self.assertGreater(table.objects.first().modified, now)
-
         self.assertEqual(File.objects.count(), 2)
 
+    def check_deletion(self):
         self.new_timestamp = "2030-01-01T00:00:00+01:00"
         self.delete = True
         self.create_fake_cache()
-        importer = OParlImport(options)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
-
+        tables = self.tables[:]
         tables.remove(Body)
-
         for table in tables:
             self.assertEqual(table.objects.count(), 0)
 

@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
-from typing import Optional, Type, Tuple, TypeVar
+from typing import Optional, Type, Tuple, TypeVar, Callable
 
 import gi
 from django.conf import settings
@@ -100,18 +100,31 @@ class OParlHelper:
             return cls.glib_datetime_to_python_date(glibdate)
         return None
 
-    @staticmethod
-    def set_names(libobject: OParl.Object, dbitem: ShortableNameFields, name_fixup=None):
-        dbitem.name = libobject.get_name() or name_fixup
-        dbitem.set_short_name(libobject.get_short_name() or dbitem.name)
-        return dbitem
+    T = TypeVar("T", bound=DefaultFields)
+    U = TypeVar("U", bound=OParl.Object)
+
+    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[U, T], None],
+                       embedded: Callable[[U, T], bool]):
+        """
+        We split an object into two parts: It's value properties and the embedded objects. This is necessary because
+        the outer object might not have been modified while its embedded inner objects have.
+        """
+        outer_object, do_update = self.check_for_modification(libobject, constructor)
+        if do_update:
+            core(libobject, outer_object)
+            outer_object.save()
+        if outer_object:
+            associates_changed = embedded(libobject, outer_object)
+            if associates_changed:
+                outer_object.save()
+
+        return outer_object
 
     E = TypeVar("E", bound=DefaultFields)
 
     # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161 (TODO: Wait for that to be fixed)
-    def check_for_update(self, libobject: OParl.Object, constructor: Type[E], add_names=True,
-                         name_fixup=None) -> Tuple[Optional[E], bool]:
-        # TODO: Replace add_names with isinstance(ShortableNameFields)
+    def check_for_modification(self, libobject: OParl.Object, constructor: Type[E], name_fixup=None) \
+            -> Tuple[Optional[E], bool]:
         """ Checks common criterias for oparl objects. """
         if not libobject:
             return None, False
@@ -120,15 +133,15 @@ class OParlHelper:
         dbobject = constructor.objects_with_deleted.filter(oparl_id=oparl_id).first()  # type: DefaultFields
         if not dbobject:
             if libobject.get_deleted():
-                dbobject.deleted = True
-                dbobject.save()
-                return dbobject, False
+                # This was deleted before it could be imported, so we skip it
+                return None, False
             self.logger.debug("New %s", oparl_id)
             dbobject = constructor()
             dbobject.oparl_id = oparl_id
             dbobject.deleted = libobject.get_deleted()
-            if add_names:
-                self.set_names(libobject, dbobject, name_fixup)
+            if isinstance(dbobject, ShortableNameFields):
+                dbobject.name = libobject.get_name() or name_fixup
+                dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
             return dbobject, True
 
         if libobject.get_deleted():
@@ -150,8 +163,9 @@ class OParlHelper:
 
         if is_modified:
             self.logger.debug("Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id, oparl_id)
-            if add_names:
-                self.set_names(libobject, dbobject, name_fixup)
+            if isinstance(dbobject, ShortableNameFields):
+                dbobject.name = libobject.get_name() or name_fixup
+                dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
             return dbobject, True
         else:
             self.logger.debug("Not Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id,
