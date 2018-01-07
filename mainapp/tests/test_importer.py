@@ -23,17 +23,18 @@ logger = logging.getLogger(__name__)
 
 @skipIf(gi_not_available, "gi is not available")
 class TestImporter(TestCase):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.new_timestamp = None
-        self.delete = False
-        self.dummy_data = "testdata/oparl"
-        self.fake_cache = "testdata/fake_cache"
-        self.entrypoint = None
-        self.tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
-                       Paper, Consultation, Location]
-        self.entrypoint = "https://oparl.example.org/"
-        self.options = self.build_options()
+    dummy_data = "testdata/oparl"
+    fake_cache = "testdata/fake_cache"
+    new_timestamp = None
+    delete = False
+    tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
+              Paper, Consultation, Location]
+    entrypoint = "https://oparl.example.org/"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.options = cls.build_options()
 
     def sha1(self, data):
         return hashlib.sha1(data.encode("utf-8")).hexdigest()
@@ -157,12 +158,13 @@ class TestImporter(TestCase):
         for table in tables:
             self.assertEqual(table.objects.count(), 0)
 
-    def build_options(self):
+    @classmethod
+    def build_options(cls):
         options = default_options.copy()
-        options["cachefolder"] = self.fake_cache
+        options["cachefolder"] = cls.fake_cache
         options["storagefolder"] = "/tmp/meine_stadt_transparent/storagefolder"
         shutil.rmtree(options["storagefolder"], ignore_errors=True)
-        options["entrypoint"] = self.entrypoint
+        options["entrypoint"] = cls.entrypoint
         options["batchsize"] = 1
         options["download_files"] = False  # TODO
         return options

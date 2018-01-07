@@ -282,7 +282,10 @@ SEARCH_PAGINATION_LENGTH = 20
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
+# The following properties are not covered by default-src
+CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'self'",)
 
 LOGGING = {
     'version': 1,
