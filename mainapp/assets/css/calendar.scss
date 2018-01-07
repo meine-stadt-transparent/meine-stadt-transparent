@@ -3,6 +3,9 @@
 
 .fc-list-item {
   cursor: pointer;
+  &:focus {
+    background: #f6f6f6;
+  }
 }
 
 .fc-scroller {
@@ -13,5 +16,13 @@
   .btn {
     padding: $content-switcher-btn-padding;
     height: auto;
+  }
+}
+
+.fc-event, .fc-event-dot {
+  background-color: $calendarEventBackground;
+  &:focus {
+    background-color: darken($calendarEventBackground, 10%);
+    outline: dotted 1px gray;
   }
 }

@@ -39,7 +39,18 @@ $(function () {
         eventClick: function (calEvent/*, jsEvent, view*/) {
             window.location.href = calEvent['details'];
         },
-        viewRender: function (view/*, element*/) {
+
+        // Make the single events tabbable; go to the event when the enter-key is pressed
+        eventAfterRender: function (event, element, view) {
+            $(element).attr("tabindex", "0").keyup((ev) => {
+                if (ev.originalEvent.keyCode === 13) {
+                    window.location.href = event['details'];
+                }
+            });
+        },
+
+        // Change the URL scheme when the view is changed
+        viewRender: function (view, element) {
             if (view.name === defaultView && defaultDate.isBetween(view.start, view.end)) {
                 window.history.pushState({}, "", $calendar.data("url-default"));
             } else {
@@ -49,6 +60,8 @@ $(function () {
                 window.history.pushState({}, "", url);
             }
         },
+
+        // Show a loading spinner while data is loaded
         loading: (isLoading, view) => {
             // That code is managed by fullcalendar so we can't just put this in some template and hide it
             let spinner = '<i id="calendar-loading-spinner" class="fa fa-spinner fa-spin" ' +
