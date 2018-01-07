@@ -282,8 +282,6 @@ SEARCH_PAGINATION_LENGTH = 20
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
 
 LOGGING = {
@@ -360,7 +358,7 @@ if DEBUG and not TESTING:
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
     if DEBUG_STYLES:
-        CSP_STYLE_SRC = CSP_STYLE_SRC + ("'unsafe-inline'",)
+        CSP_STYLE_SRC = ("'self'", "'unsafe-inline'",)
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")
