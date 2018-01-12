@@ -1,6 +1,7 @@
 {% load i18n %}
 <div class="container">
     <div class="d-flex flex-wrap lead">
+        <h1 class="sr-only">{{ settings.TEMPLATE_META.product_name }}</h1>
         <div>
             {{ settings.TEMPLATE_META.product_name }}
             {% blocktrans %}informs you about your local city council.{% endblocktrans %}&nbsp;

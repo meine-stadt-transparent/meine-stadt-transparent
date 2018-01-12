@@ -3,6 +3,8 @@ $header-height: 56px !default;
 $header-search-max-width: 200px !default;
 $main-content-margin-top: 30px !default;
 $border-radius: 0 !default;
+$text-muted: #6e7881 !default; // Should have a contrast of at least 4.5
+$link-color: #0072ee !default; // Should have a contrast of at least 4.5
 $fa-font-path: "~font-awesome/fonts/" !default;
 
 $container-max-widths: (

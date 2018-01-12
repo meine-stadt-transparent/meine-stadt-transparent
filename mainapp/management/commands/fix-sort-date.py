@@ -19,9 +19,8 @@ class Command(BaseCommand):
         parser.add_argument('fallback_date', type=str, help=help_str)
 
     def handle(self, *args, **options):
-        import_date = datetime.datetime.strptime(options['import_date'] + " 23:59:59", '%Y-%m-%d %H:%M:%S') \
-            .astimezone(Local)
-        fallback_date = datetime.datetime.strptime(options['fallback_date'], '%Y-%m-%d').astimezone(Local)
+        import_date = datetime.datetime.strptime(options['import_date'] + " 23:59:59", '%Y-%m-%d %H:%M:%S')
+        fallback_date = datetime.datetime.strptime(options['fallback_date'], '%Y-%m-%d')
 
         print("Fixing papers...")
         num = Paper.objects.filter(created__lte=import_date, legal_date__isnull=False)\
