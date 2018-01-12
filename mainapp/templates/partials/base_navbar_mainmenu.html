@@ -1,0 +1,54 @@
+{% load i18n %}
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{% url 'info_about' %}">{% trans "About" context 'navigation' %}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{% url 'calendar' %}">{% trans "Calendar" context 'navigation' %}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{% url 'persons' %}">{% trans "People" context 'navigation' %}</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link"
+           href="{% url 'organizations' %}">{% trans "Organizations" context 'navigation' %}</a>
+    </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarMyAccount" role="button"
+               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% trans "My Account" context 'navigation' %}
+            </a>
+            <form class="dropdown-menu" method="POST" action="{% url 'account_logout' %}"
+                  aria-labelledby="navbarMyAccount">
+                {% csrf_token %}
+                {% if redirect_field_value %}
+                    <input type="hidden" name="{{ redirect_field_name }}"
+                           value="{{ redirect_field_value }}">
+                {% endif %}
+                <div class="dropdown-header">{{ user.email }}</div>
+                <a class="dropdown-item my-account-link" href="{% url 'profile-home' %}">
+                    {% trans 'Notifications' %}
+                </a>
+                <a class="dropdown-item change-password-link"
+                   href="{% url 'account_change_password' %}">
+                    {% trans "Change your password" %}
+                </a>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-item">
+                    <button type="submit" class="logout-button btn btn-transparent">
+                        {% trans 'Sign Out' %}
+                    </button>
+                </div>
+            </form>
+        </li>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link login-link"
+               href="{% url 'account_login' %}?next={{ request.path }}">{% trans "Sign In" context 'navigation' %}</a>
+        </li>
+    {% endif %}
+</ul>

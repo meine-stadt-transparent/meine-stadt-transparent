@@ -15,84 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-navbar" role="navigation"
          id="main-menu">
         <div class="container">
-            <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
-            <a href="{% url 'search' '' %}" class="navbar-toggler" type="button">
-                <span class="fa fa-search"></span>
-                <span class="sr-only">Search</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
-                    aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="main-menu-content">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'info_about' %}">{% trans "About" context 'navigation' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'calendar' %}">{% trans "Calendar" context 'navigation' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'persons' %}">{% trans "People" context 'navigation' %}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           href="{% url 'organizations' %}">{% trans "Organizations" context 'navigation' %}</a>
-                    </li>
-                    {% if user.is_authenticated %}
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarMyAccount" role="button"
-                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {% trans "My Account" context 'navigation' %}
-                            </a>
-                            <form class="dropdown-menu" method="POST" action="{% url 'account_logout' %}"
-                                  aria-labelledby="navbarMyAccount">
-                                {% csrf_token %}
-                                {% if redirect_field_value %}
-                                    <input type="hidden" name="{{ redirect_field_name }}"
-                                           value="{{ redirect_field_value }}">
-                                {% endif %}
-                                <div class="dropdown-header">{{ user.email }}</div>
-                                <a class="dropdown-item my-account-link" href="{% url 'profile-home' %}">
-                                    {% trans 'Notifications' %}
-                                </a>
-                                <a class="dropdown-item change-password-link"
-                                   href="{% url 'account_change_password' %}">
-                                    {% trans "Change your password" %}
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <div class="dropdown-item">
-                                    <button type="submit" class="logout-button btn btn-transparent">
-                                        {% trans 'Sign Out' %}
-                                    </button>
-                                </div>
-                            </form>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link login-link"
-                               href="{% url 'account_login' %}?next={{ request.path }}">{% trans "Sign In" context 'navigation' %}</a>
-                        </li>
-                    {% endif %}
-                </ul>
-                {% if not disable_header_search %}
-                    <form class="form-inline search-autocomplete" method="GET"
-                          action="{% url 'search' '' %}">
-                        <input class="form-control" type="text" name="query" value="" autocomplete="off"
-                               data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
-                               placeholder="{% trans "Search" context "page_title" %}"
-                               aria-label="{% trans "Search" context "perform search" %}"
-                               id="searchfield-mousetrap">
-                        <button class="search-icon fa fa-search" type="submit"
-                                title="{% trans 'Show search results' context 'aria label' %}"></button>
-
-                    </form>
-                {% endif %}
-            </div>
+            {% include 'partials/base_navbar.html' %}
         </div>
     </nav>
 {% endblock %}
@@ -108,34 +31,7 @@
 </main>
 
 <footer class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-dark bg-navbar">
-    <div class="container flex-column align-items-start">
-        <div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'info_contact' %}">
-                        {% trans "Contact" context 'navigation' %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'info_privacy' %}">
-                        {% trans "Privacy Policy" context 'navigation' %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'info_feedback' %}">
-                        {% trans "Feedback" context 'navigation' %}
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div>
-            <div class="navbar-nav">
-                <div class="nav-link">
-                    {{ settings.TEMPLATE_META.product_name }} {% trans 'is a private project and not authorized by any city council' %}
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'partials/base_footer.html' %}
 </footer>
 
 {% render_bundle 'vendor' 'js' %}

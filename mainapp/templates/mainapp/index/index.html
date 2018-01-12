@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{{ settings.TEMPLATE_META.product_name }}{% endblock %}
+
+{% block header %}
+    {% with True as disable_header_search %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    {% include 'mainapp/index/index_title.html' %}
+    {% include 'mainapp/index/index_search.html' %}
+    {% include 'mainapp/index/index_map.html' %}
+    {% include 'mainapp/index/index_main_buttons.html' %}
+    {% include 'mainapp/index/index_documents.html' %}
+{% endblock %}

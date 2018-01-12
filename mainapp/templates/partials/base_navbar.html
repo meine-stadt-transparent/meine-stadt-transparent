@@ -1,0 +1,27 @@
+{% load i18n %}
+<a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
+<a href="{% url 'search' '' %}" class="navbar-toggler" type="button">
+    <span class="fa fa-search"></span>
+    <span class="sr-only">Search</span>
+</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu-content"
+        aria-controls="main-menu-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="main-menu-content">
+    {% include 'partials/base_navbar_mainmenu.html' %}
+    {% if not disable_header_search %}
+        <form class="form-inline search-autocomplete" method="GET"
+              action="{% url 'search' '' %}">
+            <input class="form-control" type="text" name="query" value="" autocomplete="off"
+                   data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
+                   placeholder="{% trans "Search" context "page_title" %}"
+                   aria-label="{% trans "Search" context "perform search" %}"
+                   id="searchfield-mousetrap">
+            <button class="search-icon fa fa-search" type="submit"
+                    title="{% trans 'Show search results' context 'aria label' %}"></button>
+
+        </form>
+    {% endif %}
+</div>

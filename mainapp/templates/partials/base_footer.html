@@ -1,0 +1,29 @@
+{% load i18n %}
+<div class="container flex-column align-items-start">
+    <div>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'info_contact' %}">
+                    {% trans "Contact" context 'navigation' %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'info_privacy' %}">
+                    {% trans "Privacy Policy" context 'navigation' %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'info_feedback' %}">
+                    {% trans "Feedback" context 'navigation' %}
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <div class="navbar-nav">
+            <div class="nav-link">
+                {{ settings.TEMPLATE_META.product_name }} {% trans 'is a private project and not authorized by any city council' %}
+            </div>
+        </div>
+    </div>
+</div>

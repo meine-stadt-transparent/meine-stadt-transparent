@@ -32,7 +32,7 @@ def index(request):
         'map': _build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
     }
-    return render(request, 'mainapp/index.html', context)
+    return render(request, 'mainapp/index/index.html', context)
 
 
 def _build_map_object(body: Body, geo_papers):
