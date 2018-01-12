@@ -39,6 +39,23 @@ expected_params = {
             '*': {'fragment_size': 150, 'pre_tags': '<mark>', 'post_tags': '</mark>'}
         },
         'require_field_match': False
+    },
+    "aggs": {
+        "document_type": {
+            "terms": {
+                "field": "_type"
+            }
+        },
+        "person": {
+            "terms": {
+                "field": "person_ids"
+            }
+        },
+        "organization": {
+            "terms": {
+                "field": "organization_ids"
+            }
+        }
     }
 }
 

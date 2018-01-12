@@ -6,6 +6,7 @@ from urllib import parse
 
 from django.test import override_settings
 from elasticsearch_dsl import Search
+from elasticsearch_dsl.response import AggResponse
 from selenium.webdriver.common.keys import Keys
 
 from mainapp.models import Person
@@ -22,8 +23,27 @@ template = {
 }
 
 
+def get_aggregations():
+    # Fakes aggregation results that are sufficient for testing
+    aggs = {
+        "document_type": [
+            {"key": "file", "doc_count": 42},
+            {"key": "meeting", "doc_count": 42},
+            {"key": "person", "doc_count": 42}
+        ],
+        "person": [],
+        "organization": []
+    }
+
+    for i in range(10):
+        aggs["person"].append({"key": i, "doc_count": 42})
+        aggs["organization"].append({"key": i, "doc_count": 42})
+
+    return AggResponse({}, {}, aggs)
+
+
 def mock_search_to_results(_) -> (List[Any], int):
-    return [template], 1
+    return [template], 1, get_aggregations()
 
 
 def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
@@ -34,7 +54,7 @@ def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
         result["name_escaped"] = position
         result["id"] = position
         out.append(result)
-    return out, len(out) * 2
+    return out, len(out) * 2, get_aggregations()
 
 
 class FacettedSearchTest(ChromeDriverTestCase):
