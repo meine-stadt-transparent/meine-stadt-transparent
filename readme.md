@@ -232,7 +232,7 @@ Please note the following hints:
   - The JS-File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file.
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
   - The new CSS-File needs to be registered in the ``.env``-file: ``TEMPLATE_MAIN_CSS=mainapp-mycity```
-
+- If you are using our Git-Repository to keep track with the lastest changes, you might want to put the newly created city directory to the git-ignore-list. Instead of using the project .gitignore-file, which might lead to collissions with upstream changes, a good place to put these files would be the ``.git/info/exclude`` file.
 
 ## Important Commands
 
