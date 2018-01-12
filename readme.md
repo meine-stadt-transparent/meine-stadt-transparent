@@ -223,7 +223,8 @@ Two examples are provided to illustrate how to use this:
 - [bedburg_transparent](bedburg_transparent/): Some more templates are overridden and a custum style is provided (though the style isn't really different from the main style)
 
 Please note the following hints:
-- The name of the city directory is arbitrary, but it needs to be in the project root.
+- The name of the city directory is arbitrary, but it needs to be in the project root. If you use git to keep up with our changes, prefix your folder with `custom_` so they are ignored by git.
+- Don't modify out files without creating a pull request. You'll have huge problems updating otherwise. Also version your files in a version controll system.
 - Within a directory, there needs to be a configuration file based on the [env-template](etc/env-template). Usually it is called ``.env``.
 - You need to provide the location of this ``.env`` file to Django as a environment-variable, e.g. by calling manage.py with ``ENV_PATH=juelich_transparent/.env ./manage.py``
 - To override a templates, the ``.env`` file needs to define the directory of the overriding templates. Usually that's the ``templates``-folder within the city directory: ``TEMPLATE_DIRS=juelich_transparent/templates``
@@ -232,7 +233,6 @@ Please note the following hints:
   - The JS-File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file.
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
   - The new CSS-File needs to be registered in the ``.env``-file: ``TEMPLATE_MAIN_CSS=mainapp-mycity``
-- If you are using our Git-Repository to keep track with the lastest changes, you might want to put the newly created city directory to the git-ignore-list. Instead of using the project .gitignore-file, which might lead to collissions with upstream changes, a good place to put these files would be the ``.git/info/exclude`` file.
 
 ## Important Commands
 

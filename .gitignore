@@ -8,6 +8,7 @@ config/
 .env*
 urls-to-import.txt
 testdata/fake_cache
+./custom_*/
 
 # Python Stuff
 __pycache__/
