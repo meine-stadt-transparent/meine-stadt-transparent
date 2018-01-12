@@ -68,14 +68,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
 
-TEMPLATE_DIRS = []
-if env.str('TEMPLATE_DIRS', None):
-    TEMPLATE_DIRS.append(env.str('TEMPLATE_DIRS'))
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': TEMPLATE_DIRS,
+        'DIRS': [env.str('TEMPLATE_DIRS')] if env.str('TEMPLATE_DIRS', None) else [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
