@@ -91,7 +91,14 @@ export default class FacettedSearch {
             $btn.data('widget').reset();
             $subscribeWidget.html(data['subscribe_widget']);
             $("#endless-scroll-target").html($data.find("> li"));
+
             this.locationSelector.updateLocationString();
+
+            for (let facet of this.facets) {
+                if (typeof facet.update === 'function') {
+                    facet.update(data);
+                }
+            }
             this.$refreshSpinner.attr("hidden", "hidden");
         });
     }

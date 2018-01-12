@@ -55,4 +55,29 @@ export default class FacettedSearchFilterDropdown {
         this.setLabel();
         event.preventDefault();
     }
+
+    /**
+     * Adds the item count to the values and hides away those with a count of zero. Also disables the button
+     * when there is no value with a count biger than zero, unless a value is selected
+     */
+    update(data) {
+        let $filter_list = $("#filter-" + this.key + "-list");
+        let $button = $("#" + this.key + "Button");
+
+        // Reset to defaults
+        $button.prop("disabled", false);
+        $filter_list.find(".filter-item").attr("hidden", "hidden");
+
+        if (data['aggregations'][this.key]['buckets'].length === 0) {
+            if (!this.$input.val()) {
+                $button.prop("disabled", true);
+            }
+            return;
+        }
+        for (let bucket_entry of data['aggregations'][this.key]['buckets']) {
+            let $obj = $filter_list.find("[data-id=" + bucket_entry["key"] + "]");
+            $obj.find(".facet-item-count").text(" (" + bucket_entry["doc_count"] + ")");
+            $obj.removeAttr("hidden");
+        }
+    }
 }

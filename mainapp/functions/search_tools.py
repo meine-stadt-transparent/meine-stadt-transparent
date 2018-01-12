@@ -121,6 +121,10 @@ def params_to_query(params: dict):
     else:
         s = s.sort("_score")
 
+    s.aggs.bucket('document_type', 'terms', field='_type')
+    s.aggs.bucket('person', 'terms', field='person_ids')
+    s.aggs.bucket('organization', 'terms', field='organization_ids')
+
     return options, s, errors
 
 

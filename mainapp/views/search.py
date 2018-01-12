@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 def _parse_hit(hit):
-    parsed = hit.__dict__['_d_']  # Extract the raw fields from the hit
+    parsed = hit.to_dict()  # Extract the raw fields from the hit
     parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
     parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
     highlights = []
@@ -45,7 +45,7 @@ def _parse_hit(hit):
     return parsed
 
 
-def _search_to_context(query, params: dict, options, results, total_hits, request):
+def _search_to_context(query, params: dict, options, results, aggregations, total_hits, request):
     context = {
         "query": query,
         "results": results,
@@ -55,7 +55,8 @@ def _search_to_context(query, params: dict, options, results, total_hits, reques
         "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
         "total_hits": total_hits,
         "subscribable": params_are_subscribable(params),
-        'is_subscribed': is_subscribed_to_search(request.user, params)
+        "is_subscribed": is_subscribed_to_search(request.user, params),
+        "aggregations": aggregations
     }
 
     return context
@@ -65,7 +66,7 @@ def _search_to_results(search):
     """ Extracted to allow mocking in tests """
     executed = search.execute()
     results = [_parse_hit(hit) for hit in executed]
-    return results, executed.hits.total
+    return results, executed.hits.total, executed.aggregations
 
 
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
@@ -84,12 +85,27 @@ def search_index(request, query):
         return redirect(err.redirect_url)
 
     search = search[:settings.SEARCH_PAGINATION_LENGTH]
-    results, total_hits = _search_to_results(search)
-    context = _search_to_context(query, params, options, results, total_hits, request)
+    results, total_hits, aggregations = _search_to_results(search)
+    context = _search_to_context(query, params, options, results, aggregations, total_hits, request)
 
-    context['searchable_organizations'] = Organization.objects.all()
+    # TODO: Optimize this to get the names from elasticsearch
     org = settings.SITE_DEFAULT_ORGANIZATION
-    context['searchable_persons'] = Person.objects.filter(organizationmembership__organization=org).distinct()
+
+    bucketing = {
+        "organization": Organization.objects.all(),
+        "person": Person.objects.filter(organizationmembership__organization=org).distinct()
+    }
+    for aggs_field, queryset in bucketing.items():
+        aggs_count = 0
+        for db_object in queryset:
+            setattr(db_object, "doc_count", 0)
+            for bucket in context["aggregations"][aggs_field]:
+                if bucket.key == db_object.id:
+                    setattr(db_object, "doc_count", bucket.doc_count)
+                    aggs_count += 1
+                    break
+        setattr(queryset, "aggs_count", aggs_count)
+        context["searchable_{}s".format(aggs_field)] = queryset
 
     return render(request, "mainapp/search/search.html", context)
 
@@ -99,15 +115,16 @@ def search_results_only(request, query):
     params = search_string_to_params(query)
     options, search, _ = params_to_query(params)
     after = int(request.GET.get('after', 0))
-    search = search[after:settings.SEARCH_PAGINATION_LENGTH+after]
-    results, total_hits = _search_to_results(search)
-    context = _search_to_context(query, params, options, results, total_hits, request)
+    search = search[after:settings.SEARCH_PAGINATION_LENGTH + after]
+    results, total_hits, aggregations = _search_to_results(search)
+    context = _search_to_context(query, params, options, results, aggregations, total_hits, request)
 
     result = {
         'results': loader.render_to_string('partials/mixed_results.html', context, request),
         'total_results': total_hits,
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
         'more_link': reverse(search_results_only, args=[query]),
+        'aggregations': aggregations.to_dict()
     }
 
     return JsonResponse(result, safe=False)

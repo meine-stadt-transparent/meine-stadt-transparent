@@ -107,7 +107,6 @@
   }
   .dropdown-menu {
     padding-top: 0;
-    width: 14rem; // Stops changing the width while filtering
     min-height: 5rem;
   }
   .dropdown-scroller {
@@ -142,6 +141,22 @@
   .result {
     margin-top: 15px;
 
+    &:hover {
+      background-color: map-get($theme-colors, dark);
+
+      a {
+        text-decoration: none;
+
+        div {
+          color: map_get($theme-colors, light);
+        }
+
+        i {
+          color: map_get($theme-colors, light);
+        }
+      }
+    }
+
     i {
       color: map_get($theme-colors, dark);
     }
@@ -149,19 +164,6 @@
     .col {
       padding: 0;
       min-width: 0; // Workaround for word-wrapping-problem: https://css-tricks.com/flexbox-truncated-text/
-    }
-
-    a:hover {
-      text-decoration: none;
-
-      div {
-        background-color: map-get($theme-colors, dark);
-        color: map_get($theme-colors, light);
-      }
-
-      i {
-        color: map_get($theme-colors, light);
-      }
     }
 
     &:last-child {
