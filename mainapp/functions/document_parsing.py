@@ -11,6 +11,17 @@ from PyPDF2 import PdfFileReader
 from mainapp.models import SearchStreet, Body, Location, Person
 
 
+def cleanup_extracted_text(text):
+    """
+    :param text: str
+    :return: str
+    """
+
+    # Tries to merge hyphenated text back into whole words; last and first characters have to be lower case
+    text = re.sub(r"([a-z])-\s*\n([a-z])", r"\1\2", text)
+    return text
+
+
 def extract_text_from_pdf(pdf_file):
     """
     :param pdf_file: str
@@ -19,6 +30,7 @@ def extract_text_from_pdf(pdf_file):
     escaped_filename = shlex.quote(pdf_file)
     parser = PDFBox()
     parsed_text = parser.extract_text(escaped_filename)
+    parsed_text = cleanup_extracted_text(parsed_text)
     return parsed_text
 
 
