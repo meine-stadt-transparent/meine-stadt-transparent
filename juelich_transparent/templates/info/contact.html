@@ -6,11 +6,31 @@
 
 {% block content %}
     <article class="container infopage-container">
-        <h1 class="infopage-title">Kontakt</h1>
+        <h1 class="infopage-title">Impressum / Kontakt</h1>
 
-        <h2 class="infopage-header">Betreiber von juelich.meine-stadt-transparent.de</h2>
-        <p>[TODO]</p>
-        <p>E-Mail: <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">
-            {{ settings.TEMPLATE_META.contact_mail }}</a></p>
+        <h2 class="infopage-header">Angaben gemäß § 5 TMG</h2>
+        <address>
+            Schütze &amp; Hößl GbR - Open Source Ratsinformationssystem<br>
+            z.Hd. Tobias Hößl<br>
+            Guido-Schneble-Str. 34<br>
+            80689 München
+        </address>
+
+        <h2>Vertreten durch:</h2>
+        <p>
+            Konstantin Schütze <a href="https://github.com/konstin" title="Konstantin Schütze"><span class="fa fa-github"></span></a> <a href="https://twitter.com/konstinx" title="Konstantin Schütze auf Twitter"><span class="fa fa-twitter"></span></a><br>
+            Tobias Hößl <a href="https://github.com/CatoTH" title="Tobias Hößl auf Github"><span class="fa fa-github"></span></a> <a href="https://twitter.com/TobiasHoessl" title="Tobias Hößl auf Twitter"><span class="fa fa-twitter"></span></a> <a href="https://www.hoessl.eu/" title="Website von Tobias Hößl"><span class="fa fa-home"></span></a>
+        </p>
+
+        <h2>Kontakt</h2>
+        <p>
+            E-Mail: <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">{{ settings.TEMPLATE_META.contact_mail }}</a><br>
+            Telefon: +49-1515-6024223
+        </p>
+
+        <h2>Weitere Angaben</h2>
+        <p>
+            Steuernummer: 143/566/50485
+        </p>
     </article>
 {% endblock %}

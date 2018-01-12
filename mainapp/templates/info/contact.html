@@ -1,15 +1,16 @@
+{# This template should be overridden using a city-specific template as described in the /readme.md #}
+
 {% extends 'base.html' %}
 
 {% load i18n %}
 
-{% block title %}{% trans "Contact" %}{% endblock %}
+{% block title %}{% trans "Contact" context "Contact page title" %}{% endblock %}
 
 {% block content %}
     <article class="container infopage-container">
-        <h1 class="infopage-title">Kontakt</h1>
-        <h2 class="infopage-header">Betreiber</h2>
-        <p>[TODO]</p>
-        <p>E-Mail: <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">
-            {{ settings.TEMPLATE_META.contact_mail }}</a></p>
+        <h1 class="infopage-title">{% trans "Contact" context "Contact page h1" %}</h1>
+        <p>{% trans "E-Mail" context "Contact page" %}:
+            <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">{{ settings.TEMPLATE_META.contact_mail }}</a>
+        </p>
     </article>
 {% endblock %}
