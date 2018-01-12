@@ -13,6 +13,7 @@ class File(DefaultFields):
     # See https://stackoverflow.com/a/643772/3549270#comment11618045_643772
     mime_type = models.CharField(max_length=255)
     legal_date = models.DateField(null=True, blank=True)
+    sort_date = models.DateTimeField(auto_now_add=True)
     filesize = models.IntegerField()
     locations = models.ManyToManyField(Location, blank=True)
     mentioned_persons = models.ManyToManyField(Person, blank=True)

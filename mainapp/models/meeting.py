@@ -60,3 +60,6 @@ class Meeting(DefaultFields, ShortableNameFields):
 
     def get_default_link(self):
         return reverse('meeting', args=[self.id])
+
+    def sort_date(self):
+        return self.start

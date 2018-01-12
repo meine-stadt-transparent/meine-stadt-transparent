@@ -182,7 +182,7 @@ Import the outer shape of a city from OpenStreetMap and write it into an existin
 Now we can import the actual data from the OParl backend. This is going to take quite a while:
 
 ```bash
-./manage.py importoparl --download-files https://www.muenchen-transparent.de/oparl/v1.0
+./manage.py importoparl https://www.muenchen-transparent.de/oparl/v1.0
 ```
 
 Now two variables have to be set in the ``.env``-File:

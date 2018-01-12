@@ -14,4 +14,14 @@ class PaperDocument(DocType):
 
     class Meta:
         model = Paper
-        fields = ['id', 'name', 'short_name', 'description', 'legal_date', 'created', 'modified',]
+
+        fields = [
+            'id',
+            'name',
+            'short_name',
+            'description',
+            'legal_date',
+            'created',
+            'modified',
+            'sort_date',
+        ]

@@ -22,4 +22,5 @@ class FileDocument(DocType):
             'parsed_text',
             'created',
             'modified',
+            'sort_date',
         ]

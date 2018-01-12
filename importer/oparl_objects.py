@@ -131,6 +131,7 @@ class OParlObjects(OParlHelper):
         else:
             paper_type = None
         paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
+        paper.sort_date = paper.created
         paper.reference_number = libobject.get_reference()
         paper.paper_type = paper_type
 
@@ -314,6 +315,7 @@ class OParlObjects(OParlHelper):
         file.parsed_text = libobject.get_text()
         file.mime_type = libobject.get_mime_type() or "application/octet-stream"
         file.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
+        file.sort_date = file.created
 
         if self.download_files:
             self.download_file(file, libobject)

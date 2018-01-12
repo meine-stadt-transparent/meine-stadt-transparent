@@ -32,3 +32,11 @@ class Person(DefaultFields):
 
     def organization_ids(self):
         return list(self.organizationmembership_set.values_list('organization_id', flat=True))
+
+    def sort_date(self):
+        # The most recent time this person joined a new organization
+        dates = list(self.organizationmembership_set.values_list('start', flat=True))
+        if len(dates) > 0:
+            return max(dates)
+        else:
+            return self.created

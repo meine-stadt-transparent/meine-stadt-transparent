@@ -36,3 +36,6 @@ class Organization(DefaultFields, ShortableNameFields):
 
     def get_default_link(self):
         return reverse('organization', args=[self.id])
+
+    def sort_date(self):
+        return self.start

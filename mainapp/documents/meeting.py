@@ -1,5 +1,5 @@
 from django_elasticsearch_dsl import DocType, GeoPointField, NestedField, StringField, IntegerField, \
-    BooleanField
+    BooleanField, DateField
 
 from mainapp.models import Meeting
 from .utils import mainIndex
@@ -8,6 +8,8 @@ from .utils import mainIndex
 @mainIndex.doc_type
 class MeetingDocument(DocType):
     location = GeoPointField()
+    sort_date = DateField()
+
     agenda_items = NestedField(attr="agendaitem_set", properties={
         "key": StringField(),
         "title": StringField(),
