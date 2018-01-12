@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-06 19:32+0100\n"
+"POT-Creation-Date: 2018-01-12 11:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -282,7 +282,8 @@ msgstr "Ihre E-Mail-Adresse ist nun bestätigt"
 msgid "Verify now"
 msgstr "Jetzt bestätigen"
 
-#: templates/account/home.html:19 templates/base.html:60
+#: templates/account/home.html:19
+#: templates/partials/base_navbar_mainmenu.html:34
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -312,7 +313,8 @@ msgstr "E-Mail-Adressen verwalten"
 msgid "Edit email"
 msgstr "E-Mail-Adresse bearbeiten"
 
-#: templates/account/home.html:57 templates/base.html:63
+#: templates/account/home.html:57
+#: templates/partials/base_navbar_mainmenu.html:38
 msgid "Change your password"
 msgstr "Passwort ändern"
 
@@ -420,81 +422,35 @@ msgstr ""
 "Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie "
 "sich ein</a>."
 
-#: templates/base.html:32
-msgctxt "navigation"
-msgid "About"
-msgstr "Diese Seite"
-
-#: templates/base.html:36 templates/email/user-alert.html:91
-msgctxt "navigation"
-msgid "Calendar"
-msgstr "Kalender"
-
-#: templates/base.html:40 templates/email/user-alert.html:91
-msgctxt "navigation"
-msgid "People"
-msgstr "Personen"
-
-#: templates/base.html:44 templates/email/user-alert.html:91
-msgctxt "navigation"
-msgid "Organizations"
-msgstr "Gremien"
-
-#: templates/base.html:50 templates/email/user-alert.html:91
-#: templates/mainapp/index.html:69
-msgctxt "navigation"
-msgid "My Account"
-msgstr "Mein Zugang"
-
-#: templates/base.html:67
-msgid "Sign Out"
-msgstr "Ausloggen"
-
-#: templates/base.html:74 templates/mainapp/index.html:72
-msgctxt "navigation"
-msgid "Sign In"
-msgstr "Einloggen"
-
-#: templates/base.html:83 templates/mainapp/search/search.html:5
-#: templates/mainapp/search/search.html:18
-msgctxt "page_title"
-msgid "Search"
-msgstr "Suche"
-
-#: templates/base.html:84 templates/mainapp/index.html:30
-msgctxt "perform search"
-msgid "Search"
-msgstr "Suchen"
-
-#: templates/base.html:86 templates/mainapp/index.html:33
-#: templates/mainapp/search/search.html:41
-msgctxt "aria label"
-msgid "Show search results"
-msgstr "Suchergebnisse"
-
-#: templates/base.html:111
-msgctxt "navigation"
-msgid "Contact"
-msgstr "Kontakt"
-
-#: templates/base.html:116
-msgctxt "navigation"
-msgid "Privacy Policy"
-msgstr "Datenschutz"
-
-#: templates/base.html:121
-msgctxt "navigation"
-msgid "Feedback"
-msgstr ""
-
-#: templates/base.html:129
-msgid "is a private project and not authorized by any city council"
-msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
-
 #: templates/email/user-alert.html:71 templates/email/user-alert.html:104
 msgctxt "email-new-documents"
 msgid "New documents on Meine Stadt Transparent"
 msgstr "Neue Dokumente auf Meine Stadt Transparent"
+
+#: templates/email/user-alert.html:91
+#: templates/partials/base_navbar_mainmenu.html:9
+msgctxt "navigation"
+msgid "Calendar"
+msgstr "Kalender"
+
+#: templates/email/user-alert.html:91
+#: templates/partials/base_navbar_mainmenu.html:13
+msgctxt "navigation"
+msgid "People"
+msgstr "Personen"
+
+#: templates/email/user-alert.html:91
+#: templates/partials/base_navbar_mainmenu.html:17
+msgctxt "navigation"
+msgid "Organizations"
+msgstr "Gremien"
+
+#: templates/email/user-alert.html:91
+#: templates/mainapp/index/index_main_buttons.html:28
+#: templates/partials/base_navbar_mainmenu.html:23
+msgctxt "navigation"
+msgid "My Account"
+msgstr "Mein Zugang"
 
 #: templates/email/user-alert.html:106
 msgctxt "email-new-documents"
@@ -534,9 +490,22 @@ msgstr "Fotografiert von Luigi Rosa, CC-BY-SA"
 msgid "About this project"
 msgstr "Über dieses Projekt"
 
-#: templates/info/contact.html:5
+#: templates/info/contact.html:7
+#| msgid "Contact"
+msgctxt "Contact page title"
 msgid "Contact"
 msgstr "Kontakt"
+
+#: templates/info/contact.html:11
+#| msgid "Contact"
+msgctxt "Contact page h1"
+msgid "Contact"
+msgstr "Kontakt"
+
+#: templates/info/contact.html:12
+msgctxt "Contact page"
+msgid "E-Mail"
+msgstr ""
 
 #: templates/info/feedback.html:5 templates/info/feedback.html:9
 msgid "Feedback"
@@ -556,19 +525,18 @@ msgstr ""
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: templates/mainapp/calendar.html:6 templates/mainapp/index.html:62
+#: templates/mainapp/calendar.html:6
+#: templates/mainapp/index/index_main_buttons.html:21
 msgid "Calendar"
 msgstr "Kalender"
 
 #: templates/mainapp/file.html:35
-#, fuzzy
 #| msgid "Submitted Papers"
 msgctxt "Singular"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlage"
 
 #: templates/mainapp/file.html:45
-#, fuzzy
 #| msgid "Submitted Papers"
 msgctxt "Plural"
 msgid "Superordinated paper"
@@ -591,51 +559,70 @@ msgstr "Herunterladen"
 msgid "The file is not available"
 msgstr "Die Datei is nicht verfügbar"
 
-#: templates/mainapp/index.html:18
-msgid "informs you about your local city council."
-msgstr "informiert Sie über ihren Stadtrat"
+#: templates/mainapp/index/index_documents.html:3
+msgctxt "Header"
+msgid "Latest Documents"
+msgstr "Neueste Dokumente"
 
-#: templates/mainapp/index.html:20
-msgid "More information"
-msgstr "Weitere Informationen"
+#: templates/mainapp/index/index_main_buttons.html:7
+msgid "About the project"
+msgstr "Über dieses Projekt"
 
-#: templates/mainapp/index.html:29
-msgctxt "page_title"
-msgid "Search for documents, persons, topics and more"
-msgstr "Suche nach Dokumenten, Personen, Themen..."
+#: templates/mainapp/index/index_main_buttons.html:12
+msgid "How do city politics work?"
+msgstr "Wie funktioniert Stadtpolitik?"
 
-#: templates/mainapp/index.html:41
-#, fuzzy
+#: templates/mainapp/index/index_main_buttons.html:18
+#: templates/mainapp/persons.html:6
+msgid "Persons"
+msgstr "Personen"
+
+#: templates/mainapp/index/index_main_buttons.html:31
+#: templates/partials/base_navbar_mainmenu.html:51
+msgctxt "navigation"
+msgid "Sign In"
+msgstr "Einloggen"
+
+#: templates/mainapp/index/index_main_buttons.html:36
+msgid "Organizations"
+msgstr "Gremien"
+
+#: templates/mainapp/index/index_map.html:5
 #| msgid ""
 #| "The markers on the map show places which have been mentioned in the "
 #| "latest documents"
 msgid ""
 "The markers on the map show places which have been mentioned\n"
-"            in the latest documents"
+"        in the latest documents"
 msgstr ""
 "Die Marker auf der Karte zeigen Orte, die in den neusten Dokumenten erwähnt "
 "wurden"
 
-#: templates/mainapp/index.html:48
-msgid "About the project"
-msgstr "Über dieses Projekt"
+#: templates/mainapp/index/index_search.html:7
+msgctxt "page_title"
+msgid "Search for documents, persons, topics and more"
+msgstr "Suche nach Dokumenten, Personen, Themen..."
 
-#: templates/mainapp/index.html:53
-msgid "How do city politics work?"
-msgstr "Wie funktioniert Stadtpolitik?"
+#: templates/mainapp/index/index_search.html:8
+#: templates/partials/base_navbar.html:20
+msgctxt "perform search"
+msgid "Search"
+msgstr "Suchen"
 
-#: templates/mainapp/index.html:59 templates/mainapp/persons.html:6
-msgid "Persons"
-msgstr "Personen"
+#: templates/mainapp/index/index_search.html:12
+#: templates/mainapp/search/search.html:41
+#: templates/partials/base_navbar.html:23
+msgctxt "aria label"
+msgid "Show search results"
+msgstr "Suchergebnisse"
 
-#: templates/mainapp/index.html:77
-msgid "Organizations"
-msgstr "Gremien"
+#: templates/mainapp/index/index_title.html:6
+msgid "informs you about your local city council."
+msgstr "informiert Sie über ihren Stadtrat"
 
-#: templates/mainapp/index.html:84
-msgctxt "Header"
-msgid "Latest Documents"
-msgstr "Neueste Dokumente"
+#: templates/mainapp/index/index_title.html:8
+msgid "More information"
+msgstr "Weitere Informationen"
 
 #: templates/mainapp/meeting.html:11
 msgid "Time of the Meeting"
@@ -800,57 +787,57 @@ msgid "Since"
 msgstr "Seit"
 
 #: templates/mainapp/search/facet_date_range.html:4
-#: templates/mainapp/search/facet_date_range.html:19
+#: templates/mainapp/search/facet_date_range.html:22
 msgctxt "search_form"
 msgid "Time range"
 msgstr "Zeitraum"
 
-#: templates/mainapp/search/facet_date_range.html:7
+#: templates/mainapp/search/facet_date_range.html:9
 msgctxt "search_form"
 msgid "Today"
 msgstr "Heute"
 
-#: templates/mainapp/search/facet_date_range.html:8
+#: templates/mainapp/search/facet_date_range.html:10
 msgctxt "search_form"
 msgid "Last 7 days"
 msgstr "Letzte 7 Tage"
 
-#: templates/mainapp/search/facet_date_range.html:9
+#: templates/mainapp/search/facet_date_range.html:11
 msgctxt "search_form"
 msgid "This month"
 msgstr "Dieser Monat"
 
-#: templates/mainapp/search/facet_date_range.html:10
+#: templates/mainapp/search/facet_date_range.html:12
 msgctxt "search_form"
 msgid "Last month"
 msgstr "Letzter Monat"
 
-#: templates/mainapp/search/facet_date_range.html:11
+#: templates/mainapp/search/facet_date_range.html:13
 msgctxt "search_form"
 msgid "This year"
 msgstr "Dieses Jahr"
 
-#: templates/mainapp/search/facet_date_range.html:12
+#: templates/mainapp/search/facet_date_range.html:14
 msgctxt "search_form"
 msgid "Custom range"
 msgstr "Eigener Zeitraum"
 
-#: templates/mainapp/search/facet_date_range.html:13
+#: templates/mainapp/search/facet_date_range.html:15
 msgctxt "search_form"
 msgid "Apply"
 msgstr "Auswählen"
 
-#: templates/mainapp/search/facet_date_range.html:14
+#: templates/mainapp/search/facet_date_range.html:16
 msgctxt "search_form"
 msgid "Cancel Selection"
 msgstr "Auswahl aufheben"
 
-#: templates/mainapp/search/facet_date_range.html:15
+#: templates/mainapp/search/facet_date_range.html:17
 msgctxt "search_form"
 msgid "Su|Mo|Tu|We|Th|Fr|Sa"
 msgstr "So|Mo|Di|Mi|Do|Fr|Sa"
 
-#: templates/mainapp/search/facet_date_range.html:16
+#: templates/mainapp/search/facet_date_range.html:18
 msgctxt "search_form"
 msgid ""
 "January|February|March|April|May|June|July|August|September|October|November|"
@@ -902,6 +889,13 @@ msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
 
+#: templates/mainapp/search/search.html:5
+#: templates/mainapp/search/search.html:18
+#: templates/partials/base_navbar.html:19
+msgctxt "page_title"
+msgid "Search"
+msgstr "Suche"
+
 #: templates/mainapp/search/search.html:33
 #: templates/mainapp/search/search.html:38
 #: templates/mainapp/search/search.html:39
@@ -931,6 +925,34 @@ msgstr "Neuste zuerst"
 msgctxt "search_form"
 msgid "Oldest first"
 msgstr "Älteste zuerst"
+
+#: templates/partials/base_footer.html:7
+msgctxt "navigation"
+msgid "Contact"
+msgstr "Kontakt"
+
+#: templates/partials/base_footer.html:12
+msgctxt "navigation"
+msgid "Privacy Policy"
+msgstr "Datenschutz"
+
+#: templates/partials/base_footer.html:17
+msgctxt "navigation"
+msgid "Feedback"
+msgstr ""
+
+#: templates/partials/base_footer.html:25
+msgid "is a private project and not authorized by any city council"
+msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
+
+#: templates/partials/base_navbar_mainmenu.html:5
+msgctxt "navigation"
+msgid "About"
+msgstr "Diese Seite"
+
+#: templates/partials/base_navbar_mainmenu.html:43
+msgid "Sign Out"
+msgstr "Ausloggen"
 
 #: templates/partials/deleted_note.html:4
 msgid "Deleted"
