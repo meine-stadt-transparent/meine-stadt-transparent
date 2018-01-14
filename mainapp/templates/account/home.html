@@ -36,7 +36,7 @@
                     </ul>
                 {% else %}
                     <p class="alert alert-info">
-                        {% trans "You can get notified about new documents that might be of interest for you. Simple enter any search query in our search above, like keywords or locations in your city, and you will be able to subscribe to this search and therefore get notified by e-mail about new results." %}
+                        {% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send you custom notifications. Just click the subscribe button on searches, persons or papers and we'll notify you via mail about any changes. You can even select an area on the map as basis for the notifications.{% endblocktrans %}
                     </p>
                 {% endif %}
             </form>
