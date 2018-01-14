@@ -39,6 +39,8 @@
   background-color: transparent;
 }
 
+// These can't be in the calendar.scss because they need to access variables from bootstrap
 #calendar-loading-spinner {
   font-size: $h2-font-size;
+  line-height: $headings-line-height;
 }
