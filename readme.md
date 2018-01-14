@@ -57,7 +57,8 @@ You can execute all the other commands from this readme by prepending them with 
 
 ## Manual Setup
 
-### Requirements:
+### Requirements
+
  - Python >= 3.5 with pip (We test with 3.5 and 3.6)
  - A recent node version with npm
  - A webserver (nginx or apache is recommended)
@@ -93,7 +94,7 @@ Configure your webserver. Example configurations:
 
  - [Apache](etc/apache.conf)
  - [nginx](etc/nginx.conf)
- 
+
 ### pygobject (gi) and liboparl
 
 This is currently only required to use the importer. You can skip it if you don't use the importer.
@@ -117,15 +118,19 @@ Try `python3 -c "import gi"` inside your virtualenv to ensure everything is work
 
 For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Be sure to use `--prefix=/usr --buildtype=release` on `meson`.
 
-### Development
-
-The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
-
-Use `./manage.py runserver` to start the server.
-
 ### Production
 
+The following steps are only required when you want to deploy the site to production. For development, see the corresponding section below
+
+ ```bash
+npm run build:prod
+npm run build:email
+./manage.py collectstatic
+```
+
 Follow the [the official guide](https://docs.djangoproject.com/en/1.11/howto/deployment/). Unlike the guide, we recommend gunicorn over wsgi as gunicorn is much simpler to configure.
+
+The site is now fully configured :tada:
 
 ## Import
 
@@ -207,14 +212,13 @@ To bootstrap a city, two pieces of information are required: the URL of the OPar
 The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the `--use-sternberg-workarounds` to mitigate issues with the current server-side implementations.
 
 ```bash
-./manage.py migrate
 ./manage.py importbodies --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ./manage.py importcityoutline 05358024 1
 ./manage.py importstreets 05358024 1
 ./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
-### Overriding templates, styles
+### Overriding templates and styles
 
 We provide a mechanism for overriding parts of the template and custom styles for a specific city without having to mess with the core of this application, therefore maintaining easy updatability. For example, one obvious page you would want to override is the [contact.html](mainapp/templates/info/contact.html). 
 
@@ -234,25 +238,36 @@ Please note the following hints:
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
   - The new CSS-File needs to be registered in the ``.env``-file: ``TEMPLATE_MAIN_CSS=mainapp-mycity``
 
-## Important Commands
+## Development
 
-### Starting the development server
+The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
 
+### Assets
+
+You can either build the assets once ...
 ```bash
-./manage.py migrate
-./manage.py createsuperuser
-./manage.py runserver
+npm run build:dev
+npm run build:email
 ```
 
-For compiling SCSS/JS automatically:
-
+... or rebuild after every change
 ```bash
 npm run watch
 ```
 
+Run the migrations and create an admin user
+```bash
+./manage.py migrate
+```
+
+Start the actual server
+```bash
+./manage.py runserver
+```
+
 ### Testing
 
-Running the test cases:
+Run the test cases:
 ```bash
 ENV_PATH=./etc/env-test ./manage.py test
 ```
