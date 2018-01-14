@@ -363,7 +363,7 @@ if DEBUG and not TESTING:
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
     if DEBUG_STYLES:
-        CSP_STYLE_SRC = ("'self'", "'unsafe-inline'",)
+        CSP_STYLE_SRC = CSP_STYLE_SRC + ("'unsafe-inline'",)
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")

@@ -35,8 +35,8 @@ class Person(DefaultFields):
 
     def sort_date(self):
         # The most recent time this person joined a new organization
-        dates = list(self.organizationmembership_set.values_list('start', flat=True))
-        if len(dates) > 0:
-            return max(dates)
+        latest = self.organizationmembership_set.filter(start__isnull=False).order_by('-start').first()
+        if latest:
+            return latest.start
         else:
             return self.created
