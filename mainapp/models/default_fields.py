@@ -1,6 +1,8 @@
-from django.db import models
 import re
 import textwrap
+
+from django.db import models
+from simple_history.models import HistoricalRecords
 
 
 class SoftDeleteModelManager(models.Manager):
@@ -31,6 +33,8 @@ class DefaultFields(models.Model):
 
     objects = SoftDeleteModelManager()
     objects_with_deleted = SoftDeleteModelManagerWithDeleted()
+
+    history = HistoricalRecords(inherit=True)
 
     @classmethod
     def by_oparl_id(cls, oparl_id):
