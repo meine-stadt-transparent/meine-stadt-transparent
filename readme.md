@@ -284,7 +284,6 @@ To reindex the elasticsearch index (requires elastic search to be enabled):
 ### Translating strings
 
 ```bash
-cd mainapp/
 django-admin makemessages -a
 # translate django.po
 django-admin compilemessages
