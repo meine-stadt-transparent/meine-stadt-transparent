@@ -1,7 +1,14 @@
-{% if objects|length > 0 %}
+{% load i18n %}
+
+{% if historical %}
+    <p>
+        <i class="fa-custom fa-exclamation-triangle" aria-hidden="true"></i>{% trans "History is not available for" %}
+    {{ name }}
+    </p>
+{% elif objects|length > 0 %}
     <div class="clearfix">
         <p class="float-left">
-            <i class="fa-custom fa-{{ icon }}" aria-hidden="true"></i>{{ name }}&nbsp;
+            <i class="fa-custom fa-{{ icon }}" aria-hidden="true"></i>{{ name }}:&nbsp;
         </p>
         <ul class="list-inline float-left mb-0">
             {% for object in objects %}

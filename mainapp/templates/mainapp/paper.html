@@ -9,6 +9,10 @@
             {% include "partials/deleted_note.html" %}
         {% endif %}
 
+        {% if historical %}
+            {% include "partials/historical_note.html" with view_name="paper" %}
+        {% endif %}
+
         <div class="section">
             {% include "partials/header_name.html" with object=paper %}
 
@@ -25,15 +29,14 @@
             {% endif %}
 
             {% with paper.organizations.all as objects %}
-                {% trans "Submitting Organizations:" as name %}
+                {% trans "Submitting Organizations" as name %}
                 {% include "partials/inline_list.html" with icon="users" link="organization" %}
             {% endwith %}
 
             {% with paper.persons.all as objects %}
-                {% trans "Submitting Persons:" as name %}
+                {% trans "Submitting Persons" as name %}
                 {% include "partials/inline_list.html" with link="person" icon="user" %}
             {% endwith %}
-
             {% if paper.change_request_of %}
                 <p>
                     <i class="fa-custom fa-pencil"></i>Change Request of
@@ -41,8 +44,28 @@
                 </p>
             {% endif %}
 
+            {% if paper.history.count > 1 %}
+                <div class="dropdown paragraph">
+                    <i class="fa-custom fa-history"></i>
+                    <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ paper.history.count }}{% trans " Revisions" context "X revisions" %}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for historical_paper in paper.history.all %}
+                            <a class="dropdown-item" href="{% url 'historical_paper' historical_paper.history_id %}">
+                                {{ historical_paper.history_date }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
             <h2 class="h4">{% trans "Files" %}</h2>
-            {% if paper.main_file or paper.files.count > 0 %}
+            {% if historical %}
+                <p><i class="fa-custom fa-exclamation-triangle"
+                      aria-hidden="true"></i>{% trans "History is not available for files" %}</p>
+            {% elif paper.main_file or paper.files.count > 0 %}
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
                         <li class="font-weight-bold">
@@ -64,14 +87,13 @@
                 <p class="lead">{% trans "No files attached" %}</p>
             {% endif %}
 
-            <h2 class="h4">{% trans "History" %}</h2>
+            <h2 class="h4">{% trans "Consultations" %}</h2>
             <dl class="row">
-                {% for entry in history %}
-                    <dt class="col-3">{{ entry.meeting.start|date }}</dt>
-                    <dd class="col-9">{{ entry }}</dd>
+                {% for consultation in consultations %}
+                    <dt class="col-3">{{ consultation.meeting.start|date }}</dt>
+                    <dd class="col-9">{{ consultation }}</dd>
                 {% endfor %}
             </dl>
-
         </div>
     </div>
 {% endblock %}6

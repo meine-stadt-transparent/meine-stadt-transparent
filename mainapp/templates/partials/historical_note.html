@@ -1,0 +1,11 @@
+{% load i18n %}
+
+<div class="alert alert-danger" role="alert">
+    <h3 class="alert-heading">{% trans 'Old Revision' %}</h3>
+    <p>
+        {% trans "This is the revision a of this document as of " %}{{ historical.history_date }}
+    </p>
+    <p>
+        <a href="{% url view_name historical.id %}">{% trans "Go to the latest version" %}</a>
+    </p>
+</div>

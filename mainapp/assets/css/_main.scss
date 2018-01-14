@@ -44,3 +44,8 @@
   font-size: $h2-font-size;
   line-height: $headings-line-height;
 }
+
+// Sometimes you want a div that's styled like a p
+.paragraph {
+  @extend p;
+}

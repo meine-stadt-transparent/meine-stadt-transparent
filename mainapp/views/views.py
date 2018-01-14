@@ -80,7 +80,17 @@ def paper(request, pk):
     paper = get_object_or_404(Paper, id=pk)
     context = {
         "paper": paper,
-        "history": Consultation.objects.filter(paper=paper).all(),
+        "consulations": paper.consultation_set,
+    }
+    return render(request, "mainapp/paper.html", context)
+
+
+def historical_paper(request, pk):
+    historical_paper = get_object_or_404(Paper.history, history_id=pk)
+    context = {
+        "paper": historical_paper.instance,
+        "historical": historical_paper,
+        "consultations": [],  # historical_paper.consultation_set,
     }
     return render(request, "mainapp/paper.html", context)
 

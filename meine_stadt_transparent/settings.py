@@ -1,9 +1,9 @@
+import logging
 import os
+import sys
 import warnings
 
 import environ
-import sys
-import logging
 
 env = environ.Env()
 env.read_env(env.str('ENV_PATH', '.env'))
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'widget_tweaks',
+    'simple_history',
     # Note: The elasticsearch integration is added further below
 ]
 
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
     'mainapp.middleware.CSPMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
@@ -325,7 +327,6 @@ LOGGING.update(env.json("LOGGING", {}))
 
 OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
 
-
 TEMPLATE_META = {
     "logo_name": env.str('TEMPLATE_LOGO_NAME', 'MST'),
     "product_name": PRODUCT_NAME,
@@ -337,13 +338,13 @@ TEMPLATE_META = {
     "location_limit_lat": 23,
 }
 
-
 TESTING = sys.argv[1:2] == ['test']
 
 DEBUG_TOOLBAR_ACTIVE = False
 
 if DEBUG and not TESTING:
     import pip
+
     installed_packages = [package.project_name for package in pip.get_installed_distributions()]
     if "django-debug-toolbar" in installed_packages:
         # Debug Toolbar
