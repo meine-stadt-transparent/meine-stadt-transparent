@@ -80,7 +80,7 @@ def paper(request, pk):
     paper = get_object_or_404(Paper, id=pk)
     context = {
         "paper": paper,
-        "consulations": paper.consultation_set,
+        "consultations": paper.consultation_set,
     }
     return render(request, "mainapp/paper.html", context)
 
