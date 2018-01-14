@@ -47,13 +47,14 @@
             {% if paper.history.count > 1 %}
                 <div class="dropdown paragraph">
                     <i class="fa-custom fa-history"></i>
-                    <button class="btn btn-sm dropdown-toggle" type="button" id="dropdownMenuButton"
+                    <button class="btn btn-sm btn-secondary dropdown-toggle revision-dropdown-toggle" type="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ paper.history.count }}{% trans " Revisions" context "X revisions" %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for historical_paper in paper.history.all %}
-                            <a class="dropdown-item" href="{% url 'historical_paper' historical_paper.history_id %}">
+                            <a class="dropdown-item" href="{% url 'historical_paper' historical_paper.history_id %}"
+                            title="{{ historical_paper.history_date|date:"c" }}">
                                 {{ historical_paper.history_date }}
                             </a>
                         {% endfor %}

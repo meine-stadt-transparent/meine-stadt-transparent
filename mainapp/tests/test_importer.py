@@ -162,7 +162,7 @@ class TestImporter(TestCase):
     def build_options(cls):
         options = default_options.copy()
         options["cachefolder"] = cls.fake_cache
-        options["storagefolder"] = "/tmp/meine_stadt_transparent/storagefolder"
+        options["storagefolder"] = "/tmp/meine_stadt_transparent/storagefolder"  # TODO
         shutil.rmtree(options["storagefolder"], ignore_errors=True)
         options["entrypoint"] = cls.entrypoint
         options["batchsize"] = 1
