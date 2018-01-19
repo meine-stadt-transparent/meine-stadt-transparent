@@ -4,10 +4,11 @@ from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.utils import html
+from django.views.generic import DetailView
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Organization, Paper, Meeting, Person
+from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context
@@ -160,3 +161,10 @@ def error404(request):
 
 def error500(request):
     return render(request, "error/500.html", status=500)
+
+
+legislative_term = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/legislative_term.html",
+                                      context_object_name="legislative_term")
+body = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/body.html", context_object_name="body")
+location = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/location.html",
+                              context_object_name="location")

@@ -1,22 +1,10 @@
 from django.conf.urls import url
-from django.views.generic import DetailView
 from django.views.static import serve
 
 import mainapp.views.views
 from mainapp.views.profile import profile_view, profile_delete
 from meine_stadt_transparent import settings
 from . import views
-from .models import LegislativeTerm
-from .models import Location, Body
-
-
-def simple_model_view(name: str, model):
-    name_minus = name.replace(' ', '-')
-    name_underscore = name.replace(' ', '_')
-    template_name = 'mainapp/{}.html'.format(name_underscore)
-    dt = DetailView.as_view(model=model, template_name=template_name, context_object_name=name_underscore)
-    return url(r'^{}/(?P<pk>[0-9]+)/$'.format(name_minus), dt, name=name_minus)
-
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -43,9 +31,9 @@ urlpatterns = [
     url(r'^file/(?P<pk>[0-9]+)/$', views.file, name='file'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical/$', views.meeting_ical, name='meeting-ical'),
     url(r'^organization/(?P<pk>[0-9]+)/ical/$', views.committee_ical, name='committee_ical'),
-    simple_model_view('body', Body),
-    simple_model_view('legislative term', LegislativeTerm),
-    simple_model_view('location', Location),
+    url(r'^body/(?P<pk>[0-9]+)/$', views.body, name='body'),
+    url(r'^legislative-term/(?P<pk>[0-9]+)/$', views.legislative_term, name='legislative-term'),
+    url(r'^location/(?P<pk>[0-9]+)/$', views.location, name='location'),
     url(r'^profile/$', profile_view, name='profile-home'),
     url(r'^profile/delete/$', profile_delete, name='profile-delete'),
     # TODO: Warn in production because one should use nginx directly. Also, mime types
