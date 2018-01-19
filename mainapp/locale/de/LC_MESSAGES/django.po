@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # Tobias Hößl <tobias@hoessl.eu>, 2017.
-# Konstantin Schütze <konstantin@schuetze.link>, 2017.
+# Konstantin Schütze <konstin@mailbox.org>, 2017.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-19 10:11+0100\n"
+"POT-Creation-Date: 2018-01-19 12:02+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -561,7 +561,7 @@ msgstr "Herunterladen"
 
 #: mainapp/templates/mainapp/file.html:92
 msgid "The file is not available"
-msgstr "Die Datei is nicht verfügbar"
+msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/index/index_documents.html:3
 msgctxt "Header"
@@ -747,9 +747,17 @@ msgstr "Die Datei is nicht verfügbar"
 msgid "No files attached"
 msgstr "Keine Dateien angehägnt"
 
-#: mainapp/templates/mainapp/paper.html:91
+#: mainapp/templates/mainapp/paper.html:92
 msgid "Consultations"
-msgstr "Benachrichtigungen"
+msgstr "Beratungen"
+
+#: mainapp/templates/mainapp/paper.html:116
+msgid "public agenda item"
+msgstr "Öffentlicher Tagesordnungspunkt"
+
+#: mainapp/templates/mainapp/paper.html:118
+msgid "non-public agenda item"
+msgstr "Nichtöffentlicher Tagesordnungspunkt"
 
 #: mainapp/templates/mainapp/person.html:16
 msgid "Submitted Papers"
@@ -1114,56 +1122,3 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: mainapp/views/search.py:135
 msgid "search disabled"
 msgstr "Suche deaktiviert"
-
-#~ msgid ""
-#~ "You can get notified about new documents that might be of interest for "
-#~ "you. Simple enter any search query in our search above, like keywords or "
-#~ "locations in your city, and you will be able to subscribe to this search "
-#~ "and therefore get notified by e-mail about new results."
-#~ msgstr ""
-#~ "Sie können sich über neue Dokumente benachrichtigen lassen, die für Sie "
-#~ "von Interesse sein könnten. Suchen Sie einfach normal nach Dokumenten, "
-#~ "mit Suchbegriffen, Ortsbezug oder dergleichen, dann haben Sie die "
-#~ "Möglichkeit, neue Suchergebnisse zu abonnieren und folglich E-Mail-"
-#~ "Benachrichtigungen zu erhalten, sobald neue Dokumente veröffentlicht "
-#~ "werden, die Ihrer Suchanfrage entsprechen."
-
-#~ msgid "History"
-#~ msgstr "Historie"
-
-#~ msgid "How do city politics work?"
-#~ msgstr "Wie funktioniert Stadtpolitik?"
-
-#~ msgctxt "search_form"
-#~ msgid "Search"
-#~ msgstr "Suche"
-
-#~ msgid "Document Type Name"
-#~ msgstr "Name des Dokumententyps"
-
-#~ msgctxt "search_form"
-#~ msgid "na"
-#~ msgstr "Egal"
-
-#~ msgid "No papers found"
-#~ msgstr "Keine Dokumente gefunden"
-
-#~ msgid "after"
-#~ msgstr "nach"
-
-#~ msgid "before"
-#~ msgstr "vor"
-
-#~ msgctxt "login"
-#~ msgid "Sign in with..."
-#~ msgstr "Einloggen mit..."
-
-#~ msgctxt "login"
-#~ msgid "Sign in with your e-mail-address"
-#~ msgstr "Mit der E-Mail-Adresse einloggen"
-
-#~ msgid "Log out"
-#~ msgstr "Ausloggen"
-
-#~ msgid "Home"
-#~ msgstr "Start"

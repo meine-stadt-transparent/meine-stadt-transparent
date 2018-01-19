@@ -2113,6 +2113,31 @@
     }
 },
 {
+    "model": "mainapp.historicalagendaitem",
+    "pk": 8,
+    "fields": {
+        "id": 3,
+        "oparl_id": null,
+        "created": "2017-09-10T13:56:31.960Z",
+        "modified": "2018-01-19T10:58:41.923Z",
+        "deleted": false,
+        "key": "1.1",
+        "title": "Discussing the education Bill",
+        "position": 2,
+        "public": true,
+        "result": "Finished",
+        "resolution_text": "",
+        "start": null,
+        "end": null,
+        "meeting": 2,
+        "consultation": 1,
+        "resolution_file": 1,
+        "history_date": "2018-01-19T10:58:41.930Z",
+        "history_change_reason": null,
+        "history_type": "~"
+    }
+},
+{
     "model": "mainapp.agendaitem",
     "pk": 1,
     "fields": {
@@ -2162,7 +2187,7 @@
     "fields": {
         "oparl_id": null,
         "created": "2017-09-10T13:56:31.960Z",
-        "modified": "2017-11-17T13:32:52.577Z",
+        "modified": "2018-01-19T10:58:41.923Z",
         "deleted": false,
         "key": "1.1",
         "title": "Discussing the education Bill",
@@ -2170,9 +2195,9 @@
         "consultation": 1,
         "position": 2,
         "public": true,
-        "result": null,
+        "result": "Finished",
         "resolution_text": "",
-        "resolution_file": null,
+        "resolution_file": 1,
         "start": null,
         "end": null,
         "auxiliary_file": []

@@ -229,6 +229,8 @@ def extract_locations(text, fallback_city=None):
     :type fallback_city: str
     :return: list of mainapp.models.Body
     """
+    if not text:
+        return []
     if not fallback_city:
         fallback_city = settings.GEOEXTRACT_DEFAULT_CITY
 

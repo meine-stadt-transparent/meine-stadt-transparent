@@ -54,7 +54,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for historical_paper in paper.history.all %}
                             <a class="dropdown-item" href="{% url 'historical_paper' historical_paper.history_id %}"
-                            title="{{ historical_paper.history_date|date:"c" }}">
+                               title="{{ historical_paper.history_date|date:"c" }}">
                                 {{ historical_paper.history_date }}
                             </a>
                         {% endfor %}
@@ -88,13 +88,40 @@
                 <p class="lead">{% trans "No files attached" %}</p>
             {% endif %}
 
-            <h2 class="h4">{% trans "Consultations" %}</h2>
+            {% if consultations|length > 0 %}
+                <h2 class="h4">{% trans "Consultations" %}</h2>
+            {% endif %}
             <dl class="row">
                 {% for consultation in consultations %}
                     <dt class="col-3">{{ consultation.meeting.start|date }}</dt>
-                    <dd class="col-9">{{ consultation }}</dd>
+                    <dd class="col-9">
+                        {% if consultation.title %}
+                            <div>{{ consultation.title }}</div>
+                        {% endif %}
+                        {% with consultation.single_agenda_item as item %}
+                            {% if item %}
+                                <div>
+                                    {% spaceless %}
+                                        <a href="{% url "meeting" item.meeting.id %}">
+                                            {{ item.meeting }}</a>
+                                        {% if item %}
+                                            <span>: {{ item }}</span>
+                                        {% endif %}
+                                    {% endspaceless %}
+                                </div>
+                                {% if item.result %}
+                                    <div>{{ item.result }}</div>
+                                {% endif %}
+                                {% if item.public != None %}
+                                    <div class="text-muted">{% trans "public agenda item" %}</div>
+                                {% else %}
+                                    <div class="text-muted">{% trans "non-public agenda item" %}</div>
+                                {% endif %}
+                            {% endif %}
+                        {% endwith %}
+                    </dd>
                 {% endfor %}
             </dl>
         </div>
     </div>
-{% endblock %}6
+{% endblock %}

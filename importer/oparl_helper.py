@@ -174,17 +174,21 @@ class OParlHelper:
 
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)
+        parsed_text = None
         if file.mime_type == "application/pdf":
             self.logger.info("Extracting text from PDF: " + path)
             try:
-                file.parsed_text = extract_text_from_pdf(path)
+                parsed_text = extract_text_from_pdf(path)
                 file.page_count = get_page_count_from_pdf(path)
             except Exception:
                 message = "Could not parse pdf file {}".format(path)
+                self.logger.error(message)
                 self.errorlist.append(message)
         elif file.mime_type == "text/text":
             with open(path) as f:
-                file.parsed_text = f.read()
+                parsed_text = f.read()
+        file.parsed_text = parsed_text
+        return parsed_text
 
     @staticmethod
     def is_queryset_equal_list(queryset, other):

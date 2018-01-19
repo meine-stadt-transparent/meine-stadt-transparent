@@ -26,23 +26,9 @@ class File(DefaultFields):
     def __str__(self):
         return self.displayed_filename
 
-    def rebuild_locations(self):
+    def rebuild_locations(self, parsed_text):
         from mainapp.functions.document_parsing import extract_locations
-
-        if not self.parsed_text:
-            return
-
-        self.locations = extract_locations(self.parsed_text)
-
-    def rebuild_persons(self):
-        from mainapp.functions.document_parsing import extract_persons
-
-        # The title of this paper, and the titles and full text of all assigned files will be searched for persons
-        full_text = self.name + "\n"
-        if self.parsed_text:
-            full_text += self.parsed_text + "\n"
-
-        self.mentioned_persons = extract_persons(full_text)
+        self.locations = extract_locations(parsed_text)
 
     def coordinates(self):
         coordinates = []

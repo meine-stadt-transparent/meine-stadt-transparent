@@ -1,8 +1,8 @@
 from django.db import models
 
-from .organization import Organization
 from .default_fields import DefaultFields
 from .meeting import Meeting
+from .organization import Organization
 from .paper import Paper
 
 
@@ -18,4 +18,8 @@ class Consultation(DefaultFields):
     role = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return "{} {}".format(str(self.meeting), str(self.paper))
+        return "{} {} {}".format(self.meeting, self.meeting.id, self.paper)
+
+    def single_agenda_item(self):
+        if self.agendaitem_set.count() == 1:
+            return self.agendaitem_set.first()

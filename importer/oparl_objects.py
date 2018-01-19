@@ -11,6 +11,7 @@ from django.utils.translation import ugettext as _
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
+from mainapp.functions.document_parsing import extract_locations, extract_persons
 from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
     OrganizationMembership, Organization
 from mainapp.models.consultation import Consultation
@@ -28,6 +29,9 @@ class OParlObjects(OParlHelper):
 
     def __init__(self, options):
         super().__init__(options)
+
+        # We need this here for the sternberg fixup
+        self.client = None
 
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
@@ -323,11 +327,13 @@ class OParlObjects(OParlHelper):
             file.storage_filename = ""
             file.filesize = -1
 
+        parsed_text = file.parsed_text
         if file.storage_filename and not file.parsed_text:
-            self.extract_text_from_file(file)
+            parsed_text = self.extract_text_from_file(file)
 
-        file.rebuild_locations()
-        file.rebuild_persons()
+        file.save()
+        file.locations = extract_locations(parsed_text)
+        file.mentioned_persons = extract_persons(file.name + "\n" + (parsed_text or "") + "\n")
         file.save()
 
         return file
@@ -406,8 +412,12 @@ class OParlObjects(OParlHelper):
             len(self.consultation_organization_queue.items())))
         for consultation, organizations in self.consultation_organization_queue.items():
             orgas = []
-            for org in organizations:
-                orgas.append(Organization.objects_with_deleted.filter(oparl_id=org).first())
+            for org_id in organizations:
+                org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
+                # Fixup sternberg's incapatibility of using canonical urls
+                if not org:
+                    org = self.organization(self.client.parse_url(org_id))
+                orgas.append(org)
             consultation.organizations = orgas
             consultation.save()
 

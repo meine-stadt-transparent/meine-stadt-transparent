@@ -2,6 +2,7 @@ import logging
 
 from django.core.management.base import BaseCommand
 
+from mainapp.functions.document_parsing import extract_persons
 from mainapp.models import File
 
 
@@ -13,7 +14,7 @@ class Command(BaseCommand):
 
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
-        file.rebuild_persons()
+        file.mentioned_persons = extract_persons(file.name + "\n" + (file.parsed_text or "") + "\n")
         file.save()
 
     def handle(self, *args, **options):
