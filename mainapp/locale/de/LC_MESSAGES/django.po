@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-14 22:23+0100\n"
+"POT-Creation-Date: 2018-01-19 10:11+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -573,8 +573,6 @@ msgid "About the project"
 msgstr "Über dieses Projekt"
 
 #: mainapp/templates/mainapp/index/index_main_buttons.html:16
-#, fuzzy
-#| msgid "Notifications"
 msgctxt "sign up"
 msgid "Notifications"
 msgstr "Benachrichtigungen"
@@ -600,9 +598,6 @@ msgstr ""
 "wurden"
 
 #: mainapp/templates/mainapp/index/index_meetings.html:3
-#, fuzzy
-#| msgctxt "Header"
-#| msgid "Meetings"
 msgctxt "Header"
 msgid "Next Meetings"
 msgstr "Nächste Termine"
@@ -728,14 +723,10 @@ msgid "Legal date: "
 msgstr "Offizielles Datum: "
 
 #: mainapp/templates/mainapp/paper.html:32
-#, fuzzy
-#| msgid "Submitting Organizations:"
 msgid "Submitting Organizations"
 msgstr "Eingereicht von"
 
 #: mainapp/templates/mainapp/paper.html:37
-#, fuzzy
-#| msgid "Submitting Persons:"
 msgid "Submitting Persons"
 msgstr "Eingereicht von"
 
@@ -749,8 +740,6 @@ msgid "Files"
 msgstr "Dateien"
 
 #: mainapp/templates/mainapp/paper.html:68
-#, fuzzy
-#| msgid "The file is not available"
 msgid "History is not available for files"
 msgstr "Die Datei is nicht verfügbar"
 
@@ -759,8 +748,6 @@ msgid "No files attached"
 msgstr "Keine Dateien angehägnt"
 
 #: mainapp/templates/mainapp/paper.html:91
-#, fuzzy
-#| msgid "Notifications"
 msgid "Consultations"
 msgstr "Benachrichtigungen"
 
@@ -1022,7 +1009,6 @@ msgid "This is the revision a as of "
 msgstr "Dies ist die Version vom "
 
 #: mainapp/templates/partials/historical_note.html:9
-#, fuzzy
 msgid "Back to the latest version"
 msgstr "Zurück zur aktuellen Version"
 

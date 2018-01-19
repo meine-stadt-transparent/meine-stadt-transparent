@@ -22,3 +22,4 @@ class Command(ImportOParlCommand):
         oparlobject = importer.client.parse_url(options["url"])
         oparltype = convert(oparlobject.get_oparl_type().split("/")[-1])
         getattr(importer, oparltype)(oparlobject)
+        importer.add_missing_associations()
