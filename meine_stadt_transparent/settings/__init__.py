@@ -1,9 +1,8 @@
 import logging
 import os
-import sys
 import warnings
 
-from meine_stadt_transparent.settings.env import env
+from meine_stadt_transparent.settings.env import *
 from meine_stadt_transparent.settings.nested import *
 from meine_stadt_transparent.settings.security import *
 
@@ -271,7 +270,6 @@ TEMPLATE_META = {
     "location_limit_lat": 23,
 }
 
-TESTING = sys.argv[1:2] == ['test']
 
 DEBUG_TOOLBAR_ACTIVE = False
 

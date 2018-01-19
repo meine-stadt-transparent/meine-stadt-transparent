@@ -14,7 +14,13 @@
             {% if organization_group.all|length > 0 %}
                 <div class="multi-list-filter-sublist">
                     {% if organization_group.all|length > 0 %}
-                        <h2 class="h3">{{ organization_group.type }}</h2>
+                        <h2 class="h3">
+                            {% if organization_group.type %}
+                                {{ organization_group.type }}
+                            {% else %}
+                                {% trans "Unknown Type" %}
+                            {% endif %}
+                        </h2>
                         <ul class="list">
                             {% for organization in organization_group.all %}
                                 <li>

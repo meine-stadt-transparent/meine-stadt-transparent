@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-19 12:02+0100\n"
+"POT-Creation-Date: 2018-01-19 17:38+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -331,15 +331,14 @@ msgid "Sign in"
 msgstr "Einloggen"
 
 #: mainapp/templates/account/login.html:16
-#: mainapp/templates/account/signup.html:6
-#: mainapp/templates/account/signup.html:8
-#: mainapp/templates/account/signup.html:46
+#: mainapp/templates/account/signup.html:7
+#: mainapp/templates/account/signup.html:9
+#: mainapp/templates/account/signup.html:49
 msgctxt "login"
 msgid "Sign Up"
 msgstr "Registrieren"
 
 #: mainapp/templates/account/login.html:41
-#: mainapp/templates/account/signup.html:37
 msgid "Forgot Password?"
 msgstr "Passwort vergessen"
 
@@ -348,7 +347,8 @@ msgctxt "login"
 msgid "Sign In"
 msgstr "Einloggen"
 
-#: mainapp/templates/account/login.html:57
+#: mainapp/templates/account/login.html:58
+#: mainapp/templates/account/signup.html:59
 msgctxt "login"
 msgid "Social Login"
 msgstr "Social Media Login"
@@ -421,13 +421,22 @@ msgstr "Ihr Passwort wurde geändert."
 msgid "Set Password"
 msgstr "Passwort vergessen"
 
-#: mainapp/templates/account/signup.html:11
+#: mainapp/templates/account/signup.html:12
 #, python-format
 msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr ""
 "Sie haben bereits einen Account? Dann <a href=\"%(login_url)s\">loggen Sie "
 "sich ein</a>."
+
+#: mainapp/templates/account/signup.html:15
+#, python-format
+msgid ""
+"%(product_name)s can send you email\n"
+"        notifications on topics of your selection. To validate you email "
+"address and to be able to update your settings\n"
+"        later on, you need to open an account."
+msgstr ""
 
 #: mainapp/templates/email/user-alert.html:71
 #: mainapp/templates/email/user-alert.html:104
@@ -682,34 +691,41 @@ msgstr "Tagesordnung"
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
-#: mainapp/templates/mainapp/organization.html:13
+#: mainapp/templates/mainapp/organization.html:15
 msgid "Timeframe of existence:"
 msgstr "Zeitraum des Bestehens:"
 
-#: mainapp/templates/mainapp/organization.html:19
+#: mainapp/templates/mainapp/organization.html:21
 msgctxt "List name"
 msgid "Legislative Terms:"
-msgstr "Legislaturperiode"
+msgstr "Legislaturperioden:"
 
-#: mainapp/templates/mainapp/organization.html:23
+#: mainapp/templates/mainapp/organization.html:25
 msgid "Belongs to this body"
 msgstr "Gehört zu dieser Körperschaft"
 
-#: mainapp/templates/mainapp/organization.html:28
+#: mainapp/templates/mainapp/organization.html:30
 msgid "Is located there"
 msgstr "Standort"
 
-#: mainapp/templates/mainapp/organization.html:33
+#: mainapp/templates/mainapp/organization.html:39
+msgid "Unfortunately, there is only few information about this organization"
+msgstr "Leider gibt es zu dieser Organisation nur sehr wenig Informationen"
+
+#: mainapp/templates/mainapp/organization.html:44
+#: mainapp/templates/mainapp/organization.html:46
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: mainapp/templates/mainapp/organization.html:36
+#: mainapp/templates/mainapp/organization.html:52
+#: mainapp/templates/mainapp/organization.html:53
 msgctxt "Header"
 msgid "Paper"
 msgstr "Vorlagen"
 
-#: mainapp/templates/mainapp/organization.html:39
+#: mainapp/templates/mainapp/organization.html:59
+#: mainapp/templates/mainapp/organization.html:60
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
@@ -717,6 +733,10 @@ msgstr "Sitzungen"
 #: mainapp/templates/mainapp/organizations.html:10
 msgid "Filter"
 msgstr "Filter"
+
+#: mainapp/templates/mainapp/organizations.html:21
+msgid "Unknown Type"
+msgstr "Unbekannter Typ"
 
 #: mainapp/templates/mainapp/paper.html:28
 msgid "Legal date: "
@@ -795,21 +815,6 @@ msgstr "Name"
 #: mainapp/templates/mainapp/search/sorter_widget.html:13
 msgid "Sort by"
 msgstr "Sortieren"
-
-#: mainapp/templates/mainapp/persons.html:69
-msgctxt "persons-list"
-msgid "From"
-msgstr "Von"
-
-#: mainapp/templates/mainapp/persons.html:69
-msgctxt "persons-list"
-msgid "until"
-msgstr "bis"
-
-#: mainapp/templates/mainapp/persons.html:71
-msgctxt "persons-list"
-msgid "Since"
-msgstr "Seit"
 
 #: mainapp/templates/mainapp/search/facet_date_range.html:4
 #: mainapp/templates/mainapp/search/facet_date_range.html:22
@@ -1028,6 +1033,21 @@ msgstr "Keine Historie für"
 msgid "close message"
 msgstr "Nachricht schließen"
 
+#: mainapp/templates/partials/person_grid.html:15
+msgctxt "persons-list"
+msgid "From"
+msgstr "Von"
+
+#: mainapp/templates/partials/person_grid.html:16
+msgctxt "persons-list"
+msgid "until"
+msgstr "bis"
+
+#: mainapp/templates/partials/person_grid.html:18
+msgctxt "persons-list"
+msgid "Since"
+msgstr "Seit"
+
 #: mainapp/templates/partials/person_membership_section.html:21
 msgctxt "Date range separator"
 msgid " - "
@@ -1073,11 +1093,11 @@ msgid "Signup"
 msgstr "Registrieren"
 
 #: mainapp/templates/socialaccount/signup.html:7
-#: mainapp/templates/socialaccount/signup.html:34
+#: mainapp/templates/socialaccount/signup.html:33
 msgid "Sign Up"
 msgstr "Registrieren"
 
-#: mainapp/templates/socialaccount/signup.html:11
+#: mainapp/templates/socialaccount/signup.html:10
 #, python-format
 msgid ""
 "You are about to use your\n"
@@ -1097,17 +1117,17 @@ msgstr "Sitzung"
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/persons.py:73
+#: mainapp/views/persons.py:75
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert,"
 
-#: mainapp/views/persons.py:74 mainapp/views/search.py:82
+#: mainapp/views/persons.py:76 mainapp/views/search.py:82
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: mainapp/views/persons.py:75
+#: mainapp/views/persons.py:77
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 

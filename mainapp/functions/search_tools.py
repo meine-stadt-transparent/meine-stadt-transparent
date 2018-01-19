@@ -1,4 +1,5 @@
 import datetime
+from collections import namedtuple
 
 from django.conf import settings
 from django.urls import reverse
@@ -13,17 +14,7 @@ from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
 
 
-class NotificationSearchResult:
-    title = None
-    url = None
-    type = None
-    type_name = None
-
-    def __init__(self, title, url, type_id, type_name):
-        self.title = title
-        self.url = url
-        self.type = type_id
-        self.type_name = type_name
+NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name"])
 
 
 def _add_date_after(s, raw, options, errors):
@@ -182,12 +173,7 @@ def search_result_for_notification(result):
         title = "Unknown"
         url = ""
 
-    return NotificationSearchResult(
-        title=title,
-        url=url,
-        type_id=result["type"],
-        type_name=DOCUMENT_TYPE_NAMES[result["type"]]
-    )
+    return NotificationSearchResult(title, url, result["type"], DOCUMENT_TYPE_NAMES[result["type"]])
 
 
 def params_to_human_string(params: dict):
