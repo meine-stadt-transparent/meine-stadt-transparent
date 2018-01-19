@@ -13,14 +13,23 @@ from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_sear
 def persons(request):
     """ Shows all members of the default organization, which are made filterable by the parliamentary group
     memberships. """
-    pk = settings.SITE_DEFAULT_ORGANIZATION
-    organization = get_object_or_404(Organization, id=pk)
+    organization = get_object_or_404(Organization, id=settings.SITE_DEFAULT_ORGANIZATION)
+
+    members, parliamentarygroups = person_grid_context(organization)
+
+    context = {
+        "members": members,
+        "parliamentary_groups": parliamentarygroups,
+    }
+    return render(request, 'mainapp/persons.html', context)
+
+
+def person_grid_context(organization):
     group_type = settings.PARLIAMENTARY_GROUPS_TYPE[0]
 
-    # Find all parliamentary groups that are the main gremium
-    crit = Q(organizationmembership__person__organizationmembership__organization__in=[pk])
+    # Find all parliamentary groups that are in that organization
+    crit = Q(organizationmembership__person__organizationmembership__organization__in=[organization.id])
     parliamentarygroups = Organization.objects.filter(organization_type_id=group_type).filter(crit).distinct()
-
     members = []
     memberships = organization.organizationmembership_set.all()
     for membership in memberships:
@@ -39,13 +48,7 @@ def persons(request):
             'groups_classes': json.dumps(groups_css_classes),
             'groups_names': ', '.join(groups_names),
         })
-
-    context = {
-        "current_committee": organization,
-        "members": members,
-        "parliamentary_groups": parliamentarygroups,
-    }
-    return render(request, 'mainapp/persons.html', context)
+    return members, parliamentarygroups
 
 
 def get_ordered_memberships(selected_person):

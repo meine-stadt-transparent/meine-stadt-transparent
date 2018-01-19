@@ -1,5 +1,7 @@
-{% extends 'base.html' %}department
+{% extends 'base.html' %}
 {% load i18n %}
+
+{% load render_bundle from webpack_loader %}
 
 {% block title %}{{ organization.name }}{% endblock %}
 
@@ -29,14 +31,25 @@
                 <i class="fa-custom fa-map-marker" aria-hidden="true"></i>{{ organization.location }}
             </p>
         {% endif %}
+    </div>
 
-        {% trans "Members" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=memberships icon="user" %}
 
+    {% if members|length > 0 %}
+        <section class="container d-flex flex-column">
+            <h2 class="h3">{% trans "Members" %}</h2>
+            {% include "partials/person_grid.html" %}
+        </section>
+    {% endif %}
+
+    <div class="container">
         {% trans "Paper" as name context "Header" %}
         {% include "partials/header_list.html" with objects=papers icon="user" %}
 
         {% trans "Meetings" as name context "Header" %}
         {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
     </div>
+{% endblock %}
+
+{% block additional_js %}
+    {% render_bundle 'persons' 'js' %}
 {% endblock %}

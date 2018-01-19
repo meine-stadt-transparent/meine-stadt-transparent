@@ -25,7 +25,7 @@
         <!-- Filtering by parliamentary group - small/medium screens -->
         <div class="btn-group filter-organizations d-md-none pr-3" role="group">
             <button type="button" class="btn btn-content-switcher dropdown-toggle" data-toggle="dropdown"
-            id="btnFilterDropdown" aria-haspopup="true" aria-expanded="false">
+                    id="btnFilterDropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="fa-custom fa-filter"></span>
                 <span class="current-mode">{% trans "All" context "persons-list" %}</span>
             </button>
@@ -54,28 +54,7 @@
     </section>
 
     <section class="container d-flex flex-column">
-        <ul class="persons-list list-unstyled">
-            {% for member in members %}
-                <li class="col-md-3 col-sm-6 col-xs-12 person person-{{ member.id }}"
-                data-name="{{ member.name }}" data-group-names="{{ member.groups_names }}"
-                data-groups="{{ member.groups_classes }}">
-                    <div>
-                        <a href="{% url 'person' member.id %}">
-                            <div class="name">{{ member.name }}</div>
-                            <div class="organization">{{ member.groups_names }}</div>
-                            <div class="role">{{ member.role }}</div>
-                            <div class="date">
-                                {% if member.end %}
-                                    {% trans "From" context "persons-list" %} {{ member.start }} {% trans "until" context "persons-list" %} {{ member.end }}
-                                {% elif member.start %}
-                                    {% trans "Since" context "persons-list" %} {{ member.start }}
-                                {% endif %}
-                            </div>
-                        </a>
-                    </div>
-                </li>
-            {% endfor %}
-        </ul>
+        {% include "partials/person_grid.html" %}
     </section>
 {% endblock %}
 

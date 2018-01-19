@@ -7,9 +7,10 @@ from django.utils import html
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Consultation, Organization, Paper, Meeting, Person
+from mainapp.models import Body, File, Organization, Paper, Meeting, Person
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
+from mainapp.views import person_grid_context
 
 
 def index(request):
@@ -97,9 +98,13 @@ def historical_paper(request, pk):
 
 def organization(request, pk):
     organization = get_object_or_404(Organization, id=pk)
+
+    members, parliamentarygroups = person_grid_context(organization)
+
     context = {
+        "members": members,
+        "parliamentary_groups": parliamentarygroups,
         "organization": organization,
-        "memberships": Person.objects.filter(organizationmembership__organization_id=pk),
         "papers": Paper.objects.filter(organizations__in=[pk]).order_by('legal_date', 'modified')[:25],
         "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by('start', 'modified')[:25],
     }
