@@ -53,13 +53,15 @@
 
                 {% get_providers as socialaccount_providers %}
                 {% if socialaccount_providers %}
-                    <h3>
-                        {% trans "Social Login" context 'login' %}
-                    </h3>
+                    <div class="allauth-wrapper">
+                        <h3>
+                            {% trans "Social Login" context 'login' %}
+                        </h3>
 
-                    {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+                        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
 
-                    {% include "socialaccount/snippets/login_extra.html" %}
+                        {% include "socialaccount/snippets/login_extra.html" %}
+                    </div>
                 {% endif %}
             </div>
         </div>

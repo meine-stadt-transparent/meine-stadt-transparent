@@ -30,8 +30,10 @@ form.login {
 }
 
 .login-container {
-  max-width: 400px;
+    max-width: 400px;
+}
 
+.allauth-wrapper {
   .facebook {
     background-color: #3b5998;
     color: white;

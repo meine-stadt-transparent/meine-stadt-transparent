@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load widget_tweaks %}
+{% load account socialaccount %}
 
 {% block title %}{% trans "Sign Up" context "login" %}{% endblock %}
 
@@ -11,30 +12,32 @@
     <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
     </p>
 
+    <p>{% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send you email
+        notifications on topics of your selection. To validate you email address and to be able to update your settings
+        later on, you need to open an account.{% endblocktrans %}</p>
+
     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
 
         {{ form.non_field_errors }}
 
         {{ form.email.errors }}
-        <div class="form-group row">
-            <label for="{{ form.email.id_for_label }}" class="col-sm-3  col-form-label">
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}" class="col-sm-3  col-form-label" hidden>
                 {{ form.email.label }}:
             </label>
-            <div class="col-sm-9">
+            <div class="w-100">
                 {{ form.email|add_class:"form-control" }}
             </div>
         </div>
 
         {{ form.password1.errors }}
-        <div class="form-group row">
-            <label for="{{ form.password1.id_for_label }}" class="col-sm-3 col-form-label">
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}" class="col-sm-3 col-form-label" hidden>
                 {{ form.password1.label }}:
             </label>
-            <div class="col-sm-9">
+            <div class="w-100">
                 {{ form.password1|add_class:"form-control" }}
-                <a class="forgot-link"
-                   href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
             </div>
         </div>
 
@@ -43,8 +46,23 @@
         {% endif %}
 
         <div class="save-row">
-            <button type="submit" class="btn btn-primary">{% trans "Sign Up" context "login" %} &raquo;</button>
+            <button type="submit" class="btn btn-primary w-100">{% trans "Sign Up" context "login" %}</button>
         </div>
+
+        <div class="p-3">{# Visual Spacer #}</div>
     </form>
+
+    {% get_providers as socialaccount_providers %}
+    {% if socialaccount_providers %}
+        <div class="allauth-wrapper">
+            <h3>
+                {% trans "Social Login" context 'login' %}
+            </h3>
+
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+
+            {% include "socialaccount/snippets/login_extra.html" %}
+        </div>
+    {% endif %}
 
 {% endblock %}
