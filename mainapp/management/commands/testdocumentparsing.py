@@ -15,3 +15,4 @@ class Command(BaseCommand):
         file = File.objects.get(id=options['file-id'])
         logging.info(file.displayed_filename)
         file.rebuild_locations()
+        file.save()

@@ -326,9 +326,9 @@ class OParlObjects(OParlHelper):
         if file.storage_filename and not file.parsed_text:
             self.extract_text_from_file(file)
 
-        file.save()
         file.rebuild_locations()
         file.rebuild_persons()
+        file.save()
 
         return file
 

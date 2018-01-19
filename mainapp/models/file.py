@@ -33,7 +33,6 @@ class File(DefaultFields):
             return
 
         self.locations = extract_locations(self.parsed_text)
-        self.save()
 
     def rebuild_persons(self):
         from mainapp.functions.document_parsing import extract_persons
@@ -44,7 +43,6 @@ class File(DefaultFields):
             full_text += self.parsed_text + "\n"
 
         self.mentioned_persons = extract_persons(full_text)
-        self.save()
 
     def coordinates(self):
         coordinates = []

@@ -14,6 +14,7 @@ class Command(BaseCommand):
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
         file.rebuild_persons()
+        file.save()
 
     def handle(self, *args, **options):
         if options['id']:
