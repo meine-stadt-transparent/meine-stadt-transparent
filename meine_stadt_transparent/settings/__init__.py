@@ -3,16 +3,15 @@ import os
 import sys
 import warnings
 
-import environ
-
-env = environ.Env()
-env.read_env(env.str('ENV_PATH', '.env'))
+from meine_stadt_transparent.settings.env import env
+from meine_stadt_transparent.settings.nested import *
+from meine_stadt_transparent.settings.security import *
 
 # Mute an irrelevant warning
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 REAL_HOST = env.str('REAL_HOST')
 PRODUCT_NAME = "Meine Stadt Transparent"
 ABSOLUTE_URI_BASE = env.str('ABSOLUTE_URI_BASE', 'https://' + REAL_HOST)
@@ -32,63 +31,8 @@ ALLOWED_HOSTS = [
     'localhost'
 ]
 
-# Application definition
-
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'mainapp',
-    'webpack_loader',
-    'djgeojson',
-    'anymail',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'widget_tweaks',
-    'simple_history',
-    # Note: The elasticsearch integration is added further below
-]
-
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'csp.middleware.CSPMiddleware',
-    'mainapp.middleware.CSPMiddleware',
-    'simple_history.middleware.HistoryRequestMiddleware',
-]
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [env.str('TEMPLATE_DIRS')] if env.str('TEMPLATE_DIRS', None) else [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.i18n',
-                'django_settings_export.settings_export',
-                'mainapp.context_processors.seo',
-            ],
-        },
-    },
-]
-
 SETTINGS_EXPORT = [
     'TEMPLATE_META',
 ]
@@ -278,17 +222,6 @@ CALENDAR_MAX_TIME = env.bool('CALENDAR_MAX_TIME', "21:00:00")
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
 SEARCH_PAGINATION_LENGTH = 20
-
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
-# These are covered by default-src, but we need to define them explicitly for extending them later
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'",)
-# The following properties are not covered by default-src
-CSP_FORM_ACTION = ("'self'",)
-CSP_FRAME_SRC = ("'self'",)
-CSP_FRAME_ANCESTORS = ("'self'",)
 
 LOGGING = {
     'version': 1,
