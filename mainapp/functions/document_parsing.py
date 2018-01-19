@@ -224,11 +224,6 @@ def detect_relevant_bodies(location):
 
 
 def extract_locations(text, fallback_city=None):
-    """
-    :type text: str
-    :type fallback_city: str
-    :return: list of mainapp.models.Body
-    """
     if not text:
         return []
     if not fallback_city:

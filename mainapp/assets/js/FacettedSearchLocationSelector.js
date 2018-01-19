@@ -66,6 +66,10 @@ export default class FacettedSearchLocationSelector {
         this.currMarker.addTo(this.leaflet);
     }
 
+    update(_) {
+        this.updateLocationData();
+    }
+
     updateLocationData() {
         if (this.currPosition && this.$facet.find(".new-radius").val() > 0) {
             this.$inputLat.val(this.currPosition.lat);

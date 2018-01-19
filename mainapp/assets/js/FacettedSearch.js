@@ -14,10 +14,9 @@ export default class FacettedSearch {
 
         this.initAutocomplete();
 
-        this.locationSelector = new FacettedSearchLocationSelector($form.find(".search-facet-location"));
         this.facets = [
             new FacettedSearchSorter($form.find(".search-sort")),
-            this.locationSelector,
+            new FacettedSearchLocationSelector($form.find(".search-facet-location")),
             new FacettedSearchDateRange($form.find(".search-facet-daterange")),
             new FacettedSearchDocumentTypes($form.find(".search-facet-document-type")),
         ];
@@ -63,6 +62,27 @@ export default class FacettedSearch {
         return querystring;
     }
 
+    static updateEndlessScroll(data) {
+        let $data = $(data['results']);
+        let $btn = $("#start-endless-scroll");
+        let current = $data.find("> li").length;
+        let $nothingFound = $('.nothing-found');
+        if (parseInt(data['total_results'], 10) === 0) {
+            $btn.attr('hidden', 'hidden');
+            $nothingFound.removeAttr('hidden');
+        } else if (data['total_results'] > current) {
+            $btn.find('.total-hits').text(data['total_results'] - current);
+            $btn.removeAttr('hidden');
+            $nothingFound.attr('hidden', 'hidden');
+        } else {
+            $btn.attr('hidden', 'hidden');
+            $nothingFound.attr('hidden', 'hidden');
+        }
+        $btn.data('url', data['more_link']);
+        $btn.data('widget').reset();
+        $("#endless-scroll-target").html($data.find("> li"));
+    }
+
     updateSearchResults(querystring) {
         let url = this.$form.data("results-only-url").slice(0, -1) + querystring + "/";
         $.get(url, (data) => {
@@ -70,29 +90,10 @@ export default class FacettedSearch {
                 // This request probably had too much latency and there is another request going on (or completed) already
                 return;
             }
+            FacettedSearch.updateEndlessScroll(data);
 
-            let $data = $(data['results']);
-            let $btn = $("#start-endless-scroll");
-            let current = $data.find("> li").length;
-            let $nothingFound = $('.nothing-found');
-            let $subscribeWidget = $(".subscribe-widget"); // Outside of this form to prevent nested forms
-            if (parseInt(data['total_results'], 10) === 0) {
-                $btn.attr('hidden', 'hidden');
-                $nothingFound.removeAttr('hidden');
-            } else if (data['total_results'] > current) {
-                $btn.find('.total-hits').text(data['total_results'] - current);
-                $btn.removeAttr('hidden');
-                $nothingFound.attr('hidden', 'hidden');
-            } else {
-                $btn.attr('hidden', 'hidden');
-                $nothingFound.attr('hidden', 'hidden');
-            }
-            $btn.data('url', data['more_link']);
-            $btn.data('widget').reset();
-            $subscribeWidget.html(data['subscribe_widget']);
-            $("#endless-scroll-target").html($data.find("> li"));
-
-            this.locationSelector.updateLocationString();
+            // Outside of the form to prevent nested forms
+            $(".subscribe-widget").html(data['subscribe_widget']);
 
             for (let facet of this.facets) {
                 if (typeof facet.update === 'function') {

@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 from django.conf import settings
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.translation import ugettext as _
 
@@ -14,26 +15,24 @@ def persons(request):
     memberships. """
     pk = settings.SITE_DEFAULT_ORGANIZATION
     organization = get_object_or_404(Organization, id=pk)
+    group_type = settings.PARLIAMENTARY_GROUPS_TYPE[0]
 
-    parliamentarygroups = []
+    # Find all parliamentary groups that are the main gremium
+    crit = Q(organizationmembership__person__organizationmembership__organization__in=[pk])
+    parliamentarygroups = Organization.objects.filter(organization_type_id=group_type).filter(crit).distinct()
+
     members = []
     memberships = organization.organizationmembership_set.all()
     for membership in memberships:
-        pers = membership.person
-        groups_css_classes = []
-        groups_names = []
-
-        group_id = settings.PARLIAMENTARY_GROUPS_TYPE[0]
-        for parlmember in pers.organizationmembership_set.filter(organization__organization_type_id=group_id):
-            organization = parlmember.organization
-            groups_css_classes.append("organization-%i" % organization.id)
-            groups_names.append(organization.name)
-            if organization not in parliamentarygroups:
-                parliamentarygroups.append(organization)
+        # Find all the parliamentary groups the current person is in
+        crit = Q(organizationmembership__person__in=[membership.person.id], organization_type_id=group_type)
+        groups_names = Organization.objects.filter(crit).values_list("name", flat=True)
+        groups_ids = Organization.objects.filter(crit).values_list("id", flat=True)
+        groups_css_classes = ["organization-" + str(i) for i in groups_ids]
 
         members.append({
-            'id': pers.id,
-            'name': pers.name_without_salutation(),
+            'id': membership.person.id,
+            'name': membership.person.name_without_salutation(),
             'start': membership.start,
             'end': membership.end,
             'role': membership.role,
