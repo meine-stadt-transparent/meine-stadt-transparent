@@ -6,7 +6,7 @@
 {% block title %}{{ organization.name }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <section class="container">
         {% include "partials/header_name.html" with object=organization %}
 
         {% block exttendmeta %}
@@ -31,23 +31,48 @@
                 <i class="fa-custom fa-map-marker" aria-hidden="true"></i>{{ organization.location }}
             </p>
         {% endif %}
-    </div>
+    </section>
 
 
-    {% if members|length > 0 %}
-        <section class="container d-flex flex-column">
-            <h2 class="h3">{% trans "Members" %}</h2>
-            {% include "partials/person_grid.html" %}
-        </section>
-    {% endif %}
-
-    <div class="container">
-        {% trans "Paper" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=papers icon="user" %}
-
-        {% trans "Meetings" as name context "Header" %}
-        {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
-    </div>
+    <section class="container">
+        {% if not members and not papers and not meetings %}
+            <p class="lead">{% trans "Unfortunately, there is only few information about this organization" %}</p>
+        {% endif %}
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active {% if not members %}disabled{% endif %}" id="member-tab" data-toggle="tab"
+                   role="tab" aria-controls="{% trans "Members" context "Header" %}" aria-selected="true"
+                   href="#member-list">
+                    {% trans "Members" context "Header" %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if not papers %}disabled{% endif %}" id="paper-tab" data-toggle="tab" role="tab"
+                   href="#paper-list"
+                   aria-controls="{% trans "Paper" context "Header" %}" aria-selected="false">
+                    {% trans "Paper" context "Header" %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if not meetings %}disabled{% endif %}" id="meeting-tab" data-toggle="tab"
+                   href="#calendar-list" role="tab"
+                   aria-controls="{% trans "Meetings" context "Header" %}" aria-selected="false">
+                    {% trans "Meetings" context "Header" %}
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="member-list" class="tab-pane fade show active " role="tabpanel" aria-labelledby="member-tab">
+                <div class="d-flex flex-column">{% include "partials/person_grid.html" %}</div>
+            </div>
+            <div id="paper-list" class="tab-pane fade" role="tabpanel" aria-labelledby="paper-tab">
+                {% include "partials/header_list.html" with objects=papers icon="user" %}
+            </div>
+            <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
+                {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
+            </div>
+        </div>
+    </section>
 {% endblock %}
 
 {% block additional_js %}
