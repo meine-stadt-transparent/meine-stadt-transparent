@@ -3,3 +3,7 @@
 
 // noinspection ES6UnusedImports
 import style from '../css/mainapp-bedburg.scss';
+
+$(() => {
+    alert("Hi There");
+});

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-19 17:38+0100\n"
+"POT-Creation-Date: 2018-01-20 21:21+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -69,51 +69,51 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/functions/search_tools.py:36 mainapp/functions/search_tools.py:47
+#: mainapp/functions/search_tools.py:27 mainapp/functions/search_tools.py:38
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/functions/search_tools.py:204
+#: mainapp/functions/search_tools.py:190
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: mainapp/functions/search_tools.py:209
+#: mainapp/functions/search_tools.py:195
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: mainapp/functions/search_tools.py:214
+#: mainapp/functions/search_tools.py:200
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: mainapp/functions/search_tools.py:219
+#: mainapp/functions/search_tools.py:205
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: mainapp/functions/search_tools.py:224
+#: mainapp/functions/search_tools.py:210
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: mainapp/functions/search_tools.py:228
+#: mainapp/functions/search_tools.py:214
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: mainapp/functions/search_tools.py:232
+#: mainapp/functions/search_tools.py:218
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: mainapp/functions/search_tools.py:234
+#: mainapp/functions/search_tools.py:220
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: mainapp/functions/search_tools.py:236
+#: mainapp/functions/search_tools.py:222
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"

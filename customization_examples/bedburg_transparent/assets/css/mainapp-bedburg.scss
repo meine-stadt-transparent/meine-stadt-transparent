@@ -1,0 +1,16 @@
+// Here, you can override variables, e.g. bootstrap variables or the ones defined in _vars.scss
+
+$border-radius: 20px;
+
+$container-max-widths: (
+  md: 1000px,
+);
+
+@import "../../../../mainapp/assets/css/mainapp";
+
+
+// Here, you can add additional styles
+
+body {
+  background-color: #3a87ad;
+}

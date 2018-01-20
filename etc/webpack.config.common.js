@@ -100,14 +100,16 @@ module.exports = {
 };
 
 
-fs.readdirSync('./').forEach((dir) => {
-    let configFile = './' + dir + '/webpack.config.js';
-    if (dir !== 'etc' && fs.existsSync('./' + dir + '/webpack.config.js')) {
+
+let customization_folder = "./customization/";
+fs.readdirSync(customization_folder).forEach((dir) => {
+    let configFile = customization_folder + dir + '/webpack.config.js';
+    if (dir !== 'etc' && fs.existsSync(customization_folder + dir + '/webpack.config.js')) {
         try {
             // Hint: require works relative to the directory of this file (etc/),
             // while fs.readdirSync relative to the project root, therefore this . -> .. trick
             module.exports = merge(module.exports, require('.' + configFile));
-            console.log("Found extra configuration: " + configFile);
+            console.log("Using extra configuration: " + configFile);
         } catch (e) {
             console.error('Could not read file: ' + configFile)
         }

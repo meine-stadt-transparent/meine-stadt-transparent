@@ -218,25 +218,30 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
-### Overriding templates and styles
+### Customizations: Overriding templates and styles
 
-We provide a mechanism for overriding parts of the template and custom styles for a specific city without having to mess with the core of this application, therefore maintaining easy updatability. For example, one obvious page you would want to override is the [contact.html](mainapp/templates/info/contact.html). 
+You can easily override templates and add custom styles, e.g. for matching the corporate design of a specific city.
 
-Two examples are provided to illustrate how to use this:
-- [juelich_transparent](juelich_transparent/): Only one template is overridden
-- [bedburg_transparent](bedburg_transparent/): Some more templates are overridden and a custum style is provided (though the style isn't really different from the main style)
+Two examples are bundled with this repository:
+- [juelich_transparent](customization_examples/juelich_transparent/): Only the [contact form](mainapp/templates/info/contact.html) is overridden
+- [bedburg_transparent](customization_examples/bedburg_transparent/): The contact form is overriden and a custom style sheet is provided. 
 
-Please note the following hints:
-- The name of the city directory is arbitrary, but it needs to be in the project root. If you use git to keep up with our changes, prefix your folder with `custom_` so they are ignored by git.
-- Don't modify out files without creating a pull request. You'll have huge problems updating otherwise. Also version your files in a version controll system.
-- Within a directory, there needs to be a configuration file based on the [env-template](etc/env-template). Usually it is called ``.env``.
-- You need to provide the location of this ``.env`` file to Django as a environment-variable, e.g. by calling manage.py with ``ENV_PATH=juelich_transparent/.env ./manage.py``
-- To override a templates, the ``.env`` file needs to define the directory of the overriding templates. Usually that's the ``templates``-folder within the city directory: ``TEMPLATE_DIRS=juelich_transparent/templates``
-- To change the styles, some files need to be created or modified:
-  - A ``webpack.config.js``-file registering an entry point for Webpack. The entry point needs to point to a JS-File.
-  - The JS-File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file.
+You can easily add your own customizations by putting them into a folder inside `customizations`. Copying over one of the examples should by a good starting point.
+
+To override a templates, set `TEMPLATE_DIRS` in ``.env`` to the ``templates``-folder within the city directory, e.g. ``TEMPLATE_DIRS=customization/juelich_transparent/templates``
+
+The following parts are required to change styles or javascript:
+  - A ``webpack.config.js`` file registering an entry point for Webpack. The entry point needs to point to a js-File. Note that the paths in that file are realtive to [etc](etc/).
+  - The js File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file with an ES6 import.
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
-  - The new CSS-File needs to be registered in the ``.env``-file: ``TEMPLATE_MAIN_CSS=mainapp-mycity``
+  - The new CSS-File needs to be registered in the ``.env``-file, e.g. ``TEMPLATE_MAIN_CSS=mainapp-mycity``
+
+Hints:
+ - Do not modify our files without creating a pull request. You'll have huge problems updating otherwise. Also put your files in a version control system (i.e. git).
+ - Keep the name of the export, the name of the main js file and the name of the main scss file identical to avoid confusion.
+ - templates are written in the [django template language](https://docs.djangoproject.com/en/1.11/topics/templates/#the-django-template-language).
+ - Localization does also work for custom templates. With `./manage.py makemessages -a` you create or update into a file called `locale/de/LC_MESSAGES/django.po` in your custom folder. Translate your strings there and compile them with `./manage.py compilemessages --locale de`. 
+ - We have a strict [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), so no loading of external resources. 
 
 ## Development
 

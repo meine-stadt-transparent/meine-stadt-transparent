@@ -35,7 +35,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [env.str('TEMPLATE_DIRS')] if env.str('TEMPLATE_DIRS', None) else [],
+        'DIRS': env.str('TEMPLATE_DIRS', []),
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
