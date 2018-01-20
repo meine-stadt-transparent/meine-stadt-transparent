@@ -29,6 +29,8 @@ def get_persons_with_prefetch(group_type, organization):
     We want to know which person is in which parliamentary group. Instead of iterating over the persons directly,
     we're gonna go over memberships, which can carry a start and a end date with them. We then prefetch
     all membership -> person -> their memberships -> parliamentary groups (= organizations with the right type)
+
+    Django does some really awesome stuff then and transforms this into 4 fast queries
     """
     queryset = OrganizationMembership.objects.filter(organization__organization_type_id=group_type) \
         .prefetch_related("organization")
