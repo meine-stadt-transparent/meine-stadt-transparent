@@ -2,11 +2,11 @@ import json
 from datetime import datetime
 
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Organization, Person, Paper
+from mainapp.models import Organization, Person, Paper, OrganizationMembership
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 
 
@@ -24,19 +24,32 @@ def persons(request):
     return render(request, 'mainapp/persons.html', context)
 
 
+def get_persons_with_prefetch(group_type, organization):
+    """
+    We want to know which person is in which parliamentary group. Instead of iterating over the persons directly,
+    we're gonna go over memberships, which can carry a start and a end date with them. We then prefetch
+    all membership -> person -> their memberships -> parliamentary groups (= organizations with the right type)
+    """
+    queryset = OrganizationMembership.objects.filter(organization__organization_type_id=group_type) \
+        .prefetch_related("organization")
+    prefetch = Prefetch('person__organizationmembership_set', queryset=queryset, to_attr='prefetched_orgs')
+    memberships = organization.organizationmembership_set.prefetch_related(prefetch)
+    return memberships
+
+
 def person_grid_context(organization):
     group_type = settings.PARLIAMENTARY_GROUPS_TYPE[0]
 
     # Find all parliamentary groups that are in that organization
     crit = Q(organizationmembership__person__organizationmembership__organization__in=[organization.id])
     parliamentarygroups = Organization.objects.filter(organization_type_id=group_type).filter(crit).distinct()
+
+    memberships = get_persons_with_prefetch(group_type, organization)
     members = []
-    memberships = organization.organizationmembership_set.all()
     for membership in memberships:
         # Find all the parliamentary groups the current person is in
-        crit = Q(organizationmembership__person__in=[membership.person.id], organization_type_id=group_type)
-        groups_names = Organization.objects.filter(crit).values_list("name", flat=True)
-        groups_ids = Organization.objects.filter(crit).values_list("id", flat=True)
+        groups_names = [i.organization.name for i in membership.person.prefetched_orgs]
+        groups_ids = [i.organization.id for i in membership.person.prefetched_orgs]
         groups_css_classes = ["organization-" + str(i) for i in groups_ids]
 
         members.append({

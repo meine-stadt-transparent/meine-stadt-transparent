@@ -38,7 +38,7 @@ RUN npm install
 # Build assets
 COPY mainapp/assets /app/mainapp/assets
 COPY etc /app/etc
-RUN npm run build:dev && rm -rf node_modules
+RUN npm run build:dev && npm run build:email && rm -rf node_modules
 
 # Collect static files
 COPY . /app/
