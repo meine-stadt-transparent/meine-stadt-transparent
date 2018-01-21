@@ -9,6 +9,6 @@ gulp.task('default', function() {
     browserSync.init({
         proxy: "localhost:8000"
     });
-    gulp.watch(['./**/*.{html, py}'], reload);
+    gulp.watch(['./**/*.{html,py,css}'], reload);
 });
 

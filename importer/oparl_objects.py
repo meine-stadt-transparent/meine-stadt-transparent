@@ -414,7 +414,7 @@ class OParlObjects(OParlHelper):
             orgas = []
             for org_id in organizations:
                 org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-                # Fixup sternberg's incapatibility of using canonical urls
+                # Fixup sternberg's incapatibility of using canonical urls (FIXME)
                 if not org:
                     org = self.organization(self.client.parse_url(org_id))
                 orgas.append(org)
@@ -423,4 +423,8 @@ class OParlObjects(OParlHelper):
 
         self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
         for paper, organization_url in self.paper_organization_queue:
-            paper.organizations.add(Organization.objects_with_deleted.filter(oparl_id=organization_url).first())
+            org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
+            # Fixup sternberg's incapatibility of using canonical urls (FIXME)
+            if not org:
+                org = self.organization(self.client.parse_url(org_id))
+            paper.organizations.add(org)

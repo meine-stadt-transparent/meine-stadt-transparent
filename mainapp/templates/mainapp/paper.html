@@ -69,12 +69,13 @@
             {% elif paper.main_file or paper.files.count > 0 %}
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
-                        <li class="font-weight-bold">
+                        <li>
                             <a href="{% url 'file' paper.main_file.id %}">
                                 <i class="fa-custom fa-file"></i>
                                 {% firstof paper.main_file.name paper.main_file.displayed_filename %}
                             </a>
                         </li>
+                        <hr>
                     {% endif %}
                     {% for file in paper.files.all %}
                         <li>
