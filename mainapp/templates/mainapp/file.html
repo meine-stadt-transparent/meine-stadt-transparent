@@ -6,33 +6,29 @@
 
 {% block content %}
     <div class="file-main-content {{ renderer }}">
-        <div class="container">
-            {% spaceless %}
-                <div class="file-header d-flex justify-content-between flex-wrap">
-                    <div>
-                        {% if file.name %}
-                            <div>{{ file.name }}</div>
-                        {% endif %}
-                        {% if file.legal_date %}
-                            <div>{{ file.legal_date }}</div>
-                        {% endif %}
-                        {% if file.license %}
-                            <div>{{ file.license }}</div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        {% if is_renderable %}
-                            <div>
-                                <a href="{% url 'media' file.storage_filename %}">
-                                    <i class="fa-custom fa-download" aria-hidden="true"></i>Download
-                                </a>
-                            </div>
-                        {% endif %}
+        <div>
+            <div class="file-header container d-flex justify-content-between flex-wrap">
+                <div>
+                    {% if file.legal_date %}
+                        <div>{{ file.legal_date }}</div>
+                    {% endif %}
+                    {% if file.license %}
+                        <div>{{ file.license }}</div>
+                    {% endif %}
+                </div>
+                <div>
+                    {% spaceless %}
+                        <div>
+                            <a href="{% url 'media' file.storage_filename %}">
+                                <i class="fa fa-custom fa-download" aria-hidden="true"></i>
+                                <span>Download</span>
+                            </a>
+                        </div>
                         {% if papers|length == 1 %}
                             <div>
                                 <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
                                     <i class="fa-custom fa-file" aria-hidden="true"></i>
-                                    {% trans "Superordinated paper" context "Singular" %}
+                                    <span>{% trans "Superordinated paper" context "Singular" %}</span>
                                 </a>
                             </div>
                         {% endif %}
@@ -48,49 +44,94 @@
                                         {% for paper in papers %}
                                             <a class="dropdown-item" href="{% url 'paper' paper.id %}"
                                                title="{{ paper.name }}">
-                                                <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans "Paper" %}
+                                                <i class="fa-custom fa-file" aria-hidden="true"></i>
+                                                <span>{% trans "Paper" %}</span>
                                             </a>
                                         {% endfor %}
                                     </div>
                                 </div>
                             </div>
                         {% endif %}
-                    </div>
+                    {% endspaceless %}
                 </div>
-            {% endspaceless %}
+            </div>
         </div>
 
-        {% if is_available %}
-            {% if renderer == "pdf" %}
-                <div class="container pdfjs-wrapper">
-                    <div class="embed-responsive h-100">
-                        <iframe class="embed-responsive-item"
-                                src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
-                        </iframe>
+        {% comment %}
+        We want to have a sidebar on the left. So what we do is to split the page in three coloumns. The left and the
+        right one are auto-sized while the center one just gets the normal container class (plus a px-0). For the main
+        coloumn this has the same effect as using ml-auto, except we can position our sidebar in the left space
+        {% endcomment %}
+        <div class="container-fluid h-100">
+            <div class="row h-100">
+                {% if is_available %}
+                    {# :soup: #}
+                    <div class="col">
+                        <div class="file-switcher h-100">
+                            <h3 class="h4">{% trans "Documents in this paper" %}</h3>
+                            <div>
+                                <div>
+                                    <div class="list-group list-group-flush">
+                                        {% if papers.0.main_file %}
+                                            <a class="list-group-item list-group-item-action
+                            {% if papers.0.main_file.id == file.id %}active{% endif %}"
+                                               href="{% url 'file' papers.0.main_file.id %}">
+                                                <i class="fa-custom fa-file"></i>
+                                                {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
+                                            </a>
+                                        {% endif %}
+                                        {% for other_file in papers.0.files.all %}
+                                            <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
+                            active{% endif %}"
+                                               href="{% url 'file' other_file.id %}">
+                                                <i class="fa-custom fa-file"></i>
+                                                <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
+                                            </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {% if renderer == "pdf" %}
+                        <div class="col-auto file-content-div ">
+                            <div class="pdfjs-wrapper h-100">
+                                <div class="embed-responsive h-100 w-100">
+                                    <iframe class="embed-responsive-item"
+                                            src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif renderer == "txt" %}
+                        <div class="col-auto file-content-div txt-wrapper ">
+                            <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
+                        </div>
+                    {% elif renderer == "image" %}
+                        <div class="col-auto file-content-div img-wrapper ">
+                            <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
+                                 class="file-image">
+                        </div>
+                    {% else %}
+                        <div class="col-auto file-content-div ">
+                            <p class="lead">{% trans "The file can not be shown" %}</p>
+                            <a class="btn btn-primary btn-lg" role="button"
+                               href="{% url 'media' file.storage_filename %}"
+                               download>
+                                <i class="fa fa-download" aria-hidden="true"></i>
+                                {% trans "Download" %}
+                            </a>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="container">
+                        <p class="lead">{% trans "The file is not available" %}</p>
+                    </div>
+                {% endif %}
+                <div class="col">
+                    {# "Counterweight" for the left col to get the main container centered #}
                 </div>
-            {% elif renderer == "txt" %}
-                <div class="container txt-wrapper">
-                    <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
-                </div>
-            {% elif renderer == "image" %}
-                <div class="container img-wrapper">
-                    <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}" class="file-image">
-                </div>
-            {% else %}
-                <div class="container">
-                    <p class="lead">{% trans "The file can not be shown" %}</p>
-                    <a class="btn btn-primary btn-lg" role="button" href="{% url 'media' file.storage_filename %}"
-                       download>
-                        <i class="fa fa-download" aria-hidden="true"></i>
-                        {% trans "Download" %}
-                    </a>
-                </div>
-            {% endif %}
-        {% else %}
-            <div class="container">
-                <p class="lead">{% trans "The file is not available" %}</p>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}

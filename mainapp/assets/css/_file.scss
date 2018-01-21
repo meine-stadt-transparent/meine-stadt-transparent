@@ -47,3 +47,46 @@
   border-color: $gray-800;
   @extend .px-3;
 }
+
+.file-content-div {
+  width: $container-width;
+  max-width: 100%;
+}
+
+.container-fluid {
+  @media (max-width: $container-width) {
+    .col {
+      display: none;
+    }
+  }
+}
+
+.file-switcher {
+  // Don't ask me why this work
+  // https://stackoverflow.com/a/27461685/3549270
+  max-width: calc(#{$container-width} / 2);
+  flex-direction: column;
+
+  @include media-breakpoint-up(lg) {
+    display: flex;
+  }
+
+  @include media-breakpoint-down(lg) {
+    display: none;
+  }
+
+  > div {
+    overflow: hidden;
+    flex-grow: 1;
+    position: relative;
+
+    > div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: auto;
+    }
+  }
+}
