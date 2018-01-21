@@ -33,7 +33,6 @@
         {% endif %}
     </section>
 
-
     <section class="container">
         {% if not members and not papers and not meetings %}
             <p class="lead">{% trans "Unfortunately, there is only few information about this organization" %}</p>
@@ -62,10 +61,13 @@
             </li>
         </ul>
         <div class="tab-content">
-            <div id="member-list" class="tab-pane fade show active " role="tabpanel" aria-labelledby="member-tab">
+            <div id="member-list" class="tab-pane fade show active" role="tabpanel" aria-labelledby="member-tab">
                 <div class="d-flex flex-column">{% include "partials/person_grid.html" %}</div>
             </div>
             <div id="paper-list" class="tab-pane fade" role="tabpanel" aria-labelledby="paper-tab">
+                <a href="{{ to_search_url }}" class="btn btn-primary btn-sm pull-right">
+                    {% trans "Open in Search" %}
+                </a>
                 {% include "partials/header_list.html" with objects=papers icon="user" %}
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">

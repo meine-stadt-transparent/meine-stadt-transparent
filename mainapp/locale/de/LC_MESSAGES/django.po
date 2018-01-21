@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-20 21:21+0100\n"
+"POT-Creation-Date: 2018-01-21 20:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -611,6 +611,10 @@ msgctxt "Header"
 msgid "Next Meetings"
 msgstr "Nächste Termine"
 
+#: mainapp/templates/mainapp/index/index_meetings.html:21
+msgid "All meetings in the calendar"
+msgstr "Alle Termine im Kalendar"
+
 #: mainapp/templates/mainapp/index/index_search.html:7
 msgctxt "page_title"
 msgid "Search for documents, persons, topics and more"
@@ -708,27 +712,32 @@ msgstr "Gehört zu dieser Körperschaft"
 msgid "Is located there"
 msgstr "Standort"
 
-#: mainapp/templates/mainapp/organization.html:39
+#: mainapp/templates/mainapp/organization.html:38
 msgid "Unfortunately, there is only few information about this organization"
 msgstr "Leider gibt es zu dieser Organisation nur sehr wenig Informationen"
 
-#: mainapp/templates/mainapp/organization.html:44
-#: mainapp/templates/mainapp/organization.html:46
+#: mainapp/templates/mainapp/organization.html:43
+#: mainapp/templates/mainapp/organization.html:45
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
+#: mainapp/templates/mainapp/organization.html:51
 #: mainapp/templates/mainapp/organization.html:52
-#: mainapp/templates/mainapp/organization.html:53
 msgctxt "Header"
 msgid "Paper"
 msgstr "Vorlagen"
 
+#: mainapp/templates/mainapp/organization.html:58
 #: mainapp/templates/mainapp/organization.html:59
-#: mainapp/templates/mainapp/organization.html:60
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
+
+#: mainapp/templates/mainapp/organization.html:69
+#: mainapp/templates/mainapp/person.html:35
+msgid "Open in Search"
+msgstr "In der Suche öffnen"
 
 #: mainapp/templates/mainapp/organizations.html:10
 msgid "Filter"
@@ -787,7 +796,7 @@ msgstr "Eingereichte Dokumente"
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
-#: mainapp/templates/mainapp/person.html:32
+#: mainapp/templates/mainapp/person.html:33
 msgid "Mentioned in"
 msgstr "Namentliche Erwähnungen"
 
@@ -1117,17 +1126,17 @@ msgstr "Sitzung"
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/persons.py:75
+#: mainapp/views/persons.py:91
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert,"
 
-#: mainapp/views/persons.py:76 mainapp/views/search.py:82
+#: mainapp/views/persons.py:92 mainapp/views/search.py:82
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: mainapp/views/persons.py:77
+#: mainapp/views/persons.py:93
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 

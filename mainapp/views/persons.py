@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.db.models import Q, Prefetch
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 from mainapp.models import Organization, Person, Paper, OrganizationMembership
@@ -110,5 +111,6 @@ def person(request, pk):
         "memberships": memberships,
         "subscribable": True,
         "is_subscribed": is_subscribed_to_search(request.user, search_params),
+        "to_search_url": reverse("search", args=["person:" + str(selected_person.id)])
     }
     return render(request, 'mainapp/person.html', context)

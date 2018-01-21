@@ -4,6 +4,7 @@ from datetime import datetime
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.utils import html
 from django.views.generic import DetailView
 
@@ -110,6 +111,7 @@ def organization(request, pk):
         "organization": organization,
         "papers": Paper.objects.filter(organizations__in=[pk]).order_by('legal_date', 'modified')[:25],
         "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by('start', 'modified')[:25],
+        "to_search_url": reverse("search", args=["organization:" + str(organization.id)])
     }
     return render(request, "mainapp/organization.html", context)
 

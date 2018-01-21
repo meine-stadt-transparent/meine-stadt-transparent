@@ -29,7 +29,12 @@
                 {% endif %}
                 {% if mentioned_in %}
                     <section>
-                        <h2 class="h3">{% trans "Mentioned in" %}</h2>
+                        <h2 class="h3 clearfix">
+                            {% trans "Mentioned in" %}
+                            <a class="btn btn-sm btn-primary pull-right" href="{{ to_search_url }}">
+                                {% trans "Open in Search" %}
+                            </a>
+                        </h2>
                         <ul class="papers">
                             {% for group in mentioned_in %}
                                 <li class="paper">

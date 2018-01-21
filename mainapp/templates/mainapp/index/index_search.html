@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="container pt-3">
+<section class="container pt-3">
     <form class="form search-autocomplete search-autocomplete-home" method="GET" action="{% url 'search' '' %}">
         <div class="input-group">
             <input name="search-query" type="text" class="form-control" value="" autocomplete="off"
@@ -12,4 +12,4 @@
                     title="{% trans 'Show search results' context 'aria label' %}"></button>
         </div>
     </form>
-</div>
+</section>
