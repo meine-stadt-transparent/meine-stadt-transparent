@@ -3,13 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Tobias Hößl <tobias@hoessl.eu>, 2017.
 # Konstantin Schütze <konstin@mailbox.org>, 2017.
-#
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-21 20:12+0100\n"
+"POT-Creation-Date: 2018-01-21 23:40+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -545,30 +543,34 @@ msgstr "Datenschutz"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: mainapp/templates/mainapp/file.html:35
+#: mainapp/templates/mainapp/file.html:31
 msgctxt "Singular"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlage"
 
-#: mainapp/templates/mainapp/file.html:45
+#: mainapp/templates/mainapp/file.html:41
 msgctxt "Plural"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlagen"
 
-#: mainapp/templates/mainapp/file.html:51
+#: mainapp/templates/mainapp/file.html:48
 msgid "Paper"
 msgstr "Vorlage"
 
+#: mainapp/templates/mainapp/file.html:72
+msgid "Documents in this paper"
+msgstr "Dokumente in dieser Vorlage"
+
 # TODO
-#: mainapp/templates/mainapp/file.html:82
+#: mainapp/templates/mainapp/file.html:118
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
 
-#: mainapp/templates/mainapp/file.html:86
+#: mainapp/templates/mainapp/file.html:123
 msgid "Download"
 msgstr "Herunterladen"
 
-#: mainapp/templates/mainapp/file.html:92
+#: mainapp/templates/mainapp/file.html:129
 msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
@@ -772,19 +774,19 @@ msgstr "Dateien"
 msgid "History is not available for files"
 msgstr "Die Datei is nicht verfügbar"
 
-#: mainapp/templates/mainapp/paper.html:88
+#: mainapp/templates/mainapp/paper.html:89
 msgid "No files attached"
 msgstr "Keine Dateien angehägnt"
 
-#: mainapp/templates/mainapp/paper.html:92
+#: mainapp/templates/mainapp/paper.html:93
 msgid "Consultations"
 msgstr "Beratungen"
 
-#: mainapp/templates/mainapp/paper.html:116
+#: mainapp/templates/mainapp/paper.html:117
 msgid "public agenda item"
 msgstr "Öffentlicher Tagesordnungspunkt"
 
-#: mainapp/templates/mainapp/paper.html:118
+#: mainapp/templates/mainapp/paper.html:119
 msgid "non-public agenda item"
 msgstr "Nichtöffentlicher Tagesordnungspunkt"
 

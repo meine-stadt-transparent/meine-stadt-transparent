@@ -62,13 +62,13 @@
         right one are auto-sized while the center one just gets the normal container class (plus a px-0). For the main
         coloumn this has the same effect as using ml-auto, except we can position our sidebar in the left space
         {% endcomment %}
-        <div class="container-fluid h-100">
+        <div class="file-layout-container container-fluid h-100">
             <div class="row h-100">
                 {% if is_available %}
-                    {# :soup: #}
                     <div class="col">
                         <div class="file-switcher h-100">
                             <h3 class="h4">{% trans "Documents in this paper" %}</h3>
+                            {# Yep, those dics are actually needed :soup: #}
                             <div>
                                 <div>
                                     <div class="list-group list-group-flush">
@@ -93,8 +93,8 @@
                             </div>
                         </div>
                     </div>
-                    {% if renderer == "pdf" %}
-                        <div class="col-auto file-content-div ">
+                    <div class="col-auto file-content-div">
+                        {% if renderer == "pdf" %}
                             <div class="pdfjs-wrapper h-100">
                                 <div class="embed-responsive h-100 w-100">
                                     <iframe class="embed-responsive-item"
@@ -102,18 +102,16 @@
                                     </iframe>
                                 </div>
                             </div>
-                        </div>
-                    {% elif renderer == "txt" %}
-                        <div class="col-auto file-content-div txt-wrapper ">
-                            <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
-                        </div>
-                    {% elif renderer == "image" %}
-                        <div class="col-auto file-content-div img-wrapper ">
-                            <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
-                                 class="file-image">
-                        </div>
-                    {% else %}
-                        <div class="col-auto file-content-div ">
+                        {% elif renderer == "txt" %}
+                            <div class="txt-wrapper ">
+                                <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
+                            </div>
+                        {% elif renderer == "image" %}
+                            <div class="img-wrapper ">
+                                <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
+                                     class="file-image">
+                            </div>
+                        {% else %}
                             <p class="lead">{% trans "The file can not be shown" %}</p>
                             <a class="btn btn-primary btn-lg" role="button"
                                href="{% url 'media' file.storage_filename %}"
@@ -121,8 +119,8 @@
                                 <i class="fa fa-download" aria-hidden="true"></i>
                                 {% trans "Download" %}
                             </a>
-                        </div>
-                    {% endif %}
+                        {% endif %}
+                    </div>
                 {% else %}
                     <div class="container">
                         <p class="lead">{% trans "The file is not available" %}</p>
