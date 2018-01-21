@@ -4,7 +4,7 @@
     {% for result in results %}
         <li class="clearfix result">
             <a href="{% url result.type result.id %}" class="no-link-color">
-                <article class="py-2 container">
+                <div class="py-2 container">
                     <div class="row">
                         <div class="col-auto p-2">
                             <i class="fa fa-fw fa-3x result-icon
@@ -12,9 +12,9 @@
                             </i>
                         </div>
                         <div class="col">
-                            <h2 class="text-truncate result-title" title="{{ result.name_escaped | safe }}">
+                            <div class="text-truncate lead" title="{{ result.name_escaped | safe }}">
                                 {{ result.name_escaped | safe }}
-                            </h2>
+                            </div>
                             <div class="text-muted text-truncate">
                                 <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
                                 {% if result.legal_date %}
@@ -31,7 +31,7 @@
                             {% endif %}
                         </div>
                     </div>
-                </article>
+                </div>
             </a>
         </li>
     {% endfor %}

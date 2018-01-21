@@ -1,5 +1,6 @@
 import json
 
+from datetime import datetime
 from django.conf import settings
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
@@ -33,6 +34,7 @@ def index(request):
     context = {
         'map': _build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
+        'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2]
     }
     return render(request, 'mainapp/index/index.html', context)
 

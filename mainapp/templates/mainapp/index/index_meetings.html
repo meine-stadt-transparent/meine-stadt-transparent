@@ -1,5 +1,26 @@
 {% load i18n %}
-<div class="container pt-3">
+<section class="container pt-3">
     <h2>{% trans "Next Meetings" context "Header" %}</h2>
-    <p>TODO</p>
-</div>
+    <div class="row">
+        {% for meeting in next_meetings %}
+            <div class="col">
+                <a class="btn btn-outline-dark w-100" href="{% url "meeting" meeting.id %}">
+                    <div class="row">
+                        <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
+                        <div class="col">
+                            <div class="lead">{{ meeting.name }}</div>
+                            <div>{{ meeting.start }}</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex flex-row-reverse">
+        <div class="pt-3 lead">
+            <a href="{% url "calendar" %}">{% trans "All meetings in the calendar" %}
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
