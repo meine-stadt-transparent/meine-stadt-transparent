@@ -8,7 +8,7 @@ from django.views.generic import DetailView
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm
+from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm, Location
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context
@@ -163,8 +163,6 @@ def error500(request):
     return render(request, "error/500.html", status=500)
 
 
-legislative_term = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/legislative_term.html",
-                                      context_object_name="legislative_term")
-body = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/body.html", context_object_name="body")
-location = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/location.html",
-                              context_object_name="location")
+legislative_term = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/legislative_term.html")
+body = DetailView.as_view(model=Body, template_name="mainapp/body.html")
+location = DetailView.as_view(model=Location, template_name="mainapp/location.html")

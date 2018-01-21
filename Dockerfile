@@ -25,23 +25,14 @@ COPY --from=0 /usr/share/locale/de_DE/LC_MESSAGES/liboparl.mo /usr/share/locale/
 COPY --from=0 /usr/lib/x86_64-linux-gnu/liboparl-0.2.so /usr/lib/x86_64-linux-gnu/liboparl-0.2.so
 COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib
 
-# Python dependencies
-COPY Pipfile* /app/
+COPY . /app/
+
 RUN pip3 install --upgrade pipenv && \
     pipenv install --deploy && \
     ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
 
-# Javascript dependencies
-COPY package.json* /app/
-RUN npm install
+RUN npm install && npm run build:dev && npm run build:email && rm -rf node_modules
 
-# Build assets
-COPY mainapp/assets /app/mainapp/assets
-COPY etc /app/etc
-RUN npm run build:dev && npm run build:email && rm -rf node_modules
-
-# Collect static files
-COPY . /app/
 # Allow overriding the default env
 RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true) && rm -f .env
 ENV ENV_PATH "/config/.env"
