@@ -142,6 +142,9 @@ class OParlObjects(OParlHelper):
     def organization(self, libobject: OParl.Organization):
         return self.process_object(libobject, Organization, self.organization_core, self.organization_embedded)
 
+    def organization_without_embedded(self, libobject: OParl.Organization):
+        return self.process_object(libobject, Organization, self.organization_core, lambda x, y: False)
+
     def organization_embedded(self, libobject, organization):
         for membership in libobject.get_membership():
             self.membership(organization, membership)
@@ -414,9 +417,8 @@ class OParlObjects(OParlHelper):
             orgas = []
             for org_id in organizations:
                 org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-                # Fixup sternberg's incapatibility of using canonical urls (FIXME)
                 if not org:
-                    org = self.organization(self.client.parse_url(org_id))
+                    org = self.organization_without_embedded(self.client.parse_url(org_id))
                 orgas.append(org)
             consultation.organizations = orgas
             consultation.save()
@@ -424,7 +426,6 @@ class OParlObjects(OParlHelper):
         self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
         for paper, organization_url in self.paper_organization_queue:
             org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-            # Fixup sternberg's incapatibility of using canonical urls (FIXME)
             if not org:
-                org = self.organization(self.client.parse_url(org_id))
+                org = self.organization_without_embedded(self.client.parse_url(org_id))
             paper.organizations.add(org)
