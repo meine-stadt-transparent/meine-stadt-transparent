@@ -26,3 +26,12 @@ $zindex-dropdown: $typeahead-zindex + 1 !default; // The User-menu should be abo
 $content-switcher-btn-padding: .375rem .75rem !default;
 $persons-list-background: #f8f9fa !default; // $gray-100
 $calendarEventBackground: #3a87ad !default;
+
+// Heading size: one step smaller than bootstrap's default
+$font-size-base: 1rem !default;
+$h1-font-size: $font-size-base * 2 !default;
+$h2-font-size: $font-size-base * 1.75 !default;
+$h3-font-size: $font-size-base * 1.5 !default;
+$h4-font-size: $font-size-base * 1.25 !default;
+$h5-font-size: $font-size-base !default;
+$h6-font-size: $font-size-base !default;

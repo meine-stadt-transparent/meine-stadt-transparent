@@ -62,7 +62,7 @@
                 </div>
             {% endif %}
 
-            <h2 class="h4">{% trans "Files" %}</h2>
+            <h2 class="paper-section-heading">{% trans "Files" %}</h2>
             {% if historical %}
                 <p><i class="fa-custom fa-exclamation-triangle"
                       aria-hidden="true"></i>{% trans "History is not available for files" %}</p>
@@ -90,7 +90,7 @@
             {% endif %}
 
             {% if consultations|length > 0 %}
-                <h2 class="h4">{% trans "Consultations" %}</h2>
+                <h2 class="paper-section-heading">{% trans "Consultations" %}</h2>
             {% endif %}
             <dl class="row">
                 {% for consultation in consultations %}
