@@ -1,9 +1,9 @@
 {% load i18n %}
-<section class="container pt-3">
+<section class="container pt-3 home-container-meetings">
     <h2>{% trans "Next Meetings" context "Header" %}</h2>
     <div class="row">
         {% for meeting in next_meetings %}
-            <div class="col">
+            <div class="col meeting-col">
                 <a class="btn btn-outline-dark w-100" href="{% url "meeting" meeting.id %}">
                     <div class="row">
                         <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
