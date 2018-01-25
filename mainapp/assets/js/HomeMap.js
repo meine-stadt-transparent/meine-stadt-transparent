@@ -33,6 +33,9 @@ export default class IndexView {
                 console.warn('Multiple papers in this location', location);
             }
             for (let paper of Object.values(location.papers)) {
+                if (!location.coordinates) {
+                    continue;
+                }
                 let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
                 let files = '';
                 for (let i = 0; i < paper.files.length; i++) {
