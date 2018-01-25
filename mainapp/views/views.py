@@ -2,7 +2,7 @@ import json
 
 from datetime import datetime
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import html
@@ -60,10 +60,15 @@ def _build_map_object(body: Body, geo_papers):
 def organizations(request):
     organizations_ordered = []
     for organization_type in OrganizationType.objects.all():
+        ct1 = Count('organizationmembership', distinct=True)
+        ct2 = Count('paper', distinct=True)
+        ct3 = Count('meeting', distinct=True)
+        all_orgas = Organization.objects.annotate(ct1, ct2, ct3).filter(organization_type=organization_type).all()
+
         organizations_ordered.append({
             "organization_type": organization_type,
             "type": ORGANIZATION_TYPE_NAMES.get(organization_type.name, organization_type.name),
-            "all": Organization.objects.filter(organization_type=organization_type).all(),
+            "all": all_orgas,
         })
 
     for i in settings.ORGANIZATION_TYPE_SORTING:

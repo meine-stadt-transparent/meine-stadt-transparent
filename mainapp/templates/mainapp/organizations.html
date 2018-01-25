@@ -26,7 +26,11 @@
                                 <li>
                                     <span class="multi-list-filter-value
 {% if organization.id == main_organization %}font-weight-bold{% endif %}">
-                                            <a href="{% url "organization" organization.id %}">{{ organization.name }}</a>
+                                    {% if organization.organizationmembership__count > 0 or organization.paper__count > 0 or organization.meeting__count > 0 %}
+                                        <a href="{% url "organization" organization.id %}">{{ organization.name }}</a>
+                                    {% else %}
+                                        {{ organization.name }}
+                                    {% endif %}
                                     </span>
                                 </li>
                             {% endfor %}
