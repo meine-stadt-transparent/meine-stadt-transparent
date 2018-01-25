@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const merge = require('webpack-merge');
+const Autoprefixer = require('autoprefixer');
 
 module.exports = {
     context: path.resolve(__dirname),
@@ -50,6 +51,13 @@ module.exports = {
                     loader: 'sass-loader',
                     options: {
                         sourceMap: (process.env.NODE_ENV !== 'production')
+                    }
+                }, {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: () => [Autoprefixer({browsers: [">1%", "last 10 versions", "IE 9", "Firefox 3"]})],
+                        remove: false,
+                        sourceMap: true
                     }
                 }]
             })
