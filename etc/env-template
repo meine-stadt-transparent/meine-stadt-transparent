@@ -8,7 +8,7 @@ ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elastic
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
 USE_ELASTICSEARCH=False
-# Use DATABASE_URL=mysql://username:password@localhost/databasename in production
+# Use DATABASE_URL=mysql://username:password@localhost/databasename?charset=utf8mb4 in production
 DATABASE_URL=sqlite:///db.sqlite3
 DEFAULT_FROM_EMAIL=info@example.org
 DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
