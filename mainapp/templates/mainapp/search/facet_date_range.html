@@ -24,5 +24,39 @@
         </div>
         <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}">
         <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}">
+
+        <div class="daterangepicker dropdown-menu daterangepicker-template some-class">
+            <div class="calendar left">
+                <div class="daterangepicker_input">
+                    <input class="input-mini form-control" type="text" name="daterangepicker_start" value=""/>
+                    <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+                    <div class="calendar-time">
+                        <div></div>
+                        <i class="fa fa-clock-o glyphicon glyphicon-time"></i>
+                    </div>
+                </div>
+                <div class="calendar-table"></div>
+            </div>
+            <div class="calendar right">
+                <div class="daterangepicker_input">
+                    <input class="input-mini form-control" type="text" name="daterangepicker_end" value=""/>
+                    <i class="fa fa-calendar glyphicon glyphicon-calendar"></i>
+                    <div class="calendar-time">
+                        <div></div>
+                        <i class="fa fa-clock-o glyphicon glyphicon-time"></i>
+                    </div>
+                </div>
+                <div class="calendar-table"></div>
+            </div>
+            <div class="ranges">
+                <div class="range_inputs">
+                    <button class="applyBtn btn-primary" disabled="disabled" type="button"></button>
+                    <button class="cancelBtn btn-transparent remove-filter" type="button">
+                        <i class="fa-custom fa-close"></i>
+                        <span>{% trans "Cancel selection" context "Remove search filter" %}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </section>

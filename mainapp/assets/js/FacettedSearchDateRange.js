@@ -6,6 +6,7 @@ export default class FacettedSearchDateRange {
 
         this.$inputAfter = this.$facet.find("input[name=after]");
         this.$inputBefore = this.$facet.find("input[name=before]");
+        this.$template = this.$facet.find(".daterangepicker-template").removeClass("daterangepicker-template").remove();
 
         this.$openerBtn = $facet.find('#timeRangeButton');
         let strings = this.$openerBtn.data("strings");
@@ -22,7 +23,7 @@ export default class FacettedSearchDateRange {
             locale: {
                 format: 'YYYY-MM-DD',
                 applyLabel: strings['apply'],
-                cancelLabel: strings['na'],
+                cancelLabel: this.$template.find(".cancelBtn").html(),
                 customRangeLabel: strings['custom'],
                 monthNames: strings['month_names'].split('|'),
                 daysOfWeek: strings['day_names'].split('|'),
@@ -34,8 +35,9 @@ export default class FacettedSearchDateRange {
             linkedCalendars: false,
             alwaysToggle: true,
             ranges: this.dateRanges,
-            applyClass: "btn-primary",
-            cancelClass: "btn-danger"
+            applyClass: "",
+            cancelClass: "",
+            template: this.$template
         };
     }
 
