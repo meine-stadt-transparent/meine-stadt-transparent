@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-21 23:40+0100\n"
+"POT-Creation-Date: 2018-01-25 15:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,7 +57,7 @@ msgctxt "Document Type Name"
 msgid "Papers"
 msgstr "Vorlagen"
 
-#: mainapp/documents/__init__.py:23
+#: mainapp/documents/__init__.py:23 mainapp/models/organization.py:22
 msgctxt "Document Type Name"
 msgid "Organizations"
 msgstr "Gremien"
@@ -123,17 +123,32 @@ msgstr "Neue Suchergebnisse"
 #: mainapp/models/organization.py:12
 msgctxt "Document Type Name"
 msgid "Parliamentary Group"
-msgstr ""
+msgstr "Fraktion"
 
 #: mainapp/models/organization.py:13
 msgctxt "Document Type Name"
 msgid "Committee"
-msgstr ""
+msgstr "Ausschuss"
 
 #: mainapp/models/organization.py:14
 msgctxt "Document Type Name"
-msgid "Deparment"
-msgstr ""
+msgid "Department"
+msgstr "Abteilung"
+
+#: mainapp/models/organization.py:19
+msgctxt "Document Type Name"
+msgid "Parliamentary Groups"
+msgstr "Fraktionen"
+
+#: mainapp/models/organization.py:20
+msgctxt "Document Type Name"
+msgid "Committees"
+msgstr "Ausschüsse"
+
+#: mainapp/models/organization.py:21
+msgctxt "Document Type Name"
+msgid "Departments"
+msgstr "Abteilungen"
 
 #: mainapp/models/user_profile.py:9
 msgid "User"
@@ -557,20 +572,20 @@ msgstr "Übergeordnete Vorlagen"
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/templates/mainapp/file.html:72
+#: mainapp/templates/mainapp/file.html:71
 msgid "Documents in this paper"
 msgstr "Dokumente in dieser Vorlage"
 
 # TODO
-#: mainapp/templates/mainapp/file.html:118
+#: mainapp/templates/mainapp/file.html:116
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
 
-#: mainapp/templates/mainapp/file.html:123
+#: mainapp/templates/mainapp/file.html:121
 msgid "Download"
 msgstr "Herunterladen"
 
-#: mainapp/templates/mainapp/file.html:129
+#: mainapp/templates/mainapp/file.html:127
 msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
@@ -887,6 +902,12 @@ msgstr ""
 "Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|"
 "Dezember"
 
+#: mainapp/templates/mainapp/search/facet_date_range.html:56
+#: mainapp/templates/mainapp/search/facet_filter_dropdown.html:23
+msgctxt "Remove search filter"
+msgid "Cancel selection"
+msgstr "Auswahl aufheben"
+
 #: mainapp/templates/mainapp/search/facet_document_type.html:4
 #: mainapp/templates/mainapp/search/facet_document_type.html:9
 msgctxt "search_form"
@@ -903,11 +924,6 @@ msgstr "Auswahl aufheben"
 msgctxt "search_form"
 msgid "Filter"
 msgstr "Filter"
-
-#: mainapp/templates/mainapp/search/facet_filter_dropdown.html:23
-msgctxt "Remove search filter"
-msgid "Cancel selection"
-msgstr "Auswahl aufheben"
 
 #: mainapp/templates/mainapp/search/facet_location_selector.html:6
 #: mainapp/templates/mainapp/search/facet_location_selector.html:18

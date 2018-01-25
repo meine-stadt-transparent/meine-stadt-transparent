@@ -11,7 +11,7 @@ from django.views.generic import DetailView
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.document_parsing import index_papers_to_geodata
 from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm, Location
-from mainapp.models.organization import ORGANIZATION_TYPE_NAMES
+from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context
 
@@ -67,7 +67,7 @@ def organizations(request):
 
         organizations_ordered.append({
             "organization_type": organization_type,
-            "type": ORGANIZATION_TYPE_NAMES.get(organization_type.name, organization_type.name),
+            "type": ORGANIZATION_TYPE_NAMES_PLURAL.get(organization_type.name, organization_type.name),
             "all": all_orgas,
         })
 

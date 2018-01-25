@@ -11,8 +11,15 @@ from .organization_type import OrganizationType
 ORGANIZATION_TYPE_NAMES = {
     "parliamentary group": pgettext('Document Type Name', 'Parliamentary Group'),
     "committee": pgettext('Document Type Name', 'Committee'),
-    "department": pgettext('Document Type Name', 'Deparment'),
+    "department": pgettext('Document Type Name', 'Department'),
     "organization": pgettext('Document Type Name', 'Organization'),
+}
+
+ORGANIZATION_TYPE_NAMES_PLURAL = {
+    "parliamentary group": pgettext('Document Type Name', 'Parliamentary Groups'),
+    "committee": pgettext('Document Type Name', 'Committees'),
+    "department": pgettext('Document Type Name', 'Departments'),
+    "organization": pgettext('Document Type Name', 'Organizations'),
 }
 
 
