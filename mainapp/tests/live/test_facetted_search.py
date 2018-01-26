@@ -16,13 +16,13 @@ from meine_stadt_transparent import settings
 template = {
     "fields": {
         "id": 1,
-        "name": "SomeName",
+        "name": "Title Highlight",
         "type": "file",
         "type_translated": "File",
         "name_escaped": "Name <mark>Title</mark>",
     },
     "doc_type": "file_document",
-    "highlight": {"name": "Text <mark>Highlight</mark>"}
+    "highlight": {"name": ["Highlight"]}
 }
 
 
@@ -61,9 +61,10 @@ class MockMainappSearchEndlessScroll(MainappSearch):
         out = []
         for position in range(self._s.to_dict()["from"], self._s.to_dict()["from"] + self._s.to_dict()["size"]):
             result = template.copy()
-            result["name"] = position
-            result["name_escaped"] = position
-            result["id"] = position
+            result["highlight"] = {}
+            result["fields"]["name"] = str(position)
+            result["fields"]["name_escaped"] = str(position)
+            result["fields"]["id"] = position
             out.append(Hit(template))
         hits = AttrList(out)
         hits.__setattr__("total", len(out) * 2)
@@ -93,8 +94,6 @@ class FacettedSearchTest(ChromeDriverTestCase):
     def test_word(self):
         self.visit('/search/query/word/')
         self.assertTrue(self.browser.is_text_present("Highlight"))
-        self.assertTrue(self.browser.is_text_present("Title"))
-        self.assertFalse(self.browser.is_text_present("<mark>"))
 
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
@@ -177,7 +176,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
         single_length = settings.SEARCH_PAGINATION_LENGTH
         self.assertEqual(single_length, len(self.browser.find_by_css(".results-list > li")))
-        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .result-title")]
+        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .lead")]
         numbers.sort()
         self.assertEqual(numbers, list(range(0, single_length)))
 
