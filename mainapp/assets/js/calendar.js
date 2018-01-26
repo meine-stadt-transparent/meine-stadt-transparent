@@ -64,8 +64,8 @@ $(function () {
         // Show a loading spinner while data is loaded
         loading: (isLoading, view) => {
             // That code is managed by fullcalendar so we can't just put this in some template and hide it
-            let spinner = '<div id="calendar-loading-spinner"><i class="fa fa-spinner fa-spin" ' +
-                'aria-label="The calendar is loading data"></i></div>';
+            let spinner = '<div id="calendar-loading-spinner"><span class="fa fa-spinner fa-spin" ' +
+                'aria-label="The calendar is loading data"></span></div>';
             let $base = $(".fc-center");
             if (isLoading) {
                 $base.append(spinner);

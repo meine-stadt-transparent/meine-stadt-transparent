@@ -17,15 +17,15 @@
             {% include "partials/header_name.html" with object=paper %}
 
             {% if paper.description %}
-                <p><i class="fa-custom fa-info" aria-hidden="true"></i>{{ paper.description }}</p>
+                <p><span class="fa-custom fa-info" aria-hidden="true"></span>{{ paper.description }}</p>
             {% endif %}
             {% if paper.paper_type %}
-                <p><i class="fa-custom fa-bookmark" aria-hidden="true"></i>{{ paper.paper_type.paper_type }}</p>
+                <p><span class="fa-custom fa-bookmark" aria-hidden="true"></span>{{ paper.paper_type.paper_type }}</p>
             {% endif %}
-            <p><i class="fa-custom fa-tag" aria-hidden="true"></i>{{ paper.reference_number }}</p>
+            <p><span class="fa-custom fa-tag" aria-hidden="true"></span>{{ paper.reference_number }}</p>
             {% if paper.legal_date %}
-                <p><i class="fa-custom fa-calendar"
-                      aria-hidden="true"></i>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
+                <p><span class="fa-custom fa-calendar"
+                      aria-hidden="true"></span>{% trans "Legal date: " %}{{ paper.legal_date }}</p>
             {% endif %}
 
             {% with paper.organizations.all as objects %}
@@ -39,14 +39,14 @@
             {% endwith %}
             {% if paper.change_request_of %}
                 <p>
-                    <i class="fa-custom fa-pencil"></i>Change Request of
+                    <span class="fa-custom fa-pencil"></span>Change Request of
                     <a href="{% url 'paper' paper.change_request_of.id %}">{{ paper.change_request_of }}</a>
                 </p>
             {% endif %}
 
             {% if paper.history.count > 1 %}
                 <div class="dropdown paragraph">
-                    <i class="fa-custom fa-history"></i>
+                    <span class="fa-custom fa-history"></span>
                     <button class="btn btn-sm btn-secondary dropdown-toggle revision-dropdown-toggle" type="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ paper.history.count }}{% trans " Revisions" context "X revisions" %}
@@ -64,14 +64,14 @@
 
             <h2 class="paper-section-heading">{% trans "Files" %}</h2>
             {% if historical %}
-                <p><i class="fa-custom fa-exclamation-triangle"
-                      aria-hidden="true"></i>{% trans "History is not available for files" %}</p>
+                <p><span class="fa-custom fa-exclamation-triangle"
+                      aria-hidden="true"></span>{% trans "History is not available for files" %}</p>
             {% elif paper.main_file or paper.files.count > 0 %}
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
                         <li>
                             <a href="{% url 'file' paper.main_file.id %}">
-                                <i class="fa-custom fa-file"></i>
+                                <span class="fa-custom fa-file"></span>
                                 {% firstof paper.main_file.name paper.main_file.displayed_filename %}
                             </a>
                         </li>
@@ -80,7 +80,7 @@
                     {% for file in paper.files.all %}
                         <li>
                             <a href="{% url 'file' file.id %}">
-                                <i class="fa-custom fa-file"></i>{% firstof file.name file.displayed_filename file %}
+                                <span class="fa-custom fa-file"></span>{% firstof file.name file.displayed_filename file %}
                             </a>
                         </li>
                     {% endfor %}

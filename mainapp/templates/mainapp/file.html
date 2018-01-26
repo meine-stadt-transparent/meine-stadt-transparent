@@ -20,14 +20,14 @@
                     {% spaceless %}
                         <div>
                             <a href="{% url 'media' file.storage_filename %}">
-                                <i class="fa fa-custom fa-download" aria-hidden="true"></i>
+                                <span class="fa fa-custom fa-download" aria-hidden="true"></span>
                                 <span>Download</span>
                             </a>
                         </div>
                         {% if papers|length == 1 %}
                             <div>
                                 <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
-                                    <i class="fa-custom fa-file" aria-hidden="true"></i>
+                                    <span class="fa-custom fa-file" aria-hidden="true"></span>
                                     <span>{% trans "Superordinated paper" context "Singular" %}</span>
                                 </a>
                             </div>
@@ -44,7 +44,7 @@
                                         {% for paper in papers %}
                                             <a class="dropdown-item" href="{% url 'paper' paper.id %}"
                                                title="{{ paper.name }}">
-                                                <i class="fa-custom fa-file" aria-hidden="true"></i>
+                                                <span class="fa-custom fa-file" aria-hidden="true"></span>
                                                 <span>{% trans "Paper" %}</span>
                                             </a>
                                         {% endfor %}
@@ -76,7 +76,7 @@
                                             <a class="list-group-item list-group-item-action
                             {% if papers.0.main_file.id == file.id %}active{% endif %}"
                                                href="{% url 'file' papers.0.main_file.id %}">
-                                                <i class="fa-custom fa-file"></i>
+                                                <span class="fa-custom fa-file"></span>
                                                 {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
                                             </a>
                                         {% endif %}
@@ -84,7 +84,7 @@
                                             <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
                             active{% endif %}"
                                                href="{% url 'file' other_file.id %}">
-                                                <i class="fa-custom fa-file"></i>
+                                                <span class="fa-custom fa-file"></span>
                                                 <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
                                             </a>
                                         {% endfor %}
@@ -116,7 +116,7 @@
                             <a class="btn btn-primary btn-lg" role="button"
                                href="{% url 'media' file.storage_filename %}"
                                download>
-                                <i class="fa fa-download" aria-hidden="true"></i>
+                                <span class="fa fa-download" aria-hidden="true"></span>
                                 {% trans "Download" %}
                             </a>
                         {% endif %}

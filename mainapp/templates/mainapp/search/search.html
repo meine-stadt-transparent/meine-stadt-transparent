@@ -17,7 +17,7 @@
                 <h1 class="pull-left">
                     <span class="text-nowrap">{% trans "Search" context "page_title" %}</span>
                     <span class="search-refreshing-spinner" hidden="hidden">
-                        <i class="fa fa-spinner fa-spin" aria-label="The search is refreshing"></i>
+                        <span class="fa fa-spinner fa-spin" aria-label="The search is refreshing"></span>
                     </span>
                 </h1>
                 <div class="subscribe-widget">
@@ -38,7 +38,8 @@
                            placeholder="{% trans "Search term" context "search_form" %}"
                            aria-label="{% trans "Search term" context "search_form" %}">
                     <button class=" search-icon fa fa-search" type="submit"
-                    title="{% trans 'Show search results' context 'aria label' %}"></button>
+                    title="{% trans 'Show search results' context 'aria label' %}"
+                    aria-label="{% trans 'Show search results' context 'aria label' %}"></button>
                 </section>
                 <div class="form-row align-items-center">
                     {% include "mainapp/search/facet_location_selector.html" %}

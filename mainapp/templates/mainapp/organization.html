@@ -12,7 +12,7 @@
         {% block exttendmeta %}
             {% if organization.start %}
                 <p>
-                    <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{% trans 'Timeframe of existence:' %}
+                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{% trans 'Timeframe of existence:' %}
                     {{ organization.start }}
                     {% if organization.end %} - {{ organization.end }}{% endif %}
                 </p>
@@ -23,12 +23,12 @@
         {% endblock %}
 
         <p title="{% trans 'Belongs to this body' %}">
-            <i class="fa-custom fa-globe" aria-hidden="true"></i>
+            <span class="fa-custom fa-globe" aria-hidden="true"></span>
             <a href="{{ organization.body.get_default_link }}">{{ organization.body }}</a>
         </p>
         {% if organization.location %}
             <p title="{% trans 'Is located there' %}">
-                <i class="fa-custom fa-map-marker" aria-hidden="true"></i>{{ organization.location }}
+                <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ organization.location }}
             </p>
         {% endif %}
     </section>

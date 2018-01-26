@@ -9,17 +9,17 @@
             {% include "partials/header_name.html" with object=meeting %}
 
             <p title="{% trans 'Time of the Meeting' %}">
-                <i class="fa-custom fa-clock-o" aria-hidden="true"></i>{{ time }}
+                <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}
             </p>
             <p title="{% trans 'Place of the meeting' %}">
-                <i class="fa-custom fa-map-marker" aria-hidden="true"></i>{{ meeting.location }}
+                <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ meeting.location }}
             </p>
 
             {% if meeting.organizations.all|length == 1 %}
                 <p title="{% trans 'Main organization of the meeting' %}">
                     <a href="{% url 'organization' meeting.organizations.all.0.id %}">
-                        <i class="fa-custom fa-users"
-                           aria-hidden="true"></i>{{ meeting.organizations.all.0 }}
+                        <span class="fa-custom fa-users"
+                           aria-hidden="true"></span>{{ meeting.organizations.all.0 }}
                     </a>
                 </p>
             {% elif meeting.organizations.all|length > 1 %}
@@ -32,19 +32,19 @@
 
             {% if meeting.invitation %}
                 <p>
-                    <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans 'Invitation: ' %}
+                    <span class="fa-custom fa-file" aria-hidden="true"></span>{% trans 'Invitation: ' %}
                     <a href="{% url 'file' meeting.invitation.id %}">{{ meeting.invitation }}</a>
                 </p>
             {% endif %}
             {% if meeting.results_protocol %}
                 <p>
-                    <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans 'Results protocol: ' %}
+                    <span class="fa-custom fa-file" aria-hidden="true"></span>{% trans 'Results protocol: ' %}
                     <a href="{% url 'file' meeting.results_protocol.id %}">{{ meeting.results_protocol }}</a>
                 </p>
             {% endif %}
             {% if meeting.verbatim_protocol %}
                 <p>
-                    <i class="fa-custom fa-file" aria-hidden="true"></i>{% trans 'Verbatim protocol: ' %}
+                    <span class="fa-custom fa-file" aria-hidden="true"></span>{% trans 'Verbatim protocol: ' %}
                     <a href="{% url 'file' meeting.verbatim_protocol.id %}">{{ meeting.verbatim_protocol }}</a>
                 </p>
             {% endif %}
@@ -53,7 +53,7 @@
                     {% for file in meeting.auxiliary_files.all %}
                         <li>
                             <a href="{% url 'file' file.id %}">
-                                <i class="fa-custom fa-file" aria-hidden="true"></i>{{ file }}
+                                <span class="fa-custom fa-file" aria-hidden="true"></span>{{ file }}
                             </a>
                         </li>
                     {% endfor %}
@@ -64,20 +64,20 @@
                 <p class="w-100 text-left">
                     {% if previous %}
                         <a href="{% url 'meeting' previous.id %}">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i> {% trans 'Previous Meeting' %}
+                            <span class="fa fa-chevron-left" aria-hidden="true"></span> {% trans 'Previous Meeting' %}
                         </a>
                     {% endif %}
                 </p>
                 <p class="w-100 text-center">
                     <a href="{% url 'meeting-ical' meeting.id %}">
-                        <i class="fa fa-download" aria-hidden="true"></i> {% trans 'Export' %}
+                        <span class="fa fa-download" aria-hidden="true"></span> {% trans 'Export' %}
                     </a>
                 </p>
                 <p class="w-100 text-right">
                     {% if following %}
                         <a href="{% url 'meeting' following.id %}">
                             {% trans 'Following Meeting' %}
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                            <span class="fa fa-chevron-right" aria-hidden="true"></span>
                         </a>
                     {% endif %}
                 </p>
