@@ -34,6 +34,12 @@
     }
   }
 }
+.navbar-footer-disclaimer {
+  padding-right: $navbar-nav-link-padding-x;
+  padding-left: $navbar-nav-link-padding-x;
+  color: $navbar-dark-color;
+  font-size: 0.8em;
+}
 
 .btn-transparent {
   background-color: transparent;

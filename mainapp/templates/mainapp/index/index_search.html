@@ -2,10 +2,10 @@
 <section class="container pt-3 home-container-search">
     <form class="form search-autocomplete search-autocomplete-home" method="GET" action="{% url 'search' '' %}">
         <div class="input-group">
+            <label for="searchfield-mousetrap" class="sr-only">{% trans "Search" context "perform search" %}></label>
             <input name="search-query" type="text" class="form-control" value="" autocomplete="off"
                    data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
                    placeholder="{% trans "Search for documents, persons, topics and more" context "page_title" %}"
-                   aria-label="{% trans "Search" context "perform search" %}"
                    id="searchfield-mousetrap">
 
             <button class="search-icon fa fa-search" type="submit"
