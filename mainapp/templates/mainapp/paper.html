@@ -30,11 +30,13 @@
 
             {% with paper.organizations.all as objects %}
                 {% trans "Submitting Organizations" as name %}
+                {% trans "Organizations" as historical_name %}
                 {% include "partials/inline_list.html" with icon="users" link="organization" %}
             {% endwith %}
 
             {% with paper.persons.all as objects %}
                 {% trans "Submitting Persons" as name %}
+                {% trans "Persons" as historical_name %}
                 {% include "partials/inline_list.html" with link="person" icon="user" %}
             {% endwith %}
             {% if paper.change_request_of %}

@@ -72,9 +72,15 @@
                     {% trans "Open in Search" %}
                 </a>
                 {% include "partials/header_list.html" with objects=papers icon="user" %}
+                {% if paper_count > papers|length %}
+                    <p>{% trans "Remaining files omitted. They can be found with the search" %}</p>
+                {% endif %}
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
                 {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
+                {% if meeting_count > meetings|length %}
+                    <p>{% trans "Remaining meetings omitted. They can be found with the search" %}</p>
+                {% endif %}
             </div>
         </div>
     </section>

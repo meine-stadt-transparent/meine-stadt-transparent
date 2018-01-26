@@ -3,7 +3,7 @@
 {% if historical %}
     <p>
         <span class="fa-custom fa-exclamation-triangle" aria-hidden="true"></span>{% trans "History is not available for" %}
-    {{ name }}
+    {{ historical_name }}
     </p>
 {% elif objects|length > 0 %}
     <div class="clearfix">
