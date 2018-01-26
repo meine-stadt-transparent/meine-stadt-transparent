@@ -172,6 +172,14 @@ def error500(request):
     return render(request, "error/500.html", status=500)
 
 
+def body(request, pk):
+    body = get_object_or_404(Body, id=pk)
+    context = {
+        'body': body,
+        'map': _build_map_object(body, []),
+    }
+    return render(request, "mainapp/body.html", context)
+
+
 legislative_term = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/legislative_term.html")
-body = DetailView.as_view(model=Body, template_name="mainapp/body.html")
 location = DetailView.as_view(model=Location, template_name="mainapp/location.html")

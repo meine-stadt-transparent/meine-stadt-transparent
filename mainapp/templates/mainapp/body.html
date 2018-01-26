@@ -5,7 +5,6 @@
 {% block content %}
     <div class="container">
         {% include "partials/header_name.html" with object=body %}
-        <p>TODO: An overview for a body, linking to all the associated items</p>
-        <p>Also a nice map</p>
+        {% include 'mainapp/index/index_map.html' %}
     </div>
 {% endblock %}
