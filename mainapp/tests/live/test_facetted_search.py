@@ -1,14 +1,14 @@
 import time
 from datetime import date
-from typing import Any, List
 from unittest import mock
 from urllib import parse
 
 from django.test import override_settings
-from elasticsearch_dsl import Search
-from elasticsearch_dsl.response import AggResponse
+from elasticsearch_dsl import AttrDict, AttrList
+from elasticsearch_dsl.response import AggResponse, Hit
 from selenium.webdriver.common.keys import Keys
 
+from mainapp.functions.search_tools import MainappSearch
 from mainapp.models import Person
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 from meine_stadt_transparent import settings
@@ -19,7 +19,8 @@ template = {
     "name": "SomeName",
     "type": "file",
     "type_translated": "File",
-    "name_escaped": "Name <mark>Title</mark>"
+    "name_escaped": "Name <mark>Title</mark>",
+    "meta": {"doc_type": "file_document"}
 }
 
 
@@ -27,34 +28,42 @@ def get_aggregations():
     # Fakes aggregation results that are sufficient for testing
     aggs = {
         "document_type": [
-            {"key": "file", "doc_count": 42},
-            {"key": "meeting", "doc_count": 42},
-            {"key": "person", "doc_count": 42}
+            ("file", 42, False),
+            ("meeting", 42, False),
+            ("person", 42, False)
         ],
         "person": [],
         "organization": []
     }
 
     for i in range(10):
-        aggs["person"].append({"key": i, "doc_count": 42})
-        aggs["organization"].append({"key": i, "doc_count": 42})
+        aggs["person"].append((str(i), 42, False))
+        aggs["organization"].append((str(i), 42, False))
 
     return AggResponse({}, {}, aggs)
 
 
-def mock_search_to_results(_) -> (List[Any], int):
-    return [template], 1, get_aggregations()
+class MockMainappSearch(MainappSearch):
+    """ The execute method is injected in the test methods """
+    def execute(self):
+        hits = AttrList(Hit(template))
+        hits.__setattr__("total", 1)
+        return AttrDict({"hits": hits, "facets": get_aggregations()})
 
 
-def mock_search_for_endless_scroll(search: Search) -> (List[Any], int):
-    out = []
-    for position in range(search.to_dict()["from"], search.to_dict()["from"] + search.to_dict()["size"]):
-        result = template.copy()
-        result["name"] = position
-        result["name_escaped"] = position
-        result["id"] = position
-        out.append(result)
-    return out, len(out) * 2, get_aggregations()
+class MockMainappSearchEndlessScroll(MainappSearch):
+    """ The execute method is injected in the test for the endless scroll"""
+    def execute(self):
+        out = []
+        for position in range(self._s.to_dict()["from"], self._s.to_dict()["from"] + self._s.to_dict()["size"]):
+            result = template.copy()
+            result["name"] = position
+            result["name_escaped"] = position
+            result["id"] = position
+            out.append(result)
+        hits = AttrList(Hit(out))
+        hits.__setattr__("total", len(out) * 2)
+        return AttrDict({"hits": hits, "facets": get_aggregations()})
 
 
 class FacettedSearchTest(ChromeDriverTestCase):
@@ -67,8 +76,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         return parse.unquote(self.browser.url.split("/")[-2])
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_landing_page_redirect(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_landing_page_redirect(self):
         """ There was a case where the redirect would lead to the wrong page """
         self.visit('/')
         self.browser.fill("search-query", "word")
@@ -76,17 +85,18 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_word(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_word(self):
         self.visit('/search/query/word/')
         self.assertTrue(self.browser.is_text_present("Highlight"))
         self.assertTrue(self.browser.is_text_present("Title"))
         self.assertFalse(self.browser.is_text_present("<mark>"))
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_document_type(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_document_type(self):
         self.visit('/search/query/word/')
+        print(self.live_server_url)
         self.assertTextIsPresent("Document Type")
         self.assertTextIsNotPresent("Meeting")
         self.browser.click_link_by_id("documentTypeButton")
@@ -101,8 +111,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_time_range(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_time_range(self):
         self.visit('/search/query/word/')
         self.click_by_id("timeRangeButton")
         self.click_by_text("This year")
@@ -116,8 +126,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_person_filter(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_person_filter(self):
         self.visit('/search/query/word/')
         self.click_by_id("personButton")
         self.click_by_text("Frank Underwood")
@@ -130,8 +140,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_sorting(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_sorting(self):
         self.visit('/search/query/word/')
         self.click_by_id("btnSortDropdown")
         self.click_by_text("Newest first")
@@ -144,8 +154,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_to_results)
-    def test_dropdown_filter(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_dropdown_filter(self):
         self.visit('/search/query/word/')
         self.click_by_id("personButton")
         count = len(self.browser.find_by_css("[data-filter-key='person'] .filter-item"))
@@ -157,8 +167,8 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual(count, 1)
 
     @override_settings(USE_ELASTICSEARCH=True)
-    @mock.patch("mainapp.views.search._search_to_results", side_effect=mock_search_for_endless_scroll)
-    def test_endless_scroll(self, _):
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearchEndlessScroll.execute)
+    def test_endless_scroll(self):
         self.visit('/search/query/word/')
 
         single_length = settings.SEARCH_PAGINATION_LENGTH

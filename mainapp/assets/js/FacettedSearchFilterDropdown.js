@@ -68,15 +68,15 @@ export default class FacettedSearchFilterDropdown {
         $button.prop("disabled", false);
         $filter_list.find(".filter-item").attr("hidden", "hidden");
 
-        if (data['aggregations'][this.key]['buckets'].length === 0) {
+        if (data['facets'][this.key].length === 0) {
             if (!this.$input.val()) {
                 $button.prop("disabled", true);
             }
             return;
         }
-        for (let bucket_entry of data['aggregations'][this.key]['buckets']) {
-            let $obj = $filter_list.find("[data-id=" + bucket_entry["key"] + "]");
-            $obj.find(".facet-item-count").text(" (" + bucket_entry["doc_count"] + ")");
+        for (let bucket_entry of data['facets'][this.key]) {
+            let $obj = $filter_list.find("[data-id=" + bucket_entry[0] + "]");
+            $obj.find(".facet-item-count").text(" (" + bucket_entry[1] + ")");
             $obj.removeAttr("hidden");
         }
     }

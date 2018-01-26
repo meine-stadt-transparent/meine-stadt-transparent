@@ -11,11 +11,12 @@ from django.template import loader
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
+from elasticsearch_dsl.response import Hit
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
-from mainapp.functions.search_tools import params_to_query, search_string_to_params, params_are_subscribable, \
-    html_escape_highlight, escape_elasticsearch_query
+from mainapp.functions.search_tools import search_string_to_params, params_are_subscribable, \
+    html_escape_highlight, escape_elasticsearch_query, MainappSearch
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
@@ -45,35 +46,28 @@ def _parse_hit(hit):
     return parsed
 
 
-def _search_to_context(query, params: dict, options, results, aggregations, total_hits, request):
+def _search_to_context(query, main_search: MainappSearch, executed, results, request):
     context = {
         "query": query,
         "results": results,
-        "options": options,
+        "options": main_search.options,
         "document_types": DOCUMENT_TYPE_NAMES,
         "map": _build_map_object(Body.objects.get(id=settings.SITE_DEFAULT_BODY), []),
         "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
-        "total_hits": total_hits,
-        "subscribable": params_are_subscribable(params),
-        "is_subscribed": is_subscribed_to_search(request.user, params),
-        "aggregations": aggregations
+        "total_hits": executed.hits.total,
+        "subscribable": params_are_subscribable(main_search.params),
+        "is_subscribed": is_subscribed_to_search(request.user, main_search.params)
     }
 
     return context
 
 
-def _search_to_results(search):
-    """ Extracted to allow mocking in tests """
-    executed = search.execute()
-    results = [_parse_hit(hit) for hit in executed]
-    return results, executed.hits.total, executed.aggregations
-
-
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def search_index(request, query):
     params = search_string_to_params(query)
-    options, search, errors = params_to_query(params)
-    for error in errors:
+    main_search = MainappSearch(params)
+
+    for error in main_search.errors:
         messages.error(request, error)
 
     try:
@@ -84,13 +78,20 @@ def search_index(request, query):
     except NeedsLoginError as err:
         return redirect(err.redirect_url)
 
-    search = search[:settings.SEARCH_PAGINATION_LENGTH]
-    results, total_hits, aggregations = _search_to_results(search)
-    context = _search_to_context(query, params, options, results, aggregations, total_hits, request)
+    main_search = main_search[:settings.SEARCH_PAGINATION_LENGTH]
+    executed = main_search.execute()
+    results = [_parse_hit(hit) for hit in executed.hits]
 
+    context = _search_to_context(query, main_search, executed, results, request)
+    context.update(aggs_to_context(executed))
+
+    return render(request, "mainapp/search/search.html", context)
+
+
+def aggs_to_context(executed):
     # TODO: Optimize this to get the names from elasticsearch
+    context_additions = {}
     org = settings.SITE_DEFAULT_ORGANIZATION
-
     bucketing = {
         "organization": Organization.objects.all(),
         "person": Person.objects.filter(organizationmembership__organization=org).distinct()
@@ -99,32 +100,33 @@ def search_index(request, query):
         aggs_count = 0
         for db_object in queryset:
             setattr(db_object, "doc_count", 0)
-            for bucket in context["aggregations"][aggs_field]:
-                if bucket.key == db_object.id:
-                    setattr(db_object, "doc_count", bucket.doc_count)
+            for bucket in executed.facets[aggs_field]:
+                if bucket[0] == db_object.id:
+                    setattr(db_object, "doc_count", bucket[1])
                     aggs_count += 1
                     break
         setattr(queryset, "aggs_count", aggs_count)
-        context["searchable_{}s".format(aggs_field)] = queryset
-
-    return render(request, "mainapp/search/search.html", context)
+        context_additions["searchable_{}s".format(aggs_field)] = queryset
+    return context_additions
 
 
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
     params = search_string_to_params(query)
-    options, search, _ = params_to_query(params)
+    main_search = MainappSearch(params)
+
     after = int(request.GET.get('after', 0))
-    search = search[after:settings.SEARCH_PAGINATION_LENGTH + after]
-    results, total_hits, aggregations = _search_to_results(search)
-    context = _search_to_context(query, params, options, results, aggregations, total_hits, request)
+    main_search = main_search[after:settings.SEARCH_PAGINATION_LENGTH + after]
+    executed = main_search.execute()
+    results = [_parse_hit(hit) for hit in executed.hits]
+    context = _search_to_context(query, main_search, executed, results, request)
 
     result = {
         'results': loader.render_to_string('partials/mixed_results.html', context, request),
-        'total_results': total_hits,
+        'total_results': executed.hits.total,
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
         'more_link': reverse(search_results_only, args=[query]),
-        'aggregations': aggregations.to_dict()
+        'facets': executed.facets.to_dict()
     }
 
     return JsonResponse(result, safe=False)

@@ -1,61 +1,86 @@
 from django.test import TestCase
 
-from mainapp.functions.search_tools import search_string_to_params, params_to_query, params_to_search_string
+from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, MainappSearch
 
 expected_params = {
-    'sort': [
-        {
-            'sort_date': {"order": "desc"}
+    "query": {
+        "match": {
+            "_all": {
+                "query": "word radius anotherword",
+                "operator": "and",
+                "fuzziness": "AUTO",
+                "prefix_length": 1
+            }
         }
-    ],
-    'query': {
-        'bool': {
-            'filter': [
-                {
-                    'terms': {
-                        '_type': [
-                            'file_document',
-                            'committee_document'
-                        ]
-                    }
-                }
-            ],
-            'must': [
-                {
-                    'match': {
-                        '_all': {
-                            'query': 'word radius anotherword',
-                            'operator': 'and',
-                            'fuzziness': 'AUTO',
-                            'prefix_length': 1
-                        }
-                    }
-                }
+    },
+    "post_filter": {
+        "terms": {
+            "_type": [
+                "file_document",
+                "committee_document"
             ]
         }
     },
-    'highlight': {
-        'fields': {
-            '*': {'fragment_size': 150, 'pre_tags': '<mark>', 'post_tags': '</mark>'}
-        },
-        'require_field_match': False
-    },
     "aggs": {
-        "document_type": {
-            "terms": {
-                "field": "_type"
+        "_filter_document_type": {
+            "filter": {
+                "match_all": {}
+            },
+            "aggs": {
+                "document_type": {
+                    "terms": {
+                        "field": "_type"
+                    }
+                }
             }
         },
-        "person": {
-            "terms": {
-                "field": "person_ids"
+        "_filter_person": {
+            "filter": {
+                "terms": {
+                    "_type": [
+                        "file_document",
+                        "committee_document"
+                    ]
+                }
+            },
+            "aggs": {
+                "person": {
+                    "terms": {
+                        "field": "person_ids"
+                    }
+                }
             }
         },
-        "organization": {
-            "terms": {
-                "field": "organization_ids"
+        "_filter_organization": {
+            "filter": {
+                "terms": {
+                    "_type": [
+                        "file_document",
+                        "committee_document"
+                    ]
+                }
+            },
+            "aggs": {
+                "organization": {
+                    "terms": {
+                        "field": "organization_ids"
+                    }
+                }
             }
         }
+    },
+    "sort": [
+        "sort_date"
+    ],
+    "highlight": {
+        "fields": {
+            "*": {
+                "fragment_size": 150,
+                "pre_tags": "<mark>",
+                "post_tags": "</mark>"
+            }
+        },
+        "require_field_match": False
     }
 }
 
@@ -70,9 +95,9 @@ class TestSearchtools(TestCase):
         self.assertEqual(instring, self.params)
 
     def test_params_to_query(self):
-        options, query, errors = params_to_query(self.params)
-        self.assertEqual(errors, [])
-        self.assertEqual(query.to_dict(), expected_params)
+        main_search = MainappSearch(self.params)
+        self.assertEqual(main_search.errors, [])
+        self.assertEqual(main_search._s.to_dict(), expected_params)
 
     def test_params_to_search_string(self):
         expected = "document-type:file,committee radius:50 sort:date_newest word radius anotherword"

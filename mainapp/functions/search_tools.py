@@ -5,7 +5,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
-from elasticsearch_dsl import Search, Q
+from elasticsearch_dsl import Q, FacetedSearch, TermsFacet
 
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.models import Person, Organization
@@ -13,18 +13,103 @@ from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
 
-
 NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name"])
+
+
+class MainappSearch(FacetedSearch):
+    index = settings.ELASTICSEARCH_INDEX
+    fields = ["_all"]
+
+    facets = {
+        # use bucket aggregations to define facets
+        'document_type': TermsFacet(field='_type'),
+        'person': TermsFacet(field='person_ids'),
+        'organization': TermsFacet(field='organization_ids'),
+    }
+
+    def __init__(self, params):
+        self.params = params
+        self.errors = []
+        self.options = {}
+
+        filters = {
+            'person': self.params.get('person'),
+            'organization': self.params.get('organization')
+        }
+
+        if 'document-type' in self.params:
+            split = self.params['document-type'].split(",")
+            filters["document_type"] = [i + "_document" for i in split]
+
+        if 'sort' in self.params:
+            if self.params['sort'] == 'date_newest':
+                sort = {"sort_date": {"order": "desc"}}
+            elif self.params['sort'] == 'date_oldest':
+                sort = {"sort_date": {"order": "asc"}}
+            else:
+                sort = "_score"
+            self.options['sort'] = self.params['sort']
+        else:
+            sort = "_score"
+
+        super().__init__(self.params.get("searchterm"), filters, sort)
+
+    def highlight(self, search):
+        search = search.highlight_options(require_field_match=False)
+        search = search.highlight('*', fragment_size=150, pre_tags='<mark>', post_tags='</mark>')
+        return search
+
+    def query(self, search, query):
+        if query:
+            self.options["searchterm"] = query
+            search = search.query('match', _all={
+                'query': escape_elasticsearch_query(query),
+                'operator': 'and',
+                'fuzziness': 'AUTO',
+                'prefix_length': 1
+            })
+
+        return search
+
+    def search(self):
+        s = super().search()
+        try:
+            lat = float(self.params.get('lat', ''))
+            lng = float(self.params.get('lng', ''))
+            radius = int(self.params.get('radius', ''))
+            s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
+                "lat": lat,
+                "lon": lng,
+            })
+            self.options['lat'] = str(lat)
+            self.options['lng'] = str(lng)
+            self.options['radius'] = str(radius)
+            self.options['location_formatted'] = latlng_to_address(lat, lng)
+        except ValueError:
+            pass
+
+        if 'after' in self.params:
+            # options['after'] added by _add_date_after
+            s = _add_date_after(s, self.params, self.options, self.errors)
+        if 'before' in self.params:
+            # options['before'] added by _add_date_before
+            s = _add_date_before(s, self.params, self.options, self.errors)
+
+        return s
+
+    def execute(self):
+        return super().execute()
 
 
 def _add_date_after(s, raw, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
         after = datetime.datetime.strptime(raw['after'], '%Y-%m-%d')
-        s = s.filter(Q('range', start={"gte": after}) | Q('range', legal_date={"gte": after}))
-        options["after"] = after
     except ValueError or OverflowError:
         errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
+        return s
+    s = s.filter(Q('range', start={"gte": after}) | Q('range', legal_date={"gte": after}))
+    options["after"] = after
     return s
 
 
@@ -32,10 +117,11 @@ def _add_date_before(s, raw, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
         before = datetime.datetime.strptime(raw['before'], '%Y-%m-%d')
-        s = s.filter(Q('range', start={"lte": before}) | Q('range', legal_date={"lte": before}))
-        options["before"] = before
     except ValueError or OverflowError:
         errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
+        return s
+    s = s.filter(Q('range', start={"lte": before}) | Q('range', legal_date={"lte": before}))
+    options["before"] = before
     return s
 
 
@@ -54,72 +140,8 @@ def html_escape_highlight(highlight):
     return escaped
 
 
-def params_to_query(params: dict):
-    s = Search(index=settings.ELASTICSEARCH_INDEX)
-    options = {}
-    errors = []
-    if 'searchterm' in params and params['searchterm'] is not "":
-        s = s.query('match', _all={
-            'query': escape_elasticsearch_query(params['searchterm']),
-            'operator': 'and',
-            'fuzziness': 'AUTO',
-            'prefix_length': 1
-        })
-        s = s.highlight_options(require_field_match=False)
-        s = s.highlight('*', fragment_size=150, pre_tags='<mark>', post_tags='</mark>')
-        options['searchterm'] = params['searchterm']
-
-    try:
-        lat = float(params.get('lat', ''))
-        lng = float(params.get('lng', ''))
-        radius = int(params.get('radius', ''))
-        s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
-            "lat": lat,
-            "lon": lng,
-        })
-        options['lat'] = str(lat)
-        options['lng'] = str(lng)
-        options['radius'] = str(radius)
-        options['location_formatted'] = latlng_to_address(lat, lng)
-    except ValueError:
-        pass
-
-    if 'document-type' in params:
-        split = params['document-type'].split(",")
-        s = s.filter('terms', _type=[i + "_document" for i in split])
-        options["document_type"] = split
-    if 'after' in params:
-        # options['after'] added by _add_date_after
-        s = _add_date_after(s, params, options, errors)
-    if 'before' in params:
-        # options['before'] added by _add_date_before
-        s = _add_date_before(s, params, options, errors)
-    if 'person' in params:
-        s = s.filter('match', person_ids=params['person'])
-        options['person'] = params['person']
-    if 'organization' in params:
-        s = s.filter('match', organization_ids=params['organization'])
-        options['organization'] = params['organization']
-
-    if 'sort' in params:
-        if params['sort'] == 'date_newest':
-            s = s.sort({"sort_date": {"order": "desc"}})
-        elif params['sort'] == 'date_oldest':
-            s = s.sort({"sort_date": {"order": "asc"}})
-        else:
-            s = s.sort("_score")
-        options['sort'] = params['sort']
-    else:
-        s = s.sort("_score")
-
-    s.aggs.bucket('document_type', 'terms', field='_type')
-    s.aggs.bucket('person', 'terms', field='person_ids')
-    s.aggs.bucket('organization', 'terms', field='organization_ids')
-
-    return options, s, errors
-
-
 def search_string_to_params(query: str):
+    query = query.replace("  ", " ").strip(" ")  # Normalize so we don't get empty splits
     values = [value.strip() for value in query.split(" ")]
     keys = QUERY_KEYS
     params = dict()
@@ -130,7 +152,7 @@ def search_string_to_params(query: str):
                 value = value[len(key + ":"):]
                 params[key] = value
     if len(values) > 0:
-        params["searchterm"] = " ".join(values).replace("  ", " ").strip()
+        params["searchterm"] = " ".join(values).strip()
     return params
 
 
@@ -215,7 +237,10 @@ def params_to_human_string(params: dict):
         strs.append(locstr.replace('%DISTANCE%', params['radius']).replace('%PLACE%', place_name))
 
     if 'before' in params and 'after' in params:
-        strs.append(pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%', params['before']))
+        strs.append(
+            pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%',
+                                                                                                                 params[
+                                                                                                                     'before']))
     elif 'before' in params:
         strs.append(pgettext('Search query', 'published before %TO%').replace('%TO%', params['before']))
     elif 'after' in params:
