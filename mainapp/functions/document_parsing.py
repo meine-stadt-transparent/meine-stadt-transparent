@@ -1,12 +1,12 @@
 import re
 import shlex
-import geoextract
 
+import geoextract
+from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
 from geopy import OpenCage
 from pdfbox import PDFBox
-from PyPDF2 import PdfFileReader
 
 from mainapp.models import SearchStreet, Body, Location, Person
 

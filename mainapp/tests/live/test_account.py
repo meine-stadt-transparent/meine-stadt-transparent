@@ -1,3 +1,7 @@
+from unittest import skip
+
+from django.test import override_settings
+
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
@@ -51,6 +55,8 @@ class AccountTest(ChromeDriverTestCase):
         self.browser.find_by_css('form.login button').click()
         self.assertTextIsPresent('Successfully signed in')
 
+    @override_settings(DEBUG=True)
+    @skip
     def test_register_change_password(self):
         self.check_register_new_account(self.email, self.password1)
 

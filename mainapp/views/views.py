@@ -1,6 +1,6 @@
 import json
-
 from datetime import datetime
+
 from django.conf import settings
 from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404

@@ -11,7 +11,6 @@ from django.template import loader
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
-from elasticsearch_dsl.response import Hit
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address

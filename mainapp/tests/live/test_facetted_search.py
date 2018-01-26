@@ -14,13 +14,15 @@ from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 from meine_stadt_transparent import settings
 
 template = {
-    "id": 0,
-    "highlight": "Text <mark>Highlight</mark>",
-    "name": "SomeName",
-    "type": "file",
-    "type_translated": "File",
-    "name_escaped": "Name <mark>Title</mark>",
-    "meta": {"doc_type": "file_document"}
+    "fields": {
+        "id": 1,
+        "name": "SomeName",
+        "type": "file",
+        "type_translated": "File",
+        "name_escaped": "Name <mark>Title</mark>",
+    },
+    "doc_type": "file_document",
+    "highlight": {"name": "Text <mark>Highlight</mark>"}
 }
 
 
@@ -37,22 +39,24 @@ def get_aggregations():
     }
 
     for i in range(10):
-        aggs["person"].append((str(i), 42, False))
-        aggs["organization"].append((str(i), 42, False))
+        aggs["person"].append((i, 42, False))
+        aggs["organization"].append((i, 42, False))
 
     return AggResponse({}, {}, aggs)
 
 
 class MockMainappSearch(MainappSearch):
     """ The execute method is injected in the test methods """
+
     def execute(self):
-        hits = AttrList(Hit(template))
+        hits = AttrList([Hit(template)])
         hits.__setattr__("total", 1)
         return AttrDict({"hits": hits, "facets": get_aggregations()})
 
 
 class MockMainappSearchEndlessScroll(MainappSearch):
     """ The execute method is injected in the test for the endless scroll"""
+
     def execute(self):
         out = []
         for position in range(self._s.to_dict()["from"], self._s.to_dict()["from"] + self._s.to_dict()["size"]):
@@ -60,8 +64,8 @@ class MockMainappSearchEndlessScroll(MainappSearch):
             result["name"] = position
             result["name_escaped"] = position
             result["id"] = position
-            out.append(result)
-        hits = AttrList(Hit(out))
+            out.append(Hit(template))
+        hits = AttrList(out)
         hits.__setattr__("total", len(out) * 2)
         return AttrDict({"hits": hits, "facets": get_aggregations()})
 
@@ -122,7 +126,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("after:{} before:{} word".format(first_day, last_day), self.get_search_string_from_url())
 
         self.click_by_id("timeRangeButton")
-        self.click_by_text("Cancel Selection")
+        self.click_by_text("Cancel selection")
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
