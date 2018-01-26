@@ -30,6 +30,59 @@ $(function () {
         }
     });
 
+    // Unfortunately, shuffle.js apparently has no function to query the new order (to my knowledge),
+    // So we have to calculate it using the new position of the items
+    let getSortedItems = () => {
+        let items = [];
+        $gridEl.find(".person").each((i, el) => {
+            let $item = $(el);
+            if ($item.hasClass("shuffle-item--visible")) {
+                items.push($(el));
+            }
+        });
+        return items.sort(($it1, $it2) => {
+            let pos1 = $it1.position(),
+                pos2 = $it2.position();
+            if (pos1.top !== pos2.top) {
+                return pos1.top - pos2.top;
+            } else if (pos1.left !== pos2.left) {
+                return pos1.left - pos2.left;
+            } else {
+                return 0;
+            }
+        });
+    };
+
+
+
+    // Make the items tabbable in the correct order, without breaking the natural tab order of the page
+    let recalcTabindexes = () => {
+        let lastTabindex = 1;
+
+        let overrideTabindex = ($el) => {
+            // @TODO: Check if this widget becomes invisible, e.g. if hidden in an inactive tab; in that case, original-tabindex should be restored
+            if ($el.data('original-tabindex') === undefined) {
+                let origTabindex = $el.attr('tabindex');
+                $el.data('original-tabindex', (origTabindex === undefined ? 0 : origTabindex));
+            }
+            $el.attr('tabindex', lastTabindex);
+            lastTabindex++;
+        };
+
+        // Try to find all selectable elements that appear _after_ this grid and set the tabindex explicitly
+        $gridEl.parents().prevAll().find("a, input, button, [tabindex]").filter(":visible:not(:disabled)").each((i, el) => overrideTabindex($(el)));
+
+        getSortedItems().forEach(($item) => {
+            $item.find("a").attr("tabindex", lastTabindex);
+            lastTabindex++;
+        });
+
+        // Try to find all selectable elements that appear _after_ this grid and set the tabindex explicitly
+        $gridEl.parents().nextAll().find("a, input, button, [tabindex]").filter(":visible:not(:disabled)").each((i, el) => overrideTabindex($(el)));
+    };
+    grid.on(Shuffle.EventType.LAYOUT, () => {
+        recalcTabindexes();
+    });
 
     let $groupRadios = $(".filter-organizations input[type=radio]"),
         $groupDropdownLinks = $(".filter-organizations a"),
@@ -61,24 +114,7 @@ $(function () {
 
     // Returns the current filtered, sorted items
     $gridEl.data("get-items", () => {
-        let items = [];
-        $gridEl.find(".person").each((i, el) => {
-            let $item = $(el);
-            if ($item.hasClass("shuffle-item--visible")) {
-                items.push($(el));
-            }
-        });
-        return items.sort(($it1, $it2) => {
-            let pos1 = $it1.position(),
-                pos2 = $it2.position();
-            if (pos1.top !== pos2.top) {
-                return pos1.top - pos2.top;
-            } else if (pos1.left !== pos2.left) {
-                return pos1.left - pos2.left;
-            } else {
-                return 0;
-            }
-        });
+        return getSortedItems();
     });
     // Given a name of a person, this function returns the position in the list of the corresponding item
     // Returns null if no person exists with that name of the person is currently not visible
