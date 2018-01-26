@@ -2,6 +2,7 @@ $footer-height: 96px !default;
 $header-height: 56px !default;
 $header-search-max-width: 200px !default;
 $main-content-margin-top: 30px !default;
+$badge-border-radius: .25rem !default;
 $border-radius: 0 !default;
 $text-muted: #6e7881 !default; // Should have a contrast of at least 4.5
 $link-color: #0072ee !default; // Should have a contrast of at least 4.5
@@ -37,3 +38,4 @@ $h3-font-size: $font-size-base * 1.5 !default;
 $h4-font-size: $font-size-base * 1.25 !default;
 $h5-font-size: $font-size-base !default;
 $h6-font-size: $font-size-base !default;
+
