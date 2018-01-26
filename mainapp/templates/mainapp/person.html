@@ -6,10 +6,10 @@
 {% block content %}
     <div class="container">
         <article class="card">
-            <h1 class="card-header">
+            <header class="card-header">
                 {% include 'partials/subscribe_widget.html' %}
-                {{ person }}
-            </h1>
+                <h1>{{ person }}</h1>
+            </header>
             <div class="card-body">
                 {% if papers %}
                     <section>

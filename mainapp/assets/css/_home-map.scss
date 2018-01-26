@@ -22,6 +22,14 @@
     }
   }
 }
+.leaflet-container {
+  a {
+    color: $link-color;
+  }
+}
+.leaflet-bar a.leaflet-disabled {
+  color: #707070;
+}
 
 .home-container-meetings {
   .meeting-col {

@@ -9,8 +9,9 @@
                    id="searchfield-mousetrap">
 
             <button class="search-icon fa fa-search" type="submit"
-                    title="{% trans 'Show search results' context 'aria label' %}"
-                    aria-label="{% trans 'Show search results' context 'aria label' %}"></button>
+                    title="{% trans 'Show search results' context 'aria label' %}">
+                <span class="sr-only">{% trans 'Show search results' context 'aria label' %}</span>
+            </button>
         </div>
     </form>
 </section>

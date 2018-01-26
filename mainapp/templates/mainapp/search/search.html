@@ -5,7 +5,7 @@
 {% block title %}{% trans "Search" context "page_title" %}{% endblock %}
 
 {% block header %}
-    {% with True as disable_header_search %}
+    {% with disable_header_search=True main_content_id="endless-scroll-target" %}
         {{ block.super }}
     {% endwith %}
 {% endblock %}
@@ -38,8 +38,9 @@
                            placeholder="{% trans "Search term" context "search_form" %}"
                            aria-label="{% trans "Search term" context "search_form" %}">
                     <button class=" search-icon fa fa-search" type="submit"
-                    title="{% trans 'Show search results' context 'aria label' %}"
-                    aria-label="{% trans 'Show search results' context 'aria label' %}"></button>
+                    title="{% trans 'Show search results' context 'aria label' %}">
+                        <span class="sr-only">{% trans 'Show search results' context 'aria label' %}</span>
+                    </button>
                 </section>
                 <div class="form-row align-items-center">
                     {% include "mainapp/search/facet_location_selector.html" %}

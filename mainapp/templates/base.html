@@ -12,8 +12,13 @@
 <body>
 
 {% block header %}
-    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-navbar" role="navigation"
-         id="main-menu">
+    {% if main_content_id %}
+        <a href="#{{ main_content_id }}" class="sr-only">{% trans "Skip navigation" %}</a>
+    {% else %}
+        <a href="#main-content" class="sr-only">{% trans "Skip navigation" %}</a>
+    {% endif %}
+
+    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-navbar" id="main-menu">
         <div class="container">
             {% include 'partials/base_navbar.html' %}
         </div>
