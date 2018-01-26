@@ -83,6 +83,7 @@ $(function () {
     grid.on(Shuffle.EventType.LAYOUT, () => {
         recalcTabindexes();
     });
+    recalcTabindexes();
 
     let $groupRadios = $(".filter-organizations input[type=radio]"),
         $groupDropdownLinks = $(".filter-organizations a"),

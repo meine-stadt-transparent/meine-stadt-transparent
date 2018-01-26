@@ -1,5 +1,7 @@
 {% if objects|length > 0 %}
-    <h2>{{ name }}</h2>
+    {% if name %}
+        <h2>{{ name }}</h2>
+    {% endif %}
     <ul>
         {% for object in objects %}
             <li>

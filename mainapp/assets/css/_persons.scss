@@ -34,7 +34,7 @@
   }
 
   .organization, .role, .date {
-    color: #737373; // Hint: needs enough contrast to the background
+    color: $persons-list-light-text;
     font-size: 0.8em;
     white-space: nowrap;
     overflow: hidden;
