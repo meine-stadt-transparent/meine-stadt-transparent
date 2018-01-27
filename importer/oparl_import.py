@@ -87,7 +87,7 @@ class OParlImport(OParlObjects):
             try:
                 fn(item)
             except Exception as e:
-                self.logger.error("An error occured:", e)
+                self.logger.error("An error occured: {}".format(e))
                 self.logger.error(traceback.format_exc())
                 self.errorlist.append((item.get_id(), e, traceback.format_exc()))
                 err_count += 1

@@ -92,7 +92,7 @@ def get_geodata(location, fallback_city_name):
 
     geolocator = get_geolocator()
     location = geolocator.geocode(search_str, language="de", exactly_one=False)
-    if len(location) == 0:
+    if not location or len(location) == 0:
         return None
 
     return {
