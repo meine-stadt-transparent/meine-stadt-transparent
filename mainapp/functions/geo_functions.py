@@ -1,10 +1,17 @@
 from django.conf import settings
-from geopy import OpenCage
+from geopy import OpenCage, Nominatim
 
 
 def get_geolocator():
-    # @TODO Support other geocoders as well
-    geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
+    if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata':
+        if not settings.OPENCAGEDATA_KEY:
+            raise ValueError("OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set")
+        geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
+    elif settings.GEOEXTRACT_ENGINE.lower() == 'nominatim':
+        geolocator = Nominatim()
+    else:
+        raise ValueError("Unknown Geocoder: " + settings.GEOEXTRACT_ENGINE)
+
     return geolocator
 
 

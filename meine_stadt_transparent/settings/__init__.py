@@ -180,7 +180,10 @@ ELASTICSEARCH_DSL = {
 
 ELASTICSEARCH_INDEX = env.str('ELASTICSEARCH_INDEX', 'meine_stadt_transparent_documents')
 
-OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY')
+# Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencagedata
+GEOEXTRACT_ENGINE = env.str('GEOEXTRACT_ENGINE', 'Nominatim')
+# If GEOEXTRACT_ENGINE is "Opencagedata", then OPENCAGEDATA_KEY needs to be set
+OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY', None)
 
 # Settings for Geo-Extraction
 # @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list

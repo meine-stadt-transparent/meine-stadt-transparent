@@ -5,9 +5,9 @@ import geoextract
 from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
-from geopy import OpenCage
 from pdfbox import PDFBox
 
+from mainapp.functions.geo_functions import get_geolocator
 from mainapp.models import SearchStreet, Body, Location, Person
 
 
@@ -90,7 +90,7 @@ def get_geodata(location, fallback_city_name):
 
     search_str += ', ' + settings.GEO_SEARCH_COUNTRY
 
-    geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
+    geolocator = get_geolocator()
     location = geolocator.geocode(search_str, language="de", exactly_one=False)
     if len(location) == 0:
         return None
