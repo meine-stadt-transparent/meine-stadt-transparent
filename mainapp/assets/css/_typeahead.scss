@@ -1,30 +1,20 @@
-span.twitter-typeahead {
+.twitter-typeahead {
+  width: 100%;
+
   .tt-menu {
     @extend .dropdown-menu;
+    z-index: $zindex-dropdown !important; // Typeahead sets its own (wrong) inline z-index
     max-width: 100%;
   }
 
   .tt-suggestion {
     @extend .dropdown-item;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    padding-left: $input-padding-x;
   }
 
   .tt-suggestion.tt-cursor {
     @extend .dropdown-item.active;
   }
-
-  .input-group & {
-    display: flex !important;
-    align-items: center;
-    position: relative;
-    flex: 1 1 auto;
-    width: 1%;
-    .tt-menu, .tt-hint, .tt-input {
-      width: 100%;
-    }
-  }
-}
-
-.dropdown-item, span.twitter-typeahead .tt-suggestion {
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
