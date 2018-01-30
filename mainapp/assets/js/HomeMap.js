@@ -1,4 +1,6 @@
 import * as L from "leaflet/src/Leaflet";
+import {TextHint} from "./LeafletTextHint";
+
 import create_map from "./createMap";
 
 export default class IndexView {
@@ -59,6 +61,9 @@ export default class IndexView {
         let initData = $mapElement.data("map-data");
 
         this.leaflet = create_map($mapElement, initData);
+        let textHint = $mapElement.data("text-hint");
+        console.log(textHint);
+        (new TextHint({text: textHint})).addTo(this.leaflet);
 
         if (initData['documents']) {
             this.addDocumentLocationMarkers(initData['documents']);

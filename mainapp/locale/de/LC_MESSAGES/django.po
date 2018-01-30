@@ -622,12 +622,8 @@ msgid "Organizations"
 msgstr "Gremien"
 
 #: mainapp/templates/mainapp/index/index_map.html:5
-msgid ""
-"The markers on the map show places which have been mentioned\n"
-"        in the latest documents"
-msgstr ""
-"Die Marker auf der Karte zeigen Orte, die in den neusten Dokumenten erwähnt "
-"wurden"
+msgid "Mentioned places in the latest documents"
+msgstr "Orte, die in den neusten Dokumenten erwähnt wurden"
 
 #: mainapp/templates/mainapp/index/index_meetings.html:3
 msgctxt "Header"
@@ -661,7 +657,7 @@ msgstr "Suchergebnisse"
 
 #: mainapp/templates/mainapp/index/index_title.html:7
 msgid "informs you about your local city council."
-msgstr "informiert Sie über ihren Stadtrat"
+msgstr "informiert Sie über Ihren Stadtrat"
 
 #: mainapp/templates/mainapp/index/index_title.html:9
 msgid "More information"
