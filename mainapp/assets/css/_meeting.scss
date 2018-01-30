@@ -1,5 +1,19 @@
+@import "vars";
+
 .agenda {
   dt {
     min-width: 30px;
   }
+  .additional-links {
+    display: block;
+    font-size: 0.8em;
+  }
+}
+
+
+.meeting-section-agenda {
+  margin-top: $default-section-spacing / 2;
+}
+.meeting-section-navigation {
+  margin-top: $default-section-spacing / 2;
 }

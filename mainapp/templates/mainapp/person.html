@@ -5,54 +5,50 @@
 
 {% block content %}
     <div class="container">
-        <article class="card">
-            <header class="card-header">
-                {% include 'partials/subscribe_widget.html' %}
-                <h1>{{ person }}</h1>
-            </header>
-            <div class="card-body">
-                {% if papers %}
-                    <section>
-                        <h2>{% trans "Submitted Papers" %}</h2>
-                        <ul>
-                            {% for paper in papers %}
-                                <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </section>
-                {% endif %}
-                {% if memberships %}
-                    <section>
-                        <h2>{% trans "Memberships" %}</h2>
-                        {% include "partials/person_membership_section.html" %}
-                    </section>
-                {% endif %}
-                {% if mentioned_in %}
-                    <section>
-                        <h2 class="clearfix">
-                            {% trans "Mentioned in" %}
-                            <a class="btn btn-sm btn-primary pull-right" href="{{ to_search_url }}">
-                                {% trans "Open in Search" %}
-                            </a>
-                        </h2>
-                        <ul class="papers">
-                            {% for group in mentioned_in %}
-                                <li class="paper">
-                                    <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
-                                    <span class="text-muted">{{ group.paper.modified|date }}</span>
-                                    <ul class="files">
-                                        {% for file in group.files %}
-                                            <li class="file">
-                                                <a class="file-link" href="{% url 'file' file.id %}">{{ file }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </section>
-                {% endif %}
-            </div>
-        </article>
+        <section class="person-section-head">
+            {% include 'partials/subscribe_widget.html' %}
+            <h1>{{ person }}</h1>
+        </section>
+        {% if papers %}
+            <section class="person-section-papers">
+                <h2>{% trans "Submitted Papers" %}</h2>
+                <ul>
+                    {% for paper in papers %}
+                        <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+        {% if memberships %}
+            <section class="person-section-memberships">
+                <h2>{% trans "Memberships" %}</h2>
+                {% include "partials/person_membership_section.html" %}
+            </section>
+        {% endif %}
+        {% if mentioned_in %}
+            <section class="person-section-mentions">
+                <h2 class="clearfix">
+                    {% trans "Mentioned in" %}
+                    <a class="btn btn-sm btn-primary pull-right" href="{{ to_search_url }}">
+                        {% trans "Open in Search" %}
+                    </a>
+                </h2>
+                <ul class="papers">
+                    {% for group in mentioned_in %}
+                        <li class="paper">
+                            <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
+                            <span class="text-muted">{{ group.paper.modified|date }}</span>
+                            <ul class="files">
+                                {% for file in group.files %}
+                                    <li class="file">
+                                        <a class="file-link" href="{% url 'file' file.id %}">{{ file }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
     </div>
 {% endblock %}

@@ -1,0 +1,16 @@
+@import "vars";
+
+.paper-section-files {
+  margin-top: $default-section-spacing;
+
+  .main-file + li {
+    // Small separator between main file and extra files, if both are present
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: solid 1px lightgray;
+  }
+}
+.paper-section-consultations {
+  margin-top: $default-section-spacing;
+}
+

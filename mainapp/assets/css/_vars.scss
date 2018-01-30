@@ -8,6 +8,7 @@ $text-muted: #6e7881 !default; // Should have a contrast of at least 4.5
 $link-color: #0072ee !default; // Should have a contrast of at least 4.5
 $fa-font-path: "~font-awesome/fonts/" !default;
 $container-width: 800px !default;
+$default-section-spacing: 40px !default;
 
 $container-max-widths: (
   md: $container-width,

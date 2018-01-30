@@ -4,7 +4,7 @@
     <h2 class="sr-only">{% trans "Time range" context "search_form" %}</h2>
     <div class="facet-dropdown">
         {# Due to https://github.com/dangrossman/bootstrap-daterangepicker/issues/1490 and https://github.com/dangrossman/bootstrap-daterangepicker/pull/1650 we currently can't use a real rutton here #}
-        <div role="button" class="btn btn-sm btn-transparent dropdown-toggle" id="timeRangeButton"
+        <div role="button" class="btn btn-sm btn-transparent dropdown-toggle" id="timeRangeButton" tabindex="0"
              data-strings='{
             "today": "{% trans "Today" context "search_form" %}",
             "last_7d":"{% trans "Last 7 days" context "search_form" %}",

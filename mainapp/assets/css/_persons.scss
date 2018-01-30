@@ -51,3 +51,8 @@
     content: '';
   }
 }
+
+
+.person-section-mentions, .person-section-memberships, .person-section-papers {
+  margin-top: $default-section-spacing;
+}

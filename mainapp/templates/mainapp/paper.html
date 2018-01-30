@@ -13,7 +13,7 @@
             {% include "partials/historical_note.html" with view_name="paper" %}
         {% endif %}
 
-        <div class="section">
+        <section class="paper-section-head">
             {% include "partials/header_name.html" with object=paper %}
 
             {% if paper.description %}
@@ -63,7 +63,9 @@
                     </div>
                 </div>
             {% endif %}
+        </section>
 
+        <section class="paper-section-files">
             <h2 class="paper-section-heading">{% trans "Files" %}</h2>
             {% if historical %}
                 <p><span class="fa-custom fa-exclamation-triangle"
@@ -71,13 +73,12 @@
             {% elif paper.main_file or paper.files.count > 0 %}
                 <ul class="list-unstyled">
                     {% if paper.main_file %}
-                        <li>
+                        <li class="main-file">
                             <a href="{% url 'file' paper.main_file.id %}">
                                 <span class="fa-custom fa-file"></span>
                                 {% firstof paper.main_file.name paper.main_file.displayed_filename %}
                             </a>
                         </li>
-                        <hr>
                     {% endif %}
                     {% for file in paper.files.all %}
                         <li>
@@ -90,20 +91,22 @@
             {% else %}
                 <p class="lead">{% trans "No files attached" %}</p>
             {% endif %}
+        </section>
 
+        <section class="paper-section-consultations">
             {% if consultations|length > 0 %}
                 <h2 class="paper-section-heading">{% trans "Consultations" %}</h2>
             {% endif %}
             <dl class="row">
                 {% for consultation in consultations %}
-                    <dt class="col-3">{{ consultation.meeting.start|date }}</dt>
-                    <dd class="col-9">
+                    <dt class="col-md-3">{{ consultation.meeting.start|date }}</dt>
+                    <dd class="col-md-9">
                         {% if consultation.title %}
                             <div>{{ consultation.title }}</div>
                         {% endif %}
                         {% with consultation.single_agenda_item as item %}
                             {% if item %}
-                                <div>
+                                <div class="title">
                                     {% spaceless %}
                                         <a href="{% url "meeting" item.meeting.id %}">
                                             {{ item.meeting }}</a>
@@ -113,18 +116,18 @@
                                     {% endspaceless %}
                                 </div>
                                 {% if item.result %}
-                                    <div>{{ item.result }}</div>
+                                    <div class="result">{{ item.result }}</div>
                                 {% endif %}
                                 {% if item.public != None %}
-                                    <div class="text-muted">{% trans "public agenda item" %}</div>
+                                    <div class="public text-muted">{% trans "public agenda item" %}</div>
                                 {% else %}
-                                    <div class="text-muted">{% trans "non-public agenda item" %}</div>
+                                    <div class="non-public text-muted">{% trans "non-public agenda item" %}</div>
                                 {% endif %}
                             {% endif %}
                         {% endwith %}
                     </dd>
                 {% endfor %}
             </dl>
-        </div>
+        </section>
     </div>
 {% endblock %}

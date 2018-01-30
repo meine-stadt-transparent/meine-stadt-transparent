@@ -6,6 +6,7 @@
 {% block content %}
     {% spaceless %}
         <div class="container">
+            <section class="meeting-section-head">
             {% include "partials/header_name.html" with object=meeting %}
 
             <p title="{% trans 'Time of the Meeting' %}">
@@ -59,7 +60,9 @@
                     {% endfor %}
                 </ul>
             {% endif %}
+            </section>
 
+            <section class="meeting-section-navigation">
             <div class="d-flex justify-content-between1">
                 <p class="w-100 text-left">
                     {% if previous %}
@@ -70,7 +73,7 @@
                 </p>
                 <p class="w-100 text-center">
                     <a href="{% url 'meeting-ical' meeting.id %}">
-                        <span class="fa fa-download" aria-hidden="true"></span> {% trans 'Export' %}
+                        <span class="fa fa-calendar" aria-hidden="true"></span> {% trans 'iCal-Export' %}
                     </a>
                 </p>
                 <p class="w-100 text-right">
@@ -82,7 +85,9 @@
                     {% endif %}
                 </p>
             </div>
+            </section>
 
+            <section class="meeting-section-agenda">
             <h2>{% trans 'Agenda' %}</h2>
             {% if meeting.agendaitem_set.all %}
                 <dl class="agenda">
@@ -95,6 +100,15 @@
                                 {% else %}
                                     {{ agenda_item.title }}
                                 {% endif %}
+                                {% if agenda_item.consultation.paper %}
+                                    <div class="additional-links">
+                                        <a href="{% url 'paper' agenda_item.consultation.paper.id %}" class="paper-link">
+                                            <span class="fa fa-chevron-right"></span>
+                                            {% trans 'Paper' %}
+                                            {{ agenda_item.consultation.paper.reference_number }}
+                                        </a>
+                                    </div>
+                                {% endif %}
                             </dd>
                         </div>
                     {% endfor %}
@@ -102,6 +116,7 @@
             {% else %}
                 <p class="lead">{% trans 'An Agenda has not been published' %}</p>
             {% endif %}
+            </section>
         </div>
     {% endspaceless %}
 {% endblock %}
