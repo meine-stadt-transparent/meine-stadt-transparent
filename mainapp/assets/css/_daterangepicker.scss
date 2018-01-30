@@ -447,6 +447,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     li {
       @extend .dropdown-item;
       margin-bottom: .5rem; // like LABEL element from _reboot.scss
+      cursor: pointer;
     }
   }
 
