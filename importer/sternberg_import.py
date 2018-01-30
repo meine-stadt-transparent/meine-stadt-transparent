@@ -28,11 +28,11 @@ class SternbergImport(OParlImport):
             # Add missing "type"-attributes in body-lists
             if "data" in oparl_list:
                 for oparl_object in oparl_list["data"]:
-                    if "location" in oparl_object.keys() and not isinstance(oparl_object["location"], str):
+                    if "location" in oparl_object.keys() and isinstance(oparl_object["location"], dict):
                         oparl_object["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Add missing "type"-attributes in single bodies
-            if "location" in oparl_list.keys() and not isinstance(oparl_list["location"], str):
+            if "location" in oparl_list.keys() and isinstance(oparl_list["location"], dict):
                 oparl_list["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Location in Person must be a url, not an object
