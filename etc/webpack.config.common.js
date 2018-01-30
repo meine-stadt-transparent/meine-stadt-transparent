@@ -48,16 +48,16 @@ module.exports = {
                         sourceMap: (process.env.NODE_ENV !== 'production')
                     }
                 }, {
-                    loader: 'sass-loader',
-                    options: {
-                        sourceMap: (process.env.NODE_ENV !== 'production')
-                    }
-                }, {
                     loader: 'postcss-loader',
                     options: {
                         plugins: () => [Autoprefixer({browsers: [">1%", "last 10 versions", "IE 9", "Firefox 3"]})],
                         remove: false,
                         sourceMap: true
+                    }
+                }, {
+                    loader: 'sass-loader',
+                    options: {
+                        sourceMap: (process.env.NODE_ENV !== 'production')
                     }
                 }]
             })
