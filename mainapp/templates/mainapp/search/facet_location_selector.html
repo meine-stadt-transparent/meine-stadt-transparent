@@ -26,7 +26,7 @@
                         <label for="new-radius" class="input-group-text">{% trans "Distance in m" context "Selecting a range in meters" %}:</label>
                     </div>
                     <input type="number" class="form-control new-radius" id="new-radius"
-                           data-default="500" value="{{ options.radius }}">
+                           data-default="500" value="{{ options.radius }}" autocomplete="off">
                 </div>
             </div>
             <div class="input-group">
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <input type="hidden" name="lat" value="{{ options.lat }}">
-    <input type="hidden" name="lng" value="{{ options.lng }}">
-    <input type="hidden" name="radius" value="{{ options.radius }}">
+    <input type="hidden" name="lat" value="{{ options.lat }}" autocomplete="off">
+    <input type="hidden" name="lng" value="{{ options.lng }}" autocomplete="off">
+    <input type="hidden" name="radius" value="{{ options.radius }}" autocomplete="off">
 </section>

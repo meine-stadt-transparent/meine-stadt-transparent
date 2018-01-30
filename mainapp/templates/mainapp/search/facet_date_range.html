@@ -22,8 +22,9 @@
             <span class="time-not-set">{% trans "Time range" context "search_form" %}</span>
             <span id="base"></span>
         </div>
-        <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}">
-        <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}">
+
+        <input id="after" name="after" type="hidden" value="{{ options.after|date:"Y-m-d" }}" autocomplete="off">
+        <input id="before" name="before" type="hidden" value="{{ options.before|date:"Y-m-d" }}" autocomplete="off">
 
         <div class="daterangepicker dropdown-menu daterangepicker-template some-class">
             <div class="calendar left">

@@ -19,10 +19,10 @@
                     <label>
                         {% if document_type_id in options.document_type %}
                             <input type="checkbox" name="document-type[{{ document_type_id }}]" checked
-                                   value="{{ document_type_id }}">
+                                   value="{{ document_type_id }}" autocomplete="off">
                         {% else %}
                             <input type="checkbox" name="document-type[{{ document_type_id }}]"
-                                   value="{{ document_type_id }}">
+                                   value="{{ document_type_id }}" autocomplete="off">
                         {% endif %}
                         {{ document_type_name }}
                     </label>

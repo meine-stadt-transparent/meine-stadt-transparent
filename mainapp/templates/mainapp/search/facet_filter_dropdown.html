@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <section class="col-auto search-facet search-facet-filter-dropdown" data-filter-key="{{ key }}">
-    <input type="hidden" value="{{ init_value }}" name="{{ key }}" class="value">
+    <input type="hidden" value="{{ init_value }}" name="{{ key }}" class="value" autocomplete="off">
     <h2 class="sr-only">{% trans label context "search_form" %}</h2>
     <div class="dropdown facet-dropdown">
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="{{ key }}Button"

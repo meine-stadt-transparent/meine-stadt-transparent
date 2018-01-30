@@ -13,13 +13,14 @@ export default class FacettedSearchDateRange {
         this.buildDateRanges(strings);
         this.setDateRangeStr();
 
-        this.$openerBtn.daterangepicker(this.getDateRangePickerOptions(strings), this.onDatePickerChanged.bind(this));
+        let options = this.getDateRangePickerOptions(strings, this.$inputAfter.val(), this.$inputBefore.val());
+        this.$openerBtn.daterangepicker(options, this.onDatePickerChanged.bind(this));
 
         this.$openerBtn.on('cancel.daterangepicker', this.onDatePickerCanceled.bind(this));
     }
 
-    getDateRangePickerOptions(strings) {
-        return {
+    getDateRangePickerOptions(strings, start, end) {
+        let options = {
             locale: {
                 format: 'YYYY-MM-DD',
                 applyLabel: strings['apply'],
@@ -39,6 +40,13 @@ export default class FacettedSearchDateRange {
             cancelClass: "",
             template: this.$template
         };
+        if (start) {
+            options['startDate'] = start;
+        }
+        if (end) {
+            options['endDate'] = end;
+        }
+        return options;
     }
 
     onDatePickerChanged(start, end) {
