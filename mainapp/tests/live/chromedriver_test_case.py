@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import modify_settings
 from selenium.webdriver.chrome.options import Options
@@ -5,27 +6,25 @@ from splinter import Browser
 
 chromedriver_path = "node_modules/.bin/chromedriver"
 
-"""
-Specifics of ChromeDriverTestCase:
-- Chrome Headless is used
-- English is used for the UI
-- CSRF-checks are disabled, as referrer-checking seems to be problematic, as the HTTPS-header seems to be always set
-"""
-
 
 @modify_settings(MIDDLEWARE={
     'remove': ['django.middleware.csrf.CsrfViewMiddleware'],
 })
 class ChromeDriverTestCase(StaticLiveServerTestCase):
+    """
+    Specifics of ChromeDriverTestCase:
+    - Chrome Headless is used
+    - English is used for the UI
+    - CSRF-checks are disabled, as referrer-checking seems to be problematic, as the HTTPS-header seems to be always set
+    """
     browser = None
 
     @classmethod
     def setUpClass(cls):
-        # For debugging purposes you can define a fixed port
-        # cls.port = 12345
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
-        cls.browser = Browser('chrome', headless=True, executable_path="node_modules/.bin/chromedriver",
+        cls.browser = Browser('chrome', headless=not settings.DEBUG_TESTING,
+                              executable_path="node_modules/.bin/chromedriver",
                               options=options)
         super(ChromeDriverTestCase, cls).setUpClass()
 

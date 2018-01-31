@@ -13,16 +13,87 @@ from mainapp.models import Person
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 from meine_stadt_transparent import settings
 
+hit_template = {
+    "_type": "file_document",
+    "_id": "159",
+    "_source": {
+        "id": 159,
+        "name": "long name nolight",
+        "short_name": "short name nolight",
+    },
+    "highlight": {
+        "name": ["long name <mark>hightlight</mark>"],
+        "short_name": ["short name <mark>highlight</mark>"]
+    }
+}
+
+response_premade = {
+    "hits": {
+        "total": 117,
+        "hits": [
+            hit_template
+        ]
+    },
+    "aggregations": {
+        "_filter_document_type": {
+            "doc_count": 1337,
+            "document_type": {
+                "buckets": [
+                    {
+                        "key": "organization_document",
+                        "doc_count": 42
+                    },
+                    {
+                        "key": "person_document",
+                        "doc_count": 42
+                    }
+                ]
+            }
+        },
+        "_filter_person": {
+            "doc_count": 1337,
+            "person": {
+                "buckets": [
+                    {
+                        "key": 1,
+                        "doc_count": 42
+                    },
+                    {
+                        "key": 1,
+                        "doc_count": 42
+                    }
+                ]
+            }
+        },
+        "_filter_organization": {
+            "doc_count": 1337,
+            "organization": {
+                "buckets": [
+                    {
+                        "key": 41,
+                        "doc_count": 42
+                    },
+                    {
+                        "key": 42,
+                        "doc_count": 42
+                    }
+                ]
+            }
+        }
+    }
+}
+
 template = {
     "fields": {
         "id": 1,
-        "name": "Title Highlight",
+        "name": "Title nolight",
         "type": "file",
         "type_translated": "File",
-        "name_escaped": "Name <mark>Title</mark>",
     },
     "doc_type": "file_document",
-    "highlight": {"name": ["Highlight"]}
+    "highlight": {
+        "name": ["Title <mark>Highlight</mark>"]
+    }
 }
 
 
@@ -51,7 +122,10 @@ class MockMainappSearch(MainappSearch):
     def execute(self):
         hits = AttrList([Hit(template)])
         hits.__setattr__("total", 1)
-        return AttrDict({"hits": hits, "facets": get_aggregations()})
+        return AttrDict({
+            "hits": hits,
+            "facets": get_aggregations()
+        })
 
 
 class MockMainappSearchEndlessScroll(MainappSearch):
@@ -61,14 +135,20 @@ class MockMainappSearchEndlessScroll(MainappSearch):
         out = []
         for position in range(self._s.to_dict()["from"], self._s.to_dict()["from"] + self._s.to_dict()["size"]):
             result = template.copy()
-            result["highlight"] = {}
+            result["highlight"] = {
+                "name": ["<mark>" + str(position) + "</mark>"]
+            }
             result["fields"]["name"] = str(position)
             result["fields"]["name_escaped"] = str(position)
             result["fields"]["id"] = position
-            out.append(Hit(template))
+            out.append(Hit(result))
         hits = AttrList(out)
         hits.__setattr__("total", len(out) * 2)
-        return AttrDict({"hits": hits, "facets": get_aggregations()})
+
+        return AttrDict({
+            "hits": hits,
+            "facets": get_aggregations()
+        })
 
 
 class FacettedSearchTest(ChromeDriverTestCase):
@@ -117,6 +197,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
     def test_time_range(self):
         self.visit('/search/query/word/')
+        #webbrowser.open(self.live_server_url + '/search/query/word/')
         self.click_by_id("timeRangeButton")
         self.click_by_text("This year")
 
@@ -125,7 +206,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("after:{} before:{} word".format(first_day, last_day), self.get_search_string_from_url())
 
         self.click_by_id("timeRangeButton")
-        self.click_by_text("Cancel selection")
+        self.click_by_css(".daterangepicker .cancelBtn")
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
@@ -188,6 +269,6 @@ class FacettedSearchTest(ChromeDriverTestCase):
             time.sleep(0.01)
 
         self.assertEqual(single_length * 2, len(self.browser.find_by_css(".results-list > li")))
-        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .result-title")]
+        numbers = [int(i.text) for i in self.browser.find_by_css(".results-list > li .lead")]
         numbers.sort()
         self.assertEqual(numbers, list(range(0, single_length * 2)))

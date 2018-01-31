@@ -225,6 +225,8 @@ SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
 SEARCH_PAGINATION_LENGTH = 20
 
+DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -244,15 +246,15 @@ LOGGING = {
     'loggers': {
         'mainapp': {
             'handlers': ['console', 'mainapp'],
-            'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': DJANGO_LOG_LEVEL or 'INFO',
         },
         'mainapp.management.commands': {
-            'level': env.str('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'level': DJANGO_LOG_LEVEL or 'DEBUG',
             'propagate': True,
         },
         'importer': {
             'handlers': ['console', 'importer'],
-            'level': env.str('DJANGO_LOG_LEVEL', 'INFO'),
+            'level': DJANGO_LOG_LEVEL or 'INFO',
             'propagate': True,
         },
     }
@@ -275,6 +277,7 @@ TEMPLATE_META = {
 
 
 DEBUG_TOOLBAR_ACTIVE = False
+DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
 if DEBUG and not TESTING:
     import pip

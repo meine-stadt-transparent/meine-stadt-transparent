@@ -2,10 +2,12 @@ import hashlib
 import mimetypes
 import os
 from collections import defaultdict
+from typing import Type
 
 import gi
 import requests
 from django.conf import settings
+from django.db.models import Model
 from django.utils.translation import ugettext as _
 # noinspection PyPackageRequirements
 from slugify.slugify import slugify
@@ -13,7 +15,7 @@ from slugify.slugify import slugify
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
 from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
-    OrganizationMembership, Organization
+    OrganizationMembership, Organization, DefaultFields
 from mainapp.models.consultation import Consultation
 from mainapp.models.organization_type import OrganizationType
 from mainapp.models.paper_type import PaperType
@@ -399,6 +401,20 @@ class OParlObjects(OParlHelper):
 
         return membership
 
+    def _add_organizations(self, queue, othermodel: Type[DefaultFields]):
+        length = len(queue)
+        self.logger.info("Adding missing {} to {} {}".format(othermodel.__name__, length, Organization.__name__))
+        for base_object, associated_urls in queue.items():
+            associated = []
+            for url in associated_urls:
+                org = Organization.objects_with_deleted.filter(oparl_id=url).first()
+                if not org:
+                    org = self.organization_without_embedded(self.client.parse_url(url))
+                    org.save()
+                associated.append(org)
+            base_object.organizations = associated
+            base_object.save()
+
     def add_missing_associations(self):
         self.logger.info(
             "Adding {} missing meeting <-> persons associations".format(len(self.meeting_person_queue.items())))
@@ -438,25 +454,6 @@ class OParlObjects(OParlHelper):
                 org = self.organization_without_embedded(self.client.parse_url(organization_url))
             paper.organizations.add(org)
 
-        self.logger.info("Adding missing organizations to {} consultations".format(
-            len(self.consultation_organization_queue.items())))
-        for consultation, organizations in self.consultation_organization_queue.items():
-            orgas = []
-            for org_id in organizations:
-                org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-                if not org:
-                    org = self.organization_without_embedded(self.client.parse_url(org_id))
-                orgas.append(org)
-            consultation.organizations = orgas
-            consultation.save()
+        self._add_organizations(self.consultation_organization_queue, Consultation)
+        self._add_organizations(self.consultation_organization_queue, Meeting)
 
-        self.logger.info("Adding missing organizations to {} meetings".format(len(self.paper_organization_queue)))
-        for meeting, organization_urls in self.meeting_organization_queue.items():
-            orgas = []
-            for org_id in organization_urls:
-                org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-                if not org:
-                    org = self.organization_without_embedded(self.client.parse_url(org_id))
-                orgas.append(org)
-            meeting.organizations = orgas
-            meeting.save()
