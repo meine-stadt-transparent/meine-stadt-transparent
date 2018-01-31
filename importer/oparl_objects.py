@@ -36,6 +36,7 @@ class OParlObjects(OParlHelper):
         # mappings that could not be resolved because the target object
         # hasn't been imported yet
         self.meeting_person_queue = defaultdict(list)
+        self.meeting_organization_queue = defaultdict(list)
         self.agenda_item_paper_queue = {}
         self.membership_queue = []
         self.consultation_meeting_queue = []
@@ -45,13 +46,19 @@ class OParlObjects(OParlHelper):
 
         # Ensure the existence of the three predefined organization types
         group = settings.PARLIAMENTARY_GROUPS_TYPE
-        OrganizationType.objects.get_or_create(id=group[0], defaults={"name": group[1]})
+        OrganizationType.objects.get_or_create(id=group[0], defaults={
+            "name": group[1]
+            })
 
         committee = settings.COMMITTEE_TYPE
-        OrganizationType.objects.get_or_create(id=committee[0], defaults={"name": committee[1]})
+        OrganizationType.objects.get_or_create(id=committee[0], defaults={
+            "name": committee[1]
+            })
 
         department = settings.DEPARTMENT_TYPE
-        OrganizationType.objects.get_or_create(id=department[0], defaults={"name": department[1]})
+        OrganizationType.objects.get_or_create(id=department[0], defaults={
+            "name": department[1]
+            })
 
     def body(self, libobject: OParl.Body):
         return self.process_object(libobject, Body, self.body_core, self.body_embedded)
@@ -131,7 +138,9 @@ class OParlObjects(OParlHelper):
     def paper_core(self, libobject, paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
         if libobject.get_paper_type():
-            paper_type, _ = PaperType.objects.get_or_create(defaults={"paper_type": libobject.get_paper_type()})
+            paper_type, _ = PaperType.objects.get_or_create(defaults={
+                "paper_type": libobject.get_paper_type()
+                })
         else:
             paper_type = None
         paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
@@ -185,9 +194,20 @@ class OParlObjects(OParlHelper):
         meeting.persons = persons
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
             self.agendaitem(oparlitem, index, meeting)
+
+        organizations = []
+        for organization_url in libobject.get_organization_url():
+            djangoorganization = Organization.objects.filter(oparl_id=organization_url).first()
+            if djangoorganization:
+                organizations.append(djangoorganization)
+            else:
+                self.meeting_organization_queue[meeting].append(organization_url)
+        changed = changed or not self.is_queryset_equal_list(meeting.organizations, organizations)
+        meeting.organizations = organizations
+
         return changed
 
-    def meeting_core(self, libobject, meeting):
+    def meeting_core(self, libobject: OParl.Meeting, meeting):
         self.logger.info("Processing Meeting {}".format(libobject.get_id()))
         meeting.start = self.glib_datetime_to_python(libobject.get_start())
         meeting.end = self.glib_datetime_to_python(libobject.get_end())
@@ -411,7 +431,14 @@ class OParlObjects(OParlHelper):
             consultation.meeting = Meeting.objects_with_deleted.filter(oparl_id=meeting).first()
             consultation.save()
 
-        self.logger.info("Adding {} missing organizations to consultations".format(
+        self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
+        for paper, organization_url in self.paper_organization_queue:
+            org = Organization.objects_with_deleted.filter(oparl_id=organization_url).first()
+            if not org:
+                org = self.organization_without_embedded(self.client.parse_url(organization_url))
+            paper.organizations.add(org)
+
+        self.logger.info("Adding missing organizations to {} consultations".format(
             len(self.consultation_organization_queue.items())))
         for consultation, organizations in self.consultation_organization_queue.items():
             orgas = []
@@ -423,9 +450,13 @@ class OParlObjects(OParlHelper):
             consultation.organizations = orgas
             consultation.save()
 
-        self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
-        for paper, organization_url in self.paper_organization_queue:
-            org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
-            if not org:
-                org = self.organization_without_embedded(self.client.parse_url(org_id))
-            paper.organizations.add(org)
+        self.logger.info("Adding missing organizations to {} meetings".format(len(self.paper_organization_queue)))
+        for meeting, organization_urls in self.meeting_organization_queue.items():
+            orgas = []
+            for org_id in organization_urls:
+                org = Organization.objects_with_deleted.filter(oparl_id=org_id).first()
+                if not org:
+                    org = self.organization_without_embedded(self.client.parse_url(org_id))
+                orgas.append(org)
+            meeting.organizations = orgas
+            meeting.save()

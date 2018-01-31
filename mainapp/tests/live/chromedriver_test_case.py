@@ -1,6 +1,6 @@
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from selenium.webdriver.chrome.options import Options
 from django.test import modify_settings
+from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 
 chromedriver_path = "node_modules/.bin/chromedriver"

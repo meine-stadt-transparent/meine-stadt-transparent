@@ -125,6 +125,8 @@ class TestImporter(TestCase):
             self.assertEqual(table.objects.count(), 1)
             self.assertLess(table.objects.first().modified, now)
         self.assertEqual(File.objects.count(), 2)
+        # Test for #56
+        self.assertEqual(Meeting.by_oparl_id("https://oparl.example.org/meeting/281").organizations.count(), 1)
 
     def check_ignoring_unmodified(self):
         """ Check that not-modified objects are ignored - See #41 """

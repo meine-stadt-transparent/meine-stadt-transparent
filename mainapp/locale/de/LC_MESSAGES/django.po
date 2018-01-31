@@ -634,7 +634,7 @@ msgstr "Nächste Termine"
 
 #: mainapp/templates/mainapp/index/index_meetings.html:21
 msgid "All meetings in the calendar"
-msgstr "Alle Termine im Kalendar"
+msgstr "Alle Termine im Kalender"
 
 #: mainapp/templates/mainapp/index/index_search.html:7
 msgctxt "page_title"
