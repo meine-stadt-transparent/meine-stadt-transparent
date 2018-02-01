@@ -5,31 +5,67 @@
 
 {% block content %}
     {% spaceless %}
-        <div class="container">
-            <section class="meeting-section-head">
-            {% include "partials/header_name.html" with object=meeting %}
+        <section class="container meeting-section">
+            <div class="d-flex justify-content-between flex-wrap align-items-center">
+                <div>
+                    {% include "partials/header_name.html" with object=meeting %}
+                </div>
 
-            <p title="{% trans 'Time of the Meeting' %}">
-                <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}
-            </p>
-            <p title="{% trans 'Place of the meeting' %}">
-                <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ meeting.location }}
-            </p>
+                <div class="d-flex">
+                    <div>
+                        {% if previous %}
+                            <a class="btn btn-dark" href="{% url 'meeting' previous.id %}">
+                                <span class="fa fa-chevron-left" aria-hidden="true"></span>
+                                <span> {% trans 'Previous Meeting' %}</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="pl-3">
+                        {% if following %}
+                            <a class="btn btn-dark" href="{% url 'meeting' following.id %}">
+                                {% trans 'Following Meeting' %}
+                                <span class="fa fa-chevron-right" aria-hidden="true"></span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
 
-            {% if meeting.organizations.all|length == 1 %}
-                <p title="{% trans 'Main organization of the meeting' %}">
-                    <a href="{% url 'organization' meeting.organizations.all.0.id %}">
+        <section class="container meeting-section">
+            <div class="d-flex flex-column flex-md-row justify-content-between qwer">
+                <div title="{% trans 'Place of the meeting' %}">
+                    <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ meeting.location }}
+                </div>
+
+                <div title="{% trans 'Time of the Meeting' %}">
+                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}
+                </div>
+
+                {% if meeting.organizations.all|length == 1 %}
+                    <div title="{% trans 'Main organization of the meeting' %}">
+                        <a href="{% url 'organization' meeting.organizations.all.0.id %}">
                         <span class="fa-custom fa-users"
-                           aria-hidden="true"></span>{{ meeting.organizations.all.0 }}
-                    </a>
-                </p>
-            {% elif meeting.organizations.all|length > 1 %}
+                              aria-hidden="true"></span>{{ meeting.organizations.all.0 }}
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <span class="fa-custom fa-calendar-plus-o" aria-hidden="true"></span>
+                    <a href="{% url 'meeting-ical' meeting.id %}">{% trans 'iCal-Export' %}</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="container meeting-section">
+            {% if meeting.organizations.all|length > 1 %}
                 {% trans "Participating organizations:" as name %}
                 {% include "partials/inline_list.html" with objects=meeting.organizations.all icon="users" link="organization" %}
             {% endif %}
-
             {% trans "Further Attendees:" as name %}
             {% include "partials/inline_list.html" with objects=meeting.persons.all icon="user" link="person" %}
+
 
             {% if meeting.invitation %}
                 <p>
@@ -60,34 +96,9 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-            </section>
+        </section>
 
-            <section class="meeting-section-navigation">
-            <div class="d-flex justify-content-between1">
-                <p class="w-100 text-left">
-                    {% if previous %}
-                        <a href="{% url 'meeting' previous.id %}">
-                            <span class="fa fa-chevron-left" aria-hidden="true"></span> {% trans 'Previous Meeting' %}
-                        </a>
-                    {% endif %}
-                </p>
-                <p class="w-100 text-center">
-                    <a href="{% url 'meeting-ical' meeting.id %}">
-                        <span class="fa fa-calendar" aria-hidden="true"></span> {% trans 'iCal-Export' %}
-                    </a>
-                </p>
-                <p class="w-100 text-right">
-                    {% if following %}
-                        <a href="{% url 'meeting' following.id %}">
-                            {% trans 'Following Meeting' %}
-                            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                        </a>
-                    {% endif %}
-                </p>
-            </div>
-            </section>
-
-            <section class="meeting-section-agenda">
+        <section class="container meeting-section">
             <h2>{% trans 'Agenda' %}</h2>
             {% if meeting.agendaitem_set.all %}
                 <dl class="agenda">
@@ -102,7 +113,8 @@
                                 {% endif %}
                                 {% if agenda_item.consultation.paper %}
                                     <div class="additional-links">
-                                        <a href="{% url 'paper' agenda_item.consultation.paper.id %}" class="paper-link">
+                                        <a href="{% url 'paper' agenda_item.consultation.paper.id %}"
+                                           class="paper-link">
                                             <span class="fa fa-chevron-right"></span>
                                             {% trans 'Paper' %}
                                             {{ agenda_item.consultation.paper.reference_number }}
@@ -116,7 +128,6 @@
             {% else %}
                 <p class="lead">{% trans 'An Agenda has not been published' %}</p>
             {% endif %}
-            </section>
-        </div>
+        </section>
     {% endspaceless %}
 {% endblock %}

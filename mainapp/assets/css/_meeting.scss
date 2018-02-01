@@ -10,10 +10,18 @@
   }
 }
 
-
-.meeting-section-agenda {
-  margin-top: $default-section-spacing / 2;
+.meeting-section {
+  margin-bottom: $default-section-spacing / 2;
 }
-.meeting-section-navigation {
-  margin-top: $default-section-spacing / 2;
+
+.qwer {
+  @include media-breakpoint-up(md) {
+    border-top: 1px solid $hr-border-color;
+    border-bottom: 1px solid $hr-border-color;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  div {
+    @extend .py-2;
+  }
 }
