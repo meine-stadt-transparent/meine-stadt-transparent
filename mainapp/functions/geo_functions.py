@@ -1,3 +1,5 @@
+import json
+
 from django.conf import settings
 from geopy import OpenCage, Nominatim
 
@@ -7,10 +9,8 @@ def get_geolocator():
         if not settings.OPENCAGEDATA_KEY:
             raise ValueError("OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set")
         geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
-    elif settings.GEOEXTRACT_ENGINE.lower() == 'nominatim':
-        geolocator = Nominatim()
     else:
-        raise ValueError("Unknown Geocoder: " + settings.GEOEXTRACT_ENGINE)
+        geolocator = Nominatim()
 
     return geolocator
 
@@ -40,10 +40,17 @@ def _format_opencage_location(location):
     return address
 
 
+def _format_nominatim_location(location):
+    return location.split(",")[0]
+
+
 def latlng_to_address(lat, lng):
     geolocator = get_geolocator()
     location = geolocator.reverse(str(lat) + ", " + str(lng))
     if len(location) > 0:
-        return _format_opencage_location(location[0])
+        if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata':
+            return _format_opencage_location(location[0])
+        else:
+            return _format_nominatim_location(location[0])
     else:
         return str(lat) + ", " + str(lng)

@@ -182,6 +182,8 @@ ELASTICSEARCH_INDEX = env.str('ELASTICSEARCH_INDEX', 'meine_stadt_transparent_do
 
 # Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencagedata
 GEOEXTRACT_ENGINE = env.str('GEOEXTRACT_ENGINE', 'Nominatim')
+if GEOEXTRACT_ENGINE.lower() not in ['nominatim', 'opencagedata']:
+    raise ValueError("Unknown Geocoder: " + GEOEXTRACT_ENGINE)
 # If GEOEXTRACT_ENGINE is "Opencagedata", then OPENCAGEDATA_KEY needs to be set
 OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY', None)
 
