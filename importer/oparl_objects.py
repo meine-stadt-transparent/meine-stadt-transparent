@@ -338,6 +338,9 @@ class OParlObjects(OParlHelper):
         else:
             displayed_filename = slugify(libobject.get_access_url())[-self.filename_length_cutoff:]
 
+        parsed_text_before = file.parsed_text
+        file_name_before = file.name
+
         file.oparl_id = libobject.get_id()
         file.name = libobject.get_name()[:200]  # FIXME
         file.displayed_filename = displayed_filename
@@ -360,9 +363,12 @@ class OParlObjects(OParlHelper):
             parsed_text = self.extract_text_from_file(file)
 
         file.save()
-        file.locations = extract_locations(parsed_text)
-        file.mentioned_persons = extract_persons(file.name + "\n" + (parsed_text or "") + "\n")
-        file.save()
+
+        if file_name_before != file.name or parsed_text_before != file.parsed_text:
+            # These two operations are rather CPU-intensive, so we only perform them if something relevant has changed
+            file.locations = extract_locations(parsed_text)
+            file.mentioned_persons = extract_persons(file.name + "\n" + (parsed_text or "") + "\n")
+            file.save()
 
         return file
 
