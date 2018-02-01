@@ -67,7 +67,6 @@ export default class FacettedSearchLocationSelector {
     }
 
     update(_) {
-        this.updateLocationData();
     }
 
     updateLocationData() {

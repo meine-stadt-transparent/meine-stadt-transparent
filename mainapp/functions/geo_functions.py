@@ -1,8 +1,6 @@
-import json
-
 from django.conf import settings
 from geopy import OpenCage, Nominatim
-
+import re
 
 def get_geolocator():
     if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata':
@@ -41,7 +39,11 @@ def _format_opencage_location(location):
 
 
 def _format_nominatim_location(location):
-    return location.split(",")[0]
+    if re.match("^\d", location.split(",")[0]):
+        # Number at the beginning: probably a house number
+        return location.split(",")[1] + " " + location.split(",")[0]
+    else:
+        return location.split(",")[0]
 
 
 def latlng_to_address(lat, lng):
