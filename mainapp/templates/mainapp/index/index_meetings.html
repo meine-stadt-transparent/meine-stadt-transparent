@@ -3,7 +3,7 @@
     <h2>{% trans "Next Meetings" context "Header" %}</h2>
     <div class="row">
         {% for meeting in next_meetings %}
-            <div class="col meeting-col">
+            <div class="col-sm meeting-col pb-3">
                 <a class="btn btn-outline-dark w-100" href="{% url "meeting" meeting.id %}">
                     <div class="row">
                         <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
@@ -17,7 +17,7 @@
         {% endfor %}
     </div>
     <div class="d-flex flex-row-reverse">
-        <div class="pt-3 lead">
+        <div class="lead">
             <a href="{% url "calendar" %}">{% trans "All meetings in the calendar" %}
                 <span class="fa fa-angle-right"></span>
             </a>

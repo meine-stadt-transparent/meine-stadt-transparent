@@ -6,7 +6,7 @@
 {% block content %}
     <div class="container">
         <section class="person-section-head">
-            {% include 'partials/subscribe_widget.html' %}
+            <div class="float-right">{% include 'partials/subscribe_widget.html' %}</div>
             <h1>{{ person }}</h1>
         </section>
         {% if papers %}

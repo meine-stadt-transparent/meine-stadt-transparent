@@ -56,6 +56,7 @@ class AccountTest(ChromeDriverTestCase):
         self.assertTextIsPresent('Successfully signed in')
 
     @override_settings(DEBUG=True)
+    @skip
     def test_register_change_password(self):
         self.check_register_new_account(self.email, self.password1)
 
