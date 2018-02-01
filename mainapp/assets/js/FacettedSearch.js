@@ -10,9 +10,8 @@ export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
         this.$refreshSpinner = $(".search-refreshing-spinner");
+        this.$searchterm = this.$form.find("input[name=searchterm]");
         this.currentQueryString = null;
-
-        this.initAutocomplete();
 
         this.facets = [
             new FacettedSearchSorter($form.find(".search-sort")),
@@ -28,38 +27,42 @@ export default class FacettedSearch {
         this.$form.find("input:not(.facet-internal)").change(this.search.bind(this));
         this.$form.find("input:not(.facet-internal)").keyup(this.search.bind(this));
         this.$form.find("select:not(.facet-internal)").change(this.search.bind(this));
+
+        $(window).on("hashchange", this.hashchanged.bind(this));
+        $(window).on("popstate", this.hashchanged.bind(this));
     }
 
-    initAutocomplete() {
-        let $widget = this.$form.find(".searchterm-row input[name=searchterm]");
-        let url = $widget.data('suggest-url');
-
-        $widget.typeahead(null,
-            {
-                name: 'name',
-                display: 'name',
-                source: (query, syncResults, asyncResults) => {
-                    $.get(url + query, function (data) {
-                        asyncResults(data);
-                    });
-                },
-                limit: 5
-            });
-
-        $widget.on("typeahead:selected", function (ev, obj) {
-            if (obj.url !== undefined) window.location.href = obj.url;
-        });
-    }
 
     getQuerystring() {
         let querystring = "";
         this.facets.forEach((facet) => {
             querystring += facet.getQueryString();
         });
-        querystring += this.$form.find("input[name=searchterm]").val();
+        querystring += this.$searchterm.val();
         querystring = querystring.replace(/^\s/, '').replace(/\s$/, '');
 
         return querystring;
+    }
+
+    static parseQuerystring(str) {
+        // Keep in sync with: mainapp/functions/search_tools.py
+        const known_params = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"];
+
+        str = str.replace(/ {2,}/, ' ').replace(/^ /, '').replace(/ $/, '');
+        let params = {},
+            search_words = [];
+        str.split(' ').forEach((str_part) => {
+            let str_split = str_part.split(':');
+            if (str_split.length === 2 && known_params.indexOf(str_split[0]) !== -1) {
+                params[str_split[0]] = str_split[1];
+            } else {
+                search_words.push(str_part);
+            }
+        });
+        if (search_words.length > 0) {
+            params['searchterm'] = search_words.join(' ');
+        }
+        return params;
     }
 
     static updateEndlessScroll(data) {
@@ -104,6 +107,38 @@ export default class FacettedSearch {
         });
     }
 
+    setFields(params) {
+        this.$searchterm.val(params['searchterm'] ? params['searchterm'] : '');
+        this.facets.forEach((facet) => {
+            facet.setFromQueryString(params);
+        });
+    }
+
+    hashchanged() {
+        let query = decodeURI(window.location.href);
+        if (query.indexOf(this.$form.attr("action").slice(0, -1)) === -1) {
+            return;
+        }
+        query = query.split(this.$form.attr("action").slice(0, -1))[1].replace(/\/$/, '');
+        if (query === this.currentQueryString) {
+            return;
+        }
+
+        this.setFields(FacettedSearch.parseQuerystring(query));
+
+        this.currentQueryString = this.getQuerystring();
+        this.searchDo();
+    }
+
+    searchDo() {
+        if (this.currentQueryString === "") {
+            // This would fail on the backend side (and it also wouldn't give reasonable results)
+            return;
+        }
+        this.$refreshSpinner.removeAttr("hidden");
+        this.updateSearchResults(this.currentQueryString);
+    }
+
     search(event) {
         if (event) {
             event.preventDefault();
@@ -117,13 +152,8 @@ export default class FacettedSearch {
 
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
 
+        console.log("Set: ", url);
         window.history.pushState({}, "", url);
-
-        if (querystring === "") {
-            // This would fail on the backend side (and it also wouldn't give reasonable results)
-            return;
-        }
-        this.$refreshSpinner.removeAttr("hidden");
-        this.updateSearchResults(querystring);
+        this.searchDo();
     }
 }

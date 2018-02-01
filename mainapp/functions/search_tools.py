@@ -11,6 +11,7 @@ from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.models import Person, Organization
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
+# Keep in sync with: mainapp/assets/js/FacettedSearch.js
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
 
 NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name"])

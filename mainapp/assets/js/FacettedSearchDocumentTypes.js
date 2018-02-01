@@ -2,7 +2,7 @@ export default class FacettedSearchDocumentTypes {
     constructor($facet) {
         this.$facet = $facet;
         this.$facet.find(".dropdown-item").click(this.selectType.bind(this));
-        this.toogleCancel();
+        this.toggleCancel();
         this.$facet.find(".cancel-selection").click(this.cancelSelection.bind(this));
         this.key = "document-type";
     }
@@ -15,14 +15,20 @@ export default class FacettedSearchDocumentTypes {
             // bootstrap would catch the event and use it to close the dropdown.
             event.stopPropagation();
             event.preventDefault();
-            let $checkbox = $(event.target).find("input");
+
+            let $checkbox;
+            if (event.target.nodeName === "LABEL") {
+                $checkbox = $(event.target).find("input");
+            } else {
+                $checkbox = $(event.target).parents("label").first().find("input");
+            }
             $checkbox.prop("checked", !$checkbox.prop("checked"));
             $checkbox.change();
         }
-        this.toogleCancel();
+        this.toggleCancel();
     }
 
-    toogleCancel() {
+    toggleCancel() {
         if (this.$facet.find("input:checked").length > 0) {
             this.$facet.find(".cancel-selection").show();
         } else {
@@ -32,6 +38,7 @@ export default class FacettedSearchDocumentTypes {
 
     cancelSelection() {
         this.$facet.find("input").prop("checked", false);
+        this.$facet.find(".cancel-selection").hide();
         this.$facet.find("input").change();
     }
 
@@ -60,6 +67,19 @@ export default class FacettedSearchDocumentTypes {
         for (let bucket_entry of data['new_facets']['document_type']['list']) {
             let $obj = $filter_list.find("[data-id=" + bucket_entry["name"] + "]");
             $obj.find(".facet-item-count").text(bucket_entry["count"]);
+        }
+    }
+
+    setFromQueryString(params) {
+        if (params['document-type']) {
+            let types = params['document-type'].split(',');
+            this.$facet.find("input").each((i, el) => {
+                $(el).prop("checked", types.indexOf($(el).val()) !== -1);
+            });
+            this.$facet.find(".cancel-selection").show();
+        } else {
+            this.$facet.find("input").prop("checked", false);
+            this.$facet.find(".cancel-selection").hide();
         }
     }
 }

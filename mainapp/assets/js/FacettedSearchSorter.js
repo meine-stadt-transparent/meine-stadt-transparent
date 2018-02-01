@@ -20,6 +20,7 @@ export default class FacettedSearchSorter {
     sortSelected(ev) {
         let val = $(ev.currentTarget).data('sort');
         this.$input.val(val).trigger("change");
+        ev.preventDefault();
     }
 
     getQueryString() {
@@ -28,5 +29,14 @@ export default class FacettedSearchSorter {
         } else {
             return "";
         }
+    }
+
+    setFromQueryString(params) {
+        if (params['sort']) {
+            this.$input.val(params['sort']);
+        } else {
+            this.$input.val('relevance');
+        }
+        this.setLabel();
     }
 }

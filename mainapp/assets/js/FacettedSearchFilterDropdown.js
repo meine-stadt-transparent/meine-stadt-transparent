@@ -53,7 +53,9 @@ export default class FacettedSearchFilterDropdown {
     removeFilter(event) {
         this.$input.val("").trigger("change");
         this.setLabel();
-        event.preventDefault();
+        if (event) {
+            event.preventDefault();
+        }
     }
 
     /**
@@ -79,5 +81,14 @@ export default class FacettedSearchFilterDropdown {
             $obj.find(".facet-item-count").text(bucket_entry[1]);
             $obj.removeAttr("hidden");
         }
+    }
+
+    setFromQueryString(params) {
+        if (params[this.key]) {
+            this.$input.val(params[this.key]);
+        } else {
+            this.$input.val("");
+        }
+        this.setLabel();
     }
 }

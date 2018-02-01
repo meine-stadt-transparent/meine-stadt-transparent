@@ -127,4 +127,17 @@ export default class FacettedSearchLocationSelector {
         this.updateLocationString();
         this.$facet.find(".dropdown").dropdown("toggle");
     }
+
+    setFromQueryString(params) {
+        if (params['lat'] && params['lng'] && params['radius']) {
+            this.$inputLat.val(params['lat']);
+            this.$inputLng.val(params['lng']);
+            this.$inputRadius.val(params['radius']);
+        } else {
+            this.$inputLat.val('');
+            this.$inputLng.val('');
+            this.$inputRadius.val(0);
+        }
+        this.updateLocationString();
+    }
 }

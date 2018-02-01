@@ -65,6 +65,7 @@ export default class FacettedSearchDateRange {
             this.$openerBtn.find(".time-not-set").attr("hidden", "hidden");
             this.$openerBtn.find(".time-description").removeAttr("hidden");
 
+            console.log(before, after, this.dateRanges);
             // Find an entry in this.dateRanges whose dates matches the selected values.
             // If an entry is found, the key is the descriptive string to be shown, ...
             Object.keys(this.dateRanges).forEach(dateRange => {
@@ -113,5 +114,23 @@ export default class FacettedSearchDateRange {
             str += 'before:' + this.$inputBefore.val() + ' ';
         }
         return str;
+    }
+
+    setFromQueryString(params) {
+        if (params['before']) {
+            this.$inputBefore.val(params['before']);
+            this.$openerBtn.data('daterangepicker').setEndDate(this.$inputBefore.val());
+        } else {
+            this.$inputBefore.val('');
+            // Setting enddate to null in the daterangepicker somehow leads to a broken interface, so we don't do it
+        }
+        if (params['after']) {
+            this.$inputAfter.val(params['after']);
+            this.$openerBtn.data('daterangepicker').setStartDate(this.$inputAfter.val());
+        } else {
+            this.$inputAfter.val('');
+            // Setting startdate to null in the daterangepicker somehow leads to a broken interface, so we don't do it
+        }
+        this.setDateRangeStr();
     }
 }
