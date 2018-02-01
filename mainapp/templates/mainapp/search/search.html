@@ -14,14 +14,19 @@
     <div class="container">
         <div class="search-card card">
             <div class="card-header">
-                <h1 class="pull-left">
-                    <span class="text-nowrap">{% trans "Search" context "page_title" %}</span>
-                    <span class="search-refreshing-spinner" hidden="hidden">
-                        <span class="fa fa-spinner fa-spin" aria-label="The search is refreshing"></span>
-                    </span>
-                </h1>
-                <div class="subscribe-widget">
-                    {% include 'partials/subscribe_widget.html' %}
+                <div class="row">
+                    <div class="col col-auto no-gutters">
+                        <h1 class="text-nowrap">{% trans "Search" context "page_title" %}</h1>
+                    </div>
+                    {# This col is both spacer and showing the loading spinner #}
+                    <div class="col">
+                        <div class="search-refreshing-spinner fa fa-spinner fa-spin"
+                             aria-label="The search is refreshing" hidden="hidden">
+                        </div>
+                    </div>
+                    <div class="col col-auto subscribe-widget">
+                        {% include 'partials/subscribe_widget.html' %}
+                    </div>
                 </div>
             </div>
             <form id="detailed-searchform" class="section detailed-searchform p-2 mb-0" method="GET"
@@ -38,7 +43,7 @@
                            placeholder="{% trans "Search term" context "search_form" %}"
                            aria-label="{% trans "Search term" context "search_form" %}">
                     <button class=" search-icon fa fa-search" type="submit"
-                    title="{% trans 'Show search results' context 'aria label' %}">
+                            title="{% trans 'Show search results' context 'aria label' %}">
                         <span class="sr-only">{% trans 'Show search results' context 'aria label' %}</span>
                     </button>
                 </section>
@@ -46,8 +51,8 @@
                     {% include "mainapp/search/facet_location_selector.html" %}
                     {% include "mainapp/search/facet_document_type.html" %}
                     {% include "mainapp/search/facet_date_range.html" %}
-                    {% include "mainapp/search/facet_filter_dropdown.html" with key="person" items=searchable_persons label="Person" init_value=options.person %}
-                    {% include "mainapp/search/facet_filter_dropdown.html" with key="organization" items=searchable_organizations label="Organization" init_value=options.organization %}
+                    {% include "mainapp/search/facet_filter_dropdown.html" with key="person" items=new_facets.person label="Person" init_value=options.person %}
+                    {% include "mainapp/search/facet_filter_dropdown.html" with key="organization" items=new_facets.organization label="Organization" init_value=options.organization %}
                     {% include "mainapp/search/sorter_widget.html" %}
                 </div>
             </form>

@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% if subscribable %}
-    <form class="pull-right" method="POST">
+    <form method="POST">
         {% csrf_token %}
         {% if is_subscribed %}
             <span class="subscribed-icon fa fa-check"></span>

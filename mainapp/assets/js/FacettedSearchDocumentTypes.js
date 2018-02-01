@@ -4,6 +4,7 @@ export default class FacettedSearchDocumentTypes {
         this.$facet.find(".dropdown-item").click(this.selectType.bind(this));
         this.toogleCancel();
         this.$facet.find(".cancel-selection").click(this.cancelSelection.bind(this));
+        this.key = "document-type";
     }
 
     selectType(event) {
@@ -46,6 +47,19 @@ export default class FacettedSearchDocumentTypes {
             return 'document-type:' + documentTypes.join(',') + ' ';
         } else {
             return '';
+        }
+    }
+
+    /**
+     * Adds the item count to the values and hides away those with a count of zero. Also disables the button
+     * when there is no value with a count biger than zero, unless a value is selected
+     */
+    update(data) {
+        let $filter_list = $("#filter-" + this.key + "-list");
+
+        for (let bucket_entry of data['new_facets']['document_type']['list']) {
+            let $obj = $filter_list.find("[data-id=" + bucket_entry["name"] + "]");
+            $obj.find(".facet-item-count").text(bucket_entry["count"]);
         }
     }
 }

@@ -15,6 +15,7 @@ This document shall explain the important design decision, assumptions and trade
 ## Design Decisions
  * We use docker-composer for quickly getting things up and running. Docker is becoming more and more of an industry standard in the whole server worlds, so this is a safe bet.
  * We support the last few versions of current browsers, but no old internet explorer oder android browser versions. We wont encourage using crappy insecure browsers.
+ * We felt the headers were always one level to big, so we made each one level lower (i.e. h1 now has `$h2-font-size`) 
 
 ## Trade-Offs 
  * It is expected that the site is deployed for users of only one language, e.g. there is no dynamically imported data that has to be translated. This is propably safe to assume for quite some time in the future as currently the comercial vendors afaik can't do localization at all.

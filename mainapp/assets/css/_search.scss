@@ -108,6 +108,7 @@
   .dropdown-menu {
     padding-top: 0;
     min-height: 5rem;
+    max-width: 100vw;
   }
   .dropdown-scroller {
     max-height: 200px;
@@ -182,4 +183,8 @@
       margin-bottom: 0;
     }
   }
+}
+
+.search-refreshing-spinner {
+  font-size: $h2-font-size;
 }

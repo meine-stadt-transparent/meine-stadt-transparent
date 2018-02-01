@@ -4,27 +4,28 @@
     <h2 class="sr-only">{% trans "Document Type" context "search_form" %}</h2>
     <div class="dropdown facet-dropdown">
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
-                id="documentTypeButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                id="documentTypeButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {% trans "Document Type" context "search_form" %}
         </button>
-        <div class="dropdown-menu" aria-labelledby="documentTypeButton">
+        <div class="dropdown-menu" aria-labelledby="documentTypeButton" id="filter-document-type-list">
             <div class="dropdown-item cancel-selection">
                 <a href role="button" name="document-type-cancel-selection">
                     <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
                 </a>
             </div>
-            {% for document_type_id, document_type_name in document_types.items %}
+            {% for doc_type in new_facets.document_type.list %}
                 <div class="dropdown-item">
-                    <label>
-                        {% if document_type_id in options.document_type %}
-                            <input type="checkbox" name="document-type[{{ document_type_id }}]" checked
-                                   value="{{ document_type_id }}" autocomplete="off">
+                    <label data-id="{{ doc_type.name }}">
+                        {% if doc_type.name in options.document_type %}
+                            <input type="checkbox" name="document-type[{{ doc_type.name }}]" checked
+                                   value="{{ doc_type.name }}" autocomplete="off">
                         {% else %}
-                            <input type="checkbox" name="document-type[{{ document_type_id }}]"
-                                   value="{{ document_type_id }}" autocomplete="off">
+                            <input type="checkbox" name="document-type[{{ doc_type.name }}]"
+                                   value="{{ doc_type.name }}" autocomplete="off">
                         {% endif %}
-                        {{ document_type_name }}
+
+                        <span>{{ doc_type.localized }} </span>
+                        <span class="facet-item-count badge badge-secondary">{{ doc_type.count }}</span>
                     </label>
                 </div>
             {% endfor %}

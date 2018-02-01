@@ -6,7 +6,7 @@
     <div class="dropdown facet-dropdown">
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="{{ key }}Button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-                {% if items.aggs_count == 0 %}disabled{% endif %}>
+                {% if items.count == 0 %}disabled{% endif %}>
             <span class="nothing-selected">{% trans label context "search_form" %}</span>
             <span class="selection"></span>
         </button>
@@ -25,11 +25,11 @@
                 </a>
             </div>
             <div class="dropdown-scroller filter-list" id="filter-{{ key }}-list">
-                {% for item in items %}
+                {% for item in items.list %}
                     <a class="dropdown-item filter-item" href="#" data-id="{{ item.id }}"
                        {% if item.doc_count == 0 %}hidden{% endif %}>
                         <span class="name sort">{{ item.name }}</span>
-                        <span class="facet-item-count"> ({{ item.doc_count }})</span>
+                        <span class="facet-item-count badge badge-secondary"> {{ item.doc_count }}</span>
                     </a>
                 {% endfor %}
             </div>

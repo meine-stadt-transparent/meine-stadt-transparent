@@ -97,9 +97,6 @@ class MainappSearch(FacetedSearch):
 
         return s
 
-    def execute(self):
-        return super().execute()
-
 
 def _add_date_after(s, raw, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
@@ -238,9 +235,9 @@ def params_to_human_string(params: dict):
 
     if 'before' in params and 'after' in params:
         strs.append(
-            pgettext('Search query', 'published from %FROM% to %TO%').replace('%FROM%', params['after']).replace('%TO%',
-                                                                                                                 params[
-                                                                                                                     'before']))
+            pgettext('Search query', 'published from %FROM% to %TO%')
+                .replace('%FROM%', params['after'])
+                .replace('%TO%', params['before']))
     elif 'before' in params:
         strs.append(pgettext('Search query', 'published before %TO%').replace('%TO%', params['before']))
     elif 'after' in params:

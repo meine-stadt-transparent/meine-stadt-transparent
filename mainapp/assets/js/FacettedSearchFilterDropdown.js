@@ -76,7 +76,7 @@ export default class FacettedSearchFilterDropdown {
         }
         for (let bucket_entry of data['facets'][this.key]) {
             let $obj = $filter_list.find("[data-id=" + bucket_entry[0] + "]");
-            $obj.find(".facet-item-count").text(" (" + bucket_entry[1] + ")");
+            $obj.find(".facet-item-count").text(bucket_entry[1]);
             $obj.removeAttr("hidden");
         }
     }
