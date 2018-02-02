@@ -312,17 +312,27 @@ django-admin compilemessages
 
 ### Setting up Social Login
 
-To enable login via Twitter or Facebook, first you need to enable the functionality by adding these two lines to your .env-file:
-```
-SOCIALACCOUNT_USE_FACEBOOK=True
-SOCIALACCOUNT_USE_TWITTER=True
-```
-
-Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to see the details anf create the necessary tokens. You can register them tokens using the django's admin backend.
+To enable login via Twitter or Facebook, o create an app in the corresponding developer portal. See the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) for details.
 
 For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
 
 For facebook, you'll need to go to `https://developers.facebook.com/apps/[your appp id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
+
+You can then activate them in your `.env`-file:
+
+```
+SOCIALACCOUNT_USE_FACEBOOK=True
+FACEBOOK_CLIENT_ID=[app id]
+FACEBOOK_SECRET_KEY=[app secret]
+```
+
+```
+SOCIALACCOUNT_USE_TWITTER=True
+TWITTER_CLIENT_ID=[app id]
+TWITTER_SECRET_KEY=[app secret]
+```
+
+After changing any token, use `./manage.py register_social_accounts` to apply the changes.
 
 ### Notifying users about new documents
 

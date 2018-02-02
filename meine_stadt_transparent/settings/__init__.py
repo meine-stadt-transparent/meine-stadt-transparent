@@ -138,10 +138,16 @@ if SOCIALACCOUNT_USE_FACEBOOK:
         'LOCALE_FUNC': lambda request: LANGUAGE_CODE,
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.10',
+        'CLIENT_ID': env.str('FACEBOOK_CLIENT_ID'),
+        'SECRET_KEY': env.str('FACEBOOK_SECRET_KEY'),
     }
     INSTALLED_APPS.append('allauth.socialaccount.providers.facebook')
 
 if SOCIALACCOUNT_USE_TWITTER:
+    SOCIALACCOUNT_PROVIDERS['twitter'] = {
+        'CLIENT_ID': env.str('TWITTER_CLIENT_ID'),
+        'SECRET_KEY': env.str('TWITTER_SECRET_KEY'),
+    }
     INSTALLED_APPS.append('allauth.socialaccount.providers.twitter')
 
 # Static files (CSS, JavaScript, Images)
@@ -188,7 +194,8 @@ if GEOEXTRACT_ENGINE.lower() not in ['nominatim', 'opencagedata']:
 OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY', None)
 
 # Settings for Geo-Extraction
-# @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a good list
+# @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a
+# good list
 # of relevant city names
 GEOEXTRACT_KNOWN_CITIES = ['München', 'Berlin', 'Köln', 'Hamburg', 'Karlsruhe']
 GEOEXTRACT_SEARCH_COUNTRY = 'Deutschland'
