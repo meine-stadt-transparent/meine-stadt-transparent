@@ -10,7 +10,7 @@ from requests import HTTPError
 from mainapp.models import File
 from .oparl_import import OParlImport
 
-gi.require_version("OParl", "0.2")
+gi.require_version("OParl", '0.4')
 from gi.repository import OParl
 
 
