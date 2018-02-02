@@ -22,6 +22,7 @@
       color: $index-map-title-color;
       background-color: $index-map-title-background;
     }
+    padding-bottom: $index-section-default-padding / 2; // Some additional padding comes from the map background
   }
   .home-container-main-buttons {
     background-color: $index-main-buttons-section-background;
@@ -29,6 +30,43 @@
       display: inline-block;
       color: $index-main-buttons-title-color;
       background-color: $index-main-buttons-title-background;
+    }
+    .main-button-squared {
+      position: relative;
+      width: 100%;
+      max-width: 200px;
+      display: block;
+      background-color: $index-main-buttons-btn-background;
+      color: $index-main-buttons-btn-text;
+
+      &:before {
+        // Hack to enforce a square form
+        content: "";
+	    display: block;
+	    padding-top: 100%;
+      }
+
+      &:hover, &:active {
+        background-color: darken($index-main-buttons-btn-background, 8%);
+      }
+
+      .icon {
+        display: block;
+        text-align: center;
+        font-size: 60px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: calc(50% - 40px);
+      }
+
+      .text {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
     }
   }
   .home-container-meetings {
@@ -42,7 +80,7 @@
       background-color: $index-meetings-btn;
       color: black;
       border: solid 1px black;
-      &:hover {
+      &:hover, &:active {
         background-color: darken($index-meetings-btn, 5%);
       }
     }
@@ -71,7 +109,7 @@
 }
 
 #leaflet-map {
-  height: 400px;
+  height: $index-map-height;
 
   .leaflet-popup-content-wrapper {
     .paper-title {

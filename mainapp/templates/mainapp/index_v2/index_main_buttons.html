@@ -3,18 +3,37 @@
     <div class="container">
         <h2 class="home-section-header title-colors">{% trans "Information about the city council" %}</h2>
         <div class="row">
-            <div class="col-sm-6">
-                <a href="{% url 'persons' %}" class="btn btn-primary btn-block">{% trans "Persons" %}</a>
+            <div class="col-6 col-sm-3 p-3">
+                <a href="{% url 'info_about' %}" class="btn main-button-squared">
+                    <span class="icon fa fa-info"></span>
+                    <span class="text">
+                        {% trans "About the project" %}
+                    </span>
+                </a>
             </div>
-            <div class="col-sm-6">
-                <a href="{% url 'organizations' %}" class="btn btn-primary btn-block">
-                    {% trans 'Organizations' %}</a>
+            <div class="col-6 col-sm-3 p-3">
+                <a href="{% url 'persons' %}" class="btn main-button-squared">
+                    <span class="icon fa fa-user"></span>
+                    <span class="text">
+                        {% trans "Persons" %}
+                    </span>
+                </a>
             </div>
-            <div class="col-sm-6">
-                ...
+            <div class="col-6 col-sm-3 p-3">
+                <a href="{% url 'organizations' %}" class="btn main-button-squared">
+                    <span class="icon fa fa-users"></span>
+                    <span class="text">
+                        {% trans 'Organizations' %}
+                    </span>
+                </a>
             </div>
-            <div class="col-sm-6">
-                ...
+            <div class="col-6 col-sm-3 p-3">
+                <a href="{% url 'account_signup' %}" class="btn main-button-squared">
+                    <span class="icon fa fa-bell"></span>
+                    <span class="text">
+                        {% trans "Notifications" context 'sign up' %}
+                    </span>
+                </a>
             </div>
         </div>
     </div>
