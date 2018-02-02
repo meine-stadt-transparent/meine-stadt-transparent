@@ -22,7 +22,7 @@ from mainapp.models.paper_type import PaperType
 
 # noinspection PyPackageRequirements
 
-gi.require_version('OParl', '0.2')
+gi.require_version('OParl', '0.4')
 from gi.repository import OParl
 
 

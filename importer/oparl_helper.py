@@ -13,7 +13,7 @@ from mainapp.functions.document_parsing import extract_text_from_pdf, get_page_c
 from mainapp.models import DefaultFields, File
 from mainapp.models.default_fields import ShortableNameFields
 
-gi.require_version('OParl', '0.2')
+gi.require_version('OParl', '0.4')
 gi.require_version('Json', '1.0')
 from gi.repository import Json, GLib, OParl
 

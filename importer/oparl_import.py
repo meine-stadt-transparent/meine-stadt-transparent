@@ -13,7 +13,7 @@ from django.db import transaction
 from mainapp.models import Body
 from .oparl_objects import OParlObjects
 
-gi.require_version('OParl', '0.2')
+gi.require_version('OParl', '0.4')
 from gi.repository import GLib, OParl
 
 
