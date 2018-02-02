@@ -56,7 +56,7 @@
             <container>
                 <a class="navbar-brand" href="{{ base_url }}{% url 'index' %}">{{ site_name }}</a>
                 <a class="nav-link" href="{{ base_url }}{% url 'calendar' %}">{% trans "Calendar" context 'navigation' %}</a>
-                <a class="nav-link" href="{{ base_url }}{% url 'persons' %}">{% trans "People" context 'navigation' %}</a>
+                <a class="nav-link" href="{{ base_url }}{% url 'persons' %}">{% trans "Persons" context 'navigation' %}</a>
                 <a class="nav-link" href="{{ base_url }}{% url 'organizations' %}">{% trans "Organizations" context 'navigation' %}</a>
                 <a class="nav-link" href="{{ base_url }}{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
             </container>

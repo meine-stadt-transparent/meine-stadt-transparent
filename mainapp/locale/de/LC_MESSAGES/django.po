@@ -472,7 +472,7 @@ msgstr "Kalender"
 #: mainapp/templates/email/user-alert.html:91
 #: mainapp/templates/partials/base_navbar_mainmenu.html:13
 msgctxt "navigation"
-msgid "People"
+msgid "Persons"
 msgstr "Personen"
 
 #: mainapp/templates/email/user-alert.html:91
@@ -597,7 +597,7 @@ msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/index/index_documents.html:3
 msgctxt "Header"
-msgid "Latest Documents"
+msgid "Latest Papers"
 msgstr "Neueste Dokumente"
 
 #: mainapp/templates/mainapp/index/index_main_buttons.html:7

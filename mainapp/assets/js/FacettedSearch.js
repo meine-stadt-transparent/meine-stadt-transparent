@@ -152,7 +152,6 @@ export default class FacettedSearch {
 
         let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
 
-        console.log("Set: ", url);
         window.history.pushState({}, "", url);
         this.searchDo();
     }
