@@ -1,5 +1,8 @@
 @import "vars";
 
+@import "~leaflet.markercluster/dist/MarkerCluster.css";
+@import "markercluster.theme";
+
 .index-v2 {
   .home-container {
     padding: $index-section-default-padding 0;

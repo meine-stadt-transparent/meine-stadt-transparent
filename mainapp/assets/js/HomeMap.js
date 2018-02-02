@@ -1,5 +1,6 @@
 import * as L from "leaflet/src/Leaflet";
 import {TextHint} from "./LeafletTextHint";
+import {MarkerClusterGroup} from "leaflet.markercluster/dist/leaflet.markercluster-src";
 
 import create_map from "./createMap";
 
@@ -28,12 +29,11 @@ export default class IndexView {
     }
 
     addDocumentLocationMarkers(documents) {
+        let clusterGroup = new MarkerClusterGroup();
+
+
         this.locationMarkers = [];
         for (let location of Object.values(documents)) {
-            if (Object.values(location.papers).length > 1) {
-                // @TODO Handle colliding markers and multiple papers
-                console.warn('Multiple papers in this location', location);
-            }
             for (let paper of Object.values(location.papers)) {
                 if (!location.coordinates) {
                     continue;
@@ -50,11 +50,13 @@ export default class IndexView {
                     '<div class="file-location"><div class="location-name">' + IndexView.escapeHtml(location.name) + '</div>' +
                     '<div class="files">' + files + '</div></div>';
                 marker.bindPopup(contentHtml, {className: 'file-location', minWidth: 200});
-                marker.addTo(this.leaflet);
+                clusterGroup.addLayer(marker);
 
                 this.locationMarkers.push(marker);
             }
         }
+
+        clusterGroup.addTo(this.leaflet);
     }
 
     constructor($mapElement) {
@@ -62,8 +64,9 @@ export default class IndexView {
 
         this.leaflet = create_map($mapElement, initData);
         let textHint = $mapElement.data("text-hint");
-        console.log(textHint);
-        (new TextHint({text: textHint})).addTo(this.leaflet);
+        if (textHint !== "") {
+            (new TextHint({text: textHint})).addTo(this.leaflet);
+        }
 
         if (initData['documents']) {
             this.addDocumentLocationMarkers(initData['documents']);
