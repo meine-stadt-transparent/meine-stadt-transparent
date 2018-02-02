@@ -1,0 +1,9 @@
+{% load i18n %}
+<section class="home-container home-container-map">
+    <div class="container">
+        <h2 class="home-section-header title-colors">{% blocktrans %}What's happening in your area?{% endblocktrans %}</h2>
+        <p class="instructions title-colors">Click on the marker to see which paper mentions that place.</p>
+        <div id="leaflet-map" class="js-home-map" data-map-data="{{ map }}"
+             data-text-hint=""></div>
+    </div>
+</section>

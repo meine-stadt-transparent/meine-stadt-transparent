@@ -1,0 +1,7 @@
+{% load i18n %}
+<section class="home-container home-container-documents">
+    <div class="container">
+        <h2 class="home-section-header title-colors">{% trans "Latest Papers" context "Header" %}</h2>
+        {% include "partials/mixed_results.html" with results=latest_paper %}
+    </div>
+</section>

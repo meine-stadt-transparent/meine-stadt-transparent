@@ -1,0 +1,15 @@
+{% load i18n %}
+<section class="home-container home-container-title">
+    <div class="container">
+        <h1 class="project-title title-colors">{{ settings.TEMPLATE_META.product_name }}</h1>
+        <p class="project-claim title-colors">
+            {% blocktrans %}The independent source about Jülich's city politics for all citizens.{% endblocktrans %}
+        </p>
+        <div class="more-info-link">
+            <a href="{% url 'info_about' %}">
+                {% trans "More information" %}
+                <span class="fa fa-angle-right"></span>
+            </a>
+        </div>
+    </div>
+</section>

@@ -1,6 +1,7 @@
 {% load i18n %}
 
 {% if messages %}
+    <section class="messages container" aria-label="Messages">
     {% for message in messages %}
         <div
                 {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
@@ -16,4 +17,5 @@
             </button>
         </div>
     {% endfor %}
+    </section>
 {% endif %}

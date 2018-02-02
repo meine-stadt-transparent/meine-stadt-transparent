@@ -1,5 +1,10 @@
+@import "vars";
+
 #main-content {
   margin: $main-content-margin-top auto;
+  &.no-padding {
+    margin: 0;
+  }
   min-height: calc(100vh - #{$header-height} - #{$footer-height} - 2 * #{$main-content-margin-top});
   hyphens: auto;
 }

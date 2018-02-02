@@ -1,0 +1,27 @@
+{% load i18n %}
+<section class="home-container home-container-meetings">
+    <div class="container">
+        <h2 class="home-section-header title-colors">{% trans "Next Meetings" context "Header" %}</h2>
+        <div class="row">
+            {% for meeting in next_meetings %}
+                <div class="col-sm meeting-col pb-3">
+                    <a class="btn btn-block meeting-button" href="{% url "meeting" meeting.id %}">
+                        <div class="row">
+                            <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
+                            <div class="col">
+                                <div class="lead">{{ meeting.name }}</div>
+                                <div>{{ meeting.start }}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="more-info-link">
+            <a href="{% url "calendar" %}">
+                {% trans "All meetings in the calendar" %}
+                <span class="fa fa-angle-right"></span>
+            </a>
+        </div>
+    </div>
+</section>

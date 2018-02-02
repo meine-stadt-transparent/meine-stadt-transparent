@@ -11,10 +11,12 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'mainapp/index/index_title.html' %}
-    {% include 'mainapp/index/index_search.html' %}
-    {% include 'mainapp/index/index_map.html' %}
-    {% include 'mainapp/index/index_main_buttons.html' %}
-    {% include 'mainapp/index/index_meetings.html' %}
-    {% include 'mainapp/index/index_documents.html' %}
+    <div class="index-v1">
+        {% include 'mainapp/index/index_title.html' %}
+        {% include 'mainapp/index/index_search.html' %}
+        {% include 'mainapp/index/index_map.html' %}
+        {% include 'mainapp/index/index_main_buttons.html' %}
+        {% include 'mainapp/index/index_meetings.html' %}
+        {% include 'mainapp/index/index_documents.html' %}
+    </div>
 {% endblock %}

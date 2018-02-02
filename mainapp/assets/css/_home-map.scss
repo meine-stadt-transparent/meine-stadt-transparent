@@ -1,3 +1,69 @@
+@import "vars";
+
+.index-v2 {
+  .home-container {
+    padding: $index-section-default-padding 0;
+  }
+  .home-container-title {
+    background-color: $index-title-section-background;
+    .title-colors {
+      display: inline-block;
+      color: $index-title-color;
+      background-color: $index-title-background;
+    }
+  }
+  .home-container-search {
+    background-color: $index-search-section-background;
+  }
+  .home-container-map {
+    background-color: $index-map-section-background;
+    .title-colors {
+      display: inline-block;
+      color: $index-map-title-color;
+      background-color: $index-map-title-background;
+    }
+  }
+  .home-container-main-buttons {
+    background-color: $index-main-buttons-section-background;
+    .title-colors {
+      display: inline-block;
+      color: $index-main-buttons-title-color;
+      background-color: $index-main-buttons-title-background;
+    }
+  }
+  .home-container-meetings {
+    background-color: $index-meetings-section-background;
+    .title-colors {
+      display: inline-block;
+      color: $index-meetings-title-color;
+      background-color: $index-meetings-title-background;
+    }
+    .meeting-button {
+      background-color: $index-meetings-btn;
+      color: black;
+      border: solid 1px black;
+      &:hover {
+        background-color: darken($index-meetings-btn, 5%);
+      }
+    }
+  }
+  .home-container-documents {
+    background-color: $index-documents-section-background;
+    .title-colors {
+      display: inline-block;
+      color: $index-documents-title-color;
+      background-color: $index-documents-title-background;
+    }
+  }
+
+  .more-info-link {
+    @extend .lead;
+    text-align: right;
+  }
+}
+
+
+
 .search-autocomplete-home {
   span.twitter-typeahead {
     z-index: $typeahead-zindex;

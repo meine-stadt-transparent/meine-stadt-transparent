@@ -37,7 +37,11 @@ def index(request):
         'latest_paper': latest_paper,
         'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2]
     }
-    return render(request, 'mainapp/index/index.html', context)
+
+    if request.GET.get('version', 'v1') == 'v2':
+        return render(request, 'mainapp/index_v2/index.html', context)
+    else:
+        return render(request, 'mainapp/index/index.html', context)
 
 
 def _build_map_object(body: Body, geo_papers):

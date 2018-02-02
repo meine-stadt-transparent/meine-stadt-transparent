@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+
+{% block title %}{{ settings.TEMPLATE_META.product_name }}{% endblock %}
+{% block main_content_classes %}no-padding{% endblock %}
+
+{% block header %}
+    {% with True as disable_header_search %}
+        {{ block.super }}
+    {% endwith %}
+{% endblock %}
+
+{% block content %}
+    <div class="index-v2">
+        {% include 'mainapp/index_v2/index_title.html' %}
+        {% include 'mainapp/index_v2/index_search.html' %}
+        {% include 'mainapp/index_v2/index_map.html' %}
+        {% include 'mainapp/index_v2/index_main_buttons.html' %}
+        {% include 'mainapp/index_v2/index_meetings.html' %}
+        {% include 'mainapp/index_v2/index_documents.html' %}
+    </div>
+{% endblock %}

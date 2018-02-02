@@ -25,11 +25,9 @@
     </nav>
 {% endblock %}
 
-<main id="main-content">
+<main id="main-content" class="{% block main_content_classes %}{% endblock %}">
     {% block messages %}
-        <div class="container">
-            {% include 'partials/messages.html' %}
-        </div>
+        {% include 'partials/messages.html' %}
     {% endblock %}
     {% block content %}
     {% endblock %}
