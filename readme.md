@@ -320,6 +320,8 @@ SOCIALACCOUNT_USE_TWITTER=True
 
 Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to create the necessary tokens and register the tokens using the /admin/-backend.
 
+For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
+
 ### Notifying users about new documents
 
 The following script is meant to be run as a cron job:
