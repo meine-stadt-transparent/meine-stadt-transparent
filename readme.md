@@ -318,9 +318,11 @@ SOCIALACCOUNT_USE_FACEBOOK=True
 SOCIALACCOUNT_USE_TWITTER=True
 ```
 
-Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to create the necessary tokens and register the tokens using the /admin/-backend.
+Then follow the instructions at the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) to see the details anf create the necessary tokens. You can register them tokens using the django's admin backend.
 
 For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
+
+For facebook, you'll need to go to `https://developers.facebook.com/apps/[your appp id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
 
 ### Notifying users about new documents
 

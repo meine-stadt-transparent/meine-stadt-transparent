@@ -17,8 +17,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'widget_tweaks',
     'simple_history',
-    # Note: The elasticsearch integration is added further below
+    # Note: The elasticsearch integration is added further below, as well as the social login apps
 ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -29,9 +30,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'csp.middleware.CSPMiddleware',
-    'mainapp.middleware.CSPMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
 ]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

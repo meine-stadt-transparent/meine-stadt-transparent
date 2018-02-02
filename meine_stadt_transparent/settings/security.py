@@ -13,9 +13,6 @@ SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
 CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com")
-# These are covered by default-src, but we need to define them explicitly for extending them later
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_STYLE_SRC = ("'self'",)
 # Those are not covered by default-src
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)

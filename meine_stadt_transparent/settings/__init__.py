@@ -56,6 +56,22 @@ DATABASES = {
     'default': env.db()
 }
 
+# Internationalization
+# https://docs.djangoproject.com/en/1.11/topics/i18n/
+
+LANGUAGE_CODE = env.str('LANGUAGE_CODE', 'de-de')
+
+TIME_ZONE = env.str('TIME_ZONE', 'Europe/Berlin')
+
+USE_I18N = True
+
+USE_L10N = True
+
+USE_TZ = True
+
+DATETIME_FORMAT = "%d.%m.%Y, %H:%M"
+TIME_FORMAT = "%H:%M"
+
 # Authentication
 
 ACCOUNT_USERNAME_REQUIRED = False
@@ -103,7 +119,7 @@ SOCIALACCOUNT_USE_TWITTER = env.bool('SOCIALACCOUNT_USE_TWITTER', False)
 SOCIALACCOUNT_PROVIDERS = {}
 if SOCIALACCOUNT_USE_FACEBOOK:
     SOCIALACCOUNT_PROVIDERS['facebook'] = {
-        'METHOD': 'js_sdk',
+        'METHOD': 'oauth2',
         'SCOPE': ['email', 'public_profile'],
         'INIT_PARAMS': {'cookie': True},
         'FIELDS': [
@@ -119,7 +135,7 @@ if SOCIALACCOUNT_USE_FACEBOOK:
             'updated_time',
         ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: "de",
+        'LOCALE_FUNC': lambda request: LANGUAGE_CODE,
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.10',
     }
@@ -127,22 +143,6 @@ if SOCIALACCOUNT_USE_FACEBOOK:
 
 if SOCIALACCOUNT_USE_TWITTER:
     INSTALLED_APPS.append('allauth.socialaccount.providers.twitter')
-
-# Internationalization
-# https://docs.djangoproject.com/en/1.11/topics/i18n/
-
-LANGUAGE_CODE = env.str('LANGUAGE_CODE', 'de-de')
-
-TIME_ZONE = env.str('TIME_ZONE', 'Europe/Berlin')
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
-
-DATETIME_FORMAT = "%d.%m.%Y, %H:%M"
-TIME_FORMAT = "%H:%M"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -303,7 +303,7 @@ if DEBUG and not TESTING:
     # Make debugging css styles in firefox easier
     DEBUG_STYLES = env.bool("DEBUG_STYLES", False)
     if DEBUG_STYLES:
-        CSP_STYLE_SRC = CSP_STYLE_SRC + ("'unsafe-inline'",)
+        CSP_STYLE_SRC = ("'self'", "'unsafe-inline'",)
 
     # Just an additional host you might want
     ALLOWED_HOSTS.append("meinestadttransparent.local")

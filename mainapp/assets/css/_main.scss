@@ -60,3 +60,7 @@
 .paragraph {
   @extend p;
 }
+
+footer {
+  height: $footer-height;
+}
