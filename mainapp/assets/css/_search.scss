@@ -98,12 +98,13 @@
 }
 
 .search-facet-filter-dropdown {
-  .dropdown-toggle .selection {
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    vertical-align: bottom;
+  .filter-list {
+    max-width: 400px;
+
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   .dropdown-menu {
     padding-top: 0;
@@ -139,6 +140,7 @@
   list-style: none;
   padding-left: 0;
 
+  // TODO
   /*li {
     margin-top: 5px !important;
   }

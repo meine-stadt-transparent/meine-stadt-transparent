@@ -4,7 +4,7 @@
     <div class="row">
         {% for meeting in next_meetings %}
             <div class="col-sm meeting-col pb-3">
-                <a class="btn btn-outline-dark w-100" href="{% url "meeting" meeting.id %}">
+                <a class="btn btn-secondary w-100" href="{% url "meeting" meeting.id %}">
                     <div class="row">
                         <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
                         <div class="col">

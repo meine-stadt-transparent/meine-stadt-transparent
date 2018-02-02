@@ -26,3 +26,8 @@
     outline: dotted 1px gray;
   }
 }
+
+// We don't need a blue dot in the list view
+.fc-event-dot {
+  display: none;
+}
