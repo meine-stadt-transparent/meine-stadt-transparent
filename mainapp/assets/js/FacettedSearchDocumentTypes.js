@@ -2,8 +2,9 @@ export default class FacettedSearchDocumentTypes {
     constructor($facet) {
         this.$facet = $facet;
         this.$facet.find(".dropdown-item").click(this.selectType.bind(this));
+        this.$removeFilterButton = this.$facet.find(".remove-filter");
         this.toggleCancel();
-        this.$facet.find(".cancel-selection").click(this.cancelSelection.bind(this));
+        this.$removeFilterButton.click(this.cancelSelection.bind(this));
         this.key = "document-type";
     }
 
@@ -30,15 +31,15 @@ export default class FacettedSearchDocumentTypes {
 
     toggleCancel() {
         if (this.$facet.find("input:checked").length > 0) {
-            this.$facet.find(".cancel-selection").show();
+            this.$removeFilterButton.show();
         } else {
-            this.$facet.find(".cancel-selection").hide();
+            this.$removeFilterButton.hide();
         }
     }
 
-    cancelSelection() {
+    cancelSelection(event) {
         this.$facet.find("input").prop("checked", false);
-        this.$facet.find(".cancel-selection").hide();
+        this.$removeFilterButton.hide();
         this.$facet.find("input").change();
     }
 
@@ -76,10 +77,10 @@ export default class FacettedSearchDocumentTypes {
             this.$facet.find("input").each((i, el) => {
                 $(el).prop("checked", types.indexOf($(el).val()) !== -1);
             });
-            this.$facet.find(".cancel-selection").show();
+            this.$removeFilterButton.show();
         } else {
             this.$facet.find("input").prop("checked", false);
-            this.$facet.find(".cancel-selection").hide();
+            this.$removeFilterButton.hide();
         }
     }
 }

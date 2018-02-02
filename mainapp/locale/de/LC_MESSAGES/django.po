@@ -967,7 +967,7 @@ msgstr ""
 #: mainapp/templates/mainapp/search/facet_date_range.html:57
 #: mainapp/templates/mainapp/search/facet_filter_dropdown.html:23
 msgctxt "Remove search filter"
-msgid "Cancel selection"
+msgid "Cancel Selection"
 msgstr "Auswahl aufheben"
 
 #: mainapp/templates/mainapp/search/facet_document_type.html:4

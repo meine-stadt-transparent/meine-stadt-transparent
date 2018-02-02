@@ -30,6 +30,11 @@
   cursor: pointer;
 }
 
+.daterangepicker {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 #detailed-searchform {
   margin-bottom: 30px;
   border-bottom: solid 1px $card-border-color;
@@ -133,6 +138,16 @@
     a:hover {
       text-decoration: none;
     }
+  }
+}
+
+.facet-dropdown {
+  .dropdown-menu {
+    padding-bottom: 0;
+  }
+
+  .remove-filter {
+    padding: 0;
   }
 }
 

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<section class="col-auto search-facet search-facet-filter-dropdown" data-filter-key="{{ key }}">
+<section class="col-auto search-facet search-facet-filter-dropdown" id="filter-{{ key }}-list" data-filter-key="{{ key }}">
     <input type="hidden" value="{{ init_value }}" name="{{ key }}" class="value" autocomplete="off">
     <h2 class="sr-only">{% trans label context "search_form" %}</h2>
     <div class="dropdown facet-dropdown">
@@ -10,28 +10,26 @@
             <span class="nothing-selected">{% trans label context "search_form" %}</span>
             <span class="selection"></span>
         </button>
-        <div class="dropdown-menu" aria-labelledby="{{ key }}Button">
+        <div class="dropdown-menu pb-0" aria-labelledby="{{ key }}Button">
             <div class="dropdown-item dropdown-filter">
                 <input type="text" class="form-control filter-input facet-internal"
                        title="{% trans "Filter" context "search_form" %}" name="filter-{{ key }}"
                        value="" autocomplete="off" placeholder="{% trans "Filter" context "search_form" %}">
             </div>
-            <div class="dropdown-item remove-filter">
-                <a href role="button">
-                    <div class="w-100">
-                        <span class="fa-custom fa-close"></span>
-                        <span>{% trans "Cancel selection" context "Remove search filter" %}</span>
-                    </div>
-                </a>
-            </div>
             <div class="dropdown-scroller filter-list" id="filter-{{ key }}-list">
                 {% for item in items.list %}
                     <a class="dropdown-item filter-item" href="#" data-id="{{ item.id }}"
-                       {% if item.doc_count == 0 %}hidden{% endif %}>
+                       {% if item.doc_count == 0 %}hidden{% endif %} role="button">
                         <span class="name sort">{{ item.name }}</span>
                         <span class="facet-item-count badge badge-secondary"> {{ item.doc_count }}</span>
                     </a>
                 {% endfor %}
+            </div>
+            <div class="dropdown-item remove-filter" role="button">
+                <div class="btn btn-danger btn-block">
+                    <span class="fa-custom fa-close"></span>
+                    <span>{% trans "Cancel Selection" context "Remove search filter" %}</span>
+                </div>
             </div>
         </div>
     </div>

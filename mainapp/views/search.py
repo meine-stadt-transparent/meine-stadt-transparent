@@ -151,7 +151,8 @@ def search_results_only(request, query):
         'total_results': executed.hits.total,
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
         'more_link': reverse(search_results_only, args=[query]),
-        # TOOD: Currently we need both because the js for the dropdown facet and document type facet hasn't been unified
+        # TOOD: Currently we need both because the js for the dropdown facet
+        # and document type facet hasn't been unified
         'facets': executed.facets.to_dict(),
         'new_facets': aggs_to_context(executed)
     }

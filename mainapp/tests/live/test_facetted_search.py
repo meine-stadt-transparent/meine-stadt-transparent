@@ -179,7 +179,6 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
     def test_document_type(self):
         self.visit('/search/query/word/')
-        print(self.live_server_url)
         self.assertTextIsPresent("Document Type")
         self.assertTextIsNotPresent("Meeting")
         self.browser.click_link_by_id("documentTypeButton")
@@ -190,14 +189,13 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("document-type:file,meeting,person word", self.get_search_string_from_url())
         self.browser.uncheck("document-type[meeting]")
         self.assertEqual("document-type:file,person word", self.get_search_string_from_url())
-        self.browser.click_link_by_partial_text("Cancel Selection")
+        self.click_by_css("#filter-document-type-list .remove-filter")
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
     def test_time_range(self):
         self.visit('/search/query/word/')
-        #webbrowser.open(self.live_server_url + '/search/query/word/')
         self.click_by_id("timeRangeButton")
         self.click_by_text("This year")
 
@@ -206,7 +204,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("after:{} before:{} word".format(first_day, last_day), self.get_search_string_from_url())
 
         self.click_by_id("timeRangeButton")
-        self.click_by_css(".daterangepicker .cancelBtn")
+        self.click_by_css(".daterangepicker .remove-filter")
         self.assertEqual("word", self.get_search_string_from_url())
 
     @override_settings(USE_ELASTICSEARCH=True)
@@ -219,7 +217,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.assertEqual("person:1 word", self.get_search_string_from_url())
 
         self.click_by_id("personButton")
-        self.browser.find_by_css(".show .remove-filter > a").first.click()
+        self.browser.find_by_css(".show .remove-filter").first.click()
 
         self.assertEqual("word", self.get_search_string_from_url())
 
@@ -249,6 +247,18 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.browser.fill("filter-person", "Frank")
         count = len(self.browser.find_by_css("[data-filter-key='person'] .filter-item"))
         self.assertEqual(count, 1)
+
+    @override_settings(USE_ELASTICSEARCH=True)
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
+    def test_dropdown_filter_preseted(self):
+        self.visit('/search/query/organization:1 word/')
+        self.click_by_id("organizationButton")
+        self.assertTextIsPresent("Cancel Selection")
+        self.click_by_css('[data-id="2"]')
+        self.assertEqual(self.get_search_string_from_url(), "organization:2 word")
+        self.click_by_id("organizationButton")
+        self.click_by_css("#filter-organization-list .remove-filter")
+        self.assertEqual(self.get_search_string_from_url(), "word")
 
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearchEndlessScroll.execute)

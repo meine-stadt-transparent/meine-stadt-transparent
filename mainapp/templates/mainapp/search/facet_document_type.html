@@ -8,11 +8,6 @@
             {% trans "Document Type" context "search_form" %}
         </button>
         <div class="dropdown-menu" aria-labelledby="documentTypeButton" id="filter-document-type-list">
-            <div class="dropdown-item cancel-selection">
-                <a href role="button" name="document-type-cancel-selection">
-                    <i class="fa-custom fa-close"></i>{% trans "Cancel Selection" %}
-                </a>
-            </div>
             {% for doc_type in new_facets.document_type.list %}
                 <div class="dropdown-item">
                     <label data-id="{{ doc_type.name }}">
@@ -29,6 +24,11 @@
                     </label>
                 </div>
             {% endfor %}
+            <div class="dropdown-item remove-filter">
+                <button class="btn btn-danger btn-block">
+                    <i class="fa-custom fa-close"></i><span>{% trans "Cancel Selection" %}</span>
+                </button>
+            </div>
         </div>
     </div>
 </section>

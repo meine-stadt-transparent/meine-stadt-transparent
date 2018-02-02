@@ -24,7 +24,7 @@ export default class FacettedSearchDateRange {
             locale: {
                 format: 'YYYY-MM-DD',
                 applyLabel: strings['apply'],
-                cancelLabel: this.$template.find(".cancelBtn").html(),
+                cancelLabel: this.$template.find(".remove-filter").html(),
                 customRangeLabel: strings['custom'],
                 monthNames: strings['month_names'].split('|'),
                 daysOfWeek: strings['day_names'].split('|'),
@@ -65,7 +65,6 @@ export default class FacettedSearchDateRange {
             this.$openerBtn.find(".time-not-set").attr("hidden", "hidden");
             this.$openerBtn.find(".time-description").removeAttr("hidden");
 
-            console.log(before, after, this.dateRanges);
             // Find an entry in this.dateRanges whose dates matches the selected values.
             // If an entry is found, the key is the descriptive string to be shown, ...
             Object.keys(this.dateRanges).forEach(dateRange => {

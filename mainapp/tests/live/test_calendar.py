@@ -23,6 +23,11 @@ class CalendarTest(ChromeDriverTestCase):
 
     def test_month(self):
         self.visit("/calendar/")
+
+        # Do some semi-busy waiting to avoid race conditions
+        while len(self.browser.find_by_css(".fc-month-button")) == 0:
+            pass
+
         self.browser.find_by_css(".fc-month-button").first.click()
 
         # In september, the november-meeting is not visible

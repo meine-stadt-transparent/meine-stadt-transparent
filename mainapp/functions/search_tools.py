@@ -31,6 +31,8 @@ class MainappSearch(FacetedSearch):
     def __init__(self, params):
         self.params = params
         self.errors = []
+
+        # Note that for django templates it makes a difference if a value is undefined or None
         self.options = {}
 
         filters = {
@@ -38,8 +40,13 @@ class MainappSearch(FacetedSearch):
             'organization': self.params.get('organization')
         }
 
+        for key, value in filters.items():
+            if value:
+                self.options[key] = value
+
         if 'document-type' in self.params:
             split = self.params['document-type'].split(",")
+            self.options["document_type"] = split
             filters["document_type"] = [i + "_document" for i in split]
 
         if 'sort' in self.params:

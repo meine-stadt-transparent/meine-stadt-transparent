@@ -14,14 +14,17 @@ export default class FacettedSearchFilterDropdown {
         });
         this.filterlist.sort('name', {order: "asc"});
         this.$items.click(this.itemSelected.bind(this));
-        this.setLabel();
-        this.$facet.find(".remove-filter > a").click(this.removeFilter.bind(this));
+        this.setLabelAndColor();
+        this.$facet.find(".remove-filter").click(this.removeFilter.bind(this));
     }
 
-    setLabel() {
+    setLabelAndColor() {
+        this.$items.removeClass("bg-primary");
         let id = this.$input.val();
         if (id) {
-            let name = this.$items.filter("[data-id=" + id + "]").find(".name").text();
+            let $item = this.$items.filter("[data-id=" + id + "]");
+            $item.addClass("bg-primary");
+            let name = $item.find(".name").text();
             this.$facet.find(".nothing-selected").hide();
             this.$facet.find(".selection").show().text(name);
 
@@ -38,7 +41,7 @@ export default class FacettedSearchFilterDropdown {
         let $item = $(ev.currentTarget),
             id = $item.data("id");
         this.$input.val(id).trigger("change");
-        this.setLabel();
+        this.setLabelAndColor();
         ev.preventDefault();
     }
 
@@ -52,7 +55,8 @@ export default class FacettedSearchFilterDropdown {
 
     removeFilter(event) {
         this.$input.val("").trigger("change");
-        this.setLabel();
+        this.$items.removeClass("bg-primary");
+        this.setLabelAndColor();
         if (event) {
             event.preventDefault();
         }
@@ -89,6 +93,6 @@ export default class FacettedSearchFilterDropdown {
         } else {
             this.$input.val("");
         }
-        this.setLabel();
+        this.setLabelAndColor();
     }
 }
