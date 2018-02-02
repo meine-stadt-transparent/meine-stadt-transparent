@@ -61,13 +61,13 @@ $index-map-height: 460px !default;
 $index-main-buttons-section-background: #ddd !default;
 $index-main-buttons-title-color: #111 !default;
 $index-main-buttons-title-background: transparent !default;
-$index-main-buttons-btn-background: $primary !default;
+$index-main-buttons-btn-background: map_get($theme-colors, primary) !default;
 $index-main-buttons-btn-text: white !default;;
 
 $index-meetings-section-background: #ccc !default;
 $index-meetings-title-color: #111 !default;
 $index-meetings-title-background: transparent !default;
-$index-meetings-btn: #f0f0f0 !default;
+$index-meetings-btn: lighten(#960018, 8%) !default;
 
 $index-documents-section-background: #f0f0f0 !default;
 $index-documents-title-color: #111 !default;

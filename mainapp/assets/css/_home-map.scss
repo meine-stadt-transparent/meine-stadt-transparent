@@ -80,8 +80,7 @@
     }
     .meeting-button {
       background-color: $index-meetings-btn;
-      color: black;
-      border: solid 1px black;
+      color: #eee;
       &:hover, &:active {
         background-color: darken($index-meetings-btn, 5%);
       }
