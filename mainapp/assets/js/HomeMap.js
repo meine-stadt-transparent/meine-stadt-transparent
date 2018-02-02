@@ -5,6 +5,22 @@ import {MarkerClusterGroup} from "leaflet.markercluster/dist/leaflet.markerclust
 import create_map from "./createMap";
 
 export default class IndexView {
+    constructor($mapElement) {
+        let initData = $mapElement.data("map-data");
+        this.textMore1 = $mapElement.data("more-file-1");
+        this.textMoreX = $mapElement.data("more-files-x");
+
+        this.leaflet = create_map($mapElement, initData);
+        let textHint = $mapElement.data("text-hint");
+        if (textHint !== "") {
+            (new TextHint({text: textHint})).addTo(this.leaflet);
+        }
+
+        if (initData['documents']) {
+            this.addDocumentLocationMarkers(initData['documents']);
+        }
+    }
+
     static escapeHtml(html) {
         return String(html).replace(/[&<>"'`=\/]/g, function (s) {
             return {
@@ -29,7 +45,9 @@ export default class IndexView {
     }
 
     addDocumentLocationMarkers(documents) {
-        let clusterGroup = new MarkerClusterGroup();
+        let clusterGroup = new MarkerClusterGroup({
+            maxClusterRadius: 40
+        });
 
 
         this.locationMarkers = [];
@@ -39,16 +57,24 @@ export default class IndexView {
                     continue;
                 }
                 let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
-                let files = '';
-                for (let i = 0; i < paper.files.length; i++) {
-                    files += (i > 1 ? ', ' : '');
-                    files += '<a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a>';
-                }
 
                 let paperHtml = '<a href="' + paper.url + '">' + IndexView.escapeHtml(paper.name) + '</a>';
-                let contentHtml = '<div class="paper-title">' + paperHtml + '</div>' +
-                    '<div class="file-location"><div class="location-name">' + IndexView.escapeHtml(location.name) + '</div>' +
-                    '<div class="files">' + files + '</div></div>';
+
+                let files = '';
+                for (let i = 0; i < paper.files.length && i < 2; i++) {
+                    files += '<li>↳ <a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a></li>';
+                }
+                if (paper.files.length > 3) {
+                    let remaining = this.textMoreX.replace(/%NUM%/, paper.files.length - 2);
+                    files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(remaining) + '</a></li>';
+                } else if (paper.files.length > 2) {
+                    files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(this.textMore1) + '</a></li>'
+                }
+
+                let contentHtml = '<div class="type-address"><div class="type">' + IndexView.escapeHtml(paper.type) + '</div>' +
+                    '<div class="address">' + IndexView.escapeHtml(location.name) + '</div></div>' +
+                    '<div class="paper-title">' + paperHtml + '</div>' +
+                    '<ul class="files">' + files + '</ul>';
                 marker.bindPopup(contentHtml, {className: 'file-location', minWidth: 200});
                 clusterGroup.addLayer(marker);
 
@@ -57,19 +83,5 @@ export default class IndexView {
         }
 
         clusterGroup.addTo(this.leaflet);
-    }
-
-    constructor($mapElement) {
-        let initData = $mapElement.data("map-data");
-
-        this.leaflet = create_map($mapElement, initData);
-        let textHint = $mapElement.data("text-hint");
-        if (textHint !== "") {
-            (new TextHint({text: textHint})).addTo(this.leaflet);
-        }
-
-        if (initData['documents']) {
-            this.addDocumentLocationMarkers(initData['documents']);
-        }
     }
 }

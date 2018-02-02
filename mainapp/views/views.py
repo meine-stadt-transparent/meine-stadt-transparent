@@ -19,7 +19,7 @@ from mainapp.views import person_grid_context
 def index(request):
     main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 
-    latest_paper = Paper.objects.order_by("-modified", "-legal_date")[:10]
+    latest_paper = Paper.objects.order_by("-sort_date", "-legal_date")[:10]
     for paper in latest_paper:
         # The mixed results view needs those
         setattr(paper, "type", "paper")
@@ -28,7 +28,7 @@ def index(request):
 
     geo_papers = Paper \
                      .objects \
-                     .order_by("-modified", "-legal_date") \
+                     .order_by("-sort_date", "-legal_date") \
                      .prefetch_related('files') \
                      .prefetch_related('files__locations')[:50]
 
@@ -38,7 +38,7 @@ def index(request):
         'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2]
     }
 
-    if request.GET.get('version', 'v1') == 'v2':
+    if request.GET.get('version', 'v2') == 'v2':
         return render(request, 'mainapp/index_v2/index.html', context)
     else:
         return render(request, 'mainapp/index/index.html', context)

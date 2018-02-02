@@ -1,5 +1,4 @@
 @import "vars";
-
 @import "~leaflet.markercluster/dist/MarkerCluster.css";
 @import "markercluster.theme";
 
@@ -45,8 +44,8 @@
       &:before {
         // Hack to enforce a square form
         content: "";
-	    display: block;
-	    padding-top: 100%;
+        display: block;
+        padding-top: 100%;
       }
 
       &:hover, &:active {
@@ -103,8 +102,6 @@
   }
 }
 
-
-
 .search-autocomplete-home {
   span.twitter-typeahead {
     z-index: $typeahead-zindex;
@@ -115,25 +112,63 @@
   height: $index-map-height;
 
   .leaflet-popup-content-wrapper {
-    .paper-title {
+    .type-address {
+      font-size: 12px;
+      display: flex;
+      .type {
+        flex: 1;
+      }
+      .address {
+        text-align: right;
+        flex: 1;
+      }
       padding-bottom: 5px;
-      margin-bottom: 5px;
       border-bottom: solid 1px #ccc;
     }
-    .file-location {
-      overflow: auto;
-      font-size: 12px;
+    .paper-title {
+      padding-bottom: 5px;
+      margin-top: 5px;
+      border-bottom: solid 1px #ddd;
+      position: relative;
+      .icon {
+        float: left;
+        margin-top: 4px;
+        font-size: 1.2em;
+      }
+      a {
+        max-height: 2.8em; // line-height * 2
+        overflow: hidden;
+        display: block;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; // WTF
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+      }
+    }
+    ul.files {
+      list-style-type: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+      li {
+        display: block;
+        padding: 0;
+        margin: 5px 0 0 18px;
+        text-indent: -15px;
+      }
     }
     .location-name {
       float: right;
     }
   }
 }
+
 .leaflet-container {
   .leaflet-control-attribution a {
     color: #333;
   }
 }
+
 .leaflet-bar a.leaflet-disabled {
   color: #707070;
 }
