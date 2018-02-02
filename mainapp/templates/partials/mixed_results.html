@@ -2,7 +2,7 @@
 
 <ul class="results-list" id="endless-scroll-target" data-total-hits="{{ total_hits }}">
     {% for result in results %}
-        <li class="clearfix result">
+        <li class="clearfix result result-type-{{ result.type }}">
             <a href="{% url result.type result.id %}" class="no-link-color">
                 <div class="py-2 container">
                     <div class="row">

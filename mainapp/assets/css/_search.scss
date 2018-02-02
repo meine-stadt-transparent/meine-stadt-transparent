@@ -139,6 +139,35 @@
   list-style: none;
   padding-left: 0;
 
+  li {
+    margin-top: 5px !important;
+  }
+
+  mark {
+    background-color: transparent !important;
+    color: inherit !important;
+  }
+
+  .result-type-paper {
+    background-color: #4ECDC4;
+  }
+
+  .result-type-file {
+    background-color: #EFFAB4;
+  }
+
+  .result-type-organization {
+    background-color: #FFC48C;
+  }
+
+  .result-type-meeting {
+    background-color: #FF9F80;
+  }
+
+  .result-type-person {
+    background-color: #F56991;
+  }
+
   .result {
     margin-top: 15px;
 
@@ -148,11 +177,7 @@
       a {
         text-decoration: none;
 
-        div {
-          color: map_get($theme-colors, light);
-        }
-
-        i {
+        div, i {
           color: map_get($theme-colors, light);
         }
       }
