@@ -119,25 +119,8 @@ SOCIALACCOUNT_USE_TWITTER = env.bool('SOCIALACCOUNT_USE_TWITTER', False)
 SOCIALACCOUNT_PROVIDERS = {}
 if SOCIALACCOUNT_USE_FACEBOOK:
     SOCIALACCOUNT_PROVIDERS['facebook'] = {
-        'METHOD': 'oauth2',
-        'SCOPE': ['email', 'public_profile'],
-        'INIT_PARAMS': {'cookie': True},
-        'FIELDS': [
-            'id',
-            'email',
-            'name',
-            'first_name',
-            'last_name',
-            'verified',
-            'locale',
-            'timezone',
-            'link',
-            'updated_time',
-        ],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': lambda request: LANGUAGE_CODE,
         'VERIFIED_EMAIL': False,
-        'VERSION': 'v2.10',
         'CLIENT_ID': env.str('FACEBOOK_CLIENT_ID'),
         'SECRET_KEY': env.str('FACEBOOK_SECRET_KEY'),
     }
