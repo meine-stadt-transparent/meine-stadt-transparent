@@ -15,34 +15,12 @@ from elasticsearch_dsl import Search
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import search_string_to_params, params_are_subscribable, \
-    html_escape_highlight, escape_elasticsearch_query, MainappSearch
+    escape_elasticsearch_query, MainappSearch, parse_hit
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
 from mainapp.views.views import _build_map_object
 
 logger = logging.getLogger(__name__)
-
-
-def _parse_hit(hit):
-    parsed = hit.to_dict()  # Extract the raw fields from the hit
-    parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
-    parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
-    highlights = []
-    if hasattr(hit.meta, "highlight"):
-        for field_name, field_highlights in hit.meta.highlight.to_dict().items():
-            for field_highlight in field_highlights:
-                if field_name == "name":
-                    parsed["name"] = field_highlight
-                elif field_name == "short_name":
-                    pass
-                else:
-                    highlights.append(field_highlight)
-    if len(highlights) > 0:
-        parsed["highlight"] = html_escape_highlight(highlights[0])
-    else:
-        parsed["highlight"] = None
-    parsed["name_escaped"] = html_escape_highlight(parsed["name"])
-    return parsed
 
 
 def _search_to_context(query, main_search: MainappSearch, executed, results, request):
@@ -79,10 +57,11 @@ def search(request, query):
 
     main_search = main_search[:settings.SEARCH_PAGINATION_LENGTH]
     executed = main_search.execute()
-    results = [_parse_hit(hit) for hit in executed.hits]
+    results = [parse_hit(hit) for hit in executed.hits]
 
     context = _search_to_context(query, main_search, executed, results, request)
     context["new_facets"] = aggs_to_context(executed)
+    context["query"] = query
 
     return render(request, "mainapp/search/search.html", context)
 
@@ -143,7 +122,7 @@ def search_results_only(request, query):
     after = int(request.GET.get('after', 0))
     main_search = main_search[after:settings.SEARCH_PAGINATION_LENGTH + after]
     executed = main_search.execute()
-    results = [_parse_hit(hit) for hit in executed.hits]
+    results = [parse_hit(hit) for hit in executed.hits]
     context = _search_to_context(query, main_search, executed, results, request)
 
     result = {

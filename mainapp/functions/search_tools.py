@@ -203,6 +203,31 @@ def search_result_for_notification(result):
     return NotificationSearchResult(title, url, result["type"], DOCUMENT_TYPE_NAMES[result["type"]])
 
 
+def parse_hit(hit):
+    from mainapp.documents import DOCUMENT_TYPE_NAMES
+
+    parsed = hit.to_dict()  # Extract the raw fields from the hit
+    parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
+
+    parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
+    highlights = []
+    if hasattr(hit.meta, "highlight"):
+        for field_name, field_highlights in hit.meta.highlight.to_dict().items():
+            for field_highlight in field_highlights:
+                if field_name == "name":
+                    parsed["name"] = field_highlight
+                elif field_name == "short_name":
+                    pass
+                else:
+                    highlights.append(field_highlight)
+    if len(highlights) > 0:
+        parsed["highlight"] = html_escape_highlight(highlights[0])
+    else:
+        parsed["highlight"] = None
+    parsed["name_escaped"] = html_escape_highlight(parsed["name"])
+    return parsed
+
+
 def params_to_human_string(params: dict):
     from mainapp.documents import DOCUMENT_TYPE_NAMES_PL
 

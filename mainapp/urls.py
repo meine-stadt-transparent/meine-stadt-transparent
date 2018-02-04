@@ -2,12 +2,14 @@ from django.conf.urls import url
 from django.views.static import serve
 
 import mainapp.views.views
+from mainapp.views import LatestPapersFeed, SearchResultsFeed
 from mainapp.views.profile import profile_view, profile_delete
 from meine_stadt_transparent import settings
 from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^search/query/(?P<query>.*)/feed/$', SearchResultsFeed(), name='search-feed'),
     url(r'^search/query/(?P<query>.*)/$', views.search, name='search'),
     url(r'^search/suggest/(?P<query>.*)/$', views.search_autosuggest, name='search_autosuggest'),
     url(r'^search/format_geo/(?P<lat>[\d.]+),(?P<lng>[\d.]+)/$', views.search_format_geo, name='search_format_geo'),
@@ -26,6 +28,7 @@ urlpatterns = [
     url(r'^person/(?P<pk>[0-9]+)/$', views.person, name='person'),
     url(r'^meeting/(?P<pk>[0-9]+)/$', views.meeting, name='meeting'),
     url(r'^paper/(?P<pk>[0-9]+)/$', views.paper, name='paper'),
+    url(r'^paper/feed/$', LatestPapersFeed(), name='paper-feed'),
     url(r'^paper/historical/(?P<pk>[0-9]+)/$', views.historical_paper, name='historical_paper'),
     url(r'^file/(?P<pk>[0-9]+)/$', views.file, name='file'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical/$', views.meeting_ical, name='meeting-ical'),

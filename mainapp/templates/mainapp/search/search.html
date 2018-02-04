@@ -4,6 +4,11 @@
 
 {% block title %}{% trans "Search" context "page_title" %}{% endblock %}
 
+{% block additional_html_headers %}
+    <link rel="alternate" type="application/rss+xml" href="{% url 'search-feed' query %}"
+          title="{% trans 'Search results' %}">
+{% endblock %}
+
 {% block header %}
     {% with disable_header_search=True main_content_id="endless-scroll-target" %}
         {{ block.super }}

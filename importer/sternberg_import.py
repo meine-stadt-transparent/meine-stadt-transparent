@@ -62,6 +62,14 @@ class SternbergImport(OParlImport):
             response = OParl.ResolveUrlResult(resolved_data=json.dumps(oparl_object), success=True,
                                               status_code=response.get_status_code())
 
+        if "/meeting" in url:
+            oparl_object = json.loads(response.get_resolved_data())
+            if "location" in oparl_object and not isinstance(oparl_object["location"], str):
+                oparl_object["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+
+            response = OParl.ResolveUrlResult(resolved_data=json.dumps(oparl_object), success=True,
+                                              status_code=response.get_status_code())
+
         return response
 
     def download_file(self, file: File, libobject: OParl.File):

@@ -4,6 +4,10 @@
 
 {% block title %}{{ settings.TEMPLATE_META.product_name }}{% endblock %}
 
+{% block additional_html_headers %}
+    <link rel="alternate" type="application/rss+xml" href="{% url 'paper-feed' %}" title="{% trans 'Latest papers' %}">
+{% endblock %}
+
 {% block header %}
     {% with True as disable_header_search %}
         {{ block.super }}
