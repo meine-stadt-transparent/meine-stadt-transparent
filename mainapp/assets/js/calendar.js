@@ -52,7 +52,7 @@ $(function () {
         // Change the URL scheme when the view is changed
         viewRender: function (view, element) {
             if (view.name === defaultView && defaultDate.isBetween(view.start, view.end)) {
-                if (typeof window.history.back() !== "undefined") {
+                if (typeof window.history.back !== "undefined") {
                     window.history.pushState({}, "", $calendar.data("url-default"));
                 }
             } else {
