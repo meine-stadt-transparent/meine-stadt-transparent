@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 
+from csp.decorators import csp_update
 from django.conf import settings
 from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
@@ -127,6 +128,7 @@ def organization(request, pk):
     return render(request, "mainapp/organization.html", context)
 
 
+@csp_update(FRAME_SRC=("'self'", "blob:"))  # Needed for downloading the PDF in PDF.JS
 def file(request, pk):
     file = get_object_or_404(File, id=pk)
     is_available = file.filesize and file.filesize > 0
