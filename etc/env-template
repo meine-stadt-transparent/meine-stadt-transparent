@@ -25,8 +25,9 @@ SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
 SITE_GEO_INIT_ZOOM=12
 SITE_MAPBOX_ACCESS_TOKEN=pk...
 
-SOCIALACCOUNT_USE_FACEBOOK=True
-SOCIALACCOUNT_USE_TWITTER=True
+# You need to generate tokens in the relevant developer poprtal before you can use them
+SOCIALACCOUNT_USE_FACEBOOK=False
+SOCIALACCOUNT_USE_TWITTER=False
 
 # Custom map styles can be used like this:
 # SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/tobiashoessl/cj9bafqs84zfl2snxt9o2p65r/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}

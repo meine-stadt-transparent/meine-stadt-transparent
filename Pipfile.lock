@@ -1,20 +1,20 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "92d8249164e7f7e5d2647f47e8bcc2f867b3b16567f35c0b340841e29f0fe072"
+            "sha256": "434c62746a1dcfd0b41959b95c043ea55ba958ee2fbb458115f21ab635b1de46"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
-            "implementation_version": "3.6.4",
+            "implementation_version": "3.6.3",
             "os_name": "posix",
             "platform_machine": "x86_64",
             "platform_python_implementation": "CPython",
-            "platform_release": "17.4.0",
-            "platform_system": "Darwin",
-            "platform_version": "Darwin Kernel Version 17.4.0: Sun Dec 17 09:19:54 PST 2017; root:xnu-4570.41.2~1/RELEASE_X86_64",
-            "python_full_version": "3.6.4",
+            "platform_release": "4.13.0-32-generic",
+            "platform_system": "Linux",
+            "platform_version": "#35-Ubuntu SMP Thu Jan 25 09:13:46 UTC 2018",
+            "python_full_version": "3.6.3",
             "python_version": "3.6",
-            "sys_platform": "darwin"
+            "sys_platform": "linux"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -71,9 +71,9 @@
         },
         "django-allauth": {
             "hashes": [
-                "sha256:95a9f7fbebe3e97ce3a541d213fc52492b50dac92f0f91483f58949189e5aa4f"
+                "sha256:7b31526cccd1c46f9f09acf0703068e8a9669337d29eb065f7e8143c2d897339"
             ],
-            "version": "==0.34.0"
+            "version": "==0.35.0"
         },
         "django-anymail": {
             "hashes": [
@@ -390,10 +390,10 @@
         },
         "selenium": {
             "hashes": [
-                "sha256:af448c15b3225056cd406b435cda10bfcee250460a4811e4fd8b21be9f61626c",
-                "sha256:3af07d7a4b5d523540fa4f32902b9dec15e0379862406aef974729f42411053d"
+                "sha256:b0a06afa31a80d7dcb627eafb62776488b20bdaffcd807ac4158fadbc11061f4",
+                "sha256:a34a833d89bcfb463bfba5e5515a9276bb94221787b409f0ad28d2f91903e31d"
             ],
-            "version": "==3.8.0"
+            "version": "==3.9.0"
         },
         "six": {
             "hashes": [
