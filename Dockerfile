@@ -1,5 +1,5 @@
 # We just need some files from this image
-FROM oparl/liboparl
+FROM oparl/liboparl:0.4.0
 # We can't use the python image because pygobject only works with system python
 FROM ubuntu:16.04
 
@@ -22,8 +22,8 @@ RUN apt-get update && \
 # liboparl
 COPY --from=0 /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo /usr/share/locale/en_US/LC_MESSAGES/liboparl.mo
 COPY --from=0 /usr/share/locale/de_DE/LC_MESSAGES/liboparl.mo /usr/share/locale/de_DE/LC_MESSAGES/liboparl.mo
-COPY --from=0 /usr/lib/x86_64-linux-gnu/liboparl-0.2.so /usr/lib/x86_64-linux-gnu/liboparl-0.2.so
-COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.2.typelib
+COPY --from=0 /usr/lib/x86_64-linux-gnu/liboparl-0.4.so /usr/lib/x86_64-linux-gnu/liboparl-0.4.so
+COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.4.typelib /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.4.typelib
 
 COPY . /app/
 
