@@ -16,7 +16,7 @@ install:
  - npm install
  - pip install pipenv --upgrade
  - pipenv install --deploy
- # Add pygobject to the virtualenv
+ # Add pygobject to the virtualenv; Disabled because gi only works with system python
  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
 
 script:

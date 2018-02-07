@@ -6,63 +6,12 @@
 
 {% block content %}
     <div class="file-main-content {{ renderer }}">
-        <div>
-            <div class="file-header container d-flex justify-content-between flex-wrap">
-                <div>
-                    {% if file.legal_date %}
-                        <div>{{ file.legal_date }}</div>
-                    {% endif %}
-                    {% if file.license %}
-                        <div>{{ file.license }}</div>
-                    {% endif %}
-                </div>
-                <div>
-                    {% spaceless %}
-                        <div>
-                            <a href="{% url 'media' file.storage_filename %}">
-                                <span class="fa fa-custom fa-download" aria-hidden="true"></span>
-                                <span>Download</span>
-                            </a>
-                        </div>
-                        {% if papers|length == 1 %}
-                            <div>
-                                <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
-                                    <span class="fa-custom fa-file" aria-hidden="true"></span>
-                                    <span>{% trans "Superordinated paper" context "Singular" %}</span>
-                                </a>
-                            </div>
-                        {% endif %}
-                        {% if papers|length > 1 %}
-                            <div>
-                                <div class="dropdown">
-                                    <a class="dropdown-toggle" role="button" href="#"
-                                       data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="false">
-                                        {% trans "Superordinated paper" context "Plural" %}
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        {% for paper in papers %}
-                                            <a class="dropdown-item" href="{% url 'paper' paper.id %}"
-                                               title="{{ paper.name }}">
-                                                <span class="fa-custom fa-file" aria-hidden="true"></span>
-                                                <span>{% trans "Paper" %}</span>
-                                            </a>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% endspaceless %}
-                </div>
-            </div>
-        </div>
-
         {% comment %}
         We want to have a sidebar on the left. So what we do is to split the page in three coloumns. The left and the
         right one are auto-sized while the center one just gets the normal container class (plus a px-0). For the main
         coloumn this has the same effect as using ml-auto, except we can position our sidebar in the left space
         {% endcomment %}
-        <div class="file-layout-container container-fluid h-100">
+        <div class="file-layout-container container-fluid h-100" role="navigation">
             <div class="row h-100">
                 <div class="col">
                     <div class="file-switcher h-100">
@@ -97,6 +46,55 @@
                     </div>
                 </div>
                 <div class="col-auto file-content-div">
+                    <div class="file-header container d-flex justify-content-between flex-wrap">
+                        <div>
+                            {% if file.legal_date %}
+                                <div>{{ file.legal_date }}</div>
+                            {% endif %}
+                            {% if file.license %}
+                                <div>{{ file.license }}</div>
+                            {% endif %}
+                        </div>
+                        <div>
+                            {% spaceless %}
+                                <div>
+                                    <a href="{% url 'media' file.storage_filename %}">
+                                        <span class="fa fa-custom fa-download" aria-hidden="true"></span>
+                                        <span>Download</span>
+                                    </a>
+                                </div>
+                                {% if papers|length == 1 %}
+                                    <div>
+                                        <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
+                                            <span class="fa-custom fa-file" aria-hidden="true"></span>
+                                            <span>{% trans "Superordinated paper" context "Singular" %}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                                {% if papers|length > 1 %}
+                                    <div>
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle" role="button" href="#"
+                                               data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false">
+                                                {% trans "Superordinated paper" context "Plural" %}
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                {% for paper in papers %}
+                                                    <a class="dropdown-item" href="{% url 'paper' paper.id %}"
+                                                       title="{{ paper.name }}">
+                                                        <span class="fa-custom fa-file" aria-hidden="true"></span>
+                                                        <span>{% trans "Paper" %}</span>
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endspaceless %}
+                        </div>
+                    </div>
+
                     {% if renderer == "pdf" %}
                         <div class="pdfjs-wrapper h-100">
                             <div class="embed-responsive h-100 w-100">
@@ -129,7 +127,7 @@
                     {% endif %}
                 </div>
 
-                <div class="col">
+                <div class="col right-counterweight">
                     {# "Counterweight" for the left col to get the main container centered #}
                 </div>
             </div>

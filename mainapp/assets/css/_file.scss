@@ -59,6 +59,13 @@
       display: none;
     }
   }
+
+  // This gives a nice two pane layout on medium-sized screens
+  @media (max-width: $container-width * 2) {
+    .right-counterweight {
+      display: none;
+    }
+  }
 }
 
 .file-switcher {

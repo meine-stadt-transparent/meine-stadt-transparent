@@ -14,4 +14,4 @@ elif TESTING:
 
 env.read_env(env_file)
 
-TESTING_TRAVIS = env.bool("TRAVIS")
+TESTING_TRAVIS = env.bool("TRAVIS", False)
