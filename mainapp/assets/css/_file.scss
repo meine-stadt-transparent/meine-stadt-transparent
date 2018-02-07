@@ -26,11 +26,9 @@
 }
 
 .file-main-content {
-  &.pdf {
-    height: calc(100vh - #{$header-height} - 2 * #{$main-content-margin-top});
-    display: flex;
-    flex-direction: column;
-  }
+  height: calc(100vh - #{$header-height} - 2 * #{$main-content-margin-top});
+  display: flex;
+  flex-direction: column;
 
   .pdfjs-wrapper {
     flex: 1;

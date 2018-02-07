@@ -48,4 +48,6 @@ $(function () {
     }
 
     trapMice();
+    // block: end prevents the page from scrolling down
+    $(".scroll-into-view").each((_ ,element) => element.scrollIntoView({block: "end"}));
 });

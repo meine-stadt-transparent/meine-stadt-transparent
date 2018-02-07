@@ -11,10 +11,10 @@
         right one are auto-sized while the center one just gets the normal container class (plus a px-0). For the main
         coloumn this has the same effect as using ml-auto, except we can position our sidebar in the left space
         {% endcomment %}
-        <div class="file-layout-container container-fluid h-100" role="navigation">
+        <div class="file-layout-container container-fluid h-100">
             <div class="row h-100">
                 <div class="col">
-                    <div class="file-switcher h-100">
+                    <div class="file-switcher h-100" role="navigation">
                         <h3>{% trans "Documents in this paper" %}</h3>
                         {# Yep, those divs are actually needed :soup: #}
                         <div>
@@ -22,7 +22,7 @@
                                 <div class="list-group list-group-flush">
                                     {% if papers.0.main_file %}
                                         {% if papers.0.main_file.id == file.id %}
-                                            <a class="list-group-item list-group-item-action active"
+                                            <a class="list-group-item list-group-item-action active scroll-into-view"
                                                href="{% url 'file' papers.0.main_file.id %}">
                                         {% else %}
                                             <a class="list-group-item list-group-item-action"
@@ -34,7 +34,7 @@
                                     {% endif %}
                                     {% for other_file in papers.0.files.all %}
                                         <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
-                            active{% endif %}"
+                            active scroll-into-view{% endif %}"
                                            href="{% url 'file' other_file.id %}">
                                             <span class="fa-custom fa-file"></span>
                                             <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
