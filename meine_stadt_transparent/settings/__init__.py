@@ -173,8 +173,9 @@ ELASTICSEARCH_INDEX = env.str('ELASTICSEARCH_INDEX', 'meine_stadt_transparent_do
 GEOEXTRACT_ENGINE = env.str('GEOEXTRACT_ENGINE', 'Nominatim')
 if GEOEXTRACT_ENGINE.lower() not in ['nominatim', 'opencagedata']:
     raise ValueError("Unknown Geocoder: " + GEOEXTRACT_ENGINE)
-# If GEOEXTRACT_ENGINE is "Opencagedata", then OPENCAGEDATA_KEY needs to be set
-OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY', None)
+
+if GEOEXTRACT_ENGINE.lower() == 'opencagedata':
+    OPENCAGEDATA_KEY = env.str('OPENCAGEDATA_KEY', None)
 
 # Settings for Geo-Extraction
 # @TODO Clarify if we want to distinguish other cities, and what would be the best way to get a
