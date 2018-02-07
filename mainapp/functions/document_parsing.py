@@ -287,7 +287,7 @@ def index_papers_to_geodata(papers):
                         "id": paper.id,
                         "name": paper.name,
                         "type": paper.paper_type.paper_type,
-                        "url": reverse('paper', args=[file.id]),
+                        "url": reverse('paper', args=[paper.id]),
                         "files": []
                     }
                 geodata[location.id]['papers'][paper.id]["files"].append({
