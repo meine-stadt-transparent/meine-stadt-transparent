@@ -2,17 +2,20 @@ import json
 
 from csp.decorators import csp_update
 from django.conf import settings
+from django.conf.urls.static import static
 from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
+from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
 from django.views.generic import DetailView
+from requests.utils import quote
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm, Location, \
-    Person
+from mainapp.models import Body, File, Organization, Paper, Meeting, Person, LegislativeTerm, \
+    Location
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context
@@ -163,6 +166,13 @@ def file(request, pk):
         "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
         "renderer": renderer,
     }
+
+    if renderer == "pdf":
+        context["pdfjs_iframe_url"] = static('vendored/web/viewer.html')
+        context["pdfjs_iframe_url"] += "?file=" + reverse('media', args=[file.storage_filename])
+        if request.GET.get("pdfjs_search"):
+            context["pdfjs_iframe_url"] += "#search=" + quote(request.GET.get("pdfjs_search"))
+
     return render(request, "mainapp/file.html", context)
 
 

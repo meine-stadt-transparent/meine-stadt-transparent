@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet
+from requests.utils import quote
 
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.models import Person, Organization
@@ -204,9 +205,10 @@ def search_result_for_notification(result):
 
 
 def parse_hit(hit):
+    # python module wtf
     from mainapp.documents import DOCUMENT_TYPE_NAMES
 
-    parsed = hit.to_dict()  # Extract the raw fields from the hit
+    parsed = hit.to_dict()
     parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
 
     parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
@@ -222,9 +224,15 @@ def parse_hit(hit):
                     highlights.append(field_highlight)
     if len(highlights) > 0:
         parsed["highlight"] = html_escape_highlight(highlights[0])
+        parsed["highlight_extracted"] = highlights[0].split("<mark>")[1].split("</mark>")[0]
     else:
         parsed["highlight"] = None
     parsed["name_escaped"] = html_escape_highlight(parsed["name"])
+
+    parsed["url"] = reverse(parsed["type"], args=[hit.id])
+    if hit.type == "file" and hit.highlight_extracted:
+        parsed["url"] += "?pdfjs_search=" + quote(parsed["highlight_extracted"])
+
     return parsed
 
 

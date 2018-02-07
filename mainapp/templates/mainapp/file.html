@@ -98,9 +98,7 @@
                     {% if renderer == "pdf" %}
                         <div class="pdfjs-wrapper h-100">
                             <div class="embed-responsive h-100 w-100">
-                                <iframe class="embed-responsive-item"
-                                        src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
-                                </iframe>
+                                <iframe class="embed-responsive-item" src="{{ pdfjs_iframe_url }}"></iframe>
                             </div>
                         </div>
                     {% elif renderer == "txt" %}
