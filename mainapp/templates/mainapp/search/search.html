@@ -53,11 +53,11 @@
                     </button>
                 </section>
                 <div class="form-row align-items-center">
-                    {% include "mainapp/search/facet_location_selector.html" %}
-                    {% include "mainapp/search/facet_document_type.html" %}
-                    {% include "mainapp/search/facet_date_range.html" %}
-                    {% include "mainapp/search/facet_filter_dropdown.html" with key="person" items=new_facets.person label="Person" init_value=options.person %}
-                    {% include "mainapp/search/facet_filter_dropdown.html" with key="organization" items=new_facets.organization label="Organization" init_value=options.organization %}
+                    {% include "mainapp/search/location_selector.html" %}
+                    {% include "mainapp/search/document_type.html" %}
+                    {% include "mainapp/search/date_range.html" %}
+                    {% include "mainapp/search/filter_dropdown.html" with key="person" items=new_facets.person label="Person" init_value=options.person %}
+                    {% include "mainapp/search/filter_dropdown.html" with key="organization" items=new_facets.organization label="Organization" init_value=options.organization %}
                     {% include "mainapp/search/sorter_widget.html" %}
                 </div>
             </form>
