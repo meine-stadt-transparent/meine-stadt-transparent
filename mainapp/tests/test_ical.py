@@ -72,3 +72,8 @@ class TestICal(TestCase):
         response = self.c.get('/organization/2/ical/').content.decode('utf-8').strip()
         self.assertEqual(response, expected_meeting_series)
         self.assertEqual(len(icalendar.cal.Component.from_ical(response).subcomponents[0]), 5)
+
+    def calendar(self):
+        """ Just checks that no excpetion is thrown. """
+        response = self.c.get('/calendar/ical')
+        self.assertEqual(response.status_code, 200)

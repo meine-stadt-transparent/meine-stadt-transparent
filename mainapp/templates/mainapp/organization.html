@@ -77,6 +77,10 @@
                 {% endif %}
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
+                <a href="{% url "organizazion_ical" organization.id %}" class="btn btn-primary btn-sm pull-right">
+                    <span class="fa fa-calendar-plus-o" aria-hidden="true"></span>
+                    {% trans "Subscribe (iCal)" %}
+                </a>
                 {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
                 {% if meeting_count > meetings|length %}
                     <p>{% trans "Remaining meetings omitted. They can be found with the search" %}</p>

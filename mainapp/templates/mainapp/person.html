@@ -14,7 +14,7 @@
                 <h2>{% trans "Submitted Papers" %}</h2>
                 <ul>
                     {% for paper in papers %}
-                        <li><a href="{% url 'paper' paper.id %}">{{ paper }}</a></li>
+                        <li><a href="{% url 'paper' paper.id %}">{{ paper.name }}</a></li>
                     {% endfor %}
                 </ul>
             </section>

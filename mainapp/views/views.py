@@ -136,7 +136,7 @@ def organization(request, pk):
         "paper_count": Paper.objects.filter(organizations__in=[pk]).count(),
         "meetings": Meeting.objects.filter(organizations__in=[pk])
                         .order_by('start', 'modified')[:25],
-        "meeting_counter": Meeting.objects.filter(organizations__in=[pk]).count(),
+        "meeting_count": Meeting.objects.filter(organizations__in=[pk]).count(),
         "to_search_url": reverse("search", args=["organization:" + str(organization.id)])
     }
     return render(request, "mainapp/organization.html", context)

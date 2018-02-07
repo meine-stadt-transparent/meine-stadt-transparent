@@ -1,11 +1,14 @@
 from datetime import date
 
 import dateutil.parser
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils.timezone import now
+from django.utils.translation import ugettext as _
 from icalendar import Calendar
 # noinspection PyPackageRequirements
 from pytz import timezone
@@ -83,7 +86,10 @@ def meeting(request, pk):
 
     # Try to find a previous or following meetings using the organization
     # Excludes meetings with more than one organization
-    context = {"meeting": selected_meeting, "time": time}
+    context = {
+        "meeting": selected_meeting,
+        "time": time
+    }
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()
         query = Meeting.objects \
@@ -111,7 +117,7 @@ def build_ical(events, filename):
     return response
 
 
-def meeting_ical(_, pk):
+def meeting_ical(request, pk):
     meeting = get_object_or_404(Meeting, id=pk)
 
     filename = meeting.short_name or meeting.name or _("Meeting")
@@ -119,10 +125,22 @@ def meeting_ical(_, pk):
     return build_ical([meeting.as_ical_event()], filename)
 
 
-def committee_ical(_, pk):
+def organizazion_ical(request, pk):
     committee = get_object_or_404(Organization, id=pk)
     events = [meeting.as_ical_event() for meeting in committee.meeting_set.all()]
 
     filename = committee.short_name or committee.name or _("Meeting Series")
 
+    return build_ical(events, filename)
+
+
+def calendar_ical(request):
+    """ Returns an ical file containing all meetings +/- 3 months from now. """
+    meetings = Meeting.objects \
+        .filter(start__gt=now() + relativedelta(months=-3)) \
+        .filter(start__lt=now() + relativedelta(months=+3)) \
+        .order_by("start") \
+        .all()
+    events = [meeting.as_ical_event() for meeting in meetings]
+    filename = _("All Meetings")
     return build_ical(events, filename)

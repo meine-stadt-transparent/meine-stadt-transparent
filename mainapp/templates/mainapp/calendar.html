@@ -19,6 +19,12 @@
              data-max-time="{{ max_time }}"
              data-url-template="{% url 'calendar_specific' 'VIEW' '0000-00-00' %}"
         ></div>
+        <div class="text-dark py-3">
+            {% trans "Subscribe to the latest calendar events (three month from now):" %}
+            <a href="{% url "calendar_ical" %}">
+                <span class="fa-custom fa-calendar-plus-o" aria-hidden="true"></span>{% trans "iCal" %}
+            </a>
+        </div>
     </div>
 {% endblock %}
 
