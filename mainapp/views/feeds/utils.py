@@ -1,5 +1,6 @@
-from django.utils.translation import ugettext as _
 from html import escape
+
+from django.utils.translation import ugettext as _
 
 
 def paper_description(paper):

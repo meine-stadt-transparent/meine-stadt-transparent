@@ -1,8 +1,8 @@
 import re
 
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.conf import settings
 
 from .default_fields import DefaultFields
 from .location import Location

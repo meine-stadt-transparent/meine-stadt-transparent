@@ -1,5 +1,4 @@
 import os
-
 from collections import namedtuple
 from unittest import mock
 
@@ -7,7 +6,8 @@ from django.conf import settings
 from django.test import TestCase, override_settings
 from geopy import OpenCage
 
-from mainapp.functions.document_parsing import extract_locations, extract_text_from_pdf, get_page_count_from_pdf, \
+from mainapp.functions.document_parsing import extract_locations, extract_text_from_pdf, \
+    get_page_count_from_pdf, \
     extract_persons
 from mainapp.models import File, Person
 

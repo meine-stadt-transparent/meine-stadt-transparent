@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.utils import timezone
 from icalendar import Event
 
-from .organization import Organization
 from .default_fields import DefaultFields, ShortableNameFields
 from .file import File
 from .location import Location
+from .organization import Organization
 from .person import Person
 
 PUBLICALITY = (

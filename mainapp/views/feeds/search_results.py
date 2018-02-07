@@ -1,7 +1,9 @@
 import dateutil.parser
 from django.contrib.syndication.views import Feed
 from django.urls import reverse
-from mainapp.functions.search_tools import search_string_to_params, MainappSearch, parse_hit, params_to_human_string
+
+from mainapp.functions.search_tools import search_string_to_params, MainappSearch, parse_hit, \
+    params_to_human_string
 
 
 class SearchResultsFeed(Feed):

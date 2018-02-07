@@ -1,9 +1,9 @@
 import inspect
 
 from django.contrib import admin
+from simple_history.admin import SimpleHistoryAdmin
 
 from mainapp import models
-from simple_history.admin import SimpleHistoryAdmin
 
 # Register all models using reflections
 for name, obj in inspect.getmembers(models):

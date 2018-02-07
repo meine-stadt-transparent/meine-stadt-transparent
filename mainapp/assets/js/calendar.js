@@ -3,8 +3,9 @@ import style from '../css/calendar.scss';
 import moment from "moment";
 
 import * as fullcalendar from "fullcalendar";
-require("fullcalendar/dist/locale/de");
 import {FullCalendarMSTTheme} from "./FullCalendarMSTTheme";
+
+require("fullcalendar/dist/locale/de");
 
 fullcalendar.defineThemeSystem('mst', FullCalendarMSTTheme);
 

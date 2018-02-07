@@ -1,4 +1,5 @@
 import logging
+
 from django.core.management.base import BaseCommand
 
 from mainapp.functions.document_parsing import cleanup_extracted_text

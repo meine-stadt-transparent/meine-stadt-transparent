@@ -13,6 +13,7 @@ from slugify import slugify
 
 from mainapp.models import Meeting, Organization
 
+
 def calendar(request, init_view=None, init_date=None):
     context = {
         'default_date': date.today().strftime("%Y-%m-%d"),

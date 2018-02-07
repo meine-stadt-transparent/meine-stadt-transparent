@@ -2,7 +2,6 @@ import datetime
 
 from django.core.management.base import BaseCommand
 from django.db.models import F
-from pytz.reference import Local
 
 from mainapp.models import Paper, File
 

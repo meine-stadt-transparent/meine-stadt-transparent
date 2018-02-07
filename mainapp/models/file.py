@@ -1,9 +1,9 @@
 from django.db import models
 from django.urls import reverse
 
-from .person import Person
 from .default_fields import DefaultFields
 from .location import Location
+from .person import Person
 
 
 class File(DefaultFields):

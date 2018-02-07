@@ -1,4 +1,5 @@
 from django.contrib.syndication.views import Feed
+
 from mainapp.models.paper import Paper
 from mainapp.views.feeds.utils import paper_description
 

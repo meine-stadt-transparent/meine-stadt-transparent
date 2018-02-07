@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
 
 from mainapp.models.default_fields import DefaultFields
-from .person import Person
 from .organization import Organization
+from .person import Person
 
 
 class OrganizationMembership(DefaultFields):

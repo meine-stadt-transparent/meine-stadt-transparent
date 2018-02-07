@@ -9,7 +9,8 @@ from unittest import skipIf
 from django.test import TestCase
 from django.utils import timezone
 
-from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem, \
+from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, \
+    Meeting, AgendaItem, \
     Paper, Consultation, Location, File
 
 gi_not_available = importlib.util.find_spec("gi") is None

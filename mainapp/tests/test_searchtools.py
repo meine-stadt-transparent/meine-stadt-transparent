@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, MainappSearch
+from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, \
+    MainappSearch
 
 expected_params = {
     "query": {

@@ -9,7 +9,8 @@ from django.utils import timezone, translation
 from django.utils.translation import ugettext as _
 from html2text import html2text
 
-from mainapp.functions.search_tools import params_to_query, add_modified_since, search_result_for_notification
+from mainapp.functions.search_tools import params_to_query, add_modified_since, \
+    search_result_for_notification
 from mainapp.models import UserAlert
 
 
