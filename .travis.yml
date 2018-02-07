@@ -20,7 +20,8 @@ install:
  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
 
 script:
+  # Ensure our migrations are working (squashing can cause weird problems)
   - ENV_PATH=etc/env-test pipenv run ./manage.py migrate
   - npm run build:dev
   - npm run build:prod
-  - ENV_PATH=etc/env-test pipenv run ./manage.py test
+  - pipenv run ./manage.py test

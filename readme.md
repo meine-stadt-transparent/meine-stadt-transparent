@@ -275,7 +275,7 @@ Start the actual server
 
 Run the test cases:
 ```bash
-ENV_PATH=./etc/env-test ./manage.py test
+./manage.py test
 ```
 
 ### Dummy data

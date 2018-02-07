@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import modify_settings
@@ -5,6 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 
 chromedriver_path = "node_modules/.bin/chromedriver"
+
+logger = logging.getLogger(__name__)
 
 
 @modify_settings(MIDDLEWARE={
@@ -23,6 +27,10 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     def setUpClass(cls):
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
+        if settings.env.bool("TRAVIS", False):
+            # See https://docs.travis-ci.com/user/chrome#Sandboxing
+            logger.debug("Travis ci detected, running chrome in no-sandbox mode")
+            options.add_argument("--no-sandbox")
         cls.browser = Browser('chrome', headless=not settings.DEBUG_TESTING,
                               executable_path="node_modules/.bin/chromedriver",
                               options=options)
