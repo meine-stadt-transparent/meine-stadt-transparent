@@ -49,39 +49,43 @@ export default class IndexView {
             maxClusterRadius: 40
         });
 
-
         this.locationMarkers = [];
         for (let location of Object.values(documents)) {
             for (let paper of Object.values(location.papers)) {
                 if (!location.coordinates) {
                     continue;
                 }
-                let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
-
-                let paperHtml = '<a href="' + paper.url + '">' + IndexView.escapeHtml(paper.name) + '</a>';
-
-                let files = '';
-                for (let i = 0; i < paper.files.length && i < 2; i++) {
-                    files += '<li>↳ <a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a></li>';
-                }
-                if (paper.files.length > 3) {
-                    let remaining = this.textMoreX.replace(/%NUM%/, paper.files.length - 2);
-                    files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(remaining) + '</a></li>';
-                } else if (paper.files.length > 2) {
-                    files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(this.textMore1) + '</a></li>'
-                }
-
-                let contentHtml = '<div class="type-address"><div class="type">' + IndexView.escapeHtml(paper.type) + '</div>' +
-                    '<div class="address">' + IndexView.escapeHtml(location.name) + '</div></div>' +
-                    '<div class="paper-title">' + paperHtml + '</div>' +
-                    '<ul class="files">' + files + '</ul>';
-                marker.bindPopup(contentHtml, {className: 'file-location', minWidth: 200});
-                clusterGroup.addLayer(marker);
+                let marker = this.addLocationMarker(location, paper, clusterGroup);
 
                 this.locationMarkers.push(marker);
             }
         }
 
         clusterGroup.addTo(this.leaflet);
+    }
+
+    addLocationMarker(location, paper, clusterGroup) {
+        let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
+
+        let paperHtml = '<a href="' + paper.url + '">' + IndexView.escapeHtml(paper.name) + '</a>';
+
+        let files = '';
+        for (let i = 0; i < paper.files.length && i < 2; i++) {
+            files += '<li>↳ <a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a></li>';
+        }
+        if (paper.files.length > 3) {
+            let remaining = this.textMoreX.replace(/%NUM%/, paper.files.length - 2);
+            files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(remaining) + '</a></li>';
+        } else if (paper.files.length > 2) {
+            files += '<li class="more"><a href="' + paper.url + '">… ' + IndexView.escapeHtml(this.textMore1) + '</a></li>'
+        }
+
+        let contentHtml = '<div class="type-address"><div class="type">' + IndexView.escapeHtml(paper.type) + '</div>' +
+            '<div class="address">' + IndexView.escapeHtml(location.name) + '</div></div>' +
+            '<div class="paper-title">' + paperHtml + '</div>' +
+            '<ul class="files">' + files + '</ul>';
+        marker.bindPopup(contentHtml, {className: 'file-location', minWidth: 200});
+        clusterGroup.addLayer(marker);
+        return marker;
     }
 }
