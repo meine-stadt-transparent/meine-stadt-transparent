@@ -38,7 +38,7 @@ class Meeting(DefaultFields, ShortableNameFields):
     auxiliary_files = models.ManyToManyField(File, blank=True, related_name="meeting_auxiliary_files")
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
 
-    def as_ical_event(self):
+    def as_ical_event(self) -> Event:
         event = Event()
         event.add("uid", "meeting-{}@{}".format(self.id, settings.REAL_HOST))
         event.add("summary", self.short_name)

@@ -1,4 +1,5 @@
 from datetime import date
+from typing import List
 
 import dateutil.parser
 from dateutil.relativedelta import relativedelta
@@ -104,13 +105,13 @@ def meeting(request, pk):
     return render(request, 'mainapp/meeting.html', context)
 
 
-def build_ical(events, filename):
+def build_ical(meetings: List[Meeting], filename: str):
     cal = Calendar()
     cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))
     cal.add('version', '2.0')
 
-    for event in events:
-        cal.add_component(event)
+    for meeting in meetings:
+        cal.add_component(meeting.as_ical_event())
 
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
     response['Content-Disposition'] = 'inline; filename={}.ics'.format(slugify(filename))
@@ -122,16 +123,15 @@ def meeting_ical(request, pk):
 
     filename = meeting.short_name or meeting.name or _("Meeting")
 
-    return build_ical([meeting.as_ical_event()], filename)
+    return build_ical([meeting], filename)
 
 
 def organizazion_ical(request, pk):
     committee = get_object_or_404(Organization, id=pk)
-    events = [meeting.as_ical_event() for meeting in committee.meeting_set.all()]
-
+    meetings = committee.meeting_set.all()
     filename = committee.short_name or committee.name or _("Meeting Series")
 
-    return build_ical(events, filename)
+    return build_ical(meetings, filename)
 
 
 def calendar_ical(request):
@@ -141,6 +141,5 @@ def calendar_ical(request):
         .filter(start__lt=now() + relativedelta(months=+3)) \
         .order_by("start") \
         .all()
-    events = [meeting.as_ical_event() for meeting in meetings]
     filename = _("All Meetings")
-    return build_ical(events, filename)
+    return build_ical(meetings, filename)
