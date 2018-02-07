@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load i18n %}
+{% load humanize %}
 
 {% block title %}{% trans "About this project" %}{% endblock %}
 
@@ -30,12 +31,20 @@
         </ul>
 
         <h2 class="infopage-header">Mitmachen</h2>
-        <p>Du Entwickler und willst dich beteiligen? Auf <a
-                href="{{ settings.TEMPLATE_META.github }}">Github</a>
+        <p>Du Entwickler und willst dich beteiligen? Auf <a href="{{ settings.TEMPLATE_META.github }}">Github</a>
             findest du unser Projekt und alle wichtigen Informationen.</p>
         <p>Du bist kein Entwickler, möchtest dich aber trotzdem gerne beteiligen? Schreib uns an
-            <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">
-                {{ settings.TEMPLATE_META.contact_mail }}</a>!
+            <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">{{ settings.TEMPLATE_META.contact_mail }}</a>!
         </p>
+
+        <h2 class="infopage-header">Statistiken</h2>
+        <dl>
+            {% for key, value in stats.items %}
+                <div class="row">
+                    <dt class="col-2">{{ key }}</dt>
+                    <dd class="col">{{ value|intcomma }}</dd>
+                </div>
+            {% endfor %}
+        </dl>
     </article>
 {% endblock %}

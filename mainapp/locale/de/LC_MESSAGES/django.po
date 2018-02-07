@@ -688,7 +688,7 @@ msgstr "informiert Sie über Ihren Stadtrat"
 #: mainapp/templates/mainapp/index/index_title.html:9
 #: mainapp/templates/mainapp/index_v2/index_title.html:10
 msgid "More information"
-msgstr "Weitere Informationen"
+msgstr "Mehr Informationen"
 
 #: mainapp/templates/mainapp/index_v2/index_main_buttons.html:4
 #| msgid "informs you about your local city council."

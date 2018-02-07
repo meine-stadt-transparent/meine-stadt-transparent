@@ -7,9 +7,11 @@
     padding: $index-section-default-padding 0;
   }
   .home-container-title {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
     background-color: $index-title-section-background;
     .title-colors {
-      display: inline-block;
       color: $index-title-color;
       background-color: $index-title-background;
     }

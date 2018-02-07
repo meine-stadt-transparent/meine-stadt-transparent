@@ -9,9 +9,10 @@ from django.urls import reverse
 from django.utils import html
 from django.views.generic import DetailView
 
-from mainapp.documents import DOCUMENT_TYPE_NAMES
+from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
 from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm, Location
+from mainapp.models import Body, File, Organization, Paper, Meeting, LegislativeTerm, Location, \
+    Person
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context
@@ -33,10 +34,19 @@ def index(request):
                      .prefetch_related('files') \
                      .prefetch_related('files__locations')[:50]
 
+    stats = {
+        "file": File.objects.count(),
+        "meeting": Meeting.objects.count(),
+        "organization": Organization.objects.count(),
+        "paper": Paper.objects.count(),
+        "person": Person.objects.count()
+    }
+
     context = {
         'map': _build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
-        'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2]
+        'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2],
+        'stats': stats
     }
 
     if request.GET.get('version', 'v2') == 'v2':
@@ -68,11 +78,13 @@ def organizations(request):
         ct1 = Count('organizationmembership', distinct=True)
         ct2 = Count('paper', distinct=True)
         ct3 = Count('meeting', distinct=True)
-        all_orgas = Organization.objects.annotate(ct1, ct2, ct3).filter(organization_type=organization_type).all()
+        all_orgas = Organization.objects.annotate(ct1, ct2, ct3).filter(
+            organization_type=organization_type).all()
 
         organizations_ordered.append({
             "organization_type": organization_type,
-            "type": ORGANIZATION_TYPE_NAMES_PLURAL.get(organization_type.name, organization_type.name),
+            "type": ORGANIZATION_TYPE_NAMES_PLURAL.get(organization_type.name,
+                                                       organization_type.name),
             "all": all_orgas,
         })
 
@@ -119,9 +131,11 @@ def organization(request, pk):
         "members": members,
         "parliamentary_groups": parliamentarygroups,
         "organization": organization,
-        "papers": Paper.objects.filter(organizations__in=[pk]).order_by('legal_date', 'modified')[:25],
+        "papers": Paper.objects.filter(organizations__in=[pk]).order_by('legal_date', 'modified')[
+                  :25],
         "paper_count": Paper.objects.filter(organizations__in=[pk]).count(),
-        "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by('start', 'modified')[:25],
+        "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by('start', 'modified')[
+                    :25],
         "meeting_counter": Meeting.objects.filter(organizations__in=[pk]).count(),
         "to_search_url": reverse("search", args=["organization:" + str(organization.id)])
     }
@@ -169,7 +183,17 @@ def info_learn(request):
 
 
 def info_about(request):
-    return render(request, 'info/about.html', {})
+    context = {
+        "stats": {
+            DOCUMENT_TYPE_NAMES_PL["file"]: File.objects.count(),
+            DOCUMENT_TYPE_NAMES_PL["meeting"]: Meeting.objects.count(),
+            DOCUMENT_TYPE_NAMES_PL["organization"]: Organization.objects.count(),
+            DOCUMENT_TYPE_NAMES_PL["paper"]: Paper.objects.count(),
+            DOCUMENT_TYPE_NAMES_PL["person"]: Person.objects.count(),
+        }
+    }
+
+    return render(request, 'info/about.html', context)
 
 
 def error404(request):
@@ -189,5 +213,6 @@ def body(request, pk):
     return render(request, "mainapp/body.html", context)
 
 
-legislative_term = DetailView.as_view(model=LegislativeTerm, template_name="mainapp/legislative_term.html")
+legislative_term = DetailView.as_view(model=LegislativeTerm,
+                                      template_name="mainapp/legislative_term.html")
 location = DetailView.as_view(model=Location, template_name="mainapp/location.html")
