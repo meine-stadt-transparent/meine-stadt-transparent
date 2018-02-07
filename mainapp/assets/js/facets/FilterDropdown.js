@@ -1,6 +1,7 @@
 import List from "list.js";
 
-export default class FacettedSearchFilterDropdown {
+/** This facet is used for the persons and the organizations */
+export default class FacetFilterDropdown {
     constructor($facet) {
         this.$facet = $facet;
         this.$input = $facet.find(".value");

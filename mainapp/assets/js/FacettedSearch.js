@@ -1,11 +1,15 @@
 // noinspection ES6UnusedImports
 import style from "../css/datepicker.scss";
-import FacettedSearchFilterDropdown from "./FacettedSearchFilterDropdown";
-import FacettedSearchDateRange from "./FacettedSearchDateRange";
-import FacettedSearchLocationSelector from "./FacettedSearchLocationSelector";
-import FacettedSearchDocumentTypes from "./FacettedSearchDocumentTypes";
-import FacettedSearchSorter from "./FacettedSearchSorter";
+import FacetFilterDropdown from "./facets/FilterDropdown";
+import FacetDateRange from "./facets/DateRange";
+import FacetLocationSelector from "./facets/LocationSelector";
+import FacetDocumentTypes from "./facets/DocumentTypes";
+import FacetSorter from "./facets/Sorting";
 
+/**
+ * General notes: All of the factes have inputs, which are used for passing the selected value around and for
+ * communicating changed values (though jquery's change method)
+ */
 export default class FacettedSearch {
     constructor($form) {
         this.$form = $form;
@@ -14,13 +18,13 @@ export default class FacettedSearch {
         this.currentQueryString = null;
 
         this.facets = [
-            new FacettedSearchSorter($form.find(".search-sort")),
-            new FacettedSearchLocationSelector($form.find(".search-facet-location")),
-            new FacettedSearchDateRange($form.find(".search-facet-daterange")),
-            new FacettedSearchDocumentTypes($form.find(".search-facet-document-type")),
+            new FacetSorter($form.find(".search-sort")),
+            new FacetLocationSelector($form.find(".search-facet-location")),
+            new FacetDateRange($form.find(".search-facet-daterange")),
+            new FacetDocumentTypes($form.find(".search-facet-document-type")),
         ];
         $form.find(".search-facet-filter-dropdown").each((_, el) => {
-            this.facets.push(new FacettedSearchFilterDropdown($(el)));
+            this.facets.push(new FacetFilterDropdown($(el)));
         });
 
         this.$form.submit(this.search.bind(this));

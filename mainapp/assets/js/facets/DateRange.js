@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-export default class FacettedSearchDateRange {
+export default class FacetDateRange {
     constructor($facet) {
         this.$facet = $facet;
 

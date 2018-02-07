@@ -1,4 +1,5 @@
-export default class FacettedSearchSorter {
+/** The default is relevance, the others are newest first and oldest first */
+export default class FacetSorter {
     constructor($widget) {
         this.$widget = $widget;
         this.$input = $widget.find("input[type=hidden]");

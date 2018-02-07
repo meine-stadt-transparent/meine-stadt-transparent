@@ -1,7 +1,8 @@
 import * as L from "leaflet/src/Leaflet";
-import create_map from "./createMap";
+import create_map from "../createMap";
 
-export default class FacettedSearchLocationSelector {
+/** A Map wher a marker can be placed with an input for the radius around the marker */
+export default class FacetLocationSelector {
     constructor($facet) {
         this.$facet = $facet;
         this.leaflet = null;

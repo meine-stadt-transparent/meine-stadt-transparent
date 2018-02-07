@@ -1,4 +1,4 @@
-export default class FacettedSearchDocumentTypes {
+export default class FacetDocumentTypes {
     constructor($facet) {
         this.$facet = $facet;
         this.$facet.find(".dropdown-item").click(this.selectType.bind(this));
