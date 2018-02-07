@@ -145,8 +145,9 @@ def organization(request, pk):
 @csp_update(FRAME_SRC=("'self'", "blob:"))  # Needed for downloading the PDF in PDF.JS
 def file(request, pk):
     file = get_object_or_404(File, id=pk)
-    is_available = file.filesize and file.filesize > 0
-    renderer = None
+
+    renderer = "download"
+
     if file.mime_type == "application/pdf":
         renderer = "pdf"
     elif file.mime_type == "text/plain":
@@ -154,10 +155,12 @@ def file(request, pk):
     elif file.mime_type in ["image/gif", "image/jpg", "image/jpeg", "image/png", "image/webp"]:
         renderer = "image"
 
+    if not (file.filesize and file.filesize > 0):
+        renderer = None
+
     context = {
         "file": file,
         "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
-        "is_available": is_available,
         "renderer": renderer,
     }
     return render(request, "mainapp/file.html", context)

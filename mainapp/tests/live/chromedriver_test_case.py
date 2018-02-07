@@ -27,7 +27,7 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     def setUpClass(cls):
         options = Options()
         options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
-        if settings.env.bool("TRAVIS", False):
+        if settings.TESTING_TRAVIS:
             # See https://docs.travis-ci.com/user/chrome#Sandboxing
             logger.debug("Travis ci detected, running chrome in no-sandbox mode")
             options.add_argument("--no-sandbox")

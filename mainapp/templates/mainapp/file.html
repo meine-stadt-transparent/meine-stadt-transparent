@@ -64,68 +64,71 @@
         {% endcomment %}
         <div class="file-layout-container container-fluid h-100">
             <div class="row h-100">
-                {% if is_available %}
-                    <div class="col">
-                        <div class="file-switcher h-100">
-                            <h3>{% trans "Documents in this paper" %}</h3>
-                            {# Yep, those dics are actually needed :soup: #}
+                <div class="col">
+                    <div class="file-switcher h-100">
+                        <h3>{% trans "Documents in this paper" %}</h3>
+                        {# Yep, those divs are actually needed :soup: #}
+                        <div>
                             <div>
-                                <div>
-                                    <div class="list-group list-group-flush">
-                                        {% if papers.0.main_file %}
-                                            <a class="list-group-item list-group-item-action
-                            {% if papers.0.main_file.id == file.id %}active{% endif %}"
+                                <div class="list-group list-group-flush">
+                                    {% if papers.0.main_file %}
+                                        {% if papers.0.main_file.id == file.id %}
+                                            <a class="list-group-item list-group-item-action active"
                                                href="{% url 'file' papers.0.main_file.id %}">
-                                                <span class="fa-custom fa-file"></span>
-                                                {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
-                                            </a>
+                                        {% else %}
+                                            <a class="list-group-item list-group-item-action"
+                                               href="{% url 'file' papers.0.main_file.id %}">
                                         {% endif %}
-                                        {% for other_file in papers.0.files.all %}
-                                            <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
+                                    <span class="fa-custom fa-file"></span>
+                                    {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
+                                    </a>
+                                    {% endif %}
+                                    {% for other_file in papers.0.files.all %}
+                                        <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
                             active{% endif %}"
-                                               href="{% url 'file' other_file.id %}">
-                                                <span class="fa-custom fa-file"></span>
-                                                <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
-                                            </a>
-                                        {% endfor %}
-                                    </div>
+                                           href="{% url 'file' other_file.id %}">
+                                            <span class="fa-custom fa-file"></span>
+                                            <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
+                                        </a>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-auto file-content-div">
-                        {% if renderer == "pdf" %}
-                            <div class="pdfjs-wrapper h-100">
-                                <div class="embed-responsive h-100 w-100">
-                                    <iframe class="embed-responsive-item"
-                                            src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
-                                    </iframe>
-                                </div>
+                </div>
+                <div class="col-auto file-content-div">
+                    {% if renderer == "pdf" %}
+                        <div class="pdfjs-wrapper h-100">
+                            <div class="embed-responsive h-100 w-100">
+                                <iframe class="embed-responsive-item"
+                                        src="{% static 'vendored/web/viewer.html' %}?file={% url 'media' file.storage_filename %}">
+                                </iframe>
                             </div>
-                        {% elif renderer == "txt" %}
-                            <div class="txt-wrapper ">
-                                <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
-                            </div>
-                        {% elif renderer == "image" %}
-                            <div class="img-wrapper ">
-                                <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
-                                     class="file-image">
-                            </div>
-                        {% else %}
-                            <p class="lead">{% trans "The file can not be shown" %}</p>
-                            <a class="btn btn-primary btn-lg" role="button"
-                               href="{% url 'media' file.storage_filename %}"
-                               download>
-                                <span class="fa fa-download" aria-hidden="true"></span>
-                                {% trans "Download" %}
-                            </a>
-                        {% endif %}
-                    </div>
-                {% else %}
-                    <div class="container">
-                        <p class="lead">{% trans "The file is not available" %}</p>
-                    </div>
-                {% endif %}
+                        </div>
+                    {% elif renderer == "txt" %}
+                        <div class="txt-wrapper ">
+                            <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
+                        </div>
+                    {% elif renderer == "image" %}
+                        <div class="img-wrapper ">
+                            <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
+                                 class="file-image">
+                        </div>
+                    {% elif renderer == "download" %}
+                        <p class="lead">{% trans "The file can not be shown" %}</p>
+                        <a class="btn btn-primary btn-lg" role="button"
+                           href="{% url 'media' file.storage_filename %}"
+                           download>
+                            <span class="fa fa-download" aria-hidden="true"></span>
+                            {% trans "Download" %}
+                        </a>
+                    {% else %}
+                        <div class="container">
+                            <p class="lead">{% trans "The file is not available" %}</p>
+                        </div>
+                    {% endif %}
+                </div>
+
                 <div class="col">
                     {# "Counterweight" for the left col to get the main container centered #}
                 </div>
