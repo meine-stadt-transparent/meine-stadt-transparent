@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
@@ -8,7 +8,7 @@ class CalendarTest(ChromeDriverTestCase):
 
     def test_list_year(self):
         self.visit("/calendar/")
-        self.assertTextIsPresent(str(datetime.datetime.now().year))
+        self.assertTextIsPresent(str(timezone.now().year))
         self.browser.find_by_css(".fc-listYear-button").first.click()
 
         # In 2017, both meetings are visible

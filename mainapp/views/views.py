@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 from csp.decorators import csp_update
 from django.conf import settings
@@ -7,6 +6,7 @@ from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import html
+from django.utils import timezone
 from django.views.generic import DetailView
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
@@ -45,7 +45,7 @@ def index(request):
     context = {
         'map': _build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
-        'next_meetings': Meeting.objects.filter(start__gt=datetime.now()).order_by("start")[:2],
+        'next_meetings': Meeting.objects.filter(start__gt=timezone.now()).order_by("start")[:2],
         'stats': stats
     }
 

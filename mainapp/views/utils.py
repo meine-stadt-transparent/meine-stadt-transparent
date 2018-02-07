@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from django.contrib import messages
 from django.urls import reverse
+from django.utils import timezone
 
 from mainapp.models import UserAlert
 
@@ -23,7 +22,7 @@ def handle_subscribe_requests(request, search_params: dict, msg_subscribed, msg_
             alert = UserAlert()
             alert.user = request.user
             alert.set_search_params(search_params)
-            alert.last_match = datetime.now()  # Prevent getting notifications about old entries
+            alert.last_match = timezone.now()  # Prevent getting notifications about old entries
             alert.save()
             messages.success(request, msg_subscribed)
 

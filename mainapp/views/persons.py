@@ -1,10 +1,10 @@
 import json
-from datetime import datetime
 
 from django.conf import settings
 from django.db.models import Q, Prefetch
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 
 from mainapp.models import Organization, Person, Paper, OrganizationMembership
@@ -69,9 +69,9 @@ def person_grid_context(organization):
 
 def get_ordered_memberships(selected_person):
     """ Orders memberships so that the active ones are first, those with unknown end seconds and the ended last. """
-    memberships_active = selected_person.organizationmembership_set.filter(end__gte=datetime.now().date()).all()
+    memberships_active = selected_person.organizationmembership_set.filter(end__gte=timezone.now().date()).all()
     memberships_no_end = selected_person.organizationmembership_set.filter(end__isnull=True).all()
-    memberships_ended = selected_person.organizationmembership_set.filter(end__lt=datetime.now().date()).all()
+    memberships_ended = selected_person.organizationmembership_set.filter(end__lt=timezone.now().date()).all()
     memberships = []
     if len(memberships_active) > 0:
         memberships.append(memberships_active)
