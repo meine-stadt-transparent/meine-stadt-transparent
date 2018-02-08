@@ -172,6 +172,8 @@ def file(request, pk):
         context["pdfjs_iframe_url"] += "?file=" + reverse('media', args=[file.storage_filename])
         if request.GET.get("pdfjs_search"):
             context["pdfjs_iframe_url"] += "#search=" + quote(request.GET.get("pdfjs_search"))
+            if request.GET.get("pdfjs_phrase"):
+                context["pdfjs_iframe_url"] += "&phrase=" + quote(request.GET.get("pdfjs_phrase"))
 
     return render(request, "mainapp/file.html", context)
 

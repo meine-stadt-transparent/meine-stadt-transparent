@@ -71,7 +71,8 @@ export default class IndexView {
 
         let files = '';
         for (let i = 0; i < paper.files.length && i < 2; i++) {
-            files += '<li>↳ <a href="' + paper.files[i].url + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a></li>';
+            let fileUrl = paper.files[i].url + '?pdfjs_search=' + encodeURIComponent(location.name) + '&pdfjs_phrase=true';
+            files += '<li>↳ <a href="' + fileUrl + '">' + IndexView.escapeHtml(paper.files[i].name) + '</a></li>';
         }
         if (paper.files.length > 3) {
             let remaining = this.textMoreX.replace(/%NUM%/, paper.files.length - 2);
