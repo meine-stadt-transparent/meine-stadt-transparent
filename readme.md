@@ -219,6 +219,23 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
+### Staying up to date
+
+To receive updates from the API and keep your installation up to date, you need to install a cronjob that flushes the file cache and calls the import script again:
+```bash
+rm -R storage/cache/*
+./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+```
+
+### Importing only a single object
+
+Instead of crawling the whole API, it is possible to update only one specific item using the ``importanything``-command. You will need to specify the entrypoint like always and the URL of the actual OParl-Object. Here are examples how to import a person, a paper and a meeting:
+```bash
+./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/person/4933
+./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/paper/53584
+./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
+```
+
 ### Customizations: Overriding templates and styles
 
 You can easily override templates and add custom styles, e.g. for matching the corporate design of a specific city.
