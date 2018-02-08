@@ -261,6 +261,15 @@ Hints:
  - Localization does also work for custom templates. With `./manage.py makemessages -a` you create or update into a file called `locale/de/LC_MESSAGES/django.po` in your custom folder. Translate your strings there and compile them with `./manage.py compilemessages --locale de`. 
  - We have a strict [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), so no loading of external resources. 
 
+### Customizations: Sanitizing values coming from an OParl-API
+
+Sometimes, redundant, unnecessary or unnormalized information comes from an API that you might want to clean up during the import. To do that on an per-instance-basis without the need to patch the importer itself, we provide hooks you can attach custom sanitize-callbacks to. The callbacks are simple Python-scripts that take an object as input and return it in a sanitized version.
+
+The following steps are required to register a sanitize-hook:
+- Create a python script that will hold contain the functions, e.g. ``customization/import_hooks.py``. You can use [import_hooks.py](customization_examples/juelich_transparent/import_hooks.py) as an example. Please note that the directory needs to contain a ``__init__.py``-file.
+- Register the script in your local ``.env``-file like this: ``CUSTOM_IMPORT_HOOKS=customization.import_hooks``
+- Please refer to our [example script](customization_examples/juelich_transparent/import_hooks.py) to see which callbacks are available and how to write one.
+
 ## Development
 
 The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.

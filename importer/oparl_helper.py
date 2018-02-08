@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from datetime import date, datetime
+from importlib import import_module
 from typing import Optional, Type, Tuple, TypeVar, Callable
 
 import gi
@@ -64,6 +65,11 @@ class OParlHelper:
 
         self.errorlist = []
         self.logger = logging.getLogger(__name__)
+
+        if settings.CUSTOM_IMPORT_HOOKS:
+            self.custom_hooks = import_module(settings.CUSTOM_IMPORT_HOOKS)
+        else:
+            self.custom_hooks = None
 
     @staticmethod
     def extract_geometry(glib_json: Json.Object):
@@ -194,3 +200,9 @@ class OParlHelper:
     def is_queryset_equal_list(queryset, other):
         """ Sufficiently correct comparison of a querysets and a list, inspired by django's assertQuerysetEqual """
         return list(queryset.order_by("id").all()) == sorted(other, key=id)
+
+    def call_custom_hook(self, hook_name, hook_parameter):
+        if self.custom_hooks and hasattr(self.custom_hooks, hook_name):
+            return getattr(self.custom_hooks, hook_name)(hook_parameter)
+        else:
+            return hook_parameter

@@ -1,6 +1,7 @@
 import hashlib
 import mimetypes
 import os
+import textwrap
 from collections import defaultdict
 from typing import Type
 
@@ -150,6 +151,8 @@ class OParlObjects(OParlHelper):
         paper.reference_number = libobject.get_reference()
         paper.paper_type = paper_type
 
+        self.call_custom_hook("sanitize_paper", paper)
+
     def organization(self, libobject: OParl.Organization):
         return self.process_object(libobject, Organization, self.organization_core, self.organization_embedded)
 
@@ -172,6 +175,8 @@ class OParlObjects(OParlHelper):
         organization.body = Body.by_oparl_id(libobject.get_body().get_id())
         organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
         organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
+
+        self.call_custom_hook("sanitize_organization", organization)
 
     def meeting(self, libobject: OParl.Meeting):
         return self.process_object(libobject, Meeting, self.meeting_core, self.meeting_embedded)
@@ -219,6 +224,8 @@ class OParlObjects(OParlHelper):
         meeting.results_protocol = self.file(libobject.get_results_protocol())
         meeting.cancelled = libobject.get_cancelled() or False
 
+        self.call_custom_hook("sanitize_meeting", meeting)
+
     def location(self, libobject: OParl.Location):
         location, do_update = self.check_for_modification(libobject, Location, name_fixup=_("Unknown"))
         if not location or not do_update:
@@ -254,6 +261,8 @@ class OParlObjects(OParlHelper):
         item.end = libobject.get_end()
         item.meeting = meeting
 
+        item = self.call_custom_hook("sanitize_agenda_item", item)
+
         item.save()
 
         item.resolution_file = self.file(libobject.get_resolution_file())
@@ -273,6 +282,8 @@ class OParlObjects(OParlHelper):
         consultation.oparl_id = libobject.get_id()
         consultation.authoritative = libobject.get_authoritative()
         consultation.role = libobject.get_role()
+
+        consultation = self.call_custom_hook("sanitize_consultation", consultation)
 
         consultation.save()
 
@@ -342,7 +353,7 @@ class OParlObjects(OParlHelper):
         file_name_before = file.name
 
         file.oparl_id = libobject.get_id()
-        file.name = libobject.get_name()[:200]  # FIXME
+        file.name = libobject.get_name()
         file.displayed_filename = displayed_filename
         file.mime_type = libobject.get_mime_type() or "application/octet-stream"
         file.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
@@ -361,6 +372,11 @@ class OParlObjects(OParlHelper):
         parsed_text = file.parsed_text
         if file.storage_filename and not file.parsed_text:
             parsed_text = self.extract_text_from_file(file)
+
+        file = self.call_custom_hook("sanitize_file", file)
+
+        if len(file.name) > 200:
+            file.name = textwrap.wrap(file.name, 199)[0] + "\u2026"
 
         file.save()
 
@@ -385,6 +401,8 @@ class OParlObjects(OParlHelper):
         person.name = libobject.get_name()
         person.given_name = libobject.get_given_name()
         person.family_name = libobject.get_family_name()
+
+        self.call_custom_hook("sanitize_person", person)
 
     def membership(self, organization, libobject: OParl.Membership):
         membership, do_update = self.check_for_modification(libobject, OrganizationMembership)
