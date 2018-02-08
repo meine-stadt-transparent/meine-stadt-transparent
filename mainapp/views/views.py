@@ -30,6 +30,7 @@ def index(request):
         setattr(paper, "type", "paper")
         setattr(paper, "name_escaped", html.escape(paper.name))
         setattr(paper, "type_translated", DOCUMENT_TYPE_NAMES[paper.type])
+        setattr(paper, "url", paper.get_default_link())
 
     geo_papers = Paper \
                      .objects \
