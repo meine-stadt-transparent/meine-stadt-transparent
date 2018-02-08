@@ -1,4 +1,7 @@
 .subscribe-widget {
+  form {
+    display: inline-block;
+  }
   .subscribed-icon {
     color: $success;
   }

@@ -1,6 +1,10 @@
 {% load i18n %}
 <section class="home-container home-container-documents">
     <div class="container">
+        <a class="pull-right btn btn-sm btn-light" href="{% url 'paper-feed' %}" title="{% trans "The latest papers as RSS-Feed" %}">
+            <span class="fa fa-feed"></span>
+            <span class="sr-only">RSS-Feed</span>
+        </a>
         <h2 class="home-section-header title-colors">{% trans "Latest Papers" context "Header" %}</h2>
         {% include "partials/mixed_results.html" with results=latest_paper %}
     </div>
