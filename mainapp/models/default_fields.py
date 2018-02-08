@@ -29,7 +29,7 @@ class DefaultFields(models.Model):
     oparl_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
-    deleted = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False, db_index=True)
 
     objects = SoftDeleteModelManager()
     objects_with_deleted = SoftDeleteModelManagerWithDeleted()
