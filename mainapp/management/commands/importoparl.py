@@ -16,7 +16,7 @@ class Command(BaseCommand):
         parser.add_argument('--download-files', dest='download_files', action='store_true')
         parser.add_argument('--no-download-files', dest='download_files', action='store_false')
         parser.add_argument('--use-cache', dest='use_cache', action='store_true')
-        parser.add_argument('--no-use-cache', dest='use_cache', action='store_false')
+        parser.add_argument('--no-cache', dest='use_cache', action='store_false')
         parser.add_argument('--use-sternberg-workarounds', dest='use_sternberg', action='store_true')
         parser.add_argument('--ignore-modified', dest='ignore_modified', action='store_true')
         parser.add_argument('--no-threads', dest='no_threads', action='store_true', help="Debug option")
