@@ -14,7 +14,7 @@
   margin-bottom: $default-section-spacing / 2;
 }
 
-.qwer {
+.meeting-vertical-bar {
   @include media-breakpoint-up(md) {
     border-top: 1px solid $hr-border-color;
     border-bottom: 1px solid $hr-border-color;

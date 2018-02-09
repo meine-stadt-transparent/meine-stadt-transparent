@@ -121,7 +121,7 @@ def historical_paper(request, pk):
     context = {
         "paper": historical_paper.instance,
         "historical": historical_paper,
-        "consultations": [],  # Blocked by
+        "consultations": [],  # Blocked by #63
     }
     return render(request, "mainapp/paper.html", context)
 

@@ -5,6 +5,10 @@
 
 {% block content %}
     {% spaceless %}
+        {% if historical %}
+            {% include "partials/historical_note.html" with view_name="paper" %}
+        {% endif %}
+
         <section class="container meeting-section">
             <div class="d-flex justify-content-between flex-wrap align-items-center">
                 <div>
@@ -33,7 +37,7 @@
         </section>
 
         <section class="container meeting-section">
-            <div class="d-flex flex-column flex-md-row justify-content-between qwer">
+            <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 <div title="{% trans 'Place of the meeting' %}">
                     <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ meeting.location }}
                 </div>

@@ -123,23 +123,23 @@ def meeting_ical(request, pk):
 
     filename = meeting.short_name or meeting.name or _("Meeting")
 
-    return build_ical([meeting], filename)
+    return build_ical_response([meeting], filename)
 
 
 def organizazion_ical(request, pk):
     committee = get_object_or_404(Organization, id=pk)
-    meetings = committee.meeting_set.all()
+    meetings = committee.meeting_set.prefetch_related("location").all()
     filename = committee.short_name or committee.name or _("Meeting Series")
 
-    return build_ical(meetings, filename)
+    return build_ical_response(meetings, filename)
 
 
 def calendar_ical(request):
     """ Returns an ical file containing all meetings +/- 3 months from now. """
     meetings = Meeting.objects \
-        .filter(start__gt=now() + relativedelta(months=-3)) \
-        .filter(start__lt=now() + relativedelta(months=+3)) \
+        .filter(start__gt=now() + relativedelta(months=-6)) \
         .order_by("start") \
+        .prefetch_related("location") \
         .all()
     filename = _("All Meetings")
-    return build_ical(meetings, filename)
+    return build_ical_response(meetings, filename)
