@@ -227,6 +227,7 @@ def parse_hit(hit):
         parsed["highlight_extracted"] = highlights[0].split("<mark>")[1].split("</mark>")[0]
     else:
         parsed["highlight"] = None
+        parsed["highlight_extracted"] = None
     parsed["name_escaped"] = html_escape_highlight(parsed["name"])
 
     parsed["url"] = reverse(parsed["type"], args=[hit.id])

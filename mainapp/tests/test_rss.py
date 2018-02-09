@@ -1,5 +1,9 @@
+from unittest import mock
+
 from django.test import Client
 from django.test import TestCase
+
+from mainapp.tests.live.helper import MockMainappSearch
 
 
 class TestRSS(TestCase):
@@ -13,9 +17,11 @@ class TestRSS(TestCase):
         self.assertIn('&lt;a href="/file/5/"&gt;Some obligatory cat content.&lt;/a&gt;', response)
         self.assertIn('Frank Underwood', response)
 
+    @mock.patch("mainapp.functions.search_tools.MainappSearch.execute",
+                new=MockMainappSearch.execute)
     def test_search_results(self):
         response = self.c.get('/search/query/complexity/feed/').content.decode('utf-8').strip()
         self.assertIn('<rss', response)
         self.assertIn('The latest search results', response)
-        self.assertIn('File: Donald Knuth', response)
+        self.assertIn('File: Title', response)
         self.assertNotIn('Frank Underwood', response)

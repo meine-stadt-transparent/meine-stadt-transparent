@@ -51,7 +51,7 @@ class PersonsTest(ChromeDriverTestCase):
         # Switch to sorting by party
         self.browser.find_by_css('#btnSortDropdown').first.click()
         self.browser.find_by_css('.sort-selector a[data-sort="group"]').first.click()
-        time.sleep(0.5)
+        time.sleep(1)
         pos_peter = self._get_pos_by_name('Peter Russo')
         pos_hector = self._get_pos_by_name('Hector Mendoza')
         self.assertLess(pos_peter, pos_hector)
@@ -59,7 +59,7 @@ class PersonsTest(ChromeDriverTestCase):
         # Switch back to sorting by name
         self.browser.find_by_css('#btnSortDropdown').first.click()
         self.browser.find_by_css('.sort-selector a[data-sort="name"]').first.click()
-        time.sleep(0.5)
+        time.sleep(1)
         pos_peter = self._get_pos_by_name('Peter Russo')
         pos_hector = self._get_pos_by_name('Hector Mendoza')
         self.assertLess(pos_hector, pos_peter)
