@@ -57,7 +57,7 @@ def person_grid_context(organization):
 
         members.append({
             'id': membership.person.id,
-            'name': membership.person.name_without_salutation(),
+            'name': membership.person.name,
             'start': membership.start,
             'end': membership.end,
             'role': membership.role,
