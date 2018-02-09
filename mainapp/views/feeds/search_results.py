@@ -1,10 +1,12 @@
 import dateutil.parser
+from django.conf import settings
 from django.contrib.syndication.views import Feed
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 from mainapp.functions.search_tools import search_string_to_params, MainappSearch, parse_hit, \
     params_to_human_string
+from mainapp.models import Paper
 
 
 class SearchResultsFeed(Feed):
@@ -23,8 +25,9 @@ class SearchResultsFeed(Feed):
     def items(self, query):
         params = search_string_to_params(query)
         main_search = MainappSearch(params)
+        main_search = main_search[:settings.SEARCH_PAGINATION_LENGTH]
         executed = main_search.execute()
-        results = [parse_hit(hit) for hit in executed.hits]
+        results = [parse_hit(hit, highlighting=False) for hit in executed.hits]
         return results
 
     def item_title(self, item):
@@ -34,7 +37,8 @@ class SearchResultsFeed(Feed):
         from mainapp.views import paper_description
 
         if item['type'] == 'paper':
-            return paper_description(item)
+            paper = Paper.objects.get(pk=item['id'])
+            return paper_description(paper)
 
         # @TODO: Description for other types, especially files and meetings
 
