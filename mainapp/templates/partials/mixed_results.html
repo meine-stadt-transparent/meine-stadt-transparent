@@ -15,14 +15,14 @@
                             <div class="text-truncate lead" title="{{ result.name_escaped | safe }}">
                                 {{ result.name_escaped | safe }}
                             </div>
-                            <div class="text-muted text-truncate">
+                            <div class="text-truncate">
                                 <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
                                 {% if result.legal_date %}
                                     <span>|</span>
                                     <span>{{ result.legal_date }}</span>
                                 {% endif %}
                             </div>
-                            <div class="text-muted text-truncate">{{ result.body.name }}</div>
+                            <div class="text-truncate">{{ result.body.name }}</div>
 
                             {% if result.highlight %}
                                 <div class="result-highlights">

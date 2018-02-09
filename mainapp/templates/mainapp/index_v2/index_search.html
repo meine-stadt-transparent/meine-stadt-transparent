@@ -3,7 +3,7 @@
 
 <section class="home-container home-container-search">
     <div class="container">
-        <p>{% trans 'Suche z.B. nach "Schule", "Fahrräder" oder "Haushalt"' context "page_title" %}</p>
+        <p class="lead">Suche im Volltext von {{ stats.file|intcomma }} Dokumenten</p>
         <form class="form search-autocomplete search-autocomplete-home"
               method="GET" action="{% url 'search' '' %}">
             <div class="input-group">
@@ -11,7 +11,6 @@
                        class="sr-only">{% trans "Search" context "perform search" %}></label>
                 <input name="search-query" type="text" class="form-control form-control-lg" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
-                       placeholder="Suche im Volltext von {{ stats.file|intcomma }} Dokumenten"
                        id="searchfield-mousetrap">
 
                 <button class="search-icon fa fa-search fa-lg" type="submit"
@@ -20,6 +19,6 @@
                 </button>
             </div>
         </form>
-        <div class="pt-3"></div>
+        <p class="pt-3 pb-0">Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“</p>
     </div>
 </section>

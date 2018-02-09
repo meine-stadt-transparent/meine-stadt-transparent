@@ -2,6 +2,8 @@
 @import "~leaflet.markercluster/dist/MarkerCluster.css";
 @import "markercluster.theme";
 
+// Color schema inspired by http://www.colourlovers.com/palette/580974/Adrift_in_Dreams
+
 .index-v2 {
   .home-container {
     padding: $index-section-default-padding 0;
@@ -26,7 +28,7 @@
       color: $index-map-title-color;
       background-color: $index-map-title-background;
     }
-    padding-bottom: $index-section-default-padding / 2; // Some additional padding comes from the map background
+    padding-bottom: $index-section-default-padding * 2; // Some additional padding comes from the map background
   }
   .home-container-main-buttons {
     background-color: $index-main-buttons-section-background;
@@ -83,8 +85,12 @@
     .meeting-button {
       background-color: $index-meetings-btn;
       color: #eee;
+      text-align: left;
       &:hover, &:active {
         background-color: darken($index-meetings-btn, 5%);
+      }
+      > div {
+        padding: 10px;
       }
     }
   }
