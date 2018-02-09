@@ -3,10 +3,11 @@ import * as L from "leaflet/src/Leaflet";
 L.Control.TextHint = L.Control.extend({
     options: {
         position: 'bottomleft',
-        text: ''
+        text: '',
+        cssClass: 'leaflet-control-attribution'
     },
     onAdd: function (map) {
-        let div = L.DomUtil.create('div', 'leaflet-control-attribution');
+        let div = L.DomUtil.create('div', this.options.cssClass);
         div.textContent = this.options.text;
         return div;
     },

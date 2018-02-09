@@ -1,4 +1,5 @@
 import * as L from "leaflet/src/Leaflet";
+import {CooperativeScrollWheelZoom} from "./LeafletCooperativeScrollWheelZoom";
 
 let coordsToPolygon = function(coords) {
     return coords[0].map((lnglat) => L.latLng(lnglat[1], lnglat[0]));
@@ -83,14 +84,21 @@ let setBounds = function (leaflet, initData) {
     }
 };
 
+let setZoomBehavior = function (leaflet) {
+    leaflet.addHandler('cooperativezoom', CooperativeScrollWheelZoom);
+    leaflet.cooperativezoom.enable();
+};
+
 export default function ($map_element, initData) {
     let leaflet = L.map($map_element.attr("id"), {
         maxBoundsViscosity: 1,
         minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
         maxZoom: 19,
+        scrollWheelZoom: false,
     });
 
     setTiles(leaflet, initData);
+    setZoomBehavior(leaflet);
     setInitView(leaflet, initData);
     setBounds(leaflet, initData);
     setOutline(leaflet, initData);

@@ -168,6 +168,11 @@
   .leaflet-control-attribution a {
     color: #333;
   }
+  .map-incative-hint {
+    color: #555;
+    font-style: italic;
+  }
+  @include form-control-focus();
 }
 
 .leaflet-bar a.leaflet-disabled {
