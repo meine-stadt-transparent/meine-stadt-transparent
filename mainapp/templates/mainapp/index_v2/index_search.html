@@ -10,7 +10,7 @@
                 <label for="searchfield-mousetrap"
                        class="sr-only">{% trans "Search" context "perform search" %}></label>
                 <input name="search-query" type="text" class="form-control form-control-lg" value="" autocomplete="off"
-                       data-suggest-url="{% url 'search_autosuggest' 'SEARCH_TERM' %}"
+                       data-suggest-url="{% url 'search_autocomplete' 'SEARCH_TERM' %}"
                        id="searchfield-mousetrap">
 
                 <button class="search-icon fa fa-search fa-lg" type="submit"

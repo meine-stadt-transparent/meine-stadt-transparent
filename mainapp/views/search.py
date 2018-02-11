@@ -139,7 +139,7 @@ def search_results_only(request, query):
     return JsonResponse(result, safe=False)
 
 
-def search_autosuggest(_, query):
+def search_autocomplete(_, query):
     if not settings.USE_ELASTICSEARCH:
         results = [{
             'name': _('search disabled'),
