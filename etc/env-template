@@ -2,20 +2,24 @@ DEBUG=False
 REAL_HOST=opensourceris.local
 SECRET_KEY=notsosecretkey
 MEDIA_ROOT=/var/storage/meine-stadt-transparent
+ABSOLUTE_URI_BASE=https://opensourceris.local
+
 
 # HTTP is used during development, as self-signed certificates seem to make some problems with urllib3 [TODO]
 ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@opensourceris.local:80/elasticsearch/
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
+USE_ELASTICSEARCH=True
 
-USE_ELASTICSEARCH=False
 # Use DATABASE_URL=mysql://username:password@localhost/databasename?charset=utf8mb4 in production
 DATABASE_URL=sqlite:///db.sqlite3
 DEFAULT_FROM_EMAIL=info@example.org
 DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
 
+FILE_DISCLAIMER=Das Dokument stammt aus dem Ratsinformationssystem der Stadt Jülich
+FILE_DISCLAIMER_URL=https://sdnetrim.kdvz-frechen.de/rim4240/
+
 MAILJET_API_KEY=
 MAILJET_SECRET_KEY=
-ABSOLUTE_URI_BASE=https://opensourceris.local
 
 GEOEXTRACT_DEFAULT_CITY=Köln
 SITE_DEFAULT_ORGANIZATION=1

@@ -430,7 +430,7 @@ class OParlObjects(OParlHelper):
 
     def _add_organizations(self, queue, othermodel: Type[DefaultFields]):
         length = len(queue)
-        self.logger.info("Adding missing {} to {} {}".format(othermodel.__name__, length, Organization.__name__))
+        self.logger.info("Adding missing {} to {} {}".format(Organization.__name__, length, othermodel.__name__))
         for base_object, associated_urls in queue.items():
             associated = []
             for url in associated_urls:
@@ -482,5 +482,5 @@ class OParlObjects(OParlHelper):
             paper.organizations.add(org)
 
         self._add_organizations(self.consultation_organization_queue, Consultation)
-        self._add_organizations(self.consultation_organization_queue, Meeting)
+        self._add_organizations(self.meeting_organization_queue, Meeting)
 
