@@ -32,9 +32,6 @@ ALLOWED_HOSTS = [
 
 
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
-SETTINGS_EXPORT = [
-    'TEMPLATE_META',
-]
 
 WSGI_APPLICATION = 'meine_stadt_transparent.wsgi.application'
 
@@ -268,6 +265,14 @@ TEMPLATE_META = {
     "location_limit_lat": 23,
 }
 
+FILE_DISCLAIMER = env.str("FILE_DISCLAIMER", None)
+FILE_DISCLAIMER_URL = env.str("FILE_DISCLAIMER_URL", None)
+
+SETTINGS_EXPORT = [
+    'TEMPLATE_META',
+    'FILE_DISCLAIMER',
+    'FILE_DISCLAIMER_URL',
+]
 
 DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)

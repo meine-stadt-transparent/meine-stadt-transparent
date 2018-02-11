@@ -30,8 +30,22 @@
   display: flex;
   flex-direction: column;
 
-  .pdfjs-wrapper {
+  .pdf-wrapper {
+    height: 100%;
     flex: 1;
+
+    $file-disclaimer-height: 30px;
+
+    > .embed-responsive {
+      height: calc(100% - #{$file-disclaimer-height});
+    }
+
+    > .file-disclaimer {
+      height: $file-disclaimer-height;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 
   .file-image {
