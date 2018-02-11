@@ -3,7 +3,7 @@
 
 <section class="home-container home-container-search">
     <div class="container">
-        <p class="lead">Suche im Volltext von {{ stats.file|intcomma }} Dokumenten</p>
+        <h2>Suche im Volltext von {{ stats.file|intcomma }} Dokumenten</h2>
         <form class="form search-autocomplete search-autocomplete-home"
               method="GET" action="{% url 'search' '' %}">
             <div class="input-group">
