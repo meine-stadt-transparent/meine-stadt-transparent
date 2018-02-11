@@ -5,11 +5,29 @@
 
 {% block content %}
     {% spaceless %}
-        {% if historical %}
-            {% include "partials/historical_note.html" with view_name="paper" %}
-        {% endif %}
-
         <section class="container meeting-section">
+            {% if historical %}
+                {% include "partials/historical_note.html" with view_name="meeting" %}
+            {% endif %}
+
+            {% if False and meeting.history.count > 1 %}
+                <div class="dropdown paragraph">
+                    <span class="fa-custom fa-history"></span>
+                    <button class="btn btn-sm btn-secondary dropdown-toggle revision-dropdown-toggle" type="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ meeting.history.count }}{% trans " Revisions" context "X revisions" %}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for historical_meeting in meeting.history.all %}
+                            <a class="dropdown-item" href="{% url 'historical_meeting' historical_meeting.history_id %}"
+                               title="{{ historical_meeting.history_date|date:"c" }}">
+                                {{ historical_meeting.history_date }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
             <div class="d-flex justify-content-between flex-wrap align-items-center">
                 <div>
                     {% include "partials/header_name.html" with object=meeting %}

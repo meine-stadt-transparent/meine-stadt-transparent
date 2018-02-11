@@ -15,7 +15,7 @@ from icalendar import Calendar
 from pytz import timezone
 from slugify import slugify
 
-from mainapp.models import Meeting, Organization
+from mainapp.models import Meeting, Organization, AgendaItem
 
 
 def calendar(request, init_view=None, init_date=None):
@@ -105,7 +105,21 @@ def meeting(request, pk):
     return render(request, 'mainapp/meeting.html', context)
 
 
-def build_ical(meetings: List[Meeting], filename: str):
+def historical_meeting(request, pk):
+    """ WIP """
+    historical_meeting = get_object_or_404(Meeting.history, history_id=pk)
+
+    AgendaItem.history.filter(meeting_id=historical_meeting.id).filter(
+        history_date__lte=historical_meeting.history_date + relativedelta(minutes=1)).count()
+
+    context = {
+        "meeting": historical_meeting.instance,
+        "historical": historical_meeting,
+    }
+    return render(request, "mainapp/meeting.html", context)
+
+
+def build_ical_response(meetings: List[Meeting], filename: str):
     cal = Calendar()
     cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))
     cal.add('version', '2.0')

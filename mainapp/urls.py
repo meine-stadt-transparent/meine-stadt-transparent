@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^paper/historical/(?P<pk>[0-9]+)/$', views.historical_paper, name='historical_paper'),
     url(r'^file/(?P<pk>[0-9]+)/$', views.file, name='file'),
     url(r'^meeting/(?P<pk>[0-9]+)/ical/$', views.meeting_ical, name='meeting-ical'),
+    url(r'^meeting/historical/(?P<pk>[0-9]+)/$', views.historical_meeting, name='historical_meeting'),
     url(r'^organization/(?P<pk>[0-9]+)/ical/$', views.organizazion_ical, name='organizazion_ical'),
     url(r'^body/(?P<pk>[0-9]+)/$', views.body, name='body'),
     url(r'^legislative-term/(?P<pk>[0-9]+)/$', views.legislative_term, name='legislative-term'),
