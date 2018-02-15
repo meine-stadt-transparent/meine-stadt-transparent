@@ -4,13 +4,13 @@
         <h2 class="home-section-header title-colors">{% trans "Next Meetings" context "Header" %}</h2>
         <div class="row">
             {% for meeting in next_meetings %}
-                <div class="col-sm meeting-col pb-3">
+                <div class="col-sm meeting-col pb-3 pt-3">
                     <a class="btn btn-block meeting-button" href="{% url "meeting" meeting.id %}">
                         <div class="row">
                             <div class="col-auto"><i class="fa fa-3x fa-calendar"></i></div>
                             <div class="col">
-                                <div class="h4">{{ meeting.name }}</div>
-                                <div>{{ meeting.start }}</div>
+                                <div class="title">{{ meeting.name }}</div>
+                                <div class="date">{{ meeting.start }}</div>
                             </div>
                         </div>
                     </a>

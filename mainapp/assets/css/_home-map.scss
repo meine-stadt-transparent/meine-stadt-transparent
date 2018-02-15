@@ -89,8 +89,17 @@
       &:hover, &:active {
         background-color: darken($index-meetings-btn, 5%);
       }
+      .col {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
       > div {
         padding: 10px;
+      }
+      .title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: .5rem;
       }
     }
   }
@@ -106,6 +115,9 @@
   .more-info-link {
     @extend .lead;
     text-align: right;
+    a, a:link, a:visited {
+      color: #005abf;
+    }
   }
 }
 
