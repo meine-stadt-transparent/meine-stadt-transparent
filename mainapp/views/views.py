@@ -4,12 +4,14 @@ from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
 from django.db.models import Q, Count
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
 from django.views.generic import DetailView
+from django.views.static import serve
 from requests.utils import quote
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
@@ -177,6 +179,20 @@ def file(request, pk):
                 context["pdfjs_iframe_url"] += "&phrase=" + quote(request.GET.get("pdfjs_phrase"))
 
     return render(request, "mainapp/file.html", context)
+
+
+def file_serve(request, path):
+    file_object = File.objects.get(storage_filename=path)
+    if not file_object:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    response = serve(request, path, document_root=settings.MEDIA_ROOT, show_indexes=False)
+    response['Content-Type'] = file_object.mime_type
+    response['Content-Disposition'] = "attachment; filename=" + file_object.displayed_filename
+    if settings.SITE_SEO_NOINDEX:
+        response['X-Robots-Tag'] = 'noindex'
+
+    return response
 
 
 def info_privacy(request):

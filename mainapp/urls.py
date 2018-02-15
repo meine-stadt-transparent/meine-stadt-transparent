@@ -1,10 +1,8 @@
 from django.conf.urls import url
-from django.views.static import serve
 
 import mainapp.views.views
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
 from mainapp.views.profile import profile_view, profile_delete
-from meine_stadt_transparent import settings
 from . import views
 
 urlpatterns = [
@@ -39,8 +37,7 @@ urlpatterns = [
     url(r'^location/(?P<pk>[0-9]+)/$', views.location, name='location'),
     url(r'^profile/$', profile_view, name='profile-home'),
     url(r'^profile/delete/$', profile_delete, name='profile-delete'),
-    # TODO: Warn in production because one should use nginx directly. Also, mime types
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name="media"),
+    url(r'^media/(?P<path>.*)$', views.file_serve, name="media"),
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]
