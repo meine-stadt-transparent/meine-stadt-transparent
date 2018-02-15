@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-15 09:48+0100\n"
+"POT-Creation-Date: 2018-02-15 22:15+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -573,48 +573,60 @@ msgstr "Kalender"
 
 #: mainapp/templates/mainapp/calendar.html:23
 msgid "Subscribe to this calendar (with six months of history):"
-msgstr ""
+msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
 
 #: mainapp/templates/mainapp/calendar.html:25
 msgid "iCal"
 msgstr ""
 
-#: mainapp/templates/mainapp/file.html:19
-msgid "Documents in this paper"
-msgstr "Dokumente in dieser Vorlage"
+# TODO
+#: mainapp/templates/mainapp/file/file.html:35
+msgid "The file can not be shown"
+msgstr "Die Datei kann nicht angezeigt werden"
 
-#: mainapp/templates/mainapp/file.html:71
-msgctxt "Singular"
-msgid "Superordinated paper"
-msgstr "Übergeordnete Vorlage"
+#: mainapp/templates/mainapp/file/file.html:40
+msgid "Download"
+msgstr "Herunterladen"
 
-#: mainapp/templates/mainapp/file.html:81
-msgctxt "Plural"
-msgid "Superordinated paper"
-msgstr "Übergeordnete Vorlagen"
+#: mainapp/templates/mainapp/file/file.html:44
+msgid "The file is not available"
+msgstr "Die Datei ist nicht verfügbar"
 
-#: mainapp/templates/mainapp/file.html:88
+#: mainapp/templates/mainapp/file/info_lg.html:7
+#: mainapp/templates/mainapp/file/info_sm.html:71
 #: mainapp/templates/mainapp/meeting.html:141
 msgid "Paper"
 msgstr "Vorlage"
 
-# TODO
-#: mainapp/templates/mainapp/file.html:110
-msgid "The file can not be shown"
-msgstr "Die Datei kann nicht angezeigt werden"
+#: mainapp/templates/mainapp/file/info_lg.html:16 mainapp/views/meeting.py:138
+msgid "Meeting"
+msgstr "Sitzung"
 
-#: mainapp/templates/mainapp/file.html:115
-msgid "Download"
-msgstr "Herunterladen"
+#: mainapp/templates/mainapp/file/info_sm.html:16
+#| msgid "User profiles"
+msgid "Other files"
+msgstr "Weitere Dateien"
 
-#: mainapp/templates/mainapp/file.html:119
-msgid "The file is not available"
-msgstr "Die Datei ist nicht verfügbar"
+#: mainapp/templates/mainapp/file/info_sm.html:46
+#| msgctxt "Singular"
+#| msgid "Superordinated paper"
+msgctxt "Singular"
+msgid "Superordinated meeting"
+msgstr "Übergeordnete Sitzung"
+
+#: mainapp/templates/mainapp/file/info_sm.html:54
+msgctxt "Singular"
+msgid "Superordinated paper"
+msgstr "Übergeordnete Vorlage"
+
+#: mainapp/templates/mainapp/file/info_sm.html:64
+msgctxt "Plural"
+msgid "Superordinated paper"
+msgstr "Übergeordnete Vorlagen"
 
 #: mainapp/templates/mainapp/index/index.html:8
 #: mainapp/templates/mainapp/index_v2/index.html:8
 #: mainapp/views/feeds/latest_papers.py:10
-#, fuzzy
 #| msgctxt "Header"
 #| msgid "Latest Papers"
 msgid "Latest papers"
@@ -724,7 +736,9 @@ msgstr "Was passiert in Ihrer Nähe?"
 
 #: mainapp/templates/mainapp/index_v2/index_map.html:5
 msgid "Click on the marker to see which paper mentions that place."
-msgstr "Klicken Sie auf die Marker, um Sitzungsvorlagen mit diesem Ortsbezug zu sehen."
+msgstr ""
+"Klicken Sie auf die Marker, um Sitzungsvorlagen mit diesem Ortsbezug zu "
+"sehen."
 
 #: mainapp/templates/mainapp/index_v2/index_map.html:7
 msgid "and 1 more file"
@@ -843,10 +857,9 @@ msgid "Remaining files omitted. They can be found with the search"
 msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 
 #: mainapp/templates/mainapp/organization.html:82
-#, fuzzy
 #| msgid "Subscribe"
 msgid "Subscribe (iCal)"
-msgstr "Benachrichtigungen abonnieren"
+msgstr "Abonnieren (iCal)"
 
 #: mainapp/templates/mainapp/organization.html:86
 msgid "Remaining meetings omitted. They can be found with the search"
@@ -1045,18 +1058,16 @@ msgid "Search"
 msgstr "Suche"
 
 #: mainapp/templates/mainapp/search/search.html:9
-#, fuzzy
 #| msgctxt "aria label"
 #| msgid "Show search results"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
 #: mainapp/templates/mainapp/search/search.html:34
-#, fuzzy
 #| msgctxt "aria label"
 #| msgid "Show search results"
 msgid "Search results as RSS-Feed"
-msgstr "Suchergebnisse"
+msgstr "Suchergebnisse als RSS-Feed"
 
 #: mainapp/templates/mainapp/search/search.html:48
 #: mainapp/templates/mainapp/search/search.html:53
@@ -1242,25 +1253,19 @@ msgstr ""
 "        Geben Sie bitte abschließend folgende Information ein:"
 
 #: mainapp/views/feeds/search_results.py:13
-#, fuzzy
 #| msgid "New search results"
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
-
-#: mainapp/views/meeting.py:138
-msgid "Meeting"
-msgstr "Sitzung"
 
 #: mainapp/views/meeting.py:146
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
 #: mainapp/views/meeting.py:158
-#, fuzzy
 #| msgctxt "Document Type Name"
 #| msgid "Meetings"
 msgid "All Meetings"
-msgstr "Sitzungen"
+msgstr "Alle Sitzungen"
 
 #: mainapp/views/persons.py:91
 msgid "You will now receive notifications about new documents."
@@ -1287,3 +1292,6 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: mainapp/views/search.py:145
 msgid "search disabled"
 msgstr "Suche deaktiviert"
+
+#~ msgid "Documents in this paper"
+#~ msgstr "Dokumente in dieser Vorlage"

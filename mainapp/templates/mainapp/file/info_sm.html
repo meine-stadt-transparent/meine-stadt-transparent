@@ -39,6 +39,14 @@
                     <span>Download</span>
                 </a>
             </div>
+            {% if file.get_assigned_meetings %}
+                <div>
+                    <a href="{% url 'meeting' file.get_assigned_meetings.0.id %}">
+                        <span class="fa-custom fa-file" aria-hidden="true"></span>
+                        <span>{% trans "Superordinated meeting" context "Singular" %}</span>
+                    </a>
+                </div>
+            {% endif %}
             {% if papers|length == 1 %}
                 <div>
                     <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">

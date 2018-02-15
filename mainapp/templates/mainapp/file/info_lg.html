@@ -1,5 +1,6 @@
 {% load i18n %}
 <div class="file-switcher h-100" role="navigation">
+    {% if papers %}
     <h2 class="title-back">
         <a href="{% url 'paper' papers.0.id %}">
             <span class="fa fa-chevron-left back-icon"></span>
@@ -7,6 +8,16 @@
             {{ papers.0.name }}
         </a>
     </h2>
+    {% endif %}
+    {% if file.get_assigned_meetings %}
+    <h2 class="title-back">
+        <a href="{% url 'meeting' file.get_assigned_meetings.0.id %}">
+            <span class="fa fa-chevron-left back-icon"></span>
+            {% trans "Meeting" %}:
+            {{ file.get_assigned_meetings.0.name }}
+        </a>
+    </h2>
+    {% endif %}
     <div class="paper-information row">
         {% if file.legal_date %}
             <div class="col date-col">{{ file.legal_date }}</div>

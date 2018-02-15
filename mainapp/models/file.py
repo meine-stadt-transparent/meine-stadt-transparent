@@ -47,3 +47,7 @@ class File(DefaultFields):
 
     def name_autocomplete(self):
         return self.name if len(self.name) > 0 else ' '
+
+    def get_assigned_meetings(self):
+        return (self.meeting_auxiliary_files.all() | self.meeting_invitation.all() | self.meeting_auxiliary_files.all()
+                | self.meeting_results_protocol.all() | self.meeting_verbatim_protocol.all()).distinct()
