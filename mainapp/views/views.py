@@ -182,9 +182,7 @@ def file(request, pk):
 
 
 def file_serve(request, path):
-    file_object = File.objects.get(storage_filename=path)
-    if not file_object:
-        return HttpResponseNotFound('<h1>Page not found</h1>')
+    file_object = get_object_or_404(File, storage_filename=path)
 
     response = serve(request, path, document_root=settings.MEDIA_ROOT, show_indexes=False)
     response['Content-Type'] = file_object.mime_type
