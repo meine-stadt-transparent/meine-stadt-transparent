@@ -1,0 +1,49 @@
+{% load i18n %}
+<div class="file-switcher h-100" role="navigation">
+    <h2 class="title-back">
+        <a href="{% url 'paper' papers.0.id %}">
+            <span class="fa fa-chevron-left back-icon"></span>
+            {% trans "Paper" %}:
+            {{ papers.0.name }}
+        </a>
+    </h2>
+    <div class="paper-information row">
+        {% if file.legal_date %}
+            <div class="col date-col">{{ file.legal_date }}</div>
+        {% endif %}
+        {% if file.license %}
+            <div class="col license-col">{{ file.license }}</div>
+        {% endif %}
+        <div class="col download-col">
+            <a href="{% url 'media' file.storage_filename %}">
+                <span class="fa fa-custom fa-download" aria-hidden="true"></span>
+                <span>Download</span>
+            </a>
+        </div>
+    </div>
+    {# Yep, those divs are actually needed :soup: #}
+    <div class="file-holder-outer">
+        <div class="file-holder-inner">
+            <div class="list-group list-group-flush">
+                {% if papers.0.main_file %}
+                    {% if papers.0.main_file.id == file.id %}
+                        <a class="list-group-item list-group-item-action active scroll-into-view"
+                           href="{% url 'file' papers.0.main_file.id %}">
+                    {% else %}
+                        <a class="list-group-item list-group-item-action" href="{% url 'file' papers.0.main_file.id %}">
+                    {% endif %}
+                <span class="fa-custom fa-file"></span>
+                {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
+                </a>
+                {% endif %}
+                {% for other_file in papers.0.files.all %}
+                    <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}
+                            active scroll-into-view{% endif %}" href="{% url 'file' other_file.id %}">
+                        <span class="fa-custom fa-file"></span>
+                        <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

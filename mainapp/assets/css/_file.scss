@@ -1,4 +1,12 @@
-.file-header {
+.file-header-small {
+  @include media-breakpoint-up(lg) {
+    display: none;
+  }
+
+  @include media-breakpoint-down(lg) {
+    display: flex;
+  }
+
   // We need to be space efficient on that page, so we remove the default top margin
   margin-top: -#{$main-content-margin-top};
   @extend .py-3;
@@ -21,6 +29,20 @@
     .dropdown-menu {
       max-height: 300px;
       overflow-y: scroll;
+    }
+  }
+
+  .files-dropdown {
+    .dropdown-item {
+      font-size: 0.9rem;
+      max-width: 320px;
+      @media screen and (max-width: 350px) {
+        max-width: 240px;
+      }
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 }
@@ -92,7 +114,50 @@
     display: none;
   }
 
-  > div {
+  .title-back {
+    @extend .h3;
+
+    display: table; // Force text to wrap
+    width: 100%;
+    table-layout: fixed;
+    margin: 0;
+    &:hover, &:active {
+        background-color: $list-group-hover-bg;
+    }
+
+    a {
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: $body-color;
+      padding: .5rem 0;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    .back-icon {
+      font-weight: normal;
+      color: lighten($body-color, 30%);
+    }
+  }
+
+  .paper-information {
+    flex: 0 0 30px;
+
+    .col {
+      text-align: center;
+      &:first-child {
+        text-align: left;
+        padding-left: calc(#{$grid-gutter-width} / 2 + #{$list-group-item-padding-x}); // Align with rest of the items
+      }
+      &:last-child {
+        text-align: right;
+      }
+    }
+  }
+
+  .file-holder-outer {
     // Don't ask me why this work
     // https://stackoverflow.com/a/27461685/3549270
     overflow: hidden;

@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ file.name }}{% endblock %}
+
+{% block content %}
+    <h1 class="sr-only">{{ file.name }}</h1>
+    <div class="file-main-content {{ renderer }}">
+        {% comment %}
+        We want to have a sidebar on the left. So what we do is to split the page in three coloumns. The left and the
+        right one are auto-sized while the center one just gets the normal container class (plus a px-0). For the main
+        coloumn this has the same effect as using ml-auto, except we can position our sidebar in the left space
+        {% endcomment %}
+        <div class="file-layout-container container-fluid h-100">
+            <div class="row h-100">
+                <div class="col">
+                    {% include 'mainapp/file/info_lg.html' %}
+                </div>
+                <div class="col-auto file-content-div">
+                    {% include 'mainapp/file/info_sm.html' %}
+
+                    <div class="{{ renderer }}-wrapper">
+                        {% if renderer == "pdf" %}
+                            <div class="embed-responsive w-100">
+                                <iframe class="embed-responsive-item" src="{{ pdfjs_iframe_url }}"></iframe>
+                            </div>
+                        {% elif renderer == "txt" %}
+                            <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
+                        {% elif renderer == "image" %}
+                            <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
+                                 class="file-image">
+                        {% elif renderer == "download" %}
+                            <p class="lead">{% trans "The file can not be shown" %}</p>
+                            <a class="btn btn-primary btn-lg" role="button"
+                               href="{% url 'media' file.storage_filename %}"
+                               download>
+                                <span class="fa fa-download" aria-hidden="true"></span>
+                                {% trans "Download" %}
+                            </a>
+                        {% else %}
+                            <div class="container">
+                                <p class="lead">{% trans "The file is not available" %}</p>
+                            </div>
+                        {% endif %}
+
+                        {% comment %}
+                        Sometimes files from eletected people countain information that must not be published on the
+                        internet, e.g. copyrighted images or confidential figures, but are published anyway because
+                        the administration doesn't check that. As by our experience google lists us higher than the
+                        original system, we're than the ones others want to sue. That's why we add a disclaimer
+                        below all files pointing to the original system where the file was originally published.
+                        We also delete all files when they are deleted in the original system.
+                        {% endcomment %}
+                        {% if settings.FILE_DISCLAIMER %}
+                            <div class="file-disclaimer">
+                                <div>
+                                    <span class="text-muted">{{ settings.FILE_DISCLAIMER }}</span>
+                                    {% if settings.FILE_DISCLAIMER_URL %}
+                                        <a href="{{ settings.FILE_DISCLAIMER_URL }}">
+                                            <span class="fa fa-external-link"></span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col right-counterweight">
+                    {# "Counterweight" for the left col to get the main container centered #}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

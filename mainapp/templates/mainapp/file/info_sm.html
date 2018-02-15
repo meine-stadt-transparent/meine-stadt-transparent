@@ -1,0 +1,72 @@
+{% load i18n %}
+<div class="file-header-small container justify-content-between flex-wrap">
+    <div>
+        {% if file.legal_date %}
+            <div>{{ file.legal_date }}</div>
+        {% endif %}
+        {% if file.license %}
+            <div>{{ file.license }}</div>
+        {% endif %}
+    </div>
+    <div>
+        {% spaceless %}
+            <div class="dropdown files-dropdown">
+                <a class="dropdown-toggle" role="button" href="#" id="dropdownFiles"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {% trans "Other files" %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownFiles">
+                    {% if papers.0.main_file %}
+                        {% if papers.0.main_file.id == file.id %}
+                            <a class="dropdown-item disabled" href="{% url 'file' papers.0.main_file.id %}">
+                        {% else %}
+                            <a class="dropdown-item" href="{% url 'file' papers.0.main_file.id %}">
+                        {% endif %}
+                    {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
+                    </a>
+                    {% endif %}
+                    {% for other_file in papers.0.files.all %}
+                        <a class="dropdown-item {% if other_file.id == file.id %}disabled{% endif %}"
+                           href="{% url 'file' other_file.id %}">
+                            <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'media' file.storage_filename %}">
+                    <span class="fa fa-custom fa-download" aria-hidden="true"></span>
+                    <span>Download</span>
+                </a>
+            </div>
+            {% if papers|length == 1 %}
+                <div>
+                    <a href="{% url 'paper' papers.0.id %}" title="{{ papers.0.name }}">
+                        <span class="fa-custom fa-file" aria-hidden="true"></span>
+                        <span>{% trans "Superordinated paper" context "Singular" %}</span>
+                    </a>
+                </div>
+            {% endif %}
+            {% if papers|length > 1 %}
+                <div>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle" role="button" href="#"
+                           data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            {% trans "Superordinated paper" context "Plural" %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            {% for paper in papers %}
+                                <a class="dropdown-item" href="{% url 'paper' paper.id %}"
+                                   title="{{ paper.name }}">
+                                    <span class="fa-custom fa-file" aria-hidden="true"></span>
+                                    <span>{% trans "Paper" %}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endspaceless %}
+    </div>
+</div>

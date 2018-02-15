@@ -178,7 +178,7 @@ def file(request, pk):
             if request.GET.get("pdfjs_phrase"):
                 context["pdfjs_iframe_url"] += "&phrase=" + quote(request.GET.get("pdfjs_phrase"))
 
-    return render(request, "mainapp/file.html", context)
+    return render(request, "mainapp/file/file.html", context)
 
 
 def file_serve(request, path):
