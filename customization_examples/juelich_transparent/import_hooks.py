@@ -41,3 +41,21 @@ def sanitize_person(person):
         person.name = re.sub(r"^" + re.escape(prefix) + " ", "", person.name)
 
     return person
+
+
+def sanitize_organization(orga):
+
+    """
+    This hook can be used to clean up some data from the API.
+    In this example, we shorten some party names to prevent line-breaks on the person list.
+
+    :param orga: mainapp.models.organization
+    :return: mainapp.models.organization
+    """
+
+    if orga.name == 'Unabhängige Wählergemeinschaft - Jülichs überparteiliche Liste':
+        orga.short_name = 'UWG Jülich'
+    if orga.name == 'Bündnis 90 / Die Grünen':
+        orga.short_name = 'B.90 / Die Grünen'
+
+    return orga
