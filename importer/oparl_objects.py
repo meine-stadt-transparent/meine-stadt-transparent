@@ -358,6 +358,8 @@ class OParlObjects(OParlHelper):
         file.mime_type = libobject.get_mime_type() or "application/octet-stream"
         file.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
         file.sort_date = file.created
+        file.oparl_access_url = libobject.get_access_url()
+        file.oparl_download_url = libobject.get_download_url()
 
         # If no text comes from the API, don't overwrite previously extracted PDF-content with an empty string
         if libobject.get_text():
