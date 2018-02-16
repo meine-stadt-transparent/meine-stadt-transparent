@@ -4,7 +4,7 @@ from djgeojson.fields import GeometryField
 from .default_fields import DefaultFields, ShortableNameFields
 
 
-class Location(DefaultFields, ShortableNameFields):
+class Location(DefaultFields):
     description = models.TextField(null=True, blank=True)
     # Need to work around a cyclic import here
     bodies = models.ManyToManyField("mainapp.Body", blank=True)
@@ -13,7 +13,7 @@ class Location(DefaultFields, ShortableNameFields):
     geometry = GeometryField(default=None)
 
     def __str__(self):
-        return self.short_name
+        return self.description
 
     def coordinates(self):
         if self.geometry and self.geometry['type'] == 'Point':

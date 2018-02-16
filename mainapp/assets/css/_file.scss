@@ -133,7 +133,6 @@
     }
     .back-icon {
       font-weight: normal;
-      color: lighten($body-color, 30%);
     }
   }
 
@@ -153,7 +152,7 @@
   }
 
   .file-holder-outer {
-    // Don't ask me why this work
+    // Don't ask me why this works
     // https://stackoverflow.com/a/27461685/3549270
     overflow: hidden;
     flex-grow: 1;

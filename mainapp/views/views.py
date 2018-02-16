@@ -4,7 +4,6 @@ from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
 from django.db.models import Q, Count
-from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404
 from django.templatetags.static import static
 from django.urls import reverse

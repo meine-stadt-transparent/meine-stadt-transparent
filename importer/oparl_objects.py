@@ -8,14 +8,14 @@ from typing import Type
 import gi
 import requests
 from django.conf import settings
-from django.db.models import Model
 from django.utils.translation import ugettext as _
 # noinspection PyPackageRequirements
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
-from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, AgendaItem, \
+from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, \
+    AgendaItem, \
     OrganizationMembership, Organization, DefaultFields
 from mainapp.models.consultation import Consultation
 from mainapp.models.organization_type import OrganizationType
@@ -51,17 +51,17 @@ class OParlObjects(OParlHelper):
         group = settings.PARLIAMENTARY_GROUPS_TYPE
         OrganizationType.objects.get_or_create(id=group[0], defaults={
             "name": group[1]
-            })
+        })
 
         committee = settings.COMMITTEE_TYPE
         OrganizationType.objects.get_or_create(id=committee[0], defaults={
             "name": committee[1]
-            })
+        })
 
         department = settings.DEPARTMENT_TYPE
         OrganizationType.objects.get_or_create(id=department[0], defaults={
             "name": department[1]
-            })
+        })
 
     def body(self, libobject: OParl.Body):
         return self.process_object(libobject, Body, self.body_core, self.body_embedded)
@@ -143,7 +143,7 @@ class OParlObjects(OParlHelper):
         if libobject.get_paper_type():
             paper_type, _ = PaperType.objects.get_or_create(defaults={
                 "paper_type": libobject.get_paper_type()
-                })
+            })
         else:
             paper_type = None
         paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
@@ -237,6 +237,22 @@ class OParlObjects(OParlHelper):
         location.description = libobject.get_description()
         location.is_official = self.official_geojson
         location.geometry = self.extract_geometry(libobject.get_geojson())
+
+        # Try to guess a better name for the location
+        if libobject.get_room():
+            location.description = libobject.get_room()
+
+        if not location.description:
+            description = ""
+            if libobject.get_room():
+                description += libobject.get_room() + ", "
+            if libobject.get_street_address():
+                description += libobject.get_street_address() + ", "
+            if libobject.get_locality():
+                if libobject.get_postal_code():
+                    description += libobject.get_postal_code() + " "
+                description += libobject.get_locality()
+
         location.save()
 
         return location
@@ -485,4 +501,3 @@ class OParlObjects(OParlHelper):
 
         self._add_organizations(self.consultation_organization_queue, Consultation)
         self._add_organizations(self.meeting_organization_queue, Meeting)
-
