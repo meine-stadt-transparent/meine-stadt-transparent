@@ -38,13 +38,17 @@
                 padding-top: 5px;
                 vertical-align: middle;
             }
+            .navbar-footer {
+                margin-top: 50px;
+            }
             .body-container {
                 margin-top: 20px;
                 padding: 10px;
             }
             h1 {
                 margin-top: 0;
-                font-size: 1.8rem;
+                margin-left: 20px;
+                font-size: 28px;
             }
             hr {
                 border-color: #DDD;
@@ -75,6 +79,13 @@
             .result-highlight {
                 font-size: 12.8px;
                 color: #545454;
+            }
+            .unsubscribe {
+                font-size: 12.8px;
+            }
+            .unsubscribe a {
+                color: white;
+                color: rgba(255, 255, 255, .5);
             }
         </style>
     </head>
@@ -108,5 +119,18 @@
             {% endfor %}
             <!-- END -->
         </container>
+        <nav class="navbar navbar-footer" aria-label="Legal hints">
+            <container>
+                <div>
+                    <a class="nav-link" href="{{ base_url }}{% url 'info_contact' %}">{% trans "Contact" context 'navigation' %}</a>
+                    <a class="nav-link" href="{{ base_url }}{% url 'info_privacy' %}">{% trans "Privacy Policy" context 'navigation' %}</a>
+                    <a class="nav-link" href="{{ base_url }}{% url 'info_feedback' %}">{% trans "Feedback" context 'navigation' %}</a>
+                </div>
+                <div class="unsubscribe">
+                    <a href="{{ base_url }}{% url 'profile-home' %}">{% trans 'Unsubscribe / Manage your e-mail notifications' %}</a>
+                </div>
+
+            </container>
+        </nav>
     </body>
 </heml>
