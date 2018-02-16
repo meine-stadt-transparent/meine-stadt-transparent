@@ -1,3 +1,7 @@
+# This is need for our development workflow
+# Use it as an extension to the elasticsearch.yml
+# https://xkcd.com/1172/
+
 version: '3'
 services:
   kibana:

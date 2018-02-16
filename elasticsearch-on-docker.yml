@@ -1,6 +1,5 @@
-# We need this as an intermediate solution to keep our workflow
+# This is need for our development workflow
 # https://xkcd.com/1172/
-# TODO: Remove this and replace it with some better workflow
 
 version: '3'
 services:
