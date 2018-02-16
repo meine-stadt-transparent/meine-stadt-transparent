@@ -105,7 +105,6 @@ class Command(BaseCommand):
 
         users = User.objects.all()
         for user in users:
-            print(user.email)
             if user.is_active:
                 # @TODO Filter users that have disabled notifications
                 self.notify_user(user, override_since, options['debug'])

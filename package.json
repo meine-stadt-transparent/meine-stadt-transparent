@@ -11,7 +11,7 @@
     "build:prod": "NODE_ENV=production webpack --config etc/webpack.config.prod.js",
     "build:email": "heml build mainapp/assets/email/user-alert.heml -o mainapp/templates/email/user-alert.html",
     "watch": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js --watch",
-    "watch:email": "heml develop mainapp/assets/emails/user-alert.heml"
+    "watch:email": "heml develop mainapp/assets/email/user-alert.heml"
   },
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",

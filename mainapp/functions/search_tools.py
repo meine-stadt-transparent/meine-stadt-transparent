@@ -15,7 +15,7 @@ from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 # Keep in sync with: mainapp/assets/js/FacettedSearch.js
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
 
-NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name"])
+NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name", "highlight"])
 
 
 class MainappSearch(FacetedSearch):
@@ -201,7 +201,8 @@ def search_result_for_notification(result):
         title = "Unknown"
         url = ""
 
-    return NotificationSearchResult(title, url, result["type"], DOCUMENT_TYPE_NAMES[result["type"]])
+    return NotificationSearchResult(title, url, result["type"], DOCUMENT_TYPE_NAMES[result["type"]],
+                                    result["highlight"])
 
 
 def parse_hit(hit, highlighting=True):

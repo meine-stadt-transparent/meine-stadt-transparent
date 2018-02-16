@@ -39,15 +39,42 @@
                 vertical-align: middle;
             }
             .body-container {
-                background: white;
                 margin-top: 20px;
                 padding: 10px;
             }
             h1 {
                 margin-top: 0;
+                font-size: 1.8rem;
             }
             hr {
                 border-color: #DDD;
+            }
+            .search-card {
+                background-color: white;
+            }
+            h2 {
+                font-size: 24px;
+                font-weight: 500;
+                line-height: 1.2;
+                color: inherit;
+                padding: 12px 20px;
+                margin-bottom: 0;
+                background-color: rgba(0,0,0,.03);
+                border-bottom: 1px solid rgba(0,0,0,.125);
+            }
+            .result {
+                display: block;
+                color: black;
+                margin-top: 15px;
+                padding: 8px 20px;
+            }
+            .result-title {
+                font-size: 20px;
+                font-weight: 300;
+            }
+            .result-highlight {
+                font-size: 12.8px;
+                color: #545454;
             }
         </style>
     </head>
@@ -66,15 +93,18 @@
 
             <!-- START -->
             {% for alert in alerts %}
-                <h2>{% trans "Notification" context 'email-new-documents' %}: {{ alert.title }}</h2>
-                <ul>
+                <div class="search-card card">
+                <h2>{{ alert.title }}</h2>
+                <div class="result-list">
                     {% for result in alert.results %}
-                        <li>
-                            {{ result.type_name }}:
-                            <a href="{{ result.url }}">{{ result.title }}</a>
-                        </li>
+                        <a href="{{ result.url }}" class="result">
+                            <div class="result-title">{{ result.title }}</div>
+                            <div class="result-type">{{ result.type_name }}</div>
+                            <div class="result-highlight">blabla {{ result.highlight }}</div>
+                        </a>
                     {% endfor %}
-                </ul>
+                </div>
+                </div>
             {% endfor %}
             <!-- END -->
         </container>
