@@ -278,7 +278,7 @@ def index_papers_to_geodata(papers):
                 if location.id not in geodata:
                     geodata[location.id] = {
                         "id": location.id,
-                        "name": location.name,
+                        "name": location.description,
                         "coordinates": location.geometry,
                         "papers": {}
                     }
