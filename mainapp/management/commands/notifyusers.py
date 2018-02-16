@@ -63,6 +63,7 @@ class Command(BaseCommand):
             return
 
         message_html = get_template('email/user-alert.html').render(context)
+        message_html = message_html.replace('&lt;mark&gt;', '<mark>').replace('&lt;/mark&gt;', '</mark>')
         message_text = html2text(message_html)
 
         if debug:

@@ -37,3 +37,6 @@ class TestNotifyUsers(TestCase):
         call_command('notifyusers', stdout=out, override_since="2017-01-01")
 
         send_mail_function.assert_called()
+        self.assertEqual(send_mail_function.call_args[0][3], ['test@example.org'])
+        self.assertTrue('* File: [Title' in send_mail_function.call_args[0][1])
+        self.assertTrue('Title <mark>Highlight</mark>' in send_mail_function.call_args[1]['html_message'])
