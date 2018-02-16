@@ -24,3 +24,31 @@ This document shall explain the important design decision, assumptions and trade
  
 ## Keyboard Shortcuts
  * `alt+f` focuses the search 
+ 
+## Pages
+ * Persons 
+ * Papers
+ * Displaying a file, mainly with pdf.js
+ * Kalendar
+ * Meeting with agenda items and attendees 
+ * Organization with persons and papaer
+ * Login and profile
+ * Search with facets ✓ 
+ * One Pager alike landing page ✓ 
+ * animal photos ✓
+
+## Links on the landing page
+ * Persons 
+ * Meetings
+ * Login / Notifications
+ * Search
+ * Map
+ * Latest papers
+ * Organizations
+
+## Linter 
+ * https://www.ssllabs.com/ssltest/analyze.html?d=meine%2dstadt%2dtransparent.de&s=185.183.157.234&hideResults=on (A+)
+ * https://observatory.mozilla.org/analyze.html?host=meine-stadt-transparent.de (A+)
+ * https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
+ * https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent (Passing)
+
