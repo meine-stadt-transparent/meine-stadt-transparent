@@ -84,7 +84,7 @@
     }
     .meeting-button {
       background-color: $index-meetings-btn;
-      color: #eee;
+      color: #fff;
       text-align: left;
       &:hover, &:active {
         background-color: darken($index-meetings-btn, 5%);
