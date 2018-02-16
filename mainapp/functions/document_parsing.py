@@ -214,41 +214,30 @@ def extract_found_locations(text, bodies=None):
     return pipeline.extract(text)
 
 
-def detect_relevant_bodies(location):
-    """
-    :param location: mainapp.models.Location
-    :return: list of mainapp.models.Body
-    """
+def detect_relevant_bodies(_):
     body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)  # @TODO
     return [body]
 
 
-def extract_locations(text, fallback_city=None):
+def extract_locations(text, fallback_city=settings.GEOEXTRACT_DEFAULT_CITY):
     if not text:
         return []
-    if not fallback_city:
-        fallback_city = settings.GEOEXTRACT_DEFAULT_CITY
 
     found_locations = extract_found_locations(text)
 
     locations = []
     for found_location in found_locations:
         location_name = format_location_name(found_location)
-        try:
-            location = Location.objects.get(description=location_name)
-            locations.append(location)
-        except Location.DoesNotExist:
-            location = Location()
-            location.description = location_name
-            location.short_name = location_name
-            location.is_official = False
-            location.osm_id = None  # @TODO
-            location.geometry = None
-            location.save()
 
-            # as get_geodata takes a while, we save the location before calling it to prevent other threads
-            # of the importer to create a second instance of this location in the meantime.
-            # This is not 100% perfect thread-safe, but at least a lot better than nothing. @TODO True thread-safety
+        defaults = {
+            "description": location_name,
+            "is_official": False,
+            "osm_id": None,  # @TODO
+            "geometry": None,
+        }
+
+        location, created = Location.objects_with_deleted.get_or_create(description=location_name, defaults=defaults)
+        if created:
             geodata = get_geodata(found_location, fallback_city)
             if geodata:
                 location.geometry = {
@@ -261,7 +250,7 @@ def extract_locations(text, fallback_city=None):
             for body in bodies:
                 location.bodies.add(body)
 
-            locations.append(location)
+        locations.append(location)
 
     return locations
 
