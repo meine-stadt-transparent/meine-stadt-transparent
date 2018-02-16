@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-15 22:15+0100\n"
+"POT-Creation-Date: 2018-02-16 08:46+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -603,13 +603,10 @@ msgid "Meeting"
 msgstr "Sitzung"
 
 #: mainapp/templates/mainapp/file/info_sm.html:16
-#| msgid "User profiles"
 msgid "Other files"
 msgstr "Weitere Dateien"
 
 #: mainapp/templates/mainapp/file/info_sm.html:46
-#| msgctxt "Singular"
-#| msgid "Superordinated paper"
 msgctxt "Singular"
 msgid "Superordinated meeting"
 msgstr "Übergeordnete Sitzung"
@@ -627,8 +624,6 @@ msgstr "Übergeordnete Vorlagen"
 #: mainapp/templates/mainapp/index/index.html:8
 #: mainapp/templates/mainapp/index_v2/index.html:8
 #: mainapp/views/feeds/latest_papers.py:10
-#| msgctxt "Header"
-#| msgid "Latest Papers"
 msgid "Latest papers"
 msgstr "Neueste Dokumente"
 
@@ -857,7 +852,6 @@ msgid "Remaining files omitted. They can be found with the search"
 msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 
 #: mainapp/templates/mainapp/organization.html:82
-#| msgid "Subscribe"
 msgid "Subscribe (iCal)"
 msgstr "Abonnieren (iCal)"
 
@@ -1058,14 +1052,10 @@ msgid "Search"
 msgstr "Suche"
 
 #: mainapp/templates/mainapp/search/search.html:9
-#| msgctxt "aria label"
-#| msgid "Show search results"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
 #: mainapp/templates/mainapp/search/search.html:34
-#| msgctxt "aria label"
-#| msgid "Show search results"
 msgid "Search results as RSS-Feed"
 msgstr "Suchergebnisse als RSS-Feed"
 
@@ -1253,7 +1243,6 @@ msgstr ""
 "        Geben Sie bitte abschließend folgende Information ein:"
 
 #: mainapp/views/feeds/search_results.py:13
-#| msgid "New search results"
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
@@ -1262,8 +1251,6 @@ msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
 #: mainapp/views/meeting.py:158
-#| msgctxt "Document Type Name"
-#| msgid "Meetings"
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 

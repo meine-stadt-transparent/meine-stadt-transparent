@@ -39,8 +39,9 @@
                                 {% trans "Download" %}
                             </a>
                         {% else %}
-                            <div class="container">
-                                <p class="lead">{% trans "The file is not available" %}</p>
+                            <div class="alert alert-danger">
+                                <h2>{% trans "The file is not available" %}</h2>
+                                <p></p>
                             </div>
                         {% endif %}
 
