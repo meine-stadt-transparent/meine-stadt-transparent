@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import shutil
+import tempfile
 from unittest import skipIf
 
 from django.test import TestCase
@@ -31,11 +32,17 @@ class TestImporter(TestCase):
     tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
               Paper, Consultation, Location]
     entrypoint = "https://oparl.example.org/"
+    tempdir = None
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.tempdir = tempfile.mkdtemp()
         cls.options = cls.build_options()
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(cls.tempdir)
 
     def sha1(self, data):
         return hashlib.sha1(data.encode("utf-8")).hexdigest()
@@ -165,7 +172,7 @@ class TestImporter(TestCase):
     def build_options(cls):
         options = default_options.copy()
         options["cachefolder"] = cls.fake_cache
-        options["storagefolder"] = "/tmp/meine_stadt_transparent/storagefolder"  # TODO
+        options["storagefolder"] = os.path.join(cls.tempdir, "storagefolder")
         shutil.rmtree(options["storagefolder"], ignore_errors=True)
         options["entrypoint"] = cls.entrypoint
         options["batchsize"] = 1
