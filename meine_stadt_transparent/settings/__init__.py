@@ -220,6 +220,11 @@ DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'extended': {
+            'format': '%(asctime)s %(levelname)-8s %(name)-12s %(message)s',
+        },
+    },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
@@ -227,10 +232,12 @@ LOGGING = {
         'mainapp': {
             'class': 'logging.FileHandler',
             'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'mainapp.log'),
+            'formatter': 'extended',
         },
         'importer': {
             'class': 'logging.FileHandler',
             'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'importer.log'),
+            'formatter': 'extended',
         }
     },
     'loggers': {
