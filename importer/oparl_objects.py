@@ -480,6 +480,10 @@ class OParlObjects(OParlHelper):
 
         self.logger.info("Adding {} missing memberships".format(len(self.membership_queue)))
         for organization, libobject in self.membership_queue:
+            person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
+            if not person:
+                self.logger.warn("The person {} is missing".format(libobject.get_id()))
+                self.person(libobject.get_person())
             self.membership(organization, libobject)
 
         self.logger.info("Adding {} missing paper to consultations".format(len(self.consultation_paper_queue)))
