@@ -24,8 +24,8 @@ class File(DefaultFields):
     description = models.TextField(null=True, blank=True)
 
     # Store these values for we might need them for a proxy
-    oparl_access_url = models.CharField(max_length=255, null=True, blank=True)
-    oparl_download_url = models.CharField(max_length=255, null=True, blank=True)
+    oparl_access_url = models.CharField(max_length=512, null=True, blank=True)
+    oparl_download_url = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
         return self.displayed_filename
