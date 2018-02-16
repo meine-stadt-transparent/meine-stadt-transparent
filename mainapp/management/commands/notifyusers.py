@@ -9,8 +9,7 @@ from django.utils import timezone, translation
 from django.utils.translation import ugettext as _
 from html2text import html2text
 
-from mainapp.functions.search_tools import search_result_for_notification, \
-    search_string_to_params, MainappSearch
+from mainapp.functions.search_tools import search_result_for_notification, MainappSearch, parse_hit
 from mainapp.models import UserAlert
 
 
@@ -26,16 +25,12 @@ class Command(BaseCommand):
             else:
                 since = timezone.now() - datetime.timedelta(days=14)
 
-        params = search_string_to_params(alert.get_search_params())
+        params = alert.get_search_params()
         params["after"] = str(since)
         mainapp_search = MainappSearch(params)
 
-        results = []
         executed = mainapp_search.execute()
-        for hit in executed:
-            result = hit.to_dict()
-            result["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
-            results.append(result)
+        results = [parse_hit(hit) for hit in executed.hits]
 
         return results
 
@@ -96,6 +91,7 @@ class Command(BaseCommand):
 
         users = User.objects.all()
         for user in users:
+            print(user.email)
             if user.is_active:
                 # @TODO Filter users that have disabled notifications
                 self.notify_user(user, override_since, options['debug'])

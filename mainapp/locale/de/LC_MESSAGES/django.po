@@ -1256,7 +1256,7 @@ msgstr "Alle Sitzungen"
 
 #: mainapp/views/persons.py:91
 msgid "You will now receive notifications about new documents."
-msgstr "Sie werden nun über neue Dokumente informiert,"
+msgstr "Sie werden nun über neue Dokumente informiert."
 
 #: mainapp/views/persons.py:92 mainapp/views/search.py:53
 msgid "You will no longer receive notifications."
