@@ -12,8 +12,9 @@ SECURE_HSTS_PRELOAD = True
 # There might be deployments where a subdomain is still without https
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
-CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list('CSP_EXTRA_SCRIPT', []))
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com") + tuple(env.list('CSP_EXTRA_IMG', []))
+CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list('CSP_EXTRA_SCRIPT', default=[]))
+CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com") +\
+              tuple(env.list('CSP_EXTRA_IMG', default=[]))
 # Those are not covered by default-src
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
