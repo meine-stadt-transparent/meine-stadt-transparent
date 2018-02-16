@@ -1,8 +1,8 @@
-.infopage-container {
-  .infopage-title {
+.infopage {
+  > h1 {
     @extend .display-4;
   }
-  .infopage-header {
-    @extend .h4;
+  > h2 {
+    @extend .h3;
   }
 }

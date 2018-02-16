@@ -5,8 +5,8 @@
 {% block title %}{% trans "Feedback" %}{% endblock %}
 
 {% block content %}
-    <article class="container infopage-container">
-        <h1 class="infopage-title">{% trans "Feedback" %}</h1>
+    <article class="container infopage">
+        <h1>{% trans "Feedback" %}</h1>
         <p>{% blocktrans %}This is only meant for feedback on this website. For feedback on the contents of the
             documents please contact your local representatives.{% endblocktrans %}</p>
         <p><a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">{{ settings.TEMPLATE_META.contact_mail }}</a></p>

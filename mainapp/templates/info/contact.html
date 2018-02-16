@@ -7,8 +7,8 @@
 {% block title %}{% trans "Contact" context "Contact page title" %}{% endblock %}
 
 {% block content %}
-    <article class="container infopage-container">
-        <h1 class="infopage-title">{% trans "Contact" context "Contact page h1" %}</h1>
+    <article class="container infopage">
+        <h1>{% trans "Contact" context "Contact page h1" %}</h1>
         <p>{% trans "E-Mail" context "Contact page" %}:
             <a href="mailto:{{ settings.TEMPLATE_META.contact_mail }}">{{ settings.TEMPLATE_META.contact_mail }}</a>
         </p>

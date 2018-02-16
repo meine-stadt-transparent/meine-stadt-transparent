@@ -6,24 +6,24 @@
 {% block title %}{% trans "About this project" %}{% endblock %}
 
 {% block content %}
-    <article class="container infopage-container infopage-about">
-        <h1 class="infopage-title">Meine Stadt Transparent</h1>
+    <article class="container infopage infopage-about">
+        <h1>Meine Stadt Transparent</h1>
         <p class="about-mission pt-3">
             Wir wollen Stadtpolitik für alle verständlich machen. Meine Stadt Transparent ermöglicht es, die öffentlichen Informationen aus einem städtischen Ratsinformationssystem modern und benutzerfreundlich aufzubereiten. Die Software ist Open Source und kann von jedem genutzt und für beliebige Städte angepasst werden.
         </p>
 
-        <h2 class="infopage-header">Funktionalität</h2>
+        <h2>Funktionalität</h2>
         <p>Durch Meine Stadt Transparent erfahren Bürgerinnen und Bürger, wer für sie im Stadtrat sitzt, wann der Stadtrat tagt und welche Themen besprochen werden. Da alle Dokumente räumlich auf einer Karte verortet werden, sind leicht jene Themen erkennbar, die sich auf das unmittelbare Lebensumfeld beziehen.</p>
         <p>Großen Wert legen wir auf eine intuitiv und flexible Suche: Mit einer zentralen Suche lässt sich die gesamte Seite - Sitzungsvorlagen, Tagesordnungen, uvm. -  im Volltext durchsuchen, genauso wie gewählte Stadtratsmitglieder oder Ausschüsse. Um auch dauerhaft auf dem Laufenden zu bleiben, bietet „Meine Stadt Transparent“ verschiedene Anschlusspunkte: Nutzer können sich E-Mail-Benachrichtigungen anlegen, die über neue Dokumente zu abonnierten Suchbegriffen informiere. Termine und Terminreihen lassen sich per iCal in eigene Kalendersysteme einbetten, die aktuellen Dokumente lassen sich auch im eigenen RSS-Reader lesen.</p>
         <p>Vor allem aber ist „Meine Stadt Transparent“ - im Gegensatz zum Vorgängerprojekt „<a href="https://www.muenchen-transparent.de/">München Transparent</a>“ - von Anfang an darauf ausgelegt, in verschiedensten Städten eingesetzt zu werden: Aussehen, Sprache und Inhalte sind maximal flexibel gehalten und lassen sich leicht anpassen.</p>
         <p>Meine Stadt Transparent ist kein isoliertes System, sondern greift auf existierende Ratsinformationssysteme zurück, um von dort Daten automatisch zu beziehen und aufzubereiten. Die Verwaltung von Dokumenten erfolgt weiterhin über ein klassisches Ratsinformationssystem, zu dem Meine Stadt Transparent eine moderne Oberfläche bietet.</p>
 
-        <h2 class="infopage-header">Meine Stadt Transparent in weiteren Städten einsetzen</h2>
+        <h2>Meine Stadt Transparent in weiteren Städten einsetzen</h2>
         <p>Voraussetzung für die Einführung von Meine Stadt Transparent ist eine Schnittstelle („API“) zum bestehenden Ratsinformationssystem nach dem OParl-Standard. Diese Schnittstelle ermöglicht einen automatischen Datenabgleich ermöglicht und wird von mehreren Herstellern angeboten.</p>
         <p>Die Installation erfolgt auf einem eigenen Server (entweder mit Docker oder manuell). Genauere Informationen dazu finden sich auf unserer <a href="https://github.com/meine-stadt-transparent/meine-stadt-transparent">Github-Seite</a></p>
         <p>Gerne unterstützen wir bei der Einführung der Software in einer Stadt.</p>
 
-        <h2 class="infopage-header">Wer entwickelt Meine Stadt Transparent?</h2>
+        <h2>Wer entwickelt Meine Stadt Transparent?</h2>
         <p>Die Software wird von Konstantin Schütze [Links] und Tobias Hößl [Links] entwickelt, die beide vorher bereits „<a href="https://www.muenchen-transparent.de/">München Transparent</a>” entwickelt hatten. Die Grundsteine für dieses Projekt wurden Ende 2017 / Anfang 2018 im Rahmen des „<a href="https://prototypefund.de/">Prototype Fund</a>” gelegt, einer Initiative der <a href="https://okfn.de/">Open Knowledge Foundation</a> und des <a href="https://www.bmbf.de/">Bundesministeriums für Bildung und Forschung</a>.</p>
         <p>Wenn Sie mit uns Kontakt aufnehmen wollen, können Sie uns folgendermaßen kontaktieren:</p>
         <address class="pb-3">
@@ -37,7 +37,7 @@
         <p>www.meine-stadt-transparent.de demonstriert die Möglichkeiten der Software prototypisch am Beispiel der Stadt Jülich, die ihr Ratsinformationssystem im Rahmen der Open.NRW-Initiative offen im OParl-Format zur Verfügung gestellt hat.</p>
         <p>Dieses Projekt wird rein ehrenamtlich betrieben und ist kein offizielles Angebot der Stadt Jülich.</p>
 
-        <h2 class="infopage-header">Statistiken: Jülich</h2>
+        <h2>Statistiken: Jülich</h2>
         <dl>
             {% for key, value in stats.items %}
                 <div class="row">
