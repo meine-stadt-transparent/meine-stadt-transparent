@@ -1,7 +1,8 @@
 from django.db import models
+from django.utils.translation import ugettext as _
 from djgeojson.fields import GeometryField
 
-from .default_fields import DefaultFields, ShortableNameFields
+from .default_fields import DefaultFields
 
 
 class Location(DefaultFields):
@@ -14,7 +15,7 @@ class Location(DefaultFields):
     geometry = GeometryField(default=None)
 
     def __str__(self):
-        return self.short_description or self.description
+        return self.short_description or self.description or _("Unknown")
 
     def coordinates(self):
         if self.geometry and self.geometry['type'] == 'Point':
