@@ -156,11 +156,11 @@ USE_ELASTICSEARCH = env.bool('USE_ELASTICSEARCH', True)
 if USE_ELASTICSEARCH:
     INSTALLED_APPS.append('django_elasticsearch_dsl')
 
-ELASTICSEARCH_URL_PRIVATE = env.str('ELASTICSEARCH_URL_PRIVATE')
+ELASTICSEARCH_URL = env.str('ELASTICSEARCH_URL')
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': ELASTICSEARCH_URL_PRIVATE
+        'hosts': ELASTICSEARCH_URL
     },
 }
 

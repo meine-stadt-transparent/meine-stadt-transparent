@@ -5,7 +5,7 @@ MEDIA_ROOT=/media
 CACHE_ROOT=/cache
 STATIC_ROOT=/static
 
-ELASTICSEARCH_URL_PRIVATE=http://elastic:changeme@elasticsearch:9200/
+ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200/
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
 USE_ELASTICSEARCH=True
