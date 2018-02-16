@@ -18,28 +18,39 @@
             <h2 class="card-header">
                 {% trans 'Notifications' %}
             </h2>
-            <form method="post" class="card-body" action="{% url 'profile-home' %}">
-                {% csrf_token %}
-                {% if alerts|length > 0 %}
-                    <ul class="list-group">
-                        {% for alert in alerts %}
-                            <li class="list-group-item">
-                                <button type="submit" name="removenotification" value="{{ alert.id }}"
-                                        class="btn btn-outline-danger pull-right">
-                                    <span class="fa fa-remove"></span> {% trans 'Remove' %}
-                                </button>
 
-                                <a href="{% url 'search' query=alert.search_string %}" class="pull-left btn btn-light"><span class="fa fa-search"></span></a>
-                                {{ alert }}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="alert alert-info">
-                        {% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send you custom notifications. Just click the subscribe button on searches, persons or papers and we'll notify you via mail about any changes. You can even select an area on the map as basis for the notifications.{% endblocktrans %}
-                    </p>
-                {% endif %}
-            </form>
+            <div style="">{% if alerts|length > 0 %}
+                {# The flush allows us to reuse the card bodies border #}
+                <ul class="list-group list-group-flush">
+                    {% for alert in alerts %}
+                        <li class="list-group-item">
+                            <div class="pull-right d-flex">
+                                <a href="{% url 'search' query=alert.search_string %}"
+                                   class="btn btn-outline-primary mr-2">
+                                    <span class="fa fa-search" aria-hidden="true"></span>
+                                    <span>{% trans "Search" %}</span>
+                                </a>
+
+                                <form method="post" action="{% url 'profile-home' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" name="removenotification" value="{{ alert.id }}"
+                                            class="btn btn-outline-danger">
+                                        <span class="fa fa-remove"></span> {% trans 'Remove' %}
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="h-100 d-flex align-items-center">{{ alert }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="alert alert-info">
+                    {% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send
+                        you custom notifications. Just click the subscribe button on searches, persons or papers and
+                        we'll notify you via mail about any changes. You can even select an area on the map as basis for
+                        the notifications.{% endblocktrans %}
+                </p>
+            {% endif %}</div>
         </section>
 
         <section class="card mst-accountsettings mst-account-section">
