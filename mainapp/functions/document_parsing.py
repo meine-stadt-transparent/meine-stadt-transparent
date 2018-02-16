@@ -235,11 +235,11 @@ def extract_locations(text, fallback_city=None):
     for found_location in found_locations:
         location_name = format_location_name(found_location)
         try:
-            location = Location.objects.get(name=location_name)
+            location = Location.objects.get(description=location_name)
             locations.append(location)
         except Location.DoesNotExist:
             location = Location()
-            location.name = location_name
+            location.description = location_name
             location.short_name = location_name
             location.is_official = False
             location.osm_id = None  # @TODO

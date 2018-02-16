@@ -47,8 +47,8 @@ class Meeting(DefaultFields, ShortableNameFields):
         if self.end:
             event.add("dtend", timezone.localtime(self.end))
 
-        if self.location:
-            event.add("location", self.location.name)
+        if self.location and self.location.description:
+            event.add("location", self.location.description)
 
         if self.cancelled:
             event.add("method", "CANCEL")

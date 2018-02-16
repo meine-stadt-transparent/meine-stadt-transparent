@@ -1,5 +1,744 @@
 [
 {
+    "model": "mainapp.historicallocation",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2017-09-10T14:05:54.213Z",
+        "modified": "2017-09-10T14:06:17.065Z",
+        "deleted": false,
+        "description": "The place where frank lives. Somewhere in Washington D.C.",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "\"{\\\"coordinates\\\":[-77.04946875572205,38.95611336793506],\\\"type\\\":\\\"Point\\\"}\"",
+        "history_date": "2018-01-14T18:32:18.722Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicallocation",
+    "pk": 2,
+    "fields": {
+        "id": 2,
+        "oparl_id": null,
+        "created": "2017-09-10T14:25:19.417Z",
+        "modified": "2017-09-10T14:25:19.417Z",
+        "deleted": false,
+        "description": "",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "\"{\\\"coordinates\\\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\\\"type\\\":\\\"Polygon\\\"}\"",
+        "history_date": "2018-01-14T18:32:18.723Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicallocation",
+    "pk": 3,
+    "fields": {
+        "id": 3,
+        "oparl_id": null,
+        "created": "2017-09-10T14:27:34.693Z",
+        "modified": "2017-09-10T14:27:34.693Z",
+        "deleted": false,
+        "description": "That look kinda centerish enough for what is needed",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "\"{\\\"coordinates\\\":[-77.05016613006592,38.88931256197531],\\\"type\\\":\\\"Point\\\"}\"",
+        "history_date": "2018-01-14T18:32:18.723Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicallocation",
+    "pk": 4,
+    "fields": {
+        "id": 4,
+        "oparl_id": null,
+        "created": "2017-09-10T14:34:03.309Z",
+        "modified": "2017-09-10T14:34:03.309Z",
+        "deleted": false,
+        "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
+        "is_official": true,
+        "osm_id": null,
+        "geometry": "\"{\\\"coordinates\\\":[-77.00895667076111,38.889788561664936],\\\"type\\\":\\\"Point\\\"}\"",
+        "history_date": "2018-01-14T18:32:18.723Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:05:54.213Z",
+        "modified": "2017-09-10T14:06:17.065Z",
+        "deleted": false,
+        "description": "The place where frank lives. Somewhere in Washington D.C.",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:25:19.417Z",
+        "modified": "2017-09-10T14:25:19.417Z",
+        "deleted": false,
+        "description": "",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
+        "bodies": [
+            3
+        ]
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:27:34.693Z",
+        "modified": "2017-09-10T14:27:34.693Z",
+        "deleted": false,
+        "description": "That look kinda centerish enough for what is needed",
+        "is_official": false,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.location",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:34:03.309Z",
+        "modified": "2017-09-10T14:34:03.309Z",
+        "deleted": false,
+        "description": "The Captiol",
+        "is_official": true,
+        "osm_id": null,
+        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
+        "bodies": []
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:03.011Z",
+        "modified": "2017-09-10T14:12:03.011Z",
+        "deleted": false,
+        "name": "Frank Underwood",
+        "given_name": "Francis",
+        "family_name": "Underwood",
+        "location": 1,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 2,
+    "fields": {
+        "id": 2,
+        "oparl_id": null,
+        "created": "2017-09-10T14:19:22.326Z",
+        "modified": "2017-09-10T14:19:22.326Z",
+        "deleted": false,
+        "name": "Garrett Walker",
+        "given_name": "Garrett",
+        "family_name": "Walker",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 3,
+    "fields": {
+        "id": 3,
+        "oparl_id": null,
+        "created": "2017-09-10T14:31:29.297Z",
+        "modified": "2017-09-10T14:31:29.297Z",
+        "deleted": false,
+        "name": "Remy Danton",
+        "given_name": "Remy",
+        "family_name": "Danton",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 4,
+    "fields": {
+        "id": 4,
+        "oparl_id": null,
+        "created": "2017-09-10T16:26:49.060Z",
+        "modified": "2017-09-10T16:26:49.060Z",
+        "deleted": false,
+        "name": "Doug Stamper",
+        "given_name": "Doug",
+        "family_name": "Stamper",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 5,
+    "fields": {
+        "id": 5,
+        "oparl_id": null,
+        "created": "2017-09-10T16:35:57.250Z",
+        "modified": "2017-09-10T16:35:57.250Z",
+        "deleted": false,
+        "name": "Claire Underwood",
+        "given_name": "Claire",
+        "family_name": "Underwood",
+        "location": 1,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 6,
+    "fields": {
+        "id": 6,
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Jackie Sharp",
+        "given_name": "Jaqueline",
+        "family_name": "Sharp",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 7,
+    "fields": {
+        "id": 7,
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "William Conway",
+        "given_name": "William",
+        "family_name": "Conway",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 8,
+    "fields": {
+        "id": 8,
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Hector Mendoza",
+        "given_name": "Hector",
+        "family_name": "Mendoza",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.679Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 9,
+    "fields": {
+        "id": 9,
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Bob Birch",
+        "given_name": "Bob",
+        "family_name": "Birch",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.680Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalperson",
+    "pk": 10,
+    "fields": {
+        "id": 10,
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Peter Russo",
+        "given_name": "Peter",
+        "family_name": "Russo",
+        "location": null,
+        "history_date": "2018-01-14T18:32:18.680Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:12:03.011Z",
+        "modified": "2017-09-10T14:12:03.011Z",
+        "deleted": false,
+        "name": "Frank Underwood",
+        "given_name": "Francis",
+        "family_name": "Underwood",
+        "location": 1
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:19:22.326Z",
+        "modified": "2017-09-10T14:19:22.326Z",
+        "deleted": false,
+        "name": "Garrett Walker",
+        "given_name": "Garrett",
+        "family_name": "Walker",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T14:31:29.297Z",
+        "modified": "2017-09-10T14:31:29.297Z",
+        "deleted": false,
+        "name": "Remy Danton",
+        "given_name": "Remy",
+        "family_name": "Danton",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:26:49.060Z",
+        "modified": "2017-09-10T16:26:49.060Z",
+        "deleted": false,
+        "name": "Doug Stamper",
+        "given_name": "Doug",
+        "family_name": "Stamper",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:35:57.250Z",
+        "modified": "2017-09-10T16:35:57.250Z",
+        "deleted": false,
+        "name": "Claire Underwood",
+        "given_name": "Claire",
+        "family_name": "Underwood",
+        "location": 1
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 6,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Jackie Sharp",
+        "given_name": "Jaqueline",
+        "family_name": "Sharp",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 7,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "William Conway",
+        "given_name": "William",
+        "family_name": "Conway",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 8,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Hector Mendoza",
+        "given_name": "Hector",
+        "family_name": "Mendoza",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 9,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Bob Birch",
+        "given_name": "Bob",
+        "family_name": "Birch",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 10,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T08:58:30.934Z",
+        "modified": "2017-09-11T08:58:30.934Z",
+        "deleted": false,
+        "name": "Peter Russo",
+        "given_name": "Peter",
+        "family_name": "Russo",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Donald Knuth - The Complexity of Songs - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
+        "displayed_filename": "The Complexity of Songs.pdf",
+        "mime_type": "application/pdf",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 153996,
+        "page_count": null,
+        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
+        "license": null,
+        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "history_date": "2018-01-14T18:32:18.646Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 2,
+    "fields": {
+        "id": 2,
+        "oparl_id": null,
+        "created": "2017-09-10T16:47:54.207Z",
+        "modified": "2017-12-15T15:49:06.776Z",
+        "deleted": false,
+        "name": "File not downloaded",
+        "storage_filename": "File not downloaded",
+        "displayed_filename": "File not Downloaded.txt",
+        "mime_type": "File not downloaded",
+        "legal_date": "2017-09-12",
+        "sort_date": "2017-09-12T00:00:00Z",
+        "filesize": -1,
+        "page_count": null,
+        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
+        "license": null,
+        "description": "It's a plaintext file containing the results of overwhelming creativity.",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "history_date": "2018-01-14T18:32:18.647Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 3,
+    "fields": {
+        "id": 3,
+        "oparl_id": null,
+        "created": "2017-09-11T09:47:54.207Z",
+        "modified": "2017-12-15T15:17:02.307Z",
+        "deleted": false,
+        "name": "env-test",
+        "storage_filename": "env-test",
+        "displayed_filename": "env-test",
+        "mime_type": "unknown/unknown",
+        "legal_date": "2017-09-10",
+        "sort_date": "2017-09-10T00:00:00Z",
+        "filesize": 123,
+        "page_count": null,
+        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\r\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\r\n/ Diversity herbeigef\u00fchrt.\r\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\r\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\r\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\r\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\r\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\r\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\r\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\r\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\r\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\r\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\r\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\r\nKarlstr. 7, 76133\r\nKarlsruhe\r\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\r\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\r\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\r\nist daher gering.\r\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\r\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\r\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\r\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\r\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\r\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\r\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\r\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\r\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\r\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
+        "license": null,
+        "description": "It's a plaintext file containing some addresses for address recognition",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "history_date": "2018-01-14T18:32:18.647Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 4,
+    "fields": {
+        "id": 4,
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "A plain text test file.",
+        "storage_filename": "file.txt",
+        "displayed_filename": "file.txt",
+        "mime_type": "text/plain",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 49,
+        "page_count": null,
+        "parsed_text": "That's some content\n\nAnd here's even more content\r\n\r\nThis is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around.",
+        "license": null,
+        "description": "",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "history_date": "2018-01-14T18:32:18.647Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 5,
+    "fields": {
+        "id": 5,
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Some obligatory cat content.",
+        "storage_filename": "cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg",
+        "displayed_filename": "cat.jpg",
+        "mime_type": "image/jpeg",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 660565,
+        "page_count": null,
+        "parsed_text": "",
+        "license": "CC-BY-SA",
+        "description": "By Luigi Rosa",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "history_date": "2018-01-14T18:32:18.647Z",
+        "history_change_reason": null,
+        "history_user": null,
+        "history_type": ""
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Donald Knuth - The Complexity of Songs - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
+        "displayed_filename": "The Complexity of Songs.pdf",
+        "mime_type": "application/pdf",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 153996,
+        "page_count": null,
+        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
+        "license": null,
+        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 2,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:47:54.207Z",
+        "modified": "2017-12-15T15:49:06.776Z",
+        "deleted": false,
+        "name": "File not downloaded",
+        "storage_filename": "File not downloaded",
+        "displayed_filename": "File not Downloaded.txt",
+        "mime_type": "File not downloaded",
+        "legal_date": "2017-09-12",
+        "sort_date": "2017-09-12T00:00:00Z",
+        "filesize": -1,
+        "page_count": null,
+        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
+        "license": null,
+        "description": "It's a plaintext file containing the results of overwhelming creativity.",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 3,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-11T09:47:54.207Z",
+        "modified": "2017-12-15T15:17:02.307Z",
+        "deleted": false,
+        "name": "env-test",
+        "storage_filename": "env-test",
+        "displayed_filename": "env-test",
+        "mime_type": "unknown/unknown",
+        "legal_date": "2017-09-10",
+        "sort_date": "2017-09-10T00:00:00Z",
+        "filesize": 123,
+        "page_count": null,
+        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\r\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\r\n/ Diversity herbeigef\u00fchrt.\r\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\r\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\r\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\r\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\r\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\r\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\r\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\r\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\r\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\r\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\r\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\r\nKarlstr. 7, 76133\r\nKarlsruhe\r\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\r\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\r\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\r\nist daher gering.\r\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\r\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\r\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\r\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\r\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\r\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\r\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\r\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\r\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\r\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
+        "license": null,
+        "description": "It's a plaintext file containing some addresses for address recognition",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": [
+            1
+        ]
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 4,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "A plain text test file.",
+        "storage_filename": "file.txt",
+        "displayed_filename": "file.txt",
+        "mime_type": "text/plain",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 49,
+        "page_count": null,
+        "parsed_text": "That's some content\n\nAnd here's even more content\r\n\r\nThis is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around.",
+        "license": null,
+        "description": "",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": []
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 5,
+    "fields": {
+        "oparl_id": null,
+        "created": "2017-09-10T16:44:54.977Z",
+        "modified": "2017-12-15T15:06:00.887Z",
+        "deleted": false,
+        "name": "Some obligatory cat content.",
+        "storage_filename": "cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg",
+        "displayed_filename": "cat.jpg",
+        "mime_type": "image/jpeg",
+        "legal_date": "1984-04-01",
+        "sort_date": "1984-04-01T00:00:00Z",
+        "filesize": 660565,
+        "page_count": null,
+        "parsed_text": "",
+        "license": "CC-BY-SA",
+        "description": "By Luigi Rosa",
+        "oparl_access_url": null,
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": []
+    }
+},
+{
     "model": "mainapp.historicallegislativeterm",
     "pk": 1,
     "fields": {
@@ -63,160 +802,6 @@
         "short_name": "43th Term",
         "start": "2017-01-01",
         "end": "2020-12-31"
-    }
-},
-{
-    "model": "mainapp.historicallocation",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "oparl_id": null,
-        "created": "2017-09-10T14:05:54.213Z",
-        "modified": "2017-09-10T14:06:17.065Z",
-        "deleted": false,
-        "name": "Francis Underwood's House",
-        "short_name": "Frank's Home",
-        "description": "The place where frank lives. Somewhere in Washington D.C.",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "\"{\\\"coordinates\\\":[-77.04946875572205,38.95611336793506],\\\"type\\\":\\\"Point\\\"}\"",
-        "history_date": "2018-01-14T18:32:18.722Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicallocation",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "oparl_id": null,
-        "created": "2017-09-10T14:25:19.417Z",
-        "modified": "2017-09-10T14:25:19.417Z",
-        "deleted": false,
-        "name": "Badly drawn outline of Washington",
-        "short_name": "Bad outline of Washington",
-        "description": "",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "\"{\\\"coordinates\\\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\\\"type\\\":\\\"Polygon\\\"}\"",
-        "history_date": "2018-01-14T18:32:18.723Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicallocation",
-    "pk": 3,
-    "fields": {
-        "id": 3,
-        "oparl_id": null,
-        "created": "2017-09-10T14:27:34.693Z",
-        "modified": "2017-09-10T14:27:34.693Z",
-        "deleted": false,
-        "name": "Lincoln Memorial in Washington D.C.",
-        "short_name": "Lincoln Memorial",
-        "description": "That look kinda centerish enough for what is needed",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "\"{\\\"coordinates\\\":[-77.05016613006592,38.88931256197531],\\\"type\\\":\\\"Point\\\"}\"",
-        "history_date": "2018-01-14T18:32:18.723Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicallocation",
-    "pk": 4,
-    "fields": {
-        "id": 4,
-        "oparl_id": null,
-        "created": "2017-09-10T14:34:03.309Z",
-        "modified": "2017-09-10T14:34:03.309Z",
-        "deleted": false,
-        "name": "The Captiol",
-        "short_name": "Capitol",
-        "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
-        "is_official": true,
-        "osm_id": null,
-        "geometry": "\"{\\\"coordinates\\\":[-77.00895667076111,38.889788561664936],\\\"type\\\":\\\"Point\\\"}\"",
-        "history_date": "2018-01-14T18:32:18.723Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.location",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:05:54.213Z",
-        "modified": "2017-09-10T14:06:17.065Z",
-        "deleted": false,
-        "name": "Francis Underwood's House",
-        "short_name": "Frank's Home",
-        "description": "The place where frank lives. Somewhere in Washington D.C.",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.04946875572205,38.95611336793506],\"type\":\"Point\"}",
-        "bodies": []
-    }
-},
-{
-    "model": "mainapp.location",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:25:19.417Z",
-        "modified": "2017-09-10T14:25:19.417Z",
-        "deleted": false,
-        "name": "Badly drawn outline of Washington",
-        "short_name": "Bad outline of Washington",
-        "description": "",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "{\"coordinates\":[[[-77.11990356445312,38.93163900447185],[-77.04231262207031,38.86858260508894],[-77.04093933105469,38.789950986265666],[-76.90635681152344,38.89103282648846],[-77.04093933105469,38.99517305687678],[-77.11990356445312,38.93163900447185]]],\"type\":\"Polygon\"}",
-        "bodies": [
-            3
-        ]
-    }
-},
-{
-    "model": "mainapp.location",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:27:34.693Z",
-        "modified": "2017-09-10T14:27:34.693Z",
-        "deleted": false,
-        "name": "Lincoln Memorial in Washington D.C.",
-        "short_name": "Lincoln Memorial",
-        "description": "That look kinda centerish enough for what is needed",
-        "is_official": false,
-        "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.05016613006592,38.88931256197531],\"type\":\"Point\"}",
-        "bodies": []
-    }
-},
-{
-    "model": "mainapp.location",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:34:03.309Z",
-        "modified": "2017-09-10T14:34:03.309Z",
-        "deleted": false,
-        "name": "The Captiol",
-        "short_name": "Capitol",
-        "description": "{\r\n        \"type\": \"Point\",\r\n        \"coordinates\": [\r\n          -77.00895667076111,\r\n          38.889788561664936\r\n        ]\r\n      }",
-        "is_official": true,
-        "osm_id": null,
-        "geometry": "{\"coordinates\":[-77.00895667076111,38.889788561664936],\"type\":\"Point\"}",
-        "bodies": []
     }
 },
 {
@@ -689,587 +1274,6 @@
         "legislative_terms": [
             1
         ]
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:03.011Z",
-        "modified": "2017-09-10T14:12:03.011Z",
-        "deleted": false,
-        "name": "Frank Underwood",
-        "given_name": "Francis",
-        "family_name": "Underwood",
-        "location": 1,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "oparl_id": null,
-        "created": "2017-09-10T14:19:22.326Z",
-        "modified": "2017-09-10T14:19:22.326Z",
-        "deleted": false,
-        "name": "Garrett Walker",
-        "given_name": "Garrett",
-        "family_name": "Walker",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 3,
-    "fields": {
-        "id": 3,
-        "oparl_id": null,
-        "created": "2017-09-10T14:31:29.297Z",
-        "modified": "2017-09-10T14:31:29.297Z",
-        "deleted": false,
-        "name": "Remy Danton",
-        "given_name": "Remy",
-        "family_name": "Danton",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 4,
-    "fields": {
-        "id": 4,
-        "oparl_id": null,
-        "created": "2017-09-10T16:26:49.060Z",
-        "modified": "2017-09-10T16:26:49.060Z",
-        "deleted": false,
-        "name": "Doug Stamper",
-        "given_name": "Doug",
-        "family_name": "Stamper",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 5,
-    "fields": {
-        "id": 5,
-        "oparl_id": null,
-        "created": "2017-09-10T16:35:57.250Z",
-        "modified": "2017-09-10T16:35:57.250Z",
-        "deleted": false,
-        "name": "Claire Underwood",
-        "given_name": "Claire",
-        "family_name": "Underwood",
-        "location": 1,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 6,
-    "fields": {
-        "id": 6,
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Jackie Sharp",
-        "given_name": "Jaqueline",
-        "family_name": "Sharp",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 7,
-    "fields": {
-        "id": 7,
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "William Conway",
-        "given_name": "William",
-        "family_name": "Conway",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 8,
-    "fields": {
-        "id": 8,
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Hector Mendoza",
-        "given_name": "Hector",
-        "family_name": "Mendoza",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.679Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 9,
-    "fields": {
-        "id": 9,
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Bob Birch",
-        "given_name": "Bob",
-        "family_name": "Birch",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.680Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalperson",
-    "pk": 10,
-    "fields": {
-        "id": 10,
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Peter Russo",
-        "given_name": "Peter",
-        "family_name": "Russo",
-        "location": null,
-        "history_date": "2018-01-14T18:32:18.680Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:12:03.011Z",
-        "modified": "2017-09-10T14:12:03.011Z",
-        "deleted": false,
-        "name": "Frank Underwood",
-        "given_name": "Francis",
-        "family_name": "Underwood",
-        "location": 1
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:19:22.326Z",
-        "modified": "2017-09-10T14:19:22.326Z",
-        "deleted": false,
-        "name": "Garrett Walker",
-        "given_name": "Garrett",
-        "family_name": "Walker",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T14:31:29.297Z",
-        "modified": "2017-09-10T14:31:29.297Z",
-        "deleted": false,
-        "name": "Remy Danton",
-        "given_name": "Remy",
-        "family_name": "Danton",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:26:49.060Z",
-        "modified": "2017-09-10T16:26:49.060Z",
-        "deleted": false,
-        "name": "Doug Stamper",
-        "given_name": "Doug",
-        "family_name": "Stamper",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 5,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:35:57.250Z",
-        "modified": "2017-09-10T16:35:57.250Z",
-        "deleted": false,
-        "name": "Claire Underwood",
-        "given_name": "Claire",
-        "family_name": "Underwood",
-        "location": 1
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 6,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Jackie Sharp",
-        "given_name": "Jaqueline",
-        "family_name": "Sharp",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 7,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "William Conway",
-        "given_name": "William",
-        "family_name": "Conway",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 8,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Hector Mendoza",
-        "given_name": "Hector",
-        "family_name": "Mendoza",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 9,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Bob Birch",
-        "given_name": "Bob",
-        "family_name": "Birch",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.person",
-    "pk": 10,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T08:58:30.934Z",
-        "modified": "2017-09-11T08:58:30.934Z",
-        "deleted": false,
-        "name": "Peter Russo",
-        "given_name": "Peter",
-        "family_name": "Russo",
-        "location": null
-    }
-},
-{
-    "model": "mainapp.historicalfile",
-    "pk": 1,
-    "fields": {
-        "id": 1,
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "Donald Knuth - The Complexity of Songs - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
-        "displayed_filename": "The Complexity of Songs.pdf",
-        "mime_type": "application/pdf",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 153996,
-        "page_count": null,
-        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
-        "license": null,
-        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
-        "history_date": "2018-01-14T18:32:18.646Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalfile",
-    "pk": 2,
-    "fields": {
-        "id": 2,
-        "oparl_id": null,
-        "created": "2017-09-10T16:47:54.207Z",
-        "modified": "2017-12-15T15:49:06.776Z",
-        "deleted": false,
-        "name": "File not downloaded",
-        "storage_filename": "File not downloaded",
-        "displayed_filename": "File not Downloaded.txt",
-        "mime_type": "File not downloaded",
-        "legal_date": "2017-09-12",
-        "sort_date": "2017-09-12T00:00:00Z",
-        "filesize": -1,
-        "page_count": null,
-        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
-        "license": null,
-        "description": "It's a plaintext file containing the results of overwhelming creativity.",
-        "history_date": "2018-01-14T18:32:18.647Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalfile",
-    "pk": 3,
-    "fields": {
-        "id": 3,
-        "oparl_id": null,
-        "created": "2017-09-11T09:47:54.207Z",
-        "modified": "2017-12-15T15:17:02.307Z",
-        "deleted": false,
-        "name": "env-test",
-        "storage_filename": "env-test",
-        "displayed_filename": "env-test",
-        "mime_type": "unknown/unknown",
-        "legal_date": "2017-09-10",
-        "sort_date": "2017-09-10T00:00:00Z",
-        "filesize": 123,
-        "page_count": null,
-        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\r\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\r\n/ Diversity herbeigef\u00fchrt.\r\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\r\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\r\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\r\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\r\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\r\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\r\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\r\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\r\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\r\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\r\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\r\nKarlstr. 7, 76133\r\nKarlsruhe\r\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\r\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\r\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\r\nist daher gering.\r\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\r\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\r\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\r\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\r\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\r\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\r\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\r\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\r\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\r\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
-        "license": null,
-        "description": "It's a plaintext file containing some addresses for address recognition",
-        "history_date": "2018-01-14T18:32:18.647Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalfile",
-    "pk": 4,
-    "fields": {
-        "id": 4,
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "A plain text test file.",
-        "storage_filename": "file.txt",
-        "displayed_filename": "file.txt",
-        "mime_type": "text/plain",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 49,
-        "page_count": null,
-        "parsed_text": "That's some content\n\nAnd here's even more content\r\n\r\nThis is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around.",
-        "license": null,
-        "description": "",
-        "history_date": "2018-01-14T18:32:18.647Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.historicalfile",
-    "pk": 5,
-    "fields": {
-        "id": 5,
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "Some obligatory cat content.",
-        "storage_filename": "cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg",
-        "displayed_filename": "cat.jpg",
-        "mime_type": "image/jpeg",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 660565,
-        "page_count": null,
-        "parsed_text": "",
-        "license": "CC-BY-SA",
-        "description": "By Luigi Rosa",
-        "history_date": "2018-01-14T18:32:18.647Z",
-        "history_change_reason": null,
-        "history_user": null,
-        "history_type": ""
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 1,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "Donald Knuth - The Complexity of Songs - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        "storage_filename": "Donald Knuth - The Complexity of Songs.pdf",
-        "displayed_filename": "The Complexity of Songs.pdf",
-        "mime_type": "application/pdf",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 153996,
-        "page_count": null,
-        "parsed_text": "LEMMA 1.\r\nLet S be a song containing m verses of length V and a\r\nrefrain of length R where the refrain is to be sung first,\r\nlast, and between adjacent verses. Then, the space\r\ncomplexity of S is ( V / ( V + R)) n + O(1) for fixed V\r\nand R as m ~ oo.\r\nPROOF.\r\nT h e l e n g t h of S when s u n g i s\r\nn =R+(V+R)m\r\n(1)\r\nwhile its space complexity is\r\nc = R + Vm.\r\n(2)\r\nThe research reported here was supported in part by the National Institute of\r\nWealth under grant $262,144.\r\n\u00a91984ACMO001-0782/84/0400-0344 75\u00a2\r\n344\r\nCommunications of the ACM\r\nBy the Distributive Law and the Commutative Law [4],\r\nwe have\r\nc= n-\r\n= n-\r\n(V+R)m + mV\r\nVm-Rm + Vm\r\n(3)\r\n=n-Rm.\r\nThe lemma follows.\r\n[3",
-        "license": null,
-        "description": "Every day brings new evidence that the concepts of\r\ncomputer science are applicable to areas of life which\r\nhave little or nothing to do with computers. The pur-\r\npose of this survey paper is to demonstrate that impor-\r\ntant aspects of popular songs are best understood in\r\nterms of modern complexity theory.\r\nIt is known [3] that almost all songs of length n re-\r\nquire a text of length ~ n. But this puts a considerable\r\nspace requirement on one's memory if many songs are\r\nto be learned; hence, our ancient ancestors invented\r\nthe concept of a refrain [14]. When the song has a\r\nrefrain, its space complexity can be reduced to cn,\r\nwhere c < 1 as shown by the following lemma.",
-        "locations": [],
-        "mentioned_persons": [
-            1
-        ]
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 2,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:47:54.207Z",
-        "modified": "2017-12-15T15:49:06.776Z",
-        "deleted": false,
-        "name": "File not downloaded",
-        "storage_filename": "File not downloaded",
-        "displayed_filename": "File not Downloaded.txt",
-        "mime_type": "File not downloaded",
-        "legal_date": "2017-09-12",
-        "sort_date": "2017-09-12T00:00:00Z",
-        "filesize": -1,
-        "page_count": null,
-        "parsed_text": "That's some content\r\n\r\nAnd here's even more content",
-        "license": null,
-        "description": "It's a plaintext file containing the results of overwhelming creativity.",
-        "locations": [],
-        "mentioned_persons": [
-            1
-        ]
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 3,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-11T09:47:54.207Z",
-        "modified": "2017-12-15T15:17:02.307Z",
-        "deleted": false,
-        "name": "env-test",
-        "storage_filename": "env-test",
-        "displayed_filename": "env-test",
-        "mime_type": "unknown/unknown",
-        "legal_date": "2017-09-10",
-        "sort_date": "2017-09-10T00:00:00Z",
-        "filesize": 123,
-        "page_count": null,
-        "parsed_text": "Das RPA hat bem\u00e4ngelt, dass das Bauwerk nicht barrierefrei ist und auch nach der Sanierung nicht\r\nbarrierefrei sein wird. Aus diesem Grund wurde eine Abstimmung mit der Fachstelle Behindertenpolitik\r\n/ Diversity herbeigef\u00fchrt.\r\nDie Rampe ist Teil der Fu\u00dfg\u00e4ngerroute entlang der Tel-Aviv-Stra\u00dfe zwischen der Mengelbergstra\u00dfe\r\nim Norden und der Ankerstra\u00dfe im S\u00fcden. Zwischen diesen beiden Stra\u00dfeneinm\u00fcndungen gibt es\r\nzwei Abzweigungen von der Fu\u00dfg\u00e4ngerroute, die beide nicht barrierefrei ausgebaut sind:\r\nDie oberirdische Stadtbahnhaltestelle Severinstra\u00dfe ist \u00fcber Treppen zu erreichen. Ein barrierefreier\r\nUm- bzw. Neubau ist aus Platzgr\u00fcnden nicht m\u00f6glich. Der Zugang von der Tel-AvivStra\u00dfe\r\nzur Stadtbahn bleibt somit dauerhaft nicht barrierefrei.\r\nDer \u00f6stlich der Tel-Aviv-Stra\u00dfe 12 befindliche Karl-Berbuer-Platz ist durch eine Unterf\u00fchrung und\r\neine Fu\u00dfg\u00e4ngerbr\u00fccke mit 12% Neigung mit der Fu\u00dfg\u00e4ngerroute verkn\u00fcpft. Durch einen Neubau\r\nder Fu\u00dfg\u00e4ngerbr\u00fccke k\u00f6nnte die Neigung auf rund 10% reduziert werden. Aufgrund der\r\ngeometrischen Rahmenbedingungen ist jedoch langfristig keine weitere Reduzierung der Neigung\r\nm\u00f6glich und somit auch keine Barrierefreiheit herstellbar.\r\nKarlstr. 7, 76133\r\nKarlsruhe\r\nEin barrierefreier Neubau der Rampe w\u00fcrde damit lediglich den mobilit\u00e4tseingeschr\u00e4nkten Fu\u00dfg\u00e4ngerverkehren\r\nzugutekommen, die die Mengelbergstra\u00dfe und die Ankerstra\u00dfe passieren/queren m\u00fcssen,\r\nda die beiden Abzweige dazwischen dauerhaft nicht barrierefrei werden. Die verkehrliche Bedeutung\r\nist daher gering.\r\nDie aktuelle Routenl\u00e4nge zwischen den Einm\u00fcndungen Tel-Aviv-Stra\u00dfe/Mengelbergstra\u00dfe und TelAviv-Stra\u00dfe/Ankerstra\u00dfe\r\nbetr\u00e4gt 360 m. Eine alternative, zuk\u00fcnftig barrierefreie Fu\u00dfg\u00e4ngerroute \u00fcber\r\nAnkerstra\u00dfe, Wilhelm-Ho\u00dfdorf-Stra\u00dfe, Friedenstra\u00dfe 10, 80689 M\u00fcnchen, Perlengraben und Mengelbergstra\u00dfe hat die\r\nL\u00e4nge von 410 m. Der Umweg betr\u00e4gt somit nur 50 m.Wenn die Rampe trotzdem barrierefrei mit 6%\r\nNeigung und Zwischenpodesten konstruiert werden w\u00fcrde, k\u00f6nnte sie auf den ca. 67 m zwischen\r\ndem oberen Rampenbeginn und der Unterf\u00fchrung unter dem Dreiviertelkreisbogen (Ohr) rund 3,20 m\r\nH\u00f6he abbauen. Der tats\u00e4chliche H\u00f6henunterschied zwischen diesen beiden Punkten betr\u00e4gt jedoch\r\nweit \u00fcber 4 m. Statt einer geradlinigen F\u00fchrung der Rampe w\u00e4re eine gewendelte Rampe mit engen\r\nKurven und einer umfangreicheren Versiegelung der vorhandenen Gr\u00fcnanlage notwendig. Au\u00dferdem\r\nw\u00e4ren mehrere B\u00e4ume zu f\u00e4llen.",
-        "license": null,
-        "description": "It's a plaintext file containing some addresses for address recognition",
-        "locations": [],
-        "mentioned_persons": [
-            1
-        ]
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 4,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "A plain text test file.",
-        "storage_filename": "file.txt",
-        "displayed_filename": "file.txt",
-        "mime_type": "text/plain",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 49,
-        "page_count": null,
-        "parsed_text": "That's some content\n\nAnd here's even more content\r\n\r\nThis is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around. This is a very long line that will surely be broken around.",
-        "license": null,
-        "description": "",
-        "locations": [],
-        "mentioned_persons": []
-    }
-},
-{
-    "model": "mainapp.file",
-    "pk": 5,
-    "fields": {
-        "oparl_id": null,
-        "created": "2017-09-10T16:44:54.977Z",
-        "modified": "2017-12-15T15:06:00.887Z",
-        "deleted": false,
-        "name": "Some obligatory cat content.",
-        "storage_filename": "cat_facepalm_cc_by_sa_luigi_rosa_resized.jpg",
-        "displayed_filename": "cat.jpg",
-        "mime_type": "image/jpeg",
-        "legal_date": "1984-04-01",
-        "sort_date": "1984-04-01T00:00:00Z",
-        "filesize": 660565,
-        "page_count": null,
-        "parsed_text": "",
-        "license": "CC-BY-SA",
-        "description": "By Luigi Rosa",
-        "locations": [],
-        "mentioned_persons": []
     }
 },
 {
@@ -2134,6 +2138,7 @@
         "resolution_file": 1,
         "history_date": "2018-01-19T10:58:41.930Z",
         "history_change_reason": null,
+        "history_user": null,
         "history_type": "~"
     }
 },

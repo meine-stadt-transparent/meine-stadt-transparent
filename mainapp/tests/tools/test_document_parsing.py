@@ -56,7 +56,7 @@ class TestDocumentParsing(TestCase):
         locations = extract_locations(file.parsed_text, 'Köln')
         location_names = []
         for location in locations:
-            location_names.append(location.name)
+            location_names.append(location.description)
 
         self.assertTrue('Tel-Aviv-Straße' in location_names)
         self.assertTrue('Tel-Aviv-Straße 12' in location_names)
