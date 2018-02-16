@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-16 11:30+0100\n"
+"POT-Creation-Date: 2018-02-16 16:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,54 +71,58 @@ msgstr "Personen"
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/functions/search_tools.py:252
+#: mainapp/functions/search_tools.py:253
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: mainapp/functions/search_tools.py:257
+#: mainapp/functions/search_tools.py:258
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: mainapp/functions/search_tools.py:262
+#: mainapp/functions/search_tools.py:263
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: mainapp/functions/search_tools.py:267
+#: mainapp/functions/search_tools.py:268
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: mainapp/functions/search_tools.py:272
+#: mainapp/functions/search_tools.py:273
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: mainapp/functions/search_tools.py:276
+#: mainapp/functions/search_tools.py:277
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: mainapp/functions/search_tools.py:281
+#: mainapp/functions/search_tools.py:282
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: mainapp/functions/search_tools.py:285
+#: mainapp/functions/search_tools.py:286
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: mainapp/functions/search_tools.py:287
+#: mainapp/functions/search_tools.py:288
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/management/commands/notifyusers.py:74
+#: mainapp/management/commands/notifyusers.py:40
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
+
+#: mainapp/models/location.py:22
+msgid "Unknown"
+msgstr "Unbekannt"
 
 #: mainapp/models/organization.py:12
 msgctxt "Document Type Name"
@@ -164,7 +168,7 @@ msgstr "Profil"
 
 #: mainapp/templates/account/delete.html:4
 #: mainapp/templates/account/delete.html:5
-#: mainapp/templates/account/home.html:61
+#: mainapp/templates/account/home.html:72
 msgid "Delete account"
 msgstr "Account löschen"
 
@@ -224,7 +228,7 @@ msgid "Re-send Verification"
 msgstr "E-Mail-Bestätigung erneut schicken"
 
 #: mainapp/templates/account/email.html:47
-#: mainapp/templates/account/home.html:29
+#: mainapp/templates/account/home.html:38
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -303,13 +307,26 @@ msgstr "Jetzt bestätigen"
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
-#: mainapp/templates/account/home.html:39
-#, python-format
+#: mainapp/templates/account/home.html:31
+#| msgctxt "perform search"
+#| msgid "Search"
+msgid "Search"
+msgstr "Suchen"
+
+#: mainapp/templates/account/home.html:48
+#, fuzzy, python-format
+#| msgid ""
+#| "%(product_name)s can send you custom notifications. Just click the "
+#| "subscribe button on searches, persons or papers and we'll notify you via "
+#| "mail about any changes. You can even select an area on the map as basis "
+#| "for the notifications."
 msgid ""
-"%(product_name)s can send you custom notifications. Just click the subscribe "
-"button on searches, persons or papers and we'll notify you via mail about "
-"any changes. You can even select an area on the map as basis for the "
-"notifications."
+"%(product_name)s can send\n"
+"                        you custom notifications. Just click the subscribe "
+"button on searches, persons or papers and\n"
+"                        we'll notify you via mail about any changes. You can "
+"even select an area on the map as basis for\n"
+"                        the notifications."
 msgstr ""
 "%(product_name)s kann ihnen personalisierte Benachrichtigungen senden. "
 "Einfach bei einer Suche, einer Person oder einem Dokument auf "
@@ -317,19 +334,19 @@ msgstr ""
 "wenn es Neuigkeiten gibt. Sie können sogar einen Bereich auf der Karte als "
 "Grundlage für die Benachrichtigungen wählen."
 
-#: mainapp/templates/account/home.html:47
+#: mainapp/templates/account/home.html:58
 msgid "Account Settings"
 msgstr "Account-Einstellungen"
 
-#: mainapp/templates/account/home.html:51
+#: mainapp/templates/account/home.html:62
 msgid "Manage email addresses"
 msgstr "E-Mail-Adressen verwalten"
 
-#: mainapp/templates/account/home.html:53
+#: mainapp/templates/account/home.html:64
 msgid "Edit email"
 msgstr "E-Mail-Adresse bearbeiten"
 
-#: mainapp/templates/account/home.html:57
+#: mainapp/templates/account/home.html:68
 #: mainapp/templates/partials/base_navbar_mainmenu.html:38
 msgid "Change your password"
 msgstr "Passwort ändern"
@@ -490,10 +507,27 @@ msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
 
-#: mainapp/templates/email/user-alert.html:106
-msgctxt "email-new-documents"
-msgid "Notification"
-msgstr "Benachrichtigungen"
+#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/partials/base_footer.html:7
+msgctxt "navigation"
+msgid "Contact"
+msgstr "Kontakt"
+
+#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/partials/base_footer.html:12
+msgctxt "navigation"
+msgid "Privacy Policy"
+msgstr "Datenschutz"
+
+#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/partials/base_footer.html:17
+msgctxt "navigation"
+msgid "Feedback"
+msgstr "Feedback"
+
+#: mainapp/templates/email/user-alert.html:129
+msgid "Unsubscribe / Manage your e-mail notifications"
+msgstr ""
 
 #: mainapp/templates/error/404.html:6
 msgid "Not Found"
@@ -593,11 +627,11 @@ msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
 #: mainapp/templates/mainapp/file/info_sm.html:48
-#: mainapp/templates/mainapp/meeting.html:141
+#: mainapp/templates/mainapp/meeting.html:142
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/templates/mainapp/file/info_lg.html:16 mainapp/views/meeting.py:138
+#: mainapp/templates/mainapp/file/info_lg.html:15 mainapp/views/meeting.py:138
 msgid "Meeting"
 msgstr "Sitzung"
 
@@ -763,43 +797,43 @@ msgstr "Folgende Sitzung"
 msgid "Place of the meeting"
 msgstr "Ort der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:63
+#: mainapp/templates/mainapp/meeting.html:64
 msgid "Time of the Meeting"
 msgstr "Zeitpunkt der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:68
+#: mainapp/templates/mainapp/meeting.html:69
 msgid "Main organization of the meeting"
 msgstr "Träger der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:78
+#: mainapp/templates/mainapp/meeting.html:79
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: mainapp/templates/mainapp/meeting.html:85
+#: mainapp/templates/mainapp/meeting.html:86
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: mainapp/templates/mainapp/meeting.html:88
+#: mainapp/templates/mainapp/meeting.html:89
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: mainapp/templates/mainapp/meeting.html:94
+#: mainapp/templates/mainapp/meeting.html:95
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: mainapp/templates/mainapp/meeting.html:100
+#: mainapp/templates/mainapp/meeting.html:101
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:106
+#: mainapp/templates/mainapp/meeting.html:107
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:124
+#: mainapp/templates/mainapp/meeting.html:125
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: mainapp/templates/mainapp/meeting.html:151
+#: mainapp/templates/mainapp/meeting.html:152
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
@@ -1089,21 +1123,6 @@ msgctxt "search_form"
 msgid "Oldest first"
 msgstr "Älteste zuerst"
 
-#: mainapp/templates/partials/base_footer.html:7
-msgctxt "navigation"
-msgid "Contact"
-msgstr "Kontakt"
-
-#: mainapp/templates/partials/base_footer.html:12
-msgctxt "navigation"
-msgid "Privacy Policy"
-msgstr "Datenschutz"
-
-#: mainapp/templates/partials/base_footer.html:17
-msgctxt "navigation"
-msgid "Feedback"
-msgstr ""
-
 #: mainapp/templates/partials/base_footer.html:24
 msgid "is a private project and not authorized by any city council"
 msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
@@ -1190,19 +1209,19 @@ msgstr " - "
 msgid "Since "
 msgstr "Seit "
 
-#: mainapp/templates/partials/subscribe_widget.html:8
+#: mainapp/templates/partials/subscribe_widget.html:10
 msgid "You receive updates"
 msgstr "Benachrichtigungen aktiv"
 
-#: mainapp/templates/partials/subscribe_widget.html:10
+#: mainapp/templates/partials/subscribe_widget.html:13
 msgid "Unsubscribe"
 msgstr "Deaktivieren"
 
-#: mainapp/templates/partials/subscribe_widget.html:14
+#: mainapp/templates/partials/subscribe_widget.html:18
 msgid "Get notified about new documents"
 msgstr "Über neue Dokumente informiert werden"
 
-#: mainapp/templates/partials/subscribe_widget.html:15
+#: mainapp/templates/partials/subscribe_widget.html:19
 msgid "Subscribe"
 msgstr "Benachrichtigungen abonnieren"
 
@@ -1279,6 +1298,10 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 #: mainapp/views/search.py:145
 msgid "search disabled"
 msgstr "Suche deaktiviert"
+
+#~ msgctxt "email-new-documents"
+#~ msgid "Notification"
+#~ msgstr "Benachrichtigungen"
 
 #~ msgid "Documents in this paper"
 #~ msgstr "Dokumente in dieser Vorlage"
