@@ -4,10 +4,14 @@
     <form method="POST">
         {% csrf_token %}
         {% if is_subscribed %}
-            <span class="subscribed-icon fa fa-check"></span>
-            <span class="subscribed-str">{% trans "You receive updates" %}</span>
-            <button class="btn btn-secondary btn-sm" name="unsubscribe" value="unsubscribe">
-                <span class="fa fa-minus"></span> {% trans "Unsubscribe" %}
+            <button class="btn btn-unsubscribe btn-sm" name="unsubscribe" value="unsubscribe">
+                <span class="display-when-not-hovered">
+                    <span class="subscribed-icon fa fa-check"></span>
+                    <span class="subscribed-str">{% trans "You receive updates" %}</span>
+                </span>
+                <span class="display-when-hovered">
+                    <span class="fa fa-minus"></span> {% trans "Unsubscribe" %}
+                </span>
             </button>
         {% else %}
             <button class="btn btn-primary btn-sm" name="subscribe" value="subscribe"

@@ -11,3 +11,29 @@
     margin-right: 10px;
   }
 }
+
+.btn-unsubscribe {
+  min-width: 200px; // Avoids that the button shrinks away under the mouse
+
+  @extend .btn-success;
+
+  .display-when-not-hovered {
+    display: block;
+  }
+
+  .display-when-hovered {
+    display: none;
+  }
+
+  &:hover {
+    @extend .btn-danger;
+
+    .display-when-not-hovered {
+      display: none;
+    }
+
+    .display-when-hovered {
+      display: block;
+    }
+  }
+}
