@@ -238,6 +238,11 @@ class OParlObjects(OParlHelper):
         location.is_official = self.official_geojson
         location.geometry = self.extract_geometry(libobject.get_geojson())
 
+        location.streetAddress = libobject.get_street_address()
+        location.room = libobject.get_room()
+        location.postalCode = libobject.get_postal_code()
+        location.locality = libobject.get_locality()
+
         # Try to guess a better name for the location
         if libobject.get_room():
             location.short_description = libobject.get_room()

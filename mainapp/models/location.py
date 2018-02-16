@@ -13,6 +13,10 @@ class Location(DefaultFields):
     is_official = models.BooleanField()
     osm_id = models.BigIntegerField(null=True, blank=True)
     geometry = GeometryField(default=None)
+    streetAddress = models.CharField(max_length=512, null=True, blank=True)
+    room = models.CharField(max_length=512, null=True, blank=True)
+    postalCode = models.CharField(max_length=512, null=True, blank=True)
+    locality = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
         return self.short_description or self.description or _("Unknown")
