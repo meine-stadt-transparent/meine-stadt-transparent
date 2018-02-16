@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-16 08:46+0100\n"
+"POT-Creation-Date: 2018-02-16 11:30+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -116,7 +116,7 @@ msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/management/commands/notifyusers.py:78
+#: mainapp/management/commands/notifyusers.py:74
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
@@ -593,7 +593,7 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_sm.html:71
+#: mainapp/templates/mainapp/file/info_sm.html:48
 #: mainapp/templates/mainapp/meeting.html:141
 msgid "Paper"
 msgstr "Vorlage"
@@ -602,24 +602,26 @@ msgstr "Vorlage"
 msgid "Meeting"
 msgstr "Sitzung"
 
-#: mainapp/templates/mainapp/file/info_sm.html:16
-msgid "Other files"
-msgstr "Weitere Dateien"
-
-#: mainapp/templates/mainapp/file/info_sm.html:46
+#: mainapp/templates/mainapp/file/info_sm.html:23
 msgctxt "Singular"
 msgid "Superordinated meeting"
 msgstr "Übergeordnete Sitzung"
 
-#: mainapp/templates/mainapp/file/info_sm.html:54
+#: mainapp/templates/mainapp/file/info_sm.html:31
 msgctxt "Singular"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlage"
 
-#: mainapp/templates/mainapp/file/info_sm.html:64
+#: mainapp/templates/mainapp/file/info_sm.html:41
 msgctxt "Plural"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlagen"
+
+#: mainapp/templates/mainapp/file/info_sm.html:59
+#, fuzzy
+#| msgid "Other files"
+msgid "Further files"
+msgstr "Weitere Dateien"
 
 #: mainapp/templates/mainapp/index/index.html:8
 #: mainapp/templates/mainapp/index_v2/index.html:8
