@@ -40,8 +40,6 @@ class SearchResultsFeed(Feed):
             paper = Paper.objects.get(pk=item['id'])
             return paper_description(paper)
 
-        # @TODO: Description for other types, especially files and meetings
-
         return ''
 
     def item_link(self, item):

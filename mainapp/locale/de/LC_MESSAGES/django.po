@@ -579,7 +579,6 @@ msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
 msgid "iCal"
 msgstr ""
 
-# TODO
 #: mainapp/templates/mainapp/file/file.html:35
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
@@ -780,7 +779,6 @@ msgstr "iCal-Export"
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-# TODO
 #: mainapp/templates/mainapp/meeting.html:88
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"

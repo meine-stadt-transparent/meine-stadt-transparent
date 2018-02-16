@@ -6,7 +6,6 @@ from .utils import autocomplete_analyzer, mainIndex
 
 @mainIndex.doc_type
 class PaperDocument(DocType):
-    # FIXME: Name should also autocomplete. Maybe add an extra negative bias
     autocomplete = StringField(attr="get_autocomplete", analyzer=autocomplete_analyzer)
     main_file = IntegerField(attr="main_file_id")
     person_ids = IntegerField(attr="person_ids")

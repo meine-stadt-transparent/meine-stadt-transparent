@@ -7,6 +7,7 @@ import shutil
 import tempfile
 from unittest import skipIf
 
+from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
@@ -27,6 +28,7 @@ logger = logging.getLogger(__name__)
 class TestImporter(TestCase):
     dummy_data = "testdata/oparl"
     fake_cache = "testdata/fake_cache"
+    base_timestamp = timezone.now().astimezone().replace(microsecond=0)
     new_timestamp = None
     delete = False
     tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
@@ -123,7 +125,7 @@ class TestImporter(TestCase):
         self.check_update()
 
     def check_basic_import(self):
-        self.new_timestamp = "2000-01-01T00:00:00+01:00"
+        self.new_timestamp = (self.base_timestamp + relativedelta(years=-100)).isoformat()
         self.create_fake_cache()
         importer = OParlImport(self.options)
         importer.run_singlethread()
@@ -148,7 +150,8 @@ class TestImporter(TestCase):
 
     def check_update(self):
         now = timezone.now()
-        self.new_timestamp = "2020-01-01T00:00:00+01:00"  # Fixme: Not futureproof
+        self.new_timestamp = (self.base_timestamp + relativedelta(years=10)).isoformat()
+        print(self.new_timestamp)
         self.create_fake_cache()
         importer = OParlImport(self.options)
         importer.run_singlethread()
@@ -158,7 +161,7 @@ class TestImporter(TestCase):
         self.assertEqual(File.objects.count(), 2)
 
     def check_deletion(self):
-        self.new_timestamp = "2030-01-01T00:00:00+01:00"
+        self.new_timestamp = (self.base_timestamp + relativedelta(years=200)).isoformat()
         self.delete = True
         self.create_fake_cache()
         importer = OParlImport(self.options)

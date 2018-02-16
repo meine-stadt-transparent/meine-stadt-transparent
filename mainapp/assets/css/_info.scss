@@ -1,8 +1,8 @@
 .infopage {
-  > h1 {
+  h1 {
     @extend .display-4;
   }
-  > h2 {
+  h2 {
     @extend .h3;
   }
 }

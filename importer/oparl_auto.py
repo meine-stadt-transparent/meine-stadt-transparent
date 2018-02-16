@@ -60,7 +60,7 @@ class OParlAuto:
         liboparl_body = None
         options = default_options.copy()
         # Quick'n'dirty cause Sternberg OParl is faulty
-        # TODO: Wait for Sternberg to fix their stuff and remove this
+        # Wait for Sternberg to fix their stuff and remove this
         if "sdnetrim.kdvz-frechen.de" in endpoint_id:
             options["use_sternberg"] = True
         options["entrypoint"] = endpoint_system

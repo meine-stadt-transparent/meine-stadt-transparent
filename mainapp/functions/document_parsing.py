@@ -215,7 +215,7 @@ def extract_found_locations(text, bodies=None):
 
 
 def detect_relevant_bodies(_):
-    body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)  # @TODO
+    body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
     return [body]
 
 
@@ -231,9 +231,7 @@ def extract_locations(text, fallback_city=settings.GEOEXTRACT_DEFAULT_CITY):
 
         defaults = {
             "description": location_name,
-            "is_official": False,
-            "osm_id": None,  # @TODO
-            "geometry": None,
+            "is_official": False
         }
 
         location, created = Location.objects_with_deleted.get_or_create(description=location_name, defaults=defaults)

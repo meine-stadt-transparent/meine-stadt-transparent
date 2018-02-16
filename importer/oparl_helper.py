@@ -51,7 +51,7 @@ class OParlHelper:
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
         self.download_files = options["download_files"]
-        self.official_geojson = False
+        self.official_geojson = True
         self.filename_length_cutoff = 100
         self.organization_classification = {
             "Fraktion": settings.PARLIAMENTARY_GROUPS_TYPE[0],
@@ -128,7 +128,7 @@ class OParlHelper:
 
     E = TypeVar("E", bound=DefaultFields)
 
-    # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161 (TODO: Wait for that to be fixed)
+    # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161. This should be fixed in 2018.1
     def check_for_modification(self, libobject: OParl.Object, constructor: Type[E], name_fixup=None) \
             -> Tuple[Optional[E], bool]:
         """ Checks common criterias for oparl objects. """
