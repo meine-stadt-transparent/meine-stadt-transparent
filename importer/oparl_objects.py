@@ -240,7 +240,7 @@ class OParlObjects(OParlHelper):
 
         # Try to guess a better name for the location
         if libobject.get_room():
-            location.description = libobject.get_room()
+            location.short_description = libobject.get_room()
 
         if not location.description:
             description = ""
@@ -252,6 +252,7 @@ class OParlObjects(OParlHelper):
                 if libobject.get_postal_code():
                     description += libobject.get_postal_code() + " "
                 description += libobject.get_locality()
+            location.description = description
 
         location.save()
 

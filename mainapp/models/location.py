@@ -5,6 +5,7 @@ from .default_fields import DefaultFields, ShortableNameFields
 
 
 class Location(DefaultFields):
+    short_description = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     # Need to work around a cyclic import here
     bodies = models.ManyToManyField("mainapp.Body", blank=True)
@@ -13,7 +14,7 @@ class Location(DefaultFields):
     geometry = GeometryField(default=None)
 
     def __str__(self):
-        return self.description
+        return self.short_description or self.description
 
     def coordinates(self):
         if self.geometry and self.geometry['type'] == 'Point':

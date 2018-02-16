@@ -36,7 +36,7 @@
                 <div class="d-flex">
                     <div>
                         {% if previous %}
-                            <a class="btn btn-dark" href="{% url 'meeting' previous.id %}">
+                            <a class="btn btn-sm btn-outline-dark" href="{% url 'meeting' previous.id %}">
                                 <span class="fa fa-chevron-left" aria-hidden="true"></span>
                                 <span> {% trans 'Previous Meeting' %}</span>
                             </a>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="pl-3">
                         {% if following %}
-                            <a class="btn btn-dark" href="{% url 'meeting' following.id %}">
+                            <a class="btn btn-sm btn-outline-dark" href="{% url 'meeting' following.id %}">
                                 {% trans 'Following Meeting' %}
                                 <span class="fa fa-chevron-right" aria-hidden="true"></span>
                             </a>
@@ -57,7 +57,8 @@
         <section class="container meeting-section">
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 <div title="{% trans 'Place of the meeting' %}">
-                    <span class="fa-custom fa-map-marker" aria-hidden="true"></span>{{ meeting.location }}
+                    <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
+                    <span title="{{ meeting.location.description }}">{{ meeting.location }}</span>
                 </div>
 
                 <div title="{% trans 'Time of the Meeting' %}">
