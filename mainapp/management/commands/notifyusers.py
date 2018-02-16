@@ -2,7 +2,7 @@ import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.core.management.base import BaseCommand
 from django.template.loader import get_template
 from django.utils import timezone, translation
@@ -33,6 +33,20 @@ class Command(BaseCommand):
         results = [parse_hit(hit) for hit in executed.hits]
 
         return results
+
+    def send_mail(self, to, message_text, message_html):
+        mail_from = settings.DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
+        msg = EmailMultiAlternatives(
+            subject=_("New search results"),
+            body=message_text,
+            from_email=mail_from,
+            to=[to],
+            headers={
+                'Precedence': 'bulk'
+            }
+        )
+        msg.attach_alternative(message_html, "text/html")
+        msg.send()
 
     def notify_user(self, user: User, override_since: datetime, debug: bool):
         context = {
@@ -70,8 +84,7 @@ class Command(BaseCommand):
             self.stdout.write(message_text)
         else:
             self.stdout.write("Sending notification to: %s" % user.email)
-            mail_from = settings.DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
-            send_mail(_("New search results"), message_text, mail_from, [user.email], html_message=message_html)
+            self.send_mail(user.email, message_text, message_html)
 
         if not override_since:
             for alert in user.useralert_set.all():
