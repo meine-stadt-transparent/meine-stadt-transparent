@@ -226,9 +226,9 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
-        'mainapp': {
+        'django': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'mainapp.log'),
+            'filename': os.path.join(env.str("LOGGING_DIRECTORY", ""), 'django.log'),
             'formatter': 'extended',
         },
         'importer': {
@@ -239,7 +239,7 @@ LOGGING = {
     },
     'loggers': {
         'mainapp': {
-            'handlers': ['console', 'mainapp'],
+            'handlers': ['console', 'django'],
             'level': DJANGO_LOG_LEVEL or 'INFO',
         },
         'mainapp.management.commands': {
@@ -251,6 +251,11 @@ LOGGING = {
             'level': DJANGO_LOG_LEVEL or 'INFO',
             'propagate': True,
         },
+        'django': {
+            'level': DJANGO_LOG_LEVEL or 'WARNING',
+            'handlers': ['console', 'django'],
+            'propagate': True
+        }
     }
 }
 
