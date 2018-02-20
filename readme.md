@@ -8,9 +8,25 @@
 
 Meine Stadt Transparent is a free council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinforamtionssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources. 
 
+Our sample live system using the data of the city [Jülich](https://www.juelich.de/) is available at: [https://meine-stadt-transparent.de/](https://meine-stadt-transparent.de/).
+
 The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
+
+## About this project
+
+Meine Stadt Transparent makes decision-making in city councils and administrations more transparent by providing easy access to information about the city council, including published documents, motions and meeting agendas. As a successor to Munich's [München Transparent](https://www.muenchen-transparent.de/), its aim is to be easily deployable for as many cities as possible.
+
+It includes many features regarding data research and staying up to date, targeted both towards citizens and journalists:
+
+- Information about city councillors, administrative organizations and meetings of the city council are provided.
+- All published documents are searchable in a flexible manner, be it motions, resolutions, meeting agendas or protocols. The search supports both simple full-text searchs and flexible criteria-based filters.
+- Documents are automatically searched for mentioned places. A map is provided indicating places that are mentioned. Thus, it is easy to identify documents that affect places in your living neighborhood.
+- You can subscribe to topics / search expressions to get notified by e-mail, once new documents matching your query are published.
+- It supports several ways of subscribing to new content: different kinds of RSS-feeds and subscribing to the meeting calendar using the iCal-format. 
+
+Meine Stadt Transparent is *not* a complete replacement for traditional council information systems, however: it focuses on displaying already published information to the public. It does not provide a user-accessible backend for content authoring. It relies on the availability of an API provided by a council information system backend. Currently, the open [Oparl-Standard](https://oparl.org/) is supported.
 
 ## Quickstart with docker compose
 
