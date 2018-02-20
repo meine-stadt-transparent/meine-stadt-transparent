@@ -6,6 +6,19 @@
 
 {% block additional_html_headers %}
     <link rel="alternate" type="application/rss+xml" href="{% url 'paper-feed' %}" title="{% trans 'Latest papers' %}">
+
+    <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "{{ settings.ABSOLUTE_URI_BASE }}/",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ settings.ABSOLUTE_URI_BASE }}search/query/{search_term_string}/",
+    "query-input": "required name=search_term_string"
+  }
+}
+    </script>
 {% endblock %}
 
 {% block main_content_classes %}no-padding{% endblock %}

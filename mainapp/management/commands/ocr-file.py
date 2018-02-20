@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 try:
                     self.parse_file(file)
                 except Exception:
-                    logging.error("Error parsing file: " + file.id)
+                    logging.error("Error parsing file: " + str(file.id))
         elif options['id']:
             file = File.objects.get(id=options['id'])
             self.parse_file(file)
