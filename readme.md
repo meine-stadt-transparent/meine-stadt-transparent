@@ -127,7 +127,7 @@ The following steps are only required when you want to deploy the site to produc
 npm run build:prod
 npm run build:email
 ./manage.py collectstatic
-```
+ ```
 
 Follow the [the official guide](https://docs.djangoproject.com/en/1.11/howto/deployment/). Unlike the guide, we recommend gunicorn over wsgi as gunicorn is much simpler to configure.
 
@@ -200,7 +200,7 @@ Now the site should be working. If the "Latest Documents"-Section on the home pa
 ```bash
 ./manage.py fix-dates 2018-01-01 2000-01-01 # The date of the initial import and a fallback date far in the past so files without determinable date show up last
 ./manage.py search_index --rebuild # Push the changed data to ElasticSearch
-``` 
+```
 
 ### Using the OParl Importer programmatically
 
@@ -270,6 +270,71 @@ The following steps are required to register a sanitize-hook:
 - Register the script in your local ``.env``-file like this: ``CUSTOM_IMPORT_HOOKS=customization.import_hooks``
 - Please refer to our [example script](customization_examples/juelich_transparent/import_hooks.py) to see which callbacks are available and how to write one.
 
+## External Services
+
+For some functionality, we rely on external web services. Most of them are optional, but can improve the quality and reliability of this system. To use them, you will need to create an account and set the credentials in the ``.env``file.
+
+### Facebook, Twitter
+
+To enable login via Twitter or Facebook, o create an app in the corresponding developer portal. See the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) for details.
+
+For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
+
+For facebook, you'll need to go to `https://developers.facebook.com/apps/[your appp id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
+
+You can then activate them in your `.env`-file:
+
+```
+SOCIALACCOUNT_USE_FACEBOOK=True
+FACEBOOK_CLIENT_ID=[app id]
+FACEBOOK_SECRET_KEY=[app secret]
+```
+
+```
+SOCIALACCOUNT_USE_TWITTER=True
+TWITTER_CLIENT_ID=[app id]
+TWITTER_SECRET_KEY=[app secret]
+```
+
+After changing any token, use `./manage.py register_social_accounts` to apply the changes.
+
+### Mapbox
+
+We use [Mapbox](https://www.mapbox.com/) to render the tiles of the map. To use the map, you need to sign up for an account and set up the map style to use:
+
+```
+SITE_MAPBOX_ACCESS_TOKEN=pk....
+SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
+```
+
+### Microsoft Azure: OCR
+
+This is optional if you want to use OCR for extracting the text of scanned documents. Set up a Azure account and add a [Computer Vision](https://azure.microsoft.com/en-us/try/cognitive-services/?api=computer-vision)-Resource (part of Cognitive Services). Add the API Key to the ``.env``-File:
+
+```
+OCR_AZURE_KEY=...
+```
+
+### Open Cage Data: Geo extraction
+
+By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. In case you want to switch to the [OpenCage Geocoder](https://geocoder.opencagedata.com/), you can register it by adding these credentials:
+
+```
+GEOEXTRACT_ENGINE=OpenCageData
+OPENCAGEDATA_KEY=...
+```
+
+### Mailjet
+
+We support [Mailjet](https://dev.mailjet.com/) for sending e-mails. You can set up e-mails like this:
+
+```
+DEFAULT_FROM_EMAIL=info@meine-stadt-transparent.de
+DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
+MAILJET_API_KEY=...
+MAILJET_SECRET_KEY=...
+```
+
 ## Development
 
 The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
@@ -335,30 +400,6 @@ django-admin makemessages -a
 # translate django.po
 django-admin compilemessages
 ```
-
-### Setting up Social Login
-
-To enable login via Twitter or Facebook, o create an app in the corresponding developer portal. See the [AllAuth-Page](http://django-allauth.readthedocs.io/en/latest/providers.html#facebook) for details.
-
-For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
-
-For facebook, you'll need to go to `https://developers.facebook.com/apps/[your appp id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
-
-You can then activate them in your `.env`-file:
-
-```
-SOCIALACCOUNT_USE_FACEBOOK=True
-FACEBOOK_CLIENT_ID=[app id]
-FACEBOOK_SECRET_KEY=[app secret]
-```
-
-```
-SOCIALACCOUNT_USE_TWITTER=True
-TWITTER_CLIENT_ID=[app id]
-TWITTER_SECRET_KEY=[app secret]
-```
-
-After changing any token, use `./manage.py register_social_accounts` to apply the changes.
 
 ### Notifying users about new documents
 
