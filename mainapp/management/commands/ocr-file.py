@@ -4,8 +4,10 @@ import os
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db.models import Q
 
-from mainapp.functions.document_parsing import get_ocr_text_from_pdf
+from mainapp.functions.document_parsing import get_ocr_text_from_pdf, extract_persons, cleanup_extracted_text, \
+    extract_locations
 from mainapp.models import File
 
 
@@ -13,17 +15,28 @@ class Command(BaseCommand):
     help = 'OCRs a file and writes the result back to the database'
 
     def add_arguments(self, parser):
-        parser.add_argument('id', type=int, help="Parse only the file with the given ID")
+        parser.add_argument('--id', type=int, help='OCR the file with the given ID')
+        parser.add_argument('--empty', dest='all_empty', action='store_true',
+                            help='OCR all files with empty parsed_text')
 
-    def handle(self, *args, **options):
-        file = File.objects.get(id=options['id'])
+    def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
         file_path = os.path.abspath(os.path.dirname(__name__))
         file_path = os.path.join(file_path, settings.MEDIA_ROOT, file.storage_filename)
-        print(file_path)
         recognized_text = get_ocr_text_from_pdf(file_path)
         if len(recognized_text) > 0:
-            file.parsed_text = recognized_text
+            file.parsed_text = cleanup_extracted_text(recognized_text)
+            file.mentioned_persons = extract_persons(file.name + "\n" + (recognized_text or "") + "\n")
+            file.locations = extract_locations(recognized_text)
             file.save()
         else:
             logging.warning("Nothing recognized")
+
+    def handle(self, *args, **options):
+        if options['all_empty']:
+            all_files = File.objects.filter(Q(parsed_text='') | Q(parsed_text__isnull=True)).all()
+            for file in all_files:
+                self.parse_file(file)
+        elif options['id']:
+            file = File.objects.get(id=options['id'])
+            self.parse_file(file)

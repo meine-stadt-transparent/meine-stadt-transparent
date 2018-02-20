@@ -413,6 +413,17 @@ However, for debugging purposes, it can be called stand alone, skipping the actu
 ./manage.py notifyusers --debug --override-since 2017-09-10
 ```
 
+### OCR'ing documents
+
+Currently, OCR'ing documents is not done automatically, as this operation is being billed per execution. So for now, it is done manually on demand. The following commands are available to ocr a single file, or to ocr all files with no recognized text:
+
+```bash
+# OCR all empty files:
+./manage.py ocr-file --empty
+# OCR an individual file:
+./manage.py ocr-file --id 23
+```
+
 ### Creating a page with additional JS libraries
 
 If we use a library on only one page and thus don't want to include it into the main JS-bundle (e.g. Isotope), this would the procedure:

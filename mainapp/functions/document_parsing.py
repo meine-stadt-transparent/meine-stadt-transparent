@@ -67,7 +67,7 @@ def perform_ocr_on_image(imgdata):
 
 
 def get_ocr_text_from_pdf(pdf_file):
-    img = Image(filename=pdf_file, resolution=500)
+    img = Image(filename=pdf_file, resolution=300)
     recognized_text = ""
     for single_image in img.sequence:
         with Image(single_image) as i, tempfile.TemporaryFile() as tmpfile:
