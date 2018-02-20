@@ -71,7 +71,7 @@ You can execute all the other commands from this readme by prepending them with 
 On Debian/Ubuntu:
 
 ```bash
-sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre
+sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre libmagickwand-dev
 ```
 
 Install dependencies. 

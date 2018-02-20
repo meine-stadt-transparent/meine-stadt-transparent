@@ -1,11 +1,15 @@
 import re
 import shlex
+import tempfile
 
 import geoextract
+import requests
 from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
 from pdfbox import PDFBox
+from wand.color import Color
+from wand.image import Image
 
 from mainapp.functions.geo_functions import get_geolocator
 from mainapp.models import SearchStreet, Body, Location, Person
@@ -41,6 +45,42 @@ def get_page_count_from_pdf(pdf_file):
     """
     pdf = PdfFileReader(open(pdf_file, 'rb'))
     return pdf.getNumPages()
+
+
+def perform_ocr_on_image(imgdata):
+    headers = {'Ocp-Apim-Subscription-Key': settings.OCR_AZURE_KEY, 'Content-Type': 'application/octet-stream'}
+    params = {'language': settings.OCR_AZURE_LANGUAGE, 'detectOrientation ': 'true'}
+    ocr_url = settings.OCR_AZURE_API + '/vision/v1.0/ocr'
+    response = requests.post(ocr_url, headers=headers, params=params, data=imgdata)
+    response.raise_for_status()
+
+    analysis = response.json()
+    plain_text = ''
+    for region in analysis['regions']:
+        for line in region['lines']:
+            for word in line['words']:
+                plain_text += word['text'] + " "
+            plain_text += "\n"
+        plain_text += "\n"
+
+    return plain_text
+
+
+def get_ocr_text_from_pdf(pdf_file):
+    img = Image(filename=pdf_file, resolution=500)
+    recognized_text = ""
+    for single_image in img.sequence:
+        with Image(single_image) as i, tempfile.TemporaryFile() as tmpfile:
+            i.format = 'png'
+            i.background_color = Color('white')
+            i.alpha_channel = 'remove'
+            i.save(file=tmpfile)
+
+            tmpfile.seek(0)
+            imgdata = tmpfile.read()
+            recognized_text += perform_ocr_on_image(imgdata)
+
+    return recognized_text
 
 
 def create_geoextract_data(bodies=None):

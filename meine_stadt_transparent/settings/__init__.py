@@ -180,6 +180,10 @@ GEOEXTRACT_SEARCH_COUNTRY = env.str('GEOEXTRACT_SEARCH_COUNTRY', 'Deutschland')
 GEOEXTRACT_DEFAULT_CITY = env.str('GEOEXTRACT_DEFAULT_CITY')
 GEO_SEARCH_COUNTRY = env.str('GEO_SEARCH_COUNTRY', 'Deutschland')
 
+OCR_AZURE_KEY = env.str('OCR_AZURE_KEY', None)
+OCR_AZURE_LANGUAGE = env.str('OCR_AZURE_LANGUAGE', 'de')
+OCR_AZURE_API = env.str('OCR_AZURE_API', 'https://westcentralus.api.cognitive.microsoft.com')
+
 # Configuration regarding the city of choice
 SITE_GEO_LIMITS = env.json('SITE_GEO_LIMITS')
 SITE_GEO_CENTER = env.json('SITE_GEO_CENTER')
