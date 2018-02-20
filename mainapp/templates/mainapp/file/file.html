@@ -2,7 +2,7 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %}{{ file.name }}{% endblock %}
+{% block title %}{% trans 'File' %}: {{ file.name|wordwrap:60 }}{% endblock %}
 
 {% block content %}
     <h1 class="sr-only">{{ file.name }}</h1>
@@ -23,7 +23,14 @@
                     <div class="{{ renderer }}-wrapper">
                         {% if renderer == "pdf" %}
                             <div class="embed-responsive w-100">
-                                <iframe class="embed-responsive-item" src="{{ pdfjs_iframe_url }}"></iframe>
+                                <iframe class="embed-responsive-item" src="{{ pdfjs_iframe_url }}"
+                                        aria-label="{% trans 'The original PDF' %}"
+                                        aria-labelledby="pdf_parsed_text"></iframe>
+                                <pre class="sr-only" id="pdf_parsed_text">
+                                    {% if pdf_parsed_text %}
+                                        {{ file.parsed_text }}!
+                                    {% endif %}
+                                </pre>
                             </div>
                         {% elif renderer == "txt" %}
                             <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>

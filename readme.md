@@ -25,6 +25,7 @@ It includes many features regarding data research and staying up to date, target
 - Documents are automatically searched for mentioned places. A map is provided indicating places that are mentioned. Thus, it is easy to identify documents that affect places in your living neighborhood.
 - You can subscribe to topics / search expressions to get notified by e-mail, once new documents matching your query are published.
 - It supports several ways of subscribing to new content: different kinds of RSS-feeds and subscribing to the meeting calendar using the iCal-format. 
+- We try to make Meine Stadt Transparent accessible by everyone: the layout is responsive to provide a good experience on mobile device, and we follow accessibility standards (WCAG 2.0 AA, ARIA) as close as possible.
 
 Meine Stadt Transparent is *not* a complete replacement for traditional council information systems, however: it focuses on displaying already published information to the public. It does not provide a user-accessible backend for content authoring. It relies on the availability of an API provided by a council information system backend. Currently, the open [Oparl-Standard](https://oparl.org/) is supported.
 

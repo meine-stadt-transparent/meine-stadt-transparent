@@ -214,6 +214,10 @@ CALENDAR_MAX_TIME = env.bool('CALENDAR_MAX_TIME', "21:00:00")
 # Configuration regarding Search Engine Optimization
 SITE_SEO_NOINDEX = env.bool('SITE_SEO_NOINDEX', False)
 
+# Include the plain text of PDFs next to the PDF viewer, visible only for Screenreaders
+# On by default to improve accessibility, deactivatable in case there are legal concerns
+EMBED_PARSED_TEXT_FOR_SCREENREADERS = env.bool('EMBED_PARSED_TEXT_FOR_SCREENREADERS', True)
+
 SEARCH_PAGINATION_LENGTH = 20
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)

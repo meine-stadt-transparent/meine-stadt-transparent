@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ meeting.name }}{% endblock %}
+{% block title %}{{ meeting.name|wordwrap:60 }}{% endblock %}
 
 {% block content %}
     {% spaceless %}

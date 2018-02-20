@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block title %}{{ paper.name }}{% endblock %}
+{% block title %}{{ paper.name|wordwrap:60 }}{% endblock %}
 
 {% block content %}
     <div class="container">

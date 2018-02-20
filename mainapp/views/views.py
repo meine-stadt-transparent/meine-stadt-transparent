@@ -167,6 +167,7 @@ def file(request, pk):
         "file": file,
         "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
         "renderer": renderer,
+        "pdf_parsed_text": settings.EMBED_PARSED_TEXT_FOR_SCREENREADERS,
     }
 
     if renderer == "pdf":

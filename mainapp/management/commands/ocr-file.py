@@ -36,7 +36,10 @@ class Command(BaseCommand):
         if options['all_empty']:
             all_files = File.objects.filter(Q(parsed_text='') | Q(parsed_text__isnull=True)).all()
             for file in all_files:
-                self.parse_file(file)
+                try:
+                    self.parse_file(file)
+                except Exception:
+                    logging.error("Error parsing file: " + file.id)
         elif options['id']:
             file = File.objects.get(id=options['id'])
             self.parse_file(file)
