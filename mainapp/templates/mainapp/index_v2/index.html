@@ -11,10 +11,10 @@
 {
   "@context": "http://schema.org",
   "@type": "WebSite",
-  "url": "{{ settings.ABSOLUTE_URI_BASE }}/",
+  "url": "{{ settings.ABSOLUTE_URI_BASE }}{% url 'index' %}",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "{{ settings.ABSOLUTE_URI_BASE }}search/query/{search_term_string}/",
+    "target": "{{ settings.ABSOLUTE_URI_BASE }}/search/query/{search_term_string}/",
     "query-input": "required name=search_term_string"
   }
 }

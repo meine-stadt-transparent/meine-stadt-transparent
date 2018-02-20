@@ -67,17 +67,31 @@ def perform_ocr_on_image(imgdata):
 
 
 def get_ocr_text_from_pdf(pdf_file):
-    img = Image(filename=pdf_file, resolution=300)
+    img = Image(filename=pdf_file, resolution=500)
     recognized_text = ""
     for single_image in img.sequence:
-        with Image(single_image) as i, tempfile.TemporaryFile() as tmpfile:
+        with Image(single_image) as i:
+            i.resolution = 100
             i.format = 'png'
             i.background_color = Color('white')
             i.alpha_channel = 'remove'
-            i.save(file=tmpfile)
 
+            tmpfile = tempfile.TemporaryFile()
+            i.save(file=tmpfile)
             tmpfile.seek(0)
             imgdata = tmpfile.read()
+            tmpfile.close()
+
+            # Workaround: Shrink image until the size is below Azure's upload limit of 4MB
+            while len(imgdata) > 4000000:
+                i.resize(round(i.width * 0.75), round(i.height * 0.75))
+
+                tmpfile = tempfile.TemporaryFile()
+                i.save(file=tmpfile)
+                tmpfile.seek(0)
+                imgdata = tmpfile.read()
+                tmpfile.close()
+
             recognized_text += perform_ocr_on_image(imgdata)
 
     return recognized_text
