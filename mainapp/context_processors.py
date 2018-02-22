@@ -8,5 +8,5 @@ def seo(request):
         robots_index = 'index'
 
     return {
-        'seo_robotos_index': robots_index
+        'seo_robots_index': robots_index
     }

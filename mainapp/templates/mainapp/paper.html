@@ -56,7 +56,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for historical_paper in paper.history.all %}
                             <a class="dropdown-item" href="{% url 'historical_paper' historical_paper.history_id %}"
-                               title="{{ historical_paper.history_date|date:"c" }}">
+                               title="{{ historical_paper.history_date|date:"c" }}" rel="nofollow">
                                 {{ historical_paper.history_date }}
                             </a>
                         {% endfor %}

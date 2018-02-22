@@ -20,7 +20,7 @@
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for historical_meeting in meeting.history.all %}
                             <a class="dropdown-item" href="{% url 'historical_meeting' historical_meeting.history_id %}"
-                               title="{{ historical_meeting.history_date|date:"c" }}">
+                               title="{{ historical_meeting.history_date|date:"c" }}" rel="nofollow">
                                 {{ historical_meeting.history_date }}
                             </a>
                         {% endfor %}

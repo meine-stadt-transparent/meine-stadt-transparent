@@ -115,6 +115,7 @@ def historical_meeting(request, pk):
     context = {
         "meeting": historical_meeting.instance,
         "historical": historical_meeting,
+        "seo_robots_index": "noindex",
     }
     return render(request, "mainapp/meeting.html", context)
 

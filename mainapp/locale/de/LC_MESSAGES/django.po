@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-16 16:43+0100\n"
+"POT-Creation-Date: 2018-02-22 12:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -308,8 +308,6 @@ msgid "Notifications"
 msgstr "Benachrichtigungen"
 
 #: mainapp/templates/account/home.html:31
-#| msgctxt "perform search"
-#| msgid "Search"
 msgid "Search"
 msgstr "Suchen"
 
@@ -613,15 +611,26 @@ msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
 msgid "iCal"
 msgstr ""
 
-#: mainapp/templates/mainapp/file/file.html:35
+#: mainapp/templates/mainapp/file/file.html:5
+#, fuzzy
+#| msgctxt "Document Type Name"
+#| msgid "File"
+msgid "File"
+msgstr "Datei"
+
+#: mainapp/templates/mainapp/file/file.html:28
+msgid "The original PDF"
+msgstr ""
+
+#: mainapp/templates/mainapp/file/file.html:42
 msgid "The file can not be shown"
 msgstr "Die Datei kann nicht angezeigt werden"
 
-#: mainapp/templates/mainapp/file/file.html:40
+#: mainapp/templates/mainapp/file/file.html:47
 msgid "Download"
 msgstr "Herunterladen"
 
-#: mainapp/templates/mainapp/file/file.html:44
+#: mainapp/templates/mainapp/file/file.html:51
 msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
@@ -631,7 +640,7 @@ msgstr "Die Datei ist nicht verfügbar"
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/templates/mainapp/file/info_lg.html:15 mainapp/views/meeting.py:138
+#: mainapp/templates/mainapp/file/info_lg.html:15 mainapp/views/meeting.py:139
 msgid "Meeting"
 msgstr "Sitzung"
 
@@ -657,7 +666,7 @@ msgid "Further files"
 msgstr "Weitere Dateien"
 
 #: mainapp/templates/mainapp/index/index.html:8
-#: mainapp/templates/mainapp/index_v2/index.html:8
+#: mainapp/templates/mainapp/index_v2/index.html:9
 #: mainapp/views/feeds/latest_papers.py:10
 msgid "Latest papers"
 msgstr "Neueste Dokumente"
@@ -751,6 +760,15 @@ msgstr "informiert Sie über Ihren Stadtrat"
 #: mainapp/templates/mainapp/index_v2/index_title.html:11
 msgid "More information"
 msgstr "Mehr Informationen"
+
+#: mainapp/templates/mainapp/index_v2/index.html:8
+#, python-format
+msgid ""
+"Up-to-date information about %(body_name)s's city politics - by Meine Stadt "
+"Transparent, the open source council information system"
+msgstr ""
+"Aktuelle Informationen über die Stadtpolitik in %(body_name)s - "
+"von Meine Stadt Transparent, dem offenen Ratsinformationssystem"
 
 #: mainapp/templates/mainapp/index_v2/index_documents.html:4
 msgid "The latest papers as RSS-Feed"
@@ -1265,11 +1283,11 @@ msgstr ""
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:146
+#: mainapp/views/meeting.py:147
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:158
+#: mainapp/views/meeting.py:159
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 

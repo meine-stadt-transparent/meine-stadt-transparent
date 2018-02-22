@@ -51,7 +51,8 @@ def index(request):
         'map': _build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
         'next_meetings': Meeting.objects.filter(start__gt=timezone.now()).order_by("start")[:2],
-        'stats': stats
+        'stats': stats,
+        'body_name': main_body.name
     }
 
     if request.GET.get('version', 'v2') == 'v2':
@@ -123,6 +124,7 @@ def historical_paper(request, pk):
         "paper": historical_paper.instance,
         "historical": historical_paper,
         "consultations": [],  # Blocked by #63
+        "seo_robots_index": "noindex",
     }
     return render(request, "mainapp/paper.html", context)
 
