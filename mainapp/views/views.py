@@ -19,7 +19,7 @@ from mainapp.models import Body, File, Organization, Paper, Meeting, Person, Leg
     Location
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
-from mainapp.views import person_grid_context
+from mainapp.views import person_grid_context, HttpResponse
 
 
 def index(request):
@@ -222,6 +222,36 @@ def info_about(request):
     }
 
     return render(request, 'info/about.html', context)
+
+
+def robots_txt(request):
+    if settings.SITE_SEO_NOINDEX:
+        return HttpResponse("User-agent: *\nDisallow: /", content_type='text/plain')
+    else:
+        sitemap_url = settings.ABSOLUTE_URI_BASE + reverse("sitemap-xml")
+        return HttpResponse("User-agent: *\nDisallow:\nSitemap: " + sitemap_url, content_type='text/plain')
+
+
+def sitemap_xml(request):
+    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "\n"
+
+    for paper_obj in Paper.objects.all():
+        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + paper_obj.get_default_link() + '</loc>' + \
+               '<lastmod>' + paper_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
+               '<priority>0.8</priority></url>' + "\n"
+
+    for meet_obj in Meeting.objects.all():
+        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + meet_obj.get_default_link() + '</loc>' + \
+               '<lastmod>' + meet_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
+               '<priority>0.9</priority></url>' + "\n"
+
+    for person_obj in Person.objects.all():
+        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + person_obj.get_default_link() + '</loc>' + \
+               '<lastmod>' + person_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
+               '<priority>0.9</priority></url>' + "\n"
+
+    xml += '</urlset>'
+    return HttpResponse(xml, content_type='application/xml')
 
 
 def error404(request):
