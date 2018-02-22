@@ -174,7 +174,8 @@ def params_to_search_string(params: dict):
 
 
 def params_are_equal(params1: dict, params2: dict):
-    return params_to_search_string(params1) == params_to_search_string(params2)
+    # Comparison should be case-insensitive, as you usually don't subscribe to "school" and "School" at the same time
+    return params_to_search_string(params1).lower() == params_to_search_string(params2).lower()
 
 
 def params_are_subscribable(params: dict):
