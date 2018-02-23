@@ -88,13 +88,18 @@ def meeting(request, pk):
     else:
         time = "{} - {}".format(begin, end)
 
+    if selected_meeting.location and selected_meeting.location.geometry:
+        location_geom = selected_meeting.location.geometry
+    else:
+        location_geom = None
+
     # Try to find a previous or following meetings using the organization
     # Excludes meetings with more than one organization
     context = {
         "meeting": selected_meeting,
         "time": time,
         'map': build_map_object(),
-        "location_json": json.dumps(selected_meeting.location.geometry),
+        "location_json": json.dumps(location_geom),
     }
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()
