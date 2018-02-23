@@ -3,6 +3,7 @@ from typing import List
 
 import dateutil.parser
 from dateutil.relativedelta import relativedelta
+from dateutil.tz import tz
 from django.conf import settings
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
@@ -69,11 +70,11 @@ def meeting(request, pk):
 
     # Format the time frame
     if selected_meeting.start:
-        begin = selected_meeting.start.strftime(settings.DATETIME_FORMAT)
+        begin = selected_meeting.start.astimezone(tz.tzlocal()).strftime(settings.DATETIME_FORMAT)
     else:
         begin = None
     if selected_meeting.end:
-        end = selected_meeting.end.strftime(settings.DATETIME_FORMAT)
+        end = selected_meeting.end.astimezone(tz.tzlocal()).strftime(settings.DATETIME_FORMAT)
     else:
         end = None
 
@@ -81,7 +82,7 @@ def meeting(request, pk):
         time = begin
     elif selected_meeting.start.date() == selected_meeting.end.date():
         # We don't need to repeat the date
-        time = "{} - {}".format(begin, selected_meeting.end.strftime(settings.TIME_FORMAT))
+        time = "{} - {}".format(begin, selected_meeting.end.astimezone(tz.tzlocal()).strftime(settings.TIME_FORMAT))
     else:
         time = "{} - {}".format(begin, end)
 
