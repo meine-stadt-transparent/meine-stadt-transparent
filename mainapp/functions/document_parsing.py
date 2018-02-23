@@ -11,7 +11,7 @@ from pdfbox import PDFBox
 from wand.color import Color
 from wand.image import Image
 
-from mainapp.functions.geo_functions import get_geolocator
+from mainapp.functions.geo_functions import geocode
 from mainapp.models import SearchStreet, Body, Location, Person
 
 
@@ -143,16 +143,7 @@ def get_geodata(location, fallback_city_name):
         search_str += location['name'] + ', ' + fallback_city_name
 
     search_str += ', ' + settings.GEO_SEARCH_COUNTRY
-
-    geolocator = get_geolocator()
-    location = geolocator.geocode(search_str, language="de", exactly_one=False)
-    if not location or len(location) == 0:
-        return None
-
-    return {
-        'lat': location[0].latitude,
-        'lng': location[0].longitude,
-    }
+    return geocode(search_str)
 
 
 def format_location_name(location):

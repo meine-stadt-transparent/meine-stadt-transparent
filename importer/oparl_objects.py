@@ -14,6 +14,7 @@ from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
+from mainapp.functions.geo_functions import geocode
 from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, \
     AgendaItem, \
     OrganizationMembership, Organization, DefaultFields
@@ -258,6 +259,24 @@ class OParlObjects(OParlHelper):
                     description += libobject.get_postal_code() + " "
                 description += libobject.get_locality()
             location.description = description
+
+        # If a streetAddress is present, we try to find the exact location on the map
+        if location.streetAddress:
+            search_str = libobject.get_street_address() + ", "
+            if libobject.get_locality():
+                if libobject.get_postal_code():
+                    search_str += libobject.get_postal_code() + " "
+                    search_str += libobject.get_locality()
+            else:
+                search_str += settings.GEOEXTRACT_DEFAULT_CITY
+            search_str += " " + settings.GEO_SEARCH_COUNTRY
+
+            geodata = geocode(search_str)
+            if geodata:
+                location.geometry = {
+                    "type": "Point",
+                    "coordinates": [geodata['lng'], geodata['lat']]
+                }
 
         location.save()
 
