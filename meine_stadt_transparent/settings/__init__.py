@@ -38,11 +38,13 @@ WSGI_APPLICATION = 'meine_stadt_transparent.wsgi.application'
 # forcing request.build_absolute_uri to return https
 os.environ['HTTPS'] = "on"
 
-ANYMAIL = {
-    "MAILJET_API_KEY": env.str('MAILJET_API_KEY'),
-    "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
-}
-EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+if env.str('MAIL_PROVIDER', 'local').lower() == 'mailjet':
+    ANYMAIL = {
+        "MAILJET_API_KEY": env.str('MAILJET_API_KEY'),
+        "MAILJET_SECRET_KEY": env.str('MAILJET_SECRET_KEY')
+    }
+    EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
 DEFAULT_FROM_EMAIL_NAME = env.str('DEFAULT_FROM_EMAIL_NAME', PRODUCT_NAME)
 

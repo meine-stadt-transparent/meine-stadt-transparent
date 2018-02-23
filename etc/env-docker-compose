@@ -13,8 +13,6 @@ DATABASE_URL=mysql://meinestadttransparent:meinestadttransparent@mariadb/meinest
 DEFAULT_FROM_EMAIL=info@example.org
 DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
 
-MAILJET_API_KEY=
-MAILJET_SECRET_KEY=
 ABSOLUTE_URI_BASE=https://opensourceris.local
 
 OPENCAGEDATA_KEY=alsonotsosecretkey

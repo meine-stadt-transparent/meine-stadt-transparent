@@ -367,13 +367,19 @@ OPENCAGEDATA_KEY=...
 
 ### Mailjet
 
-We support [Mailjet](https://dev.mailjet.com/) for sending e-mails. You can set up e-mails like this:
+By default, we send e-mails using the local SMTP server. [Mailjet](https://dev.mailjet.com/) can be set up as an alternative for sending e-mails:
 
 ```
 DEFAULT_FROM_EMAIL=info@meine-stadt-transparent.de
-DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
+MAIL_PROVIDER=Mailjet
 MAILJET_API_KEY=...
 MAILJET_SECRET_KEY=...
+```
+
+The e-mail-configuration can be tested using the following command line call, which sends a test e-mail to the given e-mail-address:
+
+```bash
+./manage.py test-email test@example.org
 ```
 
 ## Development
