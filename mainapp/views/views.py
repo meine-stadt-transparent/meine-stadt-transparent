@@ -134,8 +134,12 @@ def organization(request, pk):
 
 
 @csp_update(FRAME_SRC=("'self'", "blob:"))  # Needed for downloading the PDF in PDF.JS
-def file(request, pk):
+def file(request, pk, context_meeting_id=None):
     file = get_object_or_404(File, id=pk)
+    if context_meeting_id:
+        context_meeting = get_object_or_404(Meeting, id=context_meeting_id)
+    else:
+        context_meeting = None
 
     renderer = "download"
 
@@ -154,6 +158,7 @@ def file(request, pk):
         "papers": Paper.objects.filter(Q(files__in=[file]) | Q(main_file=file)).distinct(),
         "renderer": renderer,
         "pdf_parsed_text": settings.EMBED_PARSED_TEXT_FOR_SCREENREADERS,
+        "context_meeting": context_meeting,
     }
 
     if renderer == "pdf":

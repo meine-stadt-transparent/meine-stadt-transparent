@@ -147,6 +147,21 @@
       }
     }
   }
+  .paper-link-row {
+    .col {
+      text-align: left;
+      padding-left: calc(#{$grid-gutter-width} / 2 + #{$list-group-item-padding-x}); // Align with rest of the items
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      a {
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
 
   .file-holder-outer {
     // Don't ask me why this works
