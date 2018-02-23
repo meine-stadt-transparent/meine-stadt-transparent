@@ -317,11 +317,12 @@ After changing any token, use `./manage.py register_social_accounts` to apply th
 
 ### Mapbox
 
-We use [Mapbox](https://www.mapbox.com/) to render the tiles of the map. To use the map, you need to sign up for an account and set up the map style to use:
+By default, the map uses the tiles provided by [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Standard_tile_layer). However, for production use, it is recommended to use another provider. For now, we support [Mapbox](https://www.mapbox.com/). To use it, you need to sign up for an account, choose a map style and add the following information to the ``.env``-file:
 
 ```
-SITE_MAPBOX_ACCESS_TOKEN=pk....
-SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
+MAP_TILES_PROVIDER=Mapbox
+MAP_TILES_MAPBOX_TOKEN=pk....
+MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
 ```
 
 ### Microsoft Azure: OCR

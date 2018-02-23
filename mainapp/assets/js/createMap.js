@@ -1,7 +1,7 @@
 import * as L from "leaflet/src/Leaflet";
 import {CooperativeScrollWheelZoom} from "./LeafletCooperativeScrollWheelZoom";
 
-let coordsToPolygon = function(coords) {
+let coordsToPolygon = function (coords) {
     return coords[0].map((lnglat) => L.latLng(lnglat[1], lnglat[0]));
 };
 
@@ -38,12 +38,22 @@ let getPolygonCoveringExterior = function (limitRect, outline) {
 };
 
 let setTiles = function (leaflet, initData) {
-    let tileUrl = (initData['tileUrl'] ? initData['tileUrl'] : 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}');
-    L.tileLayer(tileUrl, {
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        accessToken: initData['mapboxKey'],
-        highres: (window.devicePixelRatio > 1.5 ? '@2x' : '')
-    }).addTo(leaflet);
+    let tiles = initData['tiles'];
+    switch (tiles['provider']) {
+        case 'OSM':
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors',
+            }).addTo(leaflet);
+            break;
+        case 'Mapbox':
+            let tileUrl = (tiles['tileUrl'] ? tiles['tileUrl'] : 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}');
+            L.tileLayer(tileUrl, {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
+                accessToken: tiles['token'],
+                highres: (window.devicePixelRatio > 1.5 ? '@2x' : '')
+            }).addTo(leaflet);
+            break;
+    }
 };
 
 let setInitView = function (leaflet, initData) {

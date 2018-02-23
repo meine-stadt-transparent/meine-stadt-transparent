@@ -73,8 +73,11 @@ def _build_map_object(body: Body, geo_papers):
         'limit': settings.SITE_GEO_LIMITS,
         'outline': outline,
         'documents': index_papers_to_geodata(geo_papers),
-        'mapboxKey': settings.SITE_MAPBOX_ACCESS_TOKEN,
-        'tileUrl': settings.SITE_MAPBOX_TILE_URL,
+        'tiles': {
+            'provider': settings.MAP_TILES_PROVIDER,
+            'url': settings.MAP_TILES_URL,
+            'token': settings.MAP_TILES_MAPBOX_TOKEN,
+        },
     })
 
 

@@ -13,8 +13,14 @@ SECURE_HSTS_PRELOAD = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
 CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list('CSP_EXTRA_SCRIPT', default=[]))
-CSP_IMG_SRC = ("'self'", "data:", "api.tiles.mapbox.com", "api.mapbox.com") +\
-              tuple(env.list('CSP_EXTRA_IMG', default=[]))
+CSP_IMG_SRC = ("'self'", "data:",) + tuple(env.list('CSP_EXTRA_IMG', default=[]))
+
+if env.str('MAP_TILES_PROVIDER', 'OSM') == 'OSM':
+    CSP_IMG_SRC = CSP_IMG_SRC + ("a.tile.openstreetmap.org", "b.tile.openstreetmap.org", "c.tile.openstreetmap.org",)
+if env.str('MAP_TILES_PROVIDER', 'OSM') == 'Mapbox':
+    CSP_IMG_SRC = CSP_IMG_SRC + ("api.tiles.mapbox.com", "api.mapbox.com",)
+
+
 # Those are not covered by default-src
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_SRC = ("'self'",)
