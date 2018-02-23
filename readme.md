@@ -73,6 +73,8 @@ Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000
 
 You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: `pipenv run` is configured as entrypoint.
 
+To use this in production, you need to set up the two Cron-Jobs described below, to keep the data up to date and to send notifications to the users.
+
 ## Manual Setup
 
 ### Requirements
@@ -236,14 +238,6 @@ The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. 
 ./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
 ```
 
-### Staying up to date
-
-To receive updates from the API and keep your installation up to date, you need to install a cronjob that flushes the file cache and calls the import script again:
-```bash
-rm -R storage/cache/*
-./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
-```
-
 ### Importing only a single object
 
 Instead of crawling the whole API, it is possible to update only one specific item using the ``importanything``-command. You will need to specify the entrypoint like always and the URL of the actual OParl-Object. Here are examples how to import a person, a paper and a meeting:
@@ -253,7 +247,28 @@ Instead of crawling the whole API, it is possible to update only one specific it
 ./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
 ```
 
-### Customizations: Overriding templates and styles
+### Cronjobs
+
+Two Cronjobs are necessary to run this system.
+
+To receive updates from the API and keep your installation up to date, you need to install a cronjob that flushes the file cache and calls the import script again:
+
+```bash
+rm -R storage/cache/*
+./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+```
+
+Another script sends notifications to users about new documents found matching their notification settings:
+
+```bash
+./manage.py notifyusers
+```
+
+The second script should be called at a time where it is somewhat safe to assume the first one has already finished.
+
+## Customization
+
+### Overriding templates and styles
 
 You can easily override templates and add custom styles, e.g. for matching the corporate design of a specific city.
 
@@ -276,9 +291,17 @@ Hints:
  - Keep the name of the export, the name of the main js file and the name of the main scss file identical to avoid confusion.
  - templates are written in the [django template language](https://docs.djangoproject.com/en/1.11/topics/templates/#the-django-template-language).
  - Localization does also work for custom templates. With `./manage.py makemessages -a` you create or update into a file called `locale/de/LC_MESSAGES/django.po` in your custom folder. Translate your strings there and compile them with `./manage.py compilemessages --locale de`. 
- - We have a strict [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), so no loading of external resources. 
 
-### Customizations: Sanitizing values coming from an OParl-API
+##### Embedding external resources / CSP
+
+If you modify templates as described above and want to embed resources hosted on another domain (for example to embed images, web-fonts, or a tracking tool), you have to whitelist the used domains, as our Content Security Policy ([CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)) will prevent them from being loaded otherwise. The following configuration settings are supported for that reason:
+
+```
+CSP_EXTRA_SCRIPT=www.example.org,'sha256-QOPA8zHkrz5+pN4Af9GXK6m6mW7STjPY13tS3Z3xLTU=' # The latter one is for whitelisting inline-scripts
+CSP_EXTRA_IMG=www.example.org
+```
+
+### Sanitizing values coming from an OParl-API
 
 Sometimes, redundant, unnecessary or unnormalized information comes from an API that you might want to clean up during the import. To do that on an per-instance-basis without the need to patch the importer itself, we provide hooks you can attach custom sanitize-callbacks to. The callbacks are simple Python-scripts that take an object as input and return it in a sanitized version.
 
