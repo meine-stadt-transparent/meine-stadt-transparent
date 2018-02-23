@@ -24,6 +24,7 @@
   div {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    font-size: $font-size-sm; // Same size as the location button
   }
   div.location-dropdown {
     padding-top: 0.25rem;

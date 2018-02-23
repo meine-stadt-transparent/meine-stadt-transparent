@@ -1,3 +1,5 @@
+from html import escape
+
 from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
@@ -7,6 +9,7 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
 from django.views.static import serve
 from requests.utils import quote
@@ -233,6 +236,21 @@ def sitemap_xml(request):
 
     xml += '</urlset>'
     return HttpResponse(xml, content_type='application/xml')
+
+
+def opensearch_xml(request):
+    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
+    description = _("Search for documents of %CITY%'s city council").replace("%CITY%", main_body.short_name)
+    url = settings.ABSOLUTE_URI_BASE + '/search/query/{searchTerms}/'
+    xml = '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" ' \
+          'xmlns:moz="http://www.mozilla.org/2006/browser/search/">' \
+          '<ShortName>' + escape(settings.TEMPLATE_META['product_name']) + '</ShortName>' \
+          '<Description>' + escape(description) + '</Description>' \
+          '<InputEncoding>UTF-8</InputEncoding>' \
+          '<Url type="text/html" method="get" template="' + escape(url) + '"/>' \
+          '<moz:SearchForm>' + settings.ABSOLUTE_URI_BASE + '</moz:SearchForm>' \
+          '</OpenSearchDescription>'
+    return HttpResponse(xml, content_type='application/opensearchdescription+xml')
 
 
 def error404(request):

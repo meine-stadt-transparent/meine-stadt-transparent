@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', views.file_serve, name="media"),
     url(r'^robots.txt$', views.robots_txt, name="robots-txt"),
     url(r'^sitemap.xml$', views.sitemap_xml, name="sitemap-xml"),
+    url(r'^opensearch.xml$', views.opensearch_xml, name="opensearch-xml"),
     url(r'^404/$', views.error404, name="error-404"),
     url(r'^500/$', views.error500, name="error-500"),
 ]

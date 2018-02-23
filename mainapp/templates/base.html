@@ -6,6 +6,8 @@
     <title>{% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="robots" content="{{ seo_robots_index }},follow"/>
+    <link rel="search" type="application/opensearchdescription+xml" title="{{ settings.TEMPLATE_META.product_name }}"
+          href="{% url 'opensearch-xml' %}">
     {% render_bundle settings.TEMPLATE_META.main_css 'css' %}
     {% block additional_css %}{% endblock %}
     {% block additional_html_headers %}{% endblock %}
