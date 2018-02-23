@@ -1,5 +1,3 @@
-import json
-
 from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
@@ -14,12 +12,12 @@ from django.views.static import serve
 from requests.utils import quote
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
-from mainapp.functions.document_parsing import index_papers_to_geodata
 from mainapp.models import Body, File, Organization, Paper, Meeting, Person, LegislativeTerm, \
     Location
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context, HttpResponse
+from mainapp.views.utils import build_map_object
 
 
 def index(request):
@@ -48,7 +46,7 @@ def index(request):
     }
 
     context = {
-        'map': _build_map_object(main_body, geo_papers),
+        'map': build_map_object(main_body, geo_papers),
         'latest_paper': latest_paper,
         'next_meetings': Meeting.objects.filter(start__gt=timezone.now()).order_by("start")[:2],
         'stats': stats,
@@ -59,26 +57,6 @@ def index(request):
         return render(request, 'mainapp/index_v2/index.html', context)
     else:
         return render(request, 'mainapp/index/index.html', context)
-
-
-def _build_map_object(body: Body, geo_papers):
-    if body.outline:
-        outline = body.outline.geometry
-    else:
-        outline = None
-
-    return json.dumps({
-        'center': settings.SITE_GEO_CENTER,
-        'zoom': settings.SITE_GEO_INIT_ZOOM,
-        'limit': settings.SITE_GEO_LIMITS,
-        'outline': outline,
-        'documents': index_papers_to_geodata(geo_papers),
-        'tiles': {
-            'provider': settings.MAP_TILES_PROVIDER,
-            'url': settings.MAP_TILES_URL,
-            'token': settings.MAP_TILES_MAPBOX_TOKEN,
-        },
-    })
 
 
 def organizations(request):
@@ -269,7 +247,7 @@ def body(request, pk):
     body = get_object_or_404(Body, id=pk)
     context = {
         'body': body,
-        'map': _build_map_object(body, []),
+        'map': build_map_object(body),
     }
     return render(request, "mainapp/body.html", context)
 

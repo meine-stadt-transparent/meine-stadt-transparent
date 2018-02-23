@@ -1,3 +1,4 @@
+import json
 from datetime import date
 from typing import List
 
@@ -17,6 +18,7 @@ from pytz import timezone
 from slugify import slugify
 
 from mainapp.models import Meeting, Organization, AgendaItem
+from mainapp.views.utils import build_map_object
 
 
 def calendar(request, init_view=None, init_date=None):
@@ -90,7 +92,9 @@ def meeting(request, pk):
     # Excludes meetings with more than one organization
     context = {
         "meeting": selected_meeting,
-        "time": time
+        "time": time,
+        'map': build_map_object(),
+        "location_json": json.dumps(selected_meeting.location.geometry),
     }
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()

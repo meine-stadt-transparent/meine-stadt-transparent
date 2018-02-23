@@ -50,7 +50,7 @@ class GeocodeMock:
 class TestDocumentParsing(TestCase):
     fixtures = ['initdata', 'cologne-pois-test']
 
-    @mock.patch('mainapp.functions.document_parsing.get_geolocator', return_value=GeocodeMock())
+    @mock.patch('mainapp.functions.geo_functions.get_geolocator', return_value=GeocodeMock())
     def test_location_extraction(self, _):
         file = File.objects.get(id=3)
         locations = extract_locations(file.parsed_text, 'Köln')

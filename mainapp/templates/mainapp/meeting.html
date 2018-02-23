@@ -56,10 +56,25 @@
 
         <section class="container meeting-section">
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
-                <div title="{% trans 'Place of the meeting' %}">
-                    <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
-                    <span title="{{ meeting.location.description }}">{{ meeting.location }}</span>
-                </div>
+                {% if meeting.location.geometry %}
+                    <div class="dropdown location-dropdown"
+                         data-map-data="{{ map }}" data-location="{{ location_json }}">
+                        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
+                                id="locationShowButton" title="{{ meeting.location.description }}"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
+                            {{ meeting.location }}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="locationShowButton">
+                            <div class="location-map" id="location-map" data-map-data="{{ map }}"></div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div title="{% trans 'Place of the meeting' %}">
+                        <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
+                        <span title="{{ meeting.location.description }}">{{ meeting.location }}</span>
+                    </div>
+                {% endif %}
 
                 <div title="{% trans 'Time of the Meeting' %}">
                     <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}

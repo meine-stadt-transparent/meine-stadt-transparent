@@ -17,8 +17,7 @@ from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import search_string_to_params, params_are_subscribable, \
     escape_elasticsearch_query, MainappSearch, parse_hit
 from mainapp.models import Body, Organization, Person
-from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, NeedsLoginError
-from mainapp.views.views import _build_map_object
+from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, build_map_object, NeedsLoginError
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ def _search_to_context(query, main_search: MainappSearch, executed, results, req
         "results": results,
         "options": main_search.options,
         "document_types": DOCUMENT_TYPE_NAMES,
-        "map": _build_map_object(Body.objects.get(id=settings.SITE_DEFAULT_BODY), []),
+        "map": build_map_object(),
         "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
         "total_hits": executed.hits.total,
         "subscribable": params_are_subscribable(main_search.params),
