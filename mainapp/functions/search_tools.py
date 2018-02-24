@@ -52,9 +52,9 @@ class MainappSearch(FacetedSearch):
 
         if 'sort' in self.params:
             if self.params['sort'] == 'date_newest':
-                sort = {"sort_date": {"order": "desc"}}
+                sort = "-sort_date"
             elif self.params['sort'] == 'date_oldest':
-                sort = {"sort_date": {"order": "asc"}}
+                sort = "sort_date"
             else:
                 sort = "_score"
             self.options['sort'] = self.params['sort']
