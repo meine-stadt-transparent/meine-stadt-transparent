@@ -71,7 +71,7 @@ expected_params = {
         }
     },
     "sort": [
-        "sort_date"
+        {'sort_date': {'order': 'desc'}}
     ],
     "highlight": {
         "fields": {
