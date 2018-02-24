@@ -188,15 +188,20 @@ def info_privacy(request):
     return render(request, 'info/privacy.html', {
         "use_facebook": settings.SOCIALACCOUNT_USE_FACEBOOK,
         "use_twitter": settings.SOCIALACCOUNT_USE_TWITTER,
+        "seo_robots_index": "noindex",
     })
 
 
 def info_contact(request):
-    return render(request, 'info/contact.html', {})
+    return render(request, 'info/contact.html', {
+        "seo_robots_index": "noindex",
+    })
 
 
 def info_feedback(request):
-    return render(request, 'info/feedback.html', {})
+    return render(request, 'info/feedback.html', {
+        "seo_robots_index": "noindex",
+    })
 
 
 def info_about(request):
@@ -218,7 +223,7 @@ def robots_txt(request):
         return HttpResponse("User-agent: *\nDisallow: /", content_type='text/plain')
     else:
         sitemap_url = settings.ABSOLUTE_URI_BASE + reverse("sitemap-xml")
-        return HttpResponse("User-agent: *\nDisallow:\nSitemap: " + sitemap_url, content_type='text/plain')
+        return HttpResponse("User-agent: *\nDisallow: /accounts/\nSitemap: " + sitemap_url, content_type='text/plain')
 
 
 def sitemap_xml(request):

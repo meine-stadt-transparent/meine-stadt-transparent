@@ -47,7 +47,7 @@
         </li>
     {% else %}
         <li class="nav-item">
-            <a class="nav-link login-link"
+            <a class="nav-link login-link" rel="nofollow"
                href="{% url 'account_login' %}?next={{ request.path }}">{% trans "Sign In" context 'navigation' %}</a>
         </li>
     {% endif %}

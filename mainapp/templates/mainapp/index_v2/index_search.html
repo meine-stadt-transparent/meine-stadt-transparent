@@ -3,7 +3,9 @@
 
 <section class="home-container home-container-search">
     <div class="container">
-        <h2>Suche im Volltext von {{ stats.file|intcomma }} Dokumenten</h2>
+        {% with num=stats.file|intcomma %}
+            <h2>{% blocktrans %}Full-text search in {{ num }} documents{% endblocktrans %}</h2>
+        {% endwith %}
         <form class="form search-autocomplete search-autocomplete-home"
               method="GET" action="{% url 'search' '' %}">
             <div class="input-group">
@@ -19,6 +21,6 @@
                 </button>
             </div>
         </form>
-        <p class="pt-3 pb-0">Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“</p>
+        <p class="pt-3 pb-0">{% trans 'Search for example for "School", "Bikes" or "Budget"' %}</p>
     </div>
 </section>
