@@ -42,13 +42,13 @@ let setTiles = function (leaflet, initData) {
     switch (tiles['provider']) {
         case 'OSM':
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors',
+                attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap</a>',
             }).addTo(leaflet);
             break;
         case 'Mapbox':
             let tileUrl = (tiles['tileUrl'] ? tiles['tileUrl'] : 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}');
             L.tileLayer(tileUrl, {
-                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
                 accessToken: tiles['token'],
                 highres: (window.devicePixelRatio > 1.5 ? '@2x' : '')
             }).addTo(leaflet);
@@ -99,19 +99,45 @@ let setZoomBehavior = function (leaflet) {
     leaflet.cooperativezoom.enable();
 };
 
-export default function ($map_element, initData) {
+export default function ($map_element, initData, noTouchDrag) {
+    // noTouchDrag: Dragging is disabled by default.
+    // For mouse users, it is enabled once the first mouse-typical event occurs
+    // For touch users, it is enabled as long as the map has the focus
+    // This behavior is enabled for maps that are shown by default. Drop-down-maps keep leaflet's default behavior.
+
     let leaflet = L.map($map_element.attr("id"), {
         maxBoundsViscosity: 1,
         minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
         maxZoom: 19,
-        scrollWheelZoom: false,
+        scrollWheelZoom: !(noTouchDrag === true),
+        dragging: !(noTouchDrag === true),
     });
 
     setTiles(leaflet, initData);
-    setZoomBehavior(leaflet);
     setInitView(leaflet, initData);
     setBounds(leaflet, initData);
     setOutline(leaflet, initData);
+
+    if (noTouchDrag === true) {
+        setZoomBehavior(leaflet);
+
+        let mouseMode = false;
+
+        $map_element.one("mousedown mousemove", () => {
+            leaflet.dragging.enable();
+            mouseMode = true;
+        });
+        $map_element.on("focus", () => {
+            if (!mouseMode) {
+                leaflet.dragging.enable();
+            }
+        });
+        $map_element.on("focus", () => {
+            if (!mouseMode) {
+                leaflet.dragging.disable();
+            }
+        });
+    }
 
     return leaflet;
 }

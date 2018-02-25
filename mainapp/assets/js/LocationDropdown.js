@@ -27,7 +27,7 @@ export default class LocationDropdown {
 
                 let $mapElement = this.$widget.find(".location-map");
                 let initData = $mapElement.data("map-data");
-                this.leaflet = create_map($mapElement, initData);
+                this.leaflet = create_map($mapElement, initData, false);
                 this.leaflet.setView(pos, 16);
                 mapIsInitialized = true;
 

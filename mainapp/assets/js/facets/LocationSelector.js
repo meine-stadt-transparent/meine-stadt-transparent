@@ -42,7 +42,7 @@ export default class FacetLocationSelector {
                 let $mapElement = this.$facet.find(".location-select-map");
                 let initData = $mapElement.data("map-data");
                 initData['zoom']--;
-                this.leaflet = create_map($mapElement, initData);
+                this.leaflet = create_map($mapElement, initData, false);
                 mapIsInitialized = true;
 
                 this.leaflet.on("click", (event) => {

@@ -10,7 +10,7 @@ export default class IndexView {
         this.textMore1 = $mapElement.data("more-file-1");
         this.textMoreX = $mapElement.data("more-files-x");
 
-        this.leaflet = create_map($mapElement, initData);
+        this.leaflet = create_map($mapElement, initData, true);
         let textHint = $mapElement.data("text-hint");
         if (textHint !== "") {
             (new TextHint({text: textHint})).addTo(this.leaflet);
