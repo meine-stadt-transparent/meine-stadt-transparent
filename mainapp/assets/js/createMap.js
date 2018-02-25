@@ -123,7 +123,11 @@ export default function ($map_element, initData, noTouchDrag) {
 
         let mouseMode = false;
 
-        $map_element.one("mousedown mousemove", () => {
+        $map_element.one("mousedown mousemove", (ev) => {
+            if (ev.originalEvent.sourceCapabilities && ev.originalEvent.sourceCapabilities.firesTouchEvents === true) {
+                // Ghost event triggered by touching the map
+                return;
+            }
             leaflet.dragging.enable();
             mouseMode = true;
         });
@@ -132,7 +136,7 @@ export default function ($map_element, initData, noTouchDrag) {
                 leaflet.dragging.enable();
             }
         });
-        $map_element.on("focus", () => {
+        $map_element.on("blur", () => {
             if (!mouseMode) {
                 leaflet.dragging.disable();
             }
