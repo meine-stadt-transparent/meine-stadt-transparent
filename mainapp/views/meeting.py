@@ -58,11 +58,15 @@ def calendar_data(request):
     meetings = Meeting.objects.filter(start__gte=start, start__lte=end)
     data = []
     for meeting in meetings:
+        class_name = []
+        if meeting.cancelled:
+            class_name.append('cancelled')
         data.append({
             'title': meeting.name,
             'start': meeting.start.isoformat() if meeting.start is not None else None,
             'end': meeting.end.isoformat() if meeting.end is not None else None,
-            'details': reverse('meeting', args=[meeting.id])
+            'details': reverse('meeting', args=[meeting.id]),
+            'className': class_name
         })
     return JsonResponse(data, safe=False)
 

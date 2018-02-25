@@ -1654,7 +1654,7 @@
         "deleted": false,
         "name": "House Assembly Meeting November",
         "short_name": "House Assembly November",
-        "cancelled": false,
+        "cancelled": true,
         "start": "2017-11-11T17:09:14Z",
         "end": "2017-11-11T17:09:15Z",
         "location": null,

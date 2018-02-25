@@ -48,6 +48,12 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     def visit(self, path):
         self.browser.visit(self.live_server_url + path)
 
+    def assetElementIsPresentByCss(self, css):
+        self.assertTrue(len(self.browser.find_by_css(css)) > 0)
+
+    def assetElementIsNotPresentByCss(self, css):
+        self.assertTrue(len(self.browser.find_by_css(css)) == 0)
+
     def assertTextIsPresent(self, text):
         self.assertTrue(self.browser.is_text_present(text))
 

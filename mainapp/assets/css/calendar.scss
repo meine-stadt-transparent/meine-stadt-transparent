@@ -6,6 +6,9 @@
   &:focus {
     background: #f6f6f6;
   }
+  &.cancelled {
+    text-decoration: line-through;
+  }
 }
 
 .fc-scroller {

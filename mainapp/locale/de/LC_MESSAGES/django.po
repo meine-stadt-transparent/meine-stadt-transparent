@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-24 14:11+0100\n"
+"POT-Creation-Date: 2018-02-25 17:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -635,15 +635,15 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:149
+#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:153
 msgid "Meeting"
 msgstr "Sitzung"
 
 #: mainapp/templates/mainapp/file/info_lg.html:14
 #: mainapp/templates/mainapp/file/info_lg.html:24
 #: mainapp/templates/mainapp/file/info_sm.html:48
-#: mainapp/templates/mainapp/meeting.html:158
-#: mainapp/templates/mainapp/meeting.html:165
+#: mainapp/templates/mainapp/meeting.html:162
+#: mainapp/templates/mainapp/meeting.html:169
 msgid "Paper"
 msgstr "Vorlage"
 
@@ -732,7 +732,7 @@ msgid "All meetings in the calendar"
 msgstr "Alle Termine im Kalender"
 
 #: mainapp/templates/mainapp/index/index_search.html:5
-#: mainapp/templates/mainapp/index_v2/index_search.html:11
+#: mainapp/templates/mainapp/index_v2/index_search.html:13
 #: mainapp/templates/partials/base_navbar.html:20
 msgctxt "perform search"
 msgid "Search"
@@ -745,8 +745,8 @@ msgstr "Suche nach Dokumenten, Personen, Themen..."
 
 #: mainapp/templates/mainapp/index/index_search.html:12
 #: mainapp/templates/mainapp/index/index_search.html:13
-#: mainapp/templates/mainapp/index_v2/index_search.html:17
-#: mainapp/templates/mainapp/index_v2/index_search.html:18
+#: mainapp/templates/mainapp/index_v2/index_search.html:19
+#: mainapp/templates/mainapp/index_v2/index_search.html:20
 #: mainapp/templates/mainapp/search/search.html:56
 #: mainapp/templates/mainapp/search/search.html:57
 #: mainapp/templates/partials/base_navbar.html:23
@@ -800,12 +800,12 @@ msgstr "und 1 weitere Datei"
 msgid "and %%NUM%% more files"
 msgstr "und %%NUM%% weitere Dateien"
 
-#: mainapp/templates/mainapp/index_v2/index_search.html:6
+#: mainapp/templates/mainapp/index_v2/index_search.html:7
 #, python-format
 msgid "Full-text search in %(num)s documents"
 msgstr "Suche im Volltext von %(num)s Dokumenten"
 
-#: mainapp/templates/mainapp/index_v2/index_search.html:22
+#: mainapp/templates/mainapp/index_v2/index_search.html:24
 msgid "Search for example for \"School\", \"Bikes\" or \"Budget\""
 msgstr "Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“"
 
@@ -839,31 +839,36 @@ msgstr "Träger der Sitzung"
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: mainapp/templates/mainapp/meeting.html:101
+#: mainapp/templates/mainapp/meeting.html:99
+#| msgid "This object has been deleted. "
+msgid "This meeting has been cancelled"
+msgstr "Dieser Termin wurde abgesagt."
+
+#: mainapp/templates/mainapp/meeting.html:105
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: mainapp/templates/mainapp/meeting.html:104
+#: mainapp/templates/mainapp/meeting.html:108
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: mainapp/templates/mainapp/meeting.html:110
+#: mainapp/templates/mainapp/meeting.html:114
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: mainapp/templates/mainapp/meeting.html:116
+#: mainapp/templates/mainapp/meeting.html:120
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:122
+#: mainapp/templates/mainapp/meeting.html:126
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:140
+#: mainapp/templates/mainapp/meeting.html:144
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: mainapp/templates/mainapp/meeting.html:176
+#: mainapp/templates/mainapp/meeting.html:180
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
@@ -1295,11 +1300,11 @@ msgstr ""
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:157
+#: mainapp/views/meeting.py:161
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:169
+#: mainapp/views/meeting.py:173
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 
@@ -1329,7 +1334,7 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 msgid "search disabled"
 msgstr "Suche deaktiviert"
 
-#: mainapp/views/views.py:248
+#: mainapp/views/views.py:253
 msgid "Search for documents of %CITY%'s city council"
 msgstr ""
 

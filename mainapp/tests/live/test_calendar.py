@@ -39,3 +39,14 @@ class CalendarTest(ChromeDriverTestCase):
         self.visit("/calendar/month/2017-11-01/")
         self.assertTextIsNotPresent("House Assembly Meeting 1")
         self.assertTextIsPresent("House Assembly Meeting November")
+
+    def test_cancelled(self):
+        self.visit("/calendar/listYear/2016-01-02/")
+        self.assetElementIsNotPresentByCss('.cancelled')
+
+        self.visit("/calendar/month/2017-11-01/")
+        self.assertTextIsPresent("House Assembly Meeting November")
+        self.assetElementIsPresentByCss('.cancelled')
+
+        self.click_by_css('.cancelled')
+        self.assertTextIsPresent('This meeting has been cancelled')

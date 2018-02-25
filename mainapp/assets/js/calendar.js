@@ -43,6 +43,7 @@ $(function () {
 
         // Make the single events tabbable; go to the event when the enter-key is pressed
         eventAfterRender: function (event, element, view) {
+            console.log(event, element, view);
             $(element).attr("tabindex", "0").keyup((ev) => {
                 if (ev.originalEvent.keyCode === 13) {
                     window.location.href = event['details'];

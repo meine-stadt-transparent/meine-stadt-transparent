@@ -94,6 +94,10 @@
                     <a href="{% url 'meeting-ical' meeting.id %}">{% trans 'iCal-Export' %}</a>
                 </div>
             </div>
+
+            {% if meeting.cancelled %}
+                <div class="alert alert-danger">{% trans "This meeting has been cancelled" %}</div>
+            {% endif %}
         </section>
 
         <section class="container meeting-section">
