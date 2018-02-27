@@ -70,18 +70,18 @@
                         </div>
                     </div>
                 {% else %}
-                    <div title="{% trans 'Place of the meeting' %}">
+                    <div title="{% trans 'Place of the meeting' %}" class="std-element">
                         <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
                         <span title="{{ meeting.location.description }}">{{ meeting.location }}</span>
                     </div>
                 {% endif %}
 
-                <div title="{% trans 'Time of the Meeting' %}">
+                <div title="{% trans 'Time of the Meeting' %}" class="std-element">
                     <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}
                 </div>
 
                 {% if meeting.organizations.all|length == 1 %}
-                    <div title="{% trans 'Main organization of the meeting' %}">
+                    <div title="{% trans 'Main organization of the meeting' %}" class="std-element">
                         <a href="{% url 'organization' meeting.organizations.all.0.id %}">
                         <span class="fa-custom fa-users"
                               aria-hidden="true"></span>{{ meeting.organizations.all.0 }}
@@ -89,7 +89,7 @@
                     </div>
                 {% endif %}
 
-                <div>
+                <div class="std-element">
                     <span class="fa-custom fa-calendar-plus-o" aria-hidden="true"></span>
                     <a href="{% url 'meeting-ical' meeting.id %}">{% trans 'iCal-Export' %}</a>
                 </div>
