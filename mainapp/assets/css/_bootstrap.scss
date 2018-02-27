@@ -10,3 +10,7 @@
     }
   }
 }
+
+.nav-link.active:focus {
+  background-color: darken($nav-pills-link-active-bg, 5%);
+}

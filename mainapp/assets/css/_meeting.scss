@@ -40,3 +40,14 @@
 
   }
 }
+
+.meeting-list-simple {
+  .meeting {
+    margin-bottom: 15px;
+  }
+  .date {
+    display: block;
+    @extend .text-muted;
+    font-size: 0.8rem;
+  }
+}

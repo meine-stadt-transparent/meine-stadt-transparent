@@ -81,7 +81,15 @@
                     <span class="fa fa-calendar-plus-o" aria-hidden="true"></span>
                     {% trans "Subscribe (iCal)" %}
                 </a>
-                {% include "partials/header_list.html" with objects=meetings icon="calendar" %}
+                <h2>{{ name }}</h2>
+                <ul class="meeting-list-simple">
+                    {% for meeting in meetings %}
+                        <li class="meeting">
+                            <a href="{{ meeting.get_default_link }}" class="meeting-name">{{ meeting }}</a>
+                            <div class="date">{{ meeting.start }}</div>
+                        </li>
+                    {% endfor %}
+                </ul>
                 {% if meeting_count > meetings|length %}
                     <p>{% trans "Remaining meetings omitted. They can be found with the search" %}</p>
                 {% endif %}

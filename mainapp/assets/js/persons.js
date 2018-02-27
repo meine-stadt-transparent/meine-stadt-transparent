@@ -60,7 +60,6 @@ $(function () {
         let lastTabindex = 1;
 
         let overrideTabindex = ($el) => {
-            // @TODO: Check if this widget becomes invisible, e.g. if hidden in an inactive tab; in that case, original-tabindex should be restored
             if ($el.data('original-tabindex') === undefined) {
                 let origTabindex = $el.attr('tabindex');
                 $el.data('original-tabindex', (origTabindex === undefined ? 0 : origTabindex));
@@ -84,6 +83,15 @@ $(function () {
         recalcTabindexes();
     });
     recalcTabindexes();
+
+    if ($gridEl.parents(".tab-pane").length > 0) {
+        // We're inside a tab content, so the list might disappear and reappear
+        let tabId = $gridEl.parents(".tab-pane").attr("id"),
+            $tab = $(".nav-link[href=\"#" + tabId + "\"]");
+        $tab.on("shown.bs.tab hidden.bs.tab", () => {
+            recalcTabindexes();
+        });
+    }
 
     let $groupRadios = $(".filter-organizations input[type=radio]"),
         $groupDropdownLinks = $(".filter-organizations a"),
