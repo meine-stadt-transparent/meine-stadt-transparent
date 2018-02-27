@@ -58,7 +58,7 @@
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 {% if meeting.location.geometry %}
                     <div class="dropdown location-dropdown"
-                         data-map-data="{{ map }}" data-location="{{ meeting.location.geometry }}">
+                         data-map-data="{{ map }}" data-location="{{ location_json }}">
                         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                                 id="locationShowButton" title="{{ meeting.location.description }}"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

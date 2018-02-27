@@ -6,7 +6,6 @@ export default class LocationDropdown {
     constructor($widget) {
         this.$widget = $widget;
         this.leaflet = null;
-        this.geojson = this.$widget.data("geojson");
 
         let mapIsInitialized = false;
         this.currMarker = null;
