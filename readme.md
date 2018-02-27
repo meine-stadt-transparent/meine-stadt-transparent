@@ -262,7 +262,7 @@ To receive updates from the API and keep your installation up to date, you need 
 
 ```bash
 rm -R storage/cache/*
-./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importoparl
 ```
 
 Another script sends notifications to users about new documents found matching their notification settings:
