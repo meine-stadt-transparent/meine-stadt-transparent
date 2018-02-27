@@ -23,13 +23,14 @@ from gi.repository import Json, GLib, OParl
 default_options = {
     "download_files": True,
     "use_cache": True,
-    "use_sternberg": False,
+    "use_sternberg": (settings.OPARL_WORKAROUNDS and settings.OPARL_WORKAROUNDS.lower() == "sternberg"),
     "ignore_modified": False,
     "no_threads": False,
     "cachefolder": settings.CACHE_ROOT,
     "storagefolder": settings.MEDIA_ROOT,
     "batchsize": 100,
     "threadcount": 10,
+    "entrypoint": settings.OPARL_ENDPOINT,
 }
 
 

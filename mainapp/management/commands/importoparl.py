@@ -6,10 +6,9 @@ from importer.functions import get_importer
 class Command(BaseCommand):
     help = 'Import the data from an oparl api into the database'
 
-    def add_arguments(self, parser, add_entrypoint=True):
+    def add_arguments(self, parser):
         from importer.oparl_helper import default_options
-        if add_entrypoint:
-            parser.add_argument('entrypoint', type=str)
+        parser.add_argument('--entrypoint', type=str)
         parser.add_argument('--cachefolder', type=str)
         parser.add_argument('--storagefolder', type=str)
         parser.add_argument('--threadcount', type=int)
