@@ -8,6 +8,7 @@ from importer import CityToAGS
 from importer.citytools import import_streets, import_outline
 from importer.functions import get_importer
 from importer.oparl_helper import default_options
+from importer.sternberg_import import SternbergImport
 from meine_stadt_transparent import settings
 
 logger = logging.getLogger(__name__)
@@ -92,8 +93,13 @@ class OParlAuto:
         logger.info("We're done with the OParl import. We just need some metadata now")
         import_streets(main_body, ags)
         import_outline(main_body, ags)
-        logger.info("Done! Please add the following line to your dotenv file: \nSITE_DEFAULT_BODY={}"
-                    .format(main_body.id))
+
+        dotenv = "SITE_DEFAULT_BODY={}".format(main_body.id) + "\n" \
+                 + "OPARL_ENDPOINT={}".format(importer.entrypoint)
+        if isinstance(importer, SternbergImport):
+            dotenv += "\nOPARL_WORKAROUNDS=Sternberg"
+
+        logger.info("Done! Please add the following line to your dotenv file: \n" + dotenv)
 
     @classmethod
     def get_ags(cls, liboparl_body, userinput):

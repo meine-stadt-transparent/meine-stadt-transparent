@@ -229,22 +229,29 @@ Now the site should be working. If the "Latest Documents"-Section on the home pa
 
 To bootstrap a city, two pieces of information are required: the URL of the OParl-Endpoint, and (for now) the German "Gemeindeschlüssel".
 
-The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the `--use-sternberg-workarounds` to mitigate issues with the current server-side implementations.
+The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the Sternberg-Workarounds to mitigate issues with the current server-side implementations.
 
+OParl-related entries in the ``.env``-file:
+```txt
+OPARL_ENDPOINT=https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+OPARL_WORKAROUNDS=Sternberg
+```
+
+Shell commands:
 ```bash
-./manage.py importbodies --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importbodies
 ./manage.py importcityoutline 05358024 1
 ./manage.py importstreets 05358024 1
-./manage.py importoparl --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
+./manage.py importoparl
 ```
 
 ### Importing only a single object
 
 Instead of crawling the whole API, it is possible to update only one specific item using the ``importanything``-command. You will need to specify the entrypoint like always and the URL of the actual OParl-Object. Here are examples how to import a person, a paper and a meeting:
 ```bash
-./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/person/4933
-./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/paper/53584
-./manage.py importanything --use-sternberg-workarounds https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
+./manage.py importanything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/person/4933
+./manage.py importanything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/paper/53584
+./manage.py importanything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
 ```
 
 ### Cronjobs

@@ -7,8 +7,8 @@ from .importoparl import Command as ImportOParlCommand
 class Command(ImportOParlCommand):
     help = 'Import the bodies from an oparl api into the database'
 
-    def add_arguments(self, parser, add_entrypoint=True):
-        super().add_arguments(parser, add_entrypoint)
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
         parser.add_argument('url', type=str)
 
     def handle(self, *args, **options):

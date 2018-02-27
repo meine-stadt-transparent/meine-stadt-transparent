@@ -9,8 +9,8 @@ from .importoparl import Command as OParlImport
 class Command(OParlImport):
     help = 'Import the data from an oparl api into '
 
-    def add_arguments(self, parser, add_entrypoint=False):
-        super().add_arguments(parser, add_entrypoint)
+    def add_arguments(self, parser):
+        super().add_arguments(parser)
         parser.add_argument('urlfile', type=str, default="urls-to-import.txt")
 
     def handle(self, *args, **options):
