@@ -40,7 +40,7 @@
     "bootstrap": "^4.0.0",
     "bootstrap-datepicker": "^1.7.1",
     "bootstrap-daterangepicker": "^2.1.30",
-    "chromedriver": "^2.34.1",
+    "chromedriver": "2.35.0",
     "corejs-typeahead": "github:meine-stadt-transparent/typeahead.js",
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.8.2",
