@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-08 18:37+0200\n"
+"POT-Creation-Date: 2018-10-08 18:34+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -154,15 +154,15 @@ msgctxt "Document Type Name"
 msgid "Departments"
 msgstr "Abteilungen"
 
-#: mainapp/models/user_profile.py:9
+#: mainapp/models/user_profile.py:7
 msgid "User"
 msgstr "Account"
 
-#: mainapp/models/user_profile.py:13
+#: mainapp/models/user_profile.py:14
 msgid "User profile"
 msgstr "Profil"
 
-#: mainapp/models/user_profile.py:14
+#: mainapp/models/user_profile.py:15
 msgid "User profiles"
 msgstr "Profil"
 
@@ -348,6 +348,40 @@ msgstr "E-Mail-Adresse bearbeiten"
 #: mainapp/templates/partials/base_navbar_mainmenu.html:38
 msgid "Change your password"
 msgstr "Passwort ändern"
+
+#: mainapp/templates/account/home.html:80
+msgid "Mail Encryption"
+msgstr "E-Mail-Verschlüsselung"
+
+#: mainapp/templates/account/home.html:94
+msgid "Select PGP Key"
+msgstr "PGP Schlüssel auswählen"
+
+#: mainapp/templates/account/home.html:97
+#, fuzzy
+#| msgid "Search results"
+msgid "Searching for Keys"
+msgstr "Suchergebnisse"
+
+#: mainapp/templates/account/home.html:104
+#, fuzzy
+#| msgid "You will no longer receive notifications."
+msgid "Select your pgp key receive encrypted notifications"
+msgstr "Wähle sie eine PGP-Schlüssel aus, um verschlüsselte Benachrichtigungen zu erhalten"
+
+#: mainapp/templates/account/home.html:112
+#, fuzzy
+#| msgid "Remove"
+msgid "Remove key"
+msgstr "Entfernen"
+
+#: mainapp/templates/account/home.html:118
+msgid "Your notifications will be pgp encrypted"
+msgstr "Ihre Benachrichtigungen werden mit PGP verschlüsselt"
+
+#: mainapp/templates/account/home.html:119
+msgid "Fingerprint: "
+msgstr "Fingerabdruck: "
 
 #: mainapp/templates/account/login.html:7
 msgid "Sign In"
@@ -1322,9 +1356,17 @@ msgstr ""
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
-#: mainapp/views/profile.py:21 mainapp/views/search.py:52
+#: mainapp/views/profile.py:34 mainapp/views/search.py:52
 msgid "You will now receive notifications about new search results."
 msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
+
+#: mainapp/views/profile.py:45
+msgid "You're notifications will now be pgp encrypted"
+msgstr "Ihre Benacharichtigung werden mit PGP verschlüsselt"
+
+#: mainapp/views/profile.py:50
+msgid "You're notifications won't be pgp encrypted anymore"
+msgstr "Ihre Benachrichtigungen werden nicht mehr mit PGP verschlüsselt"
 
 #: mainapp/views/search.py:54
 msgid "You have already subscribed to this search."

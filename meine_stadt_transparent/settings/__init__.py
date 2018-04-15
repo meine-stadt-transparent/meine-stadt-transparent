@@ -48,6 +48,10 @@ if env.str('MAIL_PROVIDER', 'local').lower() == 'mailjet':
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
 DEFAULT_FROM_EMAIL_NAME = env.str('DEFAULT_FROM_EMAIL_NAME', PRODUCT_NAME)
 
+# The pgp keyservevr, following the sks protocol
+ENABLE_PGP = env.bool("ENABLE_PGP", True)
+SKS_KEYSERVER = env.str("SKS_KEYSERVER", "gpg.mozilla.org")
+
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -145,6 +149,7 @@ STATICFILES_DIRS = (
 
 MEDIA_ROOT = env.str('MEDIA_ROOT', './storage/files/')
 CACHE_ROOT = env.str('CACHE_ROOT', './storage/cache/')
+PGP_KEY_ROOT = env.str('PGP_KEY_ROOT', './storage/pgp-keys/')
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -293,6 +298,8 @@ TEMPLATE_META = {
     "main_css": env.str('TEMPLATE_MAIN_CSS', "mainapp"),
     "location_limit_lng": 42,
     "location_limit_lat": 23,
+    "sks_keyserver": SKS_KEYSERVER,
+    "enable_pgp": ENABLE_PGP,
 }
 
 FILE_DISCLAIMER = env.str("FILE_DISCLAIMER", None)

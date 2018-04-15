@@ -7,6 +7,8 @@ import FacettedSearch from "./FacettedSearch";
 import EndlessScrolling from "./EndlessScrolling";
 import MultiListFilter from "./MultiListFilter";
 import LocationDropdown from "./LocationDropdown";
+import PgpUi from "./pgp-ui";
+
 import trapMice from "./mousetrap";
 // Force loading these images, as they are not referenced in the stylesheet but required by the JS library
 // noinspection ES6UnusedImports
@@ -33,7 +35,8 @@ let REGISTERED_CLASSES = {
     ".detailed-searchform": FacettedSearch,
     "#start-endless-scroll": EndlessScrolling,
     ".multi-list-filter": MultiListFilter,
-    ".location-dropdown": LocationDropdown
+    ".location-dropdown": LocationDropdown,
+    "#select-pgp-key-box": PgpUi
 };
 
 // initialize everything
