@@ -7,7 +7,7 @@ import requests
 from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
-from pdfbox import PDFBox
+import textract
 from wand.color import Color
 from wand.image import Image
 
@@ -22,8 +22,7 @@ def cleanup_extracted_text(text):
     """
 
     # Tries to merge hyphenated text back into whole words; last and first characters have to be lower case
-    text = re.sub(r"([a-z])-\s*\n([a-z])", r"\1\2", text)
-    return text
+    return re.sub(r"([a-z])-\s*\n([a-z])", r"\1\2", text)
 
 
 def extract_text_from_pdf(pdf_file):
@@ -31,11 +30,7 @@ def extract_text_from_pdf(pdf_file):
     :param pdf_file: str
     :return: str
     """
-    escaped_filename = shlex.quote(pdf_file)
-    parser = PDFBox()
-    parsed_text = parser.extract_text(escaped_filename)
-    parsed_text = cleanup_extracted_text(parsed_text)
-    return parsed_text
+    return str(textract.process(pdf_file))
 
 
 def get_page_count_from_pdf(pdf_file):
@@ -43,8 +38,8 @@ def get_page_count_from_pdf(pdf_file):
     :param pdf_file: str
     :return: int
     """
-    pdf = PdfFileReader(open(pdf_file, 'rb'))
-    return pdf.getNumPages()
+    with open(pdf_file, 'rb') as fp:
+        return PdfFileReader(fp).getNumPages()
 
 
 def perform_ocr_on_image(imgdata):

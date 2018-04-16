@@ -187,7 +187,7 @@ class OParlHelper:
             try:
                 parsed_text = extract_text_from_pdf(path)
                 file.page_count = get_page_count_from_pdf(path)
-            except Exception:
+            except:
                 message = "Could not parse pdf file {}".format(path)
                 self.logger.error(message)
                 self.errorlist.append(message)

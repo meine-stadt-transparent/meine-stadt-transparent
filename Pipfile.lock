@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3f3c6e3dc8cd8c4330c2bf0ecc044ac8c27395185bfe76ea9d4a249d101dbdc7"
+            "sha256": "9edef6bff60e103d4af0ea5982de7abbc6f50b1b370cec518b27a1dde79fc38e"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -27,13 +27,6 @@
         ]
     },
     "default": {
-        "appdirs": {
-            "hashes": [
-                "sha256:d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e",
-                "sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92"
-            ],
-            "version": "==1.4.3"
-        },
         "certifi": {
             "hashes": [
                 "sha256:14131608ad2fd56836d33a71ee60fa1c82bc9d2c8d98b7bdbc631fe1b3cd1296",
@@ -306,13 +299,6 @@
             ],
             "version": "==2.7.2"
         },
-        "python-pdfbox": {
-            "hashes": [
-                "sha256:604b3dfab6217abf8ab691175d6e4bf682eb2feab4deec0b779a4965fa19ad59",
-                "sha256:cdef270de35a041b3f95519db932f8b778290279d4d4924640543eebf83270e9"
-            ],
-            "version": "==0.1.0"
-        },
         "python-slugify": {
             "hashes": [
                 "sha256:5dbb360b882b2dabe0471a1a92f604504d83c2a73c71f2098d004ab62e695534"
@@ -346,12 +332,6 @@
                 "sha256:883ac416757eada6d3d07054ec7092ac21c7f35cb1d2cf82faf205637081f468"
             ],
             "version": "==0.8.0"
-        },
-        "sarge": {
-            "hashes": [
-                "sha256:59f93216723ddd9062d17cbbb90ed9e69267b84825cf0bde0b7f8d934c424823"
-            ],
-            "version": "==0.1.4"
         },
         "scipy": {
             "hashes": [
@@ -408,6 +388,9 @@
                 "sha256:ce028444cfab83be538752a2ffdb56bc417b7784ff35bb9a3062413717807dec"
             ],
             "version": "==0.2.4"
+        },
+        "textract": {
+            "git": "https://github.com/deanmalmgren/textract"
         },
         "unidecode": {
             "hashes": [

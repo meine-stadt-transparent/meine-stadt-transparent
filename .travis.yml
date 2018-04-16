@@ -6,9 +6,30 @@ python:
 env:
  - PIPENV_VENV_IN_PROJECT=True
 
+addons:
+  apt:
+    packages:
+    - libxml2-dev
+    - libxslt1-dev
+    - antiword
+    - unrtf
+    - poppler-utils
+    - pstotext
+    - tesseract-ocr
+    - flac
+    - ffmpeg
+    - lame
+    - libmad0
+    - libsox-fmt-mp3
+    - sox
+    - libjpeg-dev
+    - swig
+    - libpulse-dev
+
 cache:
  pip: true
  npm: true
+ apt: true
  directories:
   - .venv
 
