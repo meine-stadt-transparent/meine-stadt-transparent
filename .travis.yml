@@ -17,7 +17,7 @@ addons:
     - pstotext
     - tesseract-ocr
     - flac
-    - ffmpeg
+    - libav-tools
     - lame
     - libmad0
     - libsox-fmt-mp3
