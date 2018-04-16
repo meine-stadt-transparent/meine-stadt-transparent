@@ -36,6 +36,8 @@ class TestImporter(TestCase):
     entrypoint = "https://oparl.example.org/"
     tempdir = None
 
+    fixtures = ["cologne-pois-test"]
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

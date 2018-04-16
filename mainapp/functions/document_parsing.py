@@ -3,6 +3,7 @@ import shlex
 import tempfile
 
 import geoextract
+import logging
 import requests
 from PyPDF2 import PdfFileReader
 from django.conf import settings
@@ -14,6 +15,7 @@ from wand.image import Image
 from mainapp.functions.geo_functions import geocode
 from mainapp.models import SearchStreet, Body, Location, Person
 
+logger = logging.getLogger(__name__)
 
 def cleanup_extracted_text(text):
     """
@@ -165,6 +167,10 @@ def extract_found_locations(text, bodies=None):
     :return: list
     """
     search_for = create_geoextract_data(bodies)
+
+    if not search_for:
+        logger.warning("No geoextract data found for " + str(bodies))
+        return []
 
     #
     # STRING NORMALIZATION
