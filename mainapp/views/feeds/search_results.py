@@ -46,7 +46,9 @@ class SearchResultsFeed(Feed):
         return reverse(item['type'], args=[item['id']])
 
     def item_pubdate(self, item):
-        return dateutil.parser.parse(item['created'])
+        created = item.get('created')
+        if created:
+            return dateutil.parser.parse(created)
 
     def item_updateddate(self, item):
         return dateutil.parser.parse(item['modified'])

@@ -144,10 +144,6 @@ def get_geodata(location, fallback_city_name):
 
 
 def format_location_name(location):
-    """
-    :param location: str
-    :return: str
-    """
     name = ""
 
     if 'street' in location:
@@ -161,11 +157,6 @@ def format_location_name(location):
 
 
 def extract_found_locations(text, bodies=None):
-    """
-    :type text: str
-    :type bodies: list of Body
-    :return: list
-    """
     search_for = create_geoextract_data(bodies)
 
     if not search_for:

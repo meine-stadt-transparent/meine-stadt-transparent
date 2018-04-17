@@ -14,7 +14,7 @@ def get_geolocator():
     else:
         geolocator = Nominatim()
 
-        # Workaround according to https://github.com/geopy/geopy/issues/262
+        # Workaround according to https://github.com/geopy/geopy/issues/262 TODO: This issue is fixed
         requester = geolocator.urlopen
 
         def requester_hack(req, **kwargs):
