@@ -1,12 +1,9 @@
 [[source]]
-
 name = "pypi"
 verify_ssl = true
 url = "https://pypi.python.org/simple"
 
-
 [packages]
-
 Django = "~=1.11.7"
 django-allauth = "~=0.35.0"
 django-anymail = "~=1.4"
@@ -18,7 +15,7 @@ django-geojson = "~=2.11.0"
 django-webpack-loader = "~=0.6.0"
 django-settings-export = "~=1.2.1"
 elasticsearch-dsl = "~=5.4.0"
-geoextract = {ref = "b18296b54e79b664388ad71804e64bdd50161b85", git = "git://github.com/stadt-karlsruhe/geoextract.git", editable = true}
+geoextract = {git = "git://github.com/stadt-karlsruhe/geoextract.git", editable = true, ref = "b18296b54e79b664388ad71804e64bdd50161b85"}
 gunicorn = "~=19.7.1"
 icalendar = "~=4.0.1"
 "PyPDF2" = "~=1.26.0"
@@ -35,3 +32,4 @@ django-debug-toolbar = "~=1.9.1"
 django-simple-history = "~=1.9.0"
 Wand = "*"
 textract = {git = "https://github.com/deanmalmgren/textract"}
+pip = "~=9.0.3"
