@@ -51,4 +51,6 @@ class SearchResultsFeed(Feed):
             return dateutil.parser.parse(created)
 
     def item_updateddate(self, item):
-        return dateutil.parser.parse(item['modified'])
+        modified = item.get('modified')
+        if modified:
+            return dateutil.parser.parse(modified)
