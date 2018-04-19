@@ -101,6 +101,10 @@ class MockMainappSearch(MainappSearch):
         })
 
 
+def mock_search_autocomplete(*args):
+    return AttrDict({'hits': []})
+
+
 class MockMainappSearchEndlessScroll(MainappSearch):
     """ The execute method is injected in the test for the endless scroll"""
 

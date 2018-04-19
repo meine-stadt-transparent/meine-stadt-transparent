@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 
 from mainapp.models import Person
 from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
-from mainapp.tests.live.helper import MockMainappSearch, MockMainappSearchEndlessScroll
+from mainapp.tests.live.helper import MockMainappSearch, MockMainappSearchEndlessScroll, mock_search_autocomplete
 from meine_stadt_transparent import settings
 
 
@@ -22,6 +22,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         return parse.unquote(self.browser.url.split("/")[-2])
 
     @override_settings(USE_ELASTICSEARCH=True)
+    @mock.patch("mainapp.views.Search.execute", new=mock_search_autocomplete)
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
     def test_landing_page_redirect(self):
         """ There was a case where the redirect would lead to the wrong page """
