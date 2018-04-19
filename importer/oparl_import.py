@@ -1,5 +1,4 @@
 import concurrent
-import hashlib
 import logging
 import os
 import traceback
@@ -7,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
 
 import gi
-import requests
 from django.db import transaction
 
 from mainapp.models import Body
@@ -24,48 +22,19 @@ class OParlImport(OParlObjects):
     """
     T = TypeVar('T')
 
-    def __init__(self, options):
-        super().__init__(options)
+    def __init__(self, options, resolver):
+        super().__init__(options, resolver)
         os.makedirs(self.storagefolder, exist_ok=True)
-        os.makedirs(self.cachefolder, exist_ok=True)
 
         # Initialize the liboparl client
         self.client = OParl.Client()
-        self.client.connect("resolve_url", self.resolve)
+        self.client.connect("resolve_url", lambda _, url: self.resolver.resolve(url))
         try:
             self.system = self.client.open(self.entrypoint)
         except GLib.Error as e:
             self.logger.fatal("Failed to load entrypoint: {}".format(e))
             self.logger.fatal("Aborting.")
             return
-
-    def resolve(self, _, url: str):
-        cachepath = os.path.join(self.cachefolder, hashlib.sha1(url.encode('utf-8')).hexdigest())
-        if self.use_cache and os.path.isfile(cachepath):
-            self.logger.info("Cached: " + url)
-            with open(cachepath) as file:
-                data = file.read()
-                return OParl.ResolveUrlResult(resolved_data=data, success=True, status_code=304)
-
-        try:
-            self.logger.info("Loading: " + url)
-            req = requests.get(url)
-        except Exception as e:
-            self.logger.error("Error loading url: ", e)
-            return OParl.ResolveUrlResult(resolved_data=None, success=False, status_code=-1)
-
-        content = req.content.decode('utf-8')
-
-        try:
-            req.raise_for_status()
-        except Exception as e:
-            self.logger.error("HTTP status code error: ", e)
-            return OParl.ResolveUrlResult(resolved_data=content, success=False, status_code=req.status_code)
-
-        with open(cachepath, 'w') as file:
-            file.write(content)
-
-        return OParl.ResolveUrlResult(resolved_data=content, success=True, status_code=req.status_code)
 
     def list_batched(self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]):
         """ Loads a list using liboparl and then inserts it batchwise into the database. """

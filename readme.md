@@ -229,12 +229,11 @@ Now the site should be working. If the "Latest Documents"-Section on the home pa
 
 To bootstrap a city, two pieces of information are required: the URL of the OParl-Endpoint, and (for now) the German "Gemeindeschlüssel".
 
-The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. The OParl-Importer uses the Sternberg-Workarounds to mitigate issues with the current server-side implementations.
+The following example uses Jülich (Gemeindeschlüssel 05358024) as an example. Internally the OParl importer will use Sternberg specific workarounds to mitigate errors in their implementations.
 
 OParl-related entries in the ``.env``-file:
 ```txt
 OPARL_ENDPOINT=https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/system
-OPARL_WORKAROUNDS=Sternberg
 ```
 
 Shell commands:

@@ -30,7 +30,6 @@ ALLOWED_HOSTS = [
     'localhost'
 ]
 
-
 ROOT_URLCONF = 'meine_stadt_transparent.urls'
 
 WSGI_APPLICATION = 'meine_stadt_transparent.wsgi.application'
@@ -273,10 +272,12 @@ LOGGING = {
 
 LOGGING.update(env.json("LOGGING", {}))
 
-OPARL_ENDPOINTS_LIST = "https://dev.oparl.org/api/endpoints"
+OPARL_ENDPOINTS_LIST = env.list("OPARL_ENDPOINTS_LIST",
+                                cast=str,
+                                default=["https://dev.oparl.org/api/endpoints",
+                                         "https://mirror.oparl.org/bodies"])
 
 OPARL_ENDPOINT = env.str("OPARL_ENDPOINT", default=None)
-OPARL_WORKAROUNDS = env.str("OPARL_WORKAROUNDS", default=None)
 
 TEMPLATE_META = {
     "logo_name": env.str('TEMPLATE_LOGO_NAME', 'MST'),

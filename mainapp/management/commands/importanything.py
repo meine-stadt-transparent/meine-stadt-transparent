@@ -12,7 +12,7 @@ class Command(ImportOParlCommand):
         parser.add_argument('url', type=str)
 
     def handle(self, *args, **options):
-        importer = get_importer(options)(options)
+        importer = get_importer(options)
 
         def convert(name):
             """ https://stackoverflow.com/a/1176023/3549270 """

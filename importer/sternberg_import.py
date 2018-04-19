@@ -14,11 +14,14 @@ gi.require_version("OParl", '0.4')
 from gi.repository import OParl
 
 
-class SternbergImport(OParlImport):
+class SternbergResolver:
     """ Class for patching up the failures in Sternberg OParl """
 
-    def resolve(self, _, url: str):
-        response = super().resolve(_, url)
+    def __init__(self, original_resolver):
+        self.original_resolver = original_resolver
+
+    def resolve(self, url: str):
+        response = self.original_resolver.resolve(url)
         if not response.get_success():
             return response
 
@@ -71,6 +74,12 @@ class SternbergImport(OParlImport):
                                               status_code=response.get_status_code())
 
         return response
+
+
+class SternbergImport(OParlImport):
+    def __init__(self, options, resolver):
+        sternberg_resolver = SternbergResolver(resolver)
+        super().__init__(options, sternberg_resolver)
 
     def download_file(self, file: File, libobject: OParl.File):
         """ Fix the invalid urls of sternberg oparl """

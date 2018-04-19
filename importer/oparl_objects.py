@@ -31,8 +31,8 @@ from gi.repository import OParl
 class OParlObjects(OParlHelper):
     """ Methods for saving the oparl objects as database entries. """
 
-    def __init__(self, options):
-        super().__init__(options)
+    def __init__(self, options, resolver):
+        super().__init__(options, resolver)
 
         # We need this here for the sternberg fixup
         self.client = None

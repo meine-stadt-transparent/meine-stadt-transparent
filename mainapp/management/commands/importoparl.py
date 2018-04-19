@@ -23,5 +23,5 @@ class Command(BaseCommand):
         parser.set_defaults(**default_options)
 
     def handle(self, *args, **options):
-        importer = get_importer(options)(options)
-        importer.run()
+        importer = get_importer(options)
+        importer.run_importer()

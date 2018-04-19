@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from importer.oparl_auto import OParlAuto
+from importer.oparl_cli import OParlCli
 
 
 class Command(BaseCommand):
@@ -10,4 +10,4 @@ class Command(BaseCommand):
         parser.add_argument('cityname', type=str)
 
     def handle(self, *args, **options):
-        OParlAuto.magic_import(options["cityname"])
+        OParlCli.from_userinput(options["cityname"])

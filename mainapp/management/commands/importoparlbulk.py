@@ -14,7 +14,7 @@ class Command(OParlImport):
         parser.add_argument('urlfile', type=str, default="urls-to-import.txt")
 
     def handle(self, *args, **options):
-        importer = get_importer(options)(options)
+        importer = get_importer(options)
 
         urls = open(options["urlfile"]).readlines()
         urls = [url.strip() for url in urls]

@@ -17,7 +17,7 @@ class Command(ImportOParlCommand):
             return lambda: fn()
 
     def handle(self, *args, **options):
-        importer = get_importer(options)(options)
+        importer = get_importer(options)
         cutoff = options["cutoff"]
 
         bodies = importer.get_bodies()

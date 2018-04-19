@@ -23,7 +23,6 @@ from gi.repository import Json, GLib, OParl
 default_options = {
     "download_files": True,
     "use_cache": True,
-    "use_sternberg": (settings.OPARL_WORKAROUNDS and settings.OPARL_WORKAROUNDS.lower() == "sternberg"),
     "ignore_modified": False,
     "no_threads": False,
     "cachefolder": settings.CACHE_ROOT,
@@ -40,7 +39,8 @@ class OParlHelper:
     These are methods and not functions so they can be easily overwritten.
     """
 
-    def __init__(self, options):
+    def __init__(self, options, resolver):
+        self.resolver = resolver
         self.ignore_modified = options["ignore_modified"]
         self.storagefolder = options["storagefolder"]
         self.entrypoint = options["entrypoint"]
@@ -131,7 +131,7 @@ class OParlHelper:
 
     # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161. This should be fixed in 2018.1
     def check_for_modification(self, libobject: OParl.Object, constructor: Type[E], name_fixup=None) \
-            -> Tuple[Optional[E], bool]:
+        -> Tuple[Optional[E], bool]:
         """ Checks common criterias for oparl objects. """
         if not libobject:
             return None, False

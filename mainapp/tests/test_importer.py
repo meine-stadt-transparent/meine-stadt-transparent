@@ -20,6 +20,7 @@ if not gi_not_available:
     # Those two require importing gi
     from importer.oparl_helper import default_options
     from importer.oparl_import import OParlImport
+    from importer.oparl_resolve import OParlResolver
 
 logger = logging.getLogger(__name__)
 
@@ -35,6 +36,8 @@ class TestImporter(TestCase):
               Paper, Consultation, Location]
     entrypoint = "https://oparl.example.org/"
     tempdir = None
+
+    resolver = OParlResolver(entrypoint, fake_cache, True)
 
     fixtures = ["cologne-pois-test"]
 
@@ -129,7 +132,7 @@ class TestImporter(TestCase):
     def check_basic_import(self):
         self.new_timestamp = (self.base_timestamp + relativedelta(years=-100)).isoformat()
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
         now = timezone.now()
 
@@ -144,7 +147,7 @@ class TestImporter(TestCase):
         """ Check that not-modified objects are ignored - See #41 """
         tables_with_modified = [Body, Organization, Person, Meeting, Paper, File]  # must have modified and File for #41
         newer_now = timezone.now()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
         for table in tables_with_modified:
             logger.debug(table.__name__)
@@ -155,7 +158,7 @@ class TestImporter(TestCase):
         self.new_timestamp = (self.base_timestamp + relativedelta(years=10)).isoformat()
         print(self.new_timestamp)
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
         for table in self.tables:
             self.assertEqual(table.objects.count(), 1)
@@ -166,7 +169,7 @@ class TestImporter(TestCase):
         self.new_timestamp = (self.base_timestamp + relativedelta(years=200)).isoformat()
         self.delete = True
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
         tables = self.tables[:]
         tables.remove(Body)
