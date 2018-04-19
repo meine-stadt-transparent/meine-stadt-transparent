@@ -37,7 +37,7 @@ class TestImporter(TestCase):
     entrypoint = "https://oparl.example.org/"
     tempdir = None
 
-    resolver = OParlResolver(entrypoint, fake_cache, True)
+    resolver = None  # Initializing here will lead to an import error without gi
 
     fixtures = ["cologne-pois-test"]
 
@@ -46,6 +46,7 @@ class TestImporter(TestCase):
         super().setUpClass()
         cls.tempdir = tempfile.mkdtemp()
         cls.options = cls.build_options()
+        cls.resolver = OParlResolver(cls.entrypoint, cls.fake_cache, True)
 
     @classmethod
     def tearDownClass(cls):
