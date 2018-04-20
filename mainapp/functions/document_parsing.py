@@ -44,10 +44,11 @@ class AddressPipeline(geoextract.Pipeline):
 
         pattern_extractor = geoextract.PatternExtractor([address_pattern])
 
+        extractors = [pattern_extractor, name_extractor]
+
         keys_to_keep = ['name', 'street', 'house_number', 'postcode', 'city']
         postprocessors = [(geoextract.KeyFilterPostprocessor(keys_to_keep))]
 
-        extractors = [pattern_extractor, name_extractor]
         super().__init__(locations,
                          extractors=extractors,
                          normalizer=normalizer,

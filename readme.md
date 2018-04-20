@@ -79,7 +79,7 @@ To use this in production, you need to set up the two Cron-Jobs described below,
 
 ### Requirements
 
- - Python >= 3.5 with pip (We test with 3.5 and 3.6)
+ - Python 3.5 or 3.6 with pip
  - A recent node version with npm
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
