@@ -1,11 +1,16 @@
+import logging
 import re
 
 from django.conf import settings
 from geopy import OpenCage, Nominatim
+from geopy.exc import GeocoderTimedOut
 
 
-def get_geolocator():
-    if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata':
+logger = logging.getLogger(__name__)
+
+
+def get_geolocator(fallback=False):
+    if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata' and not fallback:
         if not settings.OPENCAGEDATA_KEY:
             raise ValueError(
                 "OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set")
@@ -17,8 +22,11 @@ def get_geolocator():
 
 
 def geocode(search_str: str):
-    geolocator = get_geolocator()
-    location = geolocator.geocode(search_str, language="de", exactly_one=False)
+    try:
+        location = get_geolocator().geocode(search_str, language="de", exactly_one=False)
+    except GeocoderTimedOut as e:
+        logger.warning(e)
+        location = get_geolocator(fallback=True).geocode(search_str, language="de", exactly_one=False)
     if not location or len(location) == 0:
         return None
 

@@ -70,7 +70,7 @@ def extract_text_from_pdf(pdf_file):
     :param pdf_file: str
     :return: str
     """
-    return str(textract.process(pdf_file))
+    return textract.process(pdf_file, extension="pdf").decode("utf-8")
 
 
 def get_page_count_from_pdf(pdf_file):

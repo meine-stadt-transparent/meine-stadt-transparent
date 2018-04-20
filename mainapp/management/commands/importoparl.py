@@ -24,4 +24,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         importer = get_importer(options)
-        importer.run_importer()
+        importer.run()
