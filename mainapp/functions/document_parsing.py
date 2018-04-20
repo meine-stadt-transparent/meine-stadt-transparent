@@ -1,14 +1,13 @@
+import logging
 import re
-import shlex
 import tempfile
 
 import geoextract
-import logging
 import requests
+import textract
 from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
-import textract
 from wand.color import Color
 from wand.image import Image
 
@@ -16,6 +15,44 @@ from mainapp.functions.geo_functions import geocode
 from mainapp.models import SearchStreet, Body, Location, Person
 
 logger = logging.getLogger(__name__)
+
+
+class AddressPipeline(geoextract.Pipeline):
+    def __init__(self, locations, subs=None, stem='german'):
+        if subs is None:
+            if stem == 'german':
+                subs = [(r'str\b', 'strasse')]
+            else:
+                subs = []
+        normalizer = geoextract.BasicNormalizer(subs=subs, stem=stem)
+
+        name_extractor = geoextract.NameExtractor()
+
+        address_pattern = re.compile(r'''
+            (?P<street>[^\W\d_](?:[^\W\d_]|\s)*[^\W\d_])
+            \s+
+            (?P<house_number>([1-9]\d*)[\w-]*)
+            (
+                \s+
+                (
+                    (?P<postcode>\d{5})
+                    \s+
+                )?
+                (?P<city>([^\W\d_]|-)+)
+            )?
+        ''', flags=re.UNICODE | re.VERBOSE)
+
+        pattern_extractor = geoextract.PatternExtractor([address_pattern])
+
+        keys_to_keep = ['name', 'street', 'house_number', 'postcode', 'city']
+        postprocessors = [(geoextract.KeyFilterPostprocessor(keys_to_keep))]
+
+        extractors = [pattern_extractor, name_extractor]
+        super().__init__(locations,
+                         extractors=extractors,
+                         normalizer=normalizer,
+                         postprocessors=postprocessors)
+
 
 def cleanup_extracted_text(text):
     """
@@ -159,94 +196,7 @@ def format_location_name(location):
 def extract_found_locations(text, bodies=None):
     search_for = create_geoextract_data(bodies)
 
-    if not search_for:
-        logger.warning("No geoextract data found for " + str(bodies))
-        return []
-
-    #
-    # STRING NORMALIZATION
-    #
-
-    # Strings must be normalized before searching and matching them. This includes
-    # technical normalization (e.g. Unicode normalization), linguistic
-    # normalization (e.g. stemming) and content normalization (e.g. synonym
-    # handling).
-
-    normalizer = geoextract.BasicNormalizer(subs=[(r'str\b', 'strasse')],
-                                            stem='german')
-
-    #
-    # NAMES
-    #
-
-    # Many places can be referred to using just their name, for example specific
-    # buildings (e.g. the Brandenburger Tor), streets (Hauptstraße) or other
-    # points of interest. These can be extracted using the ``NameExtractor``.
-    #
-    # Note that extractor will automatically receive the (normalized) location
-    # names from the pipeline we construct later, so there's no need to explicitly
-    # pass them to the constructor.
-
-    name_extractor = geoextract.NameExtractor()
-
-    #
-    # PATTERNS
-    #
-
-    # For locations that are notated using a semi-structured format (addresses)
-    # the ``PatternExtractor`` is a good choice. It looks for matches of regular
-    # expressions.
-    #
-    # The patterns should have named groups, their sub-matches will be
-    # returned in the extracted locations.
-
-    address_pattern = re.compile(r'''
-        (?P<street>[^\W\d_](?:[^\W\d_]|\s)*[^\W\d_])
-        \s+
-        (?P<house_number>([1-9]\d*)[\w-]*)
-        (
-            \s+
-            (
-                (?P<postcode>\d{5})
-                \s+
-            )?
-            (?P<city>([^\W\d_]|-)+)
-        )?
-    ''', flags=re.UNICODE | re.VERBOSE)
-
-    pattern_extractor = geoextract.PatternExtractor([address_pattern])
-
-    #
-    # POSTPROCESSING
-    #
-
-    # Once locations are extracted you might want to postprocess them, for example
-    # to remove certain attributes that are useful for validation but are not
-    # intended for publication. Or you may want to remove a certain address that's
-    # printed in the footer of all the documents you're processing.
-    #
-    # GeoExtract allows you to do this by using one or more postprocessors. In this
-    # example we will remove all but a few keys from our location dicts.
-
-    keys_to_keep = ['name', 'street', 'house_number', 'postcode', 'city']
-    key_filter_postprocessor = geoextract.KeyFilterPostprocessor(keys_to_keep)
-
-    #
-    # PIPELINE CONSTRUCTION
-    #
-
-    # A pipeline connects all the different components.
-    #
-    # Here we're using custom extractors and a custom normalizer. We could also
-    # provide our own code for splitting a document into chunks and for validation,
-    # but for simplicity we'll use the default implementations in these cases.
-
-    pipeline = geoextract.Pipeline(
-        search_for,
-        extractors=[pattern_extractor, name_extractor],
-        normalizer=normalizer,
-        postprocessors=[key_filter_postprocessor],
-    )
+    pipeline = AddressPipeline(search_for)
 
     return pipeline.extract(text)
 
@@ -340,8 +290,10 @@ def extract_persons(text):
         return re.search(matcher, text, re.I | re.S | re.U | re.MULTILINE)
 
     for person in persons:
-        if match([person.name]) or match([person.given_name, person.family_name]) or \
-                match([person.family_name, person.given_name]):
+        match_name = match([person.name])
+        match_names = match([person.given_name, person.family_name])
+        match_names_reverse = match([person.family_name, person.given_name])
+        if match_name or match_names or match_names_reverse:
             found_persons.append(person)
 
     return found_persons
