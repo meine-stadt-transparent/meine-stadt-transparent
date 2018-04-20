@@ -156,13 +156,20 @@ The site is now fully configured :tada:
 
 ## Import
 
-### The automagic
+### The easy way
 
 ```bash
 ./manage.py import [mycitiesname]
 ```
 
 You need to use the official German name with the right capitalization, e.g. `München` or `Jülich` and not `münchen` or `Juelich`. The [service](https://www.wikidata.org) we're using is a bit picky on those names.
+
+This script will eventually finish and tell you to add some lines to the dotenv. After that you can always do a new
+import with
+
+```bash
+./manage.py importoparl
+```
 
 ### The manual way
 
@@ -257,22 +264,11 @@ Instead of crawling the whole API, it is possible to update only one specific it
 
 ### Cronjobs
 
-Two Cronjobs are necessary to run this system.
-
-To receive updates from the API and keep your installation up to date, you need to install a cronjob that flushes the file cache and calls the import script again:
-
 ```bash
-rm -R storage/cache/*
-./manage.py importoparl
+./manage.py cron
 ```
 
-Another script sends notifications to users about new documents found matching their notification settings:
-
-```bash
-./manage.py notifyusers
-```
-
-The second script should be called at a time where it is somewhat safe to assume the first one has already finished.
+This will clear the oparl cache, import changed objects from the oparl api and then notify the users
 
 ## Customization
 
