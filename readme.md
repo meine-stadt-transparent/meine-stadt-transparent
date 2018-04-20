@@ -80,17 +80,19 @@ To use this in production, you need to set up the two Cron-Jobs described below,
 ### Requirements
 
  - Python 3.5 or 3.6 with pip
- - A recent node version with npm
+ - A recent node version (8 or 9) with npm
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
- - A Java Runtime (for PDF Text extraction)
- - If you want to use elasticsearch: docker and docker compose.
- [Docker installation instructions](https://docs.docker.com/engine/installation/)
+ - [The requirements of textract](http://textract.readthedocs.io/en/stable/installation.html). Textract is currently only used for text extraction, so it will likely work even if some package is missing
+ - If you want to use elasticsearch, you either need  [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 5.6 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
 
 On Debian/Ubuntu:
 
 ```bash
-sudo apt install python3-venv python3-pip python3-gi libmariadbclient-dev gettext openjdk-8-jre libmagickwand-dev
+sudo apt installpython3-pip python3-venv python3-numpy python3-scipy python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
+    git libmysqlclient-dev libmagickwand-dev \
+    libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr \
+    flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig zlib1g-dev libpulse-dev
 ```
 
 Install dependencies. 
@@ -279,15 +281,15 @@ The second script should be called at a time where it is somewhat safe to assume
 You can easily override templates and add custom styles, e.g. for matching the corporate design of a specific city.
 
 Two examples are bundled with this repository:
-- [juelich_transparent](customization_examples/juelich_transparent/): Only the [contact form](mainapp/templates/info/contact.html) is overridden
-- [bedburg_transparent](customization_examples/bedburg_transparent/): The contact form is overriden and a custom style sheet is provided. 
+- [juelich_transparent](customization_examples/juelich_transparent): Only the [contact form](mainapp/templates/info/contact.html) is overridden
+- [bedburg_transparent](customization_examples/bedburg_transparent): The contact form is overriden and a custom style sheet is provided. 
 
 You can easily add your own customizations by putting them into a folder inside `customizations`. Copying over one of the examples should by a good starting point.
 
 To override a templates, set `TEMPLATE_DIRS` in ``.env`` to the ``templates``-folder within the city directory, e.g. ``TEMPLATE_DIRS=customization/juelich_transparent/templates``
 
 The following parts are required to change styles or javascript:
-  - A ``webpack.config.js`` file registering an entry point for Webpack. The entry point needs to point to a js-File. Note that the paths in that file are realtive to [etc](etc/).
+  - A ``webpack.config.js`` file registering an entry point for Webpack. The entry point needs to point to a js-File. Note that the paths in that file are realtive to [etc](etc).
   - The js File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file with an ES6 import.
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
   - The new CSS-File needs to be registered in the ``.env``-file, e.g. ``TEMPLATE_MAIN_CSS=mainapp-mycity``
