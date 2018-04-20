@@ -226,23 +226,23 @@ def robots_txt(request):
         return HttpResponse("User-agent: *\nDisallow: /accounts/\nSitemap: " + sitemap_url, content_type='text/plain')
 
 
+def sitemap_xml_entry(obj, priority):
+    return '<url><loc>' + settings.ABSOLUTE_URI_BASE + obj.get_default_link() + '</loc>' + \
+           '<lastmod>' + obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
+           '<priority>' + str(priority) + '</priority></url>' + "\n"
+
+
 def sitemap_xml(request):
     xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "\n"
 
     for paper_obj in Paper.objects.all():
-        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + paper_obj.get_default_link() + '</loc>' + \
-               '<lastmod>' + paper_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
-               '<priority>0.8</priority></url>' + "\n"
+        xml += sitemap_xml_entry(paper_obj, 0.8)
 
     for meet_obj in Meeting.objects.all():
-        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + meet_obj.get_default_link() + '</loc>' + \
-               '<lastmod>' + meet_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
-               '<priority>0.9</priority></url>' + "\n"
+        xml += sitemap_xml_entry(meet_obj, 0.9)
 
     for person_obj in Person.objects.all():
-        xml += '<url><loc>' + settings.ABSOLUTE_URI_BASE + person_obj.get_default_link() + '</loc>' + \
-               '<lastmod>' + person_obj.modified.strftime("%Y-%m-%d") + '</lastmod><changefreq>weekly</changefreq>' + \
-               '<priority>0.9</priority></url>' + "\n"
+        xml += sitemap_xml_entry(person_obj, 0.9)
 
     xml += '</urlset>'
     return HttpResponse(xml, content_type='application/xml')
