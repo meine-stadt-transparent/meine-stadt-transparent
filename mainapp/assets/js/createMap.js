@@ -99,25 +99,7 @@ let setZoomBehavior = function (leaflet) {
     leaflet.cooperativezoom.enable();
 };
 
-export default function ($map_element, initData, noTouchDrag) {
-    // noTouchDrag: Dragging is disabled by default.
-    // For mouse users, it is enabled once the first mouse-typical event occurs
-    // For touch users, it is enabled as long as the map has the focus
-    // This behavior is enabled for maps that are shown by default. Drop-down-maps keep leaflet's default behavior.
-
-    let leaflet = L.map($map_element.attr("id"), {
-        maxBoundsViscosity: 1,
-        minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
-        maxZoom: 19,
-        scrollWheelZoom: !(noTouchDrag === true),
-        dragging: !(noTouchDrag === true),
-    });
-
-    setTiles(leaflet, initData);
-    setInitView(leaflet, initData);
-    setBounds(leaflet, initData);
-    setOutline(leaflet, initData);
-
+function setScrollingBehavior(noTouchDrag, leaflet, $map_element) {
     if (noTouchDrag === true) {
         setZoomBehavior(leaflet);
 
@@ -142,6 +124,27 @@ export default function ($map_element, initData, noTouchDrag) {
             }
         });
     }
+}
+
+export default function ($map_element, initData, noTouchDrag) {
+    // noTouchDrag: Dragging is disabled by default.
+    // For mouse users, it is enabled once the first mouse-typical event occurs
+    // For touch users, it is enabled as long as the map has the focus
+    // This behavior is enabled for maps that are shown by default. Drop-down-maps keep leaflet's default behavior.
+
+    let leaflet = L.map($map_element.attr("id"), {
+        maxBoundsViscosity: 1,
+        minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
+        maxZoom: 19,
+        scrollWheelZoom: !(noTouchDrag === true),
+        dragging: !(noTouchDrag === true),
+    });
+
+    setTiles(leaflet, initData);
+    setInitView(leaflet, initData);
+    setBounds(leaflet, initData);
+    setOutline(leaflet, initData);
+    setScrollingBehavior(noTouchDrag, leaflet, $map_element);
 
     return leaflet;
 }
