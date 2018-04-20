@@ -1,5 +1,4 @@
 import re
-from urllib.request import Request
 
 from django.conf import settings
 from geopy import OpenCage, Nominatim
@@ -13,15 +12,6 @@ def get_geolocator():
         geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
     else:
         geolocator = Nominatim()
-
-        # Workaround according to https://github.com/geopy/geopy/issues/262 TODO: This issue is fixed
-        requester = geolocator.urlopen
-
-        def requester_hack(req, **kwargs):
-            req = Request(url=req, headers=geolocator.headers)
-            return requester(req, **kwargs)
-
-        geolocator.urlopen = requester_hack
 
     return geolocator
 

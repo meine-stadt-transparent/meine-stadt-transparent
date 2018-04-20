@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a854c9d41511236cffaff28027e04a0d83f17294c3009e19afbd0a2f66faf1a7"
+            "sha256": "d9ef4e5ef7dcd84b226c3755eacb883a968d89f07f290e669b6810500d34f2c8"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -59,10 +59,11 @@
         },
         "django-anymail": {
             "hashes": [
-                "sha256:f534ab2ca82b6e1155d02d656db28d17d1f4e832f641b537539a4ebbcdee7e39"
+                "sha256:9058c1009adbd926213fb2f18d20a8592e23c63f845a4aaa63c51b6476a4638a",
+                "sha256:969ea878da44b54ef2229241da9f0e9a72886c9dea14186ba6733939b63320f4"
             ],
             "index": "pypi",
-            "version": "==1.4"
+            "version": "==2.2"
         },
         "django-braces": {
             "hashes": [
@@ -119,11 +120,11 @@
         },
         "django-simple-history": {
             "hashes": [
-                "sha256:121a8c3450c45882a81b29820b78ba5aa7c11a906a6cc442e77b45dab4fe7bd6",
-                "sha256:4aed8a2a931698888b650da8dcf184a82b7452b14c2b340786dd558c48476cfb"
+                "sha256:65de7b13b8df2d0eede3e6c0e2ebec69cb2a1f283109188b7a6c71b4e0d20980",
+                "sha256:d090577b1800eec06c5e04c264eac271ae5d3b0869b7987ab3574ed42de1938e"
             ],
             "index": "pypi",
-            "version": "==1.9.1"
+            "version": "==2.0"
         },
         "django-webpack-loader": {
             "hashes": [
@@ -168,13 +169,19 @@
             "git": "git://github.com/stadt-karlsruhe/geoextract.git",
             "ref": "b18296b54e79b664388ad71804e64bdd50161b85"
         },
+        "geographiclib": {
+            "hashes": [
+                "sha256:635da648fce80a57b81b28875d103dacf7deb12a3f5f7387ba7d39c51e096533"
+            ],
+            "version": "==1.49"
+        },
         "geopy": {
             "hashes": [
-                "sha256:4250e5a9e9f7abb990eddf01d1491fc112755e14f76060011c607ba759a74112",
-                "sha256:5215b360f524118a468c13bf97ecbff6136a1876bf4b11d624916e9c9e0f7c17"
+                "sha256:1e02b749c812976a46fd4737e55020dbc4197a7510826d771531f41168aa3dde",
+                "sha256:a373625acd0449a6b1f65ddad331021e3f0a79ec0f298dc2516c350c10cd84f5"
             ],
             "index": "pypi",
-            "version": "==1.11.0"
+            "version": "==1.13.0"
         },
         "gunicorn": {
             "hashes": [
