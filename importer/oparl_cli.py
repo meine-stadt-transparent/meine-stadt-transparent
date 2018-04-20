@@ -24,21 +24,28 @@ class OParlCli:
     def bodies():
         for next_page in settings.OPARL_ENDPOINTS_LIST:
             while next_page:
-                print(next_page)
                 response = requests.get(next_page).json()
                 # links for mirror.oparl.org, meta is for dev.oparl.org
                 if "links" in response:
                     next_page = response["links"].get("next")
-                    for body in response["data"]:
-                        yield (None, body["oparl-mirror:originalId"], body)
+                    yield from OParlCli.oparl_mirror_yield(response)
                 elif "meta" in response:
                     next_page = response["meta"].get("next")
-                    for system in response["data"]:
-                        for body in system["bodies"]:
-                            yield (system["system"], body["oparlURL"], body)
+                    yield from OParlCli.dev_oparl_yield(response)
                 else:
                     logger.error("Expected links or pagination")
                     next_page = None
+
+    @staticmethod
+    def oparl_mirror_yield(response):
+        for body in response["data"]:
+            yield (None, body["oparl-mirror:originalId"], body)
+
+    @staticmethod
+    def dev_oparl_yield(response):
+        for system in response["data"]:
+            for body in system["bodies"]:
+                yield (system["system"], body["oparlURL"], body)
 
     @classmethod
     def from_userinput(cls, userinput):
