@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d9ef4e5ef7dcd84b226c3755eacb883a968d89f07f290e669b6810500d34f2c8"
+            "sha256": "2c151238e3b1ca79aa2c9d3a1adad0ee4f84bcbc60ebfe7c8a06279088eb2b90"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -91,10 +91,10 @@
         },
         "django-elasticsearch-dsl": {
             "hashes": [
-                "sha256:dc2a0419e7ec6e4ff89cb83677483287555b4d18634ffb224e253a30b2ec8a0a"
+                "sha256:e09831997ffc6ca9061496146679f7dcedd9bf8a4c6883e67ab87c5ac0e08b8b"
             ],
             "index": "pypi",
-            "version": "==0.4.4"
+            "version": "==0.4.5"
         },
         "django-environ": {
             "hashes": [
@@ -296,9 +296,9 @@
         },
         "pyahocorasick": {
             "hashes": [
-                "sha256:4eac78a6c94329d4d58ce888689b86469f4c8ab80be699c7ba53f3184b41280a"
+                "sha256:3d584e7836ca7b066f99d7fdb384dc6ef7af211b2b139baedbd960c7c279bb7f"
             ],
-            "version": "==1.1.7"
+            "version": "==1.1.8"
         },
         "pypdf2": {
             "hashes": [
