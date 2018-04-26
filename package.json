@@ -52,6 +52,7 @@
     "moment": "^2.22.1",
     "mousetrap": "^1.6.1",
     "osmtogeojson": "^3.0.0-beta.3",
+    "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#d491c2f953ec98b1277045eef7d3a94802678a98",
     "popper.js": "^1.14.3",
     "postcss-loader": "^2.1.4",
     "shufflejs": "^5.1.2"

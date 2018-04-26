@@ -52,3 +52,14 @@ This document shall explain the important design decision, assumptions and trade
  * https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
  * https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent (Passing)
 
+# pdfjs
+
+Since the pdfjs maintainers don't the default viewer in the npm package, but we need that default viewer, we've forked pdfjs ([#9127](https://github.com/mozilla/pdf.js/issues/9127), [#9144](https://github.com/mozilla/pdf.js/pull/9144)). The integration works as follows (and can be updated thereby):
+
+ * pdfjs is forked to https://github.com/meine-stadt-transparent/pdf.js
+ * Those sources are then build into the embedable distribution by running `npm install && gulp dist` in the repo root.
+ * `cd build/dist/; git push --tags https://github.com/meine-stadt-transparent/pdfjs-dist master; cd ../..` pushes the build to https://github.com/meine-stadt-transparent/pdfjs-dist, which is our version of https://github.com/mozilla/pdfjs-dist
+ * This dist repo is than install as npm dependency; `gulp dist` had generated a custom package.json for the repo.
+ * STATICFILES_DIRS includes 'node_modules/pdfjs-dist/viewer', so that django copies the contents viewer folder to the static files folder
+ * The `file` view loads that with `static('web/viewer.html')`.
+ * The viewer loads the (already minified) css and js using relative paths.

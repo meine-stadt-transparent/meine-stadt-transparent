@@ -162,7 +162,7 @@ def file(request, pk, context_meeting_id=None):
     }
 
     if renderer == "pdf":
-        context["pdfjs_iframe_url"] = static('vendored/web/viewer.html')
+        context["pdfjs_iframe_url"] = static('web/viewer.html')
         context["pdfjs_iframe_url"] += "?file=" + reverse('media', args=[file.storage_filename])
         if request.GET.get("pdfjs_search"):
             context["pdfjs_iframe_url"] += "#search=" + quote(request.GET.get("pdfjs_search"))

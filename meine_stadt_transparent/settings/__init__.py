@@ -139,6 +139,7 @@ STATIC_ROOT = env.str('STATIC_ROOT', os.path.join(BASE_DIR, 'static/'))
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
+    os.path.join(BASE_DIR, 'node_modules/pdfjs-dist/viewer'), # See desgin.md
 )
 
 MEDIA_ROOT = env.str('MEDIA_ROOT', './storage/files/')
