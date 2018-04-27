@@ -31,5 +31,5 @@ selenium = "==3.9.0"
 django-debug-toolbar = "~=1.9.1"
 django-simple-history = "~=2.0.0"
 Wand = "~=0.4.4"
-textract = {git = "https://github.com/deanmalmgren/textract"}
 pip = "~=9.0.3"
+textract = {git = "https://github.com/meine-stadt-transparent/textract", editable = true, ref = "0776b86cd01fbad5b2518f75a659a1e5b614a5bd"}
