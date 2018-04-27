@@ -7,6 +7,7 @@ ENV PYTHONUNBUFFERED 1
 # The default locale breaks python 3 < python 3.7. https://bugs.python.org/issue28180
 ENV LANG C.UTF-8
 ENV PIPENV_VENV_IN_PROJECT=True
+ENV ENV_PATH "/config/.env"
 
 RUN mkdir /app
 WORKDIR /app
@@ -34,12 +35,12 @@ RUN pip3 install --upgrade pipenv && \
     pipenv install --deploy && \
     ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
 
-RUN npm install && npm run build:dev && npm run build:email && rm -rf node_modules
+RUN npm install && npm run build:dev && npm run build:email
 
 # Allow overriding the default env
 RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true) && rm -f .env
-ENV ENV_PATH "/config/.env"
 RUN pipenv run python manage.py collectstatic --noinput
+RUN rm -rf node_modules
 
 EXPOSE 8000
 
