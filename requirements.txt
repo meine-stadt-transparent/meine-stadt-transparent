@@ -22,8 +22,8 @@ docx2txt==0.6
 EbookLib==0.16
 elasticsearch==5.5.2
 elasticsearch-dsl==5.4.0
-Flask==0.12.2
--e git://github.com/stadt-karlsruhe/geoextract.git@b18296b54e79b664388ad71804e64bdd50161b85#egg=geoextract
+Flask==1.0
+-e git://github.com/meine-stadt-transparent/geoextract.git@0d184e264c8356d22580076d35f16866c8ce6ecc#egg=geoextract
 geographiclib==1.49
 geopy==1.13.0
 gunicorn==19.7.1
@@ -57,7 +57,7 @@ six==1.10.0
 SpeechRecognition==3.7.1
 splinter==0.7.7
 sqlparse==0.2.4
-textract==1.6.1
+-e git+https://github.com/meine-stadt-transparent/textract@0776b86cd01fbad5b2518f75a659a1e5b614a5bd#egg=textract
 Unidecode==1.0.22
 urllib3==1.22
 Wand==0.4.4
