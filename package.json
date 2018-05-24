@@ -16,28 +16,28 @@
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.4",
     "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
-    "babel-preset-env": "^1.6.1",
-    "browser-sync": "^2.23.7",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.24.4",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
     "gulp": "^3.9.1",
     "heml": "^1.1.3",
-    "node-sass": "^4.8.3",
+    "node-sass": "^4.9.0",
     "resolve-url-loader": "^2.3.0",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "url-loader": "^0.6.2",
-    "webpack": "^3.11.0",
+    "webpack": "^3.12.0",
     "webpack-bundle-tracker": "^0.2.1",
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "bootstrap": "^4.1.0",
+    "bootstrap": "^4.1.1",
     "bootstrap-datepicker": "^1.8.0",
     "bootstrap-daterangepicker": "^2.1.30",
     "chromedriver": "2.35.0",
@@ -54,7 +54,7 @@
     "osmtogeojson": "^3.0.0-beta.3",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
     "popper.js": "^1.14.3",
-    "postcss-loader": "^2.1.4",
+    "postcss-loader": "^2.1.5",
     "shufflejs": "^5.1.2"
   }
 }
