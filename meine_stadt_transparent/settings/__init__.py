@@ -1,3 +1,4 @@
+import importlib
 import logging
 import os
 import warnings
@@ -305,10 +306,7 @@ DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
 if DEBUG and not TESTING:
-    import pip
-
-    installed_packages = [package.project_name for package in pip.get_installed_distributions()]
-    if "django-debug-toolbar" in installed_packages:
+    if importlib.util.find_spec("debug_toolbar"):
         # Debug Toolbar
         INSTALLED_APPS.append('debug_toolbar')
         MIDDLEWARE.append('debug_toolbar.middleware.DebugToolbarMiddleware')
