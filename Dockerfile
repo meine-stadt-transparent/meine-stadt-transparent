@@ -35,7 +35,7 @@ RUN pip3 install --upgrade pipenv && \
     pipenv install --deploy && \
     ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
 
-RUN npm install && npm run build:dev && npm run build:email
+RUN npm install && npm run build:prod && npm run build:email
 
 # Allow overriding the default env
 RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true) && rm -f .env
@@ -43,6 +43,10 @@ RUN pipenv run python manage.py collectstatic --noinput
 RUN rm -rf node_modules
 
 EXPOSE 8000
+
+RUN chown -R www-data:www-data /config && chown -R www-data:www-data /app
+
+USER www-data
 
 ENTRYPOINT ["pipenv", "run"]
 CMD ["gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--env", "ENV_PATH=/config/.env", "--capture-output"]

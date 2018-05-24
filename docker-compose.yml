@@ -11,9 +11,6 @@ services:
       - django_config:/config
     networks:
       - network
-    depends_on:
-      - mariadb
-      - elasticsearch
 
   mariadb:
     image: mariadb:10
@@ -58,8 +55,6 @@ services:
      - "7000:80"
     networks:
       - network
-    depends_on:
-      - django
 
 volumes:
   django_media:
