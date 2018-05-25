@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "86d9fffa12eeb8159a129256f83471e1a968d77c89d42b0d4770f0b582285c3a"
+            "sha256": "e3ddff9caf08ef6375d6b9338ed3bee14443bec6fc9e1eb1d3f637089dc84346"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -198,11 +198,11 @@
         },
         "geopy": {
             "hashes": [
-                "sha256:1e02b749c812976a46fd4737e55020dbc4197a7510826d771531f41168aa3dde",
-                "sha256:a373625acd0449a6b1f65ddad331021e3f0a79ec0f298dc2516c350c10cd84f5"
+                "sha256:2947f914c89d665e86b19466cce3600f0d0574a54a17c7ba609058a0ef0b5f24",
+                "sha256:9df0d61b431c51bcc47e64d16f9517dacfed10875f0dfc36cd8cb87c52fa9547"
             ],
             "index": "pypi",
-            "version": "==1.13.0"
+            "version": "==1.14.0"
         },
         "gunicorn": {
             "hashes": [
