@@ -5,7 +5,7 @@ url = "https://pypi.python.org/simple"
 
 [packages]
 Django = "~=1.11.7"
-django-allauth = "~=0.35.0"
+django-allauth = "~=0.36.0"
 django-anymail = "~=2.1"
 django-braces = "~=1.13.0"
 django_csp = "~=3.3"
