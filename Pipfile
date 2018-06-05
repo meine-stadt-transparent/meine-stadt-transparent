@@ -29,7 +29,7 @@ splinter = "~=0.7.7"
 "html2text" = "~=2018.1.9"
 selenium = "==3.8.0"
 django-debug-toolbar = "~=1.9.1"
-django-simple-history = "~=2.0.0"
+django-simple-history = "~=2.1.0"
 Wand = "~=0.4.4"
 pip = "~=9.0.3"
 textract = {git = "https://github.com/meine-stadt-transparent/textract", editable = true, ref = "0776b86cd01fbad5b2518f75a659a1e5b614a5bd"}
