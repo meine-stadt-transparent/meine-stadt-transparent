@@ -19,7 +19,7 @@ geoextract = {git = "git://github.com/meine-stadt-transparent/geoextract.git", e
 gunicorn = "~=19.8.1"
 icalendar = "~=4.0.1"
 "PyPDF2" = "~=1.26.0"
-requests = "~=2.18.4"
+requests = "~=2.19.0"
 django-widget-tweaks = "~=1.4.1"
 mysqlclient = "~=1.3.12"
 jsonfield = "~=2.0.2"
