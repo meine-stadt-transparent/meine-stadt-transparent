@@ -16,7 +16,7 @@ django-webpack-loader = "~=0.6.0"
 django-settings-export = "~=1.2.1"
 elasticsearch-dsl = "~=5.4.0"
 geoextract = {git = "git://github.com/meine-stadt-transparent/geoextract.git", editable = true, ref = "0d184e264c8356d22580076d35f16866c8ce6ecc"}
-gunicorn = "~=19.8.1"
+gunicorn = "~=19.9.0"
 icalendar = "~=4.0.2"
 "PyPDF2" = "~=1.26.0"
 requests = "~=2.19.1"
