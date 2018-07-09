@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "189fb976451eb0e25d082200b98818515de706b7720306cca6282fa000473a24"
+            "sha256": "1d7c296e5b515de90ad58067d097fa529e91ec3dd2c54c9e3205637861ad6744"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -134,11 +134,11 @@
         },
         "django-simple-history": {
             "hashes": [
-                "sha256:67afe5c928114fedd7bec4cace70ae3f35fc0924d7ea467d80ee84677544d634",
-                "sha256:85157e78ea3e306b9065580c6d1c5f00525612361f655946aa4d14decae5075b"
+                "sha256:a583dd5a1a20e618dda353582248a463372659ecf53981a1413923ce5d924e60",
+                "sha256:f05285a7d9415bd107eda4fd9924598180cce23075466762c3d7430e7522561e"
             ],
             "index": "pypi",
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "django-webpack-loader": {
             "hashes": [
@@ -167,7 +167,7 @@
                 "sha256:658380fd60bdaf746fef12958f0abc49063218ce93ee1ae4ca1fe6291c896433",
                 "sha256:ae91b089f2f2b5b3daa04297949e5f805ab12d187218cb587273f472656fd250"
             ],
-            "markers": "python_version != '3.2.*' and python_version < '4' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.6' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version >= '2.6' and python_version != '3.2.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version < '4'",
             "version": "==5.5.3"
         },
         "elasticsearch-dsl": {
@@ -341,7 +341,7 @@
                 "sha256:e1864a4e9f93ddb2dc6b62ccc2ec1f8250ff4ac0d3d7a15c8985dd4e1fbd6418",
                 "sha256:e1d18421a7e2ad4a655b76e65d549d4159f8874c18a417464c1d439ee7ccc7cd"
             ],
-            "markers": "python_version != '3.2.*' and python_version >= '2.7' and python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version != '3.3.*' and python_version >= '2.7' and python_version != '3.1.*' and python_version != '3.2.*'",
             "version": "==1.14.5"
         },
         "oauthlib": {
@@ -384,7 +384,7 @@
                 "sha256:f63e420180cbe22ff6e32558b612e75f50616fc111c5e095a4631946c782e109",
                 "sha256:f8b3d413c5a8f84b12cd4c5df1d8e211777c9852c6be3ee9c094b626644d3eab"
             ],
-            "markers": "python_version != '3.2.*' and python_version >= '2.7' and python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version != '3.3.*' and python_version >= '2.7' and python_version != '3.1.*' and python_version != '3.2.*'",
             "version": "==5.2.0"
         },
         "pocketsphinx": {
@@ -494,7 +494,7 @@
                 "sha256:f0521af1b722265d824d6ad055acfe9bd3341765735c44b5a4d0069e189a0f40",
                 "sha256:f25c281f12c0da726c6ed00535ca5d1622ec755c30a3f8eafef26cf43fede694"
             ],
-            "markers": "python_version != '3.2.*' and python_version >= '2.7' and python_version != '3.3.*' and python_version != '3.1.*' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version != '3.3.*' and python_version >= '2.7' and python_version != '3.1.*' and python_version != '3.2.*'",
             "version": "==1.1.0"
         },
         "selenium": {
@@ -550,7 +550,7 @@
                 "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
-            "markers": "python_version != '3.2.*' and python_version < '4' and python_version != '3.3.*' and python_version != '3.1.*' and python_version >= '2.6' and python_version != '3.0.*'",
+            "markers": "python_version != '3.0.*' and python_version >= '2.6' and python_version != '3.2.*' and python_version != '3.3.*' and python_version != '3.1.*' and python_version < '4'",
             "version": "==1.23"
         },
         "wand": {
