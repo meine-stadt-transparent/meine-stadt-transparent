@@ -1,6 +1,6 @@
 # Meine Stadt Transparent
 
-[![Travis](https://img.shields.io/travis/meine-stadt-transparent/meine-stadt-transparent.svg?style=flat-square)](https://travis-ci.org/meine-stadt-transparent/meine-stadt-transparent)
+[![Travis](https://img.shields.io/travis/meine-stadt-transparent/meine-stadt-transparent/master.svg?style=flat-square)](https://travis-ci.org/meine-stadt-transparent/meine-stadt-transparent)
 [![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent?ref=badge_shield)
 [![Docker Build Status](https://img.shields.io/docker/build/konstin2/meine-stadt-transparent.svg?style=flat-square)](https://hub.docker.com/r/konstin2/meine-stadt-transparent/)

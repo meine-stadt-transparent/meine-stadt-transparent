@@ -164,7 +164,7 @@ def organizazion_ical(request, pk):
 
 
 def calendar_ical(request):
-    """ Returns an ical file containing all meetings +/- 3 months from now. """
+    """ Returns an ical file containing all meetings from -6 months from now. """
     meetings = Meeting.objects \
         .filter(start__gt=now() + relativedelta(months=-6)) \
         .order_by("start") \
