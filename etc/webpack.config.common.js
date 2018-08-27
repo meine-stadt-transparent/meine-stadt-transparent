@@ -101,7 +101,8 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "Hammer": "hammerjs/hammer",
-            "Popper": "popper.js"
+            "Popper": "popper.js",
+            "L": "leaflet"
         }),
         new webpack.optimize.CommonsChunkPlugin('vendor')
     ]
