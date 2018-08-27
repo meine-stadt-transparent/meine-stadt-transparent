@@ -6,7 +6,7 @@ url = "https://pypi.python.org/simple"
 [packages]
 Django = "~=1.11.7"
 django-allauth = "~=0.36.0"
-django-anymail = "~=3.0"
+django-anymail = "~=4.0"
 django-braces = "~=1.13.0"
 django_csp = "~=3.3"
 django-elasticsearch-dsl = "~=0.4.4"
