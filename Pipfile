@@ -4,7 +4,7 @@ verify_ssl = true
 url = "https://pypi.python.org/simple"
 
 [packages]
-Django = "~=1.11.7"
+Django = "~=2.1.1"
 django-allauth = "~=0.36.0"
 django-anymail = "~=3.0"
 django-braces = "~=1.13.0"
