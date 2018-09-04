@@ -70,7 +70,7 @@ Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000
 
 **Before using this in production** set proper config values in `config/.env`. Make sure that you at least changed `REAL_HOST` and `SECRET_KEY` to proper values.
 
-You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: `pipenv run` is configured as entrypoint.
+You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: `poetry run` is configured as entrypoint.
 
 To use this in production, you need to set up the two Cron-Jobs described below, to keep the data up to date and to send notifications to the users.
 
@@ -78,8 +78,8 @@ To use this in production, you need to set up the two Cron-Jobs described below,
 
 ### Requirements
 
- - Python 3.5 or 3.6 with pip
- - A recent node version (8 or 9) with npm
+ - Python 3.5 or 3.6 with pip and [poetry](https://github.com/sdispater/poetry)
+ - A recent node version (8, 9 or 10) with npm
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
  - [The requirements of textract](http://textract.readthedocs.io/en/stable/installation.html). Textract is currently only used for text extraction, so it will likely work even if some package is missing
@@ -97,16 +97,15 @@ sudo apt installpython3-pip python3-venv python3-numpy python3-scipy python3-gi 
 Install dependencies. 
 
 ```bash
-pip install --upgrade pipenv
-export PIPENV_VENV_IN_PROJECT=True # This is not mandatory, yet quite useful
-pipenv install 
+poetry config settings.virtualenvs.in-project true # This is not mandatory, yet quite useful
+poetry install 
 npm install
 ```
 
-Activate the virtualenv created by pipenv. You either need to run this in your shell before running any other python command or prefix abny python command with `pipenv run`.
+Activate the virtualenv created by poetry. You either need to run this in your shell before running any other python command or prefix abny python command with `poetry run`.
 
 ```bash
-pipenv shell 
+poetry shell 
 ```
 
 Copy `etc/env-template` to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
