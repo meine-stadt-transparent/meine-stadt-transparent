@@ -31,10 +31,10 @@ PyPDF2 = "^1.26"
 python = "^3.6"
 python-slugify = "^1.2"
 requests = "^2.19"
-splinter = "^0.7"
+splinter = "^0.9"
 textract = {git = "https://github.com/meine-stadt-transparent/textract"}
 Wand = "^0.4.4"
 
 [tool.poetry.dev-dependencies]
-selenium = "==3.8.0"
+selenium = "^3.8.0"
 
