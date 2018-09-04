@@ -30,11 +30,9 @@ cache:
  pip: true
  npm: true
  apt: true
- directories:
-  - .venv
 
 install:
- - npm install
+ - npm install --ci
  - pip install pipenv --upgrade
  - pipenv install --deploy
  # Add pygobject to the virtualenv; Disabled because gi only works with system python
