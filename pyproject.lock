@@ -125,10 +125,10 @@ name = "django-elasticsearch-dsl"
 optional = false
 platform = "*"
 python-versions = "*"
-version = "0.4.5"
+version = "0.5.0"
 
 [package.dependencies]
-elasticsearch-dsl = ">=2.1.0,<6.0.0"
+elasticsearch-dsl = ">=2.1.0,<7.0.0"
 
 [[package]]
 category = "main"
@@ -263,6 +263,7 @@ unidecode = ">=0.4.21"
 reference = "0d184e264c8356d22580076d35f16866c8ce6ecc"
 type = "git"
 url = "https://github.com/meine-stadt-transparent/geoextract"
+
 [[package]]
 category = "main"
 description = "The geodesic routines from GeographicLib"
@@ -615,6 +616,7 @@ xlrd = "1.0.0"
 reference = "0776b86cd01fbad5b2518f75a659a1e5b614a5bd"
 type = "git"
 url = "https://github.com/meine-stadt-transparent/textract"
+
 [[package]]
 category = "main"
 description = "ASCII transliterations of Unicode text"
@@ -670,7 +672,7 @@ python-versions = "*"
 version = "1.1.1"
 
 [metadata]
-content-hash = "f44f0fc1eddaa8d61546ee95d5830d24247358d3f9743707ab5cb4f8270d5548"
+content-hash = "8ca4bf0f3e7de7e6edc4a3ee0fffbcfbc8ab808e0dece68dd13f16f174509e50"
 platform = "*"
 python-versions = "^3.6"
 
@@ -686,7 +688,7 @@ django-anymail = ["855f93b06713ac8505ecf4adf1209e90293b3a33dea2687846f27050b21b0
 django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a890", "ba68e98b817c6f01d71d10849f359979617b3fe4cefb7f289adefddced092ddc"]
 django-csp = ["04c0ccd4e1339e8f6af48c55c3347dc996fde2d22d79e8bf2f6b7a920412e408", "096b634430d8ea81c3d9f216f87be890f3a975c17bb9a4631f6a1619ac09c91e"]
 django-debug-toolbar = ["08e0e43f6c1fd9820af4cbdcd54b5fb80bf83a2e08b2cc952547a671174999b8", "1dcae28d430522debafde2602b3450eb784410b78e16c29a00448032df2a4c90"]
-django-elasticsearch-dsl = ["e09831997ffc6ca9061496146679f7dcedd9bf8a4c6883e67ab87c5ac0e08b8b"]
+django-elasticsearch-dsl = ["dffde3cc83b22d458aafdadb9df37288d37204c5c6b1a1d5ace87808615622fc"]
 django-environ = ["6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde", "c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"]
 django-geojson = ["9dd9fa8160088004ca27eecbb4bf1122a792f950af32df89b21d8864c088bb3d"]
 django-settings-export = ["fceeae49fc597f654c1217415d8e049fc81c930b7154f5d8f28c432db738ff79"]
