@@ -77,7 +77,7 @@ name = "django-anymail"
 optional = false
 platform = "*"
 python-versions = "*"
-version = "4.1"
+version = "4.2"
 
 [package.dependencies]
 django = ">=1.11"
@@ -672,7 +672,7 @@ python-versions = "*"
 version = "1.1.1"
 
 [metadata]
-content-hash = "ecc0b0dc9f075d0efde5fe68081c47d07eeced35ddafb468d51184348d937be1"
+content-hash = "f44f0fc1eddaa8d61546ee95d5830d24247358d3f9743707ab5cb4f8270d5548"
 platform = "*"
 python-versions = "^3.6"
 
@@ -684,7 +684,7 @@ chardet = ["84ab92ed1c4d4f16916e05906b6b75a6c0fb5db821cc65e70cbd64a3e2a5eaae", "
 click = ["29f99fc6125fbc931b758dc053b3114e55c77a6e4c6c3a2674a2dc986016381d", "f15516df478d5a56180fbf80e68f206010e6d160fc39fa508b65e035fd75130b"]
 django = ["8176ac7985fe6737ce3d6b2531b4a2453cb7c3377c9db00bacb2b3320f4a1311", "b18235d82426f09733d2de9910cee975cf52ff05e5f836681eb957d105a05a40"]
 django-allauth = ["02175aa1c2ddfd935a54011d1196d70c976647fc46f603f8b8758fc395b9d277"]
-django-anymail = ["a6ba5b5196fa469043f5bdc32b294ce2427c964e40c80b45c3a3cb91fc683d9f", "be245c774541ae73fbe3baabc686b03f6ae3fc0c058f7e9bf26e7da0a5584bab"]
+django-anymail = ["855f93b06713ac8505ecf4adf1209e90293b3a33dea2687846f27050b21b02b4", "87396529ba0f0baebeee63b0d719a7ddf335a7f88802b250b53f126a2631037a"]
 django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a890", "ba68e98b817c6f01d71d10849f359979617b3fe4cefb7f289adefddced092ddc"]
 django-csp = ["04c0ccd4e1339e8f6af48c55c3347dc996fde2d22d79e8bf2f6b7a920412e408", "096b634430d8ea81c3d9f216f87be890f3a975c17bb9a4631f6a1619ac09c91e"]
 django-debug-toolbar = ["4af2a4e1e932dadbda197b18585962d4fc20172b4e5a479490bc659fe998864d", "d9ea75659f76d8f1e3eb8f390b47fc5bad0908d949c34a8a3c4c87978eb40a0f"]
