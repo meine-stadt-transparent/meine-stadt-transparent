@@ -4,6 +4,7 @@ python:
   #- "3.7"
 
 addons:
+  chrome: stable # Just to be sure
   apt:
     packages:
       - libxml2-dev
