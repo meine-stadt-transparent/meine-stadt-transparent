@@ -4,8 +4,9 @@ SECRET_KEY=notsosecretkey
 MEDIA_ROOT=/var/storage/meine-stadt-transparent
 ABSOLUTE_URI_BASE=https://opensourceris.local
 
-ELASTICSEARCH_URL=http://elastic:changeme@opensourceris.local:80/elasticsearch/
+ELASTICSEARCH_URL=http://elastic:changeme@localhost/elasticsearch/
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
+ELASTICSEARCH_LANG=german
 USE_ELASTICSEARCH=True
 
 # Use DATABASE_URL=mysql://username:password@localhost/databasename?charset=utf8mb4 in production

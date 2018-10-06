@@ -140,7 +140,7 @@ STATIC_ROOT = env.str('STATIC_ROOT', os.path.join(BASE_DIR, 'static/'))
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'mainapp/assets'),
-    os.path.join(BASE_DIR, 'node_modules/pdfjs-dist/viewer'), # See desgin.md
+    os.path.join(BASE_DIR, 'node_modules/pdfjs-dist/viewer'),  # See desgin.md
 )
 
 MEDIA_ROOT = env.str('MEDIA_ROOT', './storage/files/')
@@ -168,6 +168,9 @@ ELASTICSEARCH_DSL = {
 }
 
 ELASTICSEARCH_INDEX = env.str('ELASTICSEARCH_INDEX', 'meine_stadt_transparent_documents')
+
+# Language use for stemming, stop words, etc.
+ELASTICSEARCH_LANG = env.str('ELASTICSEARCH_LANG', 'german')
 
 # Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencagedata
 GEOEXTRACT_ENGINE = env.str('GEOEXTRACT_ENGINE', 'Nominatim')
@@ -268,7 +271,7 @@ LOGGING = {
             'level': DJANGO_LOG_LEVEL or 'WARNING',
             'handlers': ['console', 'django'],
             'propagate': True
-        }
+        },
     }
 }
 
@@ -316,6 +319,13 @@ if DEBUG and not TESTING:
         logger = logging.getLogger(__name__)
         logger.warning('This is running in DEBUG mode, however the Django debug toolbar is not installed.')
         DEBUG_TOOLBAR_ACTIVE = False
+
+    if env.bool("DEBUG_SHOW_SQL", False):
+        LOGGING["logggers"]['django.db.backends'] = {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False
+        }
 
     INTERNAL_IPS = [
         '127.0.0.1'

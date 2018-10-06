@@ -34,7 +34,8 @@ class Paper(DefaultFields, ShortableNameFields):
         return reverse('paper', args=[self.id])
 
     def person_ids(self):
-        return list(self.persons.values_list('id', flat=True))
+        """ This is actually efficient due to the prefetch """
+        return [person.id for person in self.persons.all()]
 
     def organization_ids(self):
-        return list(self.organizations.values_list('id', flat=True))
+        return [organization.id for organization in self.organizations.all()]

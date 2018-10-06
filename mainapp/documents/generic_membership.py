@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import StringField, IntegerField, ObjectField, DateField
 
-from .utils import autocomplete_analyzer
+from .index import autocomplete_analyzer
 
 
 class GenericMembershipDocument:
@@ -13,4 +13,4 @@ class GenericMembershipDocument:
     })
 
     class Meta:
-        fields = ['id', 'name', 'short_name']
+        fields = ["id", "name", "short_name"]

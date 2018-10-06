@@ -1,17 +1,20 @@
 from django.test import TestCase
 
 from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, \
-    MainappSearch
+    MainappSearch, MULTI_MATCH_FIELDS
+from django.test import TestCase
+
+from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, \
+    MainappSearch, MULTI_MATCH_FIELDS
 
 expected_params = {
     "query": {
-        "match": {
-            "_all": {
-                "query": "word radius anotherword",
-                "operator": "and",
-                "fuzziness": "AUTO",
-                "prefix_length": 1
-            }
+        "multi_match": {
+            "query": "word radius anotherword",
+            "operator": "and",
+            "fields": MULTI_MATCH_FIELDS,
+            "fuzziness": "1",
+            "prefix_length": 1
         }
     },
     "post_filter": {

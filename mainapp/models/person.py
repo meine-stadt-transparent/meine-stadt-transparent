@@ -25,9 +25,15 @@ class Person(DefaultFields):
         return reverse('person', args=[self.id])
 
     def organization_ids(self):
-        return list(self.organizationmembership_set.values_list('organization_id', flat=True))
+        return [organization.id for organization in self.organizationmembership_set.all()]
 
     def sort_date(self):
+        if hasattr(self, "sort_date_prefetch"):
+            if self.sort_date_prefetch:
+                return self.sort_date_prefetch[0].start
+            else:
+                return self.created
+
         # The most recent time this person joined a new organization
         latest = self.organizationmembership_set.filter(start__isnull=False).order_by('-start').first()
         if latest:

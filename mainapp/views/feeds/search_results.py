@@ -12,7 +12,7 @@ from mainapp.models import Paper
 class SearchResultsFeed(Feed):
     description = _("The latest search results.")
 
-    def get_object(self, request, query):
+    def get_object(self, request, query, **kwargs):
         return query
 
     def title(self, query):

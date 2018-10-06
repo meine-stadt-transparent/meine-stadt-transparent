@@ -14,13 +14,27 @@ from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
 # Keep in sync with: mainapp/assets/js/FacettedSearch.js
 QUERY_KEYS = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"]
+# We technically only need an explicit list for elasticsearch 6, but it's counter-productive if
+# we optimize for _all now and then have to redo the effort for elasticsearch 6
+MULTI_MATCH_FIELDS = [
+    "agenda_items.title",
+    "body.name",
+    "description",
+    "displayed_filename",
+    "family_name",
+    "given_name",
+    "name",
+    "parsed_text",
+    "short_name",
+    "type"
+]
 
 NotificationSearchResult = namedtuple("NotificationSearchResult", ["title", "url", "type", "type_name", "highlight"])
 
 
 class MainappSearch(FacetedSearch):
     index = settings.ELASTICSEARCH_INDEX
-    fields = ["_all"]
+    fields = MULTI_MATCH_FIELDS
 
     facets = {
         # use bucket aggregations to define facets
@@ -71,11 +85,13 @@ class MainappSearch(FacetedSearch):
     def query(self, search, query):
         if query:
             self.options["searchterm"] = query
-            search = search.query('match', _all={
+            # Fuzzines AUTO(=2) gives more error tolerance, but is also a lot slower and has many false positives
+            search = search.query('multi_match', **{
                 'query': escape_elasticsearch_query(query),
                 'operator': 'and',
-                'fuzziness': 'AUTO',
-                'prefix_length': 1
+                'fields': self.fields,
+                'fuzziness': '1',
+                'prefix_length': 1,
             })
 
         return search

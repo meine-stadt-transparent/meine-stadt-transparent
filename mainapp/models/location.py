@@ -1,3 +1,5 @@
+from typing import Optional, Dict, Any
+
 from django.db import models
 from django.utils.translation import ugettext as _
 from djgeojson.fields import GeometryField
@@ -21,7 +23,7 @@ class Location(DefaultFields):
     def __str__(self):
         return self.short_description or self.description or _("Unknown")
 
-    def coordinates(self):
+    def coordinates(self) -> Optional[Dict[str, Any]]:
         if self.geometry and self.geometry['type'] == 'Point':
             return {
                 "lat": self.geometry['coordinates'][1],

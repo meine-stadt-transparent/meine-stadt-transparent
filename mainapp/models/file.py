@@ -44,7 +44,7 @@ class File(DefaultFields):
         return coordinates
 
     def person_ids(self):
-        return list(self.mentioned_persons.values_list('id', flat=True))
+        return [person.id for person in self.mentioned_persons.all()]
 
     def get_default_link(self):
         return reverse('file', args=[self.id])
