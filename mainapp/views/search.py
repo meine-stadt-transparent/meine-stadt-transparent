@@ -15,7 +15,7 @@ from elasticsearch_dsl import Search
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import search_string_to_params, params_are_subscribable, \
-    escape_elasticsearch_query, MainappSearch, parse_hit
+    escape_elasticsearch_query, MainappSearch, parse_hit, params_to_search_string
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import handle_subscribe_requests, is_subscribed_to_search, build_map_object, NeedsLoginError
 
@@ -41,7 +41,8 @@ def _search_to_context(query, main_search: MainappSearch, executed, results, req
 @csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def search(request, query):
     params = search_string_to_params(query)
-    main_search = MainappSearch(params)
+    normalized = params_to_search_string(params)
+    main_search = MainappSearch(params, limit=settings.SEARCH_PAGINATION_LENGTH)
 
     for error in main_search.errors:
         messages.error(request, error)
@@ -54,13 +55,11 @@ def search(request, query):
     except NeedsLoginError as err:
         return redirect(err.redirect_url)
 
-    main_search = main_search[:settings.SEARCH_PAGINATION_LENGTH]
     executed = main_search.execute()
     results = [parse_hit(hit) for hit in executed.hits]
 
-    context = _search_to_context(query, main_search, executed, results, request)
+    context = _search_to_context(normalized, main_search, executed, results, request)
     context["new_facets"] = aggs_to_context(executed)
-    context["query"] = query
 
     return render(request, "mainapp/search/search.html", context)
 
@@ -116,23 +115,24 @@ def aggs_to_context(executed):
 def search_results_only(request, query):
     """ Returns only the result list items. Used for the endless scrolling """
     params = search_string_to_params(query)
-    main_search = MainappSearch(params)
-
+    normalized = params_to_search_string(params)
     after = int(request.GET.get('after', 0))
-    main_search = main_search[after:settings.SEARCH_PAGINATION_LENGTH + after]
+    main_search = MainappSearch(params, offset=after, limit=settings.SEARCH_PAGINATION_LENGTH)
+
     executed = main_search.execute()
     results = [parse_hit(hit) for hit in executed.hits]
-    context = _search_to_context(query, main_search, executed, results, request)
+    context = _search_to_context(normalized, main_search, executed, results, request)
 
     result = {
         'results': loader.render_to_string('partials/mixed_results.html', context, request),
         'total_results': executed.hits.total,
         'subscribe_widget': loader.render_to_string('partials/subscribe_widget.html', context, request),
-        'more_link': reverse(search_results_only, args=[query]),
+        'more_link': reverse(search_results_only, args=[normalized]),
         # TOOD: Currently we need both because the js for the dropdown facet
         # and document type facet hasn't been unified
         'facets': executed.facets.to_dict(),
-        'new_facets': aggs_to_context(executed)
+        'new_facets': aggs_to_context(executed),
+        'query': normalized,
     }
 
     return JsonResponse(result, safe=False)

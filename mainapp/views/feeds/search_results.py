@@ -24,8 +24,7 @@ class SearchResultsFeed(Feed):
 
     def items(self, query):
         params = search_string_to_params(query)
-        main_search = MainappSearch(params)
-        main_search = main_search[:settings.SEARCH_PAGINATION_LENGTH]
+        main_search = MainappSearch(params, limit=settings.SEARCH_PAGINATION_LENGTH)
         executed = main_search.execute()
         results = [parse_hit(hit, highlighting=False) for hit in executed.hits]
         return results

@@ -107,6 +107,11 @@ export default class FacettedSearch {
                     facet.update(data);
                 }
             }
+
+            let url = this.$form.attr("action").slice(0, -1) + data['query'] + "/";
+
+            window.history.pushState({}, "", url);
+
             this.$refreshSpinner.attr("hidden", "hidden");
         });
     }
@@ -154,9 +159,6 @@ export default class FacettedSearch {
         }
         this.currentQueryString = querystring;
 
-        let url = this.$form.attr("action").slice(0, -1) + querystring + "/";
-
-        window.history.pushState({}, "", url);
         this.searchDo();
     }
 }

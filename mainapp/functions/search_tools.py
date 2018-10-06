@@ -1,5 +1,6 @@
 import datetime
 from collections import namedtuple
+from typing import Dict
 
 from django.conf import settings
 from django.urls import reverse
@@ -43,9 +44,11 @@ class MainappSearch(FacetedSearch):
         'organization': TermsFacet(field='organization_ids'),
     }
 
-    def __init__(self, params):
+    def __init__(self, params: Dict, offset=None, limit=None):
         self.params = params
         self.errors = []
+        self.offset = offset
+        self.limit = limit
 
         # Note that for django templates it makes a difference if a value is undefined or None
         self.options = {}
@@ -119,6 +122,11 @@ class MainappSearch(FacetedSearch):
         if 'before' in self.params:
             # options['before'] added by _add_date_before
             s = _add_date_before(s, self.params, self.options, self.errors)
+
+        if self.offset:
+            s = s[self.offset:]
+        if self.limit:
+            s = s[:self.limit]
 
         return s
 
