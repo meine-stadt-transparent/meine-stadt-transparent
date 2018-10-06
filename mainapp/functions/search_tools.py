@@ -123,10 +123,12 @@ class MainappSearch(FacetedSearch):
             # options['before'] added by _add_date_before
             s = _add_date_before(s, self.params, self.options, self.errors)
 
-        if self.offset:
-            s = s[self.offset:]
+        # N.B.: indexing reset from and size
         if self.limit:
-            s = s[:self.limit]
+            if self.offset:
+                s = s[self.offset:self.limit + self.offset]
+            else:
+                s = s[:self.limit]
 
         return s
 

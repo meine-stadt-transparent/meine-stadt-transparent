@@ -50,6 +50,7 @@
                     <input name="searchterm" type="text" class="form-control"
                            value="{{ options.searchterm }}" id="searchfield-mousetrap" autocomplete="off"
                            data-suggest-url="{% url 'search_autocomplete' 'SEARCH_TERM' %}"
+                           data-querystring="{{ query }}"
                            placeholder="{% trans "Search term" context "search_form" %}"
                            aria-label="{% trans "Search term" context "search_form" %}">
                     <button class=" search-icon fa fa-search" type="submit"

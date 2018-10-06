@@ -196,9 +196,7 @@ def format_location_name(location):
 
 def extract_found_locations(text, bodies=None):
     search_for = create_geoextract_data(bodies)
-
     pipeline = AddressPipeline(search_for)
-
     return pipeline.extract(text)
 
 

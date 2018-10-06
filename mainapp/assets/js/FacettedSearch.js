@@ -159,6 +159,10 @@ export default class FacettedSearch {
         }
         this.currentQueryString = querystring;
 
+        // We only need this for the tests, but conditional compilation with js is painful so it stays either way
+        console.log(this.$searchterm.attr("data-querystring"));
+        this.$searchterm.attr("data-querystring", querystring);
+
         this.searchDo();
     }
 }
