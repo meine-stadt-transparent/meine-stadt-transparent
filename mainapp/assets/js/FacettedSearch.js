@@ -16,6 +16,7 @@ export default class FacettedSearch {
         this.$refreshSpinner = $(".search-refreshing-spinner");
         this.$searchterm = this.$form.find("input[name=searchterm]");
         this.currentQueryString = null;
+        this.orginalTitle = $form.attr("data-title-base");
 
         this.facets = [
             new FacetSorter($form.find(".search-sort")),
@@ -44,6 +45,8 @@ export default class FacettedSearch {
         });
         querystring += this.$searchterm.val();
         querystring = querystring.replace(/^\s/, '').replace(/\s$/, '');
+
+        document.title = this.orginalTitle + ': ' + this.$searchterm.val();
 
         return querystring;
     }

@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}{% trans "Search" context "page_title" %}{% endblock %}
+{% block title %}{% trans "Search" context "page_title" %}: {{ options.searchterm }}{% endblock %}
 
 {% block additional_html_headers %}
     <link rel="alternate" type="application/rss+xml" href="{% url 'search-feed' query %}"
@@ -40,7 +40,8 @@
                 </div>
             </div>
             <form id="detailed-searchform" class="section detailed-searchform p-2 mb-0" method="GET"
-                  action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}">
+                  action="{% url 'search' '' %}" data-results-only-url="{% url "search_results_only" "" %}"
+                  data-title-base="{% trans "Search" context "page_title" %}">
 
                 <!-- Searchterm -->
                 <section class="input-group position-relative">
@@ -74,7 +75,7 @@
                 <button class="btn btn-secondary w-100" id="start-endless-scroll"
                         data-url="{% url "search_results_only" query %}"
                         data-pagination-length="{{ pagination_length }}"
-                        {% if total_hits == results|length %} hidden="hidden" {% endif %}>
+                    {% if total_hits == results|length %} hidden="hidden" {% endif %}>
                     <span>{% trans "Load More" %}</span>
                     <span class="total-hits badge badge-light">{{ total_hits }}</span>
                 </button>

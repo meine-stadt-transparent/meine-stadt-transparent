@@ -44,7 +44,7 @@ class MainappSearch(FacetedSearch):
         'organization': TermsFacet(field='organization_ids'),
     }
 
-    def __init__(self, params: Dict, offset=None, limit=None):
+    def __init__(self, params: Dict[str, str], offset=None, limit=None):
         self.params = params
         self.errors = []
         self.offset = offset
@@ -100,12 +100,12 @@ class MainappSearch(FacetedSearch):
         return search
 
     def search(self):
-        s = super().search()
+        search = super().search()
         try:
             lat = float(self.params.get('lat', ''))
             lng = float(self.params.get('lng', ''))
             radius = int(self.params.get('radius', ''))
-            s = s.filter("geo_distance", distance=str(radius) + "m", coordinates={
+            search = search.filter("geo_distance", distance=str(radius) + "m", coordinates={
                 "lat": lat,
                 "lon": lng,
             })
@@ -118,48 +118,48 @@ class MainappSearch(FacetedSearch):
 
         if 'after' in self.params:
             # options['after'] added by _add_date_after
-            s = _add_date_after(s, self.params, self.options, self.errors)
+            search = _add_date_after(search, self.params, self.options, self.errors)
         if 'before' in self.params:
             # options['before'] added by _add_date_before
-            s = _add_date_before(s, self.params, self.options, self.errors)
+            search = _add_date_before(search, self.params, self.options, self.errors)
 
         # N.B.: indexing reset from and size
         if self.limit:
             if self.offset:
-                s = s[self.offset:self.limit + self.offset]
+                search = search[self.offset:self.limit + self.offset]
             else:
-                s = s[:self.limit]
+                search = search[:self.limit]
 
-        return s
+        return search
 
 
-def _add_date_after(s, raw, options, errors):
+def _add_date_after(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        after = datetime.datetime.strptime(raw['after'], '%Y-%m-%d')
+        after = datetime.datetime.strptime(params['after'], '%Y-%m-%d')
     except ValueError or OverflowError:
         errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
-        return s
-    s = s.filter(Q('range', start={"gte": after}) | Q('range', legal_date={"gte": after}))
+        return search
+    search = search.filter(Q('range', start={"gte": after}) | Q('range', legal_date={"gte": after}))
     options["after"] = after
-    return s
+    return search
 
 
-def _add_date_before(s, raw, options, errors):
+def _add_date_before(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        before = datetime.datetime.strptime(raw['before'], '%Y-%m-%d')
+        before = datetime.datetime.strptime(params['before'], '%Y-%m-%d')
     except ValueError or OverflowError:
         errors.append(ugettext('The value for after is invalid. The correct format is YYYY-MM-DD'))
-        return s
-    s = s.filter(Q('range', start={"lte": before}) | Q('range', legal_date={"lte": before}))
+        return search
+    search = search.filter(Q('range', start={"lte": before}) | Q('range', legal_date={"lte": before}))
     options["before"] = before
-    return s
+    return search
 
 
-def add_modified_since(s, since: datetime):
-    s = s.filter(Q('range', modified={'gte': since}))
-    return s
+def add_modified_since(search, since: datetime):
+    search = search.filter(Q('range', modified={'gte': since}))
+    return search
 
 
 def escape_elasticsearch_query(query):
@@ -292,12 +292,12 @@ def params_to_human_string(params: dict):
     if 'person' in params:
         person = Person.objects.get(pk=params['person'])
         if person:
-            strs.append(pgettext('Search query', 'mentioning %FROM%').replace('%FROM%', person.__str__()))
+            strs.append(pgettext('Search query', 'mentioning %FROM%').replace('%FROM%', str(person)))
 
     if 'organization' in params:
         organization = Organization.objects.get(pk=params['organization'])
         if organization:
-            strs.append(pgettext('Search query', 'assigned to %TO%').replace('%TO%', organization.__str__()))
+            strs.append(pgettext('Search query', 'assigned to %TO%').replace('%TO%', str(organization)))
 
     if 'radius' in params:
         place_name = latlng_to_address(params['lat'], params['lng'])
