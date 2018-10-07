@@ -32,7 +32,6 @@ python = "^3.6"
 python-slugify = "^1.2"
 requests = "^2.19"
 splinter = "^0.7"
-textract = {git = "https://github.com/meine-stadt-transparent/textract", rev = "0776b86cd01fbad5b2518f75a659a1e5b614a5bd"}
 Wand = "^0.4.4"
 
 [tool.poetry.dev-dependencies]

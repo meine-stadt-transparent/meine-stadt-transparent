@@ -14,11 +14,8 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-    apt-get install -y python3-numpy python3-scipy nodejs python3-pip python3-venv python3-gi \
-    json-glib-1.0 gir1.2-json-1.0 git libmysqlclient-dev libmagickwand-dev \
-    # For textract
-    libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr \
-    flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig zlib1g-dev libpulse-dev && \
+    apt-get install python3-pip python3-venv python3-numpy python3-scipy python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
+    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr && \
     apt-get autoremove -y && \
     apt-get clean
 

@@ -79,19 +79,16 @@ To use this in production, you need to set up the two Cron-Jobs described below,
 ### Requirements
 
  - Python 3.5 or 3.6 with pip and [poetry](https://github.com/sdispater/poetry)
- - A recent node version (8, 9 or 10) with npm
+ - A recent node version (8 or 10) with npm (npm 6 is tested)
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
- - [The requirements of textract](http://textract.readthedocs.io/en/stable/installation.html). Textract is currently only used for text extraction, so it will likely work even if some package is missing
- - If you want to use elasticsearch, you either need  [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 5.6 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
+ - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 5.6 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
 
 On Debian/Ubuntu:
 
 ```bash
-sudo apt installpython3-pip python3-venv python3-numpy python3-scipy python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
-    git libmysqlclient-dev libmagickwand-dev \
-    libxml2-dev libxslt1-dev antiword unrtf poppler-utils pstotext tesseract-ocr \
-    flac ffmpeg lame libmad0 libsox-fmt-mp3 sox libjpeg-dev swig zlib1g-dev libpulse-dev
+sudo apt install python3-pip python3-venv python3-numpy python3-scipy python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
+    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr
 ```
 
 Install dependencies. 
@@ -102,7 +99,7 @@ poetry install
 npm install
 ```
 
-Activate the virtualenv created by poetry. You either need to run this in your shell before running any other python command or prefix abny python command with `poetry run`.
+Activate the virtualenv created by poetry. You either need to run this in your shell before running any other python command or prefix any python command with `poetry run`.
 
 ```bash
 poetry shell 

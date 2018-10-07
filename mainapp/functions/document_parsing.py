@@ -1,10 +1,11 @@
 import logging
 import re
+import subprocess
 import tempfile
+from subprocess import CalledProcessError
 
 import geoextract
 import requests
-import textract
 from PyPDF2 import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
@@ -55,29 +56,20 @@ class AddressPipeline(geoextract.Pipeline):
                          postprocessors=postprocessors)
 
 
-def cleanup_extracted_text(text):
-    """
-    :param text: str
-    :return: str
-    """
-
+def cleanup_extracted_text(text: str) -> str:
     # Tries to merge hyphenated text back into whole words; last and first characters have to be lower case
     return re.sub(r"([a-z])-\s*\n([a-z])", r"\1\2", text)
 
 
-def extract_text_from_pdf(pdf_file):
-    """
-    :param pdf_file: str
-    :return: str
-    """
-    return textract.process(pdf_file, extension="pdf").decode("utf-8")
+def extract_text_from_pdf(pdf_file: str) -> str:
+    try:
+        return subprocess.check_output(["pdftotext", pdf_file, "-"]).decode("utf-8", "ignore")
+    except CalledProcessError:
+        logger.exception("Failed to run pdftotext on {}".format(pdf_file))
+        return ""
 
 
-def get_page_count_from_pdf(pdf_file):
-    """
-    :param pdf_file: str
-    :return: int
-    """
+def get_page_count_from_pdf(pdf_file: str) -> int:
     with open(pdf_file, 'rb') as fp:
         return PdfFileReader(fp).getNumPages()
 
