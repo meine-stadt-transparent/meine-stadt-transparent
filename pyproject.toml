@@ -37,4 +37,5 @@ Wand = "^0.4.4"
 [tool.poetry.dev-dependencies]
 # See https://github.com/SeleniumHQ/selenium/issues/5296
 selenium = "3.8.0"
+tox = "^3.4"
 

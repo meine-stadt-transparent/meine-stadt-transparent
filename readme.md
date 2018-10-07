@@ -411,9 +411,12 @@ Start the actual server
 ### Testing
 
 Run the test cases:
+
 ```bash
 ./manage.py test
 ```
+
+There's a tox config to ensure 3.5 and 3.6 compatibility which can be run with `tox`.
 
 ### Dummy data
 

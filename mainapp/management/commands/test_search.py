@@ -34,7 +34,7 @@ class Command(BaseCommand):
             start = time.perf_counter()
             call_command('search_index', action='rebuild', force=True, models=["mainapp.Person"])
             end = time.perf_counter()
-            print(f"Total: {end - start}")
+            print("Total: {}".format(end - start))
 
         words = ["containing", "here's"]
 
@@ -46,8 +46,8 @@ class Command(BaseCommand):
             params = search_string_to_params(query)
             main_search = MainappSearch(params)
             executed = main_search.execute()
-            print(f"# {query}: {len(executed.hits)} | {executed.took}")
+            print("# {}: {} | {}".format(query, len(executed.hits), executed.took))
             for hit in executed.hits:
                 hit = parse_hit(hit)
                 highlight = str(hit.get('highlight')).replace("\n", " ").replace("\r", " ")[:100]
-                print(f" - {hit['name'][:30]} | {highlight}")
+                print(" - {}, {}".format(hit['name'][:30], highlight))
