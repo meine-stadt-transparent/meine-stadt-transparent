@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-25 17:08+0100\n"
+"POT-Creation-Date: 2018-10-08 18:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,51 +67,51 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/functions/search_tools.py:115 mainapp/functions/search_tools.py:127
+#: mainapp/functions/search_tools.py:141 mainapp/functions/search_tools.py:153
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/functions/search_tools.py:254
+#: mainapp/functions/search_tools.py:280
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: mainapp/functions/search_tools.py:259
+#: mainapp/functions/search_tools.py:285
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: mainapp/functions/search_tools.py:264
+#: mainapp/functions/search_tools.py:290
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: mainapp/functions/search_tools.py:269
+#: mainapp/functions/search_tools.py:295
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: mainapp/functions/search_tools.py:274
+#: mainapp/functions/search_tools.py:300
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: mainapp/functions/search_tools.py:278
+#: mainapp/functions/search_tools.py:304
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: mainapp/functions/search_tools.py:283
+#: mainapp/functions/search_tools.py:309
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: mainapp/functions/search_tools.py:287
+#: mainapp/functions/search_tools.py:313
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: mainapp/functions/search_tools.py:289
+#: mainapp/functions/search_tools.py:315
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -120,7 +120,7 @@ msgstr "veröffentlicht nach %FROM%"
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/models/location.py:22
+#: mainapp/models/location.py:24
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -747,8 +747,8 @@ msgstr "Suche nach Dokumenten, Personen, Themen..."
 #: mainapp/templates/mainapp/index/index_search.html:13
 #: mainapp/templates/mainapp/index_v2/index_search.html:19
 #: mainapp/templates/mainapp/index_v2/index_search.html:20
-#: mainapp/templates/mainapp/search/search.html:56
-#: mainapp/templates/mainapp/search/search.html:57
+#: mainapp/templates/mainapp/search/search.html:58
+#: mainapp/templates/mainapp/search/search.html:59
 #: mainapp/templates/partials/base_navbar.html:23
 #: mainapp/templates/partials/base_navbar.html:24
 msgctxt "aria label"
@@ -840,7 +840,6 @@ msgid "iCal-Export"
 msgstr "iCal-Export"
 
 #: mainapp/templates/mainapp/meeting.html:99
-#| msgid "This object has been deleted. "
 msgid "This meeting has been cancelled"
 msgstr "Dieser Termin wurde abgesagt."
 
@@ -924,7 +923,7 @@ msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 msgid "Subscribe (iCal)"
 msgstr "Abonnieren (iCal)"
 
-#: mainapp/templates/mainapp/organization.html:86
+#: mainapp/templates/mainapp/organization.html:94
 msgid "Remaining meetings omitted. They can be found with the search"
 msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 
@@ -1115,6 +1114,7 @@ msgstr "Auswählen"
 
 #: mainapp/templates/mainapp/search/search.html:5
 #: mainapp/templates/mainapp/search/search.html:24
+#: mainapp/templates/mainapp/search/search.html:44
 #: mainapp/templates/partials/base_navbar.html:19
 msgctxt "page_title"
 msgid "Search"
@@ -1128,18 +1128,18 @@ msgstr "Suchergebnisse"
 msgid "Search results as RSS-Feed"
 msgstr "Suchergebnisse als RSS-Feed"
 
-#: mainapp/templates/mainapp/search/search.html:48
-#: mainapp/templates/mainapp/search/search.html:53
-#: mainapp/templates/mainapp/search/search.html:54
+#: mainapp/templates/mainapp/search/search.html:49
+#: mainapp/templates/mainapp/search/search.html:55
+#: mainapp/templates/mainapp/search/search.html:56
 msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: mainapp/templates/mainapp/search/search.html:77
+#: mainapp/templates/mainapp/search/search.html:79
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: mainapp/templates/mainapp/search/search.html:82
+#: mainapp/templates/mainapp/search/search.html:84
 msgid "Nothing Found :("
 msgstr "Nichts gefunden"
 
@@ -1312,7 +1312,7 @@ msgstr "Alle Sitzungen"
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert."
 
-#: mainapp/views/persons.py:92 mainapp/views/search.py:52
+#: mainapp/views/persons.py:92 mainapp/views/search.py:53
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
@@ -1322,11 +1322,11 @@ msgstr ""
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
-#: mainapp/views/profile.py:21 mainapp/views/search.py:51
+#: mainapp/views/profile.py:21 mainapp/views/search.py:52
 msgid "You will now receive notifications about new search results."
 msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
 
-#: mainapp/views/search.py:53
+#: mainapp/views/search.py:54
 msgid "You have already subscribed to this search."
 msgstr "Sie haben diese Abfrage bereits abonniert."
 
