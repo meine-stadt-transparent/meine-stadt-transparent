@@ -20,7 +20,6 @@ django-simple-history = "^2.3"
 django-webpack-loader = "^0.6"
 django-widget-tweaks = "^1.4"
 elasticsearch-dsl = "^5.4"
-geoextract = {git = "https://github.com/meine-stadt-transparent/geoextract", rev = "0d184e264c8356d22580076d35f16866c8ce6ecc"}
 geopy = "^1.17"
 gunicorn = "^19.9"
 html2text = "^2018.1"
@@ -33,6 +32,7 @@ python-slugify = "^1.2"
 requests = "^2.19"
 splinter = "^0.7"
 Wand = "^0.4.4"
+geoextract = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 # See https://github.com/SeleniumHQ/selenium/issues/5296

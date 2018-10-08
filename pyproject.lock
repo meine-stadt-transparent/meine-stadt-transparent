@@ -216,12 +216,12 @@ itsdangerous = ">=0.24"
 
 [[package]]
 category = "main"
-description = ""
+description = "Extraction of locations from plain text"
 name = "geoextract"
 optional = false
 platform = "*"
 python-versions = "*"
-version = "0.3.0"
+version = "0.3.1"
 
 [package.dependencies]
 Flask = ">=0.12.1"
@@ -232,10 +232,6 @@ scipy = ">=0.17.0"
 six = ">=1.10.0"
 unidecode = ">=0.4.21"
 
-[package.source]
-reference = "0d184e264c8356d22580076d35f16866c8ce6ecc"
-type = "git"
-url = "https://github.com/meine-stadt-transparent/geoextract"
 [[package]]
 category = "main"
 description = "The geodesic routines from GeographicLib"
@@ -604,7 +600,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "c9e5e65e300ae5f2310d271b684e35cd10dd379d8effb4108aff1f73c744bf7c"
+content-hash = "a57298c315180bb189e4b5698438970d2e70a1a1a0db507c2e4d4da1154e9f2e"
 platform = "*"
 python-versions = "^3.6"
 
@@ -628,7 +624,7 @@ django-widget-tweaks = ["a69cba6c8a6b98f0cf6eef0535f8212d635e19044ee4533d4d78df7
 elasticsearch = ["658380fd60bdaf746fef12958f0abc49063218ce93ee1ae4ca1fe6291c896433", "ae91b089f2f2b5b3daa04297949e5f805ab12d187218cb587273f472656fd250"]
 elasticsearch-dsl = ["197246ddd556b4b7d2738dfa9e4831068c9b5cb21706f6aca035136d42849109", "cbef6467085d7debc870bc450d996c7ba5b8822eb86a6033bba09134ffb01ba8"]
 flask = ["2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48", "a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05"]
-geoextract = []
+geoextract = ["54f3d75bceebe2c82fdca64aa40f63ffc41df442dffe16d82a1aa95568f430bc", "e2fd249361c05a3c3d9cf0d7e9ce18c7f62e08202bd39568d4f7020eeb2009d9"]
 geographiclib = ["635da648fce80a57b81b28875d103dacf7deb12a3f5f7387ba7d39c51e096533"]
 geopy = ["1bbea0efc5af91e0a7d4c2b31650f61667bcc1d0d717784d78c03f0ed13bb374", "59ddda52c62e5ebddda76c53b7b644bb0922f3f594aa350cc62cce7d8ea6afcc"]
 gunicorn = ["aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471", "fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"]

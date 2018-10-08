@@ -87,7 +87,7 @@ To use this in production, you need to set up the two Cron-Jobs described below,
 On Debian/Ubuntu:
 
 ```bash
-sudo apt install python3-pip python3-venv python3-numpy python3-scipy python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
+sudo apt install python3-pip python3-venv python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
     git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr
 ```
 
