@@ -19,9 +19,6 @@ class FacettedSearchTest(ChromeDriverTestCase):
         """ The js writes this value """
         return self.browser.find_by_css("input[name=searchterm]").first["data-querystring"]
 
-    def assert_query_equals(self):
-        return parse.unquote(self.browser.url.split("/")[-2])
-
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch("mainapp.views.Search.execute", new=mock_search_autocomplete)
     @mock.patch("mainapp.functions.search_tools.MainappSearch.execute", new=MockMainappSearch.execute)
@@ -117,7 +114,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.visit('/search/query/organization:1 word/')
         self.click_by_id("organizationButton")
         self.assertTextIsPresent("Cancel Selection")
-        self.click_by_css('[data-id="2"]')
+        self.click_by_css('#filter-organization-list a[data-id="2"]')
         self.assertEqual(self.get_querystring(), "organization:2 word")
         self.click_by_id("organizationButton")
         self.click_by_css("#filter-organization-list .remove-filter")
