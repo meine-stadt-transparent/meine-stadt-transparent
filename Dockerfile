@@ -14,7 +14,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-    apt-get install -y python3-pip python3-venv python3-gi nodejs json-glib-1.0 gir1.2-json-1.0 \
+    apt-get install -y python3-pip python3-venv python3-gi python3-dev nodejs json-glib-1.0 gir1.2-json-1.0 \
     git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr && \
     apt-get autoremove -y && \
     apt-get clean
