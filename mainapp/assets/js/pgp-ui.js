@@ -67,6 +67,14 @@ export default class PgpUi {
         this.$key_list.append(option);
     }
 
+    add_hidden_field(key, value) {
+        $("<input>")
+            .attr("type", "hidden")
+            .attr("name", key)
+            .val(value)
+            .appendTo(this.$form);
+    }
+
     onKeySelected(fingerprint) {
         let url = this.url_template_get + fingerprint;
         fetch(url)
@@ -74,16 +82,8 @@ export default class PgpUi {
                 return data.text();
             })
             .then((text) => {
-                $("<input>")
-                    .attr("type", "hidden")
-                    .attr("name", "pgp_key")
-                    .val(text)
-                    .appendTo(this.$form);
-                $("<input>")
-                    .attr("type", "hidden")
-                    .attr("name", "pgp_key_fingerprint")
-                    .val(fingerprint).appendTo(this.$form);
-
+                this.add_hidden_field("pgp_key", text);
+                this.add_hidden_field("pgp_key_fingerprint", fingerprint);
                 this.$form.submit();
             });
     }

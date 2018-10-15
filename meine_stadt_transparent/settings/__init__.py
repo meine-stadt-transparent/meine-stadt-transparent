@@ -9,6 +9,8 @@ from meine_stadt_transparent.settings.security import *
 
 # Mute an irrelevant warning
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
+# This comes from PGPy with enigmail keys
+warnings.filterwarnings("ignore", message=".*does not have the required usage flag EncryptStorage.*")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -48,8 +50,10 @@ if env.str('MAIL_PROVIDER', 'local').lower() == 'mailjet':
 DEFAULT_FROM_EMAIL = env.str('DEFAULT_FROM_EMAIL', "info@" + REAL_HOST)
 DEFAULT_FROM_EMAIL_NAME = env.str('DEFAULT_FROM_EMAIL_NAME', PRODUCT_NAME)
 
+# Encrypted email are currently plaintext only (html is just rendered as plaintext in thunderbird),
+# which is why this feature is disabled by default
+ENABLE_PGP = env.bool("ENABLE_PGP", False)
 # The pgp keyservevr, following the sks protocol
-ENABLE_PGP = env.bool("ENABLE_PGP", True)
 SKS_KEYSERVER = env.str("SKS_KEYSERVER", "gpg.mozilla.org")
 
 # Database

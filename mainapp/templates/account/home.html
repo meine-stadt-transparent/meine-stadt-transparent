@@ -101,7 +101,7 @@
                         </div>
 
                         <div class="h-100 d-flex align-items-center">
-                            {% trans "Select your pgp key receive encrypted notifications" %}
+                            {% trans "Select your pgp key receive encrypted notifications. Note that encryted notifications are plaintext only." %}
                         </div>
                     {% else %}
                         <div class="pull-right">
@@ -115,8 +115,7 @@
                         </div>
 
                         <div class="h-100 d-flex align-items-center">
-                            {% trans "Your notifications will be pgp encrypted" %}<br>
-                            {% trans "Fingerprint: " %}{{ profile.pgp_key_fingerprint }}
+                            {% trans "Your notifications will be pgp encrypted. Fingerprint: " %}{{ profile.pgp_key_fingerprint }}
                         </div>
                     {% endif %}
                 </div>

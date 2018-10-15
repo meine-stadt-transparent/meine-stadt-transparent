@@ -6,7 +6,7 @@ from django.core.management import call_command
 from django.test import Client
 from django.test import TestCase
 
-from mainapp.models import UserAlert
+from mainapp.models import UserAlert, UserProfile
 from mainapp.tests.live.helper import MockMainappSearch
 
 
@@ -20,6 +20,8 @@ class TestNotifyUsers(TestCase):
         newuser.username = email
         newuser.is_active = 1
         newuser.save()
+
+        UserProfile.objects.create(user=newuser)
 
         for alert in alerts:
             alert_object = UserAlert()

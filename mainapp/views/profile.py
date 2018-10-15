@@ -1,5 +1,3 @@
-import os
-
 from csp.decorators import csp_update
 from django.conf import settings
 from django.contrib import messages
@@ -9,15 +7,6 @@ from django.utils.translation import ugettext as _
 
 from mainapp.models import UserProfile
 from mainapp.models.user_alert import UserAlert
-
-
-def save_pgp_key(pgp_key: str, pgp_key_fingerprint: str):
-    """ This should eventually be abstracted away into a file manager class """
-    if not os.path.isdir(settings.PGP_KEY_ROOT):
-        os.makedirs(settings.PGP_KEY_ROOT, exist_ok=True)
-
-    with open(os.path.join(settings.PGP_KEY_ROOT, pgp_key_fingerprint), "w") as fp:
-        fp.write(pgp_key)
 
 
 @login_required
@@ -38,15 +27,12 @@ def profile_view(request):
         if len(pgp_key) > 10000:
             raise ValueError("The pgp is too long")
         pgp_key_fingerprint = request.POST["pgp_key_fingerprint"]
-        save_pgp_key(pgp_key, pgp_key_fingerprint)
+        profile.add_pgp_key(pgp_key_fingerprint, pgp_key)
 
-        profile.pgp_key_fingerprint = pgp_key_fingerprint
-        profile.save()
         messages.success(request, _("You're notifications will now be pgp encrypted"))
 
     if 'delete_pgp_key' in request.POST:
-        profile.pgp_key_fingerprint = None
-        profile.save()
+        profile.remove_pgp_key()
         messages.success(request, _("You're notifications won't be pgp encrypted anymore"))
 
     context = {

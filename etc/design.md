@@ -64,3 +64,7 @@ Since the pdfjs maintainers don't the default viewer in the npm package, but we 
  * STATICFILES_DIRS includes 'node_modules/pdfjs-dist/viewer', so that django copies the contents viewer folder to the static files folder
  * The `file` view loads that with `static('web/viewer.html')`.
  * The viewer loads the (already minified) css and js using relative paths.
+ 
+## PGP
+
+I thought it would be really cool to have an option to send pgp encrypted notifications that would be dead easy to use. The UI i just a dropdown on the profile page where you can select the key for your e-mail address from a keyserver. But it turns out that when sending a multipart email, enigmail, for whatever reason, chooses to display the source of the html part. I also couldn't find any documentation about this. This effectively means we can only send encrypted notifications as plaintext, which defeats the whole point of a modern, user-friendly service. So the feature is written and tested, but disabled by default (it can be enabled with `ENABLE_PGP=True`).
