@@ -12,3 +12,4 @@ docker-compose.yml
 mainapp/assets/bundles
 .git
 .idea
+.tox

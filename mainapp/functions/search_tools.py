@@ -232,6 +232,20 @@ def search_result_for_notification(result):
                                     result["highlight"])
 
 
+def get_highlights(hit, parsed):
+    highlights = []
+    if hasattr(hit.meta, "highlight"):
+        for field_name, field_highlights in hit.meta.highlight.to_dict().items():
+            for field_highlight in field_highlights:
+                if field_name == "name":
+                    parsed["name"] = field_highlight
+                elif field_name == "short_name":
+                    pass
+                else:
+                    highlights.append(field_highlight)
+    return highlights
+
+
 def parse_hit(hit, highlighting=True):
     # python module wtf
     from mainapp.documents import DOCUMENT_TYPE_NAMES
@@ -242,16 +256,7 @@ def parse_hit(hit, highlighting=True):
     parsed["url"] = reverse(parsed["type"], args=[hit.id])
 
     if highlighting:
-        highlights = []
-        if hasattr(hit.meta, "highlight"):
-            for field_name, field_highlights in hit.meta.highlight.to_dict().items():
-                for field_highlight in field_highlights:
-                    if field_name == "name":
-                        parsed["name"] = field_highlight
-                    elif field_name == "short_name":
-                        pass
-                    else:
-                        highlights.append(field_highlight)
+        highlights = get_highlights(hit, parsed)
         if len(highlights) > 0:
             parsed["highlight"] = html_escape_highlight(highlights[0])
             parsed["highlight_extracted"] = highlights[0].split("<mark>")[1].split("</mark>")[0]

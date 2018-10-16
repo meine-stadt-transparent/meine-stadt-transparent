@@ -51,8 +51,9 @@ This document shall explain the important design decision, assumptions and trade
  * https://observatory.mozilla.org/analyze.html?host=meine-stadt-transparent.de (A+)
  * https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
  * https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent (Passing)
+ * ![Docker image size](https://img.shields.io/microbadger/image-size/konstin2/meine-stadt-transparent.svg)
 
-# pdfjs
+## pdfjs
 
 Since the pdfjs maintainers don't the default viewer in the npm package, but we need that default viewer, we've forked pdfjs ([#9127](https://github.com/mozilla/pdf.js/issues/9127), [#9144](https://github.com/mozilla/pdf.js/pull/9144)). The integration works as follows (and can be updated thereby):
 

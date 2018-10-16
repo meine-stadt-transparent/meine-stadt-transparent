@@ -27,21 +27,9 @@ COPY --from=0 /usr/lib/x86_64-linux-gnu/girepository-1.0/OParl-0.4.typelib /usr/
 
 COPY . /app/
 
-RUN pip3 install --upgrade poetry && \
-    poetry config settings.virtualenvs.in-project true && \
-    poetry install && \
-    ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
-
-RUN npm install && npm run build:prod && npm run build:email
-
-# Allow overriding the default env
-RUN mkdir /config && cp etc/env-docker-compose /config/.env && (cp .env-docker-compose /config/.env || true) && rm -f .env
-RUN poetry run python manage.py collectstatic --noinput
-RUN rm -rf node_modules
+RUN /app/etc/docker-init.sh
 
 EXPOSE 8000
-
-RUN chown -R www-data:www-data /config && chown -R www-data:www-data /app
 
 USER www-data
 

@@ -129,7 +129,6 @@ class OParlHelper:
 
     E = TypeVar("E", bound=DefaultFields)
 
-    # NOTE: Typechecking fails due to https://youtrack.jetbrains.com/issue/PY-23161. This should be fixed in 2018.1
     def check_for_modification(self, libobject: OParl.Object, constructor: Type[E], name_fixup=None) \
         -> Tuple[Optional[E], bool]:
         """ Checks common criterias for oparl objects. """
@@ -173,11 +172,10 @@ class OParlHelper:
             if isinstance(dbobject, ShortableNameFields):
                 dbobject.name = libobject.get_name() or name_fixup
                 dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
-            return dbobject, True
         else:
             self.logger.debug("Not Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id,
                               oparl_id)
-            return dbobject, False
+        return dbobject, is_modified
 
     def extract_text_from_file(self, file: File):
         path = os.path.join(self.storagefolder, file.storage_filename)

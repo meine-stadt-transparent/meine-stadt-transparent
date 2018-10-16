@@ -8,22 +8,10 @@ addons:
   chrome: stable # Just to be sure
   apt:
     packages:
-      - libxml2-dev
-      - libxslt1-dev
-      - antiword
-      - unrtf
+      - libmysqlclient-dev
+      - libmagickwand-dev
       - poppler-utils
-      - pstotext
       - tesseract-ocr
-      - flac
-      - libav-tools
-      - lame
-      - libmad0
-      - libsox-fmt-mp3
-      - sox
-      - libjpeg-dev
-      - swig
-      - libpulse-dev
 
 cache:
   pip: true
