@@ -216,7 +216,7 @@ name = "elasticsearch"
 optional = false
 platform = "*"
 python-versions = "*"
-version = "5.5.3"
+version = "6.3.1"
 
 [package.dependencies]
 urllib3 = ">=1.21.1"
@@ -228,10 +228,11 @@ name = "elasticsearch-dsl"
 optional = false
 platform = "*"
 python-versions = "*"
-version = "5.4.0"
+version = "6.2.1"
 
 [package.dependencies]
-elasticsearch = ">=5.0.0,<6.0.0"
+elasticsearch = ">=6.0.0,<7.0.0"
+ipaddress = "*"
 python-dateutil = "*"
 six = "*"
 
@@ -337,6 +338,15 @@ optional = false
 platform = "*"
 python-versions = "*"
 version = "2.7"
+
+[[package]]
+category = "main"
+description = "IPv4/IPv6 manipulation library"
+name = "ipaddress"
+optional = false
+platform = "*"
+python-versions = "*"
+version = "1.0.22"
 
 [[package]]
 category = "main"
@@ -691,7 +701,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "88e083d34272db80c77e684e4426beeab4d1858c3a1826059ad71c10ecbfd39d"
+content-hash = "49fef5fd2eb7a8f19e6f6b30707a584a66c901e7b4dfdbb2424b18d69dcfefc3"
 platform = "*"
 python-versions = "^3.6"
 
@@ -715,8 +725,8 @@ django-settings-export = ["fceeae49fc597f654c1217415d8e049fc81c930b7154f5d8f28c4
 django-simple-history = ["22d511573b441b405584a045c7d241bb41808d4b5fc39c21e4a6b59b0e4b6ae6", "77a648542f6da7e17e62ab5e66528dea22b9d7f2eb92e4a1ba70ce6165b8ad83"]
 django-webpack-loader = ["60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93d3ebd5f520", "970b968c2a8975fb7eff56a3bab5d0d90d396740852d1e0c50c5cfe2b824199a"]
 django-widget-tweaks = ["a69cba6c8a6b98f0cf6eef0535f8212d635e19044ee4533d4d78df700c2e233f", "bc645ef88307bc4ac269ee8ee9e572be814cd4a125c2bb6edb59ffcdc194982d"]
-elasticsearch = ["658380fd60bdaf746fef12958f0abc49063218ce93ee1ae4ca1fe6291c896433", "ae91b089f2f2b5b3daa04297949e5f805ab12d187218cb587273f472656fd250"]
-elasticsearch-dsl = ["197246ddd556b4b7d2738dfa9e4831068c9b5cb21706f6aca035136d42849109", "cbef6467085d7debc870bc450d996c7ba5b8822eb86a6033bba09134ffb01ba8"]
+elasticsearch = ["7546cc08e3899716e12fe67d12d7cfe9a64647014d1134b014c3c392b63cad42", "aada5cfdc4a543c47098eb3aca6663848ef5d04b4324935ced441debc11ec98b"]
+elasticsearch-dsl = ["794fc7e03fc580cf48c35c9491fa97f08afa1b9e897f9c59dfa285efb520d71c", "d0a5137caf43c2ecb69f7a867d52d40e557b3ba16c361dff74a07affe7101c38"]
 filelock = ["86fe6af56ae08ebc9c66d54ba3398c35b98916d0862d782b276a65816ff39392", "97694f181bdf58f213cca0a7cb556dc7bf90e2f8eb9aa3151260adac56701afb"]
 flask = ["2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48", "a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05"]
 geoextract = ["54f3d75bceebe2c82fdca64aa40f63ffc41df442dffe16d82a1aa95568f430bc", "e2fd249361c05a3c3d9cf0d7e9ce18c7f62e08202bd39568d4f7020eeb2009d9"]
@@ -726,6 +736,7 @@ gunicorn = ["aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471", 
 html2text = ["490db40fe5b2cd79c461cf56be4d39eb8ca68191ae41ba3ba79f6cb05b7dd662", "627514fb30e7566b37be6900df26c2c78a030cc9e6211bda604d8181233bcdd4"]
 icalendar = ["07c2447a1d44cbb27c90b8c6a5c98e890cc1853c6223e2a52195cddec26c6356", "83f7248b7485ddd29c7d69b706b21c441e34855d9c1d888939fd24aefdd9d19b"]
 idna = ["156a6814fb5ac1fc6850fb002e0852d56c0c8d2531923a51032d1b70760e186e", "684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16"]
+ipaddress = ["64b28eec5e78e7510698f6d4da08800a5c575caa4a286c93d651c5d3ff7b6794", "b146c751ea45cad6188dd6cf2d9b757f6f4f8d6ffb96a023e6f2e26eea02a72c"]
 itsdangerous = ["cbb3fcf8d3e33df861709ecaf89d9e6629cff0a217bc2848f1b41cd30d360519"]
 jinja2 = ["74c935a1b8bb9a3947c50a54766a969d4846290e1e788ea44c1392163723c3bd", "f84be1bb0040caca4cea721fcbbbbd61f9be9464ca236387158b0feea01914a4"]
 jsonfield = ["a0a7fdee736ff049059409752b045281a225610fecbda9b9bd588ba976493c12", "beb1cd4850d6d6351c32daefcb826c01757744e9c863228a642f87a1a4acb834"]
