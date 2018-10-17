@@ -73,5 +73,53 @@
                 </a>
             </div>
         </section>
+
+        {% if settings.TEMPLATE_META.enable_pgp %}
+            <section class="card mst-accountsettings mst-account-section">
+                <h2 class="card-header">
+                    {% trans 'Mail Encryption' %}
+                </h2>
+
+                <div class="card-body" id="select-pgp-key-box">
+                    {% if not profile.pgp_key_fingerprint %}
+                        <div class="pull-right">
+                            <form action="{% url 'profile-home' %}" method="POST" id="pgp-form"
+                                  data-pgp-input="{{ profile.user.email }}"
+                                  data-sks-keyserver="{{ settings.TEMPLATE_META.sks_keyserver }}">
+                                {% csrf_token %}
+                                <div class="dropdown pgp-select">
+                                    <button class="btn btn-primary dropdown-toggle" type="button"
+                                            id="dropdownMenuButton"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {% trans "Select PGP Key" %}
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <div class="dropdown-item">{% trans "Searching for Keys" %}</div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="h-100 d-flex align-items-center">
+                            {% trans "Select your pgp key receive encrypted notifications. Note that encryted notifications are plaintext only." %}
+                        </div>
+                    {% else %}
+                        <div class="pull-right">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="delete_pgp_key" value="true">
+                                <button type="submit" class="btn btn-danger">
+                                    {% trans 'Remove key' %}
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="h-100 d-flex align-items-center">
+                            {% trans "Your notifications will be pgp encrypted. Fingerprint: " %}{{ profile.pgp_key_fingerprint }}
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
     </div>
 {% endblock %}

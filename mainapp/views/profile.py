@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-
+from csp.decorators import csp_update
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -10,8 +10,10 @@ from mainapp.models.user_alert import UserAlert
 
 
 @login_required
+@csp_update(CONNECT_SRC=("'self'", settings.SKS_KEYSERVER))
 def profile_view(request):
     user = request.user
+    profile = UserProfile.objects.get_or_create(user=user)[0]  # type: UserProfile
 
     if 'removenotification' in request.POST:
         alerts = UserAlert.objects.filter(user_id=user.id, id=request.POST['removenotification']).all()
@@ -20,9 +22,22 @@ def profile_view(request):
                 alert.delete()
             messages.success(request, _('You will now receive notifications about new search results.'))
 
+    if settings.ENABLE_PGP and 'pgp_key' in request.POST:
+        pgp_key = request.POST["pgp_key"]
+        if len(pgp_key) > 10000:
+            raise ValueError("The pgp is too long")
+        pgp_key_fingerprint = request.POST["pgp_key_fingerprint"]
+        profile.add_pgp_key(pgp_key_fingerprint, pgp_key)
+
+        messages.success(request, _("You're notifications will now be pgp encrypted"))
+
+    if 'delete_pgp_key' in request.POST:
+        profile.remove_pgp_key()
+        messages.success(request, _("You're notifications won't be pgp encrypted anymore"))
+
     context = {
         'alerts': UserAlert.objects.filter(user_id=user.id).all(),
-        'profile': UserProfile.objects.get_or_create(user=user)[0]
+        'profile': profile
     }
     return render(request, "account/home.html", context)
 

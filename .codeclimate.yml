@@ -19,6 +19,9 @@ checks:
   method-lines:
     config:
       threshold: 30
+  argument-count:
+    config:
+      threshold: 5
 ratings:
   paths:
   - "**.css"
@@ -27,5 +30,4 @@ ratings:
 exclude_paths:
 - mainapp/migrations/
 - mainapp/fixtures/
-- mainapp/assets/vendored/
 - manage.py
