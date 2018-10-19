@@ -31,7 +31,7 @@ pgpy = "^0.4.3"
 PyPDF2 = "^1.26"
 python = "^3.6"
 python-slugify = "^1.2"
-requests = "^2.19"
+requests = "^2.20"
 splinter = "^0.7"
 Wand = "^0.4.4"
 
