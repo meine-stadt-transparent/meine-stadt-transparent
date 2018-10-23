@@ -14,6 +14,7 @@ testdata/fake_cache
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info
 .tox
 venv/
 .venv/
