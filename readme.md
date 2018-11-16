@@ -88,7 +88,7 @@ On Debian/Ubuntu:
 
 ```bash
 sudo apt install python3-pip python3-venv python3-gi python3-dev nodejs json-glib-1.0 gir1.2-json-1.0 \
-    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr
+    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev
 ```
 
 Install dependencies. 

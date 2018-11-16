@@ -3,8 +3,11 @@
 
   .tt-menu {
     @extend .dropdown-menu;
+    // We can't `@extend .dropdown-menu-right;` with `!important`
+    left: auto !important;
+    right: 0;
+    max-width: 600px;
     z-index: $zindex-dropdown !important; // Typeahead sets its own (wrong) inline z-index
-    max-width: 100%;
   }
 
   .tt-suggestion {
@@ -16,5 +19,16 @@
 
   .tt-suggestion.tt-cursor {
     @extend .dropdown-item.active;
+  }
+}
+
+// We want 100% width for the form in the main page
+.form {
+  .twitter-typeahead {
+    .tt-menu {
+      max-width: 100%;
+      left: 0 !important;
+      right: 0;
+    }
   }
 }

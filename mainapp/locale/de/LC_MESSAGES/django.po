@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-11 00:34+0200\n"
+"POT-Creation-Date: 2018-11-16 16:08+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,47 +71,47 @@ msgstr "Personen"
 msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: functions/search_tools.py:280
+#: functions/search_tools.py:285
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: functions/search_tools.py:285
+#: functions/search_tools.py:290
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: functions/search_tools.py:290
+#: functions/search_tools.py:295
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: functions/search_tools.py:295
+#: functions/search_tools.py:300
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: functions/search_tools.py:300
+#: functions/search_tools.py:305
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: functions/search_tools.py:304
+#: functions/search_tools.py:309
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
 
-#: functions/search_tools.py:309
+#: functions/search_tools.py:314
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: functions/search_tools.py:313
+#: functions/search_tools.py:318
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: functions/search_tools.py:315
+#: functions/search_tools.py:320
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
@@ -359,7 +359,8 @@ msgid ""
 "notifications are plaintext only."
 msgstr ""
 "Wählen sie einen PGP-Schlüssel aus, um verschlüsselte Benachrichtigungen zu "
-"erhalten. Verschlüsselte Benachrichtungen werden als Reintext-E-Mail verschickt."
+"erhalten. Verschlüsselte Benachrichtungen werden als Reintext-E-Mail "
+"verschickt."
 
 #: templates/account/home.html:112
 msgid "Remove key"
@@ -649,8 +650,8 @@ msgstr "Sitzung"
 
 #: templates/mainapp/file/info_lg.html:14
 #: templates/mainapp/file/info_lg.html:24
-#: templates/mainapp/file/info_sm.html:48 templates/mainapp/meeting.html:162
-#: templates/mainapp/meeting.html:169
+#: templates/mainapp/file/info_sm.html:48 templates/mainapp/meeting.html:168
+#: templates/mainapp/meeting.html:175
 msgid "Paper"
 msgstr "Vorlage"
 
@@ -824,51 +825,55 @@ msgstr "Vorige Sitzung"
 msgid "Following Meeting"
 msgstr "Folgende Sitzung"
 
-#: templates/mainapp/meeting.html:73
+#: templates/mainapp/meeting.html:74
 msgid "Place of the meeting"
 msgstr "Ort der Sitzung"
 
-#: templates/mainapp/meeting.html:79
+#: templates/mainapp/meeting.html:80
 msgid "Time of the Meeting"
 msgstr "Zeitpunkt der Sitzung"
 
-#: templates/mainapp/meeting.html:84
-msgid "Main organization of the meeting"
-msgstr "Träger der Sitzung"
+#: templates/mainapp/meeting.html:86
+msgid "Main organization of the meeting: "
+msgstr "Träger der Sitzung: "
 
-#: templates/mainapp/meeting.html:94
+#: templates/mainapp/meeting.html:97
+msgid "Download the meeting in a format readable by most calendars"
+msgstr "Den Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
+
+#: templates/mainapp/meeting.html:99
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: templates/mainapp/meeting.html:99
+#: templates/mainapp/meeting.html:105
 msgid "This meeting has been cancelled"
 msgstr "Dieser Termin wurde abgesagt."
 
-#: templates/mainapp/meeting.html:105
+#: templates/mainapp/meeting.html:111
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: templates/mainapp/meeting.html:108
+#: templates/mainapp/meeting.html:114
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: templates/mainapp/meeting.html:114
+#: templates/mainapp/meeting.html:120
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: templates/mainapp/meeting.html:120
+#: templates/mainapp/meeting.html:126
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: templates/mainapp/meeting.html:126
+#: templates/mainapp/meeting.html:132
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: templates/mainapp/meeting.html:144
+#: templates/mainapp/meeting.html:150
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: templates/mainapp/meeting.html:180
+#: templates/mainapp/meeting.html:186
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 

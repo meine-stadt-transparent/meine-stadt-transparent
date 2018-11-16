@@ -39,3 +39,9 @@ class Paper(DefaultFields, ShortableNameFields):
 
     def organization_ids(self):
         return [organization.id for organization in self.organizations.all()]
+
+    class Meta:
+        # This makes the index page a good bit faster since it uses order_by("-sort_date", "-legal_date")
+        indexes = [
+            models.Index(fields=['sort_date', 'legal_date']),
+        ]
