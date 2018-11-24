@@ -7,10 +7,7 @@ class GenericMembershipDocument:
     autocomplete = StringField(attr="name", analyzer=autocomplete_analyzer)
     sort_date = DateField()
 
-    body = ObjectField(properties={
-        'id': IntegerField(),
-        'name': StringField(),
-    })
+    body = ObjectField(properties={"id": IntegerField(), "name": StringField()})
 
     class Meta:
         fields = ["id", "name", "short_name"]

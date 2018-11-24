@@ -61,7 +61,9 @@ class OParlCli:
         else:
             endpoint_id, endpoint_system = cls.get_endpoint_from_body_url(userinput)
 
-        importer, liboparl_body = cls.get_importer_with_body(endpoint_id, endpoint_system)
+        importer, liboparl_body = cls.get_importer_with_body(
+            endpoint_id, endpoint_system
+        )
 
         ags = cls.get_ags(liboparl_body, userinput)
 
@@ -94,7 +96,9 @@ class OParlCli:
                 liboparl_body = body
                 break
         if not liboparl_body:
-            raise Exception("Failed to find body {} in {}".format(endpoint_id, endpoint_system))
+            raise Exception(
+                "Failed to find body {} in {}".format(endpoint_id, endpoint_system)
+            )
         return importer, liboparl_body
 
     @classmethod
@@ -115,10 +119,15 @@ class OParlCli:
         import_streets(main_body, ags)
         import_outline(main_body, ags)
 
-        dotenv = "SITE_DEFAULT_BODY={}".format(main_body.id) + "\n" \
-                 + "OPARL_ENDPOINT={}".format(importer.entrypoint)
+        dotenv = (
+            "SITE_DEFAULT_BODY={}".format(main_body.id)
+            + "\n"
+            + "OPARL_ENDPOINT={}".format(importer.entrypoint)
+        )
 
-        logger.info("Done! Please add the following line to your dotenv file: \n" + dotenv)
+        logger.info(
+            "Done! Please add the following line to your dotenv file: \n" + dotenv
+        )
 
     @classmethod
     def get_ags(cls, liboparl_body, userinput):
@@ -126,7 +135,9 @@ class OParlCli:
         if not ags:
             ags = CityToAGS.query_wikidata(userinput)
         if not ags:
-            raise Exception("Could not find the Gemeindeschlüssel for '{}'".format(userinput))
+            raise Exception(
+                "Could not find the Gemeindeschlüssel for '{}'".format(userinput)
+            )
         logging.info("Using {} as Gemeindeschlüssel for '{}'".format(ags, userinput))
         return ags
 
@@ -148,6 +159,10 @@ class OParlCli:
             if len(exact_matches) == 1:
                 matching = exact_matches
             else:
-                raise Exception(("There are {} matches for your input and I can't decide which one to use. " +
-                                 "Please provide a url yourself").format(len(matching)))
+                raise Exception(
+                    (
+                        "There are {} matches for your input and I can't decide which one to use. "
+                        + "Please provide a url yourself"
+                    ).format(len(matching))
+                )
         return matching[0]

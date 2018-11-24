@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Fixes the parsed_text'
+    help = "Fixes the parsed_text"
 
     def handle(self, *args, **options):
         files = File.objects.all()

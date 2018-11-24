@@ -23,7 +23,9 @@ def sanitize_file(file):
     :return: mainapp.models.file
     """
 
-    file.name = re.sub("Sitzungsvorlage \((?P<name>.*)\)", "\g<name>", file.name, flags=re.DOTALL)
+    file.name = re.sub(
+        "Sitzungsvorlage \((?P<name>.*)\)", "\g<name>", file.name, flags=re.DOTALL
+    )
 
     return file
 
@@ -37,7 +39,7 @@ def sanitize_person(person):
     :return: mainapp.models.person
     """
 
-    for prefix in ['Frau', 'Herr', 'Herrn']:
+    for prefix in ["Frau", "Herr", "Herrn"]:
         person.name = re.sub(r"^" + re.escape(prefix) + " ", "", person.name)
 
     return person
@@ -53,9 +55,9 @@ def sanitize_organization(orga):
     :return: mainapp.models.organization
     """
 
-    if orga.name == 'Unabhängige Wählergemeinschaft - Jülichs überparteiliche Liste':
-        orga.short_name = 'UWG Jülich'
-    if orga.name == 'Bündnis 90 / Die Grünen':
-        orga.short_name = 'B.90 / Die Grünen'
+    if orga.name == "Unabhängige Wählergemeinschaft - Jülichs überparteiliche Liste":
+        orga.short_name = "UWG Jülich"
+    if orga.name == "Bündnis 90 / Die Grünen":
+        orga.short_name = "B.90 / Die Grünen"
 
     return orga

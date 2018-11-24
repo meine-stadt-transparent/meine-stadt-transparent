@@ -24,10 +24,10 @@ class Location(DefaultFields):
         return self.short_description or self.description or _("Unknown")
 
     def coordinates(self) -> Optional[Dict[str, Any]]:
-        if self.geometry and self.geometry['type'] == 'Point':
+        if self.geometry and self.geometry["type"] == "Point":
             return {
-                "lat": self.geometry['coordinates'][1],
-                "lon": self.geometry['coordinates'][0],
+                "lat": self.geometry["coordinates"][1],
+                "lon": self.geometry["coordinates"][0],
             }
         else:
             return None

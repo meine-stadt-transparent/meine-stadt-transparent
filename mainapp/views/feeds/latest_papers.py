@@ -11,7 +11,7 @@ class LatestPapersFeed(Feed):
     link = settings.ABSOLUTE_URI_BASE
 
     def items(self):
-        return Paper.objects.order_by('-sort_date')[:20]
+        return Paper.objects.order_by("-sort_date")[:20]
 
     def item_title(self, paper):
         return paper.name

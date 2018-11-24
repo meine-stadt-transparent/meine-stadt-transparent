@@ -7,11 +7,13 @@ from mainapp.models import File
 
 
 class Command(BaseCommand):
-    help = 'Rebuilds the file locations'
+    help = "Rebuilds the file locations"
 
     def add_arguments(self, parser):
-        parser.add_argument('--id', type=int, help="Rebuild only one file")
-        parser.add_argument('--all', dest='all', action='store_true', help='Rebuild all files')
+        parser.add_argument("--id", type=int, help="Rebuild only one file")
+        parser.add_argument(
+            "--all", dest="all", action="store_true", help="Rebuild all files"
+        )
 
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
@@ -19,13 +21,13 @@ class Command(BaseCommand):
         file.save()
 
     def handle(self, *args, **options):
-        if options['all']:
+        if options["all"]:
             all_files = File.objects.all()
             for file in all_files:
                 try:
                     self.parse_file(file)
                 except Exception:
                     logging.error("Error parsing file: " + str(file.id))
-        elif options['id']:
-            file = File.objects.get(id=options['id'])
+        elif options["id"]:
+            file = File.objects.get(id=options["id"])
             self.parse_file(file)

@@ -8,8 +8,13 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True, related_name="profile", verbose_name=_(u'User'),
-                                on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User,
+        null=True,
+        related_name="profile",
+        verbose_name=_(u"User"),
+        on_delete=models.CASCADE,
+    )
     # Normally pgp keys are 40 chars long (for sha-1), but we're going to use some padding in case a different
     # hash is used
     pgp_key_fingerprint = models.CharField(max_length=64, null=True, blank=True)
@@ -39,12 +44,14 @@ class UserProfile(models.Model):
         if not self.pgp_key_fingerprint:
             return None
 
-        with open(os.path.join(settings.PGP_KEY_ROOT, self.pgp_key_fingerprint), "rb") as fp:
+        with open(
+            os.path.join(settings.PGP_KEY_ROOT, self.pgp_key_fingerprint), "rb"
+        ) as fp:
             return fp.read()
 
     class Meta:
-        verbose_name = _('User profile')
-        verbose_name_plural = _('User profiles')
+        verbose_name = _("User profile")
+        verbose_name_plural = _("User profiles")
 
     def __unicode__(self):
         return "User profile: %s" % self.user.username

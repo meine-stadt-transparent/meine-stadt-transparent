@@ -1,6 +1,7 @@
 from django.conf import settings
 from django_elasticsearch_dsl import Index
 from elasticsearch_dsl import analyzer, token_filter
+
 # noinspection PyProtectedMember
 from elasticsearch_dsl.analysis import Analyzer
 

@@ -18,17 +18,15 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('allauth.urls')),
-    url(r'^', include('mainapp.urls')),
+    url(r"^admin/", admin.site.urls),
+    url(r"^accounts/", include("allauth.urls")),
+    url(r"^", include("mainapp.urls")),
 ]
 
 if settings.DEBUG_TOOLBAR_ACTIVE:
     import debug_toolbar
 
-    urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ]
+    urlpatterns += [url(r"^__debug__/", include(debug_toolbar.urls))]
 
 handler404 = "mainapp.views.error404"
 handler500 = "mainapp.views.error500"

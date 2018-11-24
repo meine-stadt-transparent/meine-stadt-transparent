@@ -1,11 +1,19 @@
 from django.test import TestCase
 
-from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, \
-    MainappSearch, MULTI_MATCH_FIELDS
+from mainapp.functions.search_tools import (
+    search_string_to_params,
+    params_to_search_string,
+    MainappSearch,
+    MULTI_MATCH_FIELDS,
+)
 from django.test import TestCase
 
-from mainapp.functions.search_tools import search_string_to_params, params_to_search_string, \
-    MainappSearch, MULTI_MATCH_FIELDS
+from mainapp.functions.search_tools import (
+    search_string_to_params,
+    params_to_search_string,
+    MainappSearch,
+    MULTI_MATCH_FIELDS,
+)
 
 expected_params = {
     "query": {
@@ -14,88 +22,46 @@ expected_params = {
             "operator": "and",
             "fields": MULTI_MATCH_FIELDS,
             "fuzziness": "1",
-            "prefix_length": 1
+            "prefix_length": 1,
         }
     },
-    "post_filter": {
-        "terms": {
-            "_type": [
-                "file_document",
-                "committee_document"
-            ]
-        }
-    },
+    "post_filter": {"terms": {"_type": ["file_document", "committee_document"]}},
     "aggs": {
         "_filter_document_type": {
-            "filter": {
-                "match_all": {}
-            },
-            "aggs": {
-                "document_type": {
-                    "terms": {
-                        "field": "_type"
-                    }
-                }
-            }
+            "filter": {"match_all": {}},
+            "aggs": {"document_type": {"terms": {"field": "_type"}}},
         },
         "_filter_person": {
-            "filter": {
-                "terms": {
-                    "_type": [
-                        "file_document",
-                        "committee_document"
-                    ]
-                }
-            },
-            "aggs": {
-                "person": {
-                    "terms": {
-                        "field": "person_ids"
-                    }
-                }
-            }
+            "filter": {"terms": {"_type": ["file_document", "committee_document"]}},
+            "aggs": {"person": {"terms": {"field": "person_ids"}}},
         },
         "_filter_organization": {
-            "filter": {
-                "terms": {
-                    "_type": [
-                        "file_document",
-                        "committee_document"
-                    ]
-                }
-            },
-            "aggs": {
-                "organization": {
-                    "terms": {
-                        "field": "organization_ids"
-                    }
-                }
-            }
-        }
+            "filter": {"terms": {"_type": ["file_document", "committee_document"]}},
+            "aggs": {"organization": {"terms": {"field": "organization_ids"}}},
+        },
     },
-    "sort": [
-        {'sort_date': {'order': 'desc'}}
-    ],
+    "sort": [{"sort_date": {"order": "desc"}}],
     "highlight": {
         "fields": {
-            "*": {
-                "fragment_size": 150,
-                "pre_tags": "<mark>",
-                "post_tags": "</mark>"
-            }
+            "*": {"fragment_size": 150, "pre_tags": "<mark>", "post_tags": "</mark>"}
         },
-        "require_field_match": False
-    }
+        "require_field_match": False,
+    },
 }
 
 
 class TestSearchtools(TestCase):
-    params = {"document-type": "file,committee", "radius": "50", "searchterm": "word radius anotherword",
-              "sort": "date_newest"}
+    params = {
+        "document-type": "file,committee",
+        "radius": "50",
+        "searchterm": "word radius anotherword",
+        "sort": "date_newest",
+    }
 
     def test_search_string_to_params(self):
         instring = search_string_to_params(
-            "document-type:file,committee word  radius radius:50 sort:date_newest anotherword")
+            "document-type:file,committee word  radius radius:50 sort:date_newest anotherword"
+        )
         self.assertEqual(instring, self.params)
 
     def test_params_to_query(self):

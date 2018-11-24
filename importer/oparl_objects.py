@@ -9,22 +9,33 @@ import gi
 import requests
 from django.conf import settings
 from django.utils.translation import ugettext as _
+
 # noinspection PyPackageRequirements
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
 from mainapp.functions.geo_functions import geocode
-from mainapp.models import Body, LegislativeTerm, Paper, Meeting, Location, File, Person, \
-    AgendaItem, \
-    OrganizationMembership, Organization, DefaultFields
+from mainapp.models import (
+    Body,
+    LegislativeTerm,
+    Paper,
+    Meeting,
+    Location,
+    File,
+    Person,
+    AgendaItem,
+    OrganizationMembership,
+    Organization,
+    DefaultFields,
+)
 from mainapp.models.consultation import Consultation
 from mainapp.models.organization_type import OrganizationType
 from mainapp.models.paper_type import PaperType
 
 # noinspection PyPackageRequirements
 
-gi.require_version('OParl', '0.4')
+gi.require_version("OParl", "0.4")
 from gi.repository import OParl
 
 
@@ -50,19 +61,17 @@ class OParlObjects(OParlHelper):
 
         # Ensure the existence of the three predefined organization types
         group = settings.PARLIAMENTARY_GROUPS_TYPE
-        OrganizationType.objects.get_or_create(id=group[0], defaults={
-            "name": group[1]
-        })
+        OrganizationType.objects.get_or_create(id=group[0], defaults={"name": group[1]})
 
         committee = settings.COMMITTEE_TYPE
-        OrganizationType.objects.get_or_create(id=committee[0], defaults={
-            "name": committee[1]
-        })
+        OrganizationType.objects.get_or_create(
+            id=committee[0], defaults={"name": committee[1]}
+        )
 
         department = settings.DEPARTMENT_TYPE
-        OrganizationType.objects.get_or_create(id=department[0], defaults={
-            "name": department[1]
-        })
+        OrganizationType.objects.get_or_create(
+            id=department[0], defaults={"name": department[1]}
+        )
 
     def body(self, libobject: OParl.Body):
         return self.process_object(libobject, Body, self.body_core, self.body_embedded)
@@ -77,7 +86,9 @@ class OParlObjects(OParlHelper):
             saved_term = self.term(term)
             if saved_term:
                 terms.append(saved_term)
-        changed = changed or not self.is_queryset_equal_list(body.legislative_terms, terms)
+        changed = changed or not self.is_queryset_equal_list(
+            body.legislative_terms, terms
+        )
         body.legislative_terms = terms
         location = self.location(libobject.get_location())
         if location and location.geometry:
@@ -90,8 +101,10 @@ class OParlObjects(OParlHelper):
                 body.center = None
                 body.outline = location
             else:
-                message = "Location object is of type {}, which is neither 'Point' nor 'Polygon'." \
-                          "Skipping this location.".format(location.geometry["type"])
+                message = (
+                    "Location object is of type {}, which is neither 'Point' nor 'Polygon'."
+                    "Skipping this location.".format(location.geometry["type"])
+                )
                 self.errorlist.append(message)
         return changed
 
@@ -114,13 +127,17 @@ class OParlObjects(OParlHelper):
         return term
 
     def paper(self, libobject: OParl.Paper):
-        return self.process_object(libobject, Paper, self.paper_core, self.paper_embedded)
+        return self.process_object(
+            libobject, Paper, self.paper_core, self.paper_embedded
+        )
 
     def paper_embedded(self, libobject, paper):
         changed = False
         files_with_none = [self.file(file) for file in libobject.get_auxiliary_file()]
         files_without_none = [file for file in files_with_none if file is not None]
-        changed = changed or not self.is_queryset_equal_list(paper.files, files_without_none)
+        changed = changed or not self.is_queryset_equal_list(
+            paper.files, files_without_none
+        )
         paper.files = files_without_none
         old_main_file = paper.main_file
         paper.main_file = self.file(libobject.get_main_file())
@@ -135,16 +152,18 @@ class OParlObjects(OParlHelper):
                 organizations.append(organization)
             else:
                 self.paper_organization_queue.append((paper, org_url))
-        changed = changed or not self.is_queryset_equal_list(paper.organizations, organizations)
+        changed = changed or not self.is_queryset_equal_list(
+            paper.organizations, organizations
+        )
         paper.organizations = organizations
         return changed
 
     def paper_core(self, libobject, paper):
         self.logger.info("Processing Paper {}".format(libobject.get_id()))
         if libobject.get_paper_type():
-            paper_type, _ = PaperType.objects.get_or_create(defaults={
-                "paper_type": libobject.get_paper_type()
-            })
+            paper_type, _ = PaperType.objects.get_or_create(
+                defaults={"paper_type": libobject.get_paper_type()}
+            )
         else:
             paper_type = None
         paper.legal_date = self.glib_datetime_to_python_date(libobject.get_date())
@@ -155,10 +174,14 @@ class OParlObjects(OParlHelper):
         self.call_custom_hook("sanitize_paper", paper)
 
     def organization(self, libobject: OParl.Organization):
-        return self.process_object(libobject, Organization, self.organization_core, self.organization_embedded)
+        return self.process_object(
+            libobject, Organization, self.organization_core, self.organization_embedded
+        )
 
     def organization_without_embedded(self, libobject: OParl.Organization):
-        return self.process_object(libobject, Organization, self.organization_core, lambda x, y: False)
+        return self.process_object(
+            libobject, Organization, self.organization_core, lambda x, y: False
+        )
 
     def organization_embedded(self, libobject, organization):
         for membership in libobject.get_membership():
@@ -167,20 +190,30 @@ class OParlObjects(OParlHelper):
 
     def organization_core(self, libobject, organization):
         self.logger.info("Processing Organization {}".format(libobject.get_id()))
-        type_id = self.organization_classification.get(libobject.get_organization_type())
+        type_id = self.organization_classification.get(
+            libobject.get_organization_type()
+        )
         if type_id:
             orgtype = OrganizationType.objects.get(id=type_id)
         else:
-            orgtype, _ = OrganizationType.objects.get_or_create(name=libobject.get_organization_type())
+            orgtype, _ = OrganizationType.objects.get_or_create(
+                name=libobject.get_organization_type()
+            )
         organization.organization_type = orgtype
         organization.body = Body.by_oparl_id(libobject.get_body().get_id())
-        organization.start = self.glib_datetime_or_date_to_python(libobject.get_start_date())
-        organization.end = self.glib_datetime_or_date_to_python(libobject.get_end_date())
+        organization.start = self.glib_datetime_or_date_to_python(
+            libobject.get_start_date()
+        )
+        organization.end = self.glib_datetime_or_date_to_python(
+            libobject.get_end_date()
+        )
 
         self.call_custom_hook("sanitize_organization", organization)
 
     def meeting(self, libobject: OParl.Meeting):
-        return self.process_object(libobject, Meeting, self.meeting_core, self.meeting_embedded)
+        return self.process_object(
+            libobject, Meeting, self.meeting_core, self.meeting_embedded
+        )
 
     def meeting_embedded(self, libobject, meeting):
         changed = False
@@ -189,7 +222,9 @@ class OParlObjects(OParlHelper):
             djangofile = self.file(oparlfile)
             if djangofile:
                 auxiliary_files.append(djangofile)
-        changed = changed or not self.is_queryset_equal_list(meeting.auxiliary_files, auxiliary_files)
+        changed = changed or not self.is_queryset_equal_list(
+            meeting.auxiliary_files, auxiliary_files
+        )
         meeting.auxiliary_files = auxiliary_files
         persons = []
         for oparlperson in libobject.get_participant():
@@ -197,7 +232,9 @@ class OParlObjects(OParlHelper):
             if djangoperson:
                 persons.append(djangoperson)
             else:
-                self.meeting_person_queue[libobject.get_id()].append(oparlperson.get_id())
+                self.meeting_person_queue[libobject.get_id()].append(
+                    oparlperson.get_id()
+                )
         changed = changed or not self.is_queryset_equal_list(meeting.persons, persons)
         meeting.persons = persons
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
@@ -205,12 +242,16 @@ class OParlObjects(OParlHelper):
 
         organizations = []
         for organization_url in libobject.get_organization_url():
-            djangoorganization = Organization.objects.filter(oparl_id=organization_url).first()
+            djangoorganization = Organization.objects.filter(
+                oparl_id=organization_url
+            ).first()
             if djangoorganization:
                 organizations.append(djangoorganization)
             else:
                 self.meeting_organization_queue[meeting].append(organization_url)
-        changed = changed or not self.is_queryset_equal_list(meeting.organizations, organizations)
+        changed = changed or not self.is_queryset_equal_list(
+            meeting.organizations, organizations
+        )
         meeting.organizations = organizations
 
         return changed
@@ -228,7 +269,9 @@ class OParlObjects(OParlHelper):
         self.call_custom_hook("sanitize_meeting", meeting)
 
     def location(self, libobject: OParl.Location):
-        location, do_update = self.check_for_modification(libobject, Location, name_fixup=_("Unknown"))
+        location, do_update = self.check_for_modification(
+            libobject, Location, name_fixup=_("Unknown")
+        )
         if not location or not do_update:
             return location
 
@@ -275,7 +318,7 @@ class OParlObjects(OParlHelper):
             if geodata:
                 location.geometry = {
                     "type": "Point",
-                    "coordinates": [geodata['lng'], geodata['lat']]
+                    "coordinates": [geodata["lng"], geodata["lat"]],
                 }
 
         location.save()
@@ -308,7 +351,9 @@ class OParlObjects(OParlHelper):
 
         item.resolution_file = self.file(libobject.get_resolution_file())
         if len(libobject.get_auxiliary_file()) > 0:
-            item.auxiliary_files = [self.file(i) for i in libobject.get_auxiliary_file()]
+            item.auxiliary_files = [
+                self.file(i) for i in libobject.get_auxiliary_file()
+            ]
         item.consultation = self.consultation(libobject.get_consultation())
 
         item.save()
@@ -329,16 +374,24 @@ class OParlObjects(OParlHelper):
         consultation.save()
 
         if libobject.get_meeting():
-            meeting = Meeting.objects.filter(oparl_id=libobject.get_meeting().get_id()).first()
+            meeting = Meeting.objects.filter(
+                oparl_id=libobject.get_meeting().get_id()
+            ).first()
             if not meeting:
-                self.consultation_meeting_queue.append((consultation, libobject.get_meeting().get_id()))
+                self.consultation_meeting_queue.append(
+                    (consultation, libobject.get_meeting().get_id())
+                )
             else:
                 consultation.meeting = meeting
 
         if libobject.get_paper():
-            paper = Meeting.objects.filter(oparl_id=libobject.get_paper().get_id()).first()
+            paper = Meeting.objects.filter(
+                oparl_id=libobject.get_paper().get_id()
+            ).first()
             if not paper:
-                self.consultation_paper_queue.append((consultation, libobject.get_paper().get_id()))
+                self.consultation_paper_queue.append(
+                    (consultation, libobject.get_paper().get_id())
+                )
             else:
                 consultation.paper = paper
 
@@ -359,7 +412,13 @@ class OParlObjects(OParlHelper):
         url = libobject.get_download_url() or libobject.get_access_url()
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
-        if file.filesize and file.filesize > 0 and file.modified and last_modified and last_modified < file.modified:
+        if (
+            file.filesize
+            and file.filesize > 0
+            and file.modified
+            and last_modified
+            and last_modified < file.modified
+        ):
             self.logger.info("Skipping cached Download: {}".format(url))
             return
 
@@ -370,7 +429,7 @@ class OParlObjects(OParlHelper):
 
         r = requests.get(url, allow_redirects=True)
         r.raise_for_status()
-        open(path, 'wb').write(r.content)
+        open(path, "wb").write(r.content)
 
         file.filesize = os.stat(path).st_size
         file.storage_filename = urlhash
@@ -388,7 +447,9 @@ class OParlObjects(OParlHelper):
             length = self.filename_length_cutoff - len(extension)
             displayed_filename = slugify(libobject.get_name())[:length] + extension
         else:
-            displayed_filename = slugify(libobject.get_access_url())[-self.filename_length_cutoff:]
+            displayed_filename = slugify(libobject.get_access_url())[
+                -self.filename_length_cutoff :
+            ]
 
         parsed_text_before = file.parsed_text
         file_name_before = file.name
@@ -426,13 +487,17 @@ class OParlObjects(OParlHelper):
         if file_name_before != file.name or parsed_text_before != file.parsed_text:
             # These two operations are rather CPU-intensive, so we only perform them if something relevant has changed
             file.locations = extract_locations(parsed_text)
-            file.mentioned_persons = extract_persons(file.name + "\n" + (parsed_text or "") + "\n")
+            file.mentioned_persons = extract_persons(
+                file.name + "\n" + (parsed_text or "") + "\n"
+            )
             file.save()
 
         return file
 
     def person(self, libobject: OParl.Person):
-        return self.process_object(libobject, Person, self.person_core, self.person_embedded)
+        return self.process_object(
+            libobject, Person, self.person_core, self.person_embedded
+        )
 
     def person_embedded(self, libobject, person):
         old_location = person.location
@@ -448,11 +513,15 @@ class OParlObjects(OParlHelper):
         self.call_custom_hook("sanitize_person", person)
 
     def membership(self, organization, libobject: OParl.Membership):
-        membership, do_update = self.check_for_modification(libobject, OrganizationMembership)
+        membership, do_update = self.check_for_modification(
+            libobject, OrganizationMembership
+        )
         if not membership or not do_update:
             return membership
 
-        person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
+        person = Person.objects_with_deleted.filter(
+            oparl_id=libobject.get_person().get_id()
+        ).first()
         if not person:
             self.membership_queue.append((organization, libobject))
             return None
@@ -473,7 +542,11 @@ class OParlObjects(OParlHelper):
 
     def _add_organizations(self, queue, othermodel: Type[DefaultFields]):
         length = len(queue)
-        self.logger.info("Adding missing {} to {} {}".format(Organization.__name__, length, othermodel.__name__))
+        self.logger.info(
+            "Adding missing {} to {} {}".format(
+                Organization.__name__, length, othermodel.__name__
+            )
+        )
         for base_object, associated_urls in queue.items():
             associated = []
             for url in associated_urls:
@@ -487,14 +560,22 @@ class OParlObjects(OParlHelper):
 
     def add_missing_associations(self):
         self.logger.info(
-            "Adding {} missing meeting <-> persons associations".format(len(self.meeting_person_queue.items())))
+            "Adding {} missing meeting <-> persons associations".format(
+                len(self.meeting_person_queue.items())
+            )
+        )
         for meeting_id, person_ids in self.meeting_person_queue.items():
             meeting = Meeting.by_oparl_id(meeting_id)
-            meeting.persons = [Person.by_oparl_id(person_id) for person_id in person_ids]
+            meeting.persons = [
+                Person.by_oparl_id(person_id) for person_id in person_ids
+            ]
             meeting.save()
 
         self.logger.info(
-            "Adding {} missing agenda item <-> paper associations".format(len(self.agenda_item_paper_queue.items())))
+            "Adding {} missing agenda item <-> paper associations".format(
+                len(self.agenda_item_paper_queue.items())
+            )
+        )
         for item_id, paper_id in self.agenda_item_paper_queue.items():
             item = AgendaItem.objects_with_deleted.get(oparl_id=item_id)
             item.paper = Paper.objects_with_deleted.filter(oparl_id=paper_id).first()
@@ -503,29 +584,53 @@ class OParlObjects(OParlHelper):
                 self.errorlist.append(message)
             item.save()
 
-        self.logger.info("Adding {} missing memberships".format(len(self.membership_queue)))
+        self.logger.info(
+            "Adding {} missing memberships".format(len(self.membership_queue))
+        )
         for organization, libobject in self.membership_queue:
-            person = Person.objects_with_deleted.filter(oparl_id=libobject.get_person().get_id()).first()
+            person = Person.objects_with_deleted.filter(
+                oparl_id=libobject.get_person().get_id()
+            ).first()
             if not person:
                 self.logger.warn("The person {} is missing".format(libobject.get_id()))
                 self.person(libobject.get_person())
             self.membership(organization, libobject)
 
-        self.logger.info("Adding {} missing paper to consultations".format(len(self.consultation_paper_queue)))
+        self.logger.info(
+            "Adding {} missing paper to consultations".format(
+                len(self.consultation_paper_queue)
+            )
+        )
         for consultation, paper in self.consultation_paper_queue:
-            consultation.paper = Paper.objects_with_deleted.filter(oparl_id=paper).first()
+            consultation.paper = Paper.objects_with_deleted.filter(
+                oparl_id=paper
+            ).first()
             consultation.save()
 
-        self.logger.info("Adding {} missing meetings to consultations".format(len(self.consultation_meeting_queue)))
+        self.logger.info(
+            "Adding {} missing meetings to consultations".format(
+                len(self.consultation_meeting_queue)
+            )
+        )
         for consultation, meeting in self.consultation_meeting_queue:
-            consultation.meeting = Meeting.objects_with_deleted.filter(oparl_id=meeting).first()
+            consultation.meeting = Meeting.objects_with_deleted.filter(
+                oparl_id=meeting
+            ).first()
             consultation.save()
 
-        self.logger.info("Adding {} missing organizations to papers".format(len(self.paper_organization_queue)))
+        self.logger.info(
+            "Adding {} missing organizations to papers".format(
+                len(self.paper_organization_queue)
+            )
+        )
         for paper, organization_url in self.paper_organization_queue:
-            org = Organization.objects_with_deleted.filter(oparl_id=organization_url).first()
+            org = Organization.objects_with_deleted.filter(
+                oparl_id=organization_url
+            ).first()
             if not org:
-                org = self.organization_without_embedded(self.client.parse_url(organization_url))
+                org = self.organization_without_embedded(
+                    self.client.parse_url(organization_url)
+                )
             paper.organizations.add(org)
 
         self._add_organizations(self.consultation_organization_queue, Consultation)

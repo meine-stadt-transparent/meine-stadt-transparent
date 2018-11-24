@@ -11,7 +11,7 @@ class TestViews(TestCase):
         """ 5 is joined with another committee, so it's skipped in this meeting series """
         contexts = {}
         for i in [3, 4, 5, 6]:
-            contexts[i] = self.client.get('/meeting/{}/'.format(i)).context
+            contexts[i] = self.client.get("/meeting/{}/".format(i)).context
         self.assertEqual(contexts[3]["previous"], None)
         self.assertEqual(contexts[3]["following"].id, 4)
         self.assertEqual(contexts[4]["previous"].id, 3)

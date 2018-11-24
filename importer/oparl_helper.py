@@ -10,12 +10,15 @@ import gi
 from django.conf import settings
 from django.utils import dateparse
 
-from mainapp.functions.document_parsing import extract_text_from_pdf, get_page_count_from_pdf
+from mainapp.functions.document_parsing import (
+    extract_text_from_pdf,
+    get_page_count_from_pdf,
+)
 from mainapp.models import DefaultFields, File
 from mainapp.models.default_fields import ShortableNameFields
 
-gi.require_version('OParl', '0.4')
-gi.require_version('Json', '1.0')
+gi.require_version("OParl", "0.4")
+gi.require_version("Json", "1.0")
 from gi.repository import Json, GLib, OParl
 
 # You can use those as defaults to inialize the importer. Or inline them when you're already here
@@ -77,7 +80,7 @@ class OParlHelper:
         """ Extracts the geometry part of the geojson as python object. A bit ugly. """
         if not glib_json:
             return None
-        node = glib_json.get_member('geometry')
+        node = glib_json.get_member("geometry")
         return json.loads(Json.to_string(node, True))
 
     @staticmethod
@@ -91,7 +94,11 @@ class OParlHelper:
         # TODO: Remove once https://github.com/OParl/liboparl/issues/18 is fixed
         if not glibdatetime:
             return None
-        return date(glibdatetime.get_year(), glibdatetime.get_month(), glibdatetime.get_day_of_month())
+        return date(
+            glibdatetime.get_year(),
+            glibdatetime.get_month(),
+            glibdatetime.get_day_of_month(),
+        )
 
     @staticmethod
     def glib_date_to_python(glibdate: GLib.Date) -> Optional[date]:
@@ -110,8 +117,13 @@ class OParlHelper:
     T = TypeVar("T", bound=DefaultFields)
     U = TypeVar("U", bound=OParl.Object)
 
-    def process_object(self, libobject: U, constructor: Type[T], core: Callable[[U, T], None],
-                       embedded: Callable[[U, T], bool]):
+    def process_object(
+        self,
+        libobject: U,
+        constructor: Type[T],
+        core: Callable[[U, T], None],
+        embedded: Callable[[U, T], bool],
+    ):
         """
         We split an object into two parts: It's value properties and the embedded objects. This is necessary because
         the outer object might not have been modified while its embedded inner objects have.
@@ -129,14 +141,17 @@ class OParlHelper:
 
     E = TypeVar("E", bound=DefaultFields)
 
-    def check_for_modification(self, libobject: OParl.Object, constructor: Type[E], name_fixup=None) \
-        -> Tuple[Optional[E], bool]:
+    def check_for_modification(
+        self, libobject: OParl.Object, constructor: Type[E], name_fixup=None
+    ) -> Tuple[Optional[E], bool]:
         """ Checks common criterias for oparl objects. """
         if not libobject:
             return None, False
 
         oparl_id = libobject.get_id()
-        dbobject = constructor.objects_with_deleted.filter(oparl_id=oparl_id).first()  # type: DefaultFields
+        dbobject = constructor.objects_with_deleted.filter(
+            oparl_id=oparl_id
+        ).first()  # type: DefaultFields
         if not dbobject:
             if libobject.get_deleted():
                 # This was deleted before it could be imported, so we skip it
@@ -168,13 +183,24 @@ class OParlHelper:
             is_modified = True
 
         if is_modified:
-            self.logger.debug("Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id, oparl_id)
+            self.logger.debug(
+                "Modified %s vs. %s on %s: %s",
+                dbobject.modified,
+                parsed_modified,
+                dbobject.id,
+                oparl_id,
+            )
             if isinstance(dbobject, ShortableNameFields):
                 dbobject.name = libobject.get_name() or name_fixup
                 dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
         else:
-            self.logger.debug("Not Modified %s vs. %s on %s: %s", dbobject.modified, parsed_modified, dbobject.id,
-                              oparl_id)
+            self.logger.debug(
+                "Not Modified %s vs. %s on %s: %s",
+                dbobject.modified,
+                parsed_modified,
+                dbobject.id,
+                oparl_id,
+            )
         return dbobject, is_modified
 
     def extract_text_from_file(self, file: File):

@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from icalendar import Calendar
+
 # noinspection PyPackageRequirements
 from pytz import timezone
 from slugify import slugify
@@ -23,29 +24,29 @@ from mainapp.views.utils import build_map_object
 
 def calendar(request, init_view=None, init_date=None):
     context = {
-        'default_date': date.today().strftime("%Y-%m-%d"),
-        'default_view': settings.CALENDAR_DEFAULT_VIEW,
-        'hide_weekends': 1 if settings.CALENDAR_HIDE_WEEKENDS else 0,
-        'min_time': settings.CALENDAR_MIN_TIME,
-        'max_time': settings.CALENDAR_MAX_TIME,
+        "default_date": date.today().strftime("%Y-%m-%d"),
+        "default_view": settings.CALENDAR_DEFAULT_VIEW,
+        "hide_weekends": 1 if settings.CALENDAR_HIDE_WEEKENDS else 0,
+        "min_time": settings.CALENDAR_MIN_TIME,
+        "max_time": settings.CALENDAR_MAX_TIME,
     }
 
     if init_view and init_date:
-        context['init_date'] = init_date
-        context['init_view'] = init_view
+        context["init_date"] = init_date
+        context["init_view"] = init_view
     else:
-        context['init_date'] = context['default_date']
-        context['init_view'] = context['default_view']
+        context["init_date"] = context["default_date"]
+        context["init_view"] = context["default_view"]
 
-    return render(request, 'mainapp/calendar.html', context)
+    return render(request, "mainapp/calendar.html", context)
 
 
 def calendar_data(request):
     """ Callback for the javascript library to get the meetings. """
     # For some reason I do neither understand nor investigated fullcalendar sometimes send a date without timezone and
     # sometimes a date with 00:00:00 and timezone.
-    start = dateutil.parser.parse(request.GET['start'])
-    end = dateutil.parser.parse(request.GET['end'])
+    start = dateutil.parser.parse(request.GET["start"])
+    end = dateutil.parser.parse(request.GET["end"])
 
     # We assume that if the user chose a date he meant the date in the timezone of the data
     local_time_zone = timezone(settings.TIME_ZONE)
@@ -60,14 +61,18 @@ def calendar_data(request):
     for meeting in meetings:
         class_name = []
         if meeting.cancelled:
-            class_name.append('cancelled')
-        data.append({
-            'title': meeting.name,
-            'start': meeting.start.isoformat() if meeting.start is not None else None,
-            'end': meeting.end.isoformat() if meeting.end is not None else None,
-            'details': reverse('meeting', args=[meeting.id]),
-            'className': class_name
-        })
+            class_name.append("cancelled")
+        data.append(
+            {
+                "title": meeting.name,
+                "start": meeting.start.isoformat()
+                if meeting.start is not None
+                else None,
+                "end": meeting.end.isoformat() if meeting.end is not None else None,
+                "details": reverse("meeting", args=[meeting.id]),
+                "className": class_name,
+            }
+        )
     return JsonResponse(data, safe=False)
 
 
@@ -76,11 +81,15 @@ def meeting(request, pk):
 
     # Format the time frame
     if selected_meeting.start:
-        begin = selected_meeting.start.astimezone(tz.tzlocal()).strftime(settings.DATETIME_FORMAT)
+        begin = selected_meeting.start.astimezone(tz.tzlocal()).strftime(
+            settings.DATETIME_FORMAT
+        )
     else:
         begin = None
     if selected_meeting.end:
-        end = selected_meeting.end.astimezone(tz.tzlocal()).strftime(settings.DATETIME_FORMAT)
+        end = selected_meeting.end.astimezone(tz.tzlocal()).strftime(
+            settings.DATETIME_FORMAT
+        )
     else:
         end = None
 
@@ -88,7 +97,12 @@ def meeting(request, pk):
         time = begin
     elif selected_meeting.start.date() == selected_meeting.end.date():
         # We don't need to repeat the date
-        time = "{} - {}".format(begin, selected_meeting.end.astimezone(tz.tzlocal()).strftime(settings.TIME_FORMAT))
+        time = "{} - {}".format(
+            begin,
+            selected_meeting.end.astimezone(tz.tzlocal()).strftime(
+                settings.TIME_FORMAT
+            ),
+        )
     else:
         time = "{} - {}".format(begin, end)
 
@@ -102,21 +116,22 @@ def meeting(request, pk):
     context = {
         "meeting": selected_meeting,
         "time": time,
-        'map': build_map_object(),
+        "map": build_map_object(),
         "location_json": json.dumps(location_geom),
     }
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()
-        query = Meeting.objects \
-            .annotate(count=Count("organizations")) \
-            .filter(count=1) \
-            .filter(organizations=organization) \
+        query = (
+            Meeting.objects.annotate(count=Count("organizations"))
+            .filter(count=1)
+            .filter(organizations=organization)
             .order_by("start")
+        )
 
         context["previous"] = query.filter(start__lt=selected_meeting.start).last()
         context["following"] = query.filter(start__gt=selected_meeting.start).first()
 
-    return render(request, 'mainapp/meeting.html', context)
+    return render(request, "mainapp/meeting.html", context)
 
 
 def historical_meeting(request, pk):
@@ -124,7 +139,8 @@ def historical_meeting(request, pk):
     historical_meeting = get_object_or_404(Meeting.history, history_id=pk)
 
     AgendaItem.history.filter(meeting_id=historical_meeting.id).filter(
-        history_date__lte=historical_meeting.history_date + relativedelta(minutes=1)).count()
+        history_date__lte=historical_meeting.history_date + relativedelta(minutes=1)
+    ).count()
 
     context = {
         "meeting": historical_meeting.instance,
@@ -137,13 +153,15 @@ def historical_meeting(request, pk):
 def build_ical_response(meetings: List[Meeting], filename: str):
     cal = Calendar()
     cal.add("prodid", "-//{}//".format(settings.PRODUCT_NAME))
-    cal.add('version', '2.0')
+    cal.add("version", "2.0")
 
     for meeting in meetings:
         cal.add_component(meeting.as_ical_event())
 
     response = HttpResponse(cal.to_ical(), content_type="text/calendar")
-    response['Content-Disposition'] = 'inline; filename={}.ics'.format(slugify(filename))
+    response["Content-Disposition"] = "inline; filename={}.ics".format(
+        slugify(filename)
+    )
     return response
 
 
@@ -165,10 +183,11 @@ def organizazion_ical(request, pk):
 
 def calendar_ical(request):
     """ Returns an ical file containing all meetings from -6 months from now. """
-    meetings = Meeting.objects \
-        .filter(start__gt=now() + relativedelta(months=-6)) \
-        .order_by("start") \
-        .prefetch_related("location") \
+    meetings = (
+        Meeting.objects.filter(start__gt=now() + relativedelta(months=-6))
+        .order_by("start")
+        .prefetch_related("location")
         .all()
+    )
     filename = _("All Meetings")
     return build_ical_response(meetings, filename)

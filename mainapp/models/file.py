@@ -32,6 +32,7 @@ class File(DefaultFields):
 
     def rebuild_locations(self, parsed_text):
         from mainapp.functions.document_parsing import extract_locations
+
         self.locations = extract_locations(parsed_text)
 
     def coordinates(self):
@@ -47,13 +48,19 @@ class File(DefaultFields):
         return [person.id for person in self.mentioned_persons.all()]
 
     def get_default_link(self):
-        return reverse('file', args=[self.id])
+        return reverse("file", args=[self.id])
 
     def name_autocomplete(self):
-        return self.name if len(self.name) > 0 else ' '
+        return self.name if len(self.name) > 0 else " "
 
     def get_assigned_meetings(self):
         from .meeting import Meeting
-        return (self.meeting_auxiliary_files.all() | self.meeting_invitation.all() | self.meeting_auxiliary_files.all()
-                | self.meeting_results_protocol.all() | self.meeting_verbatim_protocol.all()
-                | Meeting.objects.filter(agendaitem__resolution_file=self)).distinct()
+
+        return (
+            self.meeting_auxiliary_files.all()
+            | self.meeting_invitation.all()
+            | self.meeting_auxiliary_files.all()
+            | self.meeting_results_protocol.all()
+            | self.meeting_verbatim_protocol.all()
+            | Meeting.objects.filter(agendaitem__resolution_file=self)
+        ).distinct()

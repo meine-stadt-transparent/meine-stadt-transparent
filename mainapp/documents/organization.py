@@ -18,7 +18,7 @@ class OrganizationDocument(DocType, GenericMembershipDocument):
     body = ObjectField(properties={"id": IntegerField(), "name": StringField()})
 
     def get_queryset(self):
-        return Organization.objects.prefetch_related("body").order_by('id')
+        return Organization.objects.prefetch_related("body").order_by("id")
 
     class Meta(GenericMembershipDocument.Meta):
         model = Organization

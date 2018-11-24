@@ -9,12 +9,16 @@ from django.utils.translation import ugettext as _
 from html2text import html2text
 
 from mainapp.functions.mail import send_mail
-from mainapp.functions.search_tools import search_result_for_notification, MainappSearch, parse_hit
+from mainapp.functions.search_tools import (
+    search_result_for_notification,
+    MainappSearch,
+    parse_hit,
+)
 from mainapp.models import UserAlert
 
 
 class Command(BaseCommand):
-    help = 'Notifies users about new search results'
+    help = "Notifies users about new search results"
 
     def perform_search(self, alert: UserAlert, override_since=None):
         if override_since is not None:
@@ -35,12 +39,14 @@ class Command(BaseCommand):
         return results
 
     def send_mail(self, to, message_text, message_html, pgp_key_fingerprint):
-        send_mail(to, _("New search results"), message_text, message_html, pgp_key_fingerprint)
+        send_mail(
+            to, _("New search results"), message_text, message_html, pgp_key_fingerprint
+        )
 
     def notify_user(self, user: User, override_since: datetime, debug: bool):
         context = {
             "base_url": settings.ABSOLUTE_URI_BASE,
-            "site_name": settings.TEMPLATE_META['logo_name'],
+            "site_name": settings.TEMPLATE_META["logo_name"],
             "alerts": [],
             "email": user.email,
         }
@@ -54,19 +60,20 @@ class Command(BaseCommand):
                 results = []
                 for obj in notifyobjects:
                     results.append(search_result_for_notification(obj))
-                context["alerts"].append({
-                    "title": str(alert),
-                    "results": results
-                })
+                context["alerts"].append({"title": str(alert), "results": results})
 
         if debug:
-            self.stdout.write("User %s: %i results\n" % (user.email, len(context['alerts'])))
+            self.stdout.write(
+                "User %s: %i results\n" % (user.email, len(context["alerts"]))
+            )
 
-        if len(context['alerts']) == 0:
+        if len(context["alerts"]) == 0:
             return
 
-        message_html = get_template('email/user-alert.html').render(context)
-        message_html = message_html.replace('&lt;mark&gt;', '<mark>').replace('&lt;/mark&gt;', '</mark>')
+        message_html = get_template("email/user-alert.html").render(context)
+        message_html = message_html.replace("&lt;mark&gt;", "<mark>").replace(
+            "&lt;/mark&gt;", "</mark>"
+        )
         message_text = html2text(message_html)
 
         if debug:
@@ -81,18 +88,19 @@ class Command(BaseCommand):
                 alert.save()
 
     def add_arguments(self, parser):
-        parser.add_argument('--override-since', type=str)
-        parser.add_argument('--debug', action='store_true')
+        parser.add_argument("--override-since", type=str)
+        parser.add_argument("--debug", action="store_true")
 
     def handle(self, *args, **options):
         from django.conf import settings
+
         translation.activate(settings.LANGUAGE_CODE)
 
-        override_since = options['override_since']
+        override_since = options["override_since"]
         if override_since is not None:
-            override_since = datetime.datetime.strptime(override_since, '%Y-%m-%d')
+            override_since = datetime.datetime.strptime(override_since, "%Y-%m-%d")
 
         users = User.objects.all()
         for user in users:
             if user.is_active:
-                self.notify_user(user, override_since, options['debug'])
+                self.notify_user(user, override_since, options["debug"])

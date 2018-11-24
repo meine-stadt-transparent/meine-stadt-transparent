@@ -13,7 +13,11 @@ class FileDocument(DocType):
     parsed_text = StringField(attr="parsed_text", analyzer=text_analyzer)
 
     def get_queryset(self):
-        return File.objects.prefetch_related('locations').prefetch_related('mentioned_persons').order_by('id')
+        return (
+            File.objects.prefetch_related("locations")
+            .prefetch_related("mentioned_persons")
+            .order_by("id")
+        )
 
     class Meta:
         model = File

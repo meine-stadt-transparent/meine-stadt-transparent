@@ -11,9 +11,7 @@ chromedriver_path = "node_modules/.bin/chromedriver"
 logger = logging.getLogger(__name__)
 
 
-@modify_settings(MIDDLEWARE={
-    'remove': ['django.middleware.csrf.CsrfViewMiddleware'],
-})
+@modify_settings(MIDDLEWARE={"remove": ["django.middleware.csrf.CsrfViewMiddleware"]})
 class ChromeDriverTestCase(StaticLiveServerTestCase):
     """
     Specifics of ChromeDriverTestCase:
@@ -21,18 +19,23 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     - English is used for the UI
     - CSRF-checks are disabled, as referrer-checking seems to be problematic, as the HTTPS-header seems to be always set
     """
+
     browser = None
 
     @classmethod
     def setUpClass(cls):
         options = Options()
-        options.add_experimental_option('prefs', {'intl.accept_languages': 'en_US'})
+        options.add_experimental_option("prefs", {"intl.accept_languages": "en_US"})
         if settings.TESTING_TRAVIS:
             # See https://docs.travis-ci.com/user/chrome#Sandboxing
             logger.debug("Travis ci detected, running chrome in no-sandbox mode")
             options.add_argument("--no-sandbox")
-        cls.browser = Browser('chrome', executable_path=chromedriver_path, options=options,
-                              headless=not settings.DEBUG_TESTING)
+        cls.browser = Browser(
+            "chrome",
+            executable_path=chromedriver_path,
+            options=options,
+            headless=not settings.DEBUG_TESTING,
+        )
         super(ChromeDriverTestCase, cls).setUpClass()
 
     @classmethod
@@ -79,15 +82,15 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     """
 
     def logout(self):
-        self.browser.find_by_css('#main-menu-content #navbarMyAccount').click()
-        self.browser.find_by_css('#main-menu-content .logout-button').click()
-        self.assertTextIsPresent('You have signed out.')
-        self.assertElementDoesExists('#main-menu-content .login-link')
-        self.assertElementDoesNotExists('#main-menu-content .my-account-link')
+        self.browser.find_by_css("#main-menu-content #navbarMyAccount").click()
+        self.browser.find_by_css("#main-menu-content .logout-button").click()
+        self.assertTextIsPresent("You have signed out.")
+        self.assertElementDoesExists("#main-menu-content .login-link")
+        self.assertElementDoesNotExists("#main-menu-content .my-account-link")
 
     def login(self, username, password):
-        self.browser.find_by_css('#main-menu-content .login-link').click()
-        self.browser.fill('login', username)
-        self.browser.fill('password', password)
-        self.browser.find_by_css('form.login button').click()
-        self.assertTextIsPresent('Successfully signed in as ' + username)
+        self.browser.find_by_css("#main-menu-content .login-link").click()
+        self.browser.fill("login", username)
+        self.browser.fill("password", password)
+        self.browser.find_by_css("form.login button").click()
+        self.assertTextIsPresent("Successfully signed in as " + username)

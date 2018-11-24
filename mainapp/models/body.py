@@ -8,8 +8,20 @@ from .location import Location
 
 
 class Body(DefaultFields, ShortableNameFields):
-    center = models.ForeignKey(Location, null=True, blank=True, related_name="body_center", on_delete=models.CASCADE)
-    outline = models.ForeignKey(Location, null=True, blank=True, related_name="body_outline", on_delete=models.CASCADE)
+    center = models.ForeignKey(
+        Location,
+        null=True,
+        blank=True,
+        related_name="body_center",
+        on_delete=models.CASCADE,
+    )
+    outline = models.ForeignKey(
+        Location,
+        null=True,
+        blank=True,
+        related_name="body_outline",
+        on_delete=models.CASCADE,
+    )
     # There might be e.g. a newer body that didn't exist in the older terms, so
     # bodies and terms are mapped explicitly
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
@@ -19,6 +31,6 @@ class Body(DefaultFields, ShortableNameFields):
 
     def get_default_link(self):
         if settings.SITE_DEFAULT_BODY == self.id:
-            return reverse('index')
+            return reverse("index")
         else:
-            return reverse('body', args=[self.id])
+            return reverse("body", args=[self.id])

@@ -4,8 +4,12 @@ from django.contrib.syndication.views import Feed
 from django.urls import reverse
 from django.utils.translation import ugettext as _
 
-from mainapp.functions.search_tools import search_string_to_params, MainappSearch, parse_hit, \
-    params_to_human_string
+from mainapp.functions.search_tools import (
+    search_string_to_params,
+    MainappSearch,
+    parse_hit,
+    params_to_human_string,
+)
 from mainapp.models import Paper
 
 
@@ -20,7 +24,7 @@ class SearchResultsFeed(Feed):
         return params_to_human_string(params)
 
     def link(self, query):
-        return reverse('search', args=[query])
+        return reverse("search", args=[query])
 
     def items(self, query):
         params = search_string_to_params(query)
@@ -30,26 +34,26 @@ class SearchResultsFeed(Feed):
         return results
 
     def item_title(self, item):
-        return item['type_translated'] + ': ' + item['name']
+        return item["type_translated"] + ": " + item["name"]
 
     def item_description(self, item):
         from mainapp.views import paper_description
 
-        if item['type'] == 'paper':
-            paper = Paper.objects.get(pk=item['id'])
+        if item["type"] == "paper":
+            paper = Paper.objects.get(pk=item["id"])
             return paper_description(paper)
 
-        return ''
+        return ""
 
     def item_link(self, item):
-        return reverse(item['type'], args=[item['id']])
+        return reverse(item["type"], args=[item["id"]])
 
     def item_pubdate(self, item):
-        created = item.get('created')
+        created = item.get("created")
         if created:
             return dateutil.parser.parse(created)
 
     def item_updateddate(self, item):
-        modified = item.get('modified')
+        modified = item.get("modified")
         if modified:
             return dateutil.parser.parse(modified)

@@ -11,7 +11,7 @@ from django.db import transaction
 from mainapp.models import Body
 from .oparl_objects import OParlObjects
 
-gi.require_version('OParl', '0.4')
+gi.require_version("OParl", "0.4")
 from gi.repository import GLib, OParl
 
 
@@ -20,7 +20,8 @@ class OParlImport(OParlObjects):
 
     The importer can be customized by overriding this class.
     """
-    T = TypeVar('T')
+
+    T = TypeVar("T")
 
     def __init__(self, options, resolver):
         super().__init__(options, resolver)
@@ -36,16 +37,20 @@ class OParlImport(OParlObjects):
             self.logger.fatal("Aborting.")
             return
 
-    def list_batched(self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]):
+    def list_batched(
+        self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]
+    ):
         """ Loads a list using liboparl and then inserts it batchwise into the database. """
         objectlist = objectlistfn()
         for i in range(0, len(objectlist), self.batchsize):
             with transaction.atomic():
-                for item in objectlist[i:i + self.batchsize]:
+                for item in objectlist[i : i + self.batchsize]:
                     fn(item)
             self.logger.info("Batch finished")
 
-    def list_caught(self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]) -> int:
+    def list_caught(
+        self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]
+    ) -> int:
         """ Downloads and parses a body list and llogs all errors immediately.
 
         This is a fixup for python's broken error handling with threadpools.
@@ -81,10 +86,15 @@ class OParlImport(OParlObjects):
             if not Body.objects.filter(oparl_id=body.get_id()).first():
                 if body.get_deleted():
                     self.logger.error(
-                        "Body {} which has been deleted on the server side, skipping.".format(body.get_id()))
+                        "Body {} which has been deleted on the server side, skipping.".format(
+                            body.get_id()
+                        )
+                    )
                 else:
-                    self.logger.error("Body {} is not in the database even it has not been deleted on the server "
-                                      "side. This looks fishy".format(body.get_id))
+                    self.logger.error(
+                        "Body {} is not in the database even it has not been deleted on the server "
+                        "side. This looks fishy".format(body.get_id)
+                    )
                 continue
             self.list_batched(body.get_paper, self.paper)
             self.list_batched(body.get_person, self.person)
@@ -117,17 +127,27 @@ class OParlImport(OParlObjects):
                 futures[future] = body.get_short_name() or body.get_name() + ": Paper"
                 future = executor.submit(self.list_caught, body.get_person, self.person)
                 futures[future] = body.get_short_name() or body.get_name() + ": Person"
-                future = executor.submit(self.list_caught, body.get_organization, self.organization)
-                futures[future] = body.get_short_name() or body.get_name() + ": Organization"
-                future = executor.submit(self.list_caught, body.get_meeting, self.meeting)
+                future = executor.submit(
+                    self.list_caught, body.get_organization, self.organization
+                )
+                futures[future] = (
+                    body.get_short_name() or body.get_name() + ": Organization"
+                )
+                future = executor.submit(
+                    self.list_caught, body.get_meeting, self.meeting
+                )
                 futures[future] = body.get_short_name() or body.get_name() + ": Meeting"
             self.logger.info("Finished submitting concurrent tasks")
             for future in concurrent.futures.as_completed(futures):
                 err_count = future.result()
                 if err_count == 0:
-                    self.logger.info("Finished Successfully: {}".format(futures[future]))
+                    self.logger.info(
+                        "Finished Successfully: {}".format(futures[future])
+                    )
                 else:
-                    self.logger.info("Finished with {} errors: {}".format(err_count, futures[future]))
+                    self.logger.info(
+                        "Finished with {} errors: {}".format(err_count, futures[future])
+                    )
 
         self.logger.info("Finished creating objects")
         self.add_missing_associations()
@@ -149,7 +169,9 @@ class OParlImport(OParlObjects):
             runner = cls(config)
             runner.run_multithreaded()
         except Exception:
-            logger.error("There was an error in the Process for {}".format(config["entrypoint"]))
+            logger.error(
+                "There was an error in the Process for {}".format(config["entrypoint"])
+            )
             logger.error(traceback.format_exc())
             return False
         return True

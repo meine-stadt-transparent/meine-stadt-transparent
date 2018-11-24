@@ -17,4 +17,4 @@ class OrganizationMembership(DefaultFields):
         return "{}: {}".format(self.person, self.organization)
 
     def get_default_link(self):
-        return reverse('person', args=[self.person_id])
+        return reverse("person", args=[self.person_id])

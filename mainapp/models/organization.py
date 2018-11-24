@@ -9,17 +9,17 @@ from .location import Location
 from .organization_type import OrganizationType
 
 ORGANIZATION_TYPE_NAMES = {
-    "parliamentary group": pgettext('Document Type Name', 'Parliamentary Group'),
-    "committee": pgettext('Document Type Name', 'Committee'),
-    "department": pgettext('Document Type Name', 'Department'),
-    "organization": pgettext('Document Type Name', 'Organization'),
+    "parliamentary group": pgettext("Document Type Name", "Parliamentary Group"),
+    "committee": pgettext("Document Type Name", "Committee"),
+    "department": pgettext("Document Type Name", "Department"),
+    "organization": pgettext("Document Type Name", "Organization"),
 }
 
 ORGANIZATION_TYPE_NAMES_PLURAL = {
-    "parliamentary group": pgettext('Document Type Name', 'Parliamentary Groups'),
-    "committee": pgettext('Document Type Name', 'Committees'),
-    "department": pgettext('Document Type Name', 'Departments'),
-    "organization": pgettext('Document Type Name', 'Organizations'),
+    "parliamentary group": pgettext("Document Type Name", "Parliamentary Groups"),
+    "committee": pgettext("Document Type Name", "Committees"),
+    "department": pgettext("Document Type Name", "Departments"),
+    "organization": pgettext("Document Type Name", "Organizations"),
 }
 
 
@@ -28,7 +28,9 @@ class Organization(DefaultFields, ShortableNameFields):
     end = models.DateField(null=True, blank=True)
     body = models.ForeignKey(Body, on_delete=models.CASCADE)
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
-    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        Location, null=True, blank=True, on_delete=models.CASCADE
+    )
     # html color without the hash
     color = models.CharField(max_length=6, null=True, blank=True)
     logo = models.CharField(max_length=255, null=True, blank=True)
@@ -39,10 +41,10 @@ class Organization(DefaultFields, ShortableNameFields):
 
     # A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error
     def name_autocomplete(self):
-        return self.name if len(self.name) > 0 else ' '
+        return self.name if len(self.name) > 0 else " "
 
     def get_default_link(self):
-        return reverse('organization', args=[self.id])
+        return reverse("organization", args=[self.id])
 
     def sort_date(self):
         return self.start

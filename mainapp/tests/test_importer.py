@@ -11,9 +11,19 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
-from mainapp.models import Body, LegislativeTerm, Organization, Person, OrganizationMembership, \
-    Meeting, AgendaItem, \
-    Paper, Consultation, Location, File
+from mainapp.models import (
+    Body,
+    LegislativeTerm,
+    Organization,
+    Person,
+    OrganizationMembership,
+    Meeting,
+    AgendaItem,
+    Paper,
+    Consultation,
+    Location,
+    File,
+)
 
 gi_not_available = importlib.util.find_spec("gi") is None
 if not gi_not_available:
@@ -32,8 +42,18 @@ class TestImporter(TestCase):
     base_timestamp = timezone.now().astimezone().replace(microsecond=0)
     new_timestamp = None
     delete = False
-    tables = [Body, LegislativeTerm, Organization, Person, OrganizationMembership, Meeting, AgendaItem,
-              Paper, Consultation, Location]
+    tables = [
+        Body,
+        LegislativeTerm,
+        Organization,
+        Person,
+        OrganizationMembership,
+        Meeting,
+        AgendaItem,
+        Paper,
+        Consultation,
+        Location,
+    ]
     entrypoint = "https://oparl.example.org/"
     tempdir = None
 
@@ -60,7 +80,10 @@ class TestImporter(TestCase):
             return self.manipulate(json.load(f), self.new_timestamp)
 
     def dump(self, name, obj):
-        with open(os.path.join(self.fake_cache, self.sha1(self.entrypoint), self.sha1(name)), 'w') as f:
+        with open(
+            os.path.join(self.fake_cache, self.sha1(self.entrypoint), self.sha1(name)),
+            "w",
+        ) as f:
             json.dump(obj, f, indent=4, sort_keys=True)
 
     def external_list(self, obj):
@@ -131,7 +154,9 @@ class TestImporter(TestCase):
         self.check_update()
 
     def check_basic_import(self):
-        self.new_timestamp = (self.base_timestamp + relativedelta(years=-100)).isoformat()
+        self.new_timestamp = (
+            self.base_timestamp + relativedelta(years=-100)
+        ).isoformat()
         self.create_fake_cache()
         importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
@@ -142,11 +167,23 @@ class TestImporter(TestCase):
             self.assertLess(table.objects.first().modified, now)
         self.assertEqual(File.objects.count(), 2)
         # Test for #56
-        self.assertEqual(Meeting.by_oparl_id("https://oparl.example.org/meeting/281").organizations.count(), 1)
+        self.assertEqual(
+            Meeting.by_oparl_id(
+                "https://oparl.example.org/meeting/281"
+            ).organizations.count(),
+            1,
+        )
 
     def check_ignoring_unmodified(self):
         """ Check that not-modified objects are ignored - See #41 """
-        tables_with_modified = [Body, Organization, Person, Meeting, Paper, File]  # must have modified and File for #41
+        tables_with_modified = [
+            Body,
+            Organization,
+            Person,
+            Meeting,
+            Paper,
+            File,
+        ]  # must have modified and File for #41
         newer_now = timezone.now()
         importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()
@@ -167,7 +204,9 @@ class TestImporter(TestCase):
         self.assertEqual(File.objects.count(), 2)
 
     def check_deletion(self):
-        self.new_timestamp = (self.base_timestamp + relativedelta(years=200)).isoformat()
+        self.new_timestamp = (
+            self.base_timestamp + relativedelta(years=200)
+        ).isoformat()
         self.delete = True
         self.create_fake_cache()
         importer = OParlImport(self.options, self.resolver)

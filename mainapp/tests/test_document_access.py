@@ -3,9 +3,11 @@ from django.test import TestCase, override_settings
 from mainapp.models import Paper, File
 
 
-@override_settings(ELASTICSEARCH_DSL_AUTOSYNC=False, ELASTICSEARCH_DSL_AUTO_REFRESH=False)
+@override_settings(
+    ELASTICSEARCH_DSL_AUTOSYNC=False, ELASTICSEARCH_DSL_AUTO_REFRESH=False
+)
 class TestDocumentAccess(TestCase):
-    fixtures = ['initdata']
+    fixtures = ["initdata"]
     base_paper_len = 2
 
     def test_delete_document(self):

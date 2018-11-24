@@ -16,7 +16,9 @@ DESCRIPTION:Meeting with Remy Danton
 LOCATION:The Captiol
 END:VEVENT
 END:VCALENDAR
-""".strip().replace("\n", "\r\n")
+""".strip().replace(
+    "\n", "\r\n"
+)
 
 expected_meeting_series = """
 BEGIN:VCALENDAR
@@ -51,15 +53,17 @@ UID:meeting-6@meine-stadt-transparent.local
 DESCRIPTION:House Assembly Meeting 4
 END:VEVENT
 END:VCALENDAR
-""".strip().replace("\n", "\r\n")
+""".strip().replace(
+    "\n", "\r\n"
+)
 
 
 class TestICal(TestCase):
-    fixtures = ['initdata']
+    fixtures = ["initdata"]
     c = Client()
 
     def test_meeting(self):
-        reponse = self.c.get('/meeting/1/ical/').content.decode('utf-8').strip()
+        reponse = self.c.get("/meeting/1/ical/").content.decode("utf-8").strip()
         self.assertEqual(reponse, expected_meeting)
 
         event = icalendar.cal.Component.from_ical(reponse).subcomponents[0]
@@ -69,11 +73,13 @@ class TestICal(TestCase):
         self.assertEqual(event.get("dtend").dt.hour, 18)
 
     def test_meeting_series(self):
-        response = self.c.get('/organization/2/ical/').content.decode('utf-8').strip()
+        response = self.c.get("/organization/2/ical/").content.decode("utf-8").strip()
         self.assertEqual(response, expected_meeting_series)
-        self.assertEqual(len(icalendar.cal.Component.from_ical(response).subcomponents[0]), 5)
+        self.assertEqual(
+            len(icalendar.cal.Component.from_ical(response).subcomponents[0]), 5
+        )
 
     def calendar(self):
         """ Just checks that no excpetion is thrown. """
-        response = self.c.get('/calendar/ical')
+        response = self.c.get("/calendar/ical")
         self.assertEqual(response.status_code, 200)

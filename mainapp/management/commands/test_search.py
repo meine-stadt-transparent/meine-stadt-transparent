@@ -5,21 +5,22 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 from mainapp.documents.index import elastic_index
-from mainapp.functions.search_tools import search_string_to_params, MainappSearch, parse_hit
+from mainapp.functions.search_tools import (
+    search_string_to_params,
+    MainappSearch,
+    parse_hit,
+)
 
 
 class Command(BaseCommand):
-    help = 'Search for some predefined terms to check how the search is working'
+    help = "Search for some predefined terms to check how the search is working"
 
     def add_arguments(self, parser):
-        parser.add_argument('--rebuild', action="store_true")
+        parser.add_argument("--rebuild", action="store_true")
 
     def analyze(self, text: str) -> Dict[str, List[Dict]]:
         """ Shows what elasticsearch does with the tokens """
-        return elastic_index.analyze(
-            analyzer="text_analyzer",
-            text=text
-        )
+        return elastic_index.analyze(analyzer="text_analyzer", text=text)
 
     def handle(self, *args, **options):
         """
@@ -32,16 +33,26 @@ class Command(BaseCommand):
         """
         if options.get("rebuild"):
             start = time.perf_counter()
-            call_command('search_index', action='rebuild', force=True, models=["mainapp.Person"])
+            call_command(
+                "search_index", action="rebuild", force=True, models=["mainapp.Person"]
+            )
             end = time.perf_counter()
             print("Total: {}".format(end - start))
 
         words = ["containing", "here's"]
 
         for word in words:
-            print(word, [token['token'] for token in self.analyze(word)["tokens"]])
+            print(word, [token["token"] for token in self.analyze(word)["tokens"]])
 
-        queries = ["rese", "contain", "containsng", "containing", "here", "Knutt", "Schulhaus"]
+        queries = [
+            "rese",
+            "contain",
+            "containsng",
+            "containing",
+            "here",
+            "Knutt",
+            "Schulhaus",
+        ]
         for query in queries:
             params = search_string_to_params(query)
             main_search = MainappSearch(params)
@@ -49,5 +60,9 @@ class Command(BaseCommand):
             print("# {}: {} | {}".format(query, len(executed.hits), executed.took))
             for hit in executed.hits:
                 hit = parse_hit(hit)
-                highlight = str(hit.get('highlight')).replace("\n", " ").replace("\r", " ")[:100]
-                print(" - {}, {}".format(hit['name'][:30], highlight))
+                highlight = (
+                    str(hit.get("highlight"))
+                    .replace("\n", " ")
+                    .replace("\r", " ")[:100]
+                )
+                print(" - {}, {}".format(hit["name"][:30], highlight))

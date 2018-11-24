@@ -35,7 +35,11 @@ class MeetingDocument(DocType):
             return instance.location.coordinates()
 
     def get_queryset(self):
-        return Meeting.objects.prefetch_related("agendaitem_set").prefetch_related("location").order_by('id')
+        return (
+            Meeting.objects.prefetch_related("agendaitem_set")
+            .prefetch_related("location")
+            .order_by("id")
+        )
 
     class Meta:
         model = Meeting

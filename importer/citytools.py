@@ -8,7 +8,7 @@ import requests
 
 from mainapp.models import SearchStreet, Location
 
-overpass_api = 'http://overpass-api.de/api/interpreter'
+overpass_api = "http://overpass-api.de/api/interpreter"
 
 logger = logging.getLogger(__name__)
 
@@ -30,32 +30,36 @@ out geom;
 
 
 def import_streets(body, gemeindeschluessel):
-    logger.info('Importing streets from {}'.format(gemeindeschluessel))
+    logger.info("Importing streets from {}".format(gemeindeschluessel))
 
     query = streets_query_template.format(gemeindeschluessel)
 
-    r = requests.post(overpass_api, data={'data': query})
+    r = requests.post(overpass_api, data={"data": query})
 
-    logger.info('Found {} streets'.format(len([node for node in r.json()['elements'] if node['type'] == 'way'])))
+    logger.info(
+        "Found {} streets".format(
+            len([node for node in r.json()["elements"] if node["type"] == "way"])
+        )
+    )
 
-    for node in r.json()['elements']:
-        if node['type'] == 'way':
-            obj = SearchStreet.objects.filter(osm_id=node['id'])
+    for node in r.json()["elements"]:
+        if node["type"] == "way":
+            obj = SearchStreet.objects.filter(osm_id=node["id"])
             if obj.count() == 0:
                 street = SearchStreet()
-                street.displayed_name = node['tags']['name']
-                street.osm_id = node['id']
+                street.displayed_name = node["tags"]["name"]
+                street.osm_id = node["id"]
                 street.save()
 
                 street.bodies.add(body)
 
-                logger.info("Created: %s" % node['tags']['name'])
+                logger.info("Created: %s" % node["tags"]["name"])
 
 
 def import_outline(body, gemeindeschluessel):
     if not body.outline:
         outline = Location()
-        outline.name = 'Outline of ' + body.name
+        outline.name = "Outline of " + body.name
         outline.short_name = body.short_name
         outline.is_official = False
     else:
@@ -65,7 +69,7 @@ def import_outline(body, gemeindeschluessel):
 
     query = query_template_outline.format(gemeindeschluessel)
 
-    r = requests.post(overpass_api, data={'data': query})
+    r = requests.post(overpass_api, data={"data": query})
 
     geojson = convert_to_geojson(r.text)
     outline.geometry = geojson
@@ -80,8 +84,11 @@ def convert_to_geojson(osm):
         file.write(osm)
         filename = file.name
 
-    result = subprocess.run(['node_modules/.bin/osmtogeojson', '-f', 'json', '-m', filename], stdout=subprocess.PIPE)
-    geojson = json.loads(result.stdout.decode('utf-8'))
+    result = subprocess.run(
+        ["node_modules/.bin/osmtogeojson", "-f", "json", "-m", filename],
+        stdout=subprocess.PIPE,
+    )
+    geojson = json.loads(result.stdout.decode("utf-8"))
 
     os.remove(filename)
 

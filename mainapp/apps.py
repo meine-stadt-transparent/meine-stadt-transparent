@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class BackendConfig(AppConfig):
-    name = 'mainapp'
+    name = "mainapp"

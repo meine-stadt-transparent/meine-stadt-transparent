@@ -12,20 +12,24 @@ class Person(DefaultFields):
     name = models.CharField(max_length=100)
     given_name = models.CharField(max_length=50)
     family_name = models.CharField(max_length=50)
-    location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.CASCADE)
+    location = models.ForeignKey(
+        Location, null=True, blank=True, on_delete=models.CASCADE
+    )
 
     def __str__(self):
         return self.name
 
     def name_autocomplete(self):
         """ A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error """
-        return self.name if len(self.name) > 0 else ' '
+        return self.name if len(self.name) > 0 else " "
 
     def get_default_link(self):
-        return reverse('person', args=[self.id])
+        return reverse("person", args=[self.id])
 
     def organization_ids(self):
-        return [organization.id for organization in self.organizationmembership_set.all()]
+        return [
+            organization.id for organization in self.organizationmembership_set.all()
+        ]
 
     def sort_date(self):
         if hasattr(self, "sort_date_prefetch"):
@@ -35,7 +39,11 @@ class Person(DefaultFields):
                 return self.created
 
         # The most recent time this person joined a new organization
-        latest = self.organizationmembership_set.filter(start__isnull=False).order_by('-start').first()
+        latest = (
+            self.organizationmembership_set.filter(start__isnull=False)
+            .order_by("-start")
+            .first()
+        )
         if latest:
             return latest.start
         else:

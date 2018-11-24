@@ -10,10 +10,11 @@ logger = logging.getLogger(__name__)
 
 
 def get_geolocator(fallback=False):
-    if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata' and not fallback:
+    if settings.GEOEXTRACT_ENGINE.lower() == "opencagedata" and not fallback:
         if not settings.OPENCAGEDATA_KEY:
             raise ValueError(
-                "OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set")
+                "OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set"
+            )
         geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
     else:
         geolocator = Nominatim()
@@ -23,27 +24,28 @@ def get_geolocator(fallback=False):
 
 def geocode(search_str: str):
     try:
-        location = get_geolocator().geocode(search_str, language="de", exactly_one=False)
+        location = get_geolocator().geocode(
+            search_str, language="de", exactly_one=False
+        )
     except GeocoderTimedOut as e:
         logger.warning(e)
-        location = get_geolocator(fallback=True).geocode(search_str, language="de", exactly_one=False)
+        location = get_geolocator(fallback=True).geocode(
+            search_str, language="de", exactly_one=False
+        )
     if not location or len(location) == 0:
         return None
 
-    return {
-        'lat': location[0].latitude,
-        'lng': location[0].longitude,
-    }
+    return {"lat": location[0].latitude, "lng": location[0].longitude}
 
 
 def _format_opencage_location(location):
-    components = location.raw['components']
-    if 'road' in components:
-        address = components['road']
-        if 'house_number' in components:
-            address += ' ' + components['house_number']
-    elif 'pedestrian' in components:
-        address = components['pedestrian']
+    components = location.raw["components"]
+    if "road" in components:
+        address = components["road"]
+        if "house_number" in components:
+            address += " " + components["house_number"]
+    elif "pedestrian" in components:
+        address = components["pedestrian"]
     else:
         address = location.address
     return address
@@ -61,7 +63,7 @@ def latlng_to_address(lat, lng):
     geolocator = get_geolocator()
     location = geolocator.reverse(str(lat) + ", " + str(lng))
     if len(location) > 0:
-        if settings.GEOEXTRACT_ENGINE.lower() == 'opencagedata':
+        if settings.GEOEXTRACT_ENGINE.lower() == "opencagedata":
             return _format_opencage_location(location[0])
         else:
             return _format_nominatim_location(location[0])

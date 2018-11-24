@@ -11,18 +11,23 @@ def get_importer(options):
 
     from importer.oparl_resolve import OParlResolver
 
-    resolver = OParlResolver(options["entrypoint"], options["cachefolder"], options["use_cache"])
+    resolver = OParlResolver(
+        options["entrypoint"], options["cachefolder"], options["use_cache"]
+    )
 
     system = json.loads(resolver.resolve(options["entrypoint"]).get_resolved_data())
 
     try:
         import gi
-        gi.require_version("OParl", '0.4')
+
+        gi.require_version("OParl", "0.4")
         from gi.repository import OParl
     except ImportError as e:
         if str(e) == "No module named 'gi'":
-            raise ImportError("You need to install liboparl for the importer. The readme contains the installation "
-                              "instructions")
+            raise ImportError(
+                "You need to install liboparl for the importer. The readme contains the installation "
+                "instructions"
+            )
         else:
             raise e
 

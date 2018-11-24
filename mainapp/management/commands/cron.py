@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'To be called daily by a cron job. Updates the oparl dataset and sends notifications to users'
+    help = "To be called daily by a cron job. Updates the oparl dataset and sends notifications to users"
 
     def handle(self, *args, **options):
         importer = get_importer(default_options.copy())
@@ -22,4 +22,6 @@ class Command(BaseCommand):
         importer.run_singlethread()
 
         notification_options = {"override_since": None, "debug": False}
-        NotifyUsersCommand(stdout=self.stdout, stderr=self.stderr).handle(**notification_options)
+        NotifyUsersCommand(stdout=self.stdout, stderr=self.stderr).handle(
+            **notification_options
+        )

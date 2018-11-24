@@ -4,10 +4,10 @@ from importer import CityToAGS
 
 
 class Command(CityToAGS, BaseCommand):
-    help = 'Queries wikidata to get the ags of a city'
+    help = "Queries wikidata to get the ags of a city"
 
     def add_arguments(self, parser):
-        parser.add_argument('city-name', type=str)
+        parser.add_argument("city-name", type=str)
 
     def handle(self, *args, **options):
         for i in self.query_wikidata(options["city-name"]):

@@ -4,19 +4,23 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-X_FRAME_OPTIONS = 'DENY'
+X_FRAME_OPTIONS = "DENY"
 SECURE_HSTS_SECONDS = 365 * 24 * 60 * 60
 SECURE_HSTS_PRELOAD = True
 # There might be deployments where a subdomain is still without https
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
-CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list('CSP_EXTRA_SCRIPT', default=[]))
-CSP_IMG_SRC = ("'self'", "data:",) + tuple(env.list('CSP_EXTRA_IMG', default=[]))
+CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list("CSP_EXTRA_SCRIPT", default=[]))
+CSP_IMG_SRC = ("'self'", "data:") + tuple(env.list("CSP_EXTRA_IMG", default=[]))
 
-if env.str('MAP_TILES_PROVIDER', 'OSM') == 'OSM':
-    CSP_IMG_SRC = CSP_IMG_SRC + ("a.tile.openstreetmap.org", "b.tile.openstreetmap.org", "c.tile.openstreetmap.org",)
-if env.str('MAP_TILES_PROVIDER', 'OSM') == 'Mapbox':
-    CSP_IMG_SRC = CSP_IMG_SRC + ("api.tiles.mapbox.com", "api.mapbox.com",)
+if env.str("MAP_TILES_PROVIDER", "OSM") == "OSM":
+    CSP_IMG_SRC = CSP_IMG_SRC + (
+        "a.tile.openstreetmap.org",
+        "b.tile.openstreetmap.org",
+        "c.tile.openstreetmap.org",
+    )
+if env.str("MAP_TILES_PROVIDER", "OSM") == "Mapbox":
+    CSP_IMG_SRC = CSP_IMG_SRC + ("api.tiles.mapbox.com", "api.mapbox.com")
 
 
 # Those are not covered by default-src

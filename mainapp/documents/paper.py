@@ -12,7 +12,11 @@ class PaperDocument(DocType):
     organization_ids = IntegerField(attr="organization_ids")
 
     def get_queryset(self):
-        return Paper.objects.prefetch_related('persons').prefetch_related('organizations').order_by('id')
+        return (
+            Paper.objects.prefetch_related("persons")
+            .prefetch_related("organizations")
+            .order_by("id")
+        )
 
     class Meta:
         model = Paper
