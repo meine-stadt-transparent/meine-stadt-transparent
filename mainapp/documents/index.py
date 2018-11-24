@@ -1,6 +1,8 @@
 from django.conf import settings
 from django_elasticsearch_dsl import Index
 from elasticsearch_dsl import analyzer, token_filter
+# noinspection PyProtectedMember
+from elasticsearch_dsl.analysis import Analyzer
 
 """
 The elasticsearch index configuration
@@ -11,16 +13,20 @@ search field and the full-blown search query with filters and aggregations.
 For the suggest query, we're using only autocomplete filed with the edge_ngram filter, which
 generates all prefixes for a word.
 
-For the search query we want all the text field. For the fields with natural language (not names,
-but parsed pdf text) we want to include both the word itself (e.g. "containing") as well as
-normalized from "contain" as tokens. This we can search for "contain", "containing" and a
+For the search query we want all the text fields. For the fields with natural language (not names,
+but parsed pdf texts) we want to include both the word itself (e.g. "containing") as well as
+the normalized from "contain" as tokens. This way we can search for "contain", "containing" and a
 misspelled "containsng" and find that word. Therefore we use "keyword_repeat" to duplicate each
 word, of which then only one copy is normalized, and then use unique_stem to remove possible
 adjacent duplicates.
 
-In Elasticsearch 6.4, there is the multiplexer filter,
-which allows us to do that more elegantly, and maybe even to combine it with edge_ngram, so we
-should switch to that after the upgrade
+In Elasticsearch 6.4, there is the multiplexer filter, which allows us to do that more elegantly,
+and maybe even to combine it with edge_ngram, so we should switch to that after the upgrade.
+
+I tried to do word splitting and hunspell stemming for German, but the former didn't work and
+the latter didn't show any improvement with the words I tried. Maybe we'd just need a better
+dictionary, but it's difficult enough to find any dicitionary and installing the custom
+dictionary is also not trivial.
 """
 
 
@@ -35,11 +41,9 @@ def get_autocomplete_analyzer():
     )
 
 
-def get_text_analyzer():
-    # https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-lang-analyzer.html#english-analyzer
+def get_text_analyzer(language: str) -> Analyzer:
+    # https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-lang-analyzer.html
     # According to https://discuss.elastic.co/t/extend-built-in-analyzers/134778/7 we do have to copy and paste
-
-    language = settings.ELASTICSEARCH_LANG
 
     stop = token_filter("stop", "stop", stopwords="_" + language + "_")
     stemmer = token_filter("stemmer", "stemmer", language=language)
@@ -71,7 +75,7 @@ def get_text_analyzer():
 
 
 autocomplete_analyzer = get_autocomplete_analyzer()
-text_analyzer = get_text_analyzer()
+text_analyzer = get_text_analyzer(settings.ELASTICSEARCH_LANG)
 
 elastic_index = Index(settings.ELASTICSEARCH_INDEX)
 elastic_index.analyzer(autocomplete_analyzer)

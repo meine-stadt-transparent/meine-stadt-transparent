@@ -6,7 +6,8 @@
             <input name="search-query" type="text" class="form-control" value="" autocomplete="off"
                    data-suggest-url="{% url 'search_autocomplete' 'SEARCH_TERM' %}"
                    placeholder="{% trans "Search for documents, persons, topics and more" context "page_title" %}"
-                   id="searchfield-mousetrap">
+                   id="searchfield-mousetrap"
+                   title="{% trans 'Search (Alt+F)' %}">
 
             <button class="search-icon fa fa-search" type="submit"
                     title="{% trans 'Show search results' context 'aria label' %}">

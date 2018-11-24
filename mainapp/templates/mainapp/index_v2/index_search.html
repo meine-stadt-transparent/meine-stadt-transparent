@@ -13,7 +13,8 @@
                        class="sr-only">{% trans "Search" context "perform search" %}></label>
                 <input name="search-query" type="text" class="form-control form-control-lg" value="" autocomplete="off"
                        data-suggest-url="{% url 'search_autocomplete' 'SEARCH_TERM' %}"
-                       id="searchfield-mousetrap">
+                       id="searchfield-mousetrap"
+                       title="{% trans 'Search (Alt+F)' %}">
 
                 <button class="search-icon fa fa-search fa-lg" type="submit"
                         title="{% trans 'Show search results' context 'aria label' %}">

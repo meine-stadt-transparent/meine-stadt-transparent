@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 16:08+0100\n"
+"POT-Creation-Date: 2018-11-24 12:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -746,14 +746,21 @@ msgctxt "page_title"
 msgid "Search for documents, persons, topics and more"
 msgstr "Suche nach Dokumenten, Personen, Themen..."
 
-#: templates/mainapp/index/index_search.html:12
+#: templates/mainapp/index/index_search.html:10
+#: templates/mainapp/index_v2/index_search.html:17
+#: templates/mainapp/search/search.html:57
+#: templates/partials/base_navbar.html:22
+msgid "Search (Alt+F)"
+msgstr "Suche (Alt+F)"
+
 #: templates/mainapp/index/index_search.html:13
-#: templates/mainapp/index_v2/index_search.html:19
+#: templates/mainapp/index/index_search.html:14
 #: templates/mainapp/index_v2/index_search.html:20
-#: templates/mainapp/search/search.html:58
-#: templates/mainapp/search/search.html:59
-#: templates/partials/base_navbar.html:23
-#: templates/partials/base_navbar.html:24
+#: templates/mainapp/index_v2/index_search.html:21
+#: templates/mainapp/search/search.html:60
+#: templates/mainapp/search/search.html:61
+#: templates/partials/base_navbar.html:25
+#: templates/partials/base_navbar.html:26
 msgctxt "aria label"
 msgid "Show search results"
 msgstr "Suchergebnisse"
@@ -808,7 +815,7 @@ msgstr "und %%NUM%% weitere Dateien"
 msgid "Full-text search in %(num)s documents"
 msgstr "Suche im Volltext von %(num)s Dokumenten"
 
-#: templates/mainapp/index_v2/index_search.html:24
+#: templates/mainapp/index_v2/index_search.html:25
 msgid "Search for example for \"School\", \"Bikes\" or \"Budget\""
 msgstr "Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“"
 
@@ -839,7 +846,8 @@ msgstr "Träger der Sitzung: "
 
 #: templates/mainapp/meeting.html:97
 msgid "Download the meeting in a format readable by most calendars"
-msgstr "Den Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
+msgstr ""
+"Den Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
 
 #: templates/mainapp/meeting.html:99
 msgid "iCal-Export"
@@ -896,7 +904,7 @@ msgstr "Standort"
 
 #: templates/mainapp/organization.html:38
 msgid "Unfortunately, there is only few information about this organization"
-msgstr "Leider gibt es zu dieser Organisation nur sehr wenige Informationen"
+msgstr "Leider gibt es zu diesem Gremium nur sehr wenige Informationen"
 
 #: templates/mainapp/organization.html:43
 #: templates/mainapp/organization.html:45
@@ -930,7 +938,7 @@ msgstr "Abonnieren (iCal)"
 
 #: templates/mainapp/organization.html:94
 msgid "Remaining meetings omitted. They can be found with the search"
-msgstr "Die restlichen Dateien können über die Suche gefunden werden"
+msgstr "Die restlichen Termine können über die Suche gefunden werden"
 
 #: templates/mainapp/organizations.html:11
 msgid "Filter"
@@ -1137,11 +1145,11 @@ msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: templates/mainapp/search/search.html:79
+#: templates/mainapp/search/search.html:81
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: templates/mainapp/search/search.html:84
+#: templates/mainapp/search/search.html:86
 msgid "Nothing Found :("
 msgstr "Nichts gefunden"
 

@@ -18,7 +18,9 @@
                    data-suggest-url="{% url 'search_autocomplete' 'SEARCH_TERM' %}"
                    placeholder="{% trans "Search" context "page_title" %}"
                    aria-label="{% trans "Search" context "perform search" %}"
-                   id="searchfield-mousetrap">
+                   id="searchfield-mousetrap"
+                   title="{% trans 'Search (Alt+F)' %}"
+            >
             <button class="search-icon fa fa-search" type="submit"
                     title="{% trans 'Show search results' context 'aria label' %}">
                 <span class="sr-only">{% trans 'Show search results' context 'aria label' %}</span>

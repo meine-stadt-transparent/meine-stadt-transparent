@@ -40,7 +40,7 @@
         <ul class="nav nav-pills nav-fill" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active {% if not members %}disabled{% endif %}" id="member-tab" data-toggle="tab"
-                   role="tab" aria-controls="{% trans "Members" context "Header" %}" aria-selected="true"
+                   role="tab" aria-controls="{% trans 'Members' context 'Header' %}" aria-selected="true"
                    href="#member-list">
                     <span>{% trans "Members" context "Header" %}</span>
                     <span class="badge badge-secondary">{{ members|length }}</span>
@@ -49,7 +49,7 @@
             <li class="nav-item">
                 <a class="nav-link {% if not papers %}disabled{% endif %}" id="paper-tab" data-toggle="tab" role="tab"
                    href="#paper-list"
-                   aria-controls="{% trans "Paper" context "Header" %}" aria-selected="false">
+                   aria-controls="{% trans 'Paper' context 'Header' %}" aria-selected="false">
                     <span>{% trans "Paper" context "Header" %}</span>
                     <span class="badge badge-secondary">{{ paper_count }}</span>
                 </a>
@@ -57,7 +57,7 @@
             <li class="nav-item">
                 <a class="nav-link {% if not meetings %}disabled{% endif %}" id="meeting-tab" data-toggle="tab"
                    href="#calendar-list" role="tab"
-                   aria-controls="{% trans "Meetings" context "Header" %}" aria-selected="false">
+                   aria-controls="{% trans 'Meetings' context 'Header' %}" aria-selected="false">
                     <span>{% trans "Meetings" context "Header" %}</span>
                     <span class="badge badge-secondary">{{ meeting_count }}</span>
                 </a>
@@ -77,7 +77,7 @@
                 {% endif %}
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
-                <a href="{% url "organizazion_ical" organization.id %}" class="btn btn-primary btn-sm pull-right">
+                <a href="{% url 'organizazion_ical' organization.id %}" class="btn btn-primary btn-sm pull-right">
                     <span class="fa fa-calendar-plus-o" aria-hidden="true"></span>
                     {% trans "Subscribe (iCal)" %}
                 </a>

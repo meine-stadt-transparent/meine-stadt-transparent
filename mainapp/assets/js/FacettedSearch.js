@@ -143,10 +143,6 @@ export default class FacettedSearch {
     }
 
     searchDo() {
-        if (this.currentQueryString === "") {
-            // This would fail on the backend side (and it also wouldn't give reasonable results)
-            return;
-        }
         this.$refreshSpinner.removeAttr("hidden");
         this.updateSearchResults(this.currentQueryString);
     }
@@ -163,7 +159,6 @@ export default class FacettedSearch {
         this.currentQueryString = querystring;
 
         // We only need this for the tests, but conditional compilation with js is painful so it stays either way
-        console.log(this.$searchterm.attr("data-querystring"));
         this.$searchterm.attr("data-querystring", querystring);
 
         this.searchDo();
