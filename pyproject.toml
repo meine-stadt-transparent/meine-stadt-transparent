@@ -6,7 +6,7 @@ authors = ["Tobias Hößl <tobias@hoessl.eu>", "Konstantin Schütze <konstin@mai
 license = "MIT"
 
 [tool.poetry.dependencies]
-Django = "^1.11"
+Django = "^2.1"
 django-allauth = "^0.38"
 django-anymail = "^5.0"
 django-braces = "^1.13"
