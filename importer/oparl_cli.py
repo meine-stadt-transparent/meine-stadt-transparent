@@ -1,4 +1,5 @@
 import logging
+from typing import Tuple, Generator, Optional, List
 
 import requests
 from django.core.exceptions import ValidationError
@@ -21,7 +22,7 @@ class OParlCli:
     """
 
     @staticmethod
-    def bodies():
+    def bodies() -> Generator[Tuple[Optional[str], str, dict], None, None]:
         for next_page in settings.OPARL_ENDPOINTS_LIST:
             while next_page:
                 response = requests.get(next_page).json()
@@ -45,7 +46,10 @@ class OParlCli:
     def dev_oparl_yield(response):
         for system in response["data"]:
             for body in system["bodies"]:
-                yield (system["system"], body["oparlURL"], body)
+                system_url = system["system"]
+                if system_url:
+                    system_url = system_url["id"]
+                yield (system_url, body["oparlURL"], body)
 
     @classmethod
     def from_userinput(cls, userinput):
@@ -57,9 +61,9 @@ class OParlCli:
             is_url = False
 
         if not is_url:
-            endpoint_id, endpoint_system = cls.get_endpoint_from_cityname(userinput)
+            endpoint_system, endpoint_id = cls.get_endpoint_from_cityname(userinput)
         else:
-            endpoint_id, endpoint_system = cls.get_endpoint_from_body_url(userinput)
+            endpoint_system, endpoint_id = cls.get_endpoint_from_body_url(userinput)
 
         importer, liboparl_body = cls.get_importer_with_body(
             endpoint_id, endpoint_system
@@ -80,7 +84,7 @@ class OParlCli:
             raise Exception("The url you provided didn't point to an oparl body")
         endpoint_system = response.json()["system"]
         endpoint_id = userinput
-        return endpoint_id, endpoint_system
+        return endpoint_system, endpoint_id
 
     @classmethod
     def get_importer_with_body(cls, endpoint_id, endpoint_system):
@@ -142,27 +146,31 @@ class OParlCli:
         return ags
 
     @classmethod
-    def get_endpoint_from_cityname(cls, userinput):
-        matching = []
+    def get_endpoint_from_cityname(cls, userinput: str) -> Tuple[str, str]:
+        matching = []  # type: List[Tuple[str, str, dict]]
         for (system_id, body_id, body) in cls.bodies():
+            if (system_id, body_id, body) in matching:
+                continue
             if userinput.casefold() in body["name"].casefold():
                 # The oparl mirror doesn't give us the system id we need
                 if not system_id:
                     response = requests.get(body_id)
                     response.raise_for_status()
                     system_id = response.json()["system"]
-                matching.append((body_id, system_id))
+                matching.append((system_id, body_id, body))
         if len(matching) == 0:
             raise Exception("Could not find anything for '{}'".format(userinput))
         if len(matching) > 1:
-            exact_matches = [i for i in matching if i[0]["name"] == userinput]
+            exact_matches = [i for i in matching if i[2]["name"] == userinput]
             if len(exact_matches) == 1:
                 matching = exact_matches
             else:
-                raise Exception(
+                import json
+                logger.warning("Found those entries: {}".format(json.dumps(matching, indent=4)))
+                raise RuntimeError(
                     (
-                        "There are {} matches for your input and I can't decide which one to use. "
-                        + "Please provide a url yourself"
-                    ).format(len(matching))
+                        "There are {} matches and {} exact matchs for {} and I can't decide which one to use. "
+                        + "Please provide a url yourself."
+                    ).format(len(matching), len(exact_matches), userinput)
                 )
-        return matching[0]
+        return matching[0][0:2]

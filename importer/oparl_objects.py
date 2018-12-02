@@ -89,7 +89,7 @@ class OParlObjects(OParlHelper):
         changed = changed or not self.is_queryset_equal_list(
             body.legislative_terms, terms
         )
-        body.legislative_terms = terms
+        body.legislative_terms.set(terms)
         location = self.location(libobject.get_location())
         if location and location.geometry:
             if location.geometry["type"] == "Point":
@@ -138,7 +138,7 @@ class OParlObjects(OParlHelper):
         changed = changed or not self.is_queryset_equal_list(
             paper.files, files_without_none
         )
-        paper.files = files_without_none
+        paper.files.set(files_without_none)
         old_main_file = paper.main_file
         paper.main_file = self.file(libobject.get_main_file())
         changed = changed or old_main_file != paper.main_file

@@ -4,7 +4,7 @@ import re
 from django.conf import settings
 from geopy import OpenCage, Nominatim
 from geopy.exc import GeocoderTimedOut
-
+from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ def get_geolocator(fallback=False):
             )
         geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
     else:
-        geolocator = Nominatim()
+        geolocator = Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0")
 
     return geolocator
 
