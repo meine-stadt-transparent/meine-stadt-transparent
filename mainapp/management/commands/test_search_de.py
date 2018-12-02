@@ -1,5 +1,7 @@
 """
-The whether the elasticsearch analyzer yields the right tokens for the german analyzer
+The whether the elasticsearch analyzer yields the right tokens for the german analyzer.
+
+Check the comments in mainapp.documents.index for more details
 """
 
 from django.core.management.base import BaseCommand
