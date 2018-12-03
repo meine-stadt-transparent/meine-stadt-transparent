@@ -155,7 +155,7 @@ class OParlObjects(OParlHelper):
         changed = changed or not self.is_queryset_equal_list(
             paper.organizations, organizations
         )
-        paper.organizations = organizations
+        paper.organizations.set(organizations)
         return changed
 
     def paper_core(self, libobject, paper):
@@ -225,7 +225,7 @@ class OParlObjects(OParlHelper):
         changed = changed or not self.is_queryset_equal_list(
             meeting.auxiliary_files, auxiliary_files
         )
-        meeting.auxiliary_files = auxiliary_files
+        meeting.auxiliary_files.set(auxiliary_files)
         persons = []
         for oparlperson in libobject.get_participant():
             djangoperson = Person.by_oparl_id(oparlperson.get_id())
@@ -236,7 +236,7 @@ class OParlObjects(OParlHelper):
                     oparlperson.get_id()
                 )
         changed = changed or not self.is_queryset_equal_list(meeting.persons, persons)
-        meeting.persons = persons
+        meeting.persons.set(persons)
         for index, oparlitem in enumerate(libobject.get_agenda_item()):
             self.agendaitem(oparlitem, index, meeting)
 
@@ -252,7 +252,7 @@ class OParlObjects(OParlHelper):
         changed = changed or not self.is_queryset_equal_list(
             meeting.organizations, organizations
         )
-        meeting.organizations = organizations
+        meeting.organizations.set(organizations)
 
         return changed
 
@@ -402,7 +402,7 @@ class OParlObjects(OParlHelper):
                 self.consultation_organization_queue[consultation].append(org_url)
             else:
                 orgas.append(organization)
-        consultation.organizations = orgas
+        consultation.organizations.set(orgas)
 
         consultation.save()
 
@@ -419,7 +419,7 @@ class OParlObjects(OParlHelper):
             and last_modified
             and last_modified < file.modified
         ):
-            self.logger.info("Skipping cached Download: {}".format(url))
+            self.logger.info("Skipping cached download: {}".format(url))
             return
 
         self.logger.info("Downloading {}".format(url))
@@ -555,7 +555,7 @@ class OParlObjects(OParlHelper):
                     org = self.organization_without_embedded(self.client.parse_url(url))
                     org.save()
                 associated.append(org)
-            base_object.organizations = associated
+            base_object.organizations.set(associated)
             base_object.save()
 
     def add_missing_associations(self):

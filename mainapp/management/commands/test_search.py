@@ -37,12 +37,16 @@ class Command(BaseCommand):
                 "search_index", action="rebuild", force=True, models=["mainapp.Person"]
             )
             end = time.perf_counter()
-            print("Total: {}".format(end - start))
+            self.stdout.write("Total: {}\n".format(end - start))
 
         words = ["containing", "here's"]
 
         for word in words:
-            print(word, [token["token"] for token in self.analyze(word)["tokens"]])
+            self.stdout.write(
+                "{} {}\n".format(
+                    word, [token["token"] for token in self.analyze(word)["tokens"]]
+                )
+            )
 
         queries = [
             "rese",
@@ -57,7 +61,9 @@ class Command(BaseCommand):
             params = search_string_to_params(query)
             main_search = MainappSearch(params)
             executed = main_search.execute()
-            print("# {}: {} | {}".format(query, len(executed.hits), executed.took))
+            self.stdout.write(
+                "# {}: {} | {}\n".format(query, len(executed.hits), executed.took)
+            )
             for hit in executed.hits:
                 hit = parse_hit(hit)
                 highlight = (
@@ -65,4 +71,4 @@ class Command(BaseCommand):
                     .replace("\n", " ")
                     .replace("\r", " ")[:100]
                 )
-                print(" - {}, {}".format(hit["name"][:30], highlight))
+                self.stdout.write(" - {}, {}\n".format(hit["name"][:30], highlight))

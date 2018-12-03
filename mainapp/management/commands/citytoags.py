@@ -11,4 +11,4 @@ class Command(CityToAGS, BaseCommand):
 
     def handle(self, *args, **options):
         for i in self.query_wikidata(options["city-name"]):
-            print(i[0], i[1])
+            self.stdout.write("{} {}\n".format(i[0], i[1]))
