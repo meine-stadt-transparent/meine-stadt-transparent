@@ -40,6 +40,10 @@
     {% include 'partials/base_footer.html' %}
 </footer>
 
+{% if settings.TEMPLATE_META.sentry_dsn %}
+    <div class="hidden" id="sentry-dsn" data-sentry-dsn="{{settings.TEMPLATE_META.sentry_dsn}}"></div>
+{% endif %}
+
 {% render_bundle 'vendor' 'js' %}
 {% render_bundle 'mainapp' 'js' %}
 

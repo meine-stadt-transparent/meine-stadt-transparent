@@ -3,6 +3,9 @@ import logging
 import os
 import warnings
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from meine_stadt_transparent.settings.env import *
 from meine_stadt_transparent.settings.nested import *
 from meine_stadt_transparent.settings.security import *
@@ -231,6 +234,16 @@ EMBED_PARSED_TEXT_FOR_SCREENREADERS = env.bool(
 
 SEARCH_PAGINATION_LENGTH = 20
 
+SENTRY_DSN = env.str("SENTRY_DSN", None)
+
+# SENTRY_HEADER_ENDPOINT is defined in security.py
+
+if SENTRY_DSN:
+    sentry_sdk.init(
+        "https://c2dc19d8bc4c4568a6d5a462df2eb704@sentry.io/1335416",
+        integrations=[DjangoIntegration()],
+    )
+
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 
 LOGGING = {
@@ -295,6 +308,7 @@ TEMPLATE_META = {
     "location_limit_lat": 23,
     "sks_keyserver": SKS_KEYSERVER,
     "enable_pgp": ENABLE_PGP,
+    "sentry_dsn": SENTRY_DSN,
 }
 
 FILE_DISCLAIMER = env.str("FILE_DISCLAIMER", None)

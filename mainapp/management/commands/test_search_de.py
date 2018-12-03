@@ -36,4 +36,4 @@ class Command(BaseCommand):
         for word in words:
             analysis = elastic_index.analyze(analyzer="text_analyzer", text=word)
             tokens = [i["token"] for i in analysis["tokens"]]
-            print(word, tokens)
+            self.stdout.write("{} {}\n".format(word, tokens))

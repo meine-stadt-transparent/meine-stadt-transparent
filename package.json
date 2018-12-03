@@ -21,14 +21,14 @@
     "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
     "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.26.0",
+    "browser-sync": "^2.26.3",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^1.1.11",
     "gulp": "^4.0.0",
     "heml": "^1.1.3",
-    "node-sass": "^4.9.3",
-    "resolve-url-loader": "^2.3.0",
+    "node-sass": "^4.10.0",
+    "resolve-url-loader": "^2.3.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "url-loader": "^0.6.2",
@@ -37,6 +37,7 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "@sentry/browser": "^4.4.1",
     "bootstrap": "^4.1.3",
     "bootstrap-datepicker": "^1.8.0",
     "bootstrap-daterangepicker": "^2.1.30",
@@ -47,14 +48,14 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
     "leaflet": "^1.3.4",
-    "leaflet.markercluster": "^1.4.0",
+    "leaflet.markercluster": "^1.4.1",
     "list.js": "^1.5.0",
     "moment": "^2.22.2",
     "mousetrap": "^1.6.2",
     "osmtogeojson": "^3.0.0-beta.3",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
-    "popper.js": "^1.14.4",
+    "popper.js": "^1.14.6",
     "postcss-loader": "^2.1.6",
-    "shufflejs": "^5.2.0"
+    "shufflejs": "^5.2.1"
   }
 }

@@ -22,6 +22,12 @@ if env.str("MAP_TILES_PROVIDER", "OSM") == "OSM":
 if env.str("MAP_TILES_PROVIDER", "OSM") == "Mapbox":
     CSP_IMG_SRC = CSP_IMG_SRC + ("api.tiles.mapbox.com", "api.mapbox.com")
 
+SENTRY_HEADER_ENDPOINT = env.str("SENTRY_HEADER_ENDPOINT", None)
+
+CSP_CONNECT_SRC = ("'self'", "sentry.io")
+
+if SENTRY_HEADER_ENDPOINT:
+    CSP_REPORT_URI = SENTRY_HEADER_ENDPOINT
 
 # Those are not covered by default-src
 CSP_FORM_ACTION = ("'self'",)

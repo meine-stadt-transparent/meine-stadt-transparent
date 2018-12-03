@@ -166,7 +166,10 @@ class OParlCli:
                 matching = exact_matches
             else:
                 import json
-                logger.warning("Found those entries: {}".format(json.dumps(matching, indent=4)))
+
+                logger.warning(
+                    "Found those entries: {}".format(json.dumps(matching, indent=4))
+                )
                 raise RuntimeError(
                     (
                         "There are {} matches and {} exact matchs for {} and I can't decide which one to use. "

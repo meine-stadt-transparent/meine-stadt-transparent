@@ -1,6 +1,8 @@
 // noinspection ES6UnusedImports
 import style from '../css/mainapp.scss';
 
+import * as Sentry from '@sentry/browser';
+
 import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
 import FacettedSearch from "./FacettedSearch";
@@ -18,7 +20,6 @@ import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
 
 
 window.jQuery = require('jquery');
-
 
 /*
  Convention: Each widget has an assigned object that handles the behavior.
@@ -41,6 +42,13 @@ let REGISTERED_CLASSES = {
 
 // initialize everything
 $(function () {
+    let dsnElement = document.getElementById("sentry-dsn");
+    if (typeof dsnElement !== 'undefined') {
+        Sentry.init({
+            dsn: dsnElement.dataset["sentryDsn"],
+        });
+    }
+
     for (let selector in REGISTERED_CLASSES) {
         if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
             $(selector).each(function () {
