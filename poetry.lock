@@ -267,7 +267,7 @@ description = "Python Geocoding Toolbox"
 name = "geopy"
 optional = false
 python-versions = "*"
-version = "1.17.0"
+version = "1.18.0"
 
 [package.dependencies]
 geographiclib = ">=1.49,<2"
@@ -646,7 +646,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "07a4745dd91864d75363e38904d1a216d69fb60971f08129f4250ff6ecb466e3"
+content-hash = "9670659235193ae360f363f6522a30c8d3e3a4314688ad8db3dfc3a95a53d458"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -675,7 +675,7 @@ filelock = ["b8d5ca5ca1c815e1574aee746650ea7301de63d87935b3463d26368b76e31633", 
 flask = ["2271c0070dbcb5275fad4a82e29f23ab92682dc45f9dfbc22c02ba9b9322ce48", "a080b744b7e345ccfcbc77954861cb05b3c63786e93f2b3875e0913d44b43f05"]
 geoextract = ["54f3d75bceebe2c82fdca64aa40f63ffc41df442dffe16d82a1aa95568f430bc", "e2fd249361c05a3c3d9cf0d7e9ce18c7f62e08202bd39568d4f7020eeb2009d9"]
 geographiclib = ["635da648fce80a57b81b28875d103dacf7deb12a3f5f7387ba7d39c51e096533"]
-geopy = ["1bbea0efc5af91e0a7d4c2b31650f61667bcc1d0d717784d78c03f0ed13bb374", "59ddda52c62e5ebddda76c53b7b644bb0922f3f594aa350cc62cce7d8ea6afcc"]
+geopy = ["e448b41932985d71329d6caba5d95be53207c49b74e88acd651fb7b9c6896750", "e5442fd5865d1d8da0a028f5899cc696664b1c9adafb82dc2e7be85d40df9a6a"]
 gunicorn = ["aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471", "fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"]
 html2text = ["490db40fe5b2cd79c461cf56be4d39eb8ca68191ae41ba3ba79f6cb05b7dd662", "627514fb30e7566b37be6900df26c2c78a030cc9e6211bda604d8181233bcdd4"]
 icalendar = ["07c2447a1d44cbb27c90b8c6a5c98e890cc1853c6223e2a52195cddec26c6356", "83f7248b7485ddd29c7d69b706b21c441e34855d9c1d888939fd24aefdd9d19b"]
