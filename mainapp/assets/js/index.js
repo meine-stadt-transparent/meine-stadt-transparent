@@ -43,7 +43,7 @@ let REGISTERED_CLASSES = {
 // initialize everything
 $(function () {
     let dsnElement = document.getElementById("sentry-dsn");
-    if (typeof dsnElement !== 'undefined') {
+    if (dsnElement !== null) {
         Sentry.init({
             dsn: dsnElement.dataset["sentryDsn"],
         });
