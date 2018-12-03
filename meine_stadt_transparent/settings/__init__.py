@@ -240,7 +240,7 @@ SENTRY_DSN = env.str("SENTRY_DSN", None)
 
 if SENTRY_DSN:
     sentry_sdk.init(
-        "https://c2dc19d8bc4c4568a6d5a462df2eb704@sentry.io/1335416",
+        SENTRY_DSN,
         integrations=[DjangoIntegration()],
     )
 
