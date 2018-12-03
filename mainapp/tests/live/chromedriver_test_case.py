@@ -17,7 +17,9 @@ class LiveServerSingleThread(LiveServerThread):
     """Runs a single threaded server rather than multi threaded. Reverts https://github.com/django/django/pull/7832"""
 
     def _create_server(self):
-        return WSGIServer((self.host, self.port), QuietWSGIRequestHandler, allow_reuse_address=False)
+        return WSGIServer(
+            (self.host, self.port), QuietWSGIRequestHandler, allow_reuse_address=False
+        )
 
 
 @modify_settings(MIDDLEWARE={"remove": ["django.middleware.csrf.CsrfViewMiddleware"]})

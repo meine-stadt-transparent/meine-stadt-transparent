@@ -194,7 +194,6 @@ class TestImporter(TestCase):
     def check_update(self):
         now = timezone.now()
         self.new_timestamp = (self.base_timestamp + relativedelta(years=10)).isoformat()
-        print(self.new_timestamp)
         self.create_fake_cache()
         importer = OParlImport(self.options, self.resolver)
         importer.run_singlethread()

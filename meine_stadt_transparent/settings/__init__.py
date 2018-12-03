@@ -239,10 +239,7 @@ SENTRY_DSN = env.str("SENTRY_DSN", None)
 # SENTRY_HEADER_ENDPOINT is defined in security.py
 
 if SENTRY_DSN:
-    sentry_sdk.init(
-        SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-    )
+    sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()])
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 

@@ -2,7 +2,6 @@ import importlib
 import time
 from datetime import date
 from unittest import mock, skipIf
-from urllib import parse
 
 from django.test import override_settings
 from selenium.webdriver.common.keys import Keys
@@ -185,7 +184,9 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
         # semi-busy waiting
         # (it does work without wating on my machine, but I won't risk having any timing based test failures)
-        while single_length == len(self.browser.find_by_css(".results-list > li")):
+        for i in range(200):
+            if single_length != len(self.browser.find_by_css(".results-list > li")):
+                break
             time.sleep(0.01)
 
         self.assertEqual(

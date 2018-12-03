@@ -486,9 +486,9 @@ class OParlObjects(OParlHelper):
 
         if file_name_before != file.name or parsed_text_before != file.parsed_text:
             # These two operations are rather CPU-intensive, so we only perform them if something relevant has changed
-            file.locations = extract_locations(parsed_text)
-            file.mentioned_persons = extract_persons(
-                file.name + "\n" + (parsed_text or "") + "\n"
+            file.locations.set(extract_locations(file.parsed_text))
+            file.mentioned_persons.set(
+                extract_persons(file.name + "\n" + (file.parsed_text or "") + "\n")
             )
             file.save()
 

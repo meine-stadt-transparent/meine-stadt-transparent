@@ -318,11 +318,13 @@ def opensearch_xml(request):
     return HttpResponse(xml, content_type="application/opensearchdescription+xml")
 
 
-def error404(request):
+# noinspection PyUnusedLocal
+def error404(request, *args, **kwargs):
     return render(request, "error/404.html", status=404)
 
 
-def error500(request):
+# noinspection PyUnusedLocal
+def error500(request, *args, **kwargs):
     return render(request, "error/500.html", status=500)
 
 
