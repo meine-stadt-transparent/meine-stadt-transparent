@@ -118,7 +118,7 @@ description = "A configurable set of panels that display various debug informati
 name = "django-debug-toolbar"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.10.1"
+version = "1.11"
 
 [package.dependencies]
 Django = ">=1.11"
@@ -646,7 +646,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "0438a3143acdfd48400d4c47da4ef7521488f7fbc1fe27a04b8bb6c26d467e19"
+content-hash = "fab46b43b9a92758d80f03a4ff3d854f312d4a99f9d17b0268bcaef9a4145b1a"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -661,7 +661,7 @@ django-allauth = ["45661b6fe308466154adf54461679fab6f0c6850b10c56dc322fbbb9d47e0
 django-anymail = ["845edd136d9945972c507fa4d975286904bf5cb9da137925a0e44fd93caed875", "8a845b6daf398e266b323c551a087d61f08215119e67acb4b496843afe301988"]
 django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a890", "ba68e98b817c6f01d71d10849f359979617b3fe4cefb7f289adefddced092ddc"]
 django-csp = ["04c0ccd4e1339e8f6af48c55c3347dc996fde2d22d79e8bf2f6b7a920412e408", "096b634430d8ea81c3d9f216f87be890f3a975c17bb9a4631f6a1619ac09c91e"]
-django-debug-toolbar = ["08e0e43f6c1fd9820af4cbdcd54b5fb80bf83a2e08b2cc952547a671174999b8", "1dcae28d430522debafde2602b3450eb784410b78e16c29a00448032df2a4c90"]
+django-debug-toolbar = ["89d75b60c65db363fb24688d977e5fbf0e73386c67acf562d278402a10fc3736", "c2b0134119a624f4ac9398b44f8e28a01c7686ac350a12a74793f3dd57a9eea0"]
 django-elasticsearch-dsl = ["114889f0f70d584e300953b9fc75f312b447e3ff96136dad03028654ba9f4cbd", "8c96714d8eef30763e820a2909663b236df765e5c6c8508721489dc9713dfef7"]
 django-environ = ["6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde", "c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"]
 django-geojson = ["9dd9fa8160088004ca27eecbb4bf1122a792f950af32df89b21d8864c088bb3d"]
