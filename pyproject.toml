@@ -34,7 +34,7 @@ python-slugify = "^1.2"
 requests = "^2.19"
 splinter = "^0.10"
 Wand = "^0.4.4"
-sentry-sdk = "^0.6.0"
+sentry-sdk = "^0.6.1"
 
 [tool.poetry.dev-dependencies]
 # See https://github.com/SeleniumHQ/selenium/issues/5296
