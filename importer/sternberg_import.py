@@ -52,6 +52,13 @@ class SternbergResolver:
                     ):
                         oparl_object["location"] = oparl_object["location"]["id"]
 
+            if "/organization" in url and "data" in oparl_list:
+                for oparl_object in oparl_list["data"]:
+                    if "id" in oparl_object and "type" not in oparl_object:
+                        oparl_object[
+                            "type"
+                        ] = "https://schema.oparl.org/1.0/Organization"
+
             response = OParl.ResolveUrlResult(
                 resolved_data=json.dumps(oparl_list),
                 success=True,
