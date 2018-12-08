@@ -52,11 +52,7 @@ $(function () {
     for (let selector in REGISTERED_CLASSES) {
         if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
             $(selector).each(function () {
-                try {
-                    $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
-                } catch (e) {
-                    console.error("Failed to initialize", selector, e)
-                }
+                $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
             });
         }
     }
