@@ -149,7 +149,7 @@ description = "Serve vectorial map layers with Django"
 name = "django-geojson"
 optional = false
 python-versions = "*"
-version = "2.11.0"
+version = "2.12.0"
 
 [package.dependencies]
 Django = "*"
@@ -646,7 +646,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "e82217904a5c4b7a9d7fa24c4428834df0f7bc389ae699839c0a419e4c938cbe"
+content-hash = "4221045dc2f1b03bfc51d84aa893f52245a01306f17a680da1fa99933cb11161"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -664,7 +664,7 @@ django-csp = ["04c0ccd4e1339e8f6af48c55c3347dc996fde2d22d79e8bf2f6b7a920412e408"
 django-debug-toolbar = ["89d75b60c65db363fb24688d977e5fbf0e73386c67acf562d278402a10fc3736", "c2b0134119a624f4ac9398b44f8e28a01c7686ac350a12a74793f3dd57a9eea0"]
 django-elasticsearch-dsl = ["114889f0f70d584e300953b9fc75f312b447e3ff96136dad03028654ba9f4cbd", "8c96714d8eef30763e820a2909663b236df765e5c6c8508721489dc9713dfef7"]
 django-environ = ["6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde", "c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"]
-django-geojson = ["9dd9fa8160088004ca27eecbb4bf1122a792f950af32df89b21d8864c088bb3d"]
+django-geojson = ["7a892e1f8f17f10ffbced9f737c347eae975eb340cd3f00bc9e3896ecce4135d"]
 django-settings-export = ["fceeae49fc597f654c1217415d8e049fc81c930b7154f5d8f28c432db738ff79"]
 django-simple-history = ["02259651c21e6f3e4b9d8ca1cb7a8079b233bdd420cde53a777d5fd124af2369", "e83edaa0ef298bcd2d2193378e108dcc441d95e38c07edd9dfad2c39bf9d5e19"]
 django-webpack-loader = ["60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93d3ebd5f520", "970b968c2a8975fb7eff56a3bab5d0d90d396740852d1e0c50c5cfe2b824199a"]
