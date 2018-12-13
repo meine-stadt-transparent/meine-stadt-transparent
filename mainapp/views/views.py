@@ -1,3 +1,4 @@
+import logging
 from html import escape
 
 from csp.decorators import csp_update
@@ -11,10 +12,10 @@ from django.utils import html
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
-from django.views.static import serve
 from requests.utils import quote
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import (
     Body,
     File,
@@ -29,6 +30,9 @@ from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context, HttpResponse
 from mainapp.views.utils import build_map_object
+
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -189,7 +193,7 @@ def file(request, pk, context_meeting_id=None):
     if renderer == "pdf":
         context["pdfjs_iframe_url"] = static("web/viewer.html")
         context["pdfjs_iframe_url"] += "?file=" + reverse(
-            "media", args=[file.storage_filename]
+            "file-content", args=[file.id]
         )
         if request.GET.get("pdfjs_search"):
             context["pdfjs_iframe_url"] += "#search=" + quote(
@@ -203,16 +207,13 @@ def file(request, pk, context_meeting_id=None):
     return render(request, "mainapp/file/file.html", context)
 
 
-def file_serve(request, path):
-    file_object = get_object_or_404(File, storage_filename=path)
+def file_serve(request, id):
+    logger.warning("Serving media files through django is slow")
+    minio_file = minio_client.get_object(minio_file_bucket, id)
+    response = HttpResponse(minio_file.read())
 
-    response = serve(
-        request, path, document_root=settings.MEDIA_ROOT, show_indexes=False
-    )
-    response["Content-Type"] = file_object.mime_type
-    response["Content-Disposition"] = (
-        "attachment; filename=" + file_object.displayed_filename
-    )
+    response["Content-Type"] = minio_file.headers["Content-Type"]
+
     if settings.SITE_SEO_NOINDEX:
         response["X-Robots-Tag"] = "noindex"
 

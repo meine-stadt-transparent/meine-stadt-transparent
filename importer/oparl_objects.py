@@ -1,9 +1,8 @@
-import hashlib
 import mimetypes
-import os
 import textwrap
 from collections import defaultdict
-from typing import Type
+from tempfile import NamedTemporaryFile
+from typing import Type, Optional
 
 import gi
 import requests
@@ -11,11 +10,13 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 # noinspection PyPackageRequirements
+from requests import HTTPError
 from slugify.slugify import slugify
 
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
 from mainapp.functions.geo_functions import geocode
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import (
     Body,
     LegislativeTerm,
@@ -408,8 +409,9 @@ class OParlObjects(OParlHelper):
 
         return consultation
 
-    def download_file(self, file: File, libobject: OParl.File):
-        url = libobject.get_download_url() or libobject.get_access_url()
+    def download_file(
+        self, file: File, url: str, libobject: OParl.File
+    ) -> Optional[NamedTemporaryFile]:
         last_modified = self.glib_datetime_to_python(libobject.get_modified())
 
         if (
@@ -424,15 +426,29 @@ class OParlObjects(OParlHelper):
 
         self.logger.info("Downloading {}".format(url))
 
-        urlhash = hashlib.sha1(libobject.get_id().encode("utf-8")).hexdigest()
-        path = os.path.join(self.storagefolder, urlhash)
-
         r = requests.get(url, allow_redirects=True)
-        r.raise_for_status()
-        open(path, "wb").write(r.content)
 
-        file.filesize = os.stat(path).st_size
-        file.storage_filename = urlhash
+        try:
+            r.raise_for_status()
+        except HTTPError as e:
+            self.logger.exception(e)
+            file.filesize = -1
+            return
+
+        tmpfile = NamedTemporaryFile()
+        content = r.content
+        tmpfile.write(content)
+        tmpfile.file.seek(0)
+        file.filesize = len(content)
+
+        minio_client.put_object(
+            minio_file_bucket,
+            str(file.id),
+            tmpfile.file,
+            file.filesize,
+            content_type=file.mime_type,
+        )
+        return tmpfile
 
     def file(self, libobject: OParl.File):
         file, do_update = self.check_for_modification(libobject, File)
@@ -468,14 +484,13 @@ class OParlObjects(OParlHelper):
             file.parsed_text = libobject.get_text()
 
         if self.download_files:
-            self.download_file(file, libobject)
+            url = libobject.get_download_url() or libobject.get_access_url()
+            tmpfile = self.download_file(file, url, libobject)
+            if tmpfile:
+                file.parsed_text = self.extract_text_from_file(file, tmpfile.name)
+                tmpfile.close()
         else:
-            file.storage_filename = ""
             file.filesize = -1
-
-        parsed_text = file.parsed_text
-        if file.storage_filename and not file.parsed_text:
-            parsed_text = self.extract_text_from_file(file)
 
         file = self.call_custom_hook("sanitize_file", file)
 

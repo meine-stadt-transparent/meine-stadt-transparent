@@ -12,6 +12,7 @@ from mainapp.functions.document_parsing import (
     extract_persons,
 )
 from mainapp.models import File, Person
+from mainapp.tests.tools import test_media_root
 
 values = {
     "Tel-Aviv-Straße, Köln, Deutschland": {
@@ -86,7 +87,7 @@ class TestDocumentParsing(TestCase):
     def test_pdf_parsing(self):
         file = os.path.abspath(os.path.dirname(__name__))
         file = os.path.join(
-            file, settings.MEDIA_ROOT, "Donald Knuth - The Complexity of Songs.pdf"
+            file, test_media_root, "Donald Knuth - The Complexity of Songs.pdf"
         )
         parsed_text = extract_text_from_pdf(file)
         self.assertTrue("bottles of beer" in parsed_text)
@@ -94,7 +95,7 @@ class TestDocumentParsing(TestCase):
     def test_pdf_page_numbers(self):
         file = os.path.abspath(os.path.dirname(__name__))
         file = os.path.join(
-            file, settings.MEDIA_ROOT, "Donald Knuth - The Complexity of Songs.pdf"
+            file, test_media_root, "Donald Knuth - The Complexity of Songs.pdf"
         )
         page_count = get_page_count_from_pdf(file)
         self.assertEqual(3, page_count)

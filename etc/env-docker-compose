@@ -1,8 +1,6 @@
 DEBUG=FALSE
 REAL_HOST=http://localhost:7000
 SECRET_KEY=notsosecretkey
-MEDIA_ROOT=/media
-CACHE_ROOT=/cache
 STATIC_ROOT=/static
 
 ELASTICSEARCH_URL=http://elastic:changeme@elasticsearch:9200/

@@ -5,9 +5,7 @@ services:
     build: .
     container_name: django
     volumes:
-      - django_media:/media
       - django_static:/static
-      - django_cache:/cache
       - django_config:/config
     networks:
       - network
@@ -48,20 +46,30 @@ services:
     container_name: nginx
     volumes:
      - django_static:/static:ro
-     - django_media:/media:ro
-     - django_cache:/cache:ro
+     - minio_data:/minio_data:ro
      - ./etc/nginx-docker-compose.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
      - "7000:80"
     networks:
       - network
 
+  minio:
+      image: minio/minio
+      networks:
+        - network
+      volumes:
+        - minio_data:/minio_data
+      environment:
+        # TODO: Do we need proper docker secrets here or is this good enough due to nginx proxying
+        MINIO_ACCESS_KEY: meinestadttransparent
+        MINIO_SECRET_KEY: meinestadttransparent
+      command: server /minio_data
+
 volumes:
-  django_media:
-  django_cache:
   django_static:
   mariadb_data:
   elasticsearch_data:
+  minio_data:
   django_config: # Mount that volume into a folder following the readme
 
 networks:

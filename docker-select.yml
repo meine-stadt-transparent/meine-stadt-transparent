@@ -13,7 +13,7 @@ services:
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
 
-    ulimits: # Elastic search needs those
+    ulimits: # Elasticsearch needs those
       memlock:
         soft: -1
         hard: -1
@@ -25,8 +25,31 @@ services:
     networks:
       - meinestadttransparent_net
 
+  kibana:
+      image: docker.elastic.co/kibana/kibana:5.6.13
+      ports:
+        - 5601:5601
+      networks:
+        - meinestadttransparent_net
+      environment:
+        - xpack.security.enabled=false
+
+  minio:
+      image: minio/minio
+      ports:
+        - 9000:9000
+      networks:
+        - meinestadttransparent_net
+      volumes:
+        - minio_data:/minio_data
+      environment:
+        MINIO_ACCESS_KEY: meinestadttransparent
+        MINIO_SECRET_KEY: meinestadttransparent
+      command: server /minio_data
+
 volumes:
   elasticsearch_data:
+  minio_data:
 
 networks:
   meinestadttransparent_net:

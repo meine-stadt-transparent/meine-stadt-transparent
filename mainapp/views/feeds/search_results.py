@@ -8,8 +8,8 @@ from mainapp.functions.search_tools import (
     search_string_to_params,
     MainappSearch,
     parse_hit,
-    params_to_human_string,
 )
+from mainapp.functions.search_notification_tools import params_to_human_string
 from mainapp.models import Paper
 
 

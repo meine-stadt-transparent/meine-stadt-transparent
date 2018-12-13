@@ -1,7 +1,6 @@
 DEBUG=False
 REAL_HOST=opensourceris.local
 SECRET_KEY=notsosecretkey
-MEDIA_ROOT=/var/storage/meine-stadt-transparent
 ABSOLUTE_URI_BASE=https://opensourceris.local
 
 ELASTICSEARCH_URL=http://elastic:changeme@localhost/elasticsearch/

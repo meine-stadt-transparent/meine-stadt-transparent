@@ -103,8 +103,8 @@ def perform_ocr_on_image(imgdata):
     return plain_text
 
 
-def get_ocr_text_from_pdf(pdf_file):
-    img = Image(filename=pdf_file, resolution=500)
+def get_ocr_text_from_pdf(file):
+    img = Image(blob=file, resolution=500)
     recognized_text = ""
     for single_image in img.sequence:
         with Image(single_image) as i:

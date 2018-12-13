@@ -16,12 +16,12 @@ from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import (
     search_string_to_params,
-    params_are_subscribable,
     escape_elasticsearch_query,
     MainappSearch,
     parse_hit,
     params_to_search_string,
 )
+from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
     handle_subscribe_requests,

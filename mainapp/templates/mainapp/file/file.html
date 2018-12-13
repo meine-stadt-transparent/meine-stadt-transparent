@@ -35,13 +35,13 @@
                         {% elif renderer == "txt" %}
                             <pre class="embed-responsive h-100 border">{{ file.parsed_text }}</pre>
                         {% elif renderer == "image" %}
-                            <img src="{% url 'media' file.storage_filename %}" alt="{{ file.description }}"
+                            <img src="{% url 'file-content' file.id %}" alt="{{ file.description }}"
                                  class="file-image">
                         {% elif renderer == "download" %}
                             <p class="lead">{% trans "The file can not be shown" %}</p>
                             <a class="btn btn-primary btn-lg" role="button"
-                               href="{% url 'media' file.storage_filename %}"
-                               download>
+                               href="{% url 'file-content' file.id %}"
+                               download='{{ file.displayed_filename }}'>
                                 <span class="fa fa-download" aria-hidden="true"></span>
                                 {% trans "Download" %}
                             </a>

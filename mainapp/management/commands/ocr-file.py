@@ -12,6 +12,7 @@ from mainapp.functions.document_parsing import (
     cleanup_extracted_text,
     extract_locations,
 )
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import File
 
 
@@ -29,9 +30,8 @@ class Command(BaseCommand):
 
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
-        file_path = os.path.abspath(os.path.dirname(__name__))
-        file_path = os.path.join(file_path, settings.MEDIA_ROOT, file.storage_filename)
-        recognized_text = get_ocr_text_from_pdf(file_path)
+        with minio_client.get_object(minio_file_bucket, str(file.id)) as file_handle:
+            recognized_text = get_ocr_text_from_pdf(file_handle.read())
         if len(recognized_text) > 0:
             file.parsed_text = cleanup_extracted_text(recognized_text)
             file.mentioned_persons = extract_persons(
