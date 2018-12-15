@@ -13,7 +13,7 @@ ELASTICSEARCH_URL=
 ABSOLUTE_URI_BASE=https://meine-stadt-transparent.local
 
 GEOEXTRACT_DEFAULT_CITY=
-SITE_GEO_LIMITS={}
+SITE_GEO_LIMITS={"min": {"lat": 47.965, "lng": 11.286}, "max": {"lat": 48.296, "lng": 11.871}}
 SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
 CALENDAR_HIDE_WEEKENDS=False
 

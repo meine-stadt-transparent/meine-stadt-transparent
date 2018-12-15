@@ -1,4 +1,4 @@
-import * as L from "leaflet/src/Leaflet";
+import L from "leaflet";
 
 L.Control.TextHint = L.Control.extend({
     options: {

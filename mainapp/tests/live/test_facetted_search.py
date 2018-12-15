@@ -36,12 +36,6 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.visit("/")
         self.browser.fill("search-query", "word")
         self.browser.find_by_name("search-query").first._element.send_keys(Keys.ENTER)
-
-        # semi-busy waiting because the test is otherwise broken on travis
-        for i in range(200):
-            if "word" == self.get_querystring():
-                break
-            time.sleep(0.01)
         self.assertEqual("word", self.get_querystring())
 
     @override_settings(USE_ELASTICSEARCH=True)

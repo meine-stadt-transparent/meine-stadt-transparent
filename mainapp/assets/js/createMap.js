@@ -1,4 +1,4 @@
-import * as L from "leaflet/src/Leaflet";
+import L from "leaflet";
 import {CooperativeScrollWheelZoom} from "./LeafletCooperativeScrollWheelZoom";
 
 let coordsToPolygon = function (coords) {

@@ -1,4 +1,4 @@
-import * as L from "leaflet/src/Leaflet";
+import L from "leaflet";
 import create_map from "./createMap";
 
 /** A Map wher a marker can be placed with an input for the radius around the marker */
