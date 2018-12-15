@@ -1,6 +1,6 @@
-import importlib
 import time
 from datetime import date
+from importlib.util import find_spec
 from unittest import mock, skipIf
 
 from django.test import override_settings
@@ -36,6 +36,12 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.visit("/")
         self.browser.fill("search-query", "word")
         self.browser.find_by_name("search-query").first._element.send_keys(Keys.ENTER)
+
+        # semi-busy waiting because the test is otherwise broken on travis
+        for i in range(200):
+            if "word" == self.get_querystring():
+                break
+            time.sleep(0.01)
         self.assertEqual("word", self.get_querystring())
 
     @override_settings(USE_ELASTICSEARCH=True)
@@ -146,7 +152,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     # This fails on travis for weird, untracable causes. But we know travis doesn't have gi, so we use that hack here
     # (The weirdness is that click_by_css fails. This could be a race, but than assertTextIsPresent had to fail too)
-    @skipIf(importlib.util.find_spec("gi") is None, "gi is not available")
+    @skipIf(find_spec("gi") is None, "gi is not available")
     @override_settings(USE_ELASTICSEARCH=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",

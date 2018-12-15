@@ -18,10 +18,9 @@ addons:
 cache:
   pip: true
   npm: true
-  apt: true
 
 install:
-  - npm install --ci
+  - npm ci
   - pip install poetry --upgrade
   - poetry install
   # Add pygobject to the virtualenv; Disabled because gi only works with system python

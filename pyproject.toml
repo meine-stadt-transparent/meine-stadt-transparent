@@ -11,7 +11,6 @@ django-allauth = "^0.38"
 django-anymail = "^5.0"
 django-braces = "^1.13"
 django_csp = "^3.4"
-django-debug-toolbar = "^1.11"
 django-elasticsearch-dsl = "^0.5"
 django-environ = "^0.4"
 django-geojson = "^2.12"
@@ -39,6 +38,7 @@ sentry-sdk = "^0.6.2"
 [tool.poetry.dev-dependencies]
 selenium = "3.141.0"
 tox = "^3.5"
+django-debug-toolbar = "^1.11"
 # We can't directly depend on black here because then we'd need to require python 3.6 as minimum
 
 [tool.black]

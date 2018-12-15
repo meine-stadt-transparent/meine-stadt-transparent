@@ -1,10 +1,10 @@
 import hashlib
-import importlib.util
 import json
 import logging
 import os
 import shutil
 import tempfile
+from importlib.util import find_spec
 from unittest import skipIf
 
 from dateutil.relativedelta import relativedelta
@@ -25,7 +25,7 @@ from mainapp.models import (
     File,
 )
 
-gi_not_available = importlib.util.find_spec("gi") is None
+gi_not_available = find_spec("gi") is None
 if not gi_not_available:
     # Those two require importing gi
     from importer.oparl_helper import default_options
