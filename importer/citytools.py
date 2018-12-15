@@ -88,7 +88,7 @@ def convert_to_geojson(osm):
         ["node_modules/.bin/osmtogeojson", "-f", "json", "-m", filename],
         stdout=subprocess.PIPE,
     )
-    geojson = json.loads(result.stdout.decode("utf-8"))
+    geojson = json.loads(result.stdout.decode())
 
     os.remove(filename)
 

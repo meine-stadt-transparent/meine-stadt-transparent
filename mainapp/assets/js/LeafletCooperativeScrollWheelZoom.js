@@ -1,4 +1,4 @@
-import * as L from "leaflet/src/Leaflet";
+import L from "leaflet";
 import {ScrollWheelZoom} from "leaflet/src/map/handler/Map.ScrollWheelZoom";
 import {TextHint} from "./LeafletTextHint";
 

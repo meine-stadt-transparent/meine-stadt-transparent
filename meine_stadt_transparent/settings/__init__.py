@@ -1,7 +1,7 @@
-import importlib
 import logging
 import os
 import warnings
+from importlib.util import find_spec
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -61,6 +61,9 @@ SKS_KEYSERVER = env.str("SKS_KEYSERVER", "gpg.mozilla.org")
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {"default": env.db()}
+
+if TESTING:
+    DATABASES["OPTIONS"] = {"timeout": 10}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -322,7 +325,7 @@ DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
 if DEBUG and not TESTING:
-    if importlib.util.find_spec("debug_toolbar"):
+    if find_spec("debug_toolbar"):
         # Debug Toolbar
         INSTALLED_APPS.append("debug_toolbar")
         MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")

@@ -32,7 +32,10 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     """
 
     # https://stackoverflow.com/a/51750516/3549270
-    server_thread_class = LiveServerSingleThread
+    # This currently leads to some kind of deadlock where it spends 200% in readinto (/usr/lib/python3.6/socket.py:586)
+    # The workaround was to disable this workaround and instead increase the sqlite timeout and hope it'll never
+    # take that long
+    # server_thread_class = LiveServerSingleThread
 
     browser = None
 

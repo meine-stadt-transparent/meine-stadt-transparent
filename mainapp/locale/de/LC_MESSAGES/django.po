@@ -621,7 +621,7 @@ msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
 
 #: templates/mainapp/calendar.html:25
 msgid "iCal"
-msgstr ""
+msgstr "iCal"
 
 #: templates/mainapp/file/file.html:5
 msgid "File"
@@ -629,7 +629,7 @@ msgstr "Datei"
 
 #: templates/mainapp/file/file.html:28
 msgid "The original PDF"
-msgstr ""
+msgstr "Das ursprüngliche PDF"
 
 #: templates/mainapp/file/file.html:42
 msgid "The file can not be shown"

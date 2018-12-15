@@ -1,4 +1,4 @@
-import * as L from "leaflet/src/Leaflet";
+import L from "leaflet";
 import {TextHint} from "./LeafletTextHint";
 import {MarkerClusterGroup} from "leaflet.markercluster/dist/leaflet.markercluster-src";
 
