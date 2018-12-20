@@ -1,34 +1,21 @@
+# The important non-essential options are defined in the readme
+# All options can be found in meine_stadt_transparent/settings/
+
 DEBUG=False
-REAL_HOST=opensourceris.local
-SECRET_KEY=notsosecretkey
-ABSOLUTE_URI_BASE=https://opensourceris.local
+SECRET_KEY=changeme
+REAL_HOST=changeme.tld
 
-ELASTICSEARCH_URL=http://elastic:changeme@localhost/elasticsearch/
-ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
-ELASTICSEARCH_LANG=german
+DATABASE_URL=mysql://meinestadttransparent:changeme@mariadb/meinestadttransparent
+
 USE_ELASTICSEARCH=True
+ELASTICSEARCH_URL=http://elasticsearch:9200/
+ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
-# Use DATABASE_URL=mysql://username:password@localhost/databasename?charset=utf8mb4 in production
-DATABASE_URL=sqlite:///db.sqlite3
-DEFAULT_FROM_EMAIL=info@example.org
-DEFAULT_FROM_EMAIL_NAME="Meine Stadt Transparent"
+MINIO_ACCESS_KEY=changeme
+MINIO_SECRET_KEY=changeme
 
-FILE_DISCLAIMER=Das Dokument stammt aus dem Ratsinformationssystem der Stadt Jülich
-FILE_DISCLAIMER_URL=https://sdnetrim.kdvz-frechen.de/rim4240/
-
-MAILJET_API_KEY=
-MAILJET_SECRET_KEY=
+# Delete this entry if you don't use the docker container
+STATIC_ROOT=/static
 
 GEOEXTRACT_DEFAULT_CITY=Köln
-SITE_DEFAULT_ORGANIZATION=1
 SITE_DEFAULT_BODY=1
-
-# You need to generate tokens in the relevant developer poprtal before you can use them
-SOCIALACCOUNT_USE_FACEBOOK=False
-SOCIALACCOUNT_USE_TWITTER=False
-
-# Custom map styles can be used like this:
-# SITE_MAPBOX_TILE_URL=https://api.mapbox.com/styles/v1/tobiashoessl/cj9bafqs84zfl2snxt9o2p65r/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
-
-# Note: A lot of options are omitted here as they have proper defaults.
-# You can find them at meine_stadt_transparent/settings.py

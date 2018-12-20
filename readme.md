@@ -10,7 +10,7 @@ Meine Stadt Transparent is a free council information system. Its current main f
 
 Our sample live system using the data of the city [Jülich](https://www.juelich.de/) is available at: [https://meine-stadt-transparent.de/](https://meine-stadt-transparent.de/).
 
-The project is sponsored by the [Prototype Fund](https://prototypefund.de/).
+The project was sponsored by the [Prototype Fund](https://prototypefund.de/).
 
 ![Logo of the Prototype Fund](etc/prototype-fund-logo.svg) ![Gefördert von Bundesministetrium für Bilduung und Forschung](etc/bmbf-logo.svg) ![Logo of the Open Knowledge Foundation Germany](etc/okfde-logo.svg)
 
@@ -29,57 +29,94 @@ It includes many features regarding data research and staying up to date, target
 
 Meine Stadt Transparent is *not* a complete replacement for traditional council information systems, however: it focuses on displaying already published information to the public. It does not provide a user-accessible backend for content authoring. It relies on the availability of an API provided by a council information system backend. Currently, the open [Oparl-Standard](https://oparl.org/) is supported.
 
-## Quickstart with docker compose
+# Production setup with docker compose
 
-Install [docker ce](https://www.docker.com/community-edition) and [docker compose](https://docs.docker.com/compose/install/)
+Prerequisites: A host with root access and enough ram for elasticsearch and mariadb.
 
-Before starting, you'll likely need to [adjust max_map_count on the host system](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
+All services will run in docker containers orchestrated by docker compose, with nginx as reverse proxy in front of them which also serves static files.
 
-Clone this repository and `cd` into it.
+First, install [docker](https://docs.docker.com/install/) and [docker compose](https://docs.docker.com/compose/install/). You'll likely need to [adjust max_map_count](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode) on the host system for elasticsearch.
 
-Then assemble everything with:
+Download [etc/docker-compose.yml](etc/docker-compose.yml) from the root of this repository. Replace all `changeme` with real random passwords (Hint: `openssl rand -hex 32`).
 
-```bash
-docker-compose pull
-docker volume create --opt type=none --opt device=`pwd`/config --opt o=bind django_config
-docker-compose up --no-build
+Download [etc/env-template](etc/env-template) to `.env`. Change `REAL_HOST` to your domain, `SECRET_KEY` to a randomly generated secret and use the same passwords as in `docker-compose.yml` for `DATABASE_URL`, `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY`. You most likely want to configure third-party services as described later, but you can postpone that until after the base site works.
+
+To deliver the assets through nginx, we need to mount them to a local container: 
+
+```
+mkdir /var/www/meine-stadt-transparent-static
+docker volume create --opt type=none --opt device=/var/www/meine-stadt-transparent-static --opt o=bind django_static
 ```
 
-Wait a until mariadb and elasticsearch have finshed starting. You should see `Cluster health status changed from [RED] to [YELLOW]` as last log message. Then open a new terminal for the following commands.
+You can change the directory to any other as long as you match that later in your nginx conf.
+
+Start everything:
+
+```
+docker-compose up
+```
+
+Wait until the elasticsearch log says `Cluster health status changed from [RED] to [YELLOW]` and open another terminal. You can later start the services as daemons with `-d` or stop them with `docker-compose down`.
 
 Then we can run the migrations:
 
-```bash
-docker-compose run django ./manage.py migrate
+```
+docker-compose run --rm django ./manage.py migrate
 ```
 
-The database is still empty, so you'll need some data.
+Let's load some dummy data to check everythings wokring:
 
-Option 1: Dummy data. Fast import and has all the relations.
-
-```bash
-docker-compose run django ./manage.py loaddata mainapp/fixtures/initdata.json
+```
+docker-compose run --rm django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
-Option 2: Real data, which means this is slow. See the import section below for details.
+You should now get a 200 response from [localhost:8000](http://localhost:8000).
 
-```bash
-docker-compose run django ./manage.py import [mycitiesname]
+If you've not familiar with nginx, you should start with [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04).  Install nginx, [certbot](https://certbot.eff.org/) and the certbot nginx integration. For ubuntu it is e.g.
+
+```
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt install nginx certbot python3-certbot-nginx 
 ```
 
-Meine Stadt Transparent is now running at [localhost:7000](http://localhost:7000).
+Download [etc/nginx-http.conf](etc/nginx-http.conf), add it to your nginx sites and replace `changeme.tld` with your domain. Then run certbot and follow the instructions:
 
-**Before using this in production** set proper config values in `config/.env`. Make sure that you at least changed `REAL_HOST` and `SECRET_KEY` to proper values.
+```
+certbot --nginx
+```
 
-You can execute all the other commands from this readme by prepending them with `docker-compose exec django`. Note for advanced users: `poetry run` is configured as entrypoint.
+Certbot will rewrite the nginx configuration to a version with strong encryption. You might also want to activate http/2 by adding `http2` after both `443 ssl`.
 
-To use this in production, you need to set up the two Cron-Jobs described below, to keep the data up to date and to send notifications to the users.
+You now have a proper site at your domain!
+
+Now that everything is in place, drop the dummy data:
+
+```
+docker-compose run --rm django ./manage.py flush
+```
+
+Instead, import real data. See the import section below for details.
+
+```bash
+docker-compose run --rm django ./manage.py import [mycitiesname]
+```
+
+You should now have a usable instance!
+
+Finally, create a daily cronjob with the following. This will clear the oparl cache, import changed objects from the oparl api and then notify the users. Also make sure that there is a cronjob for certbot.
+
+```
+docker-compose run --rm django ./manage.py cron
+```
+
+You can execute all the other commands from this readme by prepending them with `docker-compose run --rm django` (or starting a shell in the container). Note for advanced users: `poetry run` is configured as entrypoint.
 
 ## Manual Setup
 
 ### Requirements
 
- - Python 3.5 or 3.6 with pip and [poetry](https://github.com/sdispater/poetry)
+ - Python 3.5, 3.6 or 3.7 with pip and [poetry](https://github.com/sdispater/poetry)
  - A recent node version (8 or 10) with npm (npm 6 is tested)
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
@@ -106,12 +143,9 @@ Activate the virtualenv created by poetry. You either need to run this in your s
 poetry shell 
 ```
 
-Copy `etc/env-template` to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
+Copy [etc/env-template](etc/env-template) to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
 
-Configure your webserver. Example configurations:
-
- - [Apache](etc/apache.conf)
- - [nginx](etc/nginx.conf)
+Configure your webserver, see e.g. [etc/nginx.conf](etc/nginx.conf)
 
 ### pygobject (gi) and liboparl
 
@@ -226,10 +260,6 @@ Now the site should be working. If the "Latest Documents"-Section on the home pa
 ./manage.py search_index --rebuild # Push the changed data to ElasticSearch
 ```
 
-### Using the OParl Importer programmatically
-
-`importer.oparl_import.OParlImport` has all the top level methods which are e.g. used by the import commands. It inherits `importer.oparl_objects.OParlObjects` which has methods to import the individual OParl objects except System. You need to pass the constructor an option set based on `importer.oparl_helper.default_options` with the correct value for `entrypoint` set. Note that error handling with mutlithreading and liboparl is weird to non-functional.
-
 ### A complete installation for a city, starting from an empty database
 
 To bootstrap a city, two pieces of information are required: the URL of the OParl-Endpoint, and (for now) the German "Gemeindeschlüssel".
@@ -257,14 +287,6 @@ Instead of crawling the whole API, it is possible to update only one specific it
 ./manage.py importanything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/paper/53584
 ./manage.py importanything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
 ```
-
-### Cronjobs
-
-```bash
-./manage.py cron
-```
-
-This will clear the oparl cache, import changed objects from the oparl api and then notify the users
 
 ## Customization
 
@@ -350,11 +372,7 @@ MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/
 
 ### Microsoft Azure: OCR
 
-This is optional if you want to use OCR for extracting the text of scanned documents. Set up a Azure account and add a [Computer Vision](https://azure.microsoft.com/en-us/try/cognitive-services/?api=computer-vision)-Resource (part of Cognitive Services). Add the API Key to the ``.env``-File:
-
-```
-OCR_AZURE_KEY=...
-```
+This is optional if you want to use OCR for extracting the text of scanned documents. Set up a Azure account and add a [Computer Vision](https://azure.microsoft.com/en-us/try/cognitive-services/?api=computer-vision) Resource (part of Cognitive Services). Add the API Key to the `.env` file aas `OCR_AZURE_KEY`.
 
 ### Open Cage Data: Geo extraction
 
@@ -381,6 +399,14 @@ The e-mail-configuration can be tested using the following command line call, wh
 ```bash
 ./manage.py test-email test@example.org
 ```
+
+### Monitoring
+
+Using [sentry](https://sentry.io) for error monitoring is supported by setting `SENTRY_DSN` and optionally `SENTRY_HEADER_ENDPOINT`.
+
+### Tracking
+
+You add a tracker by overwriting the template `templates/partials/base_footer_extra.html` and adding the javascript in there. See `juelich_transparent` for a customization example with matomo (formerly piwik). 
 
 ## Development
 
@@ -473,6 +499,10 @@ Currently, OCR'ing documents is not done automatically, as this operation is bei
 # OCR an individual file:
 ./manage.py ocr-file --id 23
 ```
+
+### Using the OParl Importer programmatically
+
+`importer.oparl_import.OParlImport` has all the top level methods which are e.g. used by the import commands. It inherits `importer.oparl_objects.OParlObjects` which has methods to import the individual OParl objects except System. You need to pass the constructor an option set based on `importer.oparl_helper.default_options` with the correct value for `entrypoint` set. Note that error handling with mutlithreading and liboparl is weird to non-functional.
 
 ### Creating a page with additional JS libraries
 

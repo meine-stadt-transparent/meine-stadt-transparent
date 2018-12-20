@@ -12,7 +12,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
       - xpack.watcher.enabled=false
-
+      - cluster.routing.allocation.disk.threshold_enabled=false
     ulimits: # Elasticsearch needs those
       memlock:
         soft: -1
@@ -23,28 +23,29 @@ services:
         - 9200:9200
         - 9300:9300
     networks:
-      - meinestadttransparent_net
+      - mst_dev
 
   kibana:
       image: docker.elastic.co/kibana/kibana:5.6.13
       ports:
         - 5601:5601
       networks:
-        - meinestadttransparent_net
+        - mst_dev
       environment:
         - xpack.security.enabled=false
 
   minio:
       image: minio/minio
-      ports:
-        - 9000:9000
-      networks:
-        - meinestadttransparent_net
+      container_name: minio
       volumes:
         - minio_data:/minio_data
       environment:
         MINIO_ACCESS_KEY: meinestadttransparent
         MINIO_SECRET_KEY: meinestadttransparent
+      ports:
+        - 9000:9000
+      networks:
+        - mst_dev
       command: server /minio_data
 
 volumes:
@@ -52,4 +53,4 @@ volumes:
   minio_data:
 
 networks:
-  meinestadttransparent_net:
+  mst_dev:

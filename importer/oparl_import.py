@@ -1,6 +1,5 @@
 import concurrent
 import logging
-import os
 import traceback
 from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List

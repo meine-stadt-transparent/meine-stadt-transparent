@@ -7,7 +7,8 @@ testdata/
 webpack-stats.json
 db.sqlite3
 Dockerfile
-docker-compose.yml
+etc/docker-compose.yml
+docker-dev.yml
 **/__pycache__
 mainapp/assets/bundles
 .git
