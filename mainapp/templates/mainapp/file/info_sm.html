@@ -11,7 +11,7 @@
     <div>
         {% spaceless %}
             <div>
-                <a href="{% url 'file-content' file.id %}">
+                <a href="{% url 'file-content' file.id %}" download="{{ file.displayed_filename }}">
                     <span class="fa fa-custom fa-download" aria-hidden="true"></span>
                     <span>Download</span>
                 </a>

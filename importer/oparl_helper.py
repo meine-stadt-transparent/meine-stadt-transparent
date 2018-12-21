@@ -199,13 +199,13 @@ class OParlHelper:
     def extract_text_from_file(self, file: File, path: str):
         parsed_text = None
         if file.mime_type == "application/pdf":
-            self.logger.info("Extracting text from PDF: " + path)
+            self.logger.info("Extracting text from PDF for file {} ({})".format(file.id, file))
             try:
                 parsed_text = extract_text_from_pdf(path)
                 file.page_count = get_page_count_from_pdf(path)
             except Exception as e:
-                message = "Could not parse pdf file {}: {}".format(path, e)
-                self.logger.error(message)
+                message = "Could not parse pdf for file {}: {}".format(file.id, e)
+                self.logger.exception(message)
                 self.errorlist.append(message)
         elif file.mime_type == "text/text":
             with open(path) as f:
