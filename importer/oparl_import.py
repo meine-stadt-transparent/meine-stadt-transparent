@@ -1,5 +1,6 @@
 import concurrent
 import logging
+import sys
 import traceback
 from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
@@ -33,7 +34,7 @@ class OParlImport(OParlObjects):
         except GLib.Error as e:
             self.logger.fatal("Failed to load entrypoint: {}".format(e))
             self.logger.fatal("Aborting.")
-            return
+            sys.exit(1)
 
     def list_batched(
         self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]

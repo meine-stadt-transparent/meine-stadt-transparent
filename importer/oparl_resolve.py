@@ -22,7 +22,9 @@ class OParlResolver:
     def resolve(self, url: str):
         if self.use_cache:
             try:
-                data = minio_client.get_object(minio_cache_bucket, url + "-disambiguate-file")
+                data = minio_client.get_object(
+                    minio_cache_bucket, url + "-disambiguate-file"
+                )
                 data = data.read().decode()
                 self.logger.info("Cached: " + url)
                 return OParl.ResolveUrlResult(
@@ -52,7 +54,12 @@ class OParlResolver:
             )
 
         # We need to avoid filenames where a prefix already is a file, which fails with a weird minio error
-        minio_client.put_object(minio_cache_bucket, url + "-disambiguate-file", BytesIO(content), len(content))
+        minio_client.put_object(
+            minio_cache_bucket,
+            url + "-disambiguate-file",
+            BytesIO(content),
+            len(content),
+        )
 
         return OParl.ResolveUrlResult(
             resolved_data=decoded, success=True, status_code=req.status_code

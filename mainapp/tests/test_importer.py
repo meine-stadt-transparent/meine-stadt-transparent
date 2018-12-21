@@ -86,7 +86,9 @@ class TestImporter(TestCase):
 
     def dump(self, name, obj):
         dumps = json.dumps(obj, indent=4, sort_keys=True).encode()
-        self.minio_mock.put_object(minio_cache_bucket, name, BytesIO(dumps), len(dumps))
+        self.minio_mock.put_object(
+            minio_cache_bucket, name + "-disambiguate-file", BytesIO(dumps), len(dumps)
+        )
 
     def external_list(self, obj):
         return {"data": [obj], "links": {}, "pagination": {}}

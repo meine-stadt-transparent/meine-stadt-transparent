@@ -104,15 +104,19 @@ class OParlCli:
         logger.info("The Amtliche Gemeindeschlüssel is {}".format(ags))
         main_body = importer.body(liboparl_body)
 
-        dotenv = "OPARL_ENDPOINT={}\n".format(importer.entrypoint)
+        dotenv = ""
+
+        if importer.entrypoint != settings.OPARL_ENDPOINT:
+            dotenv += "OPARL_ENDPOINT={}\n".format(importer.entrypoint)
 
         if main_body.id != settings.SITE_DEFAULT_BODY:
             dotenv += "SITE_DEFAULT_BODY={}\n".format(main_body.id)
 
-        logger.info(
-            "Found the oparl endpoint. Please add the following line to your dotenv file "
-            "(you'll be reminded again after the import finished): \n\n" + dotenv
-        )
+        if dotenv:
+            logger.info(
+                "Found the oparl endpoint. Please add the following line to your dotenv file "
+                "(you'll be reminded again after the import finished): \n\n" + dotenv
+            )
 
         logger.info("Importing the shape of the city")
         import_outline(main_body, ags)
@@ -131,11 +135,12 @@ class OParlCli:
         logger.info("Add some missing foreign keys")
         importer.add_missing_associations()
 
-        logger.info(
-            "Done! Please add the following line to your dotenv file: \n\n"
-            + dotenv
-            + "\n"
-        )
+        if dotenv:
+            logger.info(
+                "Done! Please add the following line to your dotenv file: \n\n"
+                + dotenv
+                + "\n"
+            )
 
     def get_ags(self, liboparl_body: Any, userinput: str) -> str:
         ags = liboparl_body.get_ags()

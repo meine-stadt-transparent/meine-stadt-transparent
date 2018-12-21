@@ -420,23 +420,23 @@ class OParlObjects(OParlHelper):
             and file.modified
             and last_modified
             and last_modified < file.modified
+            and minio_client.has_object(minio_file_bucket, str(file.id))
         ):
             self.logger.info("Skipping cached download: {}".format(url))
             return
 
         self.logger.info("Downloading {}".format(url))
 
-        r = requests.get(url, allow_redirects=True)
+        response = requests.get(url, allow_redirects=True)
 
         try:
-            r.raise_for_status()
+            response.raise_for_status()
         except HTTPError as e:
-            self.logger.exception(e)
-            file.filesize = -1
+            self.logger.exception("Failed to download file {}: {}", file.id, e)
             return
 
         tmpfile = NamedTemporaryFile()
-        content = r.content
+        content = response.content
         tmpfile.write(content)
         tmpfile.file.seek(0)
         file.filesize = len(content)
@@ -478,6 +478,9 @@ class OParlObjects(OParlHelper):
         file.sort_date = file.created
         file.oparl_access_url = libobject.get_access_url()
         file.oparl_download_url = libobject.get_download_url()
+        file.filesize = -1
+
+        file.save_without_historical_record()  # Generates an id which need for downloading the file
 
         # If no text comes from the API, don't overwrite previously extracted PDF-content with an empty string
         if libobject.get_text():
@@ -489,15 +492,11 @@ class OParlObjects(OParlHelper):
             if tmpfile:
                 file.parsed_text = self.extract_text_from_file(file, tmpfile.name)
                 tmpfile.close()
-        else:
-            file.filesize = -1
 
         file = self.call_custom_hook("sanitize_file", file)
 
         if len(file.name) > 200:
             file.name = textwrap.wrap(file.name, 199)[0] + "\u2026"
-
-        file.save()
 
         if file_name_before != file.name or parsed_text_before != file.parsed_text:
             # These two operations are rather CPU-intensive, so we only perform them if something relevant has changed
@@ -505,7 +504,8 @@ class OParlObjects(OParlHelper):
             file.mentioned_persons.set(
                 extract_persons(file.name + "\n" + (file.parsed_text or "") + "\n")
             )
-            file.save()
+
+        file.save()
 
         return file
 

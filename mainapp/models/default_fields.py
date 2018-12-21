@@ -45,6 +45,14 @@ class DefaultFields(models.Model):
     def by_oparl_id(cls, oparl_id):
         return cls.objects.get(oparl_id=oparl_id)
 
+    def save_without_historical_record(self, *args, **kwargs):
+        self.skip_history_when_saving = True
+        try:
+            ret = self.save(*args, **kwargs)
+        finally:
+            del self.skip_history_when_saving
+        return ret
+
     class Meta:
         abstract = True
 

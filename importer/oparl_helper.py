@@ -26,7 +26,7 @@ default_options = {
     "use_cache": True,
     "ignore_modified": False,
     "no_threads": False,
-    "batchsize": 100,
+    "batchsize": 50,
     "threadcount": 10,
     "entrypoint": settings.OPARL_ENDPOINT,
 }
@@ -199,7 +199,9 @@ class OParlHelper:
     def extract_text_from_file(self, file: File, path: str):
         parsed_text = None
         if file.mime_type == "application/pdf":
-            self.logger.info("Extracting text from PDF for file {} ({})".format(file.id, file))
+            self.logger.info(
+                "Extracting text from PDF for file {} ({})".format(file.id, file)
+            )
             try:
                 parsed_text = extract_text_from_pdf(path)
                 file.page_count = get_page_count_from_pdf(path)
