@@ -14,5 +14,3 @@ ABSOLUTE_URI_BASE=https://meine-stadt-transparent.local
 
 GEOEXTRACT_DEFAULT_CITY=
 CALENDAR_HIDE_WEEKENDS=False
-
-MEDIA_ROOT=./testdata/media

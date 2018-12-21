@@ -1,4 +1,4 @@
-from html import escape
+import logging
 
 from csp.decorators import csp_update
 from django.conf import settings
@@ -9,12 +9,11 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
-from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
-from django.views.static import serve
 from requests.utils import quote
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import (
     Body,
     File,
@@ -29,6 +28,9 @@ from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context, HttpResponse
 from mainapp.views.utils import build_map_object
+
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -189,7 +191,7 @@ def file(request, pk, context_meeting_id=None):
     if renderer == "pdf":
         context["pdfjs_iframe_url"] = static("web/viewer.html")
         context["pdfjs_iframe_url"] += "?file=" + reverse(
-            "media", args=[file.storage_filename]
+            "file-content", args=[file.id]
         )
         if request.GET.get("pdfjs_search"):
             context["pdfjs_iframe_url"] += "#search=" + quote(
@@ -203,16 +205,13 @@ def file(request, pk, context_meeting_id=None):
     return render(request, "mainapp/file/file.html", context)
 
 
-def file_serve(request, path):
-    file_object = get_object_or_404(File, storage_filename=path)
+def file_serve(request, id):
+    logger.warning("Serving media files through django is slow")
+    minio_file = minio_client.get_object(minio_file_bucket, id)
+    response = HttpResponse(minio_file.read())
 
-    response = serve(
-        request, path, document_root=settings.MEDIA_ROOT, show_indexes=False
-    )
-    response["Content-Type"] = file_object.mime_type
-    response["Content-Disposition"] = (
-        "attachment; filename=" + file_object.displayed_filename
-    )
+    response["Content-Type"] = minio_file.headers["Content-Type"]
+
     if settings.SITE_SEO_NOINDEX:
         response["X-Robots-Tag"] = "noindex"
 
@@ -251,81 +250,6 @@ def info_about(request):
     }
 
     return render(request, "info/about.html", context)
-
-
-def robots_txt(request):
-    if settings.SITE_SEO_NOINDEX:
-        return HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")
-    else:
-        sitemap_url = settings.ABSOLUTE_URI_BASE + reverse("sitemap-xml")
-        return HttpResponse(
-            "User-agent: *\nDisallow: /accounts/\nSitemap: " + sitemap_url,
-            content_type="text/plain",
-        )
-
-
-def sitemap_xml_entry(obj, priority):
-    return (
-        "<url><loc>"
-        + settings.ABSOLUTE_URI_BASE
-        + obj.get_default_link()
-        + "</loc>"
-        + "<lastmod>"
-        + obj.modified.strftime("%Y-%m-%d")
-        + "</lastmod><changefreq>weekly</changefreq>"
-        + "<priority>"
-        + str(priority)
-        + "</priority></url>"
-        + "\n"
-    )
-
-
-def sitemap_xml(request):
-    xml = (
-        '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        + "\n"
-    )
-
-    for paper_obj in Paper.objects.all():
-        xml += sitemap_xml_entry(paper_obj, 0.8)
-
-    for meet_obj in Meeting.objects.all():
-        xml += sitemap_xml_entry(meet_obj, 0.9)
-
-    for person_obj in Person.objects.all():
-        xml += sitemap_xml_entry(person_obj, 0.9)
-
-    xml += "</urlset>"
-    return HttpResponse(xml, content_type="application/xml")
-
-
-def opensearch_xml(request):
-    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
-    description = _("Search for documents of %CITY%'s city council").replace(
-        "%CITY%", main_body.short_name
-    )
-    url = settings.ABSOLUTE_URI_BASE + "/search/query/{searchTerms}/"
-    xml = (
-        '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" '
-        'xmlns:moz="http://www.mozilla.org/2006/browser/search/">'
-        "<ShortName>" + escape(settings.TEMPLATE_META["product_name"]) + "</ShortName>"
-        "<Description>" + escape(description) + "</Description>"
-        "<InputEncoding>UTF-8</InputEncoding>"
-        '<Url type="text/html" method="get" template="' + escape(url) + '"/>'
-        "<moz:SearchForm>" + settings.ABSOLUTE_URI_BASE + "</moz:SearchForm>"
-        "</OpenSearchDescription>"
-    )
-    return HttpResponse(xml, content_type="application/opensearchdescription+xml")
-
-
-# noinspection PyUnusedLocal
-def error404(request, *args, **kwargs):
-    return render(request, "error/404.html", status=404)
-
-
-# noinspection PyUnusedLocal
-def error500(request, *args, **kwargs):
-    return render(request, "error/500.html", status=500)
 
 
 def body(request, pk):

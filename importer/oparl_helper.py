@@ -28,8 +28,6 @@ default_options = {
     "use_cache": True,
     "ignore_modified": False,
     "no_threads": False,
-    "cachefolder": settings.CACHE_ROOT,
-    "storagefolder": settings.MEDIA_ROOT,
     "batchsize": 100,
     "threadcount": 10,
     "entrypoint": settings.OPARL_ENDPOINT,
@@ -45,7 +43,6 @@ class OParlHelper:
     def __init__(self, options, resolver):
         self.resolver = resolver
         self.ignore_modified = options["ignore_modified"]
-        self.storagefolder = options["storagefolder"]
         self.entrypoint = options["entrypoint"]
         self.use_cache = options["use_cache"]
         self.download_files = options["download_files"]
@@ -53,7 +50,6 @@ class OParlHelper:
         self.batchsize = options["batchsize"]
         self.no_threads = options["no_threads"]
         entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
-        self.cachefolder = os.path.join(options["cachefolder"], entrypoint_hash)
         self.download_files = options["download_files"]
         self.official_geojson = True
         self.filename_length_cutoff = 100
@@ -203,8 +199,7 @@ class OParlHelper:
             )
         return dbobject, is_modified
 
-    def extract_text_from_file(self, file: File):
-        path = os.path.join(self.storagefolder, file.storage_filename)
+    def extract_text_from_file(self, file: File, path: str):
         parsed_text = None
         if file.mime_type == "application/pdf":
             self.logger.info("Extracting text from PDF: " + path)

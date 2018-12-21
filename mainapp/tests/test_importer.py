@@ -5,12 +5,15 @@ import os
 import shutil
 import tempfile
 from importlib.util import find_spec
+from io import BytesIO
 from unittest import skipIf
+from unittest.mock import patch
 
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
+from mainapp.functions.minio import minio_cache_bucket
 from mainapp.models import (
     Body,
     LegislativeTerm,
@@ -24,6 +27,7 @@ from mainapp.models import (
     Location,
     File,
 )
+from mainapp.tests.tools import MinioMock
 
 gi_not_available = find_spec("gi") is None
 if not gi_not_available:
@@ -38,9 +42,9 @@ logger = logging.getLogger(__name__)
 @skipIf(gi_not_available, "gi is not available")
 class TestImporter(TestCase):
     dummy_data = "testdata/oparl"
-    fake_cache = "testdata/fake_cache"
     base_timestamp = timezone.now().astimezone().replace(microsecond=0)
     new_timestamp = None
+    minio_mock = None
     delete = False
     tables = [
         Body,
@@ -66,7 +70,8 @@ class TestImporter(TestCase):
         super().setUpClass()
         cls.tempdir = tempfile.mkdtemp()
         cls.options = cls.build_options()
-        cls.resolver = OParlResolver(cls.entrypoint, cls.fake_cache, True)
+        cls.resolver = OParlResolver(cls.entrypoint, True)
+        cls.minio_mock = MinioMock()
 
     @classmethod
     def tearDownClass(cls):
@@ -80,11 +85,8 @@ class TestImporter(TestCase):
             return self.manipulate(json.load(f), self.new_timestamp)
 
     def dump(self, name, obj):
-        with open(
-            os.path.join(self.fake_cache, self.sha1(self.entrypoint), self.sha1(name)),
-            "w",
-        ) as f:
-            json.dump(obj, f, indent=4, sort_keys=True)
+        dumps = json.dumps(obj, indent=4, sort_keys=True).encode()
+        self.minio_mock.put_object(minio_cache_bucket, name, BytesIO(dumps), len(dumps))
 
     def external_list(self, obj):
         return {"data": [obj], "links": {}, "pagination": {}}
@@ -107,10 +109,6 @@ class TestImporter(TestCase):
     def create_fake_cache(self):
         """ Fakes an oparl server by a creating a prefilled cache. """
         system = self.load("System.json")
-
-        # Discard old data
-        shutil.rmtree(self.fake_cache, ignore_errors=True)
-        os.makedirs(os.path.join(self.fake_cache, self.sha1(self.entrypoint)))
 
         self.dump(system["id"], system)
         body = self.load("Body.json")
@@ -142,16 +140,19 @@ class TestImporter(TestCase):
         self.dump(membership["id"], membership)
 
     def test_importer(self):
-        self.check_basic_import()
-        self.check_ignoring_unmodified()
-        self.check_update()
-        self.check_deletion()
+        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+            self.check_basic_import()
+            self.check_ignoring_unmodified()
+            self.check_update()
+            self.check_deletion()
 
     def test_deletion(self):
-        self.check_deletion()
+        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+            self.check_deletion()
 
     def test_update(self):
-        self.check_update()
+        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+            self.check_update()
 
     def check_basic_import(self):
         self.new_timestamp = (
@@ -218,13 +219,7 @@ class TestImporter(TestCase):
     @classmethod
     def build_options(cls):
         options = default_options.copy()
-        options["cachefolder"] = cls.fake_cache
-        options["storagefolder"] = os.path.join(cls.tempdir, "storagefolder")
-        shutil.rmtree(options["storagefolder"], ignore_errors=True)
         options["entrypoint"] = cls.entrypoint
         options["batchsize"] = 1
         options["download_files"] = False  # TODO
         return options
-
-    def tearDown(self):
-        shutil.rmtree(self.fake_cache, ignore_errors=True)

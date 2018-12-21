@@ -10,8 +10,6 @@ class Command(BaseCommand):
         from importer.oparl_helper import default_options
 
         parser.add_argument("--entrypoint", type=str)
-        parser.add_argument("--cachefolder", type=str)
-        parser.add_argument("--storagefolder", type=str)
         parser.add_argument("--threadcount", type=int)
         parser.add_argument(
             "--download-files", dest="download_files", action="store_true"

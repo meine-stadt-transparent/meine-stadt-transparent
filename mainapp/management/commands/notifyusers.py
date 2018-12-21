@@ -9,11 +9,8 @@ from django.utils.translation import ugettext as _
 from html2text import html2text
 
 from mainapp.functions.mail import send_mail
-from mainapp.functions.search_tools import (
-    search_result_for_notification,
-    MainappSearch,
-    parse_hit,
-)
+from mainapp.functions.search_tools import MainappSearch, parse_hit
+from mainapp.functions.search_notification_tools import search_result_for_notification
 from mainapp.models import UserAlert
 
 

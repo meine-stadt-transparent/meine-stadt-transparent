@@ -146,9 +146,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "node_modules/pdfjs-dist/viewer"),  # See desgin.md
 )
 
-MEDIA_ROOT = env.str("MEDIA_ROOT", "./storage/files/")
-CACHE_ROOT = env.str("CACHE_ROOT", "./storage/cache/")
-PGP_KEY_ROOT = env.str("PGP_KEY_ROOT", "./storage/pgp-keys/")
+MINIO_PREFIX = env.str("MINIO_PREFIX", "meine-stadt-transparent-")
+MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
+MINIO_ACCESS_KEY = env.str("MINIO_ACCESS_KEY", "meinestadttransparent")
+MINIO_SECRET_KEY = env.str("MINIO_SECRET_KEY", "meinestadttransparent")
 
 WEBPACK_LOADER = {
     "DEFAULT": {

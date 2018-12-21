@@ -1,6 +1,5 @@
 import concurrent
 import logging
-import os
 import traceback
 from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
@@ -25,7 +24,6 @@ class OParlImport(OParlObjects):
 
     def __init__(self, options, resolver):
         super().__init__(options, resolver)
-        os.makedirs(self.storagefolder, exist_ok=True)
 
         # Initialize the liboparl client
         self.client = OParl.Client()

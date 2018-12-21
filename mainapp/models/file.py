@@ -8,7 +8,6 @@ from .person import Person
 
 class File(DefaultFields):
     name = models.CharField(max_length=200)
-    storage_filename = models.CharField(max_length=200)
     displayed_filename = models.CharField(max_length=200)
     # See https://stackoverflow.com/a/643772/3549270#comment11618045_643772
     mime_type = models.CharField(max_length=255)

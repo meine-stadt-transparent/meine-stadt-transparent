@@ -43,7 +43,7 @@
             <div class="col license-col">{{ file.license }}</div>
         {% endif %}
         <div class="col download-col">
-            <a href="{% url 'media' file.storage_filename %}">
+            <a href="{% url 'file-content' file.id %}">
                 <span class="fa fa-custom fa-download" aria-hidden="true"></span>
                 <span>Download</span>
             </a>

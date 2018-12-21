@@ -14,19 +14,21 @@
 </head>
 <body>
 
-{% block header %}
-    {% if main_content_id %}
-        <a href="#{{ main_content_id }}" class="sr-only">{% trans "Skip navigation" %}</a>
-    {% else %}
-        <a href="#main-content" class="sr-only">{% trans "Skip navigation" %}</a>
-    {% endif %}
+{% with main_content_id=False disable_header_search=False %}{# Defaults to avoid undefined variables #}
+    {% block header %}
+        {% if main_content_id %}
+            <a href="#{{ main_content_id }}" class="sr-only">{% trans "Skip navigation" %}</a>
+        {% else %}
+            <a href="#main-content" class="sr-only">{% trans "Skip navigation" %}</a>
+        {% endif %}
 
-    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-navbar" id="main-menu">
-        <div class="container">
-            {% include 'partials/base_navbar.html' %}
-        </div>
-    </nav>
-{% endblock %}
+        <nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark bg-navbar" id="main-menu">
+            <div class="container">
+                {% include 'partials/base_navbar.html' %}
+            </div>
+        </nav>
+    {% endblock %}
+{% endwith %}
 
 <main id="main-content" class="{% block main_content_classes %}{% endblock %}">
     {% block messages %}
@@ -41,7 +43,7 @@
 </footer>
 
 {% if settings.TEMPLATE_META.sentry_dsn %}
-    <div class="hidden" id="sentry-dsn" data-sentry-dsn="{{settings.TEMPLATE_META.sentry_dsn}}"></div>
+    <div class="hidden" id="sentry-dsn" data-sentry-dsn="{{ settings.TEMPLATE_META.sentry_dsn }}"></div>
 {% endif %}
 
 {% render_bundle 'vendor' 'js' %}

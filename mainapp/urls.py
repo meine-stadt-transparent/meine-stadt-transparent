@@ -1,6 +1,5 @@
 from django.conf.urls import url
 
-import mainapp.views.views
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
 from mainapp.views.profile import profile_view, profile_delete
 from . import views
@@ -29,7 +28,7 @@ urlpatterns = [
     url(r"^info/privacy/$", views.info_privacy, name="info_privacy"),
     url(r"^info/feedback/$", views.info_feedback, name="info_feedback"),
     url(r"^persons/$", views.persons, name="persons"),
-    url(r"^organizations/$", mainapp.views.views.organizations, name="organizations"),
+    url(r"^organizations/$", views.organizations, name="organizations"),
     url(r"^calendar/$", views.calendar, name="calendar"),
     url(r"^calendar/data/$", views.calendar_data, name="calendar_data"),
     url(
@@ -74,7 +73,7 @@ urlpatterns = [
     url(r"^location/(?P<pk>[0-9]+)/$", views.location, name="location"),
     url(r"^profile/$", profile_view, name="profile-home"),
     url(r"^profile/delete/$", profile_delete, name="profile-delete"),
-    url(r"^media/(?P<path>.*)$", views.file_serve, name="media"),
+    url(r"^file-content/(?P<id>.*)$", views.file_serve, name="file-content"),
     url(r"^robots.txt$", views.robots_txt, name="robots-txt"),
     url(r"^sitemap.xml$", views.sitemap_xml, name="sitemap-xml"),
     url(r"^opensearch.xml$", views.opensearch_xml, name="opensearch-xml"),

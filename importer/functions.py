@@ -15,9 +15,7 @@ def get_importer(options: dict) -> "OParlImport":
 
     from importer.oparl_resolve import OParlResolver
 
-    resolver = OParlResolver(
-        options["entrypoint"], options["cachefolder"], options["use_cache"]
-    )
+    resolver = OParlResolver(options["entrypoint"], options["use_cache"])
 
     system = json.loads(resolver.resolve(options["entrypoint"]).get_resolved_data())
 
