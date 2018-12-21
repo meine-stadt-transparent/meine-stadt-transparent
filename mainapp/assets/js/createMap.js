@@ -133,7 +133,7 @@ export default function ($map_element, initData, noTouchDrag) {
 
     setTiles(leaflet, initData);
 
-    if (false && initData["outline"]) {
+    if (initData["outline"]) {
         let polygons = getOutlineAsPolygons(initData["outline"]);
         setBoundsAndOutline(leaflet, polygons);
     } else {
