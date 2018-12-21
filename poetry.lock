@@ -444,11 +444,30 @@ version = "0.4.4"
 
 [[package]]
 category = "main"
+description = "Python interface for cairo"
+name = "pycairo"
+optional = false
+python-versions = "*"
+version = "1.18.0"
+
+[[package]]
+category = "main"
 description = "C parser in Python"
 name = "pycparser"
 optional = false
 python-versions = "*"
 version = "2.19"
+
+[[package]]
+category = "main"
+description = "Python bindings for GObject Introspection"
+name = "pygobject"
+optional = false
+python-versions = "*"
+version = "3.30.4"
+
+[package.dependencies]
+pycairo = ">=1.11.1"
 
 [[package]]
 category = "main"
@@ -660,7 +679,7 @@ python-versions = "*"
 version = "0.14.1"
 
 [metadata]
-content-hash = "17c98ab40fb1625a4a92186be75e5d450857411959429d77e6d351ec565b8e06"
+content-hash = "3300d14410298e267dbc71df8f545b1959cf4d1a9b55724ecda41a8f89eb65b0"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -708,7 +727,9 @@ pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "b
 py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"]
 pyahocorasick = ["819749c0f99dda5fd45f43ce588ee32109aec3006aad01a3698148603c3ad0ee"]
 pyasn1 = ["0ad0fe0593dde1e599cac0bf65bb1a4ec663032f0bc68ee44850db4251e8c501", "13794d835643ee970b2c059dbfe4eb5d751e16c693c8baee61c526abd209e5c7", "49a8ed515f26913049113820b462f698e6ed26df62c389dafb6fa3685ddca8de", "74ac8521a0480f228549be20bea555ae35678f0e754c2fbc6f1576b0959bec43", "89399ca8ecd4524f974e926d4ef9e7a787903e01f0a9cdff3131ad1361792fe5", "8f291e0338d519a1a0d07f0b9d03c9265f6be26eb32fdd21af6d3259d14ea49c", "b9d3abc5031e61927c82d4d96c1cec1e55676c1a991623cfed28faea73cdd7ca", "d3bbd726c1a760d4ca596a4d450c380b81737612fe0182f5bb3caebc17461fd9", "dea873d6c907c1cf1341fd88742a61efce33227d7743cb37564ab7d7e77dd9fd", "ded5eea5cb88bc1ce9aa074b5a3092f95ce4741887e317e9b49c7ece75d7ea0e", "e8b69ea2200d42201cbedd486eedb8980f320d4534f83ce2fb468e96aa5545d0", "edad117649643230493aeb4955456ce19ab4b12e94489dde6f7094cdb5a3c87e", "f58f2a3d12fd754aa123e9fa74fb7345333000a035f3921dbdaa08597aa53137"]
+pycairo = ["abd42a4c9c2069febb4c38fe74bfc4b4a9d3a89fea3bc2e4ba7baff7a20f783f"]
 pycparser = ["a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3"]
+pygobject = ["2d4423cbf169d50a3165f2dde21478a00215c7fb3f68d9d236af588c670980bb"]
 pypdf2 = ["e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"]
 python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93", "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"]
 python-openid = ["92c51c3ecec846cbec4aeff11f9ff47303d4a63f93b0e6ac0ec02a091fed70ef", "c2d133e47e0a7705c9272eef00d7a09c174f5bf17a127fed8e2c6499556cc782"]

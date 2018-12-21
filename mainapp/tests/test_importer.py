@@ -4,11 +4,11 @@ import logging
 import os
 import shutil
 import tempfile
-from importlib.util import find_spec
 from io import BytesIO
 from unittest import skipIf
 from unittest.mock import patch
 
+import gi
 from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
@@ -29,12 +29,15 @@ from mainapp.models import (
 )
 from mainapp.tests.tools import MinioMock
 
-gi_not_available = find_spec("gi") is None
-if not gi_not_available:
-    # Those two require importing gi
+try:
+    gi.require_version("OParl", "0.4")
     from importer.oparl_helper import default_options
     from importer.oparl_import import OParlImport
     from importer.oparl_resolve import OParlResolver
+
+    gi_not_available = False
+except ValueError:
+    gi_not_available = True
 
 logger = logging.getLogger(__name__)
 

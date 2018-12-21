@@ -14,6 +14,7 @@ addons:
       - libmagickwand-dev
       - poppler-utils
       - tesseract-ocr
+      - libgirepository1.0-dev
 
 cache:
   pip: true

@@ -14,7 +14,7 @@ RUN apt-get update && \
     apt-get install -y curl && \
     curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y python3-pip python3-venv python3-gi python3-dev json-glib-1.0 gir1.2-json-1.0 \
-    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev && \
+    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev libgirepository1.0-dev && \
     apt-get autoremove -y && \
     apt-get clean
 
