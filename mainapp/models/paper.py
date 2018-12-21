@@ -36,7 +36,8 @@ class Paper(DefaultFields, ShortableNameFields):
     )
 
     def all_files(self) -> Generator[File, None, None]:
-        yield self.main_file
+        if self.main_file:
+            yield self.main_file
         for file in self.files.all():
             yield file
 
