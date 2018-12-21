@@ -289,13 +289,11 @@ LOGGING = {
 
 LOGGING.update(env.json("LOGGING", {}))
 
-OPARL_ENDPOINTS_LIST = env.list(
-    "OPARL_ENDPOINTS_LIST",
-    cast=str,
-    default=["https://dev.oparl.org/api/endpoints", "https://mirror.oparl.org/bodies"],
+OPARL_ENDPOINTS_LIST = env.str(
+    "OPARL_ENDPOINTS_LIST", "https://mirror.oparl.org/bodies"
 )
 
-OPARL_ENDPOINT = env.str("OPARL_ENDPOINT", default=None)
+OPARL_ENDPOINT = env.str("OPARL_ENDPOINT", None)
 
 TEMPLATE_META = {
     "logo_name": env.str("TEMPLATE_LOGO_NAME", "MST"),

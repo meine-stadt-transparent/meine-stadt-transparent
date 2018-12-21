@@ -1,5 +1,5 @@
 import logging
-from typing import Tuple, Generator, Optional, List
+from typing import Tuple, List, Any, TYPE_CHECKING
 
 import requests
 from django.core.exceptions import ValidationError
@@ -11,6 +11,9 @@ from importer.functions import get_importer
 from importer.oparl_helper import default_options
 from meine_stadt_transparent import settings
 
+if TYPE_CHECKING:
+    from importer.oparl_import import OParlImport
+
 logger = logging.getLogger(__name__)
 
 
@@ -21,39 +24,25 @@ class OParlCli:
     It uses the joint information the oparl dev portal and the oparl mirror.
     """
 
-    @staticmethod
-    def bodies() -> Generator[Tuple[Optional[str], str, dict], None, None]:
-        for next_page in settings.OPARL_ENDPOINTS_LIST:
-            while next_page:
-                response = requests.get(next_page).json()
-                # links for mirror.oparl.org, meta is for dev.oparl.org
-                if "links" in response:
-                    next_page = response["links"].get("next")
-                    yield from OParlCli.oparl_mirror_yield(response)
-                elif "meta" in response:
-                    next_page = response["meta"].get("next")
-                    yield from OParlCli.dev_oparl_yield(response)
-                else:
-                    logger.error("Expected links or pagination")
-                    next_page = None
+    def __init__(self):
+        self.bodies = []  # type: List[Tuple[str, str, str]]
 
-    @staticmethod
-    def oparl_mirror_yield(response):
-        for body in response["data"]:
-            yield (None, body["oparl-mirror:originalId"], body)
+        response = requests.get(settings.OPARL_ENDPOINTS_LIST)
+        response.raise_for_status()
+        next_page = settings.OPARL_ENDPOINTS_LIST
+        while next_page:
+            response = requests.get(next_page).json()
+            next_page = response["links"].get("next")
+            for body in response["data"]:
+                self.bodies.append(
+                    (
+                        body.get("name") or body["oparl-mirror:originalId"],
+                        body["oparl-mirror:originalId"],
+                        body["id"],
+                    )
+                )
 
-    @staticmethod
-    def dev_oparl_yield(response):
-        for system in response["data"]:
-            for body in system["bodies"]:
-                system_url = system["system"]
-                if system_url:
-                    system_url = system_url["id"]
-                yield (system_url, body["oparlURL"], body)
-
-    @classmethod
-    def from_userinput(cls, userinput):
-        """ It's magic in the disney sense """
+    def from_userinput(self, userinput: str, mirror: bool) -> None:
         try:
             URLValidator()(userinput)
             is_url = True
@@ -61,33 +50,36 @@ class OParlCli:
             is_url = False
 
         if not is_url:
-            endpoint_system, endpoint_id = cls.get_endpoint_from_cityname(userinput)
+            endpoint_system, endpoint_body = self.get_endpoint_from_cityname(
+                userinput, mirror
+            )
         else:
-            endpoint_system, endpoint_id = cls.get_endpoint_from_body_url(userinput)
+            endpoint_system, endpoint_body = self.get_endpoint_from_body_url(userinput)
 
-        importer, liboparl_body = cls.get_importer_with_body(
-            endpoint_id, endpoint_system
+        importer, liboparl_body = self.get_importer_with_body(
+            endpoint_body, endpoint_system
         )
 
-        ags = cls.get_ags(liboparl_body, userinput)
+        ags = self.get_ags(liboparl_body, userinput)
 
-        cls.run_importer(ags, importer, liboparl_body)
+        self.run_importer(ags, importer, liboparl_body)
 
-    @classmethod
-    def get_endpoint_from_body_url(cls, userinput):
+    def get_endpoint_from_body_url(self, userinput: str) -> Tuple[str, str]:
         # We can't use the resolver here as we don't know the system url yet, which the resolver needs for determining
         # the cache folder
-        logging.info("Found url, importing url")
+        logging.info("Using {} as url".format(userinput))
         response = requests.get(userinput)
         response.raise_for_status()
-        if response.json().get("type") != "https://schema.oparl.org/1.0/Body":
+        data = response.json()
+        if data.get("type") != "https://schema.oparl.org/1.0/Body":
             raise Exception("The url you provided didn't point to an oparl body")
-        endpoint_system = response.json()["system"]
+        endpoint_system = data["system"]
         endpoint_id = userinput
         return endpoint_system, endpoint_id
 
-    @classmethod
-    def get_importer_with_body(cls, endpoint_id, endpoint_system):
+    def get_importer_with_body(
+        self, endpoint_body: str, endpoint_system: str
+    ) -> Tuple["OParlImport", Any]:
         """ Get the oparl importer and the body as liboparl object """
         liboparl_body = None
         options = default_options.copy()
@@ -96,72 +88,91 @@ class OParlCli:
         importer = get_importer(options)
         bodies = importer.get_bodies()
         for body in bodies:
-            if body.get_id() == endpoint_id:
+            if body.get_id() == endpoint_body:
                 liboparl_body = body
                 break
         if not liboparl_body:
             raise Exception(
-                "Failed to find body {} in {}".format(endpoint_id, endpoint_system)
+                "Failed to find body {} in {}".format(endpoint_body, endpoint_system)
             )
         return importer, liboparl_body
 
-    @classmethod
-    def run_importer(cls, ags, importer, liboparl_body):
-        logger.info("Importing {}".format(liboparl_body.get_id()))
-        main_body = importer.body(liboparl_body)
-
-        logger.info("Finished importing body")
-        importer.list_batched(liboparl_body.get_paper, importer.paper)
-        importer.list_batched(liboparl_body.get_person, importer.person)
-        importer.list_batched(liboparl_body.get_organization, importer.organization)
-        importer.list_batched(liboparl_body.get_meeting, importer.meeting)
-
-        logger.info("Finished importing objects")
-        importer.add_missing_associations()
-
-        logger.info("We're done with the OParl import. We just need some metadata now")
-        import_streets(main_body, ags)
-        import_outline(main_body, ags)
-
-        dotenv = (
-            "SITE_DEFAULT_BODY={}".format(main_body.id)
-            + "\n"
-            + "OPARL_ENDPOINT={}".format(importer.entrypoint)
+    def run_importer(
+        self, ags: str, importer: "OParlImport", liboparl_body: Any
+    ) -> None:
+        dotenv = "SITE_DEFAULT_BODY={}\nOPARL_ENDPOINT={}".format(
+            liboparl_body.get_id(), importer.entrypoint
         )
 
         logger.info(
-            "Done! Please add the following line to your dotenv file: \n" + dotenv
+            "Found the oparl endpoint. Please add the following line to your dotenv file "
+            "(you'll be reminded again after the import finished): \n\n" + dotenv + "\n"
         )
 
-    @classmethod
-    def get_ags(cls, liboparl_body, userinput):
+        logger.info("Importing {}".format(liboparl_body.get_id()))
+        main_body = importer.body(liboparl_body)
+
+        logger.info("Importing the shape of the city")
+        import_outline(main_body, ags)
+        logger.info("Importing the streets")
+        import_streets(main_body, ags)
+
+        logger.info("Importing the papers")
+        importer.list_batched(liboparl_body.get_paper, importer.paper)
+        logger.info("Importing the persons")
+        importer.list_batched(liboparl_body.get_person, importer.person)
+        logger.info("Importing the organizations")
+        importer.list_batched(liboparl_body.get_organization, importer.organization)
+        logger.info("Importing the meetings")
+        importer.list_batched(liboparl_body.get_meeting, importer.meeting)
+
+        logger.info("Add some missing foreign keys")
+        importer.add_missing_associations()
+
+        logger.info(
+            "Done! Please add the following line to your dotenv file: \n\n"
+            + dotenv
+            + "\n"
+        )
+
+    def get_ags(self, liboparl_body: Any, userinput: str) -> str:
         ags = liboparl_body.get_ags()
         if not ags:
             ags = CityToAGS.query_wikidata(userinput)
-        if not ags:
+        if len(ags) == 0:
             raise Exception(
                 "Could not find the Gemeindeschlüssel for '{}'".format(userinput)
             )
-        logging.info("Using {} as Gemeindeschlüssel for '{}'".format(ags, userinput))
-        return ags
+        if len(ags) > 1:
+            raise Exception(
+                "Found more than one Gemeindeschlüssel for '{}': {}".format(
+                    userinput, ags
+                )
+            )
 
-    @classmethod
-    def get_endpoint_from_cityname(cls, userinput: str) -> Tuple[str, str]:
-        matching = []  # type: List[Tuple[str, str, dict]]
-        for (system_id, body_id, body) in cls.bodies():
-            if (system_id, body_id, body) in matching:
-                continue
-            if userinput.casefold() in body["name"].casefold():
+        logging.info("Using {} as Gemeindeschlüssel for '{}'".format(ags, userinput))
+        return ags[0][1]
+
+    def get_endpoint_from_cityname(
+        self, userinput: str, mirror: bool
+    ) -> Tuple[str, str]:
+        matching = []  # type: List[Tuple[str, str, str]]
+        for (name, original_id, mirror_id) in self.bodies:
+            if userinput.casefold() in name.casefold():
                 # The oparl mirror doesn't give us the system id we need
-                if not system_id:
-                    response = requests.get(body_id)
-                    response.raise_for_status()
-                    system_id = response.json()["system"]
-                matching.append((system_id, body_id, body))
+                response = requests.get(original_id)
+                response.raise_for_status()
+                system_id = response.json()["system"]
+                if mirror:
+                    matching.append((name, system_id, mirror_id))
+                else:
+                    matching.append((name, system_id, original_id))
         if len(matching) == 0:
             raise Exception("Could not find anything for '{}'".format(userinput))
         if len(matching) > 1:
-            exact_matches = [i for i in matching if i[2]["name"] == userinput]
+            exact_matches = [
+                i for i in matching if i[0].casefold() == userinput.casefold()
+            ]
             if len(exact_matches) == 1:
                 matching = exact_matches
             else:
@@ -176,4 +187,4 @@ class OParlCli:
                         + "Please provide a url yourself."
                     ).format(len(matching), len(exact_matches), userinput)
                 )
-        return matching[0][0:2]
+        return matching[0][1:3]

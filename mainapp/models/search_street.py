@@ -9,3 +9,6 @@ class SearchStreet(DefaultFields):
     bodies = models.ManyToManyField(Body, blank=True)
     osm_id = models.BigIntegerField(null=True, blank=True)
     exclude_from_search = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [models.Index(fields=["osm_id"])]

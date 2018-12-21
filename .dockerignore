@@ -13,3 +13,4 @@ mainapp/assets/bundles
 .git
 .idea
 .tox
+.env

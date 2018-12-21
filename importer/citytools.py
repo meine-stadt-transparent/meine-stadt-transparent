@@ -6,7 +6,7 @@ import tempfile
 
 import requests
 
-from mainapp.models import SearchStreet, Location
+from mainapp.models import SearchStreet, Location, Body
 
 overpass_api = "http://overpass-api.de/api/interpreter"
 
@@ -34,29 +34,26 @@ def import_streets(body, gemeindeschluessel):
 
     query = streets_query_template.format(gemeindeschluessel)
 
-    r = requests.post(overpass_api, data={"data": query})
+    response = requests.post(overpass_api, data={"data": query})
 
-    logger.info(
-        "Found {} streets".format(
-            len([node for node in r.json()["elements"] if node["type"] == "way"])
-        )
-    )
+    elements = response.json()["elements"]
+    ways = [node for node in elements if node["type"] == "way"]
+    logger.info("Found {} streets".format(len(ways)))
 
-    for node in r.json()["elements"]:
-        if node["type"] == "way":
-            obj = SearchStreet.objects.filter(osm_id=node["id"])
-            if obj.count() == 0:
-                street = SearchStreet()
-                street.displayed_name = node["tags"]["name"]
-                street.osm_id = node["id"]
-                street.save()
+    for way in ways:
+        obj = SearchStreet.objects.filter(osm_id=way["id"]).first()
+        if not obj:
+            street = SearchStreet()
+            street.displayed_name = way["tags"]["name"]
+            street.osm_id = way["id"]
+            street.save()
 
-                street.bodies.add(body)
+            street.bodies.add(body)
 
-                logger.info("Created: %s" % node["tags"]["name"])
+            logger.info("Created: %s" % way["tags"]["name"])
 
 
-def import_outline(body, gemeindeschluessel):
+def import_outline(body: Body, gemeindeschluessel: str):
     if not body.outline:
         outline = Location()
         outline.name = "Outline of " + body.name
@@ -69,9 +66,9 @@ def import_outline(body, gemeindeschluessel):
 
     query = query_template_outline.format(gemeindeschluessel)
 
-    r = requests.post(overpass_api, data={"data": query})
+    response = requests.post(overpass_api, data={"data": query})
 
-    geojson = convert_to_geojson(r.text)
+    geojson = convert_to_geojson(response.text)
     outline.geometry = geojson
     outline.save()
 

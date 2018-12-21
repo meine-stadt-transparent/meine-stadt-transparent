@@ -19,4 +19,4 @@ class Command(BaseCommand, Importamenities):
     def handle(self, *args, **options):
         body = Body.objects.get(id=options["body-id"])
 
-        self.importamenities(body, options["gemeindeschluessel"], options["amenity"])
+        self.import_amenities(body, options["gemeindeschluessel"], options["amenity"])

@@ -1,7 +1,11 @@
 import json
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from importer.oparl_import import OParlImport
 
 
-def get_importer(options):
+def get_importer(options: dict) -> "OParlImport":
     """
     We need this function because we (a) must not have a dependency on gi in the mainapp and (b) need to select
     over normal vs. Sternberg fixup.

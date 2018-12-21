@@ -8,6 +8,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser, add_entrypoint=True):
         parser.add_argument("cityname", type=str)
+        parser.add_argument(
+            "--mirror",
+            action="store_true",
+            help="Use the oparl mirror instead of the original oparl api",
+        )
 
     def handle(self, *args, **options):
-        OParlCli.from_userinput(options["cityname"])
+        oparl_cli = OParlCli()
+        oparl_cli.from_userinput(options["cityname"], options["mirror"])

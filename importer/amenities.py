@@ -20,11 +20,12 @@ class Importamenities:
     overpass = "http://overpass-api.de/api/interpreter"
 
     @classmethod
-    def importamenities(cls, body, ags, amenity):
+    def import_amenities(cls, body, ags, amenity):
         query = cls.query_template.format(ags, amenity)
 
-        r = requests.post(cls.overpass, data={"data": query})
-        for node in r.json()["elements"]:
+        response = requests.post(cls.overpass, data={"data": query})
+        response.raise_for_status()
+        for node in response.json()["elements"]:
             if node["type"] == "node":
                 obj = SearchPoi.objects.filter(osm_id=node["id"])
                 if obj.count() == 0:

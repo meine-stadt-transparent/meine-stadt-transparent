@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
-        file.locations = extract_locations(file.parsed_text)
+        file.locations.set(extract_locations(file.parsed_text))
         file.save()
 
     def handle(self, *args, **options):
