@@ -2,7 +2,10 @@ from django.urls import reverse
 from django.utils.translation import pgettext
 
 from mainapp.functions.geo_functions import latlng_to_address
-from mainapp.functions.search_tools import NotificationSearchResult, params_to_search_string
+from mainapp.functions.search_tools import (
+    NotificationSearchResult,
+    params_to_search_string,
+)
 from mainapp.models import Person, Organization
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 

@@ -181,11 +181,6 @@ def _add_date_before(search, params, options, errors):
     return search
 
 
-def add_modified_since(search, since: datetime):
-    search = search.filter(Q("range", modified={"gte": since}))
-    return search
-
-
 def escape_elasticsearch_query(query):
     return query.replace("/", "\/")
 
