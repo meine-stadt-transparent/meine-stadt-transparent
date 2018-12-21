@@ -3,6 +3,7 @@ import re
 import subprocess
 import tempfile
 from subprocess import CalledProcessError
+from typing import Dict, List, Optional, Any
 
 import geoextract
 import requests
@@ -13,7 +14,7 @@ from wand.color import Color
 from wand.image import Image
 
 from mainapp.functions.geo_functions import geocode
-from mainapp.models import SearchStreet, Body, Location, Person
+from mainapp.models import SearchStreet, Body, Location, Person, Paper
 
 logger = logging.getLogger(__name__)
 
@@ -177,7 +178,7 @@ def get_geodata(location, fallback_city_name):
     return geocode(search_str)
 
 
-def format_location_name(location):
+def format_location_name(location: Dict[str, str]):
     name = ""
 
     if "street" in location:
@@ -190,18 +191,22 @@ def format_location_name(location):
     return name
 
 
-def extract_found_locations(text, bodies=None):
+def extract_found_locations(
+    text: str, bodies: Optional[List[Body]] = None
+) -> List[Dict[str, str]]:
     search_for = create_geoextract_data(bodies)
     pipeline = AddressPipeline(search_for)
     return pipeline.extract(text)
 
 
-def detect_relevant_bodies(_):
+def detect_relevant_bodies(_) -> List[Body]:
     body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
     return [body]
 
 
-def extract_locations(text, fallback_city=settings.GEOEXTRACT_DEFAULT_CITY):
+def extract_locations(
+    text: str, fallback_city: str = settings.GEOEXTRACT_DEFAULT_CITY
+) -> List[Location]:
     if not text:
         return []
 
@@ -209,6 +214,9 @@ def extract_locations(text, fallback_city=settings.GEOEXTRACT_DEFAULT_CITY):
 
     locations = []
     for found_location in found_locations:
+        if "name" in found_location and len(found_location["name"]) < 5:
+            continue
+
         location_name = format_location_name(found_location)
 
         defaults = {"description": location_name, "is_official": False}
@@ -234,14 +242,14 @@ def extract_locations(text, fallback_city=settings.GEOEXTRACT_DEFAULT_CITY):
     return locations
 
 
-def index_papers_to_geodata(papers):
+def index_papers_to_geodata(papers: List[Paper]) -> Dict[str, Any]:
     """
     :param papers: list of Paper
     :return: object
     """
     geodata = {}
     for paper in papers:
-        for file in paper.files.all():
+        for file in paper.all_files():
             for location in file.locations.all():
                 if location.id not in geodata:
                     geodata[location.id] = {

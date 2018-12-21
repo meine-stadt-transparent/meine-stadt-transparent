@@ -1,3 +1,5 @@
+from typing import Generator
+
 from django.db import models
 from django.urls import reverse
 
@@ -32,6 +34,11 @@ class Paper(DefaultFields, ShortableNameFields):
     paper_type = models.ForeignKey(
         PaperType, null=True, blank=True, on_delete=models.CASCADE
     )
+
+    def all_files(self) -> Generator[File, None, None]:
+        yield self.main_file
+        for file in self.files.all():
+            yield file
 
     def get_autocomplete(self):
         autocomplete = self.name + " " + self.reference_number

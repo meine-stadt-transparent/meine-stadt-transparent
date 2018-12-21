@@ -1,5 +1,3 @@
-import logging
-
 from django.core.management.base import BaseCommand
 
 from mainapp.functions.document_parsing import extract_locations
@@ -10,14 +8,16 @@ class Command(BaseCommand):
     help = "Rebuilds the file locations"
 
     def add_arguments(self, parser):
-        parser.add_argument("--id", type=int, help="Rebuild only one file")
+        parser.add_argument("--id", type=int, nargs="*", help="Rebuild only one file")
         parser.add_argument(
             "--all", dest="all", action="store_true", help="Rebuild all files"
         )
 
     def parse_file(self, file: File):
-        logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
-        file.locations.set(extract_locations(file.parsed_text))
+        self.stdout.write("Parsing: " + str(file.id) + " (" + file.name + ")")
+        locations = extract_locations(file.parsed_text)
+        self.stdout.write("{} locations found".format(len(locations)))
+        file.locations.set(locations)
         file.save()
 
     def handle(self, *args, **options):
@@ -26,8 +26,11 @@ class Command(BaseCommand):
             for file in all_files:
                 try:
                     self.parse_file(file)
-                except Exception:
-                    logging.error("Error parsing file: " + str(file.id))
+                except Exception as e:
+                    self.stderr.write(
+                        "Error parsing file: {}: {}".format(str(file.id), e)
+                    )
         elif options["id"]:
-            file = File.objects.get(id=options["id"])
-            self.parse_file(file)
+            for id in options["id"]:
+                file = File.objects.get(id=id)
+                self.parse_file(file)

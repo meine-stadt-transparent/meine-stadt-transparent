@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from django.conf import settings
 from django.contrib import messages
@@ -60,7 +61,7 @@ def is_subscribed_to_search(user, params: dict):
         return UserAlert.user_has_alert(user, params)
 
 
-def build_map_object(body=None, geo_papers=None):
+def build_map_object(body: Optional[Body] = None, geo_papers=None):
     if not body:
         body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
 

@@ -25,22 +25,22 @@ class Command(BaseCommand):
         )
         fallback_date = datetime.datetime.strptime(options["fallback_date"], "%Y-%m-%d")
 
-        print("Fixing papers...")
+        self.stdout.write("Fixing papers...")
         num = Paper.objects.filter(
             created__lte=import_date, legal_date__isnull=False
         ).update(sort_date=F("legal_date"), modified=F("legal_date"))
-        print("=> Changed records: ", num)
+        self.stdout.write("=> Changed records: ", num)
         num = Paper.objects.filter(legal_date__isnull=True).update(
             sort_date=fallback_date
         )
-        print("=> Not determinable: ", num)
+        self.stdout.write("=> Not determinable: ", num)
 
-        print("Fixing files...")
+        self.stdout.write("Fixing files...")
         num = File.objects.filter(
             created__lte=import_date, legal_date__isnull=False
         ).update(sort_date=F("legal_date"), modified=F("legal_date"))
-        print("=> Changed records: ", num)
+        self.stdout.write("=> Changed records: ", num)
         num = File.objects.filter(legal_date__isnull=True).update(
             sort_date=fallback_date
         )
-        print("=> Not determinable: ", num)
+        self.stdout.write("=> Not determinable: ", num)

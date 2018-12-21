@@ -500,6 +500,9 @@ class OParlObjects(OParlHelper):
 
         if file_name_before != file.name or parsed_text_before != file.parsed_text:
             # These two operations are rather CPU-intensive, so we only perform them if something relevant has changed
+            self.logger.info(
+                "Extracting locations from PDF for file {} ({})".format(file.id, file)
+            )
             file.locations.set(extract_locations(file.parsed_text))
             file.mentioned_persons.set(
                 extract_persons(file.name + "\n" + (file.parsed_text or "") + "\n")

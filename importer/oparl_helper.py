@@ -26,7 +26,7 @@ default_options = {
     "use_cache": True,
     "ignore_modified": False,
     "no_threads": False,
-    "batchsize": 50,
+    "batchsize": 1,
     "threadcount": 10,
     "entrypoint": settings.OPARL_ENDPOINT,
 }
