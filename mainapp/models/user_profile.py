@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from mainapp.functions.minio import minio_client, minio_pgp_keys_buckets
+from mainapp.functions.minio import minio_client, minio_pgp_keys_bucket
 
 
 class UserProfile(models.Model):
@@ -24,7 +24,7 @@ class UserProfile(models.Model):
         """ This should eventually be abstracted away into a file manager class """
         key_bytes = pgp_key.encode()
         minio_client.put_object(
-            minio_pgp_keys_buckets,
+            minio_pgp_keys_bucket,
             pgp_key_fingerprint,
             BytesIO(key_bytes),
             len(key_bytes),
@@ -38,7 +38,7 @@ class UserProfile(models.Model):
         if not self.pgp_key_fingerprint:
             return
 
-        minio_client.remove_object(minio_pgp_keys_buckets, self.pgp_key_fingerprint)
+        minio_client.remove_object(minio_pgp_keys_bucket, self.pgp_key_fingerprint)
 
         self.pgp_key_fingerprint = None
         self.save()
@@ -49,7 +49,7 @@ class UserProfile(models.Model):
             return None
 
         return minio_client.get_object(
-            minio_pgp_keys_buckets, self.pgp_key_fingerprint
+            minio_pgp_keys_bucket, self.pgp_key_fingerprint
         ).read()
 
     class Meta:

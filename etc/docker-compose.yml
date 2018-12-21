@@ -49,7 +49,7 @@ services:
       volumes:
         - minio_data:/minio_data
       environment:
-        MINIO_ACCESS_KEY: changeme
+        MINIO_ACCESS_KEY: meinestadttransparent
         MINIO_SECRET_KEY: changeme
       ports:
         - 9000:9000

@@ -67,4 +67,4 @@ minio_client = LazyMinio()
 
 minio_file_bucket = settings.MINIO_PREFIX + "files"
 minio_cache_bucket = settings.MINIO_PREFIX + "cache"
-minio_pgp_keys_buckets = settings.MINIO_PREFIX + "pgp-keys"
+minio_pgp_keys_bucket = settings.MINIO_PREFIX + "pgp-keys"

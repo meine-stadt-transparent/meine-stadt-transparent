@@ -11,7 +11,6 @@ USE_ELASTICSEARCH=True
 ELASTICSEARCH_URL=http://elasticsearch:9200/
 ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
 
-MINIO_ACCESS_KEY=changeme
 MINIO_SECRET_KEY=changeme
 
 # Delete this entry if you don't use the docker container
