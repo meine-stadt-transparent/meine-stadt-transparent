@@ -104,7 +104,7 @@ docker-compose run --rm django ./manage.py import [mycitiesname]
 
 You should now have a usable instance!
 
-Finally, create a daily cronjob with the following. This will clear the oparl cache, import changed objects from the oparl api and then notify the users. Also make sure that there is a cronjob for certbot.
+Finally, create a daily cronjob with the following. This will import changed objects from the oparl api and then notify the users. Also make sure that there is a cronjob for certbot.
 
 ```
 docker-compose run --rm django ./manage.py cron

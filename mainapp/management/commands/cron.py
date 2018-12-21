@@ -16,10 +16,9 @@ class Command(BaseCommand):
     help = "To be called daily by a cron job. Updates the oparl dataset and sends notifications to users"
 
     def handle(self, *args, **options):
-        importer = get_importer(default_options.copy())
-        # This is darn ugly but liboparl doesn't support updates yet
-        minio_client.remove_bucket(minio_cache_bucket)
-        minio_client.make_bucket(minio_cache_bucket)
+        options = default_options.copy()
+        options["use_cache"] = False
+        importer = get_importer(options)
 
         importer.run_singlethread()
 

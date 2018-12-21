@@ -1,7 +1,5 @@
-import hashlib
 import json
 import logging
-import os
 from datetime import date, datetime
 from importlib import import_module
 from typing import Optional, Type, Tuple, TypeVar, Callable
@@ -49,7 +47,6 @@ class OParlHelper:
         self.threadcount = options["threadcount"]
         self.batchsize = options["batchsize"]
         self.no_threads = options["no_threads"]
-        entrypoint_hash = hashlib.sha1(self.entrypoint.encode("utf-8")).hexdigest()
         self.download_files = options["download_files"]
         self.official_geojson = True
         self.filename_length_cutoff = 100

@@ -100,17 +100,19 @@ class OParlCli:
     def run_importer(
         self, ags: str, importer: "OParlImport", liboparl_body: Any
     ) -> None:
-        dotenv = "SITE_DEFAULT_BODY={}\nOPARL_ENDPOINT={}".format(
-            liboparl_body.get_id(), importer.entrypoint
-        )
+        logger.info("Importing {}".format(liboparl_body.get_id()))
+        logger.info("The Amtliche Gemeindeschlüssel is {}".format(ags))
+        main_body = importer.body(liboparl_body)
+
+        dotenv = "OPARL_ENDPOINT={}\n".format(importer.entrypoint)
+
+        if main_body.id != settings.SITE_DEFAULT_BODY:
+            dotenv += "SITE_DEFAULT_BODY={}\n".format(main_body.id)
 
         logger.info(
             "Found the oparl endpoint. Please add the following line to your dotenv file "
-            "(you'll be reminded again after the import finished): \n\n" + dotenv + "\n"
+            "(you'll be reminded again after the import finished): \n\n" + dotenv
         )
-
-        logger.info("Importing {}".format(liboparl_body.get_id()))
-        main_body = importer.body(liboparl_body)
 
         logger.info("Importing the shape of the city")
         import_outline(main_body, ags)
