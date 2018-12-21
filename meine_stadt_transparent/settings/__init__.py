@@ -195,9 +195,6 @@ OCR_AZURE_API = env.str(
 )
 
 # Configuration regarding the city of choice
-SITE_GEO_LIMITS = env.json("SITE_GEO_LIMITS")
-SITE_GEO_CENTER = env.json("SITE_GEO_CENTER")
-SITE_GEO_INIT_ZOOM = env.int("SITE_GEO_INIT_ZOOM", 11)
 SITE_DEFAULT_BODY = env.int("SITE_DEFAULT_BODY", 1)
 SITE_DEFAULT_ORGANIZATION = env.int("SITE_DEFAULT_ORGANIZATION", 1)
 

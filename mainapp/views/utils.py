@@ -70,9 +70,6 @@ def build_map_object(body=None, geo_papers=None):
         outline = None
 
     map_obj = {
-        "center": settings.SITE_GEO_CENTER,
-        "zoom": settings.SITE_GEO_INIT_ZOOM,
-        "limit": settings.SITE_GEO_LIMITS,
         "outline": outline,
         "tiles": {
             "provider": settings.MAP_TILES_PROVIDER,

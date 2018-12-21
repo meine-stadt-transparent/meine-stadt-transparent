@@ -19,9 +19,6 @@ OPENCAGEDATA_KEY=alsonotsosecretkey
 GEOEXTRACT_DEFAULT_CITY=Köln
 SITE_DEFAULT_ORGANIZATION=1
 SITE_DEFAULT_BODY=1
-SITE_GEO_LIMITS={"min": {"lat": 47.965, "lng": 11.286}, "max": {"lat": 48.296, "lng": 11.871}}
-SITE_GEO_CENTER={"lat": 48.137, "lng": 11.575}
-SITE_GEO_INIT_ZOOM=12
 
 # You need to generate tokens in the relevant developer poprtal before you can use them
 SOCIALACCOUNT_USE_FACEBOOK=False

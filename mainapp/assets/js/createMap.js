@@ -1,52 +1,55 @@
 import L from "leaflet";
 import {CooperativeScrollWheelZoom} from "./LeafletCooperativeScrollWheelZoom";
 
-let coordsToPolygon = function (coords) {
-    return coords[0].map((lnglat) => L.latLng(lnglat[1], lnglat[0]));
+const outlineStroke = {
+    weight: 1,
+    fillColor: "#ffffff",
+    fillOpacity: 0.75,
+    stroke: true,
+    color: "#0000ff",
+    opacity: 0.5,
+    dashArray: [2, 4]
 };
 
-let getPolygonCoveringExterior = function (limitRect, outline) {
+
+function coordsToPolygon(coords) {
+    return coords[0].map((lnglat) => L.latLng(lnglat[1], lnglat[0]));
+}
+
+function getOutlineAsPolygons(outline) {
     let polygons = [];
-    if (typeof(outline) === 'string') {
+    if (typeof (outline) === "string") {
         outline = JSON.parse(outline);
     }
 
-    // The limit of the view is the outer ring of the polygon
-    polygons.push([
-        L.latLng(limitRect['min']['lat'], limitRect['min']['lng']),
-        L.latLng(limitRect['min']['lat'], limitRect['max']['lng']),
-        L.latLng(limitRect['max']['lat'], limitRect['max']['lng']),
-        L.latLng(limitRect['max']['lat'], limitRect['min']['lng']),
-    ]);
-
     // The shape of the city itself is the "hole" in the polygon
-    if (outline['type'] && outline['type'] === 'Polygon') {
-        polygons.push(coordsToPolygon(outline['coordinates']));
+    if (outline["type"] && outline["type"] === "Polygon") {
+        polygons.push(coordsToPolygon(outline["coordinates"]));
     }
-    if (outline['features']) {
-        outline['features'].forEach((feature) => {
-            if (feature['geometry']['type'] === 'MultiPolygon') {
-                feature['geometry']['coordinates'].forEach((coords) => polygons.push(coordsToPolygon(coords)));
+    if (outline["features"]) {
+        outline["features"].forEach((feature) => {
+            if (feature["geometry"]["type"] === "MultiPolygon") {
+                feature["geometry"]["coordinates"].forEach((coords) => polygons.push(coordsToPolygon(coords)));
             }
-            if (feature['geometry']['type'] === 'Polygon') {
-                polygons.push(coordsToPolygon(feature['geometry']['coordinates']));
+            if (feature["geometry"]["type"] === "Polygon") {
+                polygons.push(coordsToPolygon(feature["geometry"]["coordinates"]));
             }
         });
     }
 
     return polygons;
-};
+}
 
-let setTiles = function (leaflet, initData) {
-    let tiles = initData['tiles'];
-    switch (tiles['provider']) {
-        case 'OSM':
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+function setTiles(leaflet, initData) {
+    let tiles = initData["tiles"];
+    switch (tiles["provider"]) {
+        case "OSM":
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap</a>',
             }).addTo(leaflet);
             break;
-        case 'Mapbox':
-            let tileUrl = (tiles['tileUrl'] ? tiles['tileUrl'] : 'https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}');
+        case "Mapbox":
+            let tileUrl = (tiles["tileUrl"] ? tiles["tileUrl"] : "https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}");
             L.tileLayer(tileUrl, {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
                 accessToken: tiles['token'],
@@ -54,50 +57,38 @@ let setTiles = function (leaflet, initData) {
             }).addTo(leaflet);
             break;
     }
-};
+}
 
-let setInitView = function (leaflet, initData) {
-    let initCenter = L.latLng(35.658611, 139.745556); // If nothing else is said explicitly, we're probably talking about the Tokyo Tower
-    let initZoom = 15;
-    if (initData['center']) {
-        initCenter = L.latLng(initData['center']['lat'], initData['center']['lng']);
-    }
-    if (initData['zoom']) {
-        initZoom = initData['zoom'];
-    }
-    leaflet.setView(initCenter, initZoom);
-};
+function setBoundsAndOutline(leaflet, polygons) {
+    let cityBounds = L.polygon(polygons[0]).getBounds();
+    let paddedBounds = cityBounds.pad(1);
 
-let setOutline = function (leaflet, initData) {
-    if (initData['outline'] && initData['limit']) {
-        let polygon = getPolygonCoveringExterior(initData['limit'], initData['outline']);
-        let polygonLayer = L.polygon(polygon, {
-            weight: 1,
-            fillColor: "#ffffff",
-            fillOpacity: 0.75,
-            stroke: true,
-            color: '#0000ff',
-            opacity: 0.5,
-            dashArray: [2, 4]
-        });
-        leaflet.addLayer(polygonLayer);
-    }
-};
+    // View is limit to the city and a bit of surrounding area
+    leaflet.setMaxBounds(paddedBounds);
+    // Sets the initial zoom
+    leaflet.fitBounds(cityBounds);
+    // We don"t want the user to be able zoom out so far he can see we"re using a bounding box
+    leaflet.setMinZoom(leaflet.getBoundsZoom(paddedBounds, true));
 
-let setBounds = function (leaflet, initData) {
-    if (initData['limit']) {
-        let bounds = L.latLngBounds(
-            L.latLng(initData['limit']['min']['lat'], initData['limit']['min']['lng']),
-            L.latLng(initData['limit']['max']['lat'], initData['limit']['max']['lng'])
-        );
-        leaflet.setMaxBounds(bounds);
-    }
-};
+    // The white-ishly blurred area is paddedBounds as polygon
+    let blurringBounds = [
+        paddedBounds.getNorthEast(),
+        paddedBounds.getNorthWest(),
+        paddedBounds.getSouthWest(),
+        paddedBounds.getSouthEast(),
+    ];
 
-let setZoomBehavior = function (leaflet) {
-    leaflet.addHandler('cooperativezoom', CooperativeScrollWheelZoom);
+    // This will make the inner part by normal and outer surrounding area white-ish
+    polygons.unshift(blurringBounds);
+
+    let polygonLayer = L.polygon(polygons, outlineStroke);
+    leaflet.addLayer(polygonLayer);
+}
+
+function setZoomBehavior(leaflet) {
+    leaflet.addHandler("cooperativezoom", CooperativeScrollWheelZoom);
     leaflet.cooperativezoom.enable();
-};
+}
 
 function setScrollingBehavior(noTouchDrag, leaflet, $map_element) {
     if (noTouchDrag === true) {
@@ -130,21 +121,29 @@ export default function ($map_element, initData, noTouchDrag) {
     // noTouchDrag: Dragging is disabled by default.
     // For mouse users, it is enabled once the first mouse-typical event occurs
     // For touch users, it is enabled as long as the map has the focus
-    // This behavior is enabled for maps that are shown by default. Drop-down-maps keep leaflet's default behavior.
+    // This behavior is enabled for maps that are shown by default. Drop-down-maps keep leaflet"s default behavior.
 
     let leaflet = L.map($map_element.attr("id"), {
         maxBoundsViscosity: 1,
-        minZoom: (initData['zoom'] < 12 ? initData['zoom'] : 12),
         maxZoom: 19,
         scrollWheelZoom: !(noTouchDrag === true),
         dragging: !(noTouchDrag === true),
+        zoomSnap: 0.1,
     });
 
     setTiles(leaflet, initData);
-    setInitView(leaflet, initData);
-    setBounds(leaflet, initData);
-    setOutline(leaflet, initData);
+
+    if (false && initData["outline"]) {
+        let polygons = getOutlineAsPolygons(initData["outline"]);
+        setBoundsAndOutline(leaflet, polygons);
+    } else {
+        // If nothing else is said explicitly, we"re probably talking about the Tokyo Tower
+        let initCenter = L.latLng(35.658611, 139.745556);
+        let initZoom = 15;
+        leaflet.setView(initCenter, initZoom);
+    }
+
     setScrollingBehavior(noTouchDrag, leaflet, $map_element);
 
     return leaflet;
-}
+};
