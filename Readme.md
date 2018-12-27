@@ -114,6 +114,17 @@ You can execute all the other commands from this readme by prepending them with 
 
 Next, have a look at [docs/Customization.md](docs/Customization.md).
 
+### Updates
+
+After pulling a new version of the docker container, you need to run the following commands to update the assets:
+
+```
+docker-compose down
+rm -r /var/www/meine-stadt-transparent-static
+mkdir /var/www/meine-stadt-transparent-static
+docker-compose up
+```
+
 ## Manual Setup
 
 ### Requirements
