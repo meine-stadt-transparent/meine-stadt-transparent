@@ -44,7 +44,7 @@ Download [etc/env-template](etc/env-template) to `.env`. Change `REAL_HOST` to y
 To deliver the assets through nginx, we need to mount them to a local container:
 
 ```
-mkdir /var/www/meine-stadt-transparent-static
+mkdir -p /var/www/meine-stadt-transparent-static
 docker volume create --opt type=none --opt device=/var/www/meine-stadt-transparent-static --opt o=bind django_static
 ```
 

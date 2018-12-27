@@ -1,5 +1,4 @@
-# The important non-essential options are defined in the readme
-# All options can be found in meine_stadt_transparent/settings/
+# All available options are documented in docs/Customization.md
 
 DEBUG=False
 SECRET_KEY=changeme
