@@ -6,7 +6,6 @@ from concurrent.futures import ThreadPoolExecutor as Pool
 from typing import Callable, TypeVar, List
 
 import gi
-from django.db import transaction
 
 from mainapp.models import Body
 from .oparl_objects import OParlObjects
@@ -39,13 +38,10 @@ class OParlImport(OParlObjects):
     def list_batched(
         self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]
     ):
-        """ Loads a list using liboparl and then inserts it batchwise into the database. """
+        """ This was meant for batchwise processing, but is disabled since the apis can be so slow that it timed out """
         objectlist = objectlistfn()
-        for i in range(0, len(objectlist), self.batchsize):
-            with transaction.atomic():
-                for item in objectlist[i : i + self.batchsize]:
-                    fn(item)
-            self.logger.info("Batch finished")
+        for item in objectlist:
+            fn(item)
 
     def list_caught(
         self, objectlistfn: Callable[[], List[T]], fn: Callable[[T], None]
