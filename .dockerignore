@@ -1,6 +1,6 @@
 node_modules/
-venv/
-.venv/
+venv*/
+.venv*/
 static/
 storage/
 testdata/
@@ -14,5 +14,5 @@ mainapp/assets/bundles
 .git
 .idea
 .tox
-.env*
+.env
 *.log

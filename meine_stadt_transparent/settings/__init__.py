@@ -20,7 +20,8 @@ warnings.filterwarnings(
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 REAL_HOST = env.str("REAL_HOST")
-PRODUCT_NAME = "Meine Stadt Transparent"
+PRODUCT_NAME = env.str("PRODUCT_NAME", "Meine Stadt Transparent")
+SITE_NAME = env.str("SITE_NAME", PRODUCT_NAME)
 ABSOLUTE_URI_BASE = env.str("ABSOLUTE_URI_BASE", "https://" + REAL_HOST)
 
 # Quick-start development settings - unsuitable for production
@@ -49,7 +50,7 @@ if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
     EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
 
 DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", "info@" + REAL_HOST)
-DEFAULT_FROM_EMAIL_NAME = env.str("DEFAULT_FROM_EMAIL_NAME", PRODUCT_NAME)
+DEFAULT_FROM_EMAIL_NAME = env.str("DEFAULT_FROM_EMAIL_NAME", SITE_NAME)
 
 # Encrypted email are currently plaintext only (html is just rendered as plaintext in thunderbird),
 # which is why this feature is disabled by default
@@ -77,9 +78,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-DATETIME_FORMAT = "%d.%m.%Y, %H:%M"
-TIME_FORMAT = "%H:%M"
 
 # Authentication
 
@@ -159,12 +157,12 @@ WEBPACK_LOADER = {
 }
 
 # Elastic
-USE_ELASTICSEARCH = env.bool("USE_ELASTICSEARCH", True)
+ELASTICSEARCH_ENABLED = env.bool("ELASTICSEARCH_ENABLED", True)
 
-if USE_ELASTICSEARCH:
+if ELASTICSEARCH_ENABLED:
     INSTALLED_APPS.append("django_elasticsearch_dsl")
 
-ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL")
+ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 
 ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL}}
 
@@ -175,19 +173,22 @@ ELASTICSEARCH_INDEX = env.str(
 # Language use for stemming, stop words, etc.
 ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")
 
-# Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencagedata
+# Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencage
 GEOEXTRACT_ENGINE = env.str("GEOEXTRACT_ENGINE", "Nominatim")
-if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "opencagedata"]:
+if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "opencage"]:
     raise ValueError("Unknown Geocoder: " + GEOEXTRACT_ENGINE)
 
-if GEOEXTRACT_ENGINE.lower() == "opencagedata":
-    OPENCAGEDATA_KEY = env.str("OPENCAGEDATA_KEY", None)
+if GEOEXTRACT_ENGINE.lower() == "opencage":
+    OPENCAGE_KEY = env.str("OPENCAGE_KEY")
 
 # Settings for Geo-Extraction
-GEOEXTRACT_KNOWN_CITIES = env.list("GEOEXTRACT_KNOWN_CITIES", default=[])
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
 GEOEXTRACT_DEFAULT_CITY = env.str("GEOEXTRACT_DEFAULT_CITY")
-GEO_SEARCH_COUNTRY = env.str("GEO_SEARCH_COUNTRY", "Deutschland")
+
+CITY_AFFIXES = env.list(
+    "CITY_AFFIXES",
+    default=["Stadt", "Landeshauptstadt", "Gemeinde", "Kreis", "Landkreis"],
+)
 
 OCR_AZURE_KEY = env.str("OCR_AZURE_KEY", None)
 OCR_AZURE_LANGUAGE = env.str("OCR_AZURE_LANGUAGE", "de")
@@ -209,14 +210,11 @@ CUSTOM_IMPORT_HOOKS = env.str("CUSTOM_IMPORT_HOOKS", None)
 PARLIAMENTARY_GROUPS_TYPE = (1, "parliamentary group")
 COMMITTEE_TYPE = (2, "committee")
 DEPARTMENT_TYPE = (3, "department")
-ORGANIZATION_TYPE_SORTING = env.list(
-    "ORGANIZATION_TYPE_SORTING",
+ORGANIZATION_ORDER = env.list(
+    "ORGANIZATION_ORDER",
     int,
     [PARLIAMENTARY_GROUPS_TYPE, COMMITTEE_TYPE, DEPARTMENT_TYPE],
 )
-
-# The documents of the last SITE_INDEX_DOCUMENT_DAY days will be shown on the home page
-SITE_INDEX_DOCUMENT_DAY = env.int("SITE_INDEX_DOCUMENT_DAY", 7)
 
 # Possible values: month, listYear, listMonth, listDay, basicWeek, basicDay, agendaWeek, agendaDay
 CALENDAR_DEFAULT_VIEW = env.str("CALENDAR_DEFAULT_VIEW", "listMonth")
@@ -287,15 +285,13 @@ LOGGING = {
 
 LOGGING.update(env.json("LOGGING", {}))
 
-OPARL_ENDPOINTS_LIST = env.str(
-    "OPARL_ENDPOINTS_LIST", "https://mirror.oparl.org/bodies"
-)
+OPARL_INDEX = env.str("OPARL_INDEX", "https://mirror.oparl.org/bodies")
 
 OPARL_ENDPOINT = env.str("OPARL_ENDPOINT", None)
 
 TEMPLATE_META = {
     "logo_name": env.str("TEMPLATE_LOGO_NAME", "MST"),
-    "product_name": PRODUCT_NAME,
+    "site_name": SITE_NAME,
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
     "contact_mail": DEFAULT_FROM_EMAIL,

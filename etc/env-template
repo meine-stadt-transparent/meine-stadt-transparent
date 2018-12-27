@@ -5,13 +5,12 @@ DEBUG=False
 SECRET_KEY=changeme
 REAL_HOST=changeme.tld
 
-DATABASE_URL=mysql://meinestadttransparent:changeme@mariadb/meinestadttransparent
+DATABASE_URL=mysql://meinestadttransparent:changeme@mariadb/meinestadttransparent?charset=utf8mb4
 
-USE_ELASTICSEARCH=True
-ELASTICSEARCH_URL=http://elasticsearch:9200/
-ELASTICSEARCH_INDEX=meine_stadt_transparent_documents
+ELASTICSEARCH_URL=elasticsearch:9200
 
 MINIO_SECRET_KEY=changeme
+MINIO_HOST=minio:9000
 
 # Delete this entry if you don't use the docker container
 STATIC_ROOT=/static

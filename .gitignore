@@ -18,8 +18,8 @@ __pycache__/
 *$py.class
 *.egg-info
 .tox
-venv/
-.venv/
+venv*
+.venv*
 pip-log.txt
 pip-delete-this-directory.txt
 

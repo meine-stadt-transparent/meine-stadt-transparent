@@ -3,9 +3,9 @@
 
 version: '3'
 services:
-  elasticsearch:
+  elasticsearch-dev:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.13
-    container_name: elasticsearch
+    container_name: elasticsearch-dev
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -25,8 +25,9 @@ services:
     networks:
       - mst_dev
 
-  kibana:
+  kibana-dev:
       image: docker.elastic.co/kibana/kibana:5.6.13
+      container_name: kibana-dev
       ports:
         - 5601:5601
       networks:
@@ -34,9 +35,9 @@ services:
       environment:
         - xpack.security.enabled=false
 
-  minio:
+  minio-dev:
       image: minio/minio
-      container_name: minio
+      container_name: minio-dev
       volumes:
         - minio_data:/minio_data
       environment:

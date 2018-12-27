@@ -13,6 +13,7 @@ from django.utils.translation import ugettext as _
 from requests import HTTPError
 from slugify.slugify import slugify
 
+from importer.functions import normalize_body_name
 from importer.oparl_helper import OParlHelper
 from mainapp.functions.document_parsing import extract_locations, extract_persons
 from mainapp.functions.geo_functions import geocode
@@ -77,10 +78,12 @@ class OParlObjects(OParlHelper):
     def body(self, libobject: OParl.Body):
         return self.process_object(libobject, Body, self.body_core, self.body_embedded)
 
-    def body_core(self, libobject, _):
+    def body_core(self, libobject: OParl.Body, body: Body):
         self.logger.info("Processing {}".format(libobject.get_id()))
 
-    def body_embedded(self, libobject, body):
+        normalize_body_name(body)
+
+    def body_embedded(self, libobject: OParl.Body, body: Body):
         changed = False
         terms = []
         for term in libobject.get_legislative_term():
@@ -313,7 +316,7 @@ class OParlObjects(OParlHelper):
                     search_str += libobject.get_locality()
             else:
                 search_str += settings.GEOEXTRACT_DEFAULT_CITY
-            search_str += " " + settings.GEO_SEARCH_COUNTRY
+            search_str += " " + settings.GEOEXTRACT_SEARCH_COUNTRY
 
             geodata = geocode(search_str)
             if geodata:

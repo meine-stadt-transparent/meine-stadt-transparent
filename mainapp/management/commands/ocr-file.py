@@ -37,7 +37,7 @@ class Command(BaseCommand):
             file.mentioned_persons = extract_persons(
                 file.name + "\n" + (recognized_text or "") + "\n"
             )
-            file.locations = extract_locations(recognized_text)
+            file.locations.set(extract_locations(file.parsed_text))
             file.save()
         else:
             logging.warning("Nothing recognized")
@@ -50,8 +50,8 @@ class Command(BaseCommand):
             for file in all_files:
                 try:
                     self.parse_file(file)
-                except Exception:
-                    logging.error("Error parsing file: " + str(file.id))
+                except Exception as e:
+                    logging.error("Error parsing file {}: {}".format(str(file.id), e))
         elif options["id"]:
             file = File.objects.get(id=options["id"])
             self.parse_file(file)

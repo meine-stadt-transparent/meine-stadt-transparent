@@ -1,33 +1,34 @@
 import logging
 import re
+from typing import Optional, Dict
 
 from django.conf import settings
 from geopy import OpenCage, Nominatim
-from geopy.exc import GeocoderTimedOut
+from geopy.exc import GeocoderTimedOut, GeocoderServiceError
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
 
 def get_geolocator(fallback=False):
-    if settings.GEOEXTRACT_ENGINE.lower() == "opencagedata" and not fallback:
-        if not settings.OPENCAGEDATA_KEY:
+    if settings.GEOEXTRACT_ENGINE.lower() == "opencage" and not fallback:
+        if not settings.OPENCAGE_KEY:
             raise ValueError(
-                "OpenCage Data is selected as Geocoder, however no OPENCAGEDATA_KEY is set"
+                "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"
             )
-        geolocator = OpenCage(settings.OPENCAGEDATA_KEY)
+        geolocator = OpenCage(settings.OPENCAGE_KEY)
     else:
         geolocator = Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0")
 
     return geolocator
 
 
-def geocode(search_str: str):
+def geocode(search_str: str) -> Optional[Dict[str, int]]:
     try:
         location = get_geolocator().geocode(
             search_str, language="de", exactly_one=False
         )
-    except GeocoderTimedOut as e:
+    except (GeocoderTimedOut, GeocoderServiceError) as e:
         logger.warning(e)
         location = get_geolocator(fallback=True).geocode(
             search_str, language="de", exactly_one=False
@@ -63,7 +64,7 @@ def latlng_to_address(lat, lng):
     geolocator = get_geolocator()
     location = geolocator.reverse(str(lat) + ", " + str(lng))
     if len(location) > 0:
-        if settings.GEOEXTRACT_ENGINE.lower() == "opencagedata":
+        if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
             return _format_opencage_location(location[0])
         else:
             return _format_nominatim_location(location[0])

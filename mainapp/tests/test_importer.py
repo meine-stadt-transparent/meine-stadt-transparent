@@ -13,6 +13,7 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
+from importer.functions import normalize_body_name
 from mainapp.functions.minio import minio_cache_bucket
 from mainapp.models import (
     Body,
@@ -155,6 +156,20 @@ class TestImporter(TestCase):
     def test_update(self):
         with patch("importer.oparl_resolve.minio_client", self.minio_mock):
             self.check_update()
+
+    def test_normalize_body_name(self):
+        body = Body()
+        body.short_name = "Stadt  Bedburg"
+        normalize_body_name(body)
+        self.assertEqual("Bedburg", body.short_name)
+
+        body.short_name = "Leipzig"
+        normalize_body_name(body)
+        self.assertEqual("Leipzig", body.short_name)
+
+        body.short_name = "Stadt Bad  Münstereifel "
+        normalize_body_name(body)
+        self.assertEqual("Bad Münstereifel", body.short_name)
 
     def check_basic_import(self):
         self.new_timestamp = (

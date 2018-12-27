@@ -15,30 +15,30 @@ This document shall explain the important design decision, assumptions and trade
 ## Design Decisions
  * We use docker-composer for quickly getting things up and running. Docker is becoming more and more of an industry standard in the whole server worlds, so this is a safe bet.
  * We support the last few versions of current browsers, but no old internet explorer oder android browser versions. We wont encourage using crappy insecure browsers.
- * We felt the headers were always one level to big, so we made each one level lower (i.e. h1 now has `$h2-font-size`) 
+ * We felt the headers were always one level to big, so we made each one level lower (i.e. h1 now has `$h2-font-size`)
 
-## Trade-Offs 
+## Trade-Offs
  * It is expected that the site is deployed for users of only one language, e.g. there is no dynamically imported data that has to be translated. This is propably safe to assume for quite some time in the future as currently the comercial vendors afaik can't do localization at all.
  * You don't want to apply your cities (most likely crappy) corporate design. It will be possible to replace header and footer and it's easy to do some bootstrap theming, but we won't do that tight-yet-ugly integration into cities' websites.
  * No support for ancient servers. I'd even call that a feature and not a trade-off
- 
+
 ## Keyboard Shortcuts
- * `alt+f` focuses the search 
- 
+ * `alt+f` focuses the search
+
 ## Pages
- * Persons 
+ * Persons
  * Papers
  * Displaying a file, mainly with pdf.js
  * Kalendar
- * Meeting with agenda items and attendees 
+ * Meeting with agenda items and attendees
  * Organization with persons and papaer
  * Login and profile
- * Search with facets ✓ 
- * One Pager alike landing page ✓ 
+ * Search with facets ✓
+ * One Pager alike landing page ✓
  * animal photos ✓
 
 ## Links on the landing page
- * Persons 
+ * Persons
  * Meetings
  * Login / Notifications
  * Search
@@ -46,7 +46,7 @@ This document shall explain the important design decision, assumptions and trade
  * Latest papers
  * Organizations
 
-## Linter 
+## Linter
  * https://www.ssllabs.com/ssltest/analyze.html?d=meine%2dstadt%2dtransparent.de&s=185.183.157.234&hideResults=on (A+)
  * https://observatory.mozilla.org/analyze.html?host=meine-stadt-transparent.de (A+)
  * https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
@@ -64,7 +64,7 @@ Since the pdfjs maintainers don't the default viewer in the npm package, but we 
  * STATICFILES_DIRS includes 'node_modules/pdfjs-dist/viewer', so that django copies the contents viewer folder to the static files folder
  * The `file` view loads that with `static('web/viewer.html')`.
  * The viewer loads the (already minified) css and js using relative paths.
- 
+
 ## PGP
 
 I thought it would be really cool to have an option to send pgp encrypted notifications that would be dead easy to use. The UI i just a dropdown on the profile page where you can select the key for your e-mail address from a keyserver. But it turns out that when sending a multipart email, enigmail, for whatever reason, chooses to display the source of the html part. I also couldn't find any documentation about this. This effectively means we can only send encrypted notifications as plaintext, which defeats the whole point of a modern, user-friendly service. So the feature is written and tested, but disabled by default (it can be enabled with `ENABLE_PGP=True`).

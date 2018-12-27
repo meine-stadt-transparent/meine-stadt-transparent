@@ -5,7 +5,7 @@ services:
     container_name: django
     volumes:
       - django_static:/static
-      - ./.env:/app/.env:ro
+      - ./.env:/app/.env
     ports:
       - 8000:8000
     networks:

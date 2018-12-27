@@ -5,6 +5,7 @@ import subprocess
 import tempfile
 
 import requests
+from django.db import IntegrityError
 
 from mainapp.models import SearchStreet, Location, Body
 
@@ -29,7 +30,7 @@ out geom;
 """
 
 
-def import_streets(body, gemeindeschluessel):
+def import_streets(body: Body, gemeindeschluessel: str):
     logger.info("Importing streets from {}".format(gemeindeschluessel))
 
     query = streets_query_template.format(gemeindeschluessel)
@@ -40,17 +41,21 @@ def import_streets(body, gemeindeschluessel):
     ways = [node for node in elements if node["type"] == "way"]
     logger.info("Found {} streets".format(len(ways)))
 
+    streets = []
     for way in ways:
-        obj = SearchStreet.objects.filter(osm_id=way["id"]).first()
-        if not obj:
-            street = SearchStreet()
-            street.displayed_name = way["tags"]["name"]
-            street.osm_id = way["id"]
-            street.save()
+        streets.append(
+            SearchStreet(
+                displayed_name=way["tags"]["name"], osm_id=way["id"], body=body
+            )
+        )
 
-            street.bodies.add(body)
-
-            logger.info("Created: %s" % way["tags"]["name"])
+    try:
+        SearchStreet.objects.bulk_create(streets)
+    except IntegrityError:
+        logger.warning(
+            "The streets were already imported "
+            "(This will be fixed with the django 2.2 update through ignore_conflicts=True)"
+        )
 
 
 def import_outline(body: Body, gemeindeschluessel: str):
@@ -81,11 +86,10 @@ def convert_to_geojson(osm):
         file.write(osm)
         filename = file.name
 
-    result = subprocess.run(
-        ["node_modules/.bin/osmtogeojson", "-f", "json", "-m", filename],
-        stdout=subprocess.PIPE,
+    result = subprocess.check_output(
+        ["node_modules/.bin/osmtogeojson", "-f", "json", "-m", filename]
     )
-    geojson = json.loads(result.stdout.decode())
+    geojson = json.loads(result.decode())
 
     os.remove(filename)
 

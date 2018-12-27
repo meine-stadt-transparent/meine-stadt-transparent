@@ -116,7 +116,7 @@ class OParlHelper:
         constructor: Type[T],
         core: Callable[[U, T], None],
         embedded: Callable[[U, T], bool],
-    ):
+    ) -> T:
         """
         We split an object into two parts: It's value properties and the embedded objects. This is necessary because
         the outer object might not have been modified while its embedded inner objects have.
@@ -212,7 +212,6 @@ class OParlHelper:
         elif file.mime_type == "text/text":
             with open(path) as f:
                 parsed_text = f.read()
-        file.parsed_text = parsed_text
         return parsed_text
 
     @staticmethod

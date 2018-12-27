@@ -12,7 +12,7 @@
     <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
     </p>
 
-    <p>{% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send you email
+    <p>{% blocktrans with site_name=settings.TEMPLATE_META.site_name %}{{ site_name }} can send you email
         notifications on topics of your selection. To validate you email address and to be able to update your settings
         later on, you need to open an account.{% endblocktrans %}</p>
 

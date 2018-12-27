@@ -27,9 +27,9 @@ class OParlCli:
     def __init__(self):
         self.bodies = []  # type: List[Tuple[str, str, str]]
 
-        response = requests.get(settings.OPARL_ENDPOINTS_LIST)
+        response = requests.get(settings.OPARL_INDEX)
         response.raise_for_status()
-        next_page = settings.OPARL_ENDPOINTS_LIST
+        next_page = settings.OPARL_INDEX
         while next_page:
             response = requests.get(next_page).json()
             next_page = response["links"].get("next")
@@ -105,6 +105,9 @@ class OParlCli:
         main_body = importer.body(liboparl_body)
 
         dotenv = ""
+
+        if settings.GEOEXTRACT_DEFAULT_CITY != main_body.short_name:
+            dotenv += "GEOEXTRACT_DEFAULT_CITY={}\n".format(main_body.short_name)
 
         if importer.entrypoint != settings.OPARL_ENDPOINT:
             dotenv += "OPARL_ENDPOINT={}\n".format(importer.entrypoint)

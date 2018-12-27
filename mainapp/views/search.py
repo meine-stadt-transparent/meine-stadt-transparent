@@ -150,7 +150,7 @@ def search_results_only(request, query):
 
 
 def search_autocomplete(_, query):
-    if not settings.USE_ELASTICSEARCH:
+    if not settings.ELASTICSEARCH_ENABLED:
         results = [{"name": _("search disabled"), "url": reverse("index")}]
         return HttpResponse(json.dumps(results), content_type="application/json")
 

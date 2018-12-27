@@ -50,7 +50,7 @@ module.exports = {
                 }, {
                     loader: 'postcss-loader',
                     options: {
-                        plugins: () => [Autoprefixer({browsers: [">1%", "last 10 versions", "IE 9", "Firefox 3"]})],
+                        plugins: () => [Autoprefixer({browsers: ["defaults"]})],
                         remove: false,
                         sourceMap: true
                     }
