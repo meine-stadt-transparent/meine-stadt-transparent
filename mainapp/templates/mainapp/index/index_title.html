@@ -1,9 +1,9 @@
 {% load i18n %}
 <section class="container home-container-title">
     <div class="d-flex flex-wrap lead">
-        <h1 class="sr-only">{{ settings.TEMPLATE_META.product_name }}</h1>
+        <h1 class="sr-only">{{ settings.TEMPLATE_META.site_name }}</h1>
         <div>
-            {{ settings.TEMPLATE_META.product_name }}
+            {{ settings.TEMPLATE_META.site_name }}
             {% blocktrans %}informs you about your local city council.{% endblocktrans %}&nbsp;
         </div>
         <div><a href="{% url 'info_about' %}">{% trans "More information" %}</a></div>

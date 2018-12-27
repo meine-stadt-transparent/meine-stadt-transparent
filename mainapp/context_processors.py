@@ -1,7 +1,7 @@
 from django.conf import settings
 
 
-def seo(request):
+def seo(_request):
     if settings.SITE_SEO_NOINDEX:
         robots_index = "noindex"
     else:

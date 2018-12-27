@@ -25,7 +25,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
             "data-querystring"
         ]
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch("mainapp.views.Search.execute", new=mock_search_autocomplete)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
@@ -44,7 +44,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
             time.sleep(0.01)
         self.assertEqual("word", self.get_querystring())
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -53,7 +53,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.visit("/search/query/word/")
         self.assertTrue(self.browser.is_text_present("Highlight"))
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -75,7 +75,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.click_by_css("#filter-document-type-list .remove-filter")
         self.assertEqual("word", self.get_querystring())
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -96,7 +96,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.click_by_css(".daterangepicker .remove-filter")
         self.assertEqual("word", self.get_querystring())
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -113,7 +113,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
         self.assertEqual("word", self.get_querystring())
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -130,7 +130,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
         self.assertEqual("word", self.get_querystring())
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -153,7 +153,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     # This fails on travis for weird, untracable causes. But we know travis doesn't have gi, so we use that hack here
     # (The weirdness is that click_by_css fails. This could be a race, but than assertTextIsPresent had to fail too)
     @skipIf(find_spec("gi") is None, "gi is not available")
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -168,7 +168,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.click_by_css("#filter-organization-list .remove-filter")
         self.assertEqual(self.get_querystring(), "word")
 
-    @override_settings(USE_ELASTICSEARCH=True)
+    @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearchEndlessScroll.execute,

@@ -96,7 +96,7 @@ def organizations(request):
             }
         )
 
-    for i in settings.ORGANIZATION_TYPE_SORTING:
+    for i in settings.ORGANIZATION_ORDER:
         j = 0
         while j < len(organizations_ordered):
             if organizations_ordered[j]["organization_type"].id == i:

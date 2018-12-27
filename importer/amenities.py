@@ -39,5 +39,5 @@ class Importamenities:
                     }
                     poi.save()
 
-                    poi.bodies.add(body)
+                    poi.body = body
                     logger.info("Created: %s" % node["tags"]["name"])

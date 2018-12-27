@@ -2,7 +2,7 @@
 
 {% load i18n %}
 
-{% block title %}{{ settings.TEMPLATE_META.product_name }}{% endblock %}
+{% block title %}{{ settings.TEMPLATE_META.site_name }}{% endblock %}
 
 {% block additional_html_headers %}
     <link rel="alternate" type="application/rss+xml" href="{% url 'paper-feed' %}" title="{% trans 'Latest papers' %}">

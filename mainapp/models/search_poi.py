@@ -7,7 +7,7 @@ from .default_fields import DefaultFields
 
 class SearchPoi(DefaultFields):
     displayed_name = models.CharField(max_length=1000)
-    bodies = models.ManyToManyField(Body, blank=True)
+    body = models.ForeignKey(Body, blank=True, null=True, on_delete=models.CASCADE)
     osm_id = models.BigIntegerField(null=True, blank=True)
     osm_amenity = models.CharField(null=True, max_length=1000)
     geometry = GeometryField(null=True)

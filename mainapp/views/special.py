@@ -68,7 +68,7 @@ def opensearch_xml(_request):
     xml = (
         '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" '
         'xmlns:moz="http://www.mozilla.org/2006/browser/search/">'
-        "<ShortName>" + escape(settings.TEMPLATE_META["product_name"]) + "</ShortName>"
+        "<ShortName>" + escape(settings.TEMPLATE_META["site_name"]) + "</ShortName>"
         "<Description>" + escape(description) + "</Description>"
         "<InputEncoding>UTF-8</InputEncoding>"
         '<Url type="text/html" method="get" template="' + escape(url) + '"/>'

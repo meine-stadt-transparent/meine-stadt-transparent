@@ -1,5 +1,10 @@
 import json
+import re
 from typing import TYPE_CHECKING
+
+from django.conf import settings
+
+from mainapp.models import Body
 
 if TYPE_CHECKING:
     from importer.oparl_import import OParlImport
@@ -40,3 +45,12 @@ def get_importer(options: dict) -> "OParlImport":
         from importer.oparl_import import OParlImport as Importer
 
     return Importer(options, resolver)
+
+
+def normalize_body_name(body: Body):
+    """ Cuts away e.g. "Stadt" from "Stadt Leipzig" and normalizes the spaces """
+    name = body.short_name
+    for affix in settings.CITY_AFFIXES:
+        name = name.replace(affix, "")
+    name = re.sub(" +", " ", name).strip()
+    body.short_name = name

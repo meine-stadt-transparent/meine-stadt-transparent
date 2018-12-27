@@ -7,7 +7,7 @@ from typing import Dict, List, Optional, Any
 
 import geoextract
 import requests
-from PyPDF2 import PdfFileReader
+from PyPDF2.pdf import PdfFileReader
 from django.conf import settings
 from django.urls import reverse
 from wand.color import Color
@@ -135,12 +135,7 @@ def get_ocr_text_from_pdf(file):
     return recognized_text
 
 
-def create_geoextract_data(bodies=None):
-    """
-    :type bodies: list of mainapp.models.Body
-    :return: list
-    """
-
+def create_geoextract_data(bodies: Optional[List[Body]] = None) -> List[Dict[str, str]]:
     street_names = []
     if bodies:
         streets = SearchStreet.objects.filter(bodies__in=bodies)
@@ -153,13 +148,10 @@ def create_geoextract_data(bodies=None):
             street_names.append(street.displayed_name)
             locations.append({"type": "street", "name": street.displayed_name})
 
-    for city in settings.GEOEXTRACT_KNOWN_CITIES:
-        locations.append({"name": city, "type": "city"})
-
     return locations
 
 
-def get_geodata(location, fallback_city_name):
+def get_search_string(location: Dict[str, str], fallback_city_name: str) -> str:
     search_str = ""
     if "street" in location:
         search_str += location["street"]
@@ -174,11 +166,11 @@ def get_geodata(location, fallback_city_name):
     elif "name" in location:
         search_str += location["name"] + ", " + fallback_city_name
 
-    search_str += ", " + settings.GEO_SEARCH_COUNTRY
-    return geocode(search_str)
+    search_str += ", " + settings.GEOEXTRACT_SEARCH_COUNTRY
+    return search_str
 
 
-def format_location_name(location: Dict[str, str]):
+def format_location_name(location: Dict[str, str]) -> str:
     name = ""
 
     if "street" in location:
@@ -197,11 +189,6 @@ def extract_found_locations(
     search_for = create_geoextract_data(bodies)
     pipeline = AddressPipeline(search_for)
     return pipeline.extract(text)
-
-
-def detect_relevant_bodies(_) -> List[Body]:
-    body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
-    return [body]
 
 
 def extract_locations(
@@ -224,18 +211,17 @@ def extract_locations(
         location, created = Location.objects_with_deleted.get_or_create(
             description=location_name, defaults=defaults
         )
+
         if created:
-            geodata = get_geodata(found_location, fallback_city)
+            search_str = get_search_string(found_location, fallback_city)
+            geodata = geocode(search_str)
             if geodata:
                 location.geometry = {
                     "type": "Point",
                     "coordinates": [geodata["lng"], geodata["lat"]],
                 }
                 location.save()
-
-            bodies = detect_relevant_bodies(location)
-            for body in bodies:
-                location.bodies.add(body)
+            location.bodies.set([Body.objects.get(id=settings.SITE_DEFAULT_BODY)])
 
         locations.append(location)
 

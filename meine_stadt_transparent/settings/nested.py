@@ -34,10 +34,12 @@ MIDDLEWARE = [
     "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
+TEMPLATE_DIRS = env.list("TEMPLATE_DIRS", default=[])
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": env.list("TEMPLATE_DIRS", default=[]),
+        "DIRS": TEMPLATE_DIRS,
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

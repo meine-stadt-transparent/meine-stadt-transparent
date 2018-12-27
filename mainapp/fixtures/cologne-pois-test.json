@@ -10,8 +10,7 @@
       "displayed_name": "Tel-Aviv-Stra\u00dfe",
       "osm_id": 22949649,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -25,8 +24,7 @@
       "displayed_name": "Severinstra\u00dfe",
       "osm_id": 32007885,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -40,8 +38,7 @@
       "displayed_name": "Ankerstra\u00dfe",
       "osm_id": 23015816,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -55,8 +52,7 @@
       "displayed_name": "Friedenstra\u00dfe",
       "osm_id": 23015817,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -70,8 +66,7 @@
       "displayed_name": "Karlstra\u00dfe",
       "osm_id": 132405264,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -87,8 +82,7 @@
       "osm_amenity": "school",
       "geometry": "{\"type\":\"Point\",\"coordinates\":[6.8764161,50.9454102]}",
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   },
   {
@@ -102,8 +96,7 @@
       "displayed_name": "Wolfsweg",
       "osm_id": 32452447,
       "exclude_from_search": false,
-      "bodies": [
-      ]
+      "body": null
     }
   }
 ]

@@ -45,7 +45,7 @@
                 </ul>
             {% else %}
                 <p class="alert alert-info">
-                    {% blocktrans with product_name=settings.TEMPLATE_META.product_name %}{{ product_name }} can send
+                    {% blocktrans with site_name=settings.TEMPLATE_META.site_name %}{{ site_name }} can send
                         you custom notifications. Just click the subscribe button on searches, persons or papers and
                         we'll notify you via mail about any changes. You can even select an area on the map as basis for
                         the notifications.{% endblocktrans %}
