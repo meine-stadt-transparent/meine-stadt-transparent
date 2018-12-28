@@ -147,53 +147,52 @@ class OParlUtils:
     E = TypeVar("E", bound=DefaultFields)
 
     def check_for_modification(
-        self, libobject: Dict[str, Any], constructor: Type[E], name_fixup=None
+        self,
+        libobject: Optional[Dict[str, Any]],
+        constructor: Type[E],
+        name_fixup: Optional[str] = None,
     ) -> Tuple[Optional[E], bool]:
         """ Checks common criteria for oparl objects. """
         if not libobject:
             return None, False
 
-        oparl_id = libobject["id"]
         dbobject = constructor.objects_with_deleted.filter(
-            oparl_id=oparl_id
+            oparl_id=libobject["id"]
         ).first()  # type: DefaultFields
         if not dbobject:
             if libobject.get("deleted"):
                 # This was deleted before it could be imported, so we skip it
                 return None, False
-            self.logger.debug("New %s", oparl_id)
+            self.logger.debug("New %s", libobject["id"])
             dbobject = constructor()
-            dbobject.oparl_id = oparl_id
+            dbobject.oparl_id = libobject["id"]
             dbobject.deleted = bool(libobject.get("deleted"))
             if isinstance(dbobject, ShortableNameFields):
                 dbobject.name = libobject.get("name") or name_fixup
                 dbobject.set_short_name(libobject.get("shortName") or dbobject.name)
             return dbobject, True
 
+        return self._check_for_modification(dbobject, libobject, name_fixup)
+
+    def _check_for_modification(
+        self, dbobject: E, libobject: Dict[str, Any], name_fixup: Optional[str]
+    ) -> Tuple[Optional[E], bool]:
         if libobject.get("deleted"):
             dbobject.deleted = True
             dbobject.save()
-            self.logger.debug("Deleted {}: {}".format(dbobject, oparl_id))
+            self.logger.debug("Deleted {}: {}".format(dbobject, libobject["id"]))
             return dbobject, False
 
-        parsed_modified = self.parse_datetime(libobject.get("modified"))
-        if self.ignore_modified:
-            is_modified = True
-        elif not parsed_modified:
-            self.logger.debug("No modified on {}".format(oparl_id))
-            is_modified = True
-        elif dbobject.modified > parsed_modified:
-            is_modified = False
-        else:
-            is_modified = True
+        modified = self.parse_datetime(libobject.get("modified"))
+        is_modified = (not modified) or dbobject.modified < modified
 
-        if is_modified:
+        if is_modified and not self.ignore_modified:
             self.logger.debug(
                 "Modified %s vs. %s on %s: %s",
                 dbobject.modified,
-                parsed_modified,
+                modified,
                 dbobject.id,
-                oparl_id,
+                libobject["id"],
             )
             if isinstance(dbobject, ShortableNameFields):
                 dbobject.name = libobject.get("name") or name_fixup
@@ -202,9 +201,9 @@ class OParlUtils:
             self.logger.debug(
                 "Not Modified %s vs. %s on %s: %s",
                 dbobject.modified,
-                parsed_modified,
+                modified,
                 dbobject.id,
-                oparl_id,
+                libobject["id"],
             )
         return dbobject, is_modified
 
@@ -241,9 +240,7 @@ class OParlUtils:
         last_modified = self.parse_datetime(libobject.get("modified"))
 
         if (
-            file.filesize
-            and file.filesize > 0
-            and file.modified
+            file.filesize > 0
             and last_modified
             and last_modified < file.modified
             and minio_client.has_object(minio_file_bucket, str(file.id))

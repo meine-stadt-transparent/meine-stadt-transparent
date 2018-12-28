@@ -167,7 +167,7 @@ class TestImporter(TestCase):
 
     def check_basic_import(self):
         self.new_timestamp = (
-                self.base_timestamp + relativedelta(years=-100)
+            self.base_timestamp + relativedelta(years=-100)
         ).isoformat()
         self.create_fake_cache()
         importer = OParlImport(self.get_utils_mocked())
@@ -218,7 +218,7 @@ class TestImporter(TestCase):
 
     def check_deletion(self):
         self.new_timestamp = (
-                self.base_timestamp + relativedelta(years=200)
+            self.base_timestamp + relativedelta(years=200)
         ).isoformat()
         self.delete = True
         self.create_fake_cache()
