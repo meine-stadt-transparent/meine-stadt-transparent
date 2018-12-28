@@ -23,6 +23,7 @@ class Location(DefaultFields):
     def __str__(self):
         return self.short_description or self.description or _("Unknown")
 
+    # noinspection PyUnresolvedReferences
     def coordinates(self) -> Optional[Dict[str, Any]]:
         if self.geometry and self.geometry["type"] == "Point":
             return {

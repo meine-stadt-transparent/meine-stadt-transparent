@@ -59,6 +59,7 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return "User profile: %s" % self.user.username
 
+    # noinspection PyUnresolvedReferences
     def has_unverified_email_adresses(self):
         for email in self.user.emailaddress_set.all():
             if not email.verified:

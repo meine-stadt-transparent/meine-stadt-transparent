@@ -6,7 +6,7 @@ from importer.oparl_cli import OParlCli
 class Command(BaseCommand):
     help = "Import the data of a city combining oparl with other datasources"
 
-    def add_arguments(self, parser, add_entrypoint=True):
+    def add_arguments(self, parser):
         parser.add_argument("cityname", type=str)
         parser.add_argument(
             "--mirror",

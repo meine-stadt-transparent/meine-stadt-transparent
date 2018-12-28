@@ -165,7 +165,7 @@ def build_ical_response(meetings: List[Meeting], filename: str):
     return response
 
 
-def meeting_ical(request, pk):
+def meeting_ical(_request, pk):
     meeting = get_object_or_404(Meeting, id=pk)
 
     filename = meeting.short_name or meeting.name or _("Meeting")
@@ -173,7 +173,7 @@ def meeting_ical(request, pk):
     return build_ical_response([meeting], filename)
 
 
-def organizazion_ical(request, pk):
+def organizazion_ical(_request, pk):
     committee = get_object_or_404(Organization, id=pk)
     meetings = committee.meeting_set.prefetch_related("location").all()
     filename = committee.short_name or committee.name or _("Meeting Series")
@@ -181,7 +181,7 @@ def organizazion_ical(request, pk):
     return build_ical_response(meetings, filename)
 
 
-def calendar_ical(request):
+def calendar_ical(_request):
     """ Returns an ical file containing all meetings from -6 months from now. """
     meetings = (
         Meeting.objects.filter(start__gt=now() + relativedelta(months=-6))

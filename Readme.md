@@ -138,7 +138,7 @@ docker-compose up
 On Debian/Ubuntu:
 
 ```
-sudo apt install python3-pip python3-venv python3-gi python3-dev nodejs json-glib-1.0 gir1.2-json-1.0 \
+sudo apt install python3-pip python3-venv python3-dev nodejs \
     git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev
 ```
 
@@ -159,29 +159,6 @@ poetry shell
 Copy [etc/env-template](etc/env-template) to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
 
 Configure your webserver, see e.g. [etc/nginx.conf](etc/nginx.conf)
-
-### pygobject (gi) and liboparl
-
-This is currently only required to use the importer. You can skip it if you don't use the importer.
-
-pygobject needs to be installed system-wide and only works with the system python. If you have any better solution for using a vala library in python we would be extremely happy to use it.
-
- -  Debian/Ubuntu:
-    ```
-    sudo apt install python3-gi
-    ln -s /usr/lib/python3/dist-packages/gi .venv/lib/python*/site-packages/
-    ```
-
- -  macOS:
-    ```
-    brew install pygobject3 --with-python3
-    # Replace 3.26.0 and projectdir by the real paths
-    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* .venv/lib/python3.6/site-packages/
-    ```
-
-Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
-
-For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Be sure to use `--prefix=/usr --buildtype=release` on `meson`.
 
 ### Production
 

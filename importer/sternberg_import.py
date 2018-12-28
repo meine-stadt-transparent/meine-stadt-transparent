@@ -1,28 +1,18 @@
-import json
-from typing import Optional
+from typing import Optional, Dict, Any
 
-import gi
-
+from importer.oparl_helper import ResolveUrlResult
 from mainapp.models import File
 from .oparl_import import OParlImport
 
-gi.require_version("OParl", "0.4")
-from gi.repository import OParl
 
-
-class SternbergResolver:
-    """ Class for patching up the failures in Sternberg OParl """
-
-    def __init__(self, original_resolver):
-        self.original_resolver = original_resolver
-
-    def resolve(self, url: str):
-        response = self.original_resolver.resolve(url)
-        if not response.get_success():
+class SternbergImport(OParlImport):
+    def resolve(self, url: str) -> ResolveUrlResult:
+        response = super(SternbergImport, self).resolve(url)
+        if not response.success:
             return response
 
         if "/body" in url:
-            oparl_list = json.loads(response.get_resolved_data())
+            oparl_list = response.resolved_data
 
             # Add missing "type"-attributes in body-lists
             if "data" in oparl_list:
@@ -55,40 +45,36 @@ class SternbergResolver:
                             "type"
                         ] = "https://schema.oparl.org/1.0/Organization"
 
-            response = OParl.ResolveUrlResult(
-                resolved_data=json.dumps(oparl_list),
-                success=True,
-                status_code=response.get_status_code(),
+            response = ResolveUrlResult(
+                resolved_data=oparl_list, success=True, status_code=response.status_code
             )
 
         if "/membership" in url:
-            oparl_list = json.loads(response.get_resolved_data())
+            oparl_list = response.resolved_data
 
             # If an array is returned instead of an object, we just skip all list entries except for the last one
             if isinstance(oparl_list, list):
                 oparl_list = oparl_list[0]
 
-            response = OParl.ResolveUrlResult(
-                resolved_data=json.dumps(oparl_list),
-                success=True,
-                status_code=response.get_status_code(),
+            response = ResolveUrlResult(
+                resolved_data=oparl_list, success=True, status_code=response.status_code
             )
 
         if "/person" in url:
-            oparl_object = json.loads(response.get_resolved_data())
+            oparl_object = response.resolved_data
             if "location" in oparl_object and not isinstance(
                 oparl_object["location"], str
             ):
                 oparl_object["location"] = oparl_object["location"]["id"]
 
-            response = OParl.ResolveUrlResult(
-                resolved_data=json.dumps(oparl_object),
+            response = ResolveUrlResult(
+                resolved_data=oparl_object,
                 success=True,
-                status_code=response.get_status_code(),
+                status_code=response.status_code,
             )
 
         if "/meeting" in url:
-            oparl_object = json.loads(response.get_resolved_data())
+            oparl_object = response.resolved_data
             if "location" in oparl_object and not isinstance(
                 oparl_object["location"], str
             ):
@@ -96,22 +82,16 @@ class SternbergResolver:
                     "type"
                 ] = "https://schema.oparl.org/1.0/Location"
 
-            response = OParl.ResolveUrlResult(
-                resolved_data=json.dumps(oparl_object),
+            response = ResolveUrlResult(
+                resolved_data=oparl_object,
                 success=True,
-                status_code=response.get_status_code(),
+                status_code=response.status_code,
             )
 
         return response
 
-
-class SternbergImport(OParlImport):
-    def __init__(self, options, resolver):
-        sternberg_resolver = SternbergResolver(resolver)
-        super().__init__(options, sternberg_resolver)
-
     def download_file(
-        self, file: File, url: str, libobject: OParl.File
+        self, file: File, url: str, libobject: Dict[str, Any]
     ) -> Optional[bytes]:
         """ Fix the invalid urls of sternberg oparl """
         url = url.replace(r"files//rim", r"files/rim")

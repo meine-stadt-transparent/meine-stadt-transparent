@@ -1,23 +1,26 @@
 import json
 import logging
+import re
+from collections import namedtuple
 from datetime import date, datetime
 from importlib import import_module
-from typing import Optional, Type, Tuple, TypeVar, Callable
+from io import BytesIO
+from typing import Optional, Type, Tuple, TypeVar, Callable, Dict, Any
 
-import gi
+import requests
 from django.conf import settings
-from django.utils import dateparse
+from django.utils.dateparse import parse_date, parse_datetime
+from minio.error import NoSuchKey
 
 from mainapp.functions.document_parsing import (
     extract_text_from_pdf,
     get_page_count_from_pdf,
 )
-from mainapp.models import DefaultFields, File
+from mainapp.functions.minio import minio_client, minio_cache_bucket
+from mainapp.models import DefaultFields, File, Body
 from mainapp.models.default_fields import ShortableNameFields
 
-gi.require_version("OParl", "0.4")
-gi.require_version("Json", "1.0")
-from gi.repository import Json, GLib, OParl
+ResolveUrlResult = namedtuple("ResolveUrlResult", "resolved_data success status_code")
 
 # You can use those as defaults to inialize the importer. Or inline them when you're already here
 # Note that paths are relative to the project root
@@ -25,27 +28,24 @@ default_options = {
     "download_files": True,
     "use_cache": True,
     "ignore_modified": False,
-    "no_threads": False,
-    "batchsize": 1,
+    "no_threads": True,
     "threadcount": 10,
     "entrypoint": settings.OPARL_ENDPOINT,
 }
 
 
-class OParlHelper:
+class OParlUtils:
     """ A collection of helper function for the oparl importer.
 
     These are methods and not functions so they can be easily overwritten.
     """
 
-    def __init__(self, options, resolver):
-        self.resolver = resolver
+    def __init__(self, options: Dict[str, Any]):
         self.ignore_modified = options["ignore_modified"]
         self.entrypoint = options["entrypoint"]
         self.use_cache = options["use_cache"]
         self.download_files = options["download_files"]
         self.threadcount = options["threadcount"]
-        self.batchsize = options["batchsize"]
         self.no_threads = options["no_threads"]
         self.download_files = options["download_files"]
         self.official_geojson = True
@@ -60,7 +60,6 @@ class OParlHelper:
             "Referat": settings.DEPARTMENT_TYPE[0],
         }
 
-        self.errorlist = []
         self.logger = logging.getLogger(__name__)
 
         if settings.CUSTOM_IMPORT_HOOKS:
@@ -68,47 +67,52 @@ class OParlHelper:
         else:
             self.custom_hooks = None
 
-    @staticmethod
-    def extract_geometry(glib_json: Json.Object):
-        """ Extracts the geometry part of the geojson as python object. A bit ugly. """
-        if not glib_json:
-            return None
-        node = glib_json.get_member("geometry")
-        return json.loads(Json.to_string(node, True))
+    def resolve(self, url: str) -> ResolveUrlResult:
+        if self.use_cache:
+            try:
+                data = minio_client.get_object(
+                    minio_cache_bucket, url + "-disambiguate-file"
+                )
+                data = json.load(data)
+                self.logger.info("Cached: " + url)
+                return ResolveUrlResult(
+                    resolved_data=data, success=True, status_code=304
+                )
+            except NoSuchKey:
+                pass
 
-    @staticmethod
-    def glib_datetime_to_python(glibdatetime: GLib.DateTime) -> Optional[datetime]:
-        if not glibdatetime:
-            return None
-        return dateparse.parse_datetime(glibdatetime.format("%FT%T%z"))
+        try:
+            self.logger.info("Loading: " + url)
+            req = requests.get(url)
+        except Exception as e:
+            self.logger.error("Error loading url: ", e)
+            return ResolveUrlResult(resolved_data=None, success=False, status_code=-1)
 
-    @staticmethod
-    def glib_datetime_to_python_date(glibdatetime: GLib.DateTime) -> Optional[date]:
-        # TODO: Remove once https://github.com/OParl/liboparl/issues/18 is fixed
-        if not glibdatetime:
-            return None
-        return date(
-            glibdatetime.get_year(),
-            glibdatetime.get_month(),
-            glibdatetime.get_day_of_month(),
+        content = req.content
+        data = json.loads(content.decode())
+
+        try:
+            req.raise_for_status()
+        except Exception as e:
+            self.logger.error("HTTP status code error: ", e)
+            return ResolveUrlResult(
+                resolved_data=data, success=False, status_code=req.status_code
+            )
+
+        # We need to avoid filenames where a prefix already is a file, which fails with a weird minio error
+        minio_client.put_object(
+            minio_cache_bucket,
+            url + "-disambiguate-file",
+            BytesIO(content),
+            len(content),
         )
 
-    @staticmethod
-    def glib_date_to_python(glibdate: GLib.Date) -> Optional[date]:
-        if not glibdate:
-            return None
-        return date(glibdate.get_year(), glibdate.get_month(), glibdate.get_day())
-
-    @classmethod
-    def glib_datetime_or_date_to_python(cls, glibdate: GLib.DateTime):
-        if isinstance(glibdate, GLib.Date):
-            return cls.glib_date_to_python(glibdate)
-        if isinstance(glibdate, GLib.DateTime):
-            return cls.glib_datetime_to_python_date(glibdate)
-        return None
+        return ResolveUrlResult(
+            resolved_data=data, success=True, status_code=req.status_code
+        )
 
     T = TypeVar("T", bound=DefaultFields)
-    U = TypeVar("U", bound=OParl.Object)
+    U = TypeVar("U", bound=Dict[str, Any])
 
     def process_object(
         self,
@@ -135,39 +139,39 @@ class OParlHelper:
     E = TypeVar("E", bound=DefaultFields)
 
     def check_for_modification(
-        self, libobject: OParl.Object, constructor: Type[E], name_fixup=None
+        self, libobject: Dict[str, Any], constructor: Type[E], name_fixup=None
     ) -> Tuple[Optional[E], bool]:
-        """ Checks common criterias for oparl objects. """
+        """ Checks common criteria for oparl objects. """
         if not libobject:
             return None, False
 
-        oparl_id = libobject.get_id()
+        oparl_id = libobject["id"]
         dbobject = constructor.objects_with_deleted.filter(
             oparl_id=oparl_id
         ).first()  # type: DefaultFields
         if not dbobject:
-            if libobject.get_deleted():
+            if libobject.get("deleted"):
                 # This was deleted before it could be imported, so we skip it
                 return None, False
             self.logger.debug("New %s", oparl_id)
             dbobject = constructor()
             dbobject.oparl_id = oparl_id
-            dbobject.deleted = libobject.get_deleted()
+            dbobject.deleted = bool(libobject.get("deleted"))
             if isinstance(dbobject, ShortableNameFields):
-                dbobject.name = libobject.get_name() or name_fixup
-                dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
+                dbobject.name = libobject.get("name") or name_fixup
+                dbobject.set_short_name(libobject.get("shortName") or dbobject.name)
             return dbobject, True
 
-        if libobject.get_deleted():
+        if libobject.get("deleted"):
             dbobject.deleted = True
             dbobject.save()
-            self.logger.debug("Deleted %s: %s", dbobject.id, oparl_id)
+            self.logger.debug("Deleted {}: {}".format(dbobject, oparl_id))
             return dbobject, False
 
-        parsed_modified = self.glib_datetime_to_python(libobject.get_modified())
+        parsed_modified = parse_datetime_opt(libobject.get("modified"))
         if self.ignore_modified:
             is_modified = True
-        elif not libobject.get_modified():
+        elif not parsed_modified:
             self.logger.debug("No modified on {}".format(oparl_id))
             is_modified = True
         elif dbobject.modified > parsed_modified:
@@ -184,8 +188,8 @@ class OParlHelper:
                 oparl_id,
             )
             if isinstance(dbobject, ShortableNameFields):
-                dbobject.name = libobject.get_name() or name_fixup
-                dbobject.set_short_name(libobject.get_short_name() or dbobject.name)
+                dbobject.name = libobject.get("name") or name_fixup
+                dbobject.set_short_name(libobject.get("shortName") or dbobject.name)
         else:
             self.logger.debug(
                 "Not Modified %s vs. %s on %s: %s",
@@ -196,7 +200,7 @@ class OParlHelper:
             )
         return dbobject, is_modified
 
-    def extract_text_from_file(self, file: File, path: str):
+    def extract_text_from_file(self, file: File, path: str) -> Optional[str]:
         parsed_text = None
         if file.mime_type == "application/pdf":
             self.logger.info(
@@ -208,14 +212,12 @@ class OParlHelper:
             except Exception as e:
                 message = "Could not parse pdf for file {}: {}".format(file.id, e)
                 self.logger.exception(message)
-                self.errorlist.append(message)
         elif file.mime_type == "text/text":
             with open(path) as f:
                 parsed_text = f.read()
         return parsed_text
 
-    @staticmethod
-    def is_queryset_equal_list(queryset, other):
+    def is_queryset_equal_list(self, queryset, other) -> bool:
         """ Sufficiently correct comparison of a querysets and a list, inspired by django's assertQuerysetEqual """
         return list(queryset.order_by("id").all()) == sorted(other, key=id)
 
@@ -224,3 +226,62 @@ class OParlHelper:
             return getattr(self.custom_hooks, hook_name)(hook_parameter)
         else:
             return hook_parameter
+
+    def download_file(
+        self, file: File, url: str, libobject: Dict[str, Any]
+    ) -> Optional[NamedTemporaryFile]:
+        last_modified = parse_datetime_opt(libobject.get("modified"))
+
+        if (
+            file.filesize
+            and file.filesize > 0
+            and file.modified
+            and last_modified
+            and last_modified < file.modified
+            and minio_client.has_object(minio_file_bucket, str(file.id))
+        ):
+            logger.info("Skipping cached download: {}".format(url))
+            return
+
+        logger.info("Downloading {}".format(url))
+
+        response = requests.get(url, allow_redirects=True)
+
+        try:
+            response.raise_for_status()
+        except HTTPError as e:
+            logger.exception("Failed to download file {}: {}", file.id, e)
+            return
+
+        tmpfile = NamedTemporaryFile()
+        content = response.content
+        tmpfile.write(content)
+        tmpfile.file.seek(0)
+        file.filesize = len(content)
+
+        minio_client.put_object(
+            minio_file_bucket,
+            str(file.id),
+            tmpfile.file,
+            file.filesize,
+            content_type=file.mime_type,
+        )
+        return tmpfile
+
+    def parse_date_opt(self, data: Optional[str]) -> Optional[date]:
+        if not data:
+            return None
+        return parse_date(data)
+
+    def parse_datetime_opt(self, data: Optional[str]) -> Optional[datetime]:
+        if not data:
+            return None
+        return parse_datetime(data)
+
+    def normalize_body_name(self, body: Body) -> None:
+        """ Cuts away e.g. "Stadt" from "Stadt Leipzig" and normalizes the spaces """
+        name = body.short_name
+        for affix in settings.CITY_AFFIXES:
+            name = name.replace(affix, "")
+        name = re.sub(" +", " ", name).strip()
+        body.short_name = name

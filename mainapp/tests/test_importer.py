@@ -4,9 +4,7 @@ import logging
 import os
 import shutil
 import tempfile
-from importlib.util import find_spec
 from io import BytesIO
-from unittest import skipIf
 from unittest.mock import patch
 
 from dateutil.relativedelta import relativedelta
@@ -14,6 +12,8 @@ from django.test import TestCase
 from django.utils import timezone
 
 from importer.functions import normalize_body_name
+from importer.oparl_helper import default_options
+from importer.oparl_import import OParlImport
 from mainapp.functions.minio import minio_cache_bucket
 from mainapp.models import (
     Body,
@@ -30,17 +30,9 @@ from mainapp.models import (
 )
 from mainapp.tests.tools import MinioMock
 
-gi_not_available = find_spec("gi") is None
-if not gi_not_available:
-    # Those two require importing gi
-    from importer.oparl_helper import default_options
-    from importer.oparl_import import OParlImport
-    from importer.oparl_resolve import OParlResolver
-
 logger = logging.getLogger(__name__)
 
 
-@skipIf(gi_not_available, "gi is not available")
 class TestImporter(TestCase):
     dummy_data = "testdata/oparl"
     base_timestamp = timezone.now().astimezone().replace(microsecond=0)
@@ -62,8 +54,6 @@ class TestImporter(TestCase):
     entrypoint = "https://oparl.example.org/"
     tempdir = None
 
-    resolver = None  # Initializing here will lead to an import error without gi
-
     fixtures = ["cologne-pois-test"]
 
     @classmethod
@@ -71,7 +61,6 @@ class TestImporter(TestCase):
         super().setUpClass()
         cls.tempdir = tempfile.mkdtemp()
         cls.options = cls.build_options()
-        cls.resolver = OParlResolver(cls.entrypoint, True)
         cls.minio_mock = MinioMock()
 
     @classmethod
@@ -143,18 +132,18 @@ class TestImporter(TestCase):
         self.dump(membership["id"], membership)
 
     def test_importer(self):
-        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+        with patch("importer.oparl_helper.minio_client", self.minio_mock):
             self.check_basic_import()
             self.check_ignoring_unmodified()
             self.check_update()
             self.check_deletion()
 
     def test_deletion(self):
-        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+        with patch("importer.oparl_helper.minio_client", self.minio_mock):
             self.check_deletion()
 
     def test_update(self):
-        with patch("importer.oparl_resolve.minio_client", self.minio_mock):
+        with patch("importer.oparl_helper.minio_client", self.minio_mock):
             self.check_update()
 
     def test_normalize_body_name(self):
@@ -176,7 +165,7 @@ class TestImporter(TestCase):
             self.base_timestamp + relativedelta(years=-100)
         ).isoformat()
         self.create_fake_cache()
-        importer = OParlImport(self.options, self.resolver)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
         now = timezone.now()
 
@@ -203,7 +192,7 @@ class TestImporter(TestCase):
             File,
         ]  # must have modified and File for #41
         newer_now = timezone.now()
-        importer = OParlImport(self.options, self.resolver)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
         for table in tables_with_modified:
             logger.debug(table.__name__)
@@ -213,10 +202,12 @@ class TestImporter(TestCase):
         now = timezone.now()
         self.new_timestamp = (self.base_timestamp + relativedelta(years=10)).isoformat()
         self.create_fake_cache()
-        importer = OParlImport(self.options, self.resolver)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
         for table in self.tables:
-            self.assertEqual(table.objects.count(), 1)
+            self.assertEqual(
+                table.objects.count(), 1, "{}: {}".format(table, table.objects.all())
+            )
             self.assertGreater(table.objects.first().modified, now)
         self.assertEqual(File.objects.count(), 2)
 
@@ -226,17 +217,18 @@ class TestImporter(TestCase):
         ).isoformat()
         self.delete = True
         self.create_fake_cache()
-        importer = OParlImport(self.options, self.resolver)
+        importer = OParlImport(self.options)
         importer.run_singlethread()
         tables = self.tables[:]
         tables.remove(Body)
         for table in tables:
-            self.assertEqual(table.objects.count(), 0)
+            self.assertEqual(
+                table.objects.count(), 0, "{} {}".format(table, table.objects.all())
+            )
 
     @classmethod
     def build_options(cls):
         options = default_options.copy()
         options["entrypoint"] = cls.entrypoint
-        options["batchsize"] = 1
         options["download_files"] = False  # TODO
         return options

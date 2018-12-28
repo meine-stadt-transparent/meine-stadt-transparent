@@ -3,12 +3,13 @@ import re
 import subprocess
 import tempfile
 from subprocess import CalledProcessError
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Iterable
 
 import geoextract
 import requests
 from PyPDF2.pdf import PdfFileReader
 from django.conf import settings
+from django.db.models import QuerySet
 from django.urls import reverse
 from wand.color import Color
 from wand.image import Image

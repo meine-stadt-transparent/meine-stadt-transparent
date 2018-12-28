@@ -19,7 +19,8 @@ class Command(ImportOParlCommand):
             s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
             return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
-        oparlobject = importer.client.parse_url(options["url"])
-        oparltype = convert(oparlobject.get_oparl_type().split("/")[-1])
+        oparlobject = importer.resolve(options["url"]).resolved_data
+        oparltype = convert(oparlobject["type"].split("/")[-1])
         getattr(importer, oparltype)(oparlobject)
+        importer.add_embedded_objects()
         importer.add_missing_associations()

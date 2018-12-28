@@ -31,6 +31,6 @@ class Command(BaseCommand):
                         "Error parsing file: {}: {}".format(str(file.id), e)
                     )
         elif options["id"]:
-            for id in options["id"]:
-                file = File.objects.get(id=id)
+            for file_id in options["id"]:
+                file = File.objects.get(id=file_id)
                 self.parse_file(file)

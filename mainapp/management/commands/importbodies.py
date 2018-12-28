@@ -7,9 +7,5 @@ class Command(ImportOParlCommand):
 
     def handle(self, *args, **options):
         importer = get_importer(options)
-
         bodies = importer.get_bodies()
-        if importer.no_threads:
-            importer.bodies_singlethread(bodies)
-        else:
-            importer.bodies_multithread(bodies)
+        importer.bodies(bodies)

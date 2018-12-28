@@ -1,5 +1,5 @@
 import logging
-from typing import Tuple, List, Any, TYPE_CHECKING
+from typing import Tuple, List, Any, TYPE_CHECKING, Dict
 
 import requests
 from django.core.exceptions import ValidationError
@@ -88,7 +88,7 @@ class OParlCli:
         importer = get_importer(options)
         bodies = importer.get_bodies()
         for body in bodies:
-            if body.get_id() == endpoint_body:
+            if body["id"] == endpoint_body:
                 liboparl_body = body
                 break
         if not liboparl_body:
@@ -98,9 +98,9 @@ class OParlCli:
         return importer, liboparl_body
 
     def run_importer(
-        self, ags: str, importer: "OParlImport", liboparl_body: Any
+        self, ags: str, importer: "OParlImport", liboparl_body: Dict[str, Any]
     ) -> None:
-        logger.info("Importing {}".format(liboparl_body.get_id()))
+        logger.info("Importing {}".format(liboparl_body["id"]))
         logger.info("The Amtliche Gemeindeschlüssel is {}".format(ags))
         main_body = importer.body(liboparl_body)
 
@@ -126,17 +126,7 @@ class OParlCli:
         logger.info("Importing the streets")
         import_streets(main_body, ags)
 
-        logger.info("Importing the papers")
-        importer.list_batched(liboparl_body.get_paper, importer.paper)
-        logger.info("Importing the persons")
-        importer.list_batched(liboparl_body.get_person, importer.person)
-        logger.info("Importing the organizations")
-        importer.list_batched(liboparl_body.get_organization, importer.organization)
-        logger.info("Importing the meetings")
-        importer.list_batched(liboparl_body.get_meeting, importer.meeting)
-
-        logger.info("Add some missing foreign keys")
-        importer.add_missing_associations()
+        importer.import_body_objects(main_body)
 
         if dotenv:
             logger.info(
@@ -146,7 +136,7 @@ class OParlCli:
             )
 
     def get_ags(self, liboparl_body: Any, userinput: str) -> str:
-        ags = liboparl_body.get_ags()
+        ags = liboparl_body.get("ags")
         if not ags:
             ags = CityToAGS.query_wikidata(userinput)
         if len(ags) == 0:

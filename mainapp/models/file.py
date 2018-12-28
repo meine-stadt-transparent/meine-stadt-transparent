@@ -36,7 +36,7 @@ class File(DefaultFields):
 
     def coordinates(self):
         coordinates = []
-        for location in self.locations.all():
+        for location in self.locations:
             coordinate = location.coordinates()
             if coordinate:
                 coordinates.append(coordinate)

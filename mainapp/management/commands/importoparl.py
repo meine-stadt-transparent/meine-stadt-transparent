@@ -28,7 +28,6 @@ class Command(BaseCommand):
         parser.add_argument(
             "--no-threads", dest="no_threads", action="store_true", help="Debug option"
         )
-        parser.add_argument("--batchsize", type=int)
         parser.set_defaults(**default_options)
 
     def handle(self, *args, **options):
