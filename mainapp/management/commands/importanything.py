@@ -1,6 +1,6 @@
 import re
 
-from importer.functions import get_importer
+from importer.get_importer import get_importer
 from .importoparl import Command as ImportOParlCommand
 
 
@@ -19,8 +19,8 @@ class Command(ImportOParlCommand):
             s1 = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
             return re.sub("([a-z0-9])([A-Z])", r"\1_\2", s1).lower()
 
-        oparlobject = importer.resolve(options["url"]).resolved_data
+        oparlobject = importer.utils.resolve(options["url"]).resolved_data
         oparltype = convert(oparlobject["type"].split("/")[-1])
         getattr(importer, oparltype)(oparlobject)
-        importer.add_embedded_objects()
-        importer.add_missing_associations()
+        importer.embedded.add_embedded_objects()
+        importer.embedded.add_missing_associations()

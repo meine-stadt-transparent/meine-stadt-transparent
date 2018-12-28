@@ -2,8 +2,8 @@ import logging
 
 from django.core.management.base import BaseCommand
 
-from importer.functions import get_importer
-from importer.oparl_helper import default_options
+from importer.get_importer import get_importer
+from importer.oparl_utils import default_options
 from .notifyusers import Command as NotifyUsersCommand
 
 logger = logging.getLogger(__name__)

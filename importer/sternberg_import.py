@@ -1,13 +1,12 @@
 from typing import Optional, Dict, Any
 
-from importer.oparl_helper import ResolveUrlResult
+from importer.oparl_utils import ResolveUrlResult, OParlUtils
 from mainapp.models import File
-from .oparl_import import OParlImport
 
 
-class SternbergImport(OParlImport):
+class SternbergUtils(OParlUtils):
     def resolve(self, url: str) -> ResolveUrlResult:
-        response = super(SternbergImport, self).resolve(url)
+        response = super(SternbergUtils, self).resolve(url)
         if not response.success:
             return response
 

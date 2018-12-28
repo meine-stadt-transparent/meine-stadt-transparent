@@ -32,11 +32,11 @@ class File(DefaultFields):
     def rebuild_locations(self, parsed_text):
         from mainapp.functions.document_parsing import extract_locations
 
-        self.locations = extract_locations(parsed_text)
+        self.locations.set(extract_locations(parsed_text))
 
     def coordinates(self):
         coordinates = []
-        for location in self.locations:
+        for location in self.locations.all():
             coordinate = location.coordinates()
             if coordinate:
                 coordinates.append(coordinate)

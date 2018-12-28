@@ -7,8 +7,8 @@ from django.core.validators import URLValidator
 
 from importer import CityToAGS
 from importer.citytools import import_streets, import_outline
-from importer.functions import get_importer
-from importer.oparl_helper import default_options
+from importer.get_importer import get_importer
+from importer.oparl_utils import default_options
 from meine_stadt_transparent import settings
 
 if TYPE_CHECKING:
@@ -109,8 +109,8 @@ class OParlCli:
         if settings.GEOEXTRACT_DEFAULT_CITY != main_body.short_name:
             dotenv += "GEOEXTRACT_DEFAULT_CITY={}\n".format(main_body.short_name)
 
-        if importer.entrypoint != settings.OPARL_ENDPOINT:
-            dotenv += "OPARL_ENDPOINT={}\n".format(importer.entrypoint)
+        if importer.utils.entrypoint != settings.OPARL_ENDPOINT:
+            dotenv += "OPARL_ENDPOINT={}\n".format(importer.utils.entrypoint)
 
         if main_body.id != settings.SITE_DEFAULT_BODY:
             dotenv += "SITE_DEFAULT_BODY={}\n".format(main_body.id)
@@ -126,7 +126,7 @@ class OParlCli:
         logger.info("Importing the streets")
         import_streets(main_body, ags)
 
-        importer.import_body_objects(main_body)
+        importer.import_body_objects(liboparl_body)
 
         if dotenv:
             logger.info(

@@ -1,4 +1,4 @@
-from importer.functions import get_importer
+from importer.get_importer import get_importer
 from .importoparl import Command as ImportOParlCommand
 
 

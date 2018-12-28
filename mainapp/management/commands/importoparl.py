@@ -1,13 +1,13 @@
 from django.core.management.base import BaseCommand
 
-from importer.functions import get_importer
+from importer.get_importer import get_importer
 
 
 class Command(BaseCommand):
     help = "Import the data from an oparl api into the database"
 
     def add_arguments(self, parser):
-        from importer.oparl_helper import default_options
+        from importer.oparl_utils import default_options
 
         parser.add_argument("--entrypoint", type=str)
         parser.add_argument("--threadcount", type=int)

@@ -5,20 +5,27 @@ from collections import namedtuple
 from datetime import date, datetime
 from importlib import import_module
 from io import BytesIO
-from typing import Optional, Type, Tuple, TypeVar, Callable, Dict, Any
+from tempfile import NamedTemporaryFile
+from typing import Dict, Any, Tuple
+from typing import Optional
+from typing import Type, TypeVar, Callable
 
 import requests
 from django.conf import settings
 from django.utils.dateparse import parse_date, parse_datetime
 from minio.error import NoSuchKey
+from requests import HTTPError
 
 from mainapp.functions.document_parsing import (
     extract_text_from_pdf,
     get_page_count_from_pdf,
 )
 from mainapp.functions.minio import minio_client, minio_cache_bucket
+from mainapp.functions.minio import minio_file_bucket
 from mainapp.models import DefaultFields, File, Body
 from mainapp.models.default_fields import ShortableNameFields
+
+logger = logging.getLogger(__name__)
 
 ResolveUrlResult = namedtuple("ResolveUrlResult", "resolved_data success status_code")
 
@@ -48,6 +55,7 @@ class OParlUtils:
         self.threadcount = options["threadcount"]
         self.no_threads = options["no_threads"]
         self.download_files = options["download_files"]
+        self.minio_client = minio_client
         self.official_geojson = True
         self.filename_length_cutoff = 100
         self.organization_classification = {
@@ -70,7 +78,7 @@ class OParlUtils:
     def resolve(self, url: str) -> ResolveUrlResult:
         if self.use_cache:
             try:
-                data = minio_client.get_object(
+                data = self.minio_client.get_object(
                     minio_cache_bucket, url + "-disambiguate-file"
                 )
                 data = json.load(data)
@@ -100,7 +108,7 @@ class OParlUtils:
             )
 
         # We need to avoid filenames where a prefix already is a file, which fails with a weird minio error
-        minio_client.put_object(
+        self.minio_client.put_object(
             minio_cache_bucket,
             url + "-disambiguate-file",
             BytesIO(content),
@@ -168,7 +176,7 @@ class OParlUtils:
             self.logger.debug("Deleted {}: {}".format(dbobject, oparl_id))
             return dbobject, False
 
-        parsed_modified = parse_datetime_opt(libobject.get("modified"))
+        parsed_modified = self.parse_datetime(libobject.get("modified"))
         if self.ignore_modified:
             is_modified = True
         elif not parsed_modified:
@@ -230,7 +238,7 @@ class OParlUtils:
     def download_file(
         self, file: File, url: str, libobject: Dict[str, Any]
     ) -> Optional[NamedTemporaryFile]:
-        last_modified = parse_datetime_opt(libobject.get("modified"))
+        last_modified = self.parse_datetime(libobject.get("modified"))
 
         if (
             file.filesize
@@ -268,12 +276,12 @@ class OParlUtils:
         )
         return tmpfile
 
-    def parse_date_opt(self, data: Optional[str]) -> Optional[date]:
+    def parse_date(self, data: Optional[str]) -> Optional[date]:
         if not data:
             return None
         return parse_date(data)
 
-    def parse_datetime_opt(self, data: Optional[str]) -> Optional[datetime]:
+    def parse_datetime(self, data: Optional[str]) -> Optional[datetime]:
         if not data:
             return None
         return parse_datetime(data)

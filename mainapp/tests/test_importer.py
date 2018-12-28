@@ -11,9 +11,8 @@ from dateutil.relativedelta import relativedelta
 from django.test import TestCase
 from django.utils import timezone
 
-from importer.functions import normalize_body_name
-from importer.oparl_helper import default_options
 from importer.oparl_import import OParlImport
+from importer.oparl_utils import default_options, OParlUtils
 from mainapp.functions.minio import minio_cache_bucket
 from mainapp.models import (
     Body,
@@ -66,6 +65,11 @@ class TestImporter(TestCase):
     @classmethod
     def tearDownClass(cls):
         shutil.rmtree(cls.tempdir)
+
+    def get_utils_mocked(self) -> OParlUtils:
+        utils = OParlUtils(self.options)
+        utils.minio_client = self.minio_mock
+        return utils
 
     def sha1(self, data):
         return hashlib.sha1(data.encode("utf-8")).hexdigest()
@@ -132,40 +136,41 @@ class TestImporter(TestCase):
         self.dump(membership["id"], membership)
 
     def test_importer(self):
-        with patch("importer.oparl_helper.minio_client", self.minio_mock):
+        with patch("importer.oparl_utils.minio_client", self.minio_mock):
             self.check_basic_import()
             self.check_ignoring_unmodified()
             self.check_update()
             self.check_deletion()
 
     def test_deletion(self):
-        with patch("importer.oparl_helper.minio_client", self.minio_mock):
+        with patch("importer.oparl_utils.minio_client", self.minio_mock):
             self.check_deletion()
 
     def test_update(self):
-        with patch("importer.oparl_helper.minio_client", self.minio_mock):
+        with patch("importer.oparl_utils.minio_client", self.minio_mock):
             self.check_update()
 
     def test_normalize_body_name(self):
+        utils = self.get_utils_mocked()
         body = Body()
         body.short_name = "Stadt  Bedburg"
-        normalize_body_name(body)
+        utils.normalize_body_name(body)
         self.assertEqual("Bedburg", body.short_name)
 
         body.short_name = "Leipzig"
-        normalize_body_name(body)
+        utils.normalize_body_name(body)
         self.assertEqual("Leipzig", body.short_name)
 
         body.short_name = "Stadt Bad  Münstereifel "
-        normalize_body_name(body)
+        utils.normalize_body_name(body)
         self.assertEqual("Bad Münstereifel", body.short_name)
 
     def check_basic_import(self):
         self.new_timestamp = (
-            self.base_timestamp + relativedelta(years=-100)
+                self.base_timestamp + relativedelta(years=-100)
         ).isoformat()
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.get_utils_mocked())
         importer.run_singlethread()
         now = timezone.now()
 
@@ -192,7 +197,7 @@ class TestImporter(TestCase):
             File,
         ]  # must have modified and File for #41
         newer_now = timezone.now()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.get_utils_mocked())
         importer.run_singlethread()
         for table in tables_with_modified:
             logger.debug(table.__name__)
@@ -202,7 +207,7 @@ class TestImporter(TestCase):
         now = timezone.now()
         self.new_timestamp = (self.base_timestamp + relativedelta(years=10)).isoformat()
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.get_utils_mocked())
         importer.run_singlethread()
         for table in self.tables:
             self.assertEqual(
@@ -213,11 +218,11 @@ class TestImporter(TestCase):
 
     def check_deletion(self):
         self.new_timestamp = (
-            self.base_timestamp + relativedelta(years=200)
+                self.base_timestamp + relativedelta(years=200)
         ).isoformat()
         self.delete = True
         self.create_fake_cache()
-        importer = OParlImport(self.options)
+        importer = OParlImport(self.get_utils_mocked())
         importer.run_singlethread()
         tables = self.tables[:]
         tables.remove(Body)

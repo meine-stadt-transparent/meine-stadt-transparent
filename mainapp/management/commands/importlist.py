@@ -1,4 +1,4 @@
-from importer.functions import get_importer
+from importer.get_importer import get_importer
 from .importoparl import Command as ImportOParlCommand
 
 
@@ -15,7 +15,7 @@ class Command(ImportOParlCommand):
     def handle(self, *args, **options):
         importer = get_importer(options)
 
-        body = importer.resolve(options["body"]).resolved_data
+        body = importer.utils.resolve(options["body"]).resolved_data
         if options["list"] == "paper":
             importer.process_list(body["paper"], importer.paper)
         elif options["list"] == "person":
@@ -26,5 +26,5 @@ class Command(ImportOParlCommand):
             importer.process_list(body["meeting"], importer.meeting)
         else:
             raise ValueError("Invalid list " + options["list"])
-        importer.add_embedded_objects()
-        importer.add_missing_associations()
+        importer.embedded.add_embedded_objects()
+        importer.embedded.add_missing_associations()
