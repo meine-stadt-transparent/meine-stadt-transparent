@@ -81,7 +81,8 @@ class OParlUtils:
                 data = self.minio_client.get_object(
                     minio_cache_bucket, url + "-disambiguate-file"
                 )
-                data = json.load(data)
+                # From python 3.6 on we can read the stream directly
+                data = json.loads(data.read().decode())
                 self.logger.info("Cached: " + url)
                 return ResolveUrlResult(
                     resolved_data=data, success=True, status_code=304
