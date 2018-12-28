@@ -50,7 +50,6 @@ class OParlEmbedded:
 
         logger.info("Processing Location {}".format(libobject["id"]))
 
-        location.oparl_id = libobject["id"]
         location.description = libobject.get("description")
         location.is_official = self.utils.official_geojson
         location.geometry = libobject.get("geojson", {}).get("geometry")
@@ -137,7 +136,6 @@ class OParlEmbedded:
         parsed_text_before = file.parsed_text
         file_name_before = file.name
 
-        file.oparl_id = libobject["id"]
         file.name = libobject.get("name", "")[:200]
         file.displayed_filename = displayed_filename
         file.mime_type = libobject.get("mimeType") or "application/octet-stream"
@@ -186,7 +184,6 @@ class OParlEmbedded:
         if not consultation or not do_update:
             return consultation
 
-        consultation.oparl_id = libobject["id"]
         consultation.authoritative = libobject.get("authoritative")
         consultation.role = libobject.get("role")
 
@@ -234,7 +231,6 @@ class OParlEmbedded:
         if not item.key:
             item.key = "-"
 
-        item.oparl_id = libobject["id"]
         item.key = libobject.get("number")
         item.title = libobject.get("name")
         item.position = index
