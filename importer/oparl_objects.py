@@ -251,7 +251,9 @@ class OParlObjects:
 
     def person_embedded(self, libobject: Dict[str, Any], person: Person) -> bool:
         old_location = person.location
-        person.location = self.embedded.location(libobject.get("location"))
+        if libobject.get("location"):
+            location_data = self.utils.resolve(libobject.get("location")).resolved_data
+            person.location = self.embedded.location(location_data)
 
         membership_ids = []
         for membership in libobject.get("membership", []):
