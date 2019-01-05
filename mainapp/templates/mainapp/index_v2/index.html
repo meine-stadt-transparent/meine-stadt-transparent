@@ -5,7 +5,8 @@
 {% block title %}{{ settings.TEMPLATE_META.site_name }}{% endblock %}
 
 {% block additional_html_headers %}
-    <meta name="description" content="{% blocktrans %}Up-to-date information about {{ body_name }}'s city politics - by Meine Stadt Transparent, the open source council information system{% endblocktrans %}">
+    <meta name="description"
+          content="{% blocktrans %}Up-to-date information about {{ body_name }}'s city politics - by Meine Stadt Transparent, the open source council information system{% endblocktrans %}">
     <link rel="alternate" type="application/rss+xml" href="{% url 'paper-feed' %}" title="{% trans 'Latest papers' %}">
 
     <script type="application/ld+json">
