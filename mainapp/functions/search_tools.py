@@ -152,7 +152,7 @@ class MainappSearch(FacetedSearch):
 def _add_date_after(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        if len(params["after"]):
+        if len(params["after"]) == 10:
             after = datetime.datetime.strptime(params["after"], "%Y-%m-%d")
         else:
             after = datetime.datetime.strptime(params["after"][0:19], "%Y-%m-%d %H:%M:%S")
@@ -171,7 +171,7 @@ def _add_date_after(search, params, options, errors):
 def _add_date_before(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        if len(params["before"]):
+        if len(params["before"]) == 10:
             before = datetime.datetime.strptime(params["before"], "%Y-%m-%d")
         else:
             before = datetime.datetime.strptime(params["before"][0:19], "%Y-%m-%d %H:%M:%S")
