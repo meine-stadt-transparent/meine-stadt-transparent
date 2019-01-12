@@ -108,7 +108,7 @@
                           <div class="result-list"> {% for result in alert.results %} <a href="{{ result.url }}" class="result a" style="text-decoration: none; padding: 8px 20px; margin-top: 15px; color: #000000; display: block;"><span class="a__text" style="text-decoration: none; color: #000000;">
                             <div class="result-title" style="font-size: 20px; font-weight: 300;">{{ result.title }}</div>
                             <div class="result-type">{{ result.type_name }}</div>
-                            <div class="result-highlight" style="color: #545454; font-size: 12.8px;">blabla {{ result.highlight }}</div>
+                            <div class="result-highlight" style="color: #545454; font-size: 12.8px;">{{ result.highlight }}</div>
                         </span></a> {% endfor %} </div>
                         </div> {% endfor %}
                         <!-- END -->

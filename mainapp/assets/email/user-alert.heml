@@ -111,7 +111,7 @@
                         <a href="{{ result.url }}" class="result">
                             <div class="result-title">{{ result.title }}</div>
                             <div class="result-type">{{ result.type_name }}</div>
-                            <div class="result-highlight">blabla {{ result.highlight }}</div>
+                            <div class="result-highlight">{{ result.highlight }}</div>
                         </a>
                     {% endfor %}
                 </div>

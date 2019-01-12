@@ -152,10 +152,13 @@ class MainappSearch(FacetedSearch):
 def _add_date_after(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        after = datetime.datetime.strptime(params["after"], "%Y-%m-%d")
+        if len(params["after"]):
+            after = datetime.datetime.strptime(params["after"], "%Y-%m-%d")
+        else:
+            after = datetime.datetime.strptime(params["after"][0:19], "%Y-%m-%d %H:%M:%S")
     except ValueError or OverflowError:
         errors.append(
-            ugettext("The value for after is invalid. The correct format is YYYY-MM-DD")
+            ugettext("The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS")
         )
         return search
     search = search.filter(
@@ -168,10 +171,13 @@ def _add_date_after(search, params, options, errors):
 def _add_date_before(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        before = datetime.datetime.strptime(params["before"], "%Y-%m-%d")
+        if len(params["before"]):
+            before = datetime.datetime.strptime(params["before"], "%Y-%m-%d")
+        else:
+            before = datetime.datetime.strptime(params["before"][0:19], "%Y-%m-%d %H:%M:%S")
     except ValueError or OverflowError:
         errors.append(
-            ugettext("The value for after is invalid. The correct format is YYYY-MM-DD")
+            ugettext("The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS")
         )
         return search
     search = search.filter(
