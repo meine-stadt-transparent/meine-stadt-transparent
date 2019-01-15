@@ -34,6 +34,8 @@ RUN pip3 install --upgrade poetry \
 
 COPY . /app/
 
+ENV NODE_ENV production
+
 RUN etc/docker-init.sh
 
 EXPOSE 8000
