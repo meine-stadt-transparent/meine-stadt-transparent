@@ -1,15 +1,16 @@
 from typing import Optional
 
-import pgpy
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from pgpy import PGPMessage
-from pgpy.constants import CompressionAlgorithm
 
 from mainapp.models import UserProfile
 
 
 def encrypt(message: str, key: bytes) -> str:
+    import pgpy
+    from pgpy import PGPMessage
+    from pgpy.constants import CompressionAlgorithm
+
     message = PGPMessage.new(message, compression=CompressionAlgorithm.Uncompressed)
     pub_key, _ = pgpy.PGPKey.from_blob(key)
     return str(pub_key.encrypt(message))
@@ -21,14 +22,15 @@ def send_mail(
     message_text: str,
     message_html: str,
     profile: Optional[UserProfile] = None,
-):
+) -> None:
     """ Sends a possibly encrypted email """
     key = None
-    if profile:
-        key = profile.get_pgp_key()
+    if settings.ENABLE_PGP:
+        if profile:
+            key = profile.get_pgp_key()
 
-    if key:
-        message_text = encrypt(message_text, key)
+        if key:
+            message_text = encrypt(message_text, key)
 
     mail_from = (
         settings.DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
