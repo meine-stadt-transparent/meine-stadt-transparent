@@ -1,4 +1,5 @@
 import json
+from typing import List
 
 from django.conf import settings
 from django.db.models import Q, Prefetch
@@ -7,7 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Organization, Person, Paper, OrganizationMembership
+from mainapp.models import Organization, Person, Paper, Membership
 from mainapp.views.utils import (
     handle_subscribe_requests,
     is_subscribed_to_search,
@@ -36,15 +37,15 @@ def get_persons_with_prefetch(group_type, organization):
 
     Django does some really awesome stuff then and transforms this into 4 fast queries
     """
-    queryset = OrganizationMembership.objects.filter(
+    queryset = Membership.objects.filter(
         organization__organization_type_id=group_type
     ).prefetch_related("organization")
     prefetch = Prefetch(
-        "person__organizationmembership_set",
-        queryset=queryset,
-        to_attr="prefetched_orgs",
+        "person__membership_set", queryset=queryset, to_attr="prefetched_orgs"
     )
-    memberships = organization.organizationmembership_set.prefetch_related(prefetch)
+    memberships = organization.membership_set.filter(
+        Q(end__isnull=True) | Q(end__gt=timezone.now())
+    ).prefetch_related(prefetch)
     return memberships
 
 
@@ -52,11 +53,7 @@ def person_grid_context(organization):
     group_type = settings.PARLIAMENTARY_GROUPS_TYPE[0]
 
     # Find all parliamentary groups that are in that organization
-    crit = Q(
-        organizationmembership__person__organizationmembership__organization__in=[
-            organization.id
-        ]
-    )
+    crit = Q(membership__person__membership__organization__in=[organization.id])
     parliamentarygroups = (
         Organization.objects.filter(organization_type_id=group_type)
         .filter(crit)
@@ -67,7 +64,9 @@ def person_grid_context(organization):
     members = []
     for membership in memberships:
         # Find all the parliamentary groups the current person is in
-        groups_names = [i.organization.name for i in membership.person.prefetched_orgs]
+        groups_names = [
+            i.organization.short_name for i in membership.person.prefetched_orgs
+        ]
         groups_ids = [i.organization.id for i in membership.person.prefetched_orgs]
         groups_css_classes = ["organization-" + str(i) for i in groups_ids]
 
@@ -85,17 +84,23 @@ def person_grid_context(organization):
     return members, parliamentarygroups
 
 
-def get_ordered_memberships(selected_person):
+def get_ordered_memberships(selected_person: Person) -> List[List[Membership]]:
     """ Orders memberships so that the active ones are first, those with unknown end seconds and the ended last. """
-    memberships_active = selected_person.organizationmembership_set.filter(
-        end__gte=timezone.now().date()
-    ).all()
-    memberships_no_end = selected_person.organizationmembership_set.filter(
-        end__isnull=True
-    ).all()
-    memberships_ended = selected_person.organizationmembership_set.filter(
-        end__lt=timezone.now().date()
-    ).all()
+    memberships_active = (
+        selected_person.membership_set.filter(end__gte=timezone.now().date())
+        .prefetch_related("organization")
+        .all()
+    )
+    memberships_no_end = (
+        selected_person.membership_set.filter(end__isnull=True)
+        .prefetch_related("organization")
+        .all()
+    )
+    memberships_ended = (
+        selected_person.membership_set.filter(end__lt=timezone.now().date())
+        .prefetch_related("organization")
+        .all()
+    )
     memberships = []
     if len(memberships_active) > 0:
         memberships.append(memberships_active)
@@ -122,9 +127,7 @@ def person(request, pk):
         return redirect(err.redirect_url)
 
     filter_self = Paper.objects.filter(persons__id=pk)
-    filter_organization = Paper.objects.filter(
-        organizations__organizationmembership__person__id=pk
-    )
+    filter_organization = Paper.objects.filter(organizations__membership__person__id=pk)
     paper = (filter_self | filter_organization).distinct()
 
     mentioned = []

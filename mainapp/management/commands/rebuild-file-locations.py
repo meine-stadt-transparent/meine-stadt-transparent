@@ -1,7 +1,11 @@
+import logging
+
 from django.core.management.base import BaseCommand
 
 from mainapp.functions.document_parsing import extract_locations
 from mainapp.models import File
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -27,10 +31,11 @@ class Command(BaseCommand):
                 try:
                     self.parse_file(file)
                 except Exception as e:
+                    logger.exception(str(e))
                     self.stderr.write(
                         "Error parsing file: {}: {}".format(str(file.id), e)
                     )
         elif options["id"]:
-            for id in options["id"]:
-                file = File.objects.get(id=id)
+            for file_id in options["id"]:
+                file = File.objects.get(id=file_id)
                 self.parse_file(file)

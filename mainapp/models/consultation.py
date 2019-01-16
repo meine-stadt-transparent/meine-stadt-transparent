@@ -11,7 +11,6 @@ class Consultation(DefaultFields):
     See https://github.com/OParl/spec/issues/381 for why we need an extra consultation when there is agenda item
     """
 
-    title = models.TextField(null=True, blank=True)
     meeting = models.ForeignKey(
         Meeting, null=True, blank=True, on_delete=models.CASCADE
     )

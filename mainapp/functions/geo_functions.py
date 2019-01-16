@@ -1,10 +1,10 @@
 import logging
 import re
-from typing import Optional, Dict
+from typing import Optional, Dict, Any
 
 from django.conf import settings
 from geopy import OpenCage, Nominatim
-from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+from geopy.exc import GeocoderServiceError
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
@@ -23,20 +23,30 @@ def get_geolocator(fallback=False):
     return geolocator
 
 
-def geocode(search_str: str) -> Optional[Dict[str, int]]:
+def geocode(search: str) -> Optional[Dict[str, Any]]:
     try:
         location = get_geolocator().geocode(
-            search_str, language="de", exactly_one=False
+            search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
         )
-    except (GeocoderTimedOut, GeocoderServiceError) as e:
+    except GeocoderServiceError as e:
         logger.warning(e)
-        location = get_geolocator(fallback=True).geocode(
-            search_str, language="de", exactly_one=False
-        )
-    if not location or len(location) == 0:
+        try:
+            location = get_geolocator(fallback=True).geocode(
+                search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
+            )
+        except GeocoderServiceError:
+            logger.exception(
+                "Geocoder fallback service failed. Search string was {}".format(search)
+            )
+            return None
+
+    if not location:
         return None
 
-    return {"lat": location[0].latitude, "lng": location[0].longitude}
+    return {
+        "type": "Point",
+        "coordinates": [location[0].longitude, location[0].latitude],
+    }
 
 
 def _format_opencage_location(location):

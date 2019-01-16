@@ -29,14 +29,13 @@ from mainapp.models.organization_type import OrganizationType
 from mainapp.views import person_grid_context, HttpResponse
 from mainapp.views.utils import build_map_object
 
-
 logger = logging.getLogger(__name__)
 
 
 def index(request):
-    main_body = Body.objects.get(id=settings.SITE_DEFAULT_BODY)
+    main_body = get_object_or_404(Body, id=settings.SITE_DEFAULT_BODY)
 
-    latest_paper = Paper.objects.order_by("-sort_date", "-legal_date")[:10]
+    latest_paper = Paper.objects.order_by("-sort_date")[:10]
     for paper in latest_paper:
         # The mixed results view needs those
         setattr(paper, "type", "paper")
@@ -45,7 +44,9 @@ def index(request):
         setattr(paper, "url", paper.get_default_link())
 
     geo_papers = (
-        Paper.objects.order_by("-sort_date", "-legal_date")
+        Paper.objects.order_by("-sort_date")
+        .prefetch_related("main_file")
+        .prefetch_related("main_file__locations")
         .prefetch_related("files")
         .prefetch_related("files__locations")[:50]
     )
@@ -58,29 +59,33 @@ def index(request):
         "person": Person.objects.count(),
     }
 
+    map_object = build_map_object(main_body, geo_papers)
+
     context = {
-        "map": build_map_object(main_body, geo_papers),
+        "map": map_object,
         "latest_paper": latest_paper,
         "next_meetings": Meeting.objects.filter(start__gt=timezone.now()).order_by(
             "start"
         )[:2],
         "stats": stats,
-        "body_name": main_body.name,
+        "body_name": main_body.short_name,
     }
 
     if request.GET.get("version", "v2") == "v2":
-        return render(request, "mainapp/index_v2/index.html", context)
+        x = render(request, "mainapp/index_v2/index.html", context)
     else:
-        return render(request, "mainapp/index/index.html", context)
+        x = render(request, "mainapp/index/index.html", context)
+
+    return x
 
 
 def organizations(request):
     organizations_ordered = []
     for organization_type in OrganizationType.objects.all():
-        ct1 = Count("organizationmembership", distinct=True)
+        ct1 = Count("membership", distinct=True)
         ct2 = Count("paper", distinct=True)
         ct3 = Count("meeting", distinct=True)
-        all_orgas = (
+        all_orgas = list(
             Organization.objects.annotate(ct1, ct2, ct3)
             .filter(organization_type=organization_type)
             .all()
@@ -175,7 +180,7 @@ def file(request, pk, context_meeting_id=None):
     ]:
         renderer = "image"
 
-    if not (file.filesize and file.filesize > 0):
+    if not file.filesize:
         renderer = None
 
     context = {
@@ -207,7 +212,7 @@ def file(request, pk, context_meeting_id=None):
 
 def file_serve(request, id):
     logger.warning("Serving media files through django is slow")
-    minio_file = minio_client.get_object(minio_file_bucket, id)
+    minio_file = minio_client().get_object(minio_file_bucket, id)
     response = HttpResponse(minio_file.read())
 
     response["Content-Type"] = minio_file.headers["Content-Type"]

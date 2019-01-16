@@ -14,7 +14,7 @@ from .index import elastic_index, autocomplete_analyzer
 @elastic_index.doc_type
 class OrganizationDocument(DocType, GenericMembershipDocument):
     autocomplete = StringField(attr="name", analyzer=autocomplete_analyzer)
-    sort_date = DateField(attr="sort_date")
+    sort_date = DateField()
     body = ObjectField(properties={"id": IntegerField(), "name": StringField()})
 
     def get_queryset(self):

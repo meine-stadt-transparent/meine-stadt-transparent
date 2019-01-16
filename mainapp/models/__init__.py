@@ -6,8 +6,8 @@ from .file import File
 from .legislative_term import LegislativeTerm
 from .location import Location
 from .meeting import Meeting
+from .membership import Membership
 from .organization import Organization
-from .organization_membership import OrganizationMembership
 from .organization_type import OrganizationType
 from .paper import Paper
 from .paper_type import PaperType

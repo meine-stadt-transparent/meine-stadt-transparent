@@ -3,6 +3,8 @@
 .agenda {
   dt {
     min-width: 30px;
+    // For some reason min-width sets width, which can apparently be circumvented with diplay: table
+    display: table;
   }
   .additional-links {
     display: block;

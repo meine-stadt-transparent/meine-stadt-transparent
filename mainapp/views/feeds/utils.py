@@ -6,8 +6,8 @@ from django.utils.translation import ugettext as _
 def paper_description(paper):
     info = ""
 
-    if paper.description:
-        info += "<p>" + escape(paper.description) + "</escape>"
+    if paper.name:
+        info += "<p>" + escape(paper.name) + "</p>"
 
     info_bits = []
     if paper.paper_type:

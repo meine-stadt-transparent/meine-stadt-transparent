@@ -76,14 +76,14 @@
                         <li class="main-file">
                             <a href="{% url 'file' paper.main_file.id %}">
                                 <span class="fa-custom fa-file"></span>
-                                {% firstof paper.main_file.name paper.main_file.displayed_filename %}
+                                {% firstof paper.main_file.name paper.main_file.filename %}
                             </a>
                         </li>
                     {% endif %}
                     {% for file in paper.files.all %}
                         <li>
                             <a href="{% url 'file' file.id %}">
-                                <span class="fa-custom fa-file"></span>{% firstof file.name file.displayed_filename file %}
+                                <span class="fa-custom fa-file"></span>{% firstof file.name file.filename file %}
                             </a>
                         </li>
                     {% endfor %}

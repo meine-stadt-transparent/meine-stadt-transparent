@@ -8,21 +8,21 @@ from .default_fields import DefaultFields
 
 
 class Location(DefaultFields):
-    short_description = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    # Need to work around a cyclic import here
-    bodies = models.ManyToManyField("mainapp.Body", blank=True)
+
+    street_address = models.CharField(max_length=512, null=True, blank=True)
+    postal_code = models.CharField(max_length=512, null=True, blank=True)
+    locality = models.CharField(max_length=512, null=True, blank=True)
+    room = models.CharField(max_length=512, null=True, blank=True)
+
     is_official = models.BooleanField()
     osm_id = models.BigIntegerField(null=True, blank=True)
     geometry = GeometryField(default=None)
-    streetAddress = models.CharField(max_length=512, null=True, blank=True)
-    room = models.CharField(max_length=512, null=True, blank=True)
-    postalCode = models.CharField(max_length=512, null=True, blank=True)
-    locality = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
-        return self.short_description or self.description or _("Unknown")
+        return self.description or _("Unknown")
 
+    # noinspection PyUnresolvedReferences
     def coordinates(self) -> Optional[Dict[str, Any]]:
         if self.geometry and self.geometry["type"] == "Point":
             return {

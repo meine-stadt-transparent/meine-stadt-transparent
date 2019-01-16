@@ -8,8 +8,8 @@
             <div>
                 <a href="{% url 'person' member.id %}">
                     <div class="name">{{ member.name }}</div>
-                    <div class="organization">{{ member.groups_names }}</div>
-                    <div class="role">{{ member.role }}</div>
+                    <div class="organization" title="{{ member.groups_names }}">{{ member.groups_names }}</div>
+                    <div class="role" title="{{ member.role }}">{{ member.role }}</div>
                     <div class="date">
                         {% if member.end %}
                             {% trans "From" context "persons-list" %} {{ member.start }}

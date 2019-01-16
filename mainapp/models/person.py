@@ -1,6 +1,3 @@
-import re
-
-from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
@@ -27,9 +24,7 @@ class Person(DefaultFields):
         return reverse("person", args=[self.id])
 
     def organization_ids(self):
-        return [
-            organization.id for organization in self.organizationmembership_set.all()
-        ]
+        return [organization.id for organization in self.membership_set.all()]
 
     def sort_date(self):
         if hasattr(self, "sort_date_prefetch"):
@@ -40,9 +35,7 @@ class Person(DefaultFields):
 
         # The most recent time this person joined a new organization
         latest = (
-            self.organizationmembership_set.filter(start__isnull=False)
-            .order_by("-start")
-            .first()
+            self.membership_set.filter(start__isnull=False).order_by("-start").first()
         )
         if latest:
             return latest.start

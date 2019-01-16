@@ -59,7 +59,7 @@ $(function () {
             } else {
                 let url = $calendar.data("url-template")
                     .replace(/VIEW/, view.name)
-                    .replace(/0000\-00\-00/, view.start.format('YYYY-MM-DD'));
+                    .replace(/0000-00-00/, view.start.format('YYYY-MM-DD'));
                 window.history.pushState({}, "", url);
             }
         },

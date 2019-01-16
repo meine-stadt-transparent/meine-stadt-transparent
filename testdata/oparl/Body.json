@@ -37,7 +37,10 @@
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [50.1234, 10.4321]
+                "coordinates": [
+                    50.1234,
+                    10.4321
+                ]
             },
             "properties": {
                 "name": "Rathausplatz"

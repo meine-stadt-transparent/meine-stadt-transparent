@@ -12,7 +12,10 @@
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [50.1234, 10.4321]
+                "coordinates": [
+                    50.1234,
+                    10.4321
+                ]
             },
             "properties": {
                 "name": "Rathausplatz"
@@ -23,7 +26,7 @@
         "https://oparl.example.org/organization/34"
     ],
     "invitation": {
-        "id": "https://oparl.example.org/files/57739",
+        "id": "https://oparl.example.org/files/57740",
         "type": "https://schema.oparl.org/1.1/File",
         "name": "Einladung",
         "fileName": "einladung.pdf",
@@ -36,7 +39,7 @@
         "downloadUrl": "https://oparl.example.org/files/download/57739.pdf"
     },
     "resultsProtocol": {
-        "id": "https://oparl.example.org/files/57739",
+        "id": "https://oparl.example.org/files/57741",
         "type": "https://schema.oparl.org/1.1/File",
         "name": "Protokoll",
         "fileName": "protokoll.pdf",
@@ -49,7 +52,7 @@
         "modified": "2012-01-08T14:05:27+01:00"
     },
     "verbatimProtocol": {
-        "id": "https://oparl.example.org/files/57739",
+        "id": "https://oparl.example.org/files/57742",
         "type": "https://schema.oparl.org/1.1/File",
         "name": "Wortprotokoll",
         "fileName": "wortprotokoll.pdf",
@@ -86,7 +89,8 @@
             "public": true,
             "consultation": "https://oparl.example.org/consultation/47594",
             "result": "Geändert beschlossen",
-            "resolutionText": "Der Beschluss weicht wie folgt vom Antrag ab: ..."
+            "resolutionText": "Der Beschluss weicht wie folgt vom Antrag ab: ...",
+            "resolutionFile": "https://oparl.example.org/files/0"
         }
     ],
     "created": "2012-01-06T12:01:00+01:00",

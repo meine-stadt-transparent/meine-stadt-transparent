@@ -1,7 +1,7 @@
 from django.db.models import Prefetch
 from django_elasticsearch_dsl import DocType, StringField, IntegerField, DateField
 
-from mainapp.models import Person, OrganizationMembership
+from mainapp.models import Person, Membership
 from .index import elastic_index, autocomplete_analyzer
 
 
@@ -12,16 +12,16 @@ class PersonDocument(DocType):
     organization_ids = IntegerField(attr="organization_ids")
 
     def get_queryset(self):
-        sort_date_queryset = OrganizationMembership.objects.filter(
-            start__isnull=False
-        ).order_by("-start")
+        sort_date_queryset = Membership.objects.filter(start__isnull=False).order_by(
+            "-start"
+        )
 
         return (
             Person.objects.order_by("id")
-            .prefetch_related("organizationmembership_set")
+            .prefetch_related("membership_set")
             .prefetch_related(
                 Prefetch(
-                    "organizationmembership_set",
+                    "membership_set",
                     queryset=sort_date_queryset,
                     to_attr="sort_date_prefetch",
                 )

@@ -35,6 +35,9 @@ splinter = "^0.10"
 Wand = "^0.4.4"
 sentry-sdk = "^0.6.2"
 minio = "^4.0"
+tqdm = "^4.29"
+python-dateutil = "^2.7"
+
 
 [tool.poetry.dev-dependencies]
 selenium = "3.141.0"
@@ -55,6 +58,7 @@ exclude = '''
   | \.venv
   | \.tox
   | mainapp/migrations
+  | importer/migrations
   | node_modules
   | static
 )/

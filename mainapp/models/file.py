@@ -1,5 +1,8 @@
+from typing import Optional, List, Dict, Any
+
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from .default_fields import DefaultFields
 from .location import Location
@@ -8,12 +11,12 @@ from .person import Person
 
 class File(DefaultFields):
     name = models.CharField(max_length=200)
-    displayed_filename = models.CharField(max_length=200)
-    # See https://stackoverflow.com/a/643772/3549270#comment11618045_643772
+    filename = models.CharField(max_length=200)
+    # https://stackoverflow.com/a/643772/3549270#comment11618045_643772
     mime_type = models.CharField(max_length=255)
     legal_date = models.DateField(null=True, blank=True)
-    sort_date = models.DateTimeField(auto_now_add=True)
-    filesize = models.IntegerField()
+    sort_date = models.DateTimeField(default=timezone.now)
+    filesize = models.IntegerField(null=True, blank=True)
     locations = models.ManyToManyField(Location, blank=True)
     mentioned_persons = models.ManyToManyField(Person, blank=True)
     page_count = models.IntegerField(null=True, blank=True)
@@ -27,14 +30,9 @@ class File(DefaultFields):
     oparl_download_url = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
-        return self.displayed_filename
+        return self.filename
 
-    def rebuild_locations(self, parsed_text):
-        from mainapp.functions.document_parsing import extract_locations
-
-        self.locations = extract_locations(parsed_text)
-
-    def coordinates(self):
+    def coordinates(self) -> List[Dict[str, Any]]:
         coordinates = []
         for location in self.locations.all():
             coordinate = location.coordinates()
@@ -51,6 +49,9 @@ class File(DefaultFields):
 
     def name_autocomplete(self):
         return self.name if len(self.name) > 0 else " "
+
+    def get_oparl_url(self) -> Optional[str]:
+        return self.oparl_download_url or self.oparl_access_url
 
     def get_assigned_meetings(self):
         from .meeting import Meeting

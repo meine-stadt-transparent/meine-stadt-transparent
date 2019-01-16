@@ -23,7 +23,7 @@ class MeetingDocument(DocType):
         attr="agendaitem_set",
         properties={
             "key": StringField(),
-            "title": StringField(analyzer=text_analyzer),
+            "name": StringField(analyzer=text_analyzer),
             "position": IntegerField(),
             "public": BooleanField(),
         },

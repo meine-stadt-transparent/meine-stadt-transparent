@@ -1,5 +1,6 @@
-from unittest import mock
+from unittest import mock, skipIf
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -8,7 +9,8 @@ from mainapp.tests.tools import MinioMock
 
 
 class TestPGP(TestCase):
-    @mock.patch("mainapp.models.user_profile.minio_client", new=MinioMock())
+    @mock.patch("mainapp.functions.minio.minio_singleton", new=MinioMock())
+    @skipIf(not settings.ENABLE_PGP, "pgp not enabled")
     def test_key_handling(self):
         user = User.objects.create_user(username="John Doe", email="doe@example.com")
         profile = UserProfile.objects.create(user=user)

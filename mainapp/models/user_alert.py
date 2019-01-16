@@ -1,13 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from mainapp.functions.search_tools import (
-    params_to_search_string,
-    search_string_to_params,
-)
 from mainapp.functions.search_notification_tools import (
     params_to_human_string,
     params_are_equal,
+)
+from mainapp.functions.search_tools import (
+    params_to_search_string,
+    search_string_to_params,
 )
 
 

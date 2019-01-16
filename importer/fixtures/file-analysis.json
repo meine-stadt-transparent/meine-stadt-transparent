@@ -1,0 +1,155 @@
+[
+{
+    "model": "mainapp.historicalperson",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.952Z",
+        "modified": "2019-01-12T13:03:24.952Z",
+        "deleted": false,
+        "name": "Old MacDonald",
+        "given_name": "",
+        "family_name": "MacDonald",
+        "location": null,
+        "history_change_reason": null,
+        "history_date": "2019-01-12T13:03:24.972Z",
+        "history_user": null,
+        "history_type": "+"
+    }
+},
+{
+    "model": "mainapp.person",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.952Z",
+        "modified": "2019-01-12T13:03:24.952Z",
+        "deleted": false,
+        "name": "Old MacDonald",
+        "given_name": "",
+        "family_name": "MacDonald",
+        "location": null
+    }
+},
+{
+    "model": "mainapp.historicalfile",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:25.050Z",
+        "modified": "2019-01-12T13:03:25.050Z",
+        "deleted": false,
+        "name": "Donald Knuth - The Complexity of Songs",
+        "filename": "The Complexity of Songs.pdf",
+        "mime_type": "application/pdf",
+        "legal_date": null,
+        "sort_date": "2019-01-12T13:03:25.050Z",
+        "filesize": null,
+        "page_count": null,
+        "parsed_text": null,
+        "license": null,
+        "description": null,
+        "oparl_access_url": "https://oparl.example.org/download/0",
+        "oparl_download_url": null,
+        "history_change_reason": null,
+        "history_date": "2019-01-12T13:03:25.075Z",
+        "history_user": null,
+        "history_type": "+"
+    }
+},
+{
+    "model": "mainapp.file",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:25.050Z",
+        "modified": "2019-01-12T13:03:25.050Z",
+        "deleted": false,
+        "name": "Donald Knuth - The Complexity of Songs",
+        "filename": "The Complexity of Songs.pdf",
+        "mime_type": "application/pdf",
+        "legal_date": null,
+        "sort_date": "2019-01-12T13:03:25.050Z",
+        "filesize": null,
+        "page_count": null,
+        "parsed_text": null,
+        "license": null,
+        "description": null,
+        "oparl_access_url": "https://oparl.example.org/download/0",
+        "oparl_download_url": null,
+        "locations": [],
+        "mentioned_persons": []
+    }
+},
+{
+    "model": "mainapp.historicalbody",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.900Z",
+        "modified": "2019-01-12T13:03:24.900Z",
+        "deleted": false,
+        "name": "Landeshauptstadt M\u00fcnchen",
+        "short_name": "M\u00fcnchen",
+        "ags": "09162000",
+        "center": null,
+        "outline": null,
+        "history_change_reason": null,
+        "history_date": "2019-01-12T13:03:24.925Z",
+        "history_user": null,
+        "history_type": "+"
+    }
+},
+{
+    "model": "mainapp.body",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.900Z",
+        "modified": "2019-01-12T13:03:24.900Z",
+        "deleted": false,
+        "name": "Landeshauptstadt M\u00fcnchen",
+        "short_name": "M\u00fcnchen",
+        "center": null,
+        "outline": null,
+        "ags": "09162000",
+        "legislative_terms": []
+    }
+},
+{
+    "model": "mainapp.historicalsearchstreet",
+    "pk": 1,
+    "fields": {
+        "id": 1,
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.998Z",
+        "modified": "2019-01-12T13:03:24.998Z",
+        "deleted": false,
+        "displayed_name": "There's a Hole in the Bottom of the Sea",
+        "osm_id": 1,
+        "exclude_from_search": false,
+        "body": null,
+        "history_change_reason": null,
+        "history_date": "2019-01-12T13:03:25.023Z",
+        "history_user": null,
+        "history_type": "+"
+    }
+},
+{
+    "model": "mainapp.searchstreet",
+    "pk": 1,
+    "fields": {
+        "oparl_id": null,
+        "created": "2019-01-12T13:03:24.998Z",
+        "modified": "2019-01-12T13:03:24.998Z",
+        "deleted": false,
+        "displayed_name": "There's a Hole in the Bottom of the Sea",
+        "body": null,
+        "osm_id": 1,
+        "exclude_from_search": false
+    }
+}
+]

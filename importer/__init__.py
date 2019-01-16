@@ -1,1 +1,3 @@
-from .city_to_ags import CityToAGS
+from typing import Dict, Any
+
+JSON = Dict[str, Any]

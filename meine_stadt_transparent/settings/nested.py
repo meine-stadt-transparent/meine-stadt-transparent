@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sites",
     "mainapp",
+    "importer",
     "webpack_loader",
     "djgeojson",
     "anymail",

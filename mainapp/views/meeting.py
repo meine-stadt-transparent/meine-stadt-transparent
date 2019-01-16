@@ -10,15 +10,14 @@ from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django.utils import formats
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from icalendar import Calendar
-
-# noinspection PyPackageRequirements
 from pytz import timezone
 from slugify import slugify
 
-from mainapp.models import Meeting, Organization, AgendaItem
+from mainapp.models import Meeting, Organization, AgendaItem, Person
 from mainapp.views.utils import build_map_object
 
 
@@ -79,37 +78,48 @@ def calendar_data(request):
 def meeting(request, pk):
     selected_meeting = get_object_or_404(Meeting, id=pk)
 
-    # Format the time frame
-    if selected_meeting.start:
-        begin = selected_meeting.start.astimezone(tz.tzlocal()).strftime(
-            settings.DATETIME_FORMAT
-        )
+    start = selected_meeting.start
+    if start:
+        # FIXME: That ain't nice for localization
+        start_date = start.astimezone(tz.tzlocal()).strftime("%d.%m.%Y")
+        start_time = formats.time_format(start.astimezone(tz.tzlocal()))
     else:
-        begin = None
-    if selected_meeting.end:
-        end = selected_meeting.end.astimezone(tz.tzlocal()).strftime(
-            settings.DATETIME_FORMAT
-        )
-    else:
-        end = None
+        start_date = None
+        start_time = None
 
-    if not selected_meeting.end:
-        time = begin
-    elif selected_meeting.start.date() == selected_meeting.end.date():
-        # We don't need to repeat the date
-        time = "{} - {}".format(
-            begin,
-            selected_meeting.end.astimezone(tz.tzlocal()).strftime(
-                settings.TIME_FORMAT
-            ),
-        )
+    end = selected_meeting.end
+    if end:
+        end_date = end.astimezone(tz.tzlocal()).strftime("%d.%m.%Y")
+        end_time = formats.time_format(end.astimezone(tz.tzlocal()))
     else:
-        time = "{} - {}".format(begin, end)
+        end_date = None
+        end_time = None
+
+    if start_date and start_date == end_date:
+        # Don't repeat the date
+        time = "{} {} - {}".format(start_date, start_time, end_time)
+    elif end_date:
+        time = "{} {} - {} {}".format(start_date, start_time, end_date, end_time)
+    elif start_date:
+        time = "{} {}".format(start_date, start_time)
+    else:
+        time = _("Unknown")
 
     if selected_meeting.location and selected_meeting.location.geometry:
         location_geom = selected_meeting.location.geometry
     else:
         location_geom = None
+
+    agenda_items = selected_meeting.agendaitem_set.prefetch_related(
+        "consultation__paper__main_file"
+    ).all()
+
+    # The persons can be listed both in the organization and in the meeting,
+    # but we're only interested in the ones only in the meeting
+    meeting_persons = set(
+        Person.objects.filter(membership__organization__meeting=selected_meeting).all()
+    )
+    extra_persons = set(selected_meeting.persons.all()) - meeting_persons
 
     # Try to find a previous or following meetings using the organization
     # Excludes meetings with more than one organization
@@ -118,6 +128,8 @@ def meeting(request, pk):
         "time": time,
         "map": build_map_object(),
         "location_json": json.dumps(location_geom),
+        "agenda_items": agenda_items,
+        "extra_persons": extra_persons,
     }
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()
@@ -128,8 +140,8 @@ def meeting(request, pk):
             .order_by("start")
         )
 
-        context["previous"] = query.filter(start__lt=selected_meeting.start).last()
-        context["following"] = query.filter(start__gt=selected_meeting.start).first()
+        context["previous"] = query.filter(start__lt=start).last()
+        context["following"] = query.filter(start__gt=start).first()
 
     return render(request, "mainapp/meeting.html", context)
 
@@ -165,7 +177,7 @@ def build_ical_response(meetings: List[Meeting], filename: str):
     return response
 
 
-def meeting_ical(request, pk):
+def meeting_ical(_request, pk):
     meeting = get_object_or_404(Meeting, id=pk)
 
     filename = meeting.short_name or meeting.name or _("Meeting")
@@ -173,7 +185,7 @@ def meeting_ical(request, pk):
     return build_ical_response([meeting], filename)
 
 
-def organizazion_ical(request, pk):
+def organizazion_ical(_request, pk):
     committee = get_object_or_404(Organization, id=pk)
     meetings = committee.meeting_set.prefetch_related("location").all()
     filename = committee.short_name or committee.name or _("Meeting Series")
@@ -181,7 +193,7 @@ def organizazion_ical(request, pk):
     return build_ical_response(meetings, filename)
 
 
-def calendar_ical(request):
+def calendar_ical(_request):
     """ Returns an ical file containing all meetings from -6 months from now. """
     meetings = (
         Meeting.objects.filter(start__gt=now() + relativedelta(months=-6))

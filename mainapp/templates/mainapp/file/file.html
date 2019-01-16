@@ -41,7 +41,7 @@
                             <p class="lead">{% trans "The file can not be shown" %}</p>
                             <a class="btn btn-primary btn-lg" role="button"
                                href="{% url 'file-content' file.id %}"
-                               download='{{ file.displayed_filename }}'>
+                               download='{{ file.filename }}'>
                                 <span class="fa fa-download" aria-hidden="true"></span>
                                 {% trans "Download" %}
                             </a>

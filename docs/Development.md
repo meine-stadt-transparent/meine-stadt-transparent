@@ -1,6 +1,6 @@
 ## Development
 
-The web server needs to be set up with an SSL certificate. You can use a [self-signed certificate](https://stackoverflow.com/a/10176685/3549270) for development.
+The web server needs to be set up with an SSL certificate. You can use [mkcert](https://github.com/FiloSottile/mkcert) for development.
 
 ### Assets
 
@@ -11,16 +11,19 @@ npm run build:email
 ```
 
 ... or rebuild after every change
+
 ```
 npm run watch
 ```
 
 Run the migrations and create an admin user
+
 ```
 ./manage.py migrate
 ```
 
 Start the actual server
+
 ```
 ./manage.py runserver
 ```
@@ -33,7 +36,7 @@ Run the test cases:
 ./manage.py test
 ```
 
-There's a tox config to ensure 3.5 and 3.6 compatibility which can be run with `tox`.
+There's a tox config to ensure 3.5 to 3.7 compatibility which can be run with `tox`.
 
 ### Dummy data
 
@@ -62,21 +65,22 @@ To reindex the elasticsearch index (requires elastic search to be enabled):
 ### Translating strings
 
 ```
-django-admin makemessages -a
+./manage.py makemessages -a
 # translate django.po
-django-admin compilemessages
+./manage.py compilemessages
 ```
 
 ### Notifying users about new documents
 
-The following script is meant to be run as a cron job:
+The following script is meant to be run as an hourly cron job through the `./manage.py cron`:
+
 ```
 ./manage.py notifyusers
 ```
 
 However, for debugging purposes, it can be called stand alone, skipping the actual e-mail-sending and using a custom date range. The following commands dumps the search results of all users since 2017-09-10:
 ```
-./manage.py notifyusers --debug --override-since 2017-09-10
+./manage.py notifyusers --simulate --override-since 2017-09-10
 ```
 
 ### OCR'ing documents

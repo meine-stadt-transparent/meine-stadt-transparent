@@ -6,6 +6,7 @@ services:
     volumes:
       - django_static:/static
       - ./.env:/app/.env
+      - ./log:/app/log
     ports:
       - 8000:8000
     networks:

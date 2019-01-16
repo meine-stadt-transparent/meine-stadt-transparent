@@ -1,7 +1,6 @@
 import json
 import logging
 
-# noinspection PyPackageRequirements
 from csp.decorators import csp_update
 from django.conf import settings
 from django.contrib import messages
@@ -14,6 +13,7 @@ from elasticsearch_dsl import Search
 
 from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
+from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.functions.search_tools import (
     search_string_to_params,
     escape_elasticsearch_query,
@@ -21,7 +21,6 @@ from mainapp.functions.search_tools import (
     parse_hit,
     params_to_search_string,
 )
-from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
     handle_subscribe_requests,
@@ -84,9 +83,7 @@ def aggs_to_context(executed):
     org = settings.SITE_DEFAULT_ORGANIZATION
     bucketing = {
         "organization": Organization.objects.all(),
-        "person": Person.objects.filter(
-            organizationmembership__organization=org
-        ).distinct(),
+        "person": Person.objects.filter(membership__organization=org).distinct(),
     }
     for aggs_field, queryset in bucketing.items():
         aggs_count = 0
@@ -159,7 +156,7 @@ def search_autocomplete(_, query):
     # This way we enforce that the whole entered word has to be matched (save for some fuzziness) and the algorithm
     # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
     # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
-    search = (
+    search_query = (
         Search(index=settings.ELASTICSEARCH_INDEX)
         .query(
             "match",
@@ -172,7 +169,7 @@ def search_autocomplete(_, query):
         )
         .extra(min_score=1)
     )
-    response = search.execute()
+    response = search_query.execute()
 
     multibody = Body.objects.count() > 1
 

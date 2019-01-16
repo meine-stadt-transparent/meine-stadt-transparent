@@ -46,7 +46,7 @@ export class FullCalendarMSTTheme {
         let buttonName;
 
         if ($.isPlainObject(iconOverrideHash)) {
-            iconClassesCopy = $.extend({}, this.iconClasses)
+            iconClassesCopy = $.extend({}, this.iconClasses);
 
             for (buttonName in iconOverrideHash) {
                 iconClassesCopy[buttonName] = this.applyIconOverridePrefix(

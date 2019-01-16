@@ -618,6 +618,14 @@ virtualenv = ">=1.11.2"
 
 [[package]]
 category = "main"
+description = "Fast, Extensible Progress Meter"
+name = "tqdm"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+version = "4.29.1"
+
+[[package]]
+category = "main"
 description = "ASCII transliterations of Unicode text"
 name = "unidecode"
 optional = false
@@ -663,7 +671,7 @@ version = "0.14.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "65b939f6c2ef84aaf95178f50c8b9babf7601374daa18216df69a0687fb154bc"
+content-hash = "c77b73a8ca6540df84e7a962d378366cb4c0f45fd920fbc0f9531e7ccf525afd"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -728,6 +736,7 @@ splinter = ["2d9f370536e6c1607824f5538e0bff9808bc02f086b07622b3790424dd3daff4", 
 sqlparse = ["ce028444cfab83be538752a2ffdb56bc417b7784ff35bb9a3062413717807dec", "d9cf190f51cbb26da0412247dfe4fb5f4098edb73db84e02f9fc21fdca31fed4"]
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 tox = ["04f8f1aa05de8e76d7a266ccd14e0d665d429977cd42123bc38efa9b59964e9e", "25ef928babe88c71e3ed3af0c464d1160b01fca2dd1870a5bb26c2dea61a17fc"]
+tqdm = ["b856be5cb6cfaee3b2733655c7c5bbc7751291bb5d1a4f54f020af4727570b3e", "c9b9b5eeba13994a4c266aae7eef7aeeb0ba2973e431027e942b4faea139ef49"]
 unidecode = ["092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f", "8b85354be8fd0c0e10adbf0675f6dc2310e56fda43fa8fe049123b6c475e52fb"]
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 virtualenv = ["34b9ae3742abed2f95d3970acf4d80533261d6061b51160b197f84e5b4c98b4c", "fa736831a7b18bd2bfeef746beb622a92509e9733d645952da136b0639cd40cd"]

@@ -4,7 +4,7 @@ from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
 class PersonsTest(ChromeDriverTestCase):
-    fixtures = ["initdata.json"]
+    fixtures = ["initdata"]
 
     def _get_pos_by_name(self, name):
         js = (

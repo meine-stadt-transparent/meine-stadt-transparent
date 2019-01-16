@@ -27,7 +27,7 @@ def search_result_for_notification(result) -> NotificationSearchResult:
     elif result["type"] == "paper":
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse("paper", args=[result["id"]])
-    elif result["type"] == "file":  # displayed_filename?
+    elif result["type"] == "file":  # filename?
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse("file", args=[result["id"]])
     else:

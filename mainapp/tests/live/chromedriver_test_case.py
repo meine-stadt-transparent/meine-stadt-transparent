@@ -2,24 +2,13 @@ import logging
 
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
-from django.core.servers.basehttp import WSGIServer
 from django.test import modify_settings
-from django.test.testcases import LiveServerThread, QuietWSGIRequestHandler
 from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 
 chromedriver_path = "node_modules/.bin/chromedriver"
 
 logger = logging.getLogger(__name__)
-
-
-class LiveServerSingleThread(LiveServerThread):
-    """Runs a single threaded server rather than multi threaded. Reverts https://github.com/django/django/pull/7832"""
-
-    def _create_server(self):
-        return WSGIServer(
-            (self.host, self.port), QuietWSGIRequestHandler, allow_reuse_address=False
-        )
 
 
 @modify_settings(MIDDLEWARE={"remove": ["django.middleware.csrf.CsrfViewMiddleware"]})
@@ -30,12 +19,6 @@ class ChromeDriverTestCase(StaticLiveServerTestCase):
     - English is used for the UI
     - CSRF-checks are disabled, as referrer-checking seems to be problematic, as the HTTPS-header seems to be always set
     """
-
-    # https://stackoverflow.com/a/51750516/3549270
-    # This currently leads to some kind of deadlock where it spends 200% in readinto (/usr/lib/python3.6/socket.py:586)
-    # The workaround was to disable this workaround and instead increase the sqlite timeout and hope it'll never
-    # take that long
-    # server_thread_class = LiveServerSingleThread
 
     browser = None
 
