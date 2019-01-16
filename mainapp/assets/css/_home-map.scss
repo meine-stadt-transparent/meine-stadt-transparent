@@ -46,6 +46,8 @@
       background-color: $index-main-buttons-btn-background;
       color: $index-main-buttons-btn-text;
 
+      @extend .shadow;
+
       &:before {
         // Hack to enforce a square form
         content: "";

@@ -13,12 +13,6 @@
   }
 }
 
-.search-card {
-  .card-header h1 {
-    margin-bottom: 0;
-  }
-}
-
 .search-icon {
   position: absolute;
   top: calc(50% - 16px / 2); // font awesome says 14px, but `font-size: inherit;` seems to override that
@@ -47,6 +41,7 @@
     @extend .btn-danger;
     width: 50%;
   }
+
   .select-btn {
     @extend .btn-primary;
     width: 50%;
@@ -56,6 +51,7 @@
     flex: 1;
     text-align: right;
   }
+
   label {
     cursor: pointer;
   }
@@ -65,38 +61,47 @@
   .location-select-map {
     height: 400px;
   }
+
   .dropdown-menu {
     width: 520px;
     padding: 0;
   }
+
   .location-description {
     vertical-align: bottom;
+
     > * {
       display: inline-block;
       vertical-align: bottom;
     }
+
     .location {
       max-width: 100px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
   }
+
   .distance-select {
     label {
       margin: 0;
       width: 100%;
       text-align: left;
     }
+
     > * {
       width: 50%;
     }
+
     :first-child {
       border-left: 0;
     }
+
     :last-child {
       border-right: 0;
     }
   }
+
   .radius-select-row {
     @extend .m-1;
   }
@@ -111,11 +116,13 @@
       text-overflow: ellipsis;
     }
   }
+
   .dropdown-menu {
     padding-top: 0;
     min-height: 5rem;
     max-width: 100vw;
   }
+
   .dropdown-scroller {
     max-height: 200px;
     overflow-y: auto;
@@ -123,18 +130,23 @@
     padding: 0;
     margin: 0;
   }
+
   .dropdown-item {
     padding: $dropdown-item-padding-y calc(#{$input-btn-padding-x} + 2px); // align with search filter
   }
+
   .dropdown-filter {
     padding: 0;
     border-bottom: 1px solid $card-border-color;
+
     input {
       border: none;
     }
   }
+
   .remove-filter {
     border-bottom: 1px solid $card-border-color;
+
     a:hover {
       text-decoration: none;
     }
@@ -184,15 +196,12 @@
     }
   }
 
-  .result-highlights {
-    font-size: 0.8rem;
-    color: #545454;
+  .results-small {
+    font-size: 0.9rem;
+    color: #414141;
 
     mark {
       font-weight: bold;
-    }
-    p {
-      margin-bottom: 0;
     }
   }
 }

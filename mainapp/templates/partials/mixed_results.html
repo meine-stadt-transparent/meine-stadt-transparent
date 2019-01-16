@@ -5,32 +5,27 @@
         <li class="clearfix result result-type-{{ result.type }}">
             <a href="{{ result.url }}" class="no-link-color">
                 <div class="py-2 container">
-                    <div class="row">
-                        <div class="col-auto p-2">
-                            <span class="fa fa-fw fa-3x result-icon
-                            {% include "partials/type_to_fa_icon.html" with type=result.type %}" aria-hidden="true">
-                            </span>
-                        </div>
-                        <div class="col">
-                            <div class="text-truncate lead" title="{{ result.name_escaped | safe }}">
-                                {{ result.name_escaped | safe }}
-                            </div>
-                            <div class="text-truncate">
-                                <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
-                                {% if result.legal_date %}
-                                    <span>|</span>
-                                    <span>{{ result.legal_date }}</span>
-                                {% endif %}
-                            </div>
-                            <div class="text-truncate">{{ result.body.name }}</div>
-
-                            {% if result.highlight %}
-                                <div class="result-highlights">
-                                    <p>{{ result.highlight | safe }}</p>
-                                </div>
-                            {% endif %}
-                        </div>
+                    <div class="text-truncate lead font-weight-normal" title="{{ result.name_escaped | safe }}">
+                        {{ result.name_escaped | safe }}
                     </div>
+
+                    <div class="text-truncate results-small">
+                        <span
+                            class="fa fa-fw fa-1x result-icon {% include "partials/type_to_fa_icon.html" with type=result.type %}"
+                            aria-hidden="true">
+                        </span>
+                        <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
+                        {% if result.legal_date %}
+                            <span>|</span>
+                            <span>{{ result.legal_date }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="text-truncate">{{ result.body.name }}</div>
+
+                    {% if result.highlight %}
+                        <div class="results-small">{{ result.highlight | safe }}</div>
+                    {% endif %}
                 </div>
             </a>
         </li>
