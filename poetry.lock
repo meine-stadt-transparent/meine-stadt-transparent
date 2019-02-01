@@ -2,7 +2,7 @@
 category = "main"
 description = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
 name = "asn1crypto"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.24.0"
 
@@ -18,7 +18,7 @@ version = "2018.11.29"
 category = "main"
 description = "Foreign Function Interface for Python calling C code."
 name = "cffi"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.11.5"
 
@@ -45,7 +45,7 @@ version = "7.0"
 category = "main"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 name = "cryptography"
-optional = true
+optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "2.4.2"
 
@@ -352,7 +352,7 @@ description = "Minio Python Library for Amazon S3 Compatible Cloud Storage for P
 name = "minio"
 optional = false
 python-versions = "*"
-version = "4.0.9"
+version = "4.0.11"
 
 [package.dependencies]
 certifi = "*"
@@ -400,7 +400,7 @@ version = "3.0.0"
 category = "main"
 description = "Pretty Good Privacy for Python"
 name = "pgpy"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.3"
 
@@ -438,7 +438,7 @@ version = "1.4.0"
 category = "main"
 description = "ASN.1 types and codecs"
 name = "pyasn1"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.5"
 
@@ -446,7 +446,7 @@ version = "0.4.5"
 category = "main"
 description = "C parser in Python"
 name = "pycparser"
-optional = true
+optional = false
 python-versions = "*"
 version = "2.19"
 
@@ -701,7 +701,7 @@ itsdangerous = ["321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f1
 jinja2 = ["74c935a1b8bb9a3947c50a54766a969d4846290e1e788ea44c1392163723c3bd", "f84be1bb0040caca4cea721fcbbbbd61f9be9464ca236387158b0feea01914a4"]
 jsonfield = ["a0a7fdee736ff049059409752b045281a225610fecbda9b9bd588ba976493c12", "beb1cd4850d6d6351c32daefcb826c01757744e9c863228a642f87a1a4acb834"]
 markupsafe = ["048ef924c1623740e70204aa7143ec592504045ae4429b59c30054cb31e3c432", "130f844e7f5bdd8e9f3f42e7102ef1d49b2e6fdf0d7526df3f87281a532d8c8b", "19f637c2ac5ae9da8bfd98cef74d64b7e1bb8a63038a3505cd182c3fac5eb4d9", "1b8a7a87ad1b92bd887568ce54b23565f3fd7018c4180136e1cf412b405a47af", "1c25694ca680b6919de53a4bb3bdd0602beafc63ff001fea2f2fc16ec3a11834", "1f19ef5d3908110e1e891deefb5586aae1b49a7440db952454b4e281b41620cd", "1fa6058938190ebe8290e5cae6c351e14e7bb44505c4a7624555ce57fbbeba0d", "31cbb1359e8c25f9f48e156e59e2eaad51cd5242c05ed18a8de6dbe85184e4b7", "3e835d8841ae7863f64e40e19477f7eb398674da6a47f09871673742531e6f4b", "4e97332c9ce444b0c2c38dd22ddc61c743eb208d916e4265a2a3b575bdccb1d3", "525396ee324ee2da82919f2ee9c9e73b012f23e7640131dd1b53a90206a0f09c", "52b07fbc32032c21ad4ab060fec137b76eb804c4b9a1c7c7dc562549306afad2", "52ccb45e77a1085ec5461cde794e1aa037df79f473cbc69b974e73940655c8d7", "5c3fbebd7de20ce93103cb3183b47671f2885307df4a17a0ad56a1dd51273d36", "5e5851969aea17660e55f6a3be00037a25b96a9b44d2083651812c99d53b14d1", "5edfa27b2d3eefa2210fb2f5d539fbed81722b49f083b2c6566455eb7422fd7e", "7d263e5770efddf465a9e31b78362d84d015cc894ca2c131901a4445eaa61ee1", "83381342bfc22b3c8c06f2dd93a505413888694302de25add756254beee8449c", "857eebb2c1dc60e4219ec8e98dfa19553dae33608237e107db9c6078b1167856", "98e439297f78fca3a6169fd330fbe88d78b3bb72f967ad9961bcac0d7fdd1550", "bf54103892a83c64db58125b3f2a43df6d2cb2d28889f14c78519394feb41492", "d9ac82be533394d341b41d78aca7ed0e0f4ba5a2231602e2f05aa87f25c51672", "e982fe07ede9fada6ff6705af70514a52beb1b2c3d25d4e873e82114cf3c5401", "edce2ea7f3dfc981c4ddc97add8a61381d9642dc3273737e756517cc03e84dd6", "efdc45ef1afc238db84cb4963aa689c0408912a0239b0721cb172b4016eb31d6", "f137c02498f8b935892d5c0172560d7ab54bc45039de8805075e19079c639a9c", "f82e347a72f955b7017a39708a3667f106e6ad4d10b25f237396a7115d8ed5fd", "fb7c206e01ad85ce57feeaaa0bf784b97fa3cad0d4a5737bc5295785f5c613a1"]
-minio = ["588bc293ffc63528ce758d66fc5098908a11b675b9f6933788624263df076006", "6e9b5389149b861aa34b7a4309665e1dca18fc496a273d8ea622a9a420894e58", "b154cf996fcef838d34076b177f66daca2667afe7cb17868d04d11504899eb4b"]
+minio = ["5b50861d7f129a50b0bcaa9bbc716c2c797eb6b41eb4577c73fd072722009ffd", "96f6fb2b9ecb40656ae0c8095c4745fa5068f3e51a9a5ca542aea3db8649b456", "b7c5ff80bfa945ab8bf41386738ac0bdfe076b6806822c48a92ef9e4e3f0de16"]
 mysqlclient = ["062d78953acb23066c0387a8f3bd0ecf946626f599145bb7fd201460e8f773e1", "3981ae9ce545901a36a8b7aed76ed02960a429f75dc53b7ad77fb2f9ab7cd56b", "b3591a00c0366de71d65108627899710d9cfb00e575c4d211aa8de59b1f130c9"]
 nltk = ["286f6797204ffdb52525a1d21ec0a221ec68b8e3fa4f2d25f412ac8e63c70e8d", "e51590c0bf2d9dcb7ce088b03e4f42c94e7cdd2a372c724320dfa8b19de77609"]
 numpy = ["00a458d6821b1e87be873f2126d5646b901047a7480e8ae9773ecf214f0e19f3", "0470c5dc32212a08ebc2405f32e8ceb9a5b1c8ac61a2daf9835ec0856a220495", "24a9c287a4a1c427c2d45bf7c4fc6180c52a08fa0990d4c94e4c86a9b1e23ba5", "25600e8901012180a1b7cd1ac3e27e7793586ecd432383191929ac2edf37ff5d", "2d279bd99329e72c30937bdef82b6dc7779c7607c5a379bab1bf76be1f4c1422", "32af2bcf4bb7631dac19736a6e092ec9715e770dcaa1f85fcd99dec5040b2a4d", "3e90a9fce378114b6c2fc01fff7423300515c7b54b7cc71b02a22bc0bd7dfdd8", "5774d49516c37fd3fc1f232e033d2b152f3323ca4c7bfefd7277e4c67f3c08b4", "64ff21aac30d40c20ba994c94a08d439b8ced3b9c704af897e9e4ba09d10e62c", "803b2af862dcad6c11231ea3cd1015d1293efd6c87088be33d713a9b23e9e419", "95c830b09626508f7808ce7f1344fb98068e63143e6050e5dc3063142fc60007", "96e49a0c82b4e3130093002f625545104037c2d25866fa2e0c90d6e54f5a1fbc", "a1dd8221f0e69038748f47b8bb3248d0b9ecdf13fe837440951c3d5ff72639bb", "a80ecac5664f420556a725a5646f2d1c60a7c0489d68a38b5056393e949e27ac", "b19a47ff1bd2fca0cacdfa830c967746764c32dca6a0c0328d9c893f4bfe2f6b", "be43df2c563e264b38e3318574d80fc8f365df3fb745270934d2dbe54e006f41", "c40cb17188f6ae3c5b6efc6f0fd43a7ddd219b7807fe179e71027849a9b91afc", "c6251e0f0ecac53ba2b99d9f0cc16fa9021914a78869c38213c436ba343641f0", "cb189bd98b2e7ac02df389b6212846ab20661f4bafe16b5a70a6f1728c1cc7cb", "ef4ae41add536cb825d8aa029c15ef510aead06ea5b68daea64f0b9ecbff17db", "f00a2c21f60284e024bba351875f3501c6d5817d64997a0afe4f4355161a8889", "f1232f98a6bbd6d1678249f94028bccc541bbc306aa5c4e1471a881b0e5a3409", "fea682f6ddc09517df0e6d5caad9613c6d91a42232aeb082df67e4d205de19cc"]
