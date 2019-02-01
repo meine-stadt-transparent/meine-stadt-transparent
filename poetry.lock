@@ -2,7 +2,7 @@
 category = "main"
 description = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
 name = "asn1crypto"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.24.0"
 
@@ -18,7 +18,7 @@ version = "2018.11.29"
 category = "main"
 description = "Foreign Function Interface for Python calling C code."
 name = "cffi"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.11.5"
 
@@ -45,7 +45,7 @@ version = "7.0"
 category = "main"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 name = "cryptography"
-optional = true
+optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "2.4.2"
 
@@ -400,7 +400,7 @@ version = "3.0.0"
 category = "main"
 description = "Pretty Good Privacy for Python"
 name = "pgpy"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.3"
 
@@ -438,7 +438,7 @@ version = "1.4.0"
 category = "main"
 description = "ASN.1 types and codecs"
 name = "pyasn1"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.5"
 
@@ -446,7 +446,7 @@ version = "0.4.5"
 category = "main"
 description = "C parser in Python"
 name = "pycparser"
-optional = true
+optional = false
 python-versions = "*"
 version = "2.19"
 
@@ -547,7 +547,7 @@ description = "Python client for Sentry (https://getsentry.com)"
 name = "sentry-sdk"
 optional = false
 python-versions = "*"
-version = "0.6.6"
+version = "0.6.9"
 
 [package.dependencies]
 certifi = "*"
@@ -663,7 +663,7 @@ version = "0.14.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "65b939f6c2ef84aaf95178f50c8b9babf7601374daa18216df69a0687fb154bc"
+content-hash = "ef09efeebc9be5d24fe00b6b93e241be543d75edccf37a6086599c19fac53a20"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -721,7 +721,7 @@ requests = ["502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e", 
 requests-oauthlib = ["bd6533330e8748e94bf0b214775fed487d309b8b8fe823dc45641ebcd9a32f57", "d3ed0c8f2e3bbc6b344fa63d6f933745ab394469da38db16bdddb461c7e25140", "dd5a0499abfefd087c6dd96693cbd5bfd28aa009719a7f85ab3fabe3956ef19a"]
 scipy = ["02cb79ea38114dc480e9b08d6b87095728e8fb39b9a49b449ee443d678001611", "03c827cdbc584e935264040b958e5fa0570a16095bee23a013482ba3f0e963a2", "04f2b23258139c109d0524f111597dd095a505d9cb2c71e381d688d653877fa3", "3132a9fab3f3545c8b0ba15688d11857efdd4a58d388d3785dc474f56fea7138", "4b1f0883cb9d8ee963cf0a31c87341e9e758abb2cf1e5bcc0d7b066ef6b17573", "4cce25c6e7ff7399c67dfe1b5423c36c391cf9b4b2be390c1675ab410f1ef503", "51a2424c8ed80e60bdb9a896806e7adaf24a58253b326fbad10f80a6d06f2214", "5706b785ca289fdfd91aa05066619e51d140613b613e35932601f2315f5d8470", "58f0435f052cb60f1472c77f52a8f6642f8877b70559e5e0b9a1744f33f5cbe5", "63e1d5ca9e5e1984f1a275276991b036e25d39d37dd7edbb3f4f6165c2da7dbb", "64b2c35824da3ef6bb1e722216e4ef28802af6413c7586136500e343d34ba179", "6f791987899532305126309578727c0197bddbafab9596bafe3e7bfab6e1ce13", "72bd766f753fd32f072d30d7bc2ad492d56dbcbf3e13764e27635d5c41079339", "7413080b381766a22d52814edb65631f0e323a7cea945c70021a672f38acc73f", "78a67ee4845440e81cfbfabde20537ca12051d0eeac951fe4c6d8751feac3103", "7994c044bf659b0a24ad7673ec7db85c2fadb87e4980a379a9fd5b086fe3649a", "7dc4002f0a0a688774ef04878afe769ecd1ac21fe9b4b1d7125e2cf16170afd3", "854bd87cc23824d5db4983956bc30f3790e1c7448f1a9e6a8fb7bff7601aef87", "8608316d0cc01f8b25111c8adfe6efbc959cbba037a62c784551568d7ffbf280", "8f5fcc87b48fc3dd6d901669c89af4feeb856dffb6f671539a238b7e8af1799c", "937147086e8b4338bf139ca8fa98da650e3a46bf2ca617f8e9dd68c3971ec420", "bc294841f6c822714af362095b181a853f47ed5ce757354bd2e4776d579ff3a4", "bc6a88b0009a1b60eab5c22ac3a006f6968d6328de10c6a64ebb0d64a05548d3", "c5eae911cf26b3c7eda889ec98d3c226f312c587acfaaf02602473f98b4c16d6", "cca33a01a5987c650b87a1a910aa311ffa44e67cca1ff502ef9efdae5d9a8624", "d1ae77b79fd5e27a10ba7c4e7c3a62927b9d29a4dccf28f6905c25d983aaf183", "fb36064047e6bf87b6320a9b6eb7f525ef6863c7a4aef1a84a4bbfb043612617", "fc1a19d95649439dbd50baca676bceb29bbfcd600aed2c5bd71d9bad82a87cfe"]
 selenium = ["2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c", "deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"]
-sentry-sdk = ["2d12914aa71845670aea9555f63091bf55c953ed07a5e64bffa5a149f0a2b8dd", "dc775d5d6672cf555d721c3cc9329cc9caed6369ef9aa1b87286017d4ad49614"]
+sentry-sdk = ["78bb79adfe991a770ce2179826f5f216e086bbc4bd4585c543f377180cae3654", "a6cfb0a2316416d100d2732a26c95fb7d534c9dcc16e2682e8d19fcd45f0a2c6"]
 singledispatch = ["5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c", "833b46966687b3de7f438c761ac475213e53b306740f1abfaa86e1d1aae56aa8"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 splinter = ["2d9f370536e6c1607824f5538e0bff9808bc02f086b07622b3790424dd3daff4", "5d9913bddb6030979c18d6801578813b02bbf8a03b43fb057f093228ed876d62"]
