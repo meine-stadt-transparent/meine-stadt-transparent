@@ -2,7 +2,7 @@
 category = "main"
 description = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
 name = "asn1crypto"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.24.0"
 
@@ -18,7 +18,7 @@ version = "2018.11.29"
 category = "main"
 description = "Foreign Function Interface for Python calling C code."
 name = "cffi"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.11.5"
 
@@ -45,7 +45,7 @@ version = "7.0"
 category = "main"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
 name = "cryptography"
-optional = true
+optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "2.5"
 
@@ -399,7 +399,7 @@ version = "3.0.1"
 category = "main"
 description = "Pretty Good Privacy for Python"
 name = "pgpy"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.3"
 
@@ -437,7 +437,7 @@ version = "1.4.0"
 category = "main"
 description = "ASN.1 types and codecs"
 name = "pyasn1"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.4.5"
 
@@ -445,7 +445,7 @@ version = "0.4.5"
 category = "main"
 description = "C parser in Python"
 name = "pycparser"
-optional = true
+optional = false
 python-versions = "*"
 version = "2.19"
 
@@ -645,7 +645,7 @@ description = "Ctypes-based simple MagickWand API binding for Python"
 name = "wand"
 optional = false
 python-versions = "*"
-version = "0.4.5"
+version = "0.5.0"
 
 [[package]]
 category = "main"
@@ -659,7 +659,7 @@ version = "0.14.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "65b939f6c2ef84aaf95178f50c8b9babf7601374daa18216df69a0687fb154bc"
+content-hash = "c3ad1805e8c787102b5f75c3f45b46e808df281870398c1c4bc46440d65c9b66"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -727,5 +727,5 @@ tox = ["04f8f1aa05de8e76d7a266ccd14e0d665d429977cd42123bc38efa9b59964e9e", "25ef
 unidecode = ["092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f", "8b85354be8fd0c0e10adbf0675f6dc2310e56fda43fa8fe049123b6c475e52fb"]
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 virtualenv = ["8b9abfc51c38b70f61634bf265e5beacf6fae11fc25d355d1871f49b8e45f0db", "cceab52aa7d4df1e1871a70236eb2b89fcfe29b6b43510d9738689787c513261"]
-wand = ["2d64f3d63f5fae997938451f77efad80ad47cd86d871fb758a4a7cc691be00c5", "b40a2215545e8c7193b3fccd6e7251dc556ec9b878a4f67d992b056ff396bc65"]
+wand = ["3e59e4bda9ef9d643d90e881cc950c8eee1508ec2cde1c150a1cbd5a12c1c007", "52763dbf65d00cf98d7bc910b49329eea15896249c5555d47e169f2b6efbe166"]
 werkzeug = ["c3fd7a7d41976d9f44db327260e263132466836cef6f91512889ed60ad26557c", "d5da73735293558eb1651ee2fddc4d0dedcfa06538b8813a2e20011583c9e49b"]
