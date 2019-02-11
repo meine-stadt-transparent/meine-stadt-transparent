@@ -132,31 +132,43 @@
 
 #leaflet-map {
   height: $index-map-height;
+  // The form-control-focus doesn't work with the shadow class as the latter takes precedent with `!important`,
+  // so we roll our own
+  box-shadow: $box-shadow;
+  &:focus {
+     box-shadow: $box-shadow, $input-box-shadow, $input-focus-box-shadow;
+  }
 
   .leaflet-popup-content-wrapper {
     .type-address {
       font-size: 12px;
       display: flex;
+
       .type {
         flex: 1;
       }
+
       .address {
         text-align: right;
         flex: 1;
       }
+
       padding-bottom: 5px;
       border-bottom: solid 1px #ccc;
     }
+
     .paper-title {
       padding-bottom: 5px;
       margin-top: 5px;
       border-bottom: solid 1px #ddd;
       position: relative;
+
       .icon {
         float: left;
         margin-top: 4px;
         font-size: 1.2em;
       }
+
       a {
         max-height: 2.8em; // line-height * 2
         overflow: hidden;
@@ -167,11 +179,13 @@
         text-overflow: ellipsis;
       }
     }
+
     ul.files {
       list-style-type: none;
       display: block;
       margin: 0;
       padding: 0;
+
       li {
         display: block;
         padding: 0;
@@ -179,6 +193,7 @@
         text-indent: -15px;
       }
     }
+
     .location-name {
       float: right;
     }
@@ -193,7 +208,6 @@
     color: #555;
     font-style: italic;
   }
-  @include form-control-focus();
 }
 
 .leaflet-bar a.leaflet-disabled {
