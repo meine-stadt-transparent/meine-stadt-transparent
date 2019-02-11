@@ -34,6 +34,8 @@ class Cli:
             data = response.json()
             next_page = data["links"].get("next")
             for body in data["data"]:
+                if not "oparl-mirror:originalId" in body:
+                    continue
                 self.bodies.append(
                     (
                         body.get("name") or body["oparl-mirror:originalId"],
@@ -70,7 +72,7 @@ class Cli:
     def import_body_and_metadata(
         self, body_id: str, importer: Importer, userinput: str
     ) -> Tuple[JSON, str]:
-        logger.info("Fetching the body")
+        logger.info("Fetching the body {}".format(body_id))
         [body_data] = importer.load_bodies(body_id)
         logger.info("Importing the body")
         [body] = importer.import_bodies()

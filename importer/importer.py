@@ -395,6 +395,16 @@ class Importer:
         db.connections.close_all()
         file.save()
 
+    def file_wrapper(
+        self, file_id: int, address_pipeline: AddressPipeline, fallback_city: str
+    ) -> None:
+        """ For better error reporting """
+        try:
+            self.download_and_analyze_file(file_id, address_pipeline, fallback_city)
+        except Exception as e:
+            logger.exception("Failed to download and analyze file {}".format(file_id))
+            raise e
+
     def load_files(self, fallback_city: str, max_workers: Optional[int] = None) -> None:
         """ Downloads and analyses the actual file for the file entries in the database """
         # This is partially bound by waiting on external resources, but mostly very cpu intensive,
