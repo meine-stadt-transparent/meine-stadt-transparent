@@ -123,24 +123,25 @@ class Cli:
         response.raise_for_status()
         data = response.json()
         if data.get("type") != "https://schema.oparl.org/1.0/Body":
-            raise Exception("The url you provided didn't point to an oparl body")
+            raise RuntimeError("The url you provided didn't point to an oparl body")
         endpoint_system = data["system"]
         endpoint_id = userinput
         return endpoint_system, endpoint_id
 
     def get_ags(self, body: Body, userinput: str) -> str:
         ags = body.ags
-        # The len(ags) check is necessary because there's Kall
+        # The len(ags) check is necessary because there's Kall and Jülich
         # which failed to add the leading zero
         # https://sdnetrim.kdvz-frechen.de/rim4550/webservice/oparl/v1/body
         if not ags or len(ags) != 8:
-            ags_list = city_to_ags(userinput)
+            # Open question: Are there cases where this only works with the user input and not with the short name?
+            ags_list = city_to_ags(body.short_name)
             if len(ags_list) == 0:
-                raise Exception(
+                raise RuntimeError(
                     "Could not find the Gemeindeschlüssel for '{}'".format(userinput)
                 )
             if len(ags_list) > 1:
-                raise Exception(
+                raise RuntimeError(
                     "Found more than one Gemeindeschlüssel for '{}': {}".format(
                         userinput, ags_list
                     )
@@ -166,7 +167,7 @@ class Cli:
                 else:
                     matching.append((name, system_id, original_id))
         if len(matching) == 0:
-            raise Exception("Could not find anything for '{}'".format(userinput))
+            raise RuntimeError("Could not find anything for '{}'".format(userinput))
         if len(matching) > 1:
             exact_matches = [
                 i for i in matching if i[0].casefold() == userinput.casefold()

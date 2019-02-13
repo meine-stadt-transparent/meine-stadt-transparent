@@ -47,6 +47,12 @@ class SternbergLoader(BaseLoader):
                             "type"
                         ] = "https://schema.oparl.org/1.0/Location"
 
+                # There are deleted entries in unfiltered external lists (which they shouldn't) and then
+                # they don't even have type attributes (which are mandatory)
+                for entry in response["data"][:]:
+                    if entry.get("deleted") and not "type" in entry:
+                        response["data"].remove(entry)
+
             # Add missing "type"-attributes in single bodies
             if "location" in response.keys() and isinstance(response["location"], dict):
                 response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
