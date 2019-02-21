@@ -6,7 +6,18 @@ from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page, Orderable
 
 
-class IndexPage(Page):
+class CMSPage(Page):
+    # noinspection PyMethodOverriding
+    def get_context(self, request):
+        context = super().get_context(request)
+        context["can_edit"] = self.permissions_for_user(request.user).can_edit()
+        return context
+
+    class Meta:
+        abstract = True
+
+
+class IndexPage(CMSPage):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [FieldPanel("body", classname="full")]
@@ -15,7 +26,7 @@ class IndexPage(Page):
         verbose_name = _("The landing page for the cms section")
 
 
-class ContentPage(Page):
+class ContentPage(CMSPage):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [FieldPanel("body", classname="full")]
@@ -24,7 +35,7 @@ class ContentPage(Page):
         verbose_name = _("A page with a title and some content")
 
 
-class GlossaryPage(Page):
+class GlossaryPage(CMSPage):
     body = RichTextField(blank=True)
 
     content_panels = Page.content_panels + [InlinePanel("entries")]

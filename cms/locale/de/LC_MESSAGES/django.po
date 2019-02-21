@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 15:17+0100\n"
+"POT-Creation-Date: 2019-02-21 18:34+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,17 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:15
+#: models.py:26
 msgid "The landing page for the cms section"
 msgstr "Die Startseite des CMS-Teils"
 
-#: models.py:24
+#: models.py:35
 msgid "A page with a title and some content"
 msgstr "Eine Seite mit einem Titel und Inhalt"
 
-#: models.py:33
+#: models.py:44
 msgid "A glossary"
 msgstr "Ein Glossar"
+
+#: templates/base_cms.html:25
+msgid "Edit page"
+msgstr "Seite Bearbeiten"
 
 #: templates/cms/glossary_page.html:14
 msgid "Link to this entry"

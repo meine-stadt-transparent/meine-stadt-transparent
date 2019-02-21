@@ -313,6 +313,9 @@ SETTINGS_EXPORT = [
     "ABSOLUTE_URI_BASE",
 ]
 
+# Mandatory but afaik unsused value
+WAGTAIL_SITE_NAME = SITE_NAME
+
 DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
