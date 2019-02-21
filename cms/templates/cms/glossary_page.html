@@ -1,0 +1,20 @@
+{% extends "base_cms.html" %}
+
+{% load wagtailcore_tags %}
+{% load i18n %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block article %}
+    <dl class="glossary">
+        {% for entry in page.entries.all %}
+            <div class="row">
+                <dt class="col-md-4" id="{{ entry.key }}">
+                    {{ entry.key }}
+                    <a title="{% trans 'Link to this entry' %}" href="#{{ entry.key }}"><i class="fa fa-link text-muted"></i></a>
+                </dt>
+                <dd class="col">{{ entry.value|richtext }}</dd>
+            </div>
+        {% endfor %}
+    </dl>
+{% endblock %}

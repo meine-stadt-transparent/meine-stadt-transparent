@@ -1,0 +1,14 @@
+{% extends "base_cms.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block article %}
+    {{ page.body|richtext }}
+    <ul>
+        {% for child in self.get_children %}
+            <li><a href="{{ child.url }}">{{ child }}</a>
+        {% endfor %}
+    </ul>
+{% endblock %}
