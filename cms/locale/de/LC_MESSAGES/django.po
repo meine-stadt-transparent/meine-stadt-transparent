@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-21 12:39+0100\n"
+"POT-Creation-Date: 2019-02-21 15:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: customization_examples/juelich_transparent/templates/info/contact.html:5
-msgid "Contact"
-msgstr ""
+#: models.py:15
+msgid "The landing page for the cms section"
+msgstr "Die Startseite des CMS-Teils"
+
+#: models.py:24
+msgid "A page with a title and some content"
+msgstr "Eine Seite mit einem Titel und Inhalt"
+
+#: models.py:33
+msgid "A glossary"
+msgstr "Ein Glossar"
+
+#: templates/cms/glossary_page.html:14
+msgid "Link to this entry"
+msgstr "Link zu diesem Eintrag"

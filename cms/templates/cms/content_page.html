@@ -1,0 +1,9 @@
+{% extends "base_cms.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block article %}
+    {{ page.body|richtext }}
+{% endblock %}

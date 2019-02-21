@@ -28,6 +28,7 @@ ratings:
   - "**.js"
   - "**.py"
 exclude_paths:
+- cms/migrations/
 - mainapp/migrations/
 - mainapp/fixtures/
 - manage.py

@@ -2,7 +2,51 @@
   h1 {
     @extend .display-4;
   }
+
   h2 {
     @extend .h3;
+  }
+
+  // https://docs.wagtail.io/en/latest/topics/writing_templates.html#responsive-embeds
+  .responsive-object {
+    position: relative;
+  }
+
+  .responsive-object iframe,
+  .responsive-object object,
+  .responsive-object embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.cmspage-breadcrumb {
+  background-color: #e9ecef;
+}
+
+// We want to use the margin space for the breadcrumbs
+main#main-content.no-top-margin {
+  margin-top: 0;
+  min-height: calc(100vh - #{$header-height} - #{$footer-height} - #{$main-content-margin-top});
+}
+
+.glossary {
+  dt {
+    @media (min-width: breakpoint-max(lg, $grid-breakpoints)) {
+      text-align: right;
+    }
+
+    a {
+      visibility: hidden;
+    }
+
+    &:hover {
+      a {
+        visibility: inherit;
+      }
+    }
   }
 }
