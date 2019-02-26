@@ -39,7 +39,7 @@ First, install [docker](https://docs.docker.com/install/) and [docker compose](h
 
 Download [etc/docker-compose.yml](etc/docker-compose.yml) from the root of this repository. Replace all `changeme` with real random passwords (Hint: `openssl rand -hex 32`).
 
-Download [etc/env-template](etc/env-template) to `.env`. Change `REAL_HOST` to your domain, `SECRET_KEY` to a randomly generated secret and use the same passwords as in `docker-compose.yml` for `DATABASE_URL`, and `MINIO_SECRET_KEY`. You most likely want to configure third-party services as described later, but you can postpone that until after the base site works.
+Download [etc/env-template](etc/template.env) to `.env`. Change `REAL_HOST` to your domain, `SECRET_KEY` to a randomly generated secret and use the same passwords as in `docker-compose.yml` for `DATABASE_URL`, and `MINIO_SECRET_KEY`. You most likely want to configure third-party services as described later, but you can postpone that until after the base site works.
 
 To deliver the assets through nginx, we need to mount them to a local container:
 
@@ -156,7 +156,7 @@ Activate the virtualenv created by poetry. You either need to run this in your s
 poetry shell
 ```
 
-Copy [etc/env-template](etc/env-template) to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
+Copy [etc/env-template](etc/template.env) to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
 
 Configure your webserver, see e.g. [etc/nginx.conf](etc/nginx.conf)
 

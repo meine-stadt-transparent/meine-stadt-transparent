@@ -8,10 +8,9 @@ from mainapp.tests.live.helper import MockMainappSearch
 
 class TestRSS(TestCase):
     fixtures = ["initdata"]
-    c = Client()
 
     def test_paper_feed(self):
-        response = self.c.get("/paper/feed/").content.decode()
+        response = self.client.get("/paper/feed/").content.decode()
         self.assertIn("<rss", response)
         self.assertIn("Latest papers", response)
         self.assertIn(
@@ -24,7 +23,7 @@ class TestRSS(TestCase):
         new=MockMainappSearch.execute,
     )
     def test_search_results(self):
-        response = self.c.get("/search/query/complexity/feed/").content.decode()
+        response = self.client.get("/search/query/complexity/feed/").content.decode()
         self.assertIn("<rss", response)
         self.assertIn("The latest search results", response)
         self.assertIn("File: Title", response)
