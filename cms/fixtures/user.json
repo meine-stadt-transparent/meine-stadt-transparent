@@ -1,0 +1,40 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$120000$dfLiqJhWG5oS$0mcuieFWTfKWJqpBFxje8Z+fkDU4aw+zqsAPpCpEmqI=",
+            "last_login": null,
+            "is_superuser": false,
+            "username": "user@example.org",
+            "first_name": "",
+            "last_name": "",
+            "email": "user@example.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2019-02-25T14:24:43.621Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$120000$76yobc9wiU7H$99pTBEGabC9RE+Eqq0BzzTI30RRRgVtPBa3tTYudFvE=",
+            "last_login": "2019-02-25T14:49:23.243Z",
+            "is_superuser": false,
+            "username": "editor@example.org",
+            "first_name": "",
+            "last_name": "",
+            "email": "editor@example.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2019-02-25T14:24:43.803Z",
+            "groups": [
+                2
+            ],
+            "user_permissions": []
+        }
+    }
+]
