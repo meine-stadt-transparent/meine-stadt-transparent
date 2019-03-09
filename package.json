@@ -57,5 +57,8 @@
     "popper.js": "^1.14.7",
     "postcss-loader": "^3.0.0",
     "shufflejs": "^5.2.1"
+  },
+  "resolutions": {
+    "webpack-sources": "1.0.1"
   }
 }
