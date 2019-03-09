@@ -153,7 +153,7 @@ MINIO_SECRET_KEY = env.str("MINIO_SECRET_KEY", "meinestadttransparent")
 # If debug is False and the stats file is in the project root, this leads to a WebpackLoaderBadStatsError.
 # So we place the file besides the assets, so it will be copied over by collectstatic
 # only after the compilation finished, so that django only ever sees a finished stats file
-if DEBUG:
+if DEBUG or TESTING:
     webpack_stats = "mainapp/assets/bundles/webpack-stats.json"
 else:
     webpack_stats = os.path.join(STATIC_ROOT, "bundles", "webpack-stats.json")
