@@ -90,7 +90,7 @@ module.exports = {
     },
     plugins: [
         new BundleTracker({
-            path: path.resolve(__dirname, '../'),
+            path: path.resolve(__dirname, '../mainapp/assets/bundles'),
             filename: './webpack-stats.json'
         }),
         new ExtractTextPlugin({
