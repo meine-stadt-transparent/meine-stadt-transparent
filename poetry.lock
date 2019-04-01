@@ -768,7 +768,7 @@ description = "Ctypes-based simple MagickWand API binding for Python"
 name = "wand"
 optional = false
 python-versions = "*"
-version = "0.5.1"
+version = "0.5.2"
 
 [[package]]
 category = "main"
@@ -798,7 +798,7 @@ version = "1.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "8edf16b2c49e9c2d45f96766ccca0916d4cbbf2f3e77a645e7a90b9d3803bf41"
+content-hash = "aa929818d599c8c97d1e0ef070f0d1534f5c52fd52c16169b634d65886c25d48"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -877,7 +877,7 @@ unidecode = ["092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f",
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 virtualenv = ["6aebaf4dd2568a0094225ebbca987859e369e3e5c22dc7d52e5406d504890417", "984d7e607b0a5d1329425dd8845bd971b957424b5ba664729fab51ab8c11bc39"]
 wagtail = ["1dd069ef8b3a08728fa5304e45ee2a92ed49b8e235e9c8b677adfd2039cff1fd", "fa588695932178667f58347fb77cc85a34be963ccceafa818e0d7f9998c2cdf3"]
-wand = ["7d6b8dc9d4eaccc430b9c86e6b749013220c994970a3f39e902b397e2fa732c3", "cc0b5c9cd50fecd10dc8888b739dd5984c6f8085d2954f34903b83ca39a91236"]
+wand = ["91810d241ab0851d40e67c946beb960b869c4f4160c397eac291ec6283ee3e3f", "ae7c0958509a22f531b7b97e93adfd3f1208f0ac1c593af9e5f0cffa4ac06d5b"]
 webencodings = ["a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"]
 werkzeug = ["c3fd7a7d41976d9f44db327260e263132466836cef6f91512889ed60ad26557c", "d5da73735293558eb1651ee2fddc4d0dedcfa06538b8813a2e20011583c9e49b"]
 willow = ["76a8874304356b7d86923405f5ca1df125c3540fb55b32747e7a33ba59bc1744", "818ee11803c90a0a6d49c94b0453d6266be1ef83ae00de72731c45fae4d3e78c"]
