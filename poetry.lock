@@ -699,11 +699,11 @@ version = "0.10.0"
 
 [[package]]
 category = "dev"
-description = "virtualenv-based automation of test activities"
+description = "tox is a generic virtualenv management and test command line tool"
 name = "tox"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "3.7.0"
+version = "3.8.3"
 
 [package.dependencies]
 filelock = ">=3.0.0,<4"
@@ -798,7 +798,7 @@ version = "1.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "8edf16b2c49e9c2d45f96766ccca0916d4cbbf2f3e77a645e7a90b9d3803bf41"
+content-hash = "5d448e6d5dc70882ddcfc40c2914c031e541e9f840b1e42bd38cb51778c2c33f"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -872,7 +872,7 @@ six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a
 splinter = ["2d9f370536e6c1607824f5538e0bff9808bc02f086b07622b3790424dd3daff4", "5d9913bddb6030979c18d6801578813b02bbf8a03b43fb057f093228ed876d62"]
 sqlparse = ["ce028444cfab83be538752a2ffdb56bc417b7784ff35bb9a3062413717807dec", "d9cf190f51cbb26da0412247dfe4fb5f4098edb73db84e02f9fc21fdca31fed4"]
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
-tox = ["04f8f1aa05de8e76d7a266ccd14e0d665d429977cd42123bc38efa9b59964e9e", "25ef928babe88c71e3ed3af0c464d1160b01fca2dd1870a5bb26c2dea61a17fc"]
+tox = ["90ad4696d94fff5ff0e1e48e4f16bcc839bdfd80d2922717e9eff4313ddc278f", "90e4b0d094a8fb6b4af44b9f9181f776e1be8a8be547839d3c477960a3ef5487"]
 unidecode = ["092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f", "8b85354be8fd0c0e10adbf0675f6dc2310e56fda43fa8fe049123b6c475e52fb"]
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 virtualenv = ["6aebaf4dd2568a0094225ebbca987859e369e3e5c22dc7d52e5406d504890417", "984d7e607b0a5d1329425dd8845bd971b957424b5ba664729fab51ab8c11bc39"]
