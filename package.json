@@ -51,7 +51,7 @@
     "leaflet.markercluster": "^1.4.1",
     "list.js": "^1.5.0",
     "moment": "^2.24.0",
-    "mousetrap": "^1.6.2",
+    "mousetrap": "^1.6.3",
     "osmtogeojson": "^3.0.0-beta.3",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
     "popper.js": "^1.14.7",
