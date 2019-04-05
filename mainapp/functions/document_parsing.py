@@ -73,9 +73,13 @@ def extract_from_file(
     page_count = None
     if mime_type == "application/pdf":
         try:
-            parsed_text = subprocess.check_output(["pdftotext", filename, "-"]).decode(
-                "utf-8", "ignore"
+            command = ["pdftotext", filename, "-"]
+            completed = subprocess.run(
+                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
             )
+            parsed_text = completed.stdout.decode("utf-8", "ignore")
+            if completed.stderr:
+                logger.info("pdftotext: {}".format(completed.stderr))
         except CalledProcessError as e:
             logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
 

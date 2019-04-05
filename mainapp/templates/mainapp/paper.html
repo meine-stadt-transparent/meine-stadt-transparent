@@ -22,7 +22,7 @@
             {% if paper.paper_type %}
                 <p><span class="fa-custom fa-bookmark" aria-hidden="true"></span>{{ paper.paper_type.paper_type }}</p>
             {% endif %}
-            <p><span class="fa-custom fa-tag" aria-hidden="true"></span>{{ paper.reference_number }}</p>
+            <p><span class="fa-custom fa-tag" aria-hidden="true"></span>{{ paper.reference_number|default_if_none:paper }}</p>
             {% if paper.legal_date %}
                 <p><span class="fa-custom fa-calendar"
                       aria-hidden="true"></span>{% trans "Legal date: " %}{{ paper.legal_date }}</p>

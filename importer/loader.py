@@ -26,7 +26,8 @@ class BaseLoader:
         response.raise_for_status()
         return response.json()
 
-    def load_file(self, url: str) -> Tuple[bytes, str]:
+    def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
+        """ Returns the content and the content type """
         response = requests.get(url)
         response.raise_for_status()
         content = response.content
@@ -93,6 +94,12 @@ class SternbergLoader(BaseLoader):
 
         return response
 
+    def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
+        content, content_type = super().load_file(url)
+        if content_type == "application/octetstream; charset=UTF-8":
+            content_type = None
+        return content, content_type
+
 
 class CCEgovLoader(BaseLoader):
     def visit(self, data: JSON):
@@ -113,10 +120,14 @@ class CCEgovLoader(BaseLoader):
 def get_loader_from_system(entrypoint: str) -> BaseLoader:
     system = requests.get(entrypoint).json()
     if system.get("contactName") == "STERNBERG Software GmbH & Co. KG":
+        logger.info("Using Sternberg patches")
         return SternbergLoader(system)
-    if system.get("vendor") == "http://cc-egov.de/":
+    elif system.get("vendor") == "http://cc-egov.de/":
+        logger.info("Using CC e-gov patches")
         return CCEgovLoader(system)
-    return BaseLoader(system)
+    else:
+        logger.info("Using no vendor specific patches")
+        return BaseLoader(system)
 
 
 def get_loader_from_body(body_id: str) -> BaseLoader:

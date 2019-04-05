@@ -12,7 +12,7 @@ from .person import Person
 
 
 class Paper(DefaultFields, ShortableNameFields):
-    reference_number = models.CharField(max_length=50)
+    reference_number = models.CharField(max_length=50, null=True, blank=True)
     organizations = models.ManyToManyField(Organization, blank=True)
     # Only relevant if a person acts independently from one of the submitting organizations
     persons = models.ManyToManyField(Person, blank=True)
@@ -42,8 +42,12 @@ class Paper(DefaultFields, ShortableNameFields):
             yield file
 
     def get_autocomplete(self):
-        autocomplete = self.name + " " + self.reference_number
-        return autocomplete if len(autocomplete) > 0 else " "
+        if self.name and self.reference_number:
+            return self.name + " " + self.reference_number
+        elif self.name:
+            return self.name
+        else:
+            return " "
 
     def __str__(self):
         return self.short_name

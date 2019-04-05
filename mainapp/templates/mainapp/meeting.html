@@ -166,14 +166,14 @@
                                                class="paper-link">
                                                 <span class="fa fa-chevron-right"></span>
                                                 {% trans 'Paper' %}
-                                                {{ agenda_item.consultation.paper.reference_number }}
+                                                {{ agenda_item.consultation.paper.reference_number|default_if_none:agenda_item.consultation.paper }}
                                             </a>
                                         {% else %}
                                             <a href="{% url 'paper' agenda_item.consultation.paper.id %}"
                                                class="paper-link">
                                                 <span class="fa fa-chevron-right"></span>
                                                 {% trans 'Paper' %}
-                                                {{ agenda_item.consultation.paper.reference_number }}
+                                                {{ agenda_item.consultation.paper.reference_number|default_if_none:agenda_item.consultation.paper }}
                                             </a>
                                         {% endif %}
                                     </div>

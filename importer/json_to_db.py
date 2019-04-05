@@ -352,12 +352,18 @@ class JsonToDb:
         if body.ags:
             body.ags = body.ags.replace(" ", "")
         if len(body.ags or "") > 8:
-            raise RuntimeError(
-                "The amtliche Gemeindeschlüssel of {} is longer than 8 characters"
-            )
+            # Special case for https://ris.krefeld.de/webservice/oparl/v1/body/1
+            if body.ags[8:] == "0" * len(body.ags[8:]):
+                body.ags = body.ags[:8]
+            else:
+                raise RuntimeError(
+                    "The Amtliche Gemeindeschlüssel of {} is longer than 8 characters: '{}'".format(
+                        body, body.ags
+                    )
+                )
 
         # We don't really need the location because we have our own outline
-        # importing logic and don't need the city, but we import it for compreensiveness
+        # importing logic and don't need the city, but we import it for comprehensiveness
         location = self.retrieve(Location, libobject.get("location"))
         if location and location.geometry:
             if location.geometry["type"] == "Point":
@@ -476,7 +482,7 @@ class JsonToDb:
             if given_name and family_name:
                 name = given_name + " " + family_name
             else:
-                logger.warning("Person without name")
+                logger.warning("Person without name: {}".format(libobject["id"]))
                 name = _("Unknown")
 
         if not given_name and not family_name and " " in name:
@@ -485,11 +491,11 @@ class JsonToDb:
             logger.warning("Inferring given and family name from compound name")
 
         if not given_name:
-            logger.warning("Person without given name")
+            logger.warning("Person without given name: {}".format(libobject["id"]))
             given_name = _("Unknown")
 
         if not family_name:
-            logger.warning("Person without family name")
+            logger.warning("Person without family name: {}".format(libobject["id"]))
             family_name = _("Unknown")
 
         person.name = name
