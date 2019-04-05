@@ -1,11 +1,8 @@
-from django.test import Client
 from django.test import TestCase
 
 
 class TestViews(TestCase):
     fixtures = ["initdata"]
-
-    client = Client()
 
     def test_meeting_navigation(self):
         """ 5 is joined with another committee, so it's skipped in this meeting series """

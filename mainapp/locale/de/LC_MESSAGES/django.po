@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-11 22:03+0100\n"
+"POT-Creation-Date: 2019-04-05 09:32+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,10 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
+#: mainapp/functions/notify_users.py:83
+msgid "New search results"
+msgstr "Neue Suchergebnisse"
+
 #: mainapp/functions/search_notification_tools.py:57
 msgctxt "Search query"
 msgid "and"
@@ -112,13 +116,21 @@ msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/functions/search_tools.py:158 mainapp/functions/search_tools.py:174
-msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
+#: mainapp/functions/search_tools.py:159
+#, fuzzy
+#| msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
+msgid ""
+"The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
+"DD HH:MM:SS: "
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/management/commands/notifyusers.py:40
-msgid "New search results"
-msgstr "Neue Suchergebnisse"
+#: mainapp/functions/search_tools.py:178
+#, fuzzy
+#| msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
+msgid ""
+"The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
+"DD HH:MM:SS "
+msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
 #: mainapp/models/location.py:23 mainapp/views/meeting.py:106
 msgid "Unknown"
@@ -656,7 +668,7 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:170
+#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:183
 msgid "Meeting"
 msgstr "Sitzung"
 
@@ -764,7 +776,7 @@ msgstr "Suche nach Dokumenten, Personen, Themen..."
 
 #: mainapp/templates/mainapp/index/index_search.html:10
 #: mainapp/templates/mainapp/index_v2/index_search.html:17
-#: mainapp/templates/mainapp/search/search.html:57
+#: mainapp/templates/mainapp/search/search.html:56
 #: mainapp/templates/partials/base_navbar.html:22
 msgid "Search (Alt+F)"
 msgstr "Suche (Alt+F)"
@@ -773,8 +785,8 @@ msgstr "Suche (Alt+F)"
 #: mainapp/templates/mainapp/index/index_search.html:14
 #: mainapp/templates/mainapp/index_v2/index_search.html:20
 #: mainapp/templates/mainapp/index_v2/index_search.html:21
+#: mainapp/templates/mainapp/search/search.html:59
 #: mainapp/templates/mainapp/search/search.html:60
-#: mainapp/templates/mainapp/search/search.html:61
 #: mainapp/templates/partials/base_navbar.html:25
 #: mainapp/templates/partials/base_navbar.html:26
 msgctxt "aria label"
@@ -1144,8 +1156,8 @@ msgid "Select"
 msgstr "Auswählen"
 
 #: mainapp/templates/mainapp/search/search.html:5
-#: mainapp/templates/mainapp/search/search.html:24
-#: mainapp/templates/mainapp/search/search.html:44
+#: mainapp/templates/mainapp/search/search.html:23
+#: mainapp/templates/mainapp/search/search.html:43
 #: mainapp/templates/partials/base_navbar.html:19
 msgctxt "page_title"
 msgid "Search"
@@ -1155,22 +1167,22 @@ msgstr "Suche"
 msgid "Search results"
 msgstr "Suchergebnisse"
 
-#: mainapp/templates/mainapp/search/search.html:34
+#: mainapp/templates/mainapp/search/search.html:33
 msgid "Search results as RSS-Feed"
 msgstr "Suchergebnisse als RSS-Feed"
 
-#: mainapp/templates/mainapp/search/search.html:49
+#: mainapp/templates/mainapp/search/search.html:48
+#: mainapp/templates/mainapp/search/search.html:54
 #: mainapp/templates/mainapp/search/search.html:55
-#: mainapp/templates/mainapp/search/search.html:56
 msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
 
-#: mainapp/templates/mainapp/search/search.html:81
+#: mainapp/templates/mainapp/search/search.html:80
 msgid "Load More"
 msgstr "Mehr laden"
 
-#: mainapp/templates/mainapp/search/search.html:86
+#: mainapp/templates/mainapp/search/search.html:85
 msgid "Nothing Found :("
 msgstr "Nichts gefunden"
 
@@ -1331,25 +1343,25 @@ msgstr ""
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:178
+#: mainapp/views/meeting.py:191
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:191
+#: mainapp/views/meeting.py:204
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 
-#: mainapp/views/persons.py:118
+#: mainapp/views/persons.py:122
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert."
 
-#: mainapp/views/persons.py:119 mainapp/views/search.py:65
+#: mainapp/views/persons.py:123 mainapp/views/search.py:65
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: mainapp/views/persons.py:120
+#: mainapp/views/persons.py:124
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 

@@ -21,6 +21,7 @@ urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^accounts/", include("allauth.urls")),
     url(r"^", include("mainapp.urls")),
+    url(r"^", include("cms.urls")),
 ]
 
 if settings.DEBUG_TOOLBAR_ACTIVE:

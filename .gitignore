@@ -1,5 +1,5 @@
 # Django / Custom Stuff
-db.sqlite3
+*.sqlite3
 node_modules/
 webpack-stats.json
 storage/
@@ -7,7 +7,7 @@ static/
 config/
 cache/
 media/
-.env*
+/*.env*
 urls-to-import.txt
 testdata/fake_cache
 ./custom_*/
@@ -22,6 +22,7 @@ venv*
 .venv*
 pip-log.txt
 pip-delete-this-directory.txt
+pip-wheel-metadata
 
 # Translations
 *.mo

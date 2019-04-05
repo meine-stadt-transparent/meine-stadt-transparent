@@ -3,7 +3,6 @@ from unittest import mock
 
 from django.contrib.auth.models import User
 from django.core.management import call_command
-from django.test import Client
 from django.test import TestCase
 
 from mainapp.models import UserAlert, UserProfile
@@ -12,7 +11,6 @@ from mainapp.tests.live.helper import MockMainappSearch
 
 class TestNotifyUsers(TestCase):
     fixtures = ["initdata"]
-    c = Client()
 
     def _create_user_with_alerts(self, email, alerts):
         newuser = User()

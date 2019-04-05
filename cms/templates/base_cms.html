@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+{% load i18n %}
+
+{% block main_content_classes %}no-top-margin{% endblock %}
+
+{% block content %}
+    <div class="cmspage-breadcrumb">
+        <ul class="container breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url "index" %}">{{ settings.TEMPLATE_META.site_name }}</a>
+            </li>
+            {% for page in self.get_ancestors|slice:"1:" %}
+                <li class="breadcrumb-item"><a href="{% pageurl page %}">{{ page.title }}</a></li>
+            {% endfor %}
+            <li class="active breadcrumb-item">{{ self.title }}</li>
+        </ul>
+    </div>
+
+    <article class="container infopage">
+        <h1>
+            {{ page.title }}
+            {% if can_edit %}
+                <a href="{% url "wagtailadmin_pages:edit" page.id %}" title="{% trans 'Edit page' %}">
+                    <i class="fa fa-pencil"></i>
+                </a>
+            {% endif %}
+        </h1>
+        {% block article %}
+        {% endblock %}
+    </article>
+{% endblock %}

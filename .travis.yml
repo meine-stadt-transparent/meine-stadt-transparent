@@ -26,7 +26,7 @@ install:
 
 script:
   # Ensure our migrations are working (squashing can cause weird problems)
-  - ENV_PATH=etc/env-test poetry run python ./manage.py migrate
+  - ENV_PATH=etc/test.env poetry run python ./manage.py migrate
   - npm run build:prod
   - npm run build:dev
   - poetry run python ./manage.py test

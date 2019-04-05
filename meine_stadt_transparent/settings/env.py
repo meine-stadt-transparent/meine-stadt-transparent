@@ -11,7 +11,7 @@ TESTING = sys.argv[1:2] == ["test"]
 if env.str("ENV_PATH", None):
     env_file = env.str("ENV_PATH")
 elif TESTING:
-    env_file = "etc/env-test"
+    env_file = "etc/test.env"
 
 env.read_env(env_file)
 

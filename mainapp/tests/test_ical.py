@@ -1,6 +1,5 @@
 import icalendar
 from django.conf import settings
-from django.test import Client
 from django.test import TestCase
 
 expected_meeting = """
@@ -60,10 +59,9 @@ END:VCALENDAR
 
 class TestICal(TestCase):
     fixtures = ["initdata"]
-    c = Client()
 
     def test_meeting(self):
-        reponse = self.c.get("/meeting/1/ical/").content.decode().strip()
+        reponse = self.client.get("/meeting/1/ical/").content.decode().strip()
         self.assertEqual(reponse, expected_meeting)
 
         event = icalendar.cal.Component.from_ical(reponse).subcomponents[0]
@@ -73,7 +71,7 @@ class TestICal(TestCase):
         self.assertEqual(event.get("dtend").dt.hour, 18)
 
     def test_meeting_series(self):
-        response = self.c.get("/organization/2/ical/").content.decode().strip()
+        response = self.client.get("/organization/2/ical/").content.decode().strip()
         self.assertEqual(response, expected_meeting_series)
         self.assertEqual(
             len(icalendar.cal.Component.from_ical(response).subcomponents[0]), 5
@@ -81,5 +79,5 @@ class TestICal(TestCase):
 
     def calendar(self):
         """ Just checks that no excpetion is thrown. """
-        response = self.c.get("/calendar/ical")
+        response = self.client.get("/calendar/ical")
         self.assertEqual(response.status_code, 200)

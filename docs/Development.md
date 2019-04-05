@@ -114,3 +114,11 @@ The templates for the e-mail-notifications are created using [HEML](https://heml
 ```
 npm run build:email
 ```
+
+### Wagtail
+
+Exporting:
+
+```
+./manage.py dumpdata --indent 4 wagtailcore.page wagtailcore.site
+```

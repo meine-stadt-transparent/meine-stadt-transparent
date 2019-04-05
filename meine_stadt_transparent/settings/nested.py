@@ -11,6 +11,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "mainapp",
     "importer",
+    "cms",
     "webpack_loader",
     "djgeojson",
     "anymail",
@@ -19,6 +20,19 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "widget_tweaks",
     "simple_history",
+    "wagtail.contrib.forms",
+    "wagtail.contrib.redirects",
+    "wagtail.embeds",
+    "wagtail.sites",
+    "wagtail.users",
+    "wagtail.snippets",
+    "wagtail.documents",
+    "wagtail.images",
+    "wagtail.search",
+    "wagtail.admin",
+    "wagtail.core",
+    "modelcluster",
+    "taggit",
     # Note: The elasticsearch integration is added further below, as well as the social login apps
 ]
 
@@ -33,6 +47,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "csp.middleware.CSPMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
+    "wagtail.core.middleware.SiteMiddleware",
+    "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
 TEMPLATE_DIRS = env.list("TEMPLATE_DIRS", default=[])
