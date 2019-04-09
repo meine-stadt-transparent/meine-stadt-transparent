@@ -67,7 +67,8 @@ export default class IndexView {
     addLocationMarker(location, paper, clusterGroup) {
         let marker = L.marker(IndexView.geojsonToLocation(location.coordinates));
 
-        let paperHtml = '<a href="' + paper.url + '">' + IndexView.escapeHtml(paper.name) + '</a>';
+        let paperName = IndexView.escapeHtml(paper.name);
+        let paperHtml = '<a href="' + paper.url + '" title="' + paperName + '">' + paperName + '</a>';
 
         let files = '';
         for (let i = 0; i < paper.files.length && i < 2; i++) {
