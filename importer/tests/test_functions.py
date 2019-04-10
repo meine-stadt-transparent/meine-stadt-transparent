@@ -97,9 +97,15 @@ class TestFunctions(TestCase):
             self.assertEqual(
                 cm.output,
                 [
-                    "WARNING:" + json_to_db.__name__ + ":Person without name: https://oparl.example.org/person/no-name",
-                    "WARNING:" + json_to_db.__name__ + ":Person without given name: https://oparl.example.org/person/no-name",
-                    "WARNING:" + json_to_db.__name__ + ":Person without family name: https://oparl.example.org/person/no-name",
+                    "WARNING:"
+                    + json_to_db.__name__
+                    + ":Person without name: https://oparl.example.org/person/no-name",
+                    "WARNING:"
+                    + json_to_db.__name__
+                    + ":Person without given name: https://oparl.example.org/person/no-name",
+                    "WARNING:"
+                    + json_to_db.__name__
+                    + ":Person without family name: https://oparl.example.org/person/no-name",
                 ],
             )
 
