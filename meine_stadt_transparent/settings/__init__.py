@@ -1,7 +1,9 @@
 import logging
 import os
+import subprocess
 import warnings
 from importlib.util import find_spec
+from subprocess import CalledProcessError
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -159,10 +161,7 @@ else:
     webpack_stats = os.path.join(STATIC_ROOT, "bundles", "webpack-stats.json")
 
 WEBPACK_LOADER = {
-    "DEFAULT": {
-        "BUNDLE_DIR_NAME": "bundles/",
-        "STATS_FILE": webpack_stats,
-    }
+    "DEFAULT": {"BUNDLE_DIR_NAME": "bundles/", "STATS_FILE": webpack_stats}
 }
 
 # Elastic
@@ -247,7 +246,18 @@ SENTRY_DSN = env.str("SENTRY_DSN", None)
 # SENTRY_HEADER_ENDPOINT is defined in security.py
 
 if SENTRY_DSN:
-    sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()])
+    try:
+        git_tag = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
+        release = "meine-stadt-transparent@" + git_tag
+    except CalledProcessError:
+        # pkg_resources is part of setuptools, so we might want to handle the case we have an ImportError.
+        # Note however that logging isn't configured at this point
+        import pkg_resources
+
+        version = pkg_resources.get_distribution("meine_stadt_transparent").version
+        release = "meine-stadt-transparent@" + version
+
+    sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release)
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 
