@@ -20,9 +20,7 @@ WORKDIR /app
 
 RUN pip3 install --upgrade poetry \
     && poetry config settings.virtualenvs.in-project true \
-    && poetry install --no-dev \
-    && ln -s /usr/lib/python3/dist-packages/gi /app/.venv/lib/python*/site-packages/
-
+    && poetry install --no-dev
 COPY . /app/
 
 ENV NODE_ENV production

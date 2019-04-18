@@ -42,12 +42,11 @@ def init_minio() -> Minio:
     )
 
     for bucket in bucket_list:
-        if not minio.bucket_exists(settings.MINIO_PREFIX + bucket):
-            minio.make_bucket(settings.MINIO_PREFIX + bucket)
+        bucket_name = settings.MINIO_PREFIX + bucket
+        if not minio.bucket_exists(bucket_name):
+            minio.make_bucket(bucket_name)
 
-    minio.set_bucket_policy(
-        settings.MINIO_PREFIX + "files", json.dumps(policy_read_only)
-    )
+        minio.set_bucket_policy(bucket_name, json.dumps(policy_read_only))
 
     return minio
 
