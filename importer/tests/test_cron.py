@@ -5,11 +5,20 @@ from django.test import TestCase
 from django.utils import timezone
 
 from importer.models import ExternalList
-from importer.tests.utils import MockLoader, old_date, make_system, make_body, make_list, make_file, make_paper
+from importer.tests.utils import (
+    MockLoader,
+    old_date,
+    make_system,
+    make_body,
+    make_list,
+    make_file,
+    make_paper,
+)
 
 
 class TestCron(TestCase):
     """ [WIP] Tests that an file change sends out exactely one mail to only the subscribed user. """
+
     fixtures = ["cron.json"]
 
     system = make_system()
@@ -29,15 +38,18 @@ class TestCron(TestCase):
         ExternalList(url=self.body["paper"], last_update=old_date).save()
 
     def get_mock_loader(self):
-        return MockLoader(self.system, {
-            self.system["id"]: self.system,
-            self.system["body"]: make_list([self.body]),
-            self.body["id"]: self.body,
-            self.body["meeting"]: make_list([]),
-            self.body["organization"]: make_list([]),
-            self.body["person"]: make_list([]),
-            self.body["paper"]: make_list([]),
-        })
+        return MockLoader(
+            self.system,
+            {
+                self.system["id"]: self.system,
+                self.system["body"]: make_list([self.body]),
+                self.body["id"]: self.body,
+                self.body["meeting"]: make_list([]),
+                self.body["organization"]: make_list([]),
+                self.body["person"]: make_list([]),
+                self.body["paper"]: make_list([]),
+            },
+        )
 
     def test_cron(self):
         """ WIP """
@@ -46,8 +58,10 @@ class TestCron(TestCase):
 
         # Run cron. Check that nothing happend
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
-            with mock.patch("importer.functions.get_loader_from_body", new=lambda body_id: loader):
-                call_command('cron')
+            with mock.patch(
+                "importer.functions.get_loader_from_body", new=lambda body_id: loader
+            ):
+                call_command("cron")
             print(mocked_send_mail.call_count == 0)
 
     def cron_unfinished(self, loader):
@@ -73,8 +87,10 @@ class TestCron(TestCase):
         # Run cron. Check that exactely the one user got one notification for the one paper
 
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
-            with mock.patch("importer.functions.get_loader_from_body", new=lambda body_id: loader):
-                call_command('cron')
+            with mock.patch(
+                "importer.functions.get_loader_from_body", new=lambda body_id: loader
+            ):
+                call_command("cron")
             print(mocked_send_mail.call_count == 1)
 
         # In[]
@@ -82,6 +98,8 @@ class TestCron(TestCase):
         # Run cron. Check that nothing happend
 
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
-            with mock.patch("importer.functions.get_loader_from_body", new=lambda body_id: loader):
-                call_command('cron')
+            with mock.patch(
+                "importer.functions.get_loader_from_body", new=lambda body_id: loader
+            ):
+                call_command("cron")
             print(mocked_send_mail.call_count == 0)

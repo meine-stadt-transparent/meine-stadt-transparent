@@ -333,8 +333,12 @@ class Importer:
 
     def download_and_analyze_file(
         self, file_id: int, address_pipeline: AddressPipeline, fallback_city: str
-    ) -> None:
-        """ Downloads and analyses a single file, i.e. extracting text, locations and persons """
+    ) -> bool:
+        """
+        Downloads and analyses a single file, i.e. extracting text, locations and persons.
+
+        Returns False for http errors on downloading and True otherwise.
+        """
         file = File.objects.get(id=file_id)
         url = file.get_oparl_url()
 
@@ -353,7 +357,7 @@ class Importer:
                 file.filesize = len(content)
             except HTTPError:
                 logger.exception("File {}: Failed to download {}".format(file.id, url))
-                return
+                return False
 
             logger.debug(
                 "File {}: Downloaded {} ({}, {})".format(
@@ -395,12 +399,16 @@ class Importer:
         db.connections.close_all()
         file.save()
 
+        return True
+
     def file_wrapper(
         self, file_id: int, address_pipeline: AddressPipeline, fallback_city: str
-    ) -> None:
+    ) -> bool:
         """ For better error reporting """
         try:
-            self.download_and_analyze_file(file_id, address_pipeline, fallback_city)
+            return self.download_and_analyze_file(
+                file_id, address_pipeline, fallback_city
+            )
         except Exception as e:
             logger.exception("Failed to download and analyze file {}".format(file_id))
             raise e
@@ -417,33 +425,43 @@ class Importer:
         )
         logger.info("Downloading and analysing {} files".format(len(files)))
         address_pipeline = AddressPipeline(create_geoextract_data())
+        pbar = None
+        if sys.stdout.isatty() and not settings.TESTING:
+            pbar = tqdm(total=len(files))
+        failed = 0
+
         if not self.force_singlethread:
             # We need to close the database connections, which will be automatically reopen for
             # each process
             # See https://stackoverflow.com/a/10684672/3549270
             # and https://brobin.me/blog/2017/05/mutiprocessing-in-python-django-management-commands/
             db.connections.close_all()
-            pbar = None
-            if sys.stdout.isatty() and not settings.TESTING:
-                pbar = tqdm(total=len(files))
+
             with ProcessPoolExecutor(max_workers=max_workers) as executor:
-                for _ in executor.map(
+                for succeeded in executor.map(
                     self.download_and_analyze_file,
                     files,
                     repeat(address_pipeline),
                     repeat(fallback_city),
                 ):
+                    if not succeeded:
+                        failed += 1
                     if pbar:
                         pbar.update()
-            if pbar:
-                pbar.close()
+
         else:
-            pbar = None
-            if sys.stdout.isatty() and not settings.TESTING:
-                pbar = tqdm(total=len(files))
             for file in files:
-                self.download_and_analyze_file(file, address_pipeline, fallback_city)
+                succeeded = self.download_and_analyze_file(
+                    file, address_pipeline, fallback_city
+                )
+
+                if not succeeded:
+                    failed += 1
+
                 if pbar:
                     pbar.update()
-            if pbar:
-                pbar.close()
+        if pbar:
+            pbar.close()
+
+        if failed > 0:
+            logger.error("{} files failed to download".format(failed))

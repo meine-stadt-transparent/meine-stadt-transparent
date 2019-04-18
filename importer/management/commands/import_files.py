@@ -1,5 +1,9 @@
+import logging
+
 from importer.management.commands._import_base_command import ImportBaseCommand
 from mainapp.functions.document_parsing import AddressPipeline, create_geoextract_data
+
+logger = logging.getLogger(__name__)
 
 
 class Command(ImportBaseCommand):
@@ -18,10 +22,17 @@ class Command(ImportBaseCommand):
         importer, body = self.get_importer(options)
         if options["ids"]:
             address_pipeline = AddressPipeline(create_geoextract_data())
+            failed = 0
             for file in options["ids"]:
-                importer.download_and_analyze_file(
+                succeeded = importer.download_and_analyze_file(
                     file, address_pipeline, body.short_name
                 )
+
+                if not succeeded:
+                    failed += 1
+
+            if failed > 0:
+                logger.error("{} files failed to download".format(failed))
         else:
             importer.load_files(
                 max_workers=options["max_workers"], fallback_city=body.short_name
