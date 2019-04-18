@@ -124,7 +124,7 @@ class TestFunctions(TestCase):
         data = [
             membership,
             {
-                "id": "https://oparl.example.org/body/0",
+                "id": "https://oparl.example.org/body/1",
                 "type": "https://schema.oparl.org/1.1/Body",
                 "system": "https://oparl.example.org/",
                 "shortName": "Köln",
@@ -135,7 +135,7 @@ class TestFunctions(TestCase):
             {
                 "id": "https://oparl.example.org/organization/1",
                 "type": "https://schema.oparl.org/1.1/Organization",
-                "body": "https://oparl.example.org/body/0",
+                "body": "https://oparl.example.org/body/1",
                 "name": "Ausschuss für Haushalt und Finanzen",
                 "shortName": "Finanzausschuss",
                 "membership": ["https://oparl.example.org/membership/1"],
@@ -145,7 +145,7 @@ class TestFunctions(TestCase):
             {
                 "id": "https://oparl.example.org/person/1",
                 "type": "https://schema.oparl.org/1.1/Person",
-                "body": "https://oparl.example.org/body/0",
+                "body": "https://oparl.example.org/body/1",
                 "name": "Prof. Dr. Max Mustermann",
                 "familyName": "Mustermann",
                 "givenName": "Max",
@@ -171,7 +171,7 @@ class TestFunctions(TestCase):
         importer = Importer(loader)
         importer.converter.warn_missing = False
         # We need to have a body to load an organization
-        importer.import_anything("https://oparl.example.org/body/0")
+        importer.import_anything("https://oparl.example.org/body/1")
         importer.import_anything("https://oparl.example.org/membership/0")
         self.assertEqual(
             Membership.objects.filter(oparl_id=membership["id"]).count(), 1

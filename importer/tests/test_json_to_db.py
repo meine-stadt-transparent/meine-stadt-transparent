@@ -150,7 +150,7 @@ class TestImporter(TestCase):
         # Those were dropped between the tests
         self.converter.ensure_organization_type()
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
 
         membership = Membership()
         data = self.api_data["https://oparl.example.org/membership/34"]
@@ -163,7 +163,7 @@ class TestImporter(TestCase):
 
     def test_body(self):
         body = Body()
-        data = self.api_data["https://oparl.example.org/body/0"]
+        data = self.api_data["https://oparl.example.org/body/1"]
         self.converter.body(data, body)
         self.assertEqual(body.outline, None)
         self.assertNotEqual(body.center, None)
@@ -174,7 +174,7 @@ class TestImporter(TestCase):
 
     def test_paper(self):
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
 
         paper = Paper()
@@ -194,7 +194,7 @@ class TestImporter(TestCase):
 
     def test_organization(self):
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
 
         organization = Organization()
@@ -211,14 +211,14 @@ class TestImporter(TestCase):
     def test_organization_normalization(self):
         """ Test for the normalization which was mainly built for cc-egov """
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
 
         organization = Organization()
         data = {
             "id": "https://oparl.example.org/organization/34",
             "type": "https://schema.oparl.org/1.1/Organization",
-            "body": "https://oparl.example.org/body/0",
+            "body": "https://oparl.example.org/body/1",
             "name": "Freibier-Fraktion",
             "organizationType": "Gremium",
             "classification": "Fraktion",
@@ -231,7 +231,7 @@ class TestImporter(TestCase):
 
     def test_meeting(self):
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
 
         meeting = Meeting()
@@ -258,7 +258,7 @@ class TestImporter(TestCase):
 
     def test_person(self):
         # Body is mandatory for organization
-        self.converter.import_anything("https://oparl.example.org/body/0")
+        self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
 
         person = Person()

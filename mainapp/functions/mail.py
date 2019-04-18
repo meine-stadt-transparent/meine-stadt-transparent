@@ -6,6 +6,7 @@ from django.core.mail import EmailMultiAlternatives
 from mainapp.models import UserProfile
 
 
+# noinspection PyUnresolvedReferences
 def encrypt(message: str, key: bytes) -> str:
     import pgpy
     from pgpy import PGPMessage

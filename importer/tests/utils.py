@@ -20,7 +20,7 @@ def make_system() -> JSON:
 
 def make_body() -> JSON:
     return {
-        "id": "https://oparl.example.org/body/0",
+        "id": "https://oparl.example.org/body/1",
         "type": "https://schema.oparl.org/1.0/Body",
         "oparlVersion": "https://schema.oparl.org/1.0/",
         "paper": "https://oparl.example.org/paper",
@@ -34,13 +34,21 @@ def make_body() -> JSON:
 
 
 class MockLoader(BaseLoader):
-    def __init__(self, system: Optional[JSON] = None):
+    """ Loads responses from a predefined dict """
+
+    def __init__(
+        self, system: Optional[JSON] = None, api_data: Optional[Dict[str, JSON]] = None
+    ):
         super().__init__(system)
-        self.api_data = {}  # type: Dict[str, JSON]
+        if api_data is None:
+            self.api_data = {}  # type: Dict[str, JSON]
+        else:
+            self.api_data = api_data
         self.files = {}  # type: Dict[str, Tuple[bytes, str]]
         self.system = system
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
+        """ Ignores the query fragment to make mocking easy when filters are used """
         return self.api_data[url]
 
     def load_file(self, url: str) -> Tuple[bytes, str]:

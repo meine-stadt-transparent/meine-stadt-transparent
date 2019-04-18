@@ -1,7 +1,7 @@
 {
     "id": "https://oparl.example.org/organization/34",
     "type": "https://schema.oparl.org/1.1/Organization",
-    "body": "https://oparl.example.org/body/0",
+    "body": "https://oparl.example.org/body/1",
     "name": "Ausschuss für Haushalt und Finanzen",
     "shortName": "Finanzausschuss",
     "startDate": "2012-07-17",

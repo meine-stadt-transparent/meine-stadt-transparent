@@ -7,7 +7,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.6.13
     container_name: elasticsearch-dev
     environment:
-      - cluster.name=docker-cluster
+      - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - xpack.security.enabled=false
@@ -28,12 +28,12 @@ services:
   kibana-dev:
       image: docker.elastic.co/kibana/kibana:5.6.13
       container_name: kibana-dev
+      environment:
+        - ELASTICSEARCH_HOSTS=http://elasticsearch-dev:9200
       ports:
         - 5601:5601
       networks:
         - mst_dev
-      environment:
-        - xpack.security.enabled=false
 
   minio-dev:
       image: minio/minio

@@ -43,7 +43,7 @@ class TestImporter(TestCase):
         Consultation: 1,
         Location: 2,
     }
-    body_id = "https://oparl.example.org/body/0"
+    body_id = "https://oparl.example.org/body/1"
 
     @classmethod
     def setUpClass(cls):
