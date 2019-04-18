@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from typing import List
 
 from django.conf import settings
@@ -8,7 +9,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 
-from mainapp.models import Organization, Person, Paper, Membership
+from mainapp.models import Organization, Person, Paper, Membership, File
 from mainapp.views.utils import (
     handle_subscribe_requests,
     is_subscribed_to_search,
@@ -129,21 +130,16 @@ def person(request, pk):
     filter_self = Paper.objects.filter(persons__id=pk)
     filter_organization = Paper.objects.filter(organizations__membership__person__id=pk)
     paper = (filter_self | filter_organization).distinct()
-
-    mentioned = []
-    for paper_mentioned in (
-        Paper.objects.filter(files__mentioned_persons__in=[pk])
-        .order_by("-modified")
-        .distinct()
-    ):
-        mentioned.append(
-            {
-                "paper": paper_mentioned,
-                "files": paper_mentioned.files.filter(mentioned_persons__in=[pk]),
-            }
-        )
-
     memberships = get_ordered_memberships(selected_person)
+
+    mentioned = defaultdict(list)
+    files_mentioned = File.objects.filter(mentioned_persons__in=[pk]).prefetch_related("paper_set")
+    for file_mentioned in files_mentioned:
+        for paper_mentioned in file_mentioned.paper_set.all():
+            mentioned[paper_mentioned].append(file_mentioned)
+
+    # The template doesn't like defaultdicts
+    mentioned = dict(mentioned)
 
     context = {
         "person": selected_person,
