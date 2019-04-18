@@ -9,23 +9,24 @@ Minio policy: files are publicly readable, cache and pgp keys are private
 
 bucket_list = ["files", "cache", "pgp-keys"]
 
-policy_read_only = {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {"AWS": ["*"]},
-            "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
-            "Resource": ["arn:aws:s3:::meine-stadt-transparent-files"],
-        },
-        {
-            "Effect": "Allow",
-            "Principal": {"AWS": ["*"]},
-            "Action": ["s3:GetObject"],
-            "Resource": ["arn:aws:s3:::meine-stadt-transparent-files/*"],
-        },
-    ],
-}
+def get_read_only_policy(bucket_name: str) -> dict:
+    return {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {"AWS": ["*"]},
+                "Action": ["s3:GetBucketLocation", "s3:ListBucket"],
+                "Resource": ["arn:aws:s3:::" + bucket_name],
+            },
+            {
+                "Effect": "Allow",
+                "Principal": {"AWS": ["*"]},
+                "Action": ["s3:GetObject"],
+                "Resource": ["arn:aws:s3:::" + bucket_name + "/*"],
+            },
+        ],
+    }
 
 
 minio_file_bucket = settings.MINIO_PREFIX + "files"
@@ -42,11 +43,13 @@ def init_minio() -> Minio:
     )
 
     for bucket in bucket_list:
-        bucket_name = settings.MINIO_PREFIX + bucket
-        if not minio.bucket_exists(bucket_name):
-            minio.make_bucket(bucket_name)
+        if not minio.bucket_exists(settings.MINIO_PREFIX + bucket):
+            minio.make_bucket(settings.MINIO_PREFIX + bucket)
 
-        minio.set_bucket_policy(bucket_name, json.dumps(policy_read_only))
+    files_bucket = settings.MINIO_PREFIX + "files"
+    minio.set_bucket_policy(
+        files_bucket, json.dumps(get_read_only_policy(files_bucket))
+    )
 
     return minio
 
