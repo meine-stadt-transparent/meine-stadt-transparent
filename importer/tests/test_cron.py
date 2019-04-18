@@ -4,6 +4,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.utils import timezone
 
+from importer.loader import BaseLoader
 from importer.models import ExternalList
 from importer.tests.utils import (
     MockLoader,
@@ -37,7 +38,7 @@ class TestCron(TestCase):
         ExternalList(url=self.body["organization"], last_update=old_date).save()
         ExternalList(url=self.body["paper"], last_update=old_date).save()
 
-    def get_mock_loader(self):
+    def get_mock_loader(self) -> BaseLoader:
         return MockLoader(
             self.system,
             {
@@ -56,13 +57,16 @@ class TestCron(TestCase):
         self.external_list_fixture()
         loader = self.get_mock_loader()
 
+        self.run_cron(loader, 0)
+
+    def run_cron(self, loader: BaseLoader, expected_mail_count: int):
         # Run cron. Check that nothing happend
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
             with mock.patch(
                 "importer.functions.get_loader_from_body", new=lambda body_id: loader
             ):
                 call_command("cron")
-            print(mocked_send_mail.call_count == 0)
+            print(mocked_send_mail.call_count == expected_mail_count)
 
     def cron_unfinished(self, loader):
         # In[]
@@ -84,22 +88,10 @@ class TestCron(TestCase):
 
         # In[]
 
-        # Run cron. Check that exactely the one user got one notification for the one paper
-
-        with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
-            with mock.patch(
-                "importer.functions.get_loader_from_body", new=lambda body_id: loader
-            ):
-                call_command("cron")
-            print(mocked_send_mail.call_count == 1)
+        # Check that exactely the one user got one notification for the one paper
+        self.run_cron(loader, 1)
 
         # In[]
 
-        # Run cron. Check that nothing happend
-
-        with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
-            with mock.patch(
-                "importer.functions.get_loader_from_body", new=lambda body_id: loader
-            ):
-                call_command("cron")
-            print(mocked_send_mail.call_count == 0)
+        # Check the user only gets one notification for the event
+        self.run_cron(loader, 0)
