@@ -41,7 +41,7 @@
     "bootstrap": "~4.3.1",
     "bootstrap-datepicker": "^1.8.0",
     "bootstrap-daterangepicker": "^2.1.30",
-    "chromedriver": "2.46.0",
+    "chromedriver": "73.0.0",
     "corejs-typeahead": "github:meine-stadt-transparent/typeahead.js",
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.10.0",
