@@ -1,5 +1,5 @@
 {
-    "id": "https://oparl.example.org/body/0",
+    "id": "https://oparl.example.org/body/1",
     "type": "https://schema.oparl.org/1.1/Body",
     "system": "https://oparl.example.org/",
     "contactEmail": "ris@beispielstadt.de",
@@ -15,15 +15,15 @@
     "website": "http://www.beispielstadt.de/",
     "license": "http://creativecommons.org/licenses/by/4.0/",
     "licenseValidSince": "2014-01-01T00:00:00+02:00",
-    "organization": "https://oparl.example.org/body/0/organizations/",
-    "person": "https://oparl.example.org/body/0/people/",
-    "meeting": "https://oparl.example.org/body/0/meetings/",
-    "paper": "https://oparl.example.org/body/0/papers/",
+    "organization": "https://oparl.example.org/body/1/organizations/",
+    "person": "https://oparl.example.org/body/1/people/",
+    "meeting": "https://oparl.example.org/body/1/meetings/",
+    "paper": "https://oparl.example.org/body/1/papers/",
     "legislativeTerm": [
         {
             "id": "https://oparl.example.org/term/21",
             "type": "https://schema.oparl.org/1.1/LegislativeTerm",
-            "body": "https://oparl.example.org/body/0",
+            "body": "https://oparl.example.org/body/1",
             "name": "21. Wahlperiode",
             "startDate": "2010-12-03",
             "endDate": "2013-12-03"
@@ -37,7 +37,10 @@
             "type": "Feature",
             "geometry": {
                 "type": "Point",
-                "coordinates": [50.1234, 10.4321]
+                "coordinates": [
+                    50.1234,
+                    10.4321
+                ]
             },
             "properties": {
                 "name": "Rathausplatz"

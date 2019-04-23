@@ -1,20 +1,22 @@
 import logging
 import re
+import string
 import subprocess
 import tempfile
 from subprocess import CalledProcessError
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Tuple, IO
 
 import geoextract
 import requests
 from PyPDF2.pdf import PdfFileReader
+from PyPDF2.utils import PdfReadError
+from django import db
 from django.conf import settings
-from django.urls import reverse
 from wand.color import Color
 from wand.image import Image
 
 from mainapp.functions.geo_functions import geocode
-from mainapp.models import SearchStreet, Body, Location, Person, Paper
+from mainapp.models import SearchStreet, Body, Location, Person
 
 logger = logging.getLogger(__name__)
 
@@ -62,24 +64,40 @@ class AddressPipeline(geoextract.Pipeline):
         )
 
 
+def extract_from_file(
+    file: IO[bytes], filename: str, mime_type: str, file_id: int
+) -> Tuple[Optional[str], Optional[int]]:
+    """ Returns the text and the page count """
+
+    parsed_text = None
+    page_count = None
+    if mime_type == "application/pdf":
+        try:
+            command = ["pdftotext", filename, "-"]
+            completed = subprocess.run(
+                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
+            )
+            parsed_text = completed.stdout.decode("utf-8", "ignore")
+            if completed.stderr:
+                logger.info("pdftotext: {}".format(completed.stderr))
+        except CalledProcessError as e:
+            logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
+
+        try:
+            page_count = PdfFileReader(file, overwriteWarnings=False).getNumPages()
+        except PdfReadError:
+            message = "File {}: Pdf does not allow to read the number of pages".format(
+                file_id
+            )
+            logger.exception(message)
+    elif mime_type == "text/text":
+        parsed_text = file.read()
+    return parsed_text, page_count
+
+
 def cleanup_extracted_text(text: str) -> str:
     # Tries to merge hyphenated text back into whole words; last and first characters have to be lower case
     return re.sub(r"([a-z])-\s*\n([a-z])", r"\1\2", text)
-
-
-def extract_text_from_pdf(pdf_file: str) -> str:
-    try:
-        return subprocess.check_output(["pdftotext", pdf_file, "-"]).decode(
-            "utf-8", "ignore"
-        )
-    except CalledProcessError:
-        logger.exception("Failed to run pdftotext on {}".format(pdf_file))
-        return ""
-
-
-def get_page_count_from_pdf(pdf_file: str) -> int:
-    with open(pdf_file, "rb") as fp:
-        return PdfFileReader(fp).getNumPages()
 
 
 def perform_ocr_on_image(imgdata):
@@ -138,7 +156,7 @@ def get_ocr_text_from_pdf(file):
 def create_geoextract_data(bodies: Optional[List[Body]] = None) -> List[Dict[str, str]]:
     street_names = []
     if bodies:
-        streets = SearchStreet.objects.filter(bodies__in=bodies)
+        streets = SearchStreet.objects.filter(body__in=bodies)
     else:
         streets = SearchStreet.objects.all()
 
@@ -151,7 +169,7 @@ def create_geoextract_data(bodies: Optional[List[Body]] = None) -> List[Dict[str
     return locations
 
 
-def get_search_string(location: Dict[str, str], fallback_city_name: str) -> str:
+def get_search_string(location: Dict[str, str], fallback_city: Optional[str]) -> str:
     search_str = ""
     if "street" in location:
         search_str += location["street"]
@@ -161,10 +179,12 @@ def get_search_string(location: Dict[str, str], fallback_city_name: str) -> str:
             search_str += ", " + location["postcode"] + " " + location["city"]
         elif "city" in location:
             search_str += ", " + location["city"]
-        else:
-            search_str += ", " + fallback_city_name
+        elif fallback_city:
+            search_str += ", " + fallback_city
     elif "name" in location:
-        search_str += location["name"] + ", " + fallback_city_name
+        search_str += location["name"]
+        if fallback_city:
+            search_str += ", " + fallback_city
 
     search_str += ", " + settings.GEOEXTRACT_SEARCH_COUNTRY
     return search_str
@@ -183,21 +203,27 @@ def format_location_name(location: Dict[str, str]) -> str:
     return name
 
 
-def extract_found_locations(
-    text: str, bodies: Optional[List[Body]] = None
-) -> List[Dict[str, str]]:
-    search_for = create_geoextract_data(bodies)
-    pipeline = AddressPipeline(search_for)
-    return pipeline.extract(text)
-
-
 def extract_locations(
-    text: str, fallback_city: str = settings.GEOEXTRACT_DEFAULT_CITY
+    text: str,
+    fallback_city: Optional[str] = settings.GEOEXTRACT_DEFAULT_CITY,
+    pipeline: Optional[AddressPipeline] = None,
 ) -> List[Location]:
     if not text:
         return []
 
-    found_locations = extract_found_locations(text)
+    if not pipeline:
+        pipeline = AddressPipeline(create_geoextract_data())
+
+    if len(text) < settings.TEXT_CHUNK_SIZE:
+        found_locations = pipeline.extract(text)
+    else:
+        # Workaround for https://github.com/stadt-karlsruhe/geoextract/issues/7
+        found_locations = []
+        for i in range(0, len(text), settings.TEXT_CHUNK_SIZE):
+            # We can't use set because the dicts in the returned list are unhashable
+            for location in pipeline.extract(text[i : i + settings.TEXT_CHUNK_SIZE]):
+                if location not in found_locations:
+                    found_locations.append(location)
 
     locations = []
     for found_location in found_locations:
@@ -208,82 +234,53 @@ def extract_locations(
 
         defaults = {"description": location_name, "is_official": False}
 
+        # Avoid "MySQL server has gone away" errors due to timeouts
+        # https://stackoverflow.com/a/32720475/3549270
+        db.close_old_connections()
         location, created = Location.objects_with_deleted.get_or_create(
             description=location_name, defaults=defaults
         )
 
         if created:
             search_str = get_search_string(found_location, fallback_city)
-            geodata = geocode(search_str)
-            if geodata:
-                location.geometry = {
-                    "type": "Point",
-                    "coordinates": [geodata["lng"], geodata["lat"]],
-                }
-                location.save()
-            location.bodies.set([Body.objects.get(id=settings.SITE_DEFAULT_BODY)])
+            location.geometry = geocode(search_str)
+            location.save()
 
         locations.append(location)
 
     return locations
 
 
-def index_papers_to_geodata(papers: List[Paper]) -> Dict[str, Any]:
+def extract_persons(text: str) -> List[Person]:
     """
-    :param papers: list of Paper
-    :return: object
-    """
-    geodata = {}
-    for paper in papers:
-        for file in paper.all_files():
-            for location in file.locations.all():
-                if location.id not in geodata:
-                    geodata[location.id] = {
-                        "id": location.id,
-                        "name": location.description,
-                        "coordinates": location.geometry,
-                        "papers": {},
-                    }
-                if paper.id not in geodata[location.id]["papers"]:
-                    geodata[location.id]["papers"][paper.id] = {
-                        "id": paper.id,
-                        "name": paper.name,
-                        "type": paper.paper_type.paper_type,
-                        "url": reverse("paper", args=[paper.id]),
-                        "files": [],
-                    }
-                geodata[location.id]["papers"][paper.id]["files"].append(
-                    {
-                        "id": file.id,
-                        "name": file.name,
-                        "url": reverse("file", args=[file.id]),
-                    }
-                )
-
-    return geodata
-
-
-def extract_persons(text):
-    """
-    :type text: str
-    :return: list of mainapp.models.Person
+    Avoids matching every person with a regex for performance reasons
+    (Where performance means that the files analyses shouldn't take hours for 10k files).
+    This could likely be made much faster using an aho-corasick automaton over multiple files.
     """
     persons = Person.objects.all()
+    text = re.sub("\s\s+", " ", text).lower()
+    # For finding names at the very beginning and end
+    text = " " + text + " "
+
     found_persons = []
-    text = " " + text + " "  # Workaround to find names at the very beginning or end
-
-    def match(name_parts):
-        escaped_parts = []
-        for part in name_parts:
-            escaped_parts.append(re.escape(part))
-        matcher = r"[^\w]" + r"[\s,]+".join(escaped_parts) + r"[^\w]"
-        return re.search(matcher, text, re.I | re.S | re.U | re.MULTILINE)
-
     for person in persons:
-        match_name = match([person.name])
-        match_names = match([person.given_name, person.family_name])
-        match_names_reverse = match([person.family_name, person.given_name])
-        if match_name or match_names or match_names_reverse:
-            found_persons.append(person)
+        matchables = [
+            person.name,
+            person.given_name + " " + person.family_name,
+            person.family_name + " " + person.given_name,
+            person.family_name + ", " + person.given_name,
+            person.family_name + "," + person.given_name,
+        ]
+
+        for matchable in matchables:
+            matchable = matchable.lower()
+            if matchable in text:
+                start = text.index(matchable)
+                end = start + len(matchable)
+                # Make sure that there's whitespace or punction before and after name
+                is_w = string.ascii_lowercase + string.digits
+                if text[start - 1] not in is_w and text[end] not in is_w:
+                    found_persons.append(person)
+                    break
 
     return found_persons

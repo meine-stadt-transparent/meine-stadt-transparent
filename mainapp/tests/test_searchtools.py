@@ -6,14 +6,6 @@ from mainapp.functions.search_tools import (
     MainappSearch,
     MULTI_MATCH_FIELDS,
 )
-from django.test import TestCase
-
-from mainapp.functions.search_tools import (
-    search_string_to_params,
-    params_to_search_string,
-    MainappSearch,
-    MULTI_MATCH_FIELDS,
-)
 
 expected_params = {
     "query": {

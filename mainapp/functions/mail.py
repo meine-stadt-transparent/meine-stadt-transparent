@@ -6,6 +6,7 @@ from django.core.mail import EmailMultiAlternatives
 from mainapp.models import UserProfile
 
 
+# noinspection PyUnresolvedReferences
 def encrypt(message: str, key: bytes) -> str:
     import pgpy
     from pgpy import PGPMessage
@@ -32,9 +33,7 @@ def send_mail(
         if key:
             message_text = encrypt(message_text, key)
 
-    mail_from = (
-        settings.DEFAULT_FROM_EMAIL_NAME + " <" + settings.DEFAULT_FROM_EMAIL + ">"
-    )
+    mail_from = settings.EMAIL_FROM_NAME + " <" + settings.EMAIL_FROM + ">"
     msg = EmailMultiAlternatives(
         subject=subject,
         body=message_text,

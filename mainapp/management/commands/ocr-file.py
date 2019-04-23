@@ -1,8 +1,5 @@
 import logging
 
-import os
-
-from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 
@@ -30,7 +27,7 @@ class Command(BaseCommand):
 
     def parse_file(self, file: File):
         logging.info("- Parsing: " + str(file.id) + " (" + file.name + ")")
-        with minio_client.get_object(minio_file_bucket, str(file.id)) as file_handle:
+        with minio_client().get_object(minio_file_bucket, str(file.id)) as file_handle:
             recognized_text = get_ocr_text_from_pdf(file_handle.read())
         if len(recognized_text) > 0:
             file.parsed_text = cleanup_extracted_text(recognized_text)

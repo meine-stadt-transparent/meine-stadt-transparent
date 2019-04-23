@@ -48,8 +48,7 @@ MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/
 
 The oparl importer should tell you the values for those options.
 
-  * `GEOEXTRACT_DEFAULT_CITY`: This name will be sent to the geocoding service with the name of the location of interest.
-  * `OPARL_ENDPOINT`: The url of the oparl endpoint the cron task will update data from.
+  * `GEOEXTRACT_DEFAULT_CITY`: This makes sure the geocoding service finds the street in your city and not somewhere else.
   * `SITE_DEFAULT_BODY`: The database id of the body that represents the current city. Defaults to 1 which is correct when you have only imported one body.
 
 ## Overriding templates and styles
@@ -134,6 +133,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `ELASTICSEARCH_LANG`: Texts in different languages need different preprocessing. Defaults to "german"
  * `CITY_AFFIXES`: Often the data we get contains additional information in city names, e.g. "Landdeshauptstadt München" instead of "München", which we need to cut away. `CITY_AFFIXES` contains a list of those prefixes in German, currently "Stadt", "Landeshauptstadt", "Gemeinde", "Kreis" and "Landkreis".
  * `GEOEXTRACT_SEARCH_COUNTRY`: Sets the country for the geocoding service. Defaults to "Deutschland"
+  * `GEOEXTRACT_LANGUAGE`: Language passed to geopy for geocoding, defaults to the first part of `LANGUAGE_CODE`, i.e. "de"
 
 ## Various
 
@@ -144,7 +144,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `ELASTICSEARCH_INDEX`: The name of the elasticsearch index used bei Meine Stadt Transparent. Defaults to "meine_stadt_transparent_documents"
  * `MINIO_PREFIX`: All minio bucket names will be prefixed with this string. Default to "meine-stadt-transparent-"
   * `CUSTOM_IMPORT_HOOKS`: Used to hook up your own code with the default importer. See the readme for usage details.
- * `DEFAULT_FROM_EMAIL` and `DEFAULT_FROM_EMAIL_NAME`: Sender address and name for notifications. Defaults to `info@REAL_HOST` and `SITE_NAME`
+ * `EMAIL_FROM` and `EMAIL_FROM_NAME`: Sender address and name for notifications. Defaults to `info@REAL_HOST` and `SITE_NAME`
  * `EMBED_PARSED_TEXT_FOR_SCREENREADERS`: pdfs are really bad for blind people, so this includes the plain text of PDFs next to the PDF viewer, visible only for Screenreaders. On by default to improve accessibility, deactivatable in case there are legal concerns.
  * `FILE_DISCLAIMER`: This is a small text shown below every document to tell people we're not the original publisher of that document. `FILE_DISCLAIMER_URL` is shown as link next to the
  * `OCR_AZURE_KEY`: [Azure](https://azure.microsoft.com) has an ocr service with high accuracy. Since it's pay-per-use, it must be manually used through `./manage.py ocr-file`. If you want to use azure, set `OCR_AZURE_KEY` to your api key. You can also set `OCR_AZURE_LANGUAGE`, which defaults to `de` for German, and `OCR_AZURE_API`, which
@@ -152,6 +152,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `SECURE_HSTS_INCLUDE_SUBDOMAINS`: Sets the include subdomains option in the hsts header we send. Deactivatable if you have legacy services running on subdomains.
  * `SITE_SEO_NOINDEX`: Set this to true to hide the site from the google index.
  * `TEMPLATE_DIRS`: Allows customization by overriding templates. See the readme for more details.
+ * `TEXT_CHUNK_SIZE`: Our location extraction library fails with big inputs (see https://github.com/stadt-karlsruhe/geoextract/issues/7). That's why we split the text before analysing it, by default into 1MB chunks.
 
 ## Appendix
 
@@ -161,11 +162,12 @@ Even though it's possible to change those, you shouldn't need change them in pro
  * `DEBUG_STYLES`: Adds 'unsafe-inline' to the style src csp making it easier to use your browser's developer tools
  * `DEBUG_TESTING`: Makes chromedriver open an actual chrome window
  * `DJANGO_LOG_LEVEL`: Manually overrides the default log level for all loggers
- * `ENABLE_PGP` and `SKS_KEYSERVER`: While support pgp encrypted notifications with a UI for selecting the key from an sks keyserver, this feature is disabled by default because encrypted notifications end up as plain text which breaks our UX.
+ * `ENABLE_PGP` and `SKS_KEYSERVER`: While support pgp encrypted notifications with a UI for selecting the key from an sks keyserver, this feature is disabled by default because encrypted notifications end up as plain text which breaks our UX. Before you can enable it, you need to run `poetry install --extras pgp`.
  * `OPARL_INDEX`: Used to determine the oparl body id based on the city name by searching for a body with a fitting name in the [oparl mirror](https://politik-bei-uns.de/info/schnittstelle) of [Politik bei Uns](https://politik-bei-uns.de/).
  * `ELASTICSEARCH_ENABLED`: Allows to disable elasticsearch for development or test environment
  * `ABSOLUTE_URI_BASE`: This url is used as base when relative urls are not an option and we can't get the real url from the user's http requests, e.g. when generating notifications. Defaults to `"https://" + REAL_HOST`
  * `ORGANIZATION_ORDER`: Fine tune in the order in which the organizations are shown in the overview page.
  * `ALLOWED_HOSTS`: [docs](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts)
  * `PRODUCT_NAME`: Set to "Meine Stadt Transparent". Used e.g. as user agent.
+ * `SECURE_HSTS_INCLUDE_SUBDOMAINS`: Wether to include subdomains in the hsts header. Defaults to true.
 

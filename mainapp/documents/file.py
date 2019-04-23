@@ -26,7 +26,7 @@ class FileDocument(DocType):
         fields = [
             "id",
             "name",
-            "displayed_filename",
+            "filename",
             "page_count",
             "created",
             "modified",

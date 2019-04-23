@@ -11,7 +11,7 @@
     <div>
         {% spaceless %}
             <div>
-                <a href="{% url 'file-content' file.id %}" download="{{ file.displayed_filename }}">
+                <a href="{% url 'file-content' file.id %}" download="{{ file.filename }}">
                     <span class="fa fa-custom fa-download" aria-hidden="true"></span>
                     <span>Download</span>
                 </a>
@@ -65,13 +65,13 @@
                         {% else %}
                             <a class="dropdown-item" href="{% url 'file' papers.0.main_file.id %}">
                         {% endif %}
-                    {% firstof papers.0.main_file.name papers.0.main_file.displayed_filename %}
+                    {% firstof papers.0.main_file.name papers.0.main_file.filename %}
                     </a>
                     {% endif %}
                     {% for other_file in papers.0.files.all %}
                         <a class="dropdown-item {% if other_file.id == file.id %}disabled{% endif %}"
                            href="{% url 'file' other_file.id %}">
-                            <span>{% firstof other_file.name other_file.displayed_filename other_file %}</span>
+                            <span>{% firstof other_file.name other_file.filename other_file %}</span>
                         </a>
                     {% endfor %}
                 </div>

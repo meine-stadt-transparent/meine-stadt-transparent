@@ -2,24 +2,22 @@
 
 {% if historical %}
     <p>
-        <span class="fa-custom fa-exclamation-triangle" aria-hidden="true"></span>{% trans "History is not available for" %}
-    {{ historical_name }}
+        <span class="fa-custom fa-exclamation-triangle"
+              aria-hidden="true"></span>{% trans "History is not available for" %}
+        {{ historical_name }}
     </p>
 {% elif objects|length > 0 %}
     <div class="clearfix">
         <p class="float-left">
-            <span class="fa-custom fa-{{ icon }}" aria-hidden="true"></span>{{ name }}:&nbsp;
-        </p>
-        <ul class="list-inline float-left mb-0">
+            <span class="fa-custom fa-{{ icon }}" aria-hidden="true"></span>{{ name }}&nbsp;
             {% for object in objects %}
-                <li class="list-inline-item">
-                    {% if link %}
-                        <a href="{% url link object.id %}">{{ object }}</a>{% if not forloop.last %}, {% endif %}
-                    {% else %}
-                        {{ object }}{% if not forloop.last %}, {% endif %}
-                    {% endif %}
-                </li>
+                {% if link %}
+                    <a href="{% url link object.id %}">{{ object }}</a>{% if not forloop.last %},
+                {% endif %}
+                {% else %}
+                    {{ object }}{% if not forloop.last %}, {% endif %}
+                {% endif %}
             {% endfor %}
-        </ul>
+        </p>
     </div>
 {% endif %}

@@ -4,7 +4,7 @@ from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
 class CalendarTest(ChromeDriverTestCase):
-    fixtures = ["initdata.json"]
+    fixtures = ["initdata"]
 
     def test_list_year(self):
         self.visit("/calendar/")

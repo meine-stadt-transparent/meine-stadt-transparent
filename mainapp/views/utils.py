@@ -1,18 +1,52 @@
 import json
-from typing import Optional
+from typing import Optional, List, Dict, Any
 
 from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
 
-from mainapp.functions.document_parsing import index_papers_to_geodata
-from mainapp.models import UserAlert, Body
+from mainapp.models import UserAlert, Body, Paper
 
 
 class NeedsLoginError(Exception):
     def __init__(self, redirect_url):
         self.redirect_url = redirect_url
+
+
+def index_papers_to_geodata(papers: List[Paper]) -> Dict[str, Any]:
+    """
+    :param papers: list of Paper
+    :return: object
+    """
+    geodata = {}
+    for paper in papers:
+        for file in paper.all_files():
+            for location in file.locations.all():
+                if location.id not in geodata:
+                    geodata[location.id] = {
+                        "id": location.id,
+                        "name": location.description,
+                        "coordinates": location.geometry,
+                        "papers": {},
+                    }
+                if paper.id not in geodata[location.id]["papers"]:
+                    geodata[location.id]["papers"][paper.id] = {
+                        "id": paper.id,
+                        "name": paper.name,
+                        "type": paper.paper_type.paper_type,
+                        "url": reverse("paper", args=[paper.id]),
+                        "files": [],
+                    }
+                geodata[location.id]["papers"][paper.id]["files"].append(
+                    {
+                        "id": file.id,
+                        "name": file.name,
+                        "url": reverse("file", args=[file.id]),
+                    }
+                )
+
+    return geodata
 
 
 def handle_subscribe_requests(

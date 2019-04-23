@@ -2,6 +2,7 @@ from typing import Generator
 
 from django.db import models
 from django.urls import reverse
+from django.utils import timezone
 
 from .default_fields import DefaultFields, ShortableNameFields
 from .file import File
@@ -11,8 +12,7 @@ from .person import Person
 
 
 class Paper(DefaultFields, ShortableNameFields):
-    reference_number = models.CharField(max_length=50)
-    description = models.TextField(null=True, blank=True)
+    reference_number = models.CharField(max_length=50, null=True, blank=True)
     organizations = models.ManyToManyField(Organization, blank=True)
     # Only relevant if a person acts independently from one of the submitting organizations
     persons = models.ManyToManyField(Person, blank=True)
@@ -22,7 +22,7 @@ class Paper(DefaultFields, ShortableNameFields):
     )
     # This is relevant e.g. for deadlines
     legal_date = models.DateField(null=True, blank=True)
-    sort_date = models.DateTimeField(auto_now_add=True)
+    sort_date = models.DateTimeField(default=timezone.now)
     main_file = models.ForeignKey(
         File,
         null=True,
@@ -42,8 +42,12 @@ class Paper(DefaultFields, ShortableNameFields):
             yield file
 
     def get_autocomplete(self):
-        autocomplete = self.name + " " + self.reference_number
-        return autocomplete if len(autocomplete) > 0 else " "
+        if self.name and self.reference_number:
+            return self.name + " " + self.reference_number
+        elif self.name:
+            return self.name
+        else:
+            return " "
 
     def __str__(self):
         return self.short_name
@@ -59,5 +63,4 @@ class Paper(DefaultFields, ShortableNameFields):
         return [organization.id for organization in self.organizations.all()]
 
     class Meta:
-        # This makes the index page a good bit faster since it uses order_by("-sort_date", "-legal_date")
-        indexes = [models.Index(fields=["sort_date", "legal_date"])]
+        indexes = [models.Index(fields=["-sort_date"])]

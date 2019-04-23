@@ -107,13 +107,12 @@
         </section>
 
         <section class="container meeting-section">
-            {% if meeting.organizations.all|length > 1 %}
+            {% if extra_persons|length > 0 %}
                 {% trans "Participating organizations:" as name %}
                 {% include "partials/inline_list.html" with objects=meeting.organizations.all icon="users" link="organization" %}
             {% endif %}
             {% trans "Further Attendees:" as name %}
-            {% include "partials/inline_list.html" with objects=meeting.persons.all icon="user" link="person" %}
-
+            {% include "partials/inline_list.html" with objects=extra_persons icon="user" link="person" %}
 
             {% if meeting.invitation %}
                 <p>
@@ -150,10 +149,11 @@
             <h2>{% trans 'Agenda' %}</h2>
             {% if meeting.agendaitem_set.all %}
                 <dl class="agenda">
-                    {% for agenda_item in meeting.agendaitem_set.all %}
+                    {% for agenda_item in agenda_items %}
                         <div class="d-flex align-content-start">
                             <dt class="mr-2">{{ agenda_item.key }}</dt>
                             <dd>
+                                {{ agenda_item.name }}
                                 {% if agenda_item.paper %}
                                     <a href="{% url 'paper' agenda_item.paper.id %}">{{ agenda_item.title }}</a>
                                 {% else %}
@@ -166,14 +166,14 @@
                                                class="paper-link">
                                                 <span class="fa fa-chevron-right"></span>
                                                 {% trans 'Paper' %}
-                                                {{ agenda_item.consultation.paper.reference_number }}
+                                                {{ agenda_item.consultation.paper.reference_number|default_if_none:agenda_item.consultation.paper }}
                                             </a>
                                         {% else %}
                                             <a href="{% url 'paper' agenda_item.consultation.paper.id %}"
                                                class="paper-link">
                                                 <span class="fa fa-chevron-right"></span>
                                                 {% trans 'Paper' %}
-                                                {{ agenda_item.consultation.paper.reference_number }}
+                                                {{ agenda_item.consultation.paper.reference_number|default_if_none:agenda_item.consultation.paper }}
                                             </a>
                                         {% endif %}
                                     </div>

@@ -1,5 +1,5 @@
 {
-    "id": "https://oparl.example.org/files/57737",
+    "id": "https://oparl.example.org/files/0",
     "type": "https://schema.oparl.org/1.1/File",
     "name": "Anlage 1 zur Anfrage",
     "fileName": "anlage_1_zur_anfrage.pdf",
@@ -7,7 +7,7 @@
     "date": "2013-01-04",
     "size": 82930,
     "sha1Checksum": "d749751af44a32c818b9b1e1515251c67734f5d2",
-    "accessUrl": "https://oparl.example.org/files/57737.pdf",
+    "accessUrl": "https://oparl.example.org/files/0.pdf",
     "downloadUrl": "https://oparl.example.org/files/download/57737.pdf",
     "derivativeFile": [
         "https://oparl.example.org/files/57739"

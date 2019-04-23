@@ -28,7 +28,7 @@ class TestNotifyUsers(TestCase):
             alert_object.user = newuser
             alert_object.save()
 
-    @mock.patch("mainapp.management.commands.notifyusers.Command.send_mail")
+    @mock.patch("mainapp.functions.notify_users.send_mail")
     @mock.patch(
         "mainapp.functions.search_tools.MainappSearch.execute",
         new=MockMainappSearch.execute,
@@ -41,9 +41,9 @@ class TestNotifyUsers(TestCase):
 
         self.assertEqual(send_mail_function.call_count, 1)
         self.assertEqual(send_mail_function.call_args[0][0], "test@example.org")
-        self.assertTrue("Title Highlight" in send_mail_function.call_args[0][1])
+        self.assertTrue("Title Highlight" in send_mail_function.call_args[0][2])
         self.assertTrue(
-            "Title <mark>Highlight</mark>" in send_mail_function.call_args[0][2]
+            "Title <mark>Highlight</mark>" in send_mail_function.call_args[0][3]
         )
-        self.assertTrue("Unsubscribe" in send_mail_function.call_args[0][1])
         self.assertTrue("Unsubscribe" in send_mail_function.call_args[0][2])
+        self.assertTrue("Unsubscribe" in send_mail_function.call_args[0][3])

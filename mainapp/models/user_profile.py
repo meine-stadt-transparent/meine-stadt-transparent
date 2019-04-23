@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     def add_pgp_key(self, pgp_key_fingerprint: str, pgp_key: str):
         """ This should eventually be abstracted away into a file manager class """
         key_bytes = pgp_key.encode()
-        minio_client.put_object(
+        minio_client().put_object(
             minio_pgp_keys_bucket,
             pgp_key_fingerprint,
             BytesIO(key_bytes),
@@ -38,7 +38,7 @@ class UserProfile(models.Model):
         if not self.pgp_key_fingerprint:
             return
 
-        minio_client.remove_object(minio_pgp_keys_bucket, self.pgp_key_fingerprint)
+        minio_client().remove_object(minio_pgp_keys_bucket, self.pgp_key_fingerprint)
 
         self.pgp_key_fingerprint = None
         self.save()
@@ -48,9 +48,11 @@ class UserProfile(models.Model):
         if not self.pgp_key_fingerprint:
             return None
 
-        return minio_client.get_object(
-            minio_pgp_keys_bucket, self.pgp_key_fingerprint
-        ).read()
+        return (
+            minio_client()
+            .get_object(minio_pgp_keys_bucket, self.pgp_key_fingerprint)
+            .read()
+        )
 
     class Meta:
         verbose_name = _("User profile")
@@ -59,6 +61,7 @@ class UserProfile(models.Model):
     def __unicode__(self):
         return "User profile: %s" % self.user.username
 
+    # noinspection PyUnresolvedReferences
     def has_unverified_email_adresses(self):
         for email in self.user.emailaddress_set.all():
             if not email.verified:

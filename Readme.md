@@ -31,11 +31,11 @@ Meine Stadt Transparent is *not* a complete replacement for traditional council 
 
 # Production setup with docker compose
 
-Prerequisites: A host with root access and enough ram for elasticsearch and mariadb.
+Prerequisites: A host with root access and enough ram for elasticsearch and mariadb. If you don't have much ram, create a big swapfile for memory spikes in the import.
 
 All services will run in docker containers orchestrated by docker compose, with nginx as reverse proxy in front of them which also serves static files.
 
-First, install [docker](https://docs.docker.com/install/) and [docker compose](https://docs.docker.com/compose/install/). You'll likely need to [adjust max_map_count](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode) on the host system for elasticsearch.
+First, install [docker](https://docs.docker.com/install/) and [docker compose](https://docs.docker.com/compose/install/). Then [adjust max_map_count](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode) on the host system for elasticsearch.
 
 Download [etc/docker-compose.yml](etc/docker-compose.yml) from the root of this repository. Replace all `changeme` with real random passwords (Hint: `openssl rand -hex 32`).
 
@@ -44,8 +44,10 @@ Download [etc/env-template](etc/template.env) to `.env`. Change `REAL_HOST` to y
 To deliver the assets through nginx, we need to mount them to a local container:
 
 ```
+mkdir log
+chown 33:33 log
 mkdir -p /var/www/meine-stadt-transparent-static
-docker volume create --opt type=none --opt device=/var/www/meine-stadt-transparent-static --opt o=bind django_static
+docker volume create --opt type=none --opt o=bind django_static --opt device=/var/www/meine-stadt-transparent-static 
 ```
 
 You can change the directory to any other as long as you match that later in your nginx conf.
@@ -138,8 +140,8 @@ docker-compose up
 On Debian/Ubuntu:
 
 ```
-sudo apt install python3-pip python3-venv python3-gi python3-dev nodejs json-glib-1.0 gir1.2-json-1.0 \
-    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev
+sudo apt install python3-pip python3-venv python3-dev nodejs \
+    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev gettext
 ```
 
 Install dependencies.
@@ -159,29 +161,6 @@ poetry shell
 Copy [etc/env-template](etc/template.env) to `.env` and adjust the values. You can specify a different dotenv file with the `ENV_PATH` environment variable.
 
 Configure your webserver, see e.g. [etc/nginx.conf](etc/nginx.conf)
-
-### pygobject (gi) and liboparl
-
-This is currently only required to use the importer. You can skip it if you don't use the importer.
-
-pygobject needs to be installed system-wide and only works with the system python. If you have any better solution for using a vala library in python we would be extremely happy to use it.
-
- -  Debian/Ubuntu:
-    ```
-    sudo apt install python3-gi
-    ln -s /usr/lib/python3/dist-packages/gi .venv/lib/python*/site-packages/
-    ```
-
- -  macOS:
-    ```
-    brew install pygobject3 --with-python3
-    # Replace 3.26.0 and projectdir by the real paths
-    ln -s /usr/local/Cellar/pygobject3/3.26.0/lib/python3.6/site-packages/* .venv/lib/python3.6/site-packages/
-    ```
-
-Try `python3 -c "import gi"` inside your virtualenv to ensure everything is working.
-
-For liboparl, clone the [https://github.com/OParl/liboparl](https://github.com/OParl/liboparl) and follow the installation instructions. Be sure to use `--prefix=/usr --buildtype=release` on `meson`.
 
 ### Production
 
@@ -211,6 +190,6 @@ with Barracuda being set as the default format for new InnoDB-Tables (default), 
 
 ## License
 
-This software is published under the terms of the MIT license. The json files under `mainapp/testdata/oparl` are adapted from the oparl project and licensed under CC-BY-SA-4.0. The license of the included animal pictures `mainapp/testdata/oparl` are CC0 and CC-BY-SA Luigi Rosa. The redistribution of `etc/Donald Knuth - The Complexity of Songs.pdf` is explicitly allowed in its last paragraph.
+This software is published under the terms of the MIT license. The json files under `testdata/oparl` are adapted from the oparl project and licensed under CC-BY-SA-4.0. The license of the included animal pictures `mainapp/assets/images` are CC0 and CC-BY-SA Luigi Rosa. The redistribution of `etc/Donald Knuth - The Complexity of Songs.pdf` is explicitly allowed in its last paragraph.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent?ref=badge_large)

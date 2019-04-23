@@ -1,7 +1,7 @@
-import datetime
 from collections import namedtuple
 from typing import Dict
 
+from dateutil.parser import parse
 from django.conf import settings
 from django.urls import reverse
 from django.utils.html import escape
@@ -29,7 +29,7 @@ MULTI_MATCH_FIELDS = [
     "agenda_items.title",
     "body.name",
     "description",
-    "displayed_filename",
+    "filename",
     "family_name",
     "given_name",
     "name",
@@ -152,16 +152,12 @@ class MainappSearch(FacetedSearch):
 def _add_date_after(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        if len(params["after"]) == 10:
-            after = datetime.datetime.strptime(params["after"], "%Y-%m-%d")
-        else:
-            after = datetime.datetime.strptime(
-                params["after"][0:19], "%Y-%m-%d %H:%M:%S"
-            )
-    except ValueError or OverflowError:
+        after = parse(params["after"])
+    except (ValueError, OverflowError) as e:
         errors.append(
             ugettext(
-                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS"
+                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS: "
+                + str(e)
             )
         )
         return search
@@ -175,16 +171,12 @@ def _add_date_after(search, params, options, errors):
 def _add_date_before(search, params, options, errors):
     """ Filters by a date given a string, catching parsing errors. """
     try:
-        if len(params["before"]) == 10:
-            before = datetime.datetime.strptime(params["before"], "%Y-%m-%d")
-        else:
-            before = datetime.datetime.strptime(
-                params["before"][0:19], "%Y-%m-%d %H:%M:%S"
-            )
-    except ValueError or OverflowError:
+        before = parse(params["before"])
+    except (ValueError, OverflowError) as e:
         errors.append(
             ugettext(
-                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS"
+                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS "
+                + str(e)
             )
         )
         return search

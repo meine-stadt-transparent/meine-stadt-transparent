@@ -3,7 +3,9 @@ import os
 import subprocess
 import warnings
 from importlib.util import find_spec
+from logging import Filter, LogRecord
 from subprocess import CalledProcessError
+from typing import Dict, Union, Optional
 
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
@@ -12,7 +14,7 @@ from meine_stadt_transparent.settings.env import *
 from meine_stadt_transparent.settings.nested import *
 from meine_stadt_transparent.settings.security import *
 
-# Mute an irrelevant warning
+# Mute irrelevant warnings
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
 # This comes from PGPy with enigmail keys
 warnings.filterwarnings(
@@ -51,8 +53,8 @@ if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
     }
     EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
 
-DEFAULT_FROM_EMAIL = env.str("DEFAULT_FROM_EMAIL", "info@" + REAL_HOST)
-DEFAULT_FROM_EMAIL_NAME = env.str("DEFAULT_FROM_EMAIL_NAME", SITE_NAME)
+EMAIL_FROM = env.str("EMAIL_FROM", "info@" + REAL_HOST)
+EMAIL_FROM_NAME = env.str("EMAIL_FROM_NAME", SITE_NAME)
 
 # Encrypted email are currently plaintext only (html is just rendered as plaintext in thunderbird),
 # which is why this feature is disabled by default
@@ -191,12 +193,15 @@ if GEOEXTRACT_ENGINE.lower() == "opencage":
 
 # Settings for Geo-Extraction
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
-GEOEXTRACT_DEFAULT_CITY = env.str("GEOEXTRACT_DEFAULT_CITY")
+GEOEXTRACT_DEFAULT_CITY = env.str("GEOEXTRACT_DEFAULT_CITY", None)
+GEOEXTRACT_LANGUAGE = env.str(LANGUAGE_CODE.split("-")[0], "de")
 
 CITY_AFFIXES = env.list(
     "CITY_AFFIXES",
     default=["Stadt", "Landeshauptstadt", "Gemeinde", "Kreis", "Landkreis"],
 )
+
+TEXT_CHUNK_SIZE = env.int("TEXT_CHUNK_SIZE", 1024 * 1024)
 
 OCR_AZURE_KEY = env.str("OCR_AZURE_KEY", None)
 OCR_AZURE_LANGUAGE = env.str("OCR_AZURE_LANGUAGE", "de")
@@ -260,60 +265,98 @@ if SENTRY_DSN:
     sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release)
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
+IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
+
+LOGGING_DIRETORY = env.str("LOGGING_DIRECTORY", "log")
+
+
+def make_handler(
+    log_name: str, level: Optional[str] = None
+) -> Dict[str, Union[str, int]]:
+    handler = {
+        "class": "logging.handlers.RotatingFileHandler",
+        "filename": os.path.join(LOGGING_DIRETORY, log_name),
+        "formatter": "extended",
+        "maxBytes": 8 * 1024 * 1024,
+        "backupCount": 2 if not DEBUG else 0,
+    }
+
+    if level:
+        handler["level"] = level
+
+    return handler
+
+
+class WarningsFilter(Filter):
+    """
+    Removes bogus warnings.
+
+    We handle the warnings through the logging module so they get properly
+    tracked in the log files, but this also means we can't use the warning
+    module to filter them.
+    """
+
+    def filter(self, record: LogRecord) -> bool:
+        irrelevant = (
+            "Xref table not zero-indexed. ID numbers for objects will be corrected."
+        )
+        if irrelevant in record.getMessage():
+            return False
+        return True
+
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "extended": {"format": "%(asctime)s %(levelname)-8s %(name)-12s %(message)s"}
+        "extended": {"format": "%(asctime)s %(levelname)-8s %(name)-12s %(message)s"},
+        "with_time": {"format": "%(asctime)s %(message)s"},
     },
     "handlers": {
-        "console": {"class": "logging.StreamHandler"},
-        "django": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(env.str("LOGGING_DIRECTORY", ""), "django.log"),
-            "formatter": "extended",
-        },
-        "importer": {
-            "class": "logging.FileHandler",
-            "filename": os.path.join(env.str("LOGGING_DIRECTORY", ""), "importer.log"),
-            "formatter": "extended",
-        },
+        "console": {"class": "logging.StreamHandler", "formatter": "with_time"},
+        "django": make_handler("django.log"),
+        "django-error": make_handler("django-error.log", "WARNING"),
+        "importer": make_handler("importer.log"),
+        "importer-error": make_handler("importer-error.log", "WARNING"),
     },
+    "filters": {"warnings-filters": {"()": WarningsFilter}},
     "loggers": {
         "mainapp": {
-            "handlers": ["console", "django"],
+            "handlers": ["console", "django-error", "django"],
             "level": DJANGO_LOG_LEVEL or "INFO",
-        },
-        "mainapp.management.commands": {
-            "level": DJANGO_LOG_LEVEL or "DEBUG",
-            "propagate": True,
+            "propagate": False,
         },
         "importer": {
-            "handlers": ["console", "importer"],
-            "level": DJANGO_LOG_LEVEL or "INFO",
-            "propagate": True,
+            "handlers": ["console", "importer-error", "importer"],
+            "level": IMPORTER_LOG_LEVEL or "INFO",
+            "propagate": False,
         },
         "django": {
             "level": DJANGO_LOG_LEVEL or "WARNING",
-            "handlers": ["console", "django"],
-            "propagate": True,
+            "handlers": ["console", "django-error", "django"],
+            "propagate": False,
+        },
+        "py.warnings": {
+            "level": "WARNING",
+            "handlers": ["console", "django-error", "django"],
+            "propagate": False,
+            "filters": ["warnings-filters"],
         },
     },
 }
 
 LOGGING.update(env.json("LOGGING", {}))
 
-OPARL_INDEX = env.str("OPARL_INDEX", "https://mirror.oparl.org/bodies")
+logging.captureWarnings(True)
 
-OPARL_ENDPOINT = env.str("OPARL_ENDPOINT", None)
+OPARL_INDEX = env.str("OPARL_INDEX", "https://mirror.oparl.org/bodies")
 
 TEMPLATE_META = {
     "logo_name": env.str("TEMPLATE_LOGO_NAME", "MST"),
     "site_name": SITE_NAME,
     "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
-    "contact_mail": DEFAULT_FROM_EMAIL,
+    "contact_mail": EMAIL_FROM,
     "main_css": env.str("TEMPLATE_MAIN_CSS", "mainapp"),
     "location_limit_lng": 42,
     "location_limit_lat": 23,

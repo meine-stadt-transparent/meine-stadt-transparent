@@ -34,12 +34,12 @@
                     </a>
                 </h2>
                 <ul class="papers">
-                    {% for group in mentioned_in %}
+                    {% for mentioned_in_paper, mentioned_in_files in mentioned_in.items %}
                         <li class="paper">
-                            <a class="paper-link" href="{% url 'paper' group.paper.id %}">{{ group.paper }}</a>
-                            <span class="text-muted">{{ group.paper.modified|date }}</span>
+                            <a class="paper-link" href="{% url 'paper' mentioned_in_paper.id %}">{{ mentioned_in_paper }}</a>
+                            <span class="text-muted">{{ mentioned_in_paper.modified|date }}</span>
                             <ul class="files">
-                                {% for file in group.files %}
+                                {% for file in mentioned_in_files %}
                                     <li class="file">
                                         <a class="file-link" href="{% url 'file' file.id %}">{{ file }}</a>
                                     </li>

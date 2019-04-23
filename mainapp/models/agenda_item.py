@@ -8,7 +8,7 @@ from .meeting import Meeting
 
 class AgendaItem(DefaultFields):
     key = models.CharField(max_length=20, null=True, blank=True)
-    title = models.TextField()
+    name = models.TextField()
     meeting = models.ForeignKey(Meeting, on_delete=models.CASCADE)
     consultation = models.ForeignKey(
         Consultation, null=True, blank=True, on_delete=models.CASCADE
@@ -33,7 +33,7 @@ class AgendaItem(DefaultFields):
 
     def __str__(self):
         return "{} {} ({}. {})".format(
-            self.key, self.title, self.position, self.meeting.__str__()
+            self.key, self.name, self.position, self.meeting.__str__()
         )
 
     class Meta:

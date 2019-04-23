@@ -1,56 +1,104 @@
-import json
-import re
-from typing import TYPE_CHECKING
+import logging
+from typing import Optional, Set, List, Type
 
-from django.conf import settings
+from importer import JSON
+from importer.loader import get_loader_from_body
+from importer.models import CachedObject, ExternalList
+from mainapp.models import (
+    LegislativeTerm,
+    Location,
+    Body,
+    File,
+    Person,
+    Organization,
+    Membership,
+    Meeting,
+    Paper,
+    Consultation,
+    AgendaItem,
+    DefaultFields,
+)
 
-from mainapp.models import Body
+logger = logging.getLogger(__name__)
 
-if TYPE_CHECKING:
-    from importer.oparl_import import OParlImport
+import_order = [
+    LegislativeTerm,
+    Location,
+    Body,
+    File,
+    Person,
+    Organization,
+    Membership,
+    Meeting,
+    Paper,
+    Consultation,
+    AgendaItem,
+]  # type: List[Type[DefaultFields]]
 
 
-def get_importer(options: dict) -> "OParlImport":
-    """
-    We need this function because we (a) must not have a dependency on gi in the mainapp and (b) need to select
-    over normal vs. Sternberg fixup.
+def externalize(
+    libobject: JSON, key_callback: Optional[Set[str]] = None
+) -> List[CachedObject]:
+    """ Converts an oparl object with embedded objects to multiple flat json objeczs """
 
-    It query the system object to determine the vendor and the necessary workarounds.
-    """
+    externalized = []
 
-    from importer.oparl_resolve import OParlResolver
+    for key in libobject.keys():
+        # Skip the geojson object
+        if key == "geojson":
+            continue
 
-    resolver = OParlResolver(options["entrypoint"], options["use_cache"])
+        entry = libobject[key]
 
-    system = json.loads(resolver.resolve(options["entrypoint"]).get_resolved_data())
+        if isinstance(entry, dict):
+            if isinstance(key_callback, set):
+                key_callback.add(key)
+            entry["mst:backref"] = libobject["id"]
 
-    try:
-        import gi
+            externalized += externalize(entry)
+            libobject[key] = entry["id"]
 
-        gi.require_version("OParl", "0.4")
-        from gi.repository import OParl
-    except ImportError as e:
-        if str(e) == "No module named 'gi'":
-            raise ImportError(
-                "You need to install liboparl for the importer. The readme contains the installation "
-                "instructions"
-            )
-        else:
-            raise e
+        if isinstance(entry, list) and len(entry) > 0 and isinstance(entry[0], dict):
+            if isinstance(key_callback, set):
+                key_callback.add(key)
+            for pos, entry in enumerate(entry):
+                entry["mst:backref"] = libobject["id"]
+                entry["mst:backrefPosition"] = pos  # We need this for agenda items
 
-    # This will likely need a more sophisticated logic in te future
-    if system.get("contactName") == "STERNBERG Software GmbH & Co. KG":
-        from importer.sternberg_import import SternbergImport as Importer
+                externalized += externalize(entry)
+                libobject[key][pos] = entry["id"]
+
+    externalized.append(
+        CachedObject(
+            url=libobject["id"],
+            data=libobject,
+            oparl_type=libobject["type"].split("/")[-1],
+        )
+    )
+
+    return externalized
+
+
+def clear_import(prefix: str, include_cache: bool = True) -> None:
+    """ Clear all data from the oparl api identified by the prefix """
+    for class_object in import_order:
+        name = class_object.__name__
+        stats = class_object.objects.filter(oparl_id__startswith=prefix).delete()
+        logger.info("{}: {}".format(name, stats))
+    if include_cache:
+        logger.info(CachedObject.objects.filter(url__startswith=prefix).delete())
+        logger.info(ExternalList.objects.filter(url__startswith=prefix).delete())
+
+
+def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) -> None:
+    from importer.importer import Importer
+
+    if body_id:
+        bodies = Body.objects.filter(oparl_id=body_id).all()
     else:
-        from importer.oparl_import import OParlImport as Importer
-
-    return Importer(options, resolver)
-
-
-def normalize_body_name(body: Body):
-    """ Cuts away e.g. "Stadt" from "Stadt Leipzig" and normalizes the spaces """
-    name = body.short_name
-    for affix in settings.CITY_AFFIXES:
-        name = name.replace(affix, "")
-    name = re.sub(" +", " ", name).strip()
-    body.short_name = name
+        bodies = Body.objects.filter(oparl_id__isnull=False).all()
+    for body in bodies:
+        logger.info("Updating body {}: {}".format(body, body.oparl_id))
+        loader = get_loader_from_body(body.oparl_id)
+        importer = Importer(loader, body, ignore_modified=ignore_modified)
+        importer.update(body.oparl_id)

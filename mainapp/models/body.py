@@ -25,6 +25,7 @@ class Body(DefaultFields, ShortableNameFields):
     # There might be e.g. a newer body that didn't exist in the older terms, so
     # bodies and terms are mapped explicitly
     legislative_terms = models.ManyToManyField(LegislativeTerm, blank=True)
+    ags = models.CharField(max_length=8, null=True, blank=True)
 
     def __str__(self):
         return self.short_name

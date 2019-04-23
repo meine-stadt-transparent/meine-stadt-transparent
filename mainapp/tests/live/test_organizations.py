@@ -2,7 +2,7 @@ from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
 class OrganizationsTest(ChromeDriverTestCase):
-    fixtures = ["initdata.json"]
+    fixtures = ["initdata"]
 
     def test_organizations_filter(self):
         self.visit("/organizations/")

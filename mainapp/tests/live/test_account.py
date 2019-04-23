@@ -6,7 +6,7 @@ from mainapp.tests.live.chromedriver_test_case import ChromeDriverTestCase
 
 
 class AccountTest(ChromeDriverTestCase):
-    fixtures = ["initdata.json"]
+    fixtures = ["initdata"]
     password1 = "8I$KJ37Kdk"
     email = "test@example.org"
     password2 = "sdir23744!ä"

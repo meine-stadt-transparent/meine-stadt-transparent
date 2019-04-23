@@ -23,8 +23,6 @@ install:
   - npm ci
   - pip install poetry --upgrade
   - poetry install
-  # Add pygobject to the virtualenv; Disabled because gi only works with system python
-  # - ln -s /usr/lib/python$TRAVIS_PYTHON_VERSION/dist-packages/gi $VIRTUAL_ENV/lib/*/site-packages/
 
 script:
   # Ensure our migrations are working (squashing can cause weird problems)

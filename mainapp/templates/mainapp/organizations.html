@@ -14,29 +14,27 @@
         {% for organization_group in organizations %}
             {% if organization_group.all|length > 0 %}
                 <div class="multi-list-filter-sublist">
-                    {% if organization_group.all|length > 0 %}
-                        <h2>
-                            {% if organization_group.type %}
-                                {{ organization_group.type }}
-                            {% else %}
-                                {% trans "Unknown Type" %}
-                            {% endif %}
-                        </h2>
-                        <ul class="list">
-                            {% for organization in organization_group.all %}
-                                <li>
+                    <h2>
+                        {% if organization_group.type %}
+                            {{ organization_group.type }}
+                        {% else %}
+                            {% trans "Unknown Type" %}
+                        {% endif %}
+                    </h2>
+                    <ul class="list">
+                        {% for organization in organization_group.all %}
+                            <li>
                                     <span class="multi-list-filter-value
 {% if organization.id == main_organization %}font-weight-bold{% endif %}">
-                                    {% if organization.organizationmembership__count > 0 or organization.paper__count > 0 or organization.meeting__count > 0 %}
+                                    {% if organization.membership__count > 0 or organization.paper__count > 0 or organization.meeting__count > 0 %}
                                         <a href="{% url "organization" organization.id %}">{{ organization.name }}</a>
                                     {% else %}
                                         {{ organization.name }}
                                     {% endif %}
                                     </span>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             {% endif %}
         {% endfor %}

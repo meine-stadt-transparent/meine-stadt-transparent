@@ -1,0 +1,148 @@
+[
+    {
+        "model": "mainapp.file",
+        "pk": 1,
+        "fields": {
+            "oparl_id": "https://oparl.example.org/file/1",
+            "created": "2017-09-10T16:47:54.207Z",
+            "modified": "2017-12-15T15:49:06.776Z",
+            "deleted": false,
+            "name": "Antrag: Ma\u00dfnahmen gegen Wohnraumknappheit",
+            "filename": "Ma\u00dfnahmen gegen Wohnraumknappheit.pdf",
+            "mime_type": "application/pdf",
+            "legal_date": "2017-09-12",
+            "sort_date": "2017-09-12T00:00:00Z",
+            "filesize": -1,
+            "page_count": null,
+            "parsed_text": "That's some content\r\n\r\nAnd here's even more content | paid",
+            "license": null,
+            "description": "plaintext file | containing | paid | stemmer",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.file",
+        "pk": 2,
+        "fields": {
+            "oparl_id": "https://oparl.example.org/file/2",
+            "created": "2017-09-10T16:47:54.207Z",
+            "modified": "2017-12-15T15:49:06.776Z",
+            "deleted": false,
+            "name": "Anfrage: Wegfall der Radwegbenutzungspflicht",
+            "filename": "Wegfall der Radwegbenutzungspflicht.pdf",
+            "mime_type": "application/pdf",
+            "legal_date": "2017-09-12",
+            "sort_date": "2017-09-12T00:00:00Z",
+            "filesize": -1,
+            "page_count": null,
+            "parsed_text": "",
+            "license": null,
+            "description": "Durch Urteil des Bundesverwaltungsgerichts vom 18. November 2010 (BVerwG 3 C 42.09) wurde \nfestgestellt, \ndass eine Radwegebenutzungspflicht nur dann angeordnet werden darf, wenn aufgrund \nder besonderen \u00f6rtlichen Verh\u00e4ltnisse eine Gefahrenlage besteht, die das allgemeine Risiko [...] \nerheblich \u00fcbersteigt.",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.body",
+        "pk": 1,
+        "fields": {
+            "oparl_id": "https://oparl.example.org/body/1",
+            "created": "2017-09-10T13:41:52.637Z",
+            "modified": "2017-09-10T13:41:52.637Z",
+            "deleted": false,
+            "name": "United States House of Representatives",
+            "short_name": "House of Representatives",
+            "center": null,
+            "outline": null,
+            "ags": null,
+            "legislative_terms": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 1,
+        "fields": {
+            "oparl_id": "https://oparl.example.org/paper/1",
+            "created": "2017-09-10T14:38:04.044Z",
+            "modified": "2017-10-07T18:36:26.478Z",
+            "deleted": false,
+            "name": "Ma\u00dfnahmen gegen Wohnraumknappheit",
+            "short_name": "Wohnraumknappheit",
+            "reference_number": "2019/1",
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2017-09-10T14:38:04.044Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 2,
+        "fields": {
+            "oparl_id": "https://oparl.example.org/paper/2",
+            "created": "2017-09-10T15:35:04.454Z",
+            "modified": "2017-10-07T18:36:33.375Z",
+            "deleted": false,
+            "name": "Wegfall der Radwegbenutzungspflicht",
+            "short_name": "Radwegsicherheit",
+            "reference_number": "2019/2",
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2017-09-10T15:35:04.454Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": [
+                2
+            ]
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$120000$UdowFaB7YGFU$j9+2J8jS07/EF4vnVsCWDDxKnw+jw1FACwYL3EfA/FY=",
+            "last_login": "2017-09-25T12:42:47.245Z",
+            "is_superuser": false,
+            "username": "user1@example.org",
+            "first_name": "",
+            "last_name": "",
+            "email": "user1@example.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2017-09-25T12:41:50.948Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$120000$vnxuiJerwmtd$hV3N83xKFmTNXPjpe3XQ4Ljx5uDiWebhoY0YmJqI6xo=",
+            "last_login": "2017-09-25T12:42:47.245Z",
+            "is_superuser": false,
+            "username": "user2@example.org",
+            "first_name": "",
+            "last_name": "",
+            "email": "user2@example.org",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2017-09-25T12:41:50.948Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
