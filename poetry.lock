@@ -808,7 +808,7 @@ version = "1.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "508f1fd083faf8d9ac0c51ca65999bcc4d3c8ea2c564f5cf62f7d35b4d1e5731"
+content-hash = "54e3b94194e72388c8d1ca7124c978b9a946bb8fe03f4572ebdbccb088edcfe2"
 python-versions = "^3.5"
 
 [metadata.hashes]
