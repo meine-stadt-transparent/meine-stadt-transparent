@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.utils.translation import pgettext
 
 from .file import FileDocument
@@ -7,6 +8,9 @@ from .paper import PaperDocument
 from .person import PersonDocument
 
 DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
+DOCUMENT_INDICES = [
+    settings.ELASTICSEARCH_PREFIX + "-" + doc_type for doc_type in DOCUMENT_TYPES
+]
 
 DOCUMENT_TYPE_NAMES = {
     "file": pgettext("Document Type Name", "File"),
@@ -15,7 +19,6 @@ DOCUMENT_TYPE_NAMES = {
     "organization": pgettext("Document Type Name", "Organization"),
     "person": pgettext("Document Type Name", "Person"),
 }
-
 DOCUMENT_TYPE_NAMES_PL = {
     "file": pgettext("Document Type Name", "Files"),
     "meeting": pgettext("Document Type Name", "Meetings"),

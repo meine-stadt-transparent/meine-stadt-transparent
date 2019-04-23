@@ -4,17 +4,18 @@ from django_elasticsearch_dsl import (
     DocType,
     GeoPointField,
     NestedField,
-    StringField,
+    TextField,
     IntegerField,
     BooleanField,
     DateField,
 )
 
+from mainapp.documents.index import elastic_index_meeting
 from mainapp.models import Meeting
-from .index import elastic_index, text_analyzer
+from .index import text_analyzer
 
 
-@elastic_index.doc_type
+@elastic_index_meeting.doc_type
 class MeetingDocument(DocType):
     location = GeoPointField()
     sort_date = DateField()
@@ -22,8 +23,8 @@ class MeetingDocument(DocType):
     agenda_items = NestedField(
         attr="agendaitem_set",
         properties={
-            "key": StringField(),
-            "name": StringField(analyzer=text_analyzer),
+            "key": TextField(),
+            "name": TextField(analyzer=text_analyzer),
             "position": IntegerField(),
             "public": BooleanField(),
         },

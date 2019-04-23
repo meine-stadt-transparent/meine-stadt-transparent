@@ -9,6 +9,7 @@ Minio policy: files are publicly readable, cache and pgp keys are private
 
 bucket_list = ["files", "cache", "pgp-keys"]
 
+
 def get_read_only_policy(bucket_name: str) -> dict:
     return {
         "Version": "2012-10-17",

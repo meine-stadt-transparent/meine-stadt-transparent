@@ -78,6 +78,16 @@ def get_text_analyzer(language: str) -> Analyzer:
 autocomplete_analyzer = get_autocomplete_analyzer()
 text_analyzer = get_text_analyzer(settings.ELASTICSEARCH_LANG)
 
-elastic_index = Index(settings.ELASTICSEARCH_INDEX)
-elastic_index.analyzer(autocomplete_analyzer)
-elastic_index.analyzer(text_analyzer)
+
+def make_index(suffix: str) -> Index:
+    elastic_index = Index(settings.ELASTICSEARCH_PREFIX + "-" + suffix)
+    elastic_index.analyzer(autocomplete_analyzer)
+    elastic_index.analyzer(text_analyzer)
+    return elastic_index
+
+
+elastic_index_file = make_index("file")
+elastic_index_paper = make_index("paper")
+elastic_index_meeting = make_index("meeting")
+elastic_index_person = make_index("person")
+elastic_index_organization = make_index("organization")

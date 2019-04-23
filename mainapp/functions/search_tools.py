@@ -6,6 +6,7 @@ from django.conf import settings
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext
+from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet
 from requests.utils import quote
 
@@ -44,21 +45,24 @@ NotificationSearchResult = namedtuple(
 
 
 class MainappSearch(FacetedSearch):
-    index = settings.ELASTICSEARCH_INDEX
     fields = MULTI_MATCH_FIELDS
 
+    # use bucket aggregations to define facets
     facets = {
-        # use bucket aggregations to define facets
-        "document_type": TermsFacet(field="_type"),
+        "document_type": TermsFacet(field="_index"),
         "person": TermsFacet(field="person_ids"),
         "organization": TermsFacet(field="organization_ids"),
     }
 
     def __init__(self, params: Dict[str, str], offset=None, limit=None):
+        # Avoid "Models aren't loaded yet." error
+        from mainapp.documents import DOCUMENT_INDICES
+
         self.params = params
         self.errors = []
         self.offset = offset
         self.limit = limit
+        self.index = DOCUMENT_INDICES
 
         # Note that for django templates it makes a difference if a value is undefined or None
         self.options = {}
@@ -75,7 +79,9 @@ class MainappSearch(FacetedSearch):
         if "document-type" in self.params:
             split = self.params["document-type"].split(",")
             self.options["document_type"] = split
-            filters["document_type"] = [i + "_document" for i in split]
+            filters["document_type"] = [
+                settings.ELASTICSEARCH_PREFIX + "-" + i for i in split
+            ]
 
         if "sort" in self.params:
             if self.params["sort"] == "date_newest":
@@ -97,7 +103,7 @@ class MainappSearch(FacetedSearch):
         )
         return search
 
-    def query(self, search, query):
+    def query(self, search: Search, query):
         if query:
             self.options["searchterm"] = query
             # Fuzzines AUTO(=2) gives more error tolerance, but is also a lot slower and has many false positives
@@ -115,7 +121,7 @@ class MainappSearch(FacetedSearch):
         return search
 
     def search(self):
-        search = super().search()
+        search = super().search()  # type: Search
         try:
             lat = float(self.params.get("lat", ""))
             lng = float(self.params.get("lng", ""))

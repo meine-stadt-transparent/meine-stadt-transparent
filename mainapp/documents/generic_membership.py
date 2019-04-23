@@ -1,13 +1,13 @@
-from django_elasticsearch_dsl import StringField, IntegerField, ObjectField, DateField
+from django_elasticsearch_dsl import TextField, IntegerField, ObjectField, DateField
 
 from .index import autocomplete_analyzer
 
 
 class GenericMembershipDocument:
-    autocomplete = StringField(attr="name", analyzer=autocomplete_analyzer)
+    autocomplete = TextField(attr="name", analyzer=autocomplete_analyzer)
     sort_date = DateField()
 
-    body = ObjectField(properties={"id": IntegerField(), "name": StringField()})
+    body = ObjectField(properties={"id": IntegerField(), "name": TextField()})
 
     class Meta:
         fields = ["id", "name", "short_name"]

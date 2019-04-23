@@ -17,18 +17,39 @@ expected_params = {
             "prefix_length": 1,
         }
     },
-    "post_filter": {"terms": {"_type": ["file_document", "committee_document"]}},
+    "post_filter": {
+        "terms": {
+            "_index": [
+                "meine-stadt-transparent-file",
+                "meine-stadt-transparent-committee",
+            ]
+        }
+    },
     "aggs": {
         "_filter_document_type": {
             "filter": {"match_all": {}},
-            "aggs": {"document_type": {"terms": {"field": "_type"}}},
+            "aggs": {"document_type": {"terms": {"field": "_index"}}},
         },
         "_filter_person": {
-            "filter": {"terms": {"_type": ["file_document", "committee_document"]}},
+            "filter": {
+                "terms": {
+                    "_index": [
+                        "meine-stadt-transparent-file",
+                        "meine-stadt-transparent-committee",
+                    ]
+                }
+            },
             "aggs": {"person": {"terms": {"field": "person_ids"}}},
         },
         "_filter_organization": {
-            "filter": {"terms": {"_type": ["file_document", "committee_document"]}},
+            "filter": {
+                "terms": {
+                    "_index": [
+                        "meine-stadt-transparent-file",
+                        "meine-stadt-transparent-committee",
+                    ]
+                }
+            },
             "aggs": {"organization": {"terms": {"field": "organization_ids"}}},
         },
     },

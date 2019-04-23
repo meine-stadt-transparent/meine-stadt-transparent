@@ -176,9 +176,7 @@ ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 
 ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL}}
 
-ELASTICSEARCH_INDEX = env.str(
-    "ELASTICSEARCH_INDEX", "meine_stadt_transparent_documents"
-)
+ELASTICSEARCH_PREFIX = env.str("ELASTICSEARCH_PREFIX", "meine-stadt-transparent")
 
 # Language use for stemming, stop words, etc.
 ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")
