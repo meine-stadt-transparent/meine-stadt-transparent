@@ -13,15 +13,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for provider, config in settings.SOCIALACCOUNT_PROVIDERS.items():
-            _, created = SocialApp.objects.update_or_create(
+            social_app, created = SocialApp.objects.update_or_create(
                 provider=provider,
                 defaults={
                     "name": config.get("name", provider),
                     "client_id": config["CLIENT_ID"],
                     "secret": config["SECRET_KEY"],
-                    "sites": [settings.SITE_ID],
                 },
             )
+
+            social_app.sites.set([settings.SITE_ID])
 
             if created:
                 message = "Created social app: {}"
