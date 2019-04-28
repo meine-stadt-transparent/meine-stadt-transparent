@@ -8,6 +8,7 @@ from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
 
 import sentry_sdk
+from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from meine_stadt_transparent.settings.env import *
@@ -261,11 +262,13 @@ if SENTRY_DSN:
         release = "meine-stadt-transparent@" + version
 
     sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release)
+    with configure_scope() as scope:
+        scope.set_tag("env_path", env_file)
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
 
-LOGGING_DIRETORY = env.str("LOGGING_DIRECTORY", "log")
+LOG_DIRECTORY = env.str("LOG_DIRECTORY", "log")
 
 
 def make_handler(
@@ -273,7 +276,7 @@ def make_handler(
 ) -> Dict[str, Union[str, int]]:
     handler = {
         "class": "logging.handlers.RotatingFileHandler",
-        "filename": os.path.join(LOGGING_DIRETORY, log_name),
+        "filename": os.path.join(LOG_DIRECTORY, log_name),
         "formatter": "extended",
         "maxBytes": 8 * 1024 * 1024,
         "backupCount": 2 if not DEBUG else 0,
