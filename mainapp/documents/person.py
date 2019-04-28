@@ -1,13 +1,14 @@
 from django.db.models import Prefetch
-from django_elasticsearch_dsl import DocType, StringField, IntegerField, DateField
+from django_elasticsearch_dsl import DocType, TextField, IntegerField, DateField
 
+from mainapp.documents.index import elastic_index_person
 from mainapp.models import Person, Membership
-from .index import elastic_index, autocomplete_analyzer
+from .index import autocomplete_analyzer
 
 
-@elastic_index.doc_type
+@elastic_index_person.doc_type
 class PersonDocument(DocType):
-    autocomplete = StringField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
+    autocomplete = TextField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
     sort_date = DateField()
     organization_ids = IntegerField(attr="organization_ids")
 

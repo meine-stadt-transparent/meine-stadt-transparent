@@ -133,7 +133,9 @@ def person(request, pk):
     memberships = get_ordered_memberships(selected_person)
 
     mentioned = defaultdict(list)
-    files_mentioned = File.objects.filter(mentioned_persons__in=[pk]).prefetch_related("paper_set")
+    files_mentioned = File.objects.filter(mentioned_persons__in=[pk]).prefetch_related(
+        "paper_set"
+    )
     for file_mentioned in files_mentioned:
         for paper_mentioned in file_mentioned.paper_set.all():
             mentioned[paper_mentioned].append(file_mentioned)

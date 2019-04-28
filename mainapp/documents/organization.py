@@ -1,21 +1,22 @@
 from django_elasticsearch_dsl import (
     DocType,
-    StringField,
+    TextField,
     ObjectField,
     IntegerField,
     DateField,
 )
 
+from mainapp.documents.index import elastic_index_organization
 from mainapp.models import Organization
 from .generic_membership import GenericMembershipDocument
-from .index import elastic_index, autocomplete_analyzer
+from .index import autocomplete_analyzer
 
 
-@elastic_index.doc_type
+@elastic_index_organization.doc_type
 class OrganizationDocument(DocType, GenericMembershipDocument):
-    autocomplete = StringField(attr="name", analyzer=autocomplete_analyzer)
+    autocomplete = TextField(attr="name", analyzer=autocomplete_analyzer)
     sort_date = DateField()
-    body = ObjectField(properties={"id": IntegerField(), "name": StringField()})
+    body = ObjectField(properties={"id": IntegerField(), "name": TextField()})
 
     def get_queryset(self):
         return Organization.objects.prefetch_related("body").order_by("id")

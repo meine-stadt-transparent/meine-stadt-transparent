@@ -66,7 +66,6 @@ class TestCron(TestCase):
                 "importer.functions.get_loader_from_body", new=lambda body_id: loader
             ):
                 call_command("cron")
-            print(mocked_send_mail.call_count == expected_mail_count)
 
     def cron_unfinished(self, loader):
         # In[]

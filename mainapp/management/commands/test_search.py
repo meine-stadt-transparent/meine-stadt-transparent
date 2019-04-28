@@ -4,7 +4,7 @@ from typing import Dict, List
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
-from mainapp.documents.index import elastic_index
+from mainapp.documents.index import elastic_index_file
 from mainapp.functions.search_tools import (
     search_string_to_params,
     MainappSearch,
@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
     def analyze(self, text: str) -> Dict[str, List[Dict]]:
         """ Shows what elasticsearch does with the tokens """
-        return elastic_index.analyze(analyzer="text_analyzer", text=text)
+        return elastic_index_file.analyze(analyzer="text_analyzer", text=text)
 
     def handle(self, *args, **options):
         """

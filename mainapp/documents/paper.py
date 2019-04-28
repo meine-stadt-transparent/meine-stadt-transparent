@@ -1,12 +1,13 @@
-from django_elasticsearch_dsl import DocType, StringField, IntegerField
+from django_elasticsearch_dsl import DocType, TextField, IntegerField
 
+from mainapp.documents.index import elastic_index_paper
 from mainapp.models.paper import Paper
-from .index import autocomplete_analyzer, elastic_index
+from .index import autocomplete_analyzer
 
 
-@elastic_index.doc_type
+@elastic_index_paper.doc_type
 class PaperDocument(DocType):
-    autocomplete = StringField(attr="get_autocomplete", analyzer=autocomplete_analyzer)
+    autocomplete = TextField(attr="get_autocomplete", analyzer=autocomplete_analyzer)
     main_file = IntegerField(attr="main_file_id")
     person_ids = IntegerField(attr="person_ids")
     organization_ids = IntegerField(attr="organization_ids")

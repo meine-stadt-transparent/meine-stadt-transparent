@@ -11,7 +11,6 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _
 from elasticsearch_dsl import Search
 
-from mainapp.documents import DOCUMENT_TYPE_NAMES
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.functions.search_tools import (
@@ -21,6 +20,7 @@ from mainapp.functions.search_tools import (
     parse_hit,
     params_to_search_string,
 )
+from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_INDICES
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
     handle_subscribe_requests,
@@ -102,7 +102,7 @@ def aggs_to_context(executed):
     searchable_document_types = []
     for doc_type, translated in DOCUMENT_TYPE_NAMES.items():
         for i in executed.facets["document_type"]:
-            if i[0] == doc_type + "_document":
+            if i[0] == settings.ELASTICSEARCH_PREFIX + "-" + doc_type:
                 count = i[1]
                 break
         else:
@@ -157,7 +157,7 @@ def search_autocomplete(_, query):
     # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
     # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
     search_query = (
-        Search(index=settings.ELASTICSEARCH_INDEX)
+        Search(index=DOCUMENT_INDICES)
         .query(
             "match",
             autocomplete={
