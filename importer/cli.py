@@ -79,12 +79,16 @@ class Cli:
         importer.converter.default_body = body
         logger.info("Looking up the Amtliche Gemeindeschlüssel")
         ags = self.get_ags(body, userinput)
+        body.ags = ags
+        body.save()
         logger.info(
-            "Using {} as Amtliche Gemeindeschlüssel for '{}'".format(ags, userinput)
+            "Using {} as Amtliche Gemeindeschlüssel for '{}'".format(
+                ags, body.short_name
+            )
         )
         dotenv = ""
         if settings.GEOEXTRACT_DEFAULT_CITY != userinput:
-            dotenv += "GEOEXTRACT_DEFAULT_CITY={}\n".format(userinput)
+            dotenv += "GEOEXTRACT_DEFAULT_CITY={}\n".format(body.short_name)
         if body.id != settings.SITE_DEFAULT_BODY:
             dotenv += "SITE_DEFAULT_BODY={}\n".format(body.id)
         if dotenv:
@@ -129,28 +133,42 @@ class Cli:
         return endpoint_system, endpoint_id
 
     def get_ags(self, body: Body, userinput: str) -> str:
+        """
+        This function tries:
+         1. The ags field in the oparl body
+         2. Querying wikidata with the body's short name
+         3. Querying wikidata with the user's input
+         4. Querying wikidata with the body's full name
+        """
         ags = body.ags
         # The len(ags) check is necessary because there's Kall and Jülich
         # which failed to add the leading zero
         # https://sdnetrim.kdvz-frechen.de/rim4550/webservice/oparl/v1/body
-        if not ags or len(ags) != 8:
-            # Open question: Are there cases where this only works with the user input and not with the short name?
-            ags_list = city_to_ags(body.short_name)
-            if len(ags_list) == 0:
-                raise RuntimeError(
-                    "Could not find the Gemeindeschlüssel for '{}'".format(userinput)
-                )
-            if len(ags_list) > 1:
-                raise RuntimeError(
-                    "Found more than one Gemeindeschlüssel for '{}': {}".format(
-                        userinput, ags_list
-                    )
-                )
-            ags = ags_list[0][1]
-            body.ags = ags
-            body.save()
+        if ags and (len(ags) == 8 or len(ags) == 5):
+            return ags
 
-        return ags
+        ags = city_to_ags(body.short_name)
+        if ags:
+            logger.debug(
+                "Found ags using the body's short name '{}'".format(body.short_name)
+            )
+            return ags
+
+        ags = city_to_ags(userinput)
+        if ags:
+            logger.debug("Found ags using the user input '{}'".format(userinput))
+            return ags
+
+        ags = city_to_ags(body.name)
+        if ags:
+            logger.debug("Found ags using the body's full name '{}'".format(body.name))
+            return ags
+
+        raise RuntimeError(
+            "Could not determine the Amtliche Gemeindeschlüssel for '{}', '{}' and '{}'".format(
+                body.short_name, userinput, body.name
+            )
+        )
 
     def get_endpoint_from_cityname(
         self, userinput: str, mirror: bool

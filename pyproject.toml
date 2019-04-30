@@ -45,14 +45,11 @@ django-decorator-include = "^2.1"
 selenium = "3.141.0"
 tox = "^3.7"
 django-debug-toolbar = "^1.11"
+responses = "^0.10.6"
 # We can't directly depend on black here because then we'd need to require python 3.6 as minimum
 
 [tool.poetry.extras]
 pgp = ["pgpy"]
-
-[build-system]
-requires = ["poetry >= 0.12, <1"]
-build-backend = "poetry.masonry.api"
 
 [tool.black]
 include = '\.pyi?$'
@@ -68,3 +65,8 @@ exclude = '''
   | static
 )/
 '''
+
+[build-system]
+requires = ["poetry >= 0.12, <1"]
+build-backend = "poetry.masonry.api"
+

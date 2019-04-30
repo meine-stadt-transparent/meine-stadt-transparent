@@ -1,20 +1,53 @@
-from typing import Tuple, List
+"""
+Resources:
+ * https://www.riserid.eu/data/user_upload/downloads/info-pdf.s/Diverses/Liste-Amtlicher-Gemeindeschluessel-AGS-2015.pdf
+ * https://de.wikipedia.org/wiki/Liste_der_Landkreise_in_Deutschland
+ * Test the query: https://query.wikidata.org/#SELECT%20DISTINCT%20%3Fcity%20%3FcityLabel%20%3Fags%20WHERE%20%7B%0A%20%20%7B%20%3Fcity%20rdfs%3Alabel%20%22Ahrweiler%22.%20%7D%0A%20%20UNION%0A%20%20%7B%20%3Fcity%20rdfs%3Alabel%20%22Ahrweiler%22%40de.%20%7D%0A%20%20UNION%0A%20%20%7B%20%3Fcity%20rdfs%3Alabel%20%22Ahrweiler%22%40en.%20%7D%0A%20%20%7B%20%3Fcity%20wdt%3AP440%20%3Fags.%20%7D%0A%20%20UNION%0A%20%20%7B%20%3Fcity%20wdt%3AP439%20%3Fags.%20%7D%0A%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22de%2Cen%22.%20%7D%0A%7D%0A
+"""
+
+from typing import Tuple, List, Optional
 
 import requests
 
 query_template = """
-SELECT ?city ?cityLabel ?ags WHERE {{
-  ?city wdt:P439 ?ags.
-  ?city rdfs:label "{}"@de
+SELECT DISTINCT ?city ?cityLabel ?ags WHERE {{
+  {{ ?city rdfs:label "{0}". }}
+  UNION
+  {{ ?city rdfs:label "{0}"@de. }}
+  UNION
+  {{ ?city rdfs:label "{0}"@en. }}
+  {{ ?city wdt:P440 ?ags. }}
+  UNION
+  {{ ?city wdt:P439 ?ags. }}
   SERVICE wikibase:label {{ bd:serviceParam wikibase:language "de,en". }}
 }}
 """
 wikidata_sparql = "https://query.wikidata.org/sparql"
 
 
-def city_to_ags(city_name: str) -> List[Tuple[str, str]]:
+def city_to_ags_all(city_name: str) -> List[Tuple[str, str]]:
     query = query_template.format(city_name)
     response = requests.get(wikidata_sparql, {"format": "json", "query": query})
     response.raise_for_status()
-    values = response.json()["results"]["bindings"]
-    return [(i["cityLabel"]["value"], i["ags"]["value"]) for i in values]
+    data = response.json()
+    values = data["results"]["bindings"]
+    pairs = set()
+    for i in values:
+        city = i["cityLabel"]["value"]
+        value = i["ags"]["value"]
+        if len(value) != 5 and len(value) != 8:
+            raise RuntimeError(
+                "Invalid Amtlicher Gemeindeschlüssel: '{}'".format(value)
+            )
+        pairs.add((city, value))
+
+    return list(pairs)
+
+
+def city_to_ags(city_name: str) -> Optional[str]:
+    """ Returns the Amtliche Gemeindeschlüssel"""
+    ags_list = city_to_ags_all(city_name)
+    if len(ags_list) != 1:
+        return None
+    else:
+        return ags_list[0][1]
