@@ -859,16 +859,16 @@ description = "A Django content management system."
 name = "wagtail"
 optional = false
 python-versions = "*"
-version = "2.4"
+version = "2.5"
 
 [package.dependencies]
-Django = ">=1.11,<2.2"
+Django = ">=2.0,<2.3"
 Pillow = ">=4.0.0,<6.0"
 Unidecode = ">=0.04.14,<2.0"
 Willow = ">=1.1,<1.2"
 beautifulsoup4 = ">=4.5.1,<4.6.1"
 django-modelcluster = ">=4.2,<5.0"
-django-taggit = ">=0.23,<0.24"
+django-taggit = ">=0.23,<1.0"
 django-treebeard = ">=4.2.0,<5.0"
 djangorestframework = ">=3.7.4,<4.0"
 draftjs-exporter = ">=2.1.5,<3.0"
@@ -913,7 +913,7 @@ version = "1.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "a649688e618eead3d02dbc1a0c827b3d3cac525656fbb07a8417747180f1442f"
+content-hash = "6bdbac757bcc4287dbd78f22eaeff69cf4def5df2ee753f3fd8957b83070c0ed"
 python-versions = "^3.5"
 
 [metadata.hashes]
@@ -1001,7 +1001,7 @@ tqdm = ["d385c95361699e5cf7622485d9b9eae2d4864b21cd5a2374a9c381ffed701021", "e22
 unidecode = ["092cdf7ad9d1052c50313426a625b717dab52f7ac58f859e09ea020953b1ad8f", "8b85354be8fd0c0e10adbf0675f6dc2310e56fda43fa8fe049123b6c475e52fb"]
 urllib3 = ["4c291ca23bbb55c76518905869ef34bdd5f0e46af7afe6861e8375643ffee1a0", "9a247273df709c4fedb38c711e44292304f73f39ab01beda9f6b9fc375669ac3"]
 virtualenv = ["15ee248d13e4001a691d9583948ad3947bcb8a289775102e4c4aa98a8b7a6d73", "bfc98bb9b42a3029ee41b96dc00a34c2f254cbf7716bec824477b2c82741a5c4"]
-wagtail = ["1dd069ef8b3a08728fa5304e45ee2a92ed49b8e235e9c8b677adfd2039cff1fd", "fa588695932178667f58347fb77cc85a34be963ccceafa818e0d7f9998c2cdf3"]
+wagtail = ["0b1357bc66873d1c3403791e717a15c8b01d3d0e67083fe5f9eff60d7f7d9d77", "19de8dd6390429c1c6e921487e997a64fa9334da0c6255f1e9988d30729fce1a"]
 wand = ["63ab24dee0264a44f5f045d4ecc0d392bc1cc195e5a2f80ce537b2c205c3033b", "a2c318993791fab4fcfd460045415176f81d42f8c6fd8a88fb8d74d2f0f34b97", "f68f32f2e4eca663a361d36148f06372de560442dcf8c785a53a64ee282572c9"]
 webencodings = ["a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"]
 werkzeug = ["0a73e8bb2ff2feecfc5d56e6f458f5b99290ef34f565ffb2665801ff7de6af7a", "7fad9770a8778f9576693f0cc29c7dcc36964df916b83734f4431c0e612a7fbc"]
