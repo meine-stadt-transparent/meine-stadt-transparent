@@ -68,9 +68,6 @@ SKS_KEYSERVER = env.str("SKS_KEYSERVER", "gpg.mozilla.org")
 
 DATABASES = {"default": env.db()}
 
-if TESTING:
-    DATABASES["OPTIONS"] = {"timeout": 10}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 

@@ -74,4 +74,3 @@ class TestCli(SimpleTestCase):
             body.name = "Bedburg"
             ags = cli.get_ags(body, "Unknown")
             self.assertEqual(ags, "05362004")
-

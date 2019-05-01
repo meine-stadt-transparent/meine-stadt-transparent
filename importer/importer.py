@@ -1,7 +1,6 @@
 import logging
 import sys
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-from itertools import repeat
 from tempfile import NamedTemporaryFile
 from typing import Optional, List, Type
 from typing import TypeVar, Any, Set
@@ -10,9 +9,10 @@ from django import db
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
+from itertools import repeat
 from requests import HTTPError
 from tqdm import tqdm
 
@@ -218,7 +218,14 @@ class Importer:
                 # Also avoid "MySQL server has gone away" errors due to timeouts
                 # https://stackoverflow.com/a/32720475/3549270
                 db.close_old_connections()
-                saved_objects = CachedObject.objects.bulk_create(objects)
+                # The test are run with sqlite, which failed here with a TransactionManagementError:
+                # "An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block."
+                # That's why we build our own atomic block
+                if settings.TESTING:
+                    with transaction.atomic():
+                        saved_objects = CachedObject.objects.bulk_create(objects)
+                else:
+                    saved_objects = CachedObject.objects.bulk_create(objects)
             except IntegrityError:
                 saved_objects = set()
                 for i in objects:

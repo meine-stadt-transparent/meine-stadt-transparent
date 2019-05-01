@@ -37,7 +37,7 @@ sentry-sdk = "^0.7.14"
 minio = "^4.0"
 tqdm = "^4.29"
 python-dateutil = "^2.7"
-wagtail = "^2.4"
+wagtail = "~2.4"
 django-decorator-include = "^2.1"
 
 
@@ -46,6 +46,7 @@ selenium = "3.141.0"
 tox = "^3.7"
 django-debug-toolbar = "^1.11"
 responses = "^0.10.6"
+pytest-django = "^3.4"
 # We can't directly depend on black here because then we'd need to require python 3.6 as minimum
 
 [tool.poetry.extras]
@@ -69,4 +70,3 @@ exclude = '''
 [build-system]
 requires = ["poetry >= 0.12, <1"]
 build-backend = "poetry.masonry.api"
-

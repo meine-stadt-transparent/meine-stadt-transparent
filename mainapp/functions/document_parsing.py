@@ -84,7 +84,9 @@ def extract_from_file(
             logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
 
         try:
-            page_count = PdfFileReader(file, overwriteWarnings=False).getNumPages()
+            page_count = PdfFileReader(
+                file, strict=False, overwriteWarnings=False
+            ).getNumPages()
         except PdfReadError:
             message = "File {}: Pdf does not allow to read the number of pages".format(
                 file_id
@@ -258,7 +260,7 @@ def extract_persons(text: str) -> List[Person]:
     This could likely be made much faster using an aho-corasick automaton over multiple files.
     """
     persons = Person.objects.all()
-    text = re.sub("\s\s+", " ", text).lower()
+    text = re.sub(r"\s\s+", " ", text).lower()
     # For finding names at the very beginning and end
     text = " " + text + " "
 
