@@ -57,23 +57,33 @@
         <section class="container meeting-section">
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 {% if meeting.location.geometry %}
-                    <div class="dropdown location-dropdown"
+                    <div class="dropdown location-dropdown std-element"
                          data-map-data="{{ map }}" data-location="{{ location_json }}">
-                        <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
+                        <button class="btn btn-sm btn-transparent dropdown-toggle text-wrap" type="button"
                                 id="locationShowButton" title="{{ meeting.location.description }}"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
-                            {{ meeting.location }}
+                            {{ meeting.location.short }}
                         </button>
                         <div class="dropdown-menu" aria-labelledby="locationShowButton">
-                            <div class="m-2">{{ meeting.location.description }}</div>
+                            <p class="m-2">{{ meeting.location.description }}</p>
                             <div class="location-map" id="location-select-map" data-map-data="{{ map }}"></div>
+                            <div>
+                                <a href="{{ google_maps_url }}" target="_self" rel="noopener noreferrer"
+                                   class="btn btn-sm btn-transparent">
+                                    <span class="fa fa-external-link" aria-hidden="true"></span> Google Maps
+                                </a>
+                                <a href="{{ osm_url }}" target="_self" rel="noopener noreferrer"
+                                   class="btn btn-sm btn-transparent">
+                                    <span class="fa fa-external-link" aria-hidden="true"></span> OpenStreetMaps
+                                </a>
+                            </div>
                         </div>
                     </div>
                 {% else %}
                     <div title="{% trans 'Place of the meeting' %}" class="std-element">
                         <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
-                        <span title="{{ meeting.location.description }}">{{ meeting.location }}</span>
+                        <span title="{{ meeting.location.description }}">{{ meeting.location.short }}</span>
                     </div>
                 {% endif %}
 

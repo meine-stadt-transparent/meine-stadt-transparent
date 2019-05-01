@@ -52,30 +52,32 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="dropdown files-dropdown">
-                <a class="dropdown-toggle" role="button" href="#" id="dropdownFiles"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="fa-custom fa-file-text"></span>
-                    <span>{% trans "Further files" %}</span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownFiles">
-                    {% if papers.0.main_file %}
-                        {% if papers.0.main_file.id == file.id %}
-                            <a class="dropdown-item disabled" href="{% url 'file' papers.0.main_file.id %}">
-                        {% else %}
-                            <a class="dropdown-item" href="{% url 'file' papers.0.main_file.id %}">
-                        {% endif %}
-                    {% firstof papers.0.main_file.name papers.0.main_file.filename %}
+            {% if papers.0.main_file and papers.0.files.all|length > 0 or papers.0.files.all|length > 1 %}
+                <div class="dropdown files-dropdown">
+                    <a class="dropdown-toggle" role="button" href="#" id="dropdownFiles"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa-custom fa-file-text"></span>
+                        <span>{% trans "Further files" %}</span>
                     </a>
-                    {% endif %}
-                    {% for other_file in papers.0.files.all %}
-                        <a class="dropdown-item {% if other_file.id == file.id %}disabled{% endif %}"
-                           href="{% url 'file' other_file.id %}">
-                            <span>{% firstof other_file.name other_file.filename other_file %}</span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownFiles">
+                        {% if papers.0.main_file %}
+                            {% if papers.0.main_file.id == file.id %}
+                                <a class="dropdown-item disabled" href="{% url 'file' papers.0.main_file.id %}">
+                            {% else %}
+                                <a class="dropdown-item" href="{% url 'file' papers.0.main_file.id %}">
+                            {% endif %}
+                        {% firstof papers.0.main_file.name papers.0.main_file.filename %}
                         </a>
-                    {% endfor %}
+                        {% endif %}
+                        {% for other_file in papers.0.files.all %}
+                            <a class="dropdown-item {% if other_file.id == file.id %}disabled{% endif %}"
+                               href="{% url 'file' other_file.id %}">
+                                <span>{% firstof other_file.name other_file.filename other_file %}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
+            {% endif %}
         {% endspaceless %}
     </div>
 </div>

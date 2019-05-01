@@ -426,9 +426,9 @@ class Importer:
         # so we can spawn a bunch of processes to make this a lot faster.
         # We need to build a list because mysql connections and process pools don't pair well.
         files = list(
-            File.objects.filter(
-                filesize__isnull=True, oparl_access_url__isnull=False
-            ).values_list("id", flat=True)
+            File.objects.filter(filesize__isnull=True, oparl_access_url__isnull=False)
+            .order_by("-id")
+            .values_list("id", flat=True)
         )
         logger.info("Downloading and analysing {} files".format(len(files)))
         address_pipeline = AddressPipeline(create_geoextract_data())

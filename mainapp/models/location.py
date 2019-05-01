@@ -22,6 +22,25 @@ class Location(DefaultFields):
     def __str__(self):
         return self.description or _("Unknown")
 
+    def short(self) -> str:
+        """ Tries to return a short description of the adress, with a fallback to the long one """
+        if self.street_address and self.room:
+            return "{}, {}".format(self.street_address, self.room)
+        else:
+            return self.description
+
+    def for_maps(self) -> str:
+        """ Tries to build a good search string for google maps / open street map"""
+        if self.street_address:
+            if self.postal_code and self.locality:
+                return "{}, {} {}".format(
+                    self.street_address, self.postal_code, self.locality
+                )
+            else:
+                return self.street_address
+        else:
+            return self.description
+
     # noinspection PyUnresolvedReferences
     def coordinates(self) -> Optional[Dict[str, Any]]:
         if self.geometry and self.geometry["type"] == "Point":

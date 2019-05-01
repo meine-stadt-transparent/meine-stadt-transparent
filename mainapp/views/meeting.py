@@ -11,6 +11,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import formats
+from django.utils.http import urlencode
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from icalendar import Calendar
@@ -142,6 +143,15 @@ def meeting(request, pk):
 
         context["previous"] = query.filter(start__lt=start).last()
         context["following"] = query.filter(start__gt=start).first()
+
+    if selected_meeting.location:
+        for_maps = selected_meeting.location.for_maps()
+        context["google_maps_url"] = "http://maps.google.de/maps?" + urlencode(
+            {"q": for_maps}
+        )
+        context["osm_url"] = "https://www.openstreetmap.org/search?" + urlencode(
+            {"query": for_maps}
+        )
 
     return render(request, "mainapp/meeting.html", context)
 
