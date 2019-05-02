@@ -32,8 +32,8 @@ class AgendaItem(DefaultFields):
     end = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return "{} {} ({}. {})".format(
-            self.key, self.name, self.position, self.meeting.__str__()
+        return "{}: {} ({}. {})".format(
+            self.key, self.name, self.position, self.meeting
         )
 
     class Meta:

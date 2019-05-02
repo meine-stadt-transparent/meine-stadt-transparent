@@ -69,11 +69,11 @@
                             <p class="m-2">{{ meeting.location.description }}</p>
                             <div class="location-map" id="location-select-map" data-map-data="{{ map }}"></div>
                             <div>
-                                <a href="{{ google_maps_url }}" target="_self" rel="noopener noreferrer"
+                                <a href="{{ google_maps_url }}" target="_blank" rel="noopener noreferrer"
                                    class="btn btn-sm btn-transparent">
                                     <span class="fa fa-external-link" aria-hidden="true"></span> Google Maps
                                 </a>
-                                <a href="{{ osm_url }}" target="_self" rel="noopener noreferrer"
+                                <a href="{{ osm_url }}" target="_blank" rel="noopener noreferrer"
                                    class="btn btn-sm btn-transparent">
                                     <span class="fa fa-external-link" aria-hidden="true"></span> OpenStreetMaps
                                 </a>
@@ -83,7 +83,11 @@
                 {% else %}
                     <div title="{% trans 'Place of the meeting' %}" class="std-element">
                         <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
-                        <span title="{{ meeting.location.description }}">{{ meeting.location.short }}</span>
+                        {% if meeting.location %}
+                            <span title="{{ meeting.location.description }}">{{ meeting.location.short }}</span>
+                        {% else %}
+                            <i>{% trans "Unknown" %}</i>
+                        {% endif %}
                     </div>
                 {% endif %}
 
@@ -160,8 +164,11 @@
             {% if meeting.agendaitem_set.all %}
                 <dl class="agenda">
                     {% for agenda_item in agenda_items %}
+                        <span id="item-{{ agenda_item.key }}" class="offsetted-anchor"></span>
                         <div class="d-flex align-content-start">
-                            <dt class="mr-2">{{ agenda_item.key }}</dt>
+                            <dt class="mr-2">
+                                <a href="#item-{{ agenda_item.key }}" class="text-dark">{{ agenda_item.key }}</a>
+                            </dt>
                             <dd>
                                 {{ agenda_item.name }}
                                 {% if agenda_item.paper %}

@@ -10,7 +10,85 @@
     border-top: solid 1px lightgray;
   }
 }
+
+$consultations-line-color: #4e8f7a;
+$border-color: grey;
+$top-offset: 20px;
+$border-width: 3px;
+$trianle-outer-size: 15px;
+$trianle-inner-offset: 4px;
+$circle-outer-radius: 12px;
+// sqrt(2) since we need pythagoras; Gets rounded by to int by sass
+$circle-inner-radius: $circle-outer-radius - $border-width * 1.414;
+$line-width: 4px;
+
 .paper-section-consultations {
   margin-top: $default-section-spacing;
+
+  dt {
+    padding-top: $top-offset;
+  }
 }
 
+@media (min-width: breakpoint-max(sm, $grid-breakpoints)) {
+  .paper-section-consultations {
+    dt {
+      border-right: $line-width solid $consultations-line-color;
+      text-align: right;
+    }
+  }
+
+  .dot {
+    position: absolute;
+    width: $circle-outer-radius * 2;
+    height: $circle-outer-radius * 2;
+    top: $top-offset;
+    right: -($circle-outer-radius + $line-width / 2);
+    background-color: #fff;
+    border-radius: 100%;
+
+    > div {
+      position: absolute;
+      width: $circle-inner-radius * 2;
+      height: $circle-inner-radius * 2;
+      top: $circle-outer-radius - $circle-inner-radius;
+      left: $circle-outer-radius - $circle-inner-radius;
+      border-radius: 100%;
+      background-color: $consultations-line-color;
+    }
+  }
+
+  .consultation-speech-bubble {
+    position: relative;
+    border: $border-width solid $border-color;
+    border-radius: .3em;
+    padding: ($top-offset - $border-width) 15px;
+    margin-left: 20px;
+  }
+
+  .consultation-speech-bubble::before, .consultation-speech-bubble::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 0;
+    top: $top-offset + $trianle-outer-size / 2 * 1.414;
+  }
+
+  .consultation-speech-bubble::before {
+    border: $trianle-outer-size solid transparent;
+    border-right-color: $border-color;
+    border-left: 0px;
+    margin-top: -$trianle-outer-size;
+    margin-left: -$trianle-outer-size;
+  }
+
+  .consultation-speech-bubble::after {
+    border: $trianle-outer-size - $trianle-inner-offset solid transparent;
+    border-right-color: white;
+    border-left: 0px;
+    margin-top: -($trianle-outer-size - $trianle-inner-offset);
+    margin-left: -($trianle-outer-size - $trianle-inner-offset);
+  }
+
+}

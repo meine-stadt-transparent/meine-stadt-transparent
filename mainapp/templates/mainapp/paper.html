@@ -99,31 +99,34 @@
                 <h2 class="paper-section-heading">{% trans "Consultations" %}</h2>
                 <dl class="row">
                     {% for consultation in consultations %}
-                        <dt class="col-md-3">{{ consultation.meeting.start|date }}</dt>
-                        <dd class="col-md-9">
-                            {% if consultation.title %}
-                                <div>{{ consultation.title }}</div>
-                            {% endif %}
+                        <dt class="col-md-3">
+                            {{ consultation.meeting.start|date }}
+                            <div class="dot">
+                                <div></div>
+                            </div>
+                        </dt>
+                        <dd class="col-md-9 ">
                             {% with consultation.single_agenda_item as item %}
-                                {% if item %}
-                                    <div class="title">
-                                        {% spaceless %}
-                                            <a href="{% url "meeting" item.meeting.id %}">
-                                                {{ item.meeting }}</a>
-                                            {% if item %}
-                                                <span>: {{ item }}</span>
+                                <a href="{% url "meeting" item.meeting.id %}#item-{{ item.key }}">
+                                    <div class="consultation-speech-bubble">
+                                        {% if consultation.title %}
+                                            <div class="text-black font-weight-bold">{{ consultation.title }}</div>
+                                        {% endif %}
+                                        {% if item %}
+                                            <div class="font-weight-bold">{{ item.meeting }}</div>
+                                            <div class="text-dark">{{ item.key }}. {{ item.name }}</div>
+                                            {% if item.result %}
+                                                <div class="result">{{ item.result }}</div>
                                             {% endif %}
-                                        {% endspaceless %}
+                                            {% if item.public != None %}
+                                                <div class="public text-muted">{% trans "public agenda item" %}</div>
+                                            {% else %}
+                                                <div
+                                                    class="non-public text-muted">{% trans "non-public agenda item" %}</div>
+                                            {% endif %}
+                                        {% endif %}
                                     </div>
-                                    {% if item.result %}
-                                        <div class="result">{{ item.result }}</div>
-                                    {% endif %}
-                                    {% if item.public != None %}
-                                        <div class="public text-muted">{% trans "public agenda item" %}</div>
-                                    {% else %}
-                                        <div class="non-public text-muted">{% trans "non-public agenda item" %}</div>
-                                    {% endif %}
-                                {% endif %}
+                                </a>
                             {% endwith %}
                         </dd>
                     {% endfor %}
