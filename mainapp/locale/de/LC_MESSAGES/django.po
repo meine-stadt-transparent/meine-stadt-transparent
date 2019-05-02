@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-05 09:32+0200\n"
+"POT-Creation-Date: 2019-05-02 22:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,52 +17,52 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mainapp/documents/__init__.py:12
+#: mainapp/documents/__init__.py:16
 msgctxt "Document Type Name"
 msgid "File"
 msgstr "Datei"
 
-#: mainapp/documents/__init__.py:13
+#: mainapp/documents/__init__.py:17
 msgctxt "Document Type Name"
 msgid "Meeting"
 msgstr "Sitzung"
 
-#: mainapp/documents/__init__.py:14
+#: mainapp/documents/__init__.py:18
 msgctxt "Document Type Name"
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/documents/__init__.py:15 mainapp/models/organization.py:15
+#: mainapp/documents/__init__.py:19 mainapp/models/organization.py:15
 msgctxt "Document Type Name"
 msgid "Organization"
 msgstr "Gremium"
 
-#: mainapp/documents/__init__.py:16
+#: mainapp/documents/__init__.py:20
 msgctxt "Document Type Name"
 msgid "Person"
 msgstr "Person"
 
-#: mainapp/documents/__init__.py:20
+#: mainapp/documents/__init__.py:23
 msgctxt "Document Type Name"
 msgid "Files"
 msgstr "Dateien"
 
-#: mainapp/documents/__init__.py:21
+#: mainapp/documents/__init__.py:24
 msgctxt "Document Type Name"
 msgid "Meetings"
 msgstr "Sitzungen"
 
-#: mainapp/documents/__init__.py:22
+#: mainapp/documents/__init__.py:25
 msgctxt "Document Type Name"
 msgid "Papers"
 msgstr "Vorlagen"
 
-#: mainapp/documents/__init__.py:23 mainapp/models/organization.py:22
+#: mainapp/documents/__init__.py:26 mainapp/models/organization.py:22
 msgctxt "Document Type Name"
 msgid "Organizations"
 msgstr "Gremien"
 
-#: mainapp/documents/__init__.py:24
+#: mainapp/documents/__init__.py:27
 msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
@@ -116,7 +116,7 @@ msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/functions/search_tools.py:159
+#: mainapp/functions/search_tools.py:165
 #, fuzzy
 #| msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgid ""
@@ -124,7 +124,7 @@ msgid ""
 "DD HH:MM:SS: "
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/functions/search_tools.py:178
+#: mainapp/functions/search_tools.py:184
 #, fuzzy
 #| msgid "The value for after is invalid. The correct format is YYYY-MM-DD"
 msgid ""
@@ -132,7 +132,8 @@ msgid ""
 "DD HH:MM:SS "
 msgstr "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD"
 
-#: mainapp/models/location.py:23 mainapp/views/meeting.py:106
+#: mainapp/models/location.py:23 mainapp/templates/mainapp/meeting.html:89
+#: mainapp/views/meeting.py:107
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -668,15 +669,15 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:183
+#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:193
 msgid "Meeting"
 msgstr "Sitzung"
 
 #: mainapp/templates/mainapp/file/info_lg.html:14
 #: mainapp/templates/mainapp/file/info_lg.html:24
 #: mainapp/templates/mainapp/file/info_sm.html:48
-#: mainapp/templates/mainapp/meeting.html:168
-#: mainapp/templates/mainapp/meeting.html:175
+#: mainapp/templates/mainapp/meeting.html:185
+#: mainapp/templates/mainapp/meeting.html:192
 msgid "Paper"
 msgstr "Vorlage"
 
@@ -695,7 +696,7 @@ msgctxt "Plural"
 msgid "Superordinated paper"
 msgstr "Übergeordnete Vorlagen"
 
-#: mainapp/templates/mainapp/file/info_sm.html:59
+#: mainapp/templates/mainapp/file/info_sm.html:60
 msgid "Further files"
 msgstr "Weitere Dateien"
 
@@ -724,7 +725,7 @@ msgstr "Benachrichtigungen"
 
 #: mainapp/templates/mainapp/index/index_main_buttons.html:22
 #: mainapp/templates/mainapp/index_v2/index_main_buttons.html:18
-#: mainapp/templates/mainapp/paper.html:39
+#: mainapp/templates/mainapp/paper.html:40
 #: mainapp/templates/mainapp/persons.html:6
 #: mainapp/templates/mainapp/persons.html:9
 msgid "Persons"
@@ -734,7 +735,7 @@ msgstr "Personen"
 #: mainapp/templates/mainapp/index_v2/index_main_buttons.html:26
 #: mainapp/templates/mainapp/organizations.html:4
 #: mainapp/templates/mainapp/organizations.html:7
-#: mainapp/templates/mainapp/paper.html:33
+#: mainapp/templates/mainapp/paper.html:34
 msgid "Organizations"
 msgstr "Gremien"
 
@@ -848,7 +849,7 @@ msgid "Search for example for \"School\", \"Bikes\" or \"Budget\""
 msgstr "Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“"
 
 #: mainapp/templates/mainapp/meeting.html:18
-#: mainapp/templates/mainapp/paper.html:54
+#: mainapp/templates/mainapp/paper.html:55
 msgctxt "X revisions"
 msgid " Revisions"
 msgstr " Revisionen"
@@ -861,56 +862,56 @@ msgstr "Vorige Sitzung"
 msgid "Following Meeting"
 msgstr "Folgende Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:74
+#: mainapp/templates/mainapp/meeting.html:84
 msgid "Place of the meeting"
 msgstr "Ort der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:80
+#: mainapp/templates/mainapp/meeting.html:94
 msgid "Time of the Meeting"
 msgstr "Zeitpunkt der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:86
+#: mainapp/templates/mainapp/meeting.html:100
 msgid "Main organization of the meeting: "
 msgstr "Träger der Sitzung: "
 
-#: mainapp/templates/mainapp/meeting.html:97
+#: mainapp/templates/mainapp/meeting.html:111
 msgid "Download the meeting in a format readable by most calendars"
 msgstr ""
 "Den Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
 
-#: mainapp/templates/mainapp/meeting.html:99
+#: mainapp/templates/mainapp/meeting.html:113
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: mainapp/templates/mainapp/meeting.html:105
+#: mainapp/templates/mainapp/meeting.html:119
 msgid "This meeting has been cancelled"
 msgstr "Dieser Termin wurde abgesagt."
 
-#: mainapp/templates/mainapp/meeting.html:111
+#: mainapp/templates/mainapp/meeting.html:125
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: mainapp/templates/mainapp/meeting.html:114
+#: mainapp/templates/mainapp/meeting.html:128
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: mainapp/templates/mainapp/meeting.html:119
+#: mainapp/templates/mainapp/meeting.html:133
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: mainapp/templates/mainapp/meeting.html:125
+#: mainapp/templates/mainapp/meeting.html:139
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:131
+#: mainapp/templates/mainapp/meeting.html:145
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:149
+#: mainapp/templates/mainapp/meeting.html:163
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: mainapp/templates/mainapp/meeting.html:186
+#: mainapp/templates/mainapp/meeting.html:203
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
@@ -978,41 +979,46 @@ msgstr "Filter"
 msgid "Unknown Type"
 msgstr "Unbekannter Typ"
 
-#: mainapp/templates/mainapp/paper.html:28
+#: mainapp/templates/mainapp/paper.html:29
 msgid "Legal date: "
 msgstr "Offizielles Datum: "
 
-#: mainapp/templates/mainapp/paper.html:32 mainapp/views/feeds/utils.py:20
+#: mainapp/templates/mainapp/paper.html:33 mainapp/views/feeds/utils.py:20
 msgid "Submitting Organizations"
 msgstr "Eingereicht von"
 
-#: mainapp/templates/mainapp/paper.html:38 mainapp/views/feeds/utils.py:26
+#: mainapp/templates/mainapp/paper.html:39 mainapp/views/feeds/utils.py:26
 msgid "Submitting Persons"
 msgstr "Eingereicht von"
 
-#: mainapp/templates/mainapp/paper.html:69 mainapp/views/feeds/utils.py:32
+#: mainapp/templates/mainapp/paper.html:70 mainapp/views/feeds/utils.py:32
 msgid "Files"
 msgstr "Dateien"
 
-#: mainapp/templates/mainapp/paper.html:72
+#: mainapp/templates/mainapp/paper.html:73
 msgid "History is not available for files"
 msgstr "Keine Historie für Dateien"
 
-#: mainapp/templates/mainapp/paper.html:92
+#: mainapp/templates/mainapp/paper.html:93
 msgid "No files attached"
 msgstr "Keine Dateien angehägnt"
 
-#: mainapp/templates/mainapp/paper.html:98
+#: mainapp/templates/mainapp/paper.html:99
 msgid "Consultations"
 msgstr "Beratungen"
 
-#: mainapp/templates/mainapp/paper.html:122
+#: mainapp/templates/mainapp/paper.html:124
 msgid "public agenda item"
 msgstr "Öffentlicher Tagesordnungspunkt"
 
-#: mainapp/templates/mainapp/paper.html:124
+#: mainapp/templates/mainapp/paper.html:127
 msgid "non-public agenda item"
 msgstr "Nichtöffentlicher Tagesordnungspunkt"
+
+#: mainapp/templates/mainapp/paper.html:138
+#, fuzzy
+msgid "No information available"
+msgstr "Keine Informationen verfügbar"
 
 #: mainapp/templates/mainapp/person.html:14
 msgid "Submitted Papers"
@@ -1343,25 +1349,25 @@ msgstr ""
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:191
+#: mainapp/views/meeting.py:201
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:204
+#: mainapp/views/meeting.py:214
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 
-#: mainapp/views/persons.py:122
+#: mainapp/views/persons.py:123
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert."
 
-#: mainapp/views/persons.py:123 mainapp/views/search.py:65
+#: mainapp/views/persons.py:124 mainapp/views/search.py:65
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
 "erhalten."
 
-#: mainapp/views/persons.py:124
+#: mainapp/views/persons.py:125
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
