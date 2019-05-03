@@ -131,7 +131,7 @@ docker-compose up
 
 ### Requirements
 
- - Python 3.5, 3.6 or 3.7 with pip and [poetry](https://github.com/sdispater/poetry)
+ - Python 3.6 or 3.7 with pip and [poetry](https://github.com/sdispater/poetry)
  - A recent node version (8 or 10) with npm (npm 6 is tested)
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)

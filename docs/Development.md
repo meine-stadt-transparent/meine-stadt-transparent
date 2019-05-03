@@ -36,7 +36,7 @@ Run the test cases:
 ./manage.py test
 ```
 
-There's a tox config to ensure 3.5 to 3.7 compatibility which can be run with `tox`.
+There's a tox config to ensure 3.6 to 3.7 compatibility which can be run with `tox`.
 
 ### Dummy data
 
