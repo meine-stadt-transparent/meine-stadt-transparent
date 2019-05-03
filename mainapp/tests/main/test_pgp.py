@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 
 from mainapp.models import UserProfile
-from mainapp.tests.tools import MinioMock
+from mainapp.tests.main import MinioMock
 
 
 class TestPGP(TestCase):

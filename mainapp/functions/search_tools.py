@@ -1,16 +1,38 @@
 from collections import namedtuple
-from typing import Dict
+from typing import Dict, Optional, Any
 
 from dateutil.parser import parse
 from django.conf import settings
 from django.urls import reverse
 from django.utils.html import escape
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext, pgettext
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet
 from requests.utils import quote
 
 from mainapp.functions.geo_functions import latlng_to_address
+
+
+DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
+DOCUMENT_INDICES = {
+    doc_type: settings.ELASTICSEARCH_PREFIX + "-" + doc_type
+    for doc_type in DOCUMENT_TYPES
+}
+
+DOCUMENT_TYPE_NAMES = {
+    "file": pgettext("Document Type Name", "File"),
+    "meeting": pgettext("Document Type Name", "Meeting"),
+    "paper": pgettext("Document Type Name", "Paper"),
+    "organization": pgettext("Document Type Name", "Organization"),
+    "person": pgettext("Document Type Name", "Person"),
+}
+DOCUMENT_TYPE_NAMES_PL = {
+    "file": pgettext("Document Type Name", "Files"),
+    "meeting": pgettext("Document Type Name", "Meetings"),
+    "paper": pgettext("Document Type Name", "Papers"),
+    "organization": pgettext("Document Type Name", "Organizations"),
+    "person": pgettext("Document Type Name", "Persons"),
+}
 
 # Keep in sync with: mainapp/assets/js/FacettedSearch.js
 QUERY_KEYS = [
@@ -24,8 +46,7 @@ QUERY_KEYS = [
     "before",
     "sort",
 ]
-# We technically only need an explicit list for elasticsearch 6, but it's counter-productive if
-# we optimize for _all now and then have to redo the effort for elasticsearch 6
+
 MULTI_MATCH_FIELDS = [
     "agenda_items.title",
     "body.name",
@@ -34,7 +55,7 @@ MULTI_MATCH_FIELDS = [
     "family_name",
     "given_name",
     "name",
-    "parsed_text",
+    "parsed_text^0.5",
     "short_name",
     "type",
 ]
@@ -46,7 +67,6 @@ NotificationSearchResult = namedtuple(
 
 class MainappSearch(FacetedSearch):
     fields = MULTI_MATCH_FIELDS
-
     # use bucket aggregations to define facets
     facets = {
         "document_type": TermsFacet(field="_index"),
@@ -54,15 +74,17 @@ class MainappSearch(FacetedSearch):
         "organization": TermsFacet(field="organization_ids"),
     }
 
-    def __init__(self, params: Dict[str, str], offset=None, limit=None):
-        # Avoid "Models aren't loaded yet." error
-        from mainapp.documents import DOCUMENT_INDICES
-
+    def __init__(
+        self,
+        params: Dict[str, str],
+        offset: Optional[int] = None,
+        limit: Optional[int] = None,
+    ):
         self.params = params
         self.errors = []
         self.offset = offset
         self.limit = limit
-        self.index = DOCUMENT_INDICES
+        self.index = list(DOCUMENT_INDICES.values())
 
         # Note that for django templates it makes a difference if a value is undefined or None
         self.options = {}
@@ -144,6 +166,20 @@ class MainappSearch(FacetedSearch):
         if "before" in self.params:
             # options['before'] added by _add_date_before
             search = _add_date_before(search, self.params, self.options, self.errors)
+
+        # indices_boost: Titles often repeat the organization name and the test contains person names, but
+        # when searching for those proper nouns, the person/organization itself should be at the top
+        # _source: Take only the fields we use (highlights are extra)
+        search.update_from_dict(
+            {
+                "indices_boost": [
+                    {DOCUMENT_INDICES["person"]: 5},
+                    {DOCUMENT_INDICES["organization"]: 4},
+                    {DOCUMENT_INDICES["paper"]: 2},
+                ],
+                "_source": ["id", "name"],
+            }
+        )
 
         # N.B.: indexing reset from and size
         if self.limit:
@@ -248,14 +284,12 @@ def get_highlights(hit, parsed):
     return highlights
 
 
-def parse_hit(hit, highlighting=True):
-    # python module wtf
-    from mainapp.documents import DOCUMENT_TYPE_NAMES
-
+def parse_hit(hit, highlighting: bool = True) -> Dict[str, Any]:
     parsed = hit.to_dict()
     parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
     parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
     parsed["url"] = reverse(parsed["type"], args=[hit.id])
+    parsed["score"] = hit.meta.score
 
     if highlighting:
         highlights = get_highlights(hit, parsed)

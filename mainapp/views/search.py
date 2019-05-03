@@ -19,8 +19,9 @@ from mainapp.functions.search_tools import (
     MainappSearch,
     parse_hit,
     params_to_search_string,
+    DOCUMENT_TYPE_NAMES,
+    DOCUMENT_INDICES,
 )
-from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_INDICES
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
     handle_subscribe_requests,
@@ -157,7 +158,7 @@ def search_autocomplete(_, query):
     # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
     # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
     search_query = (
-        Search(index=DOCUMENT_INDICES)
+        Search(index=list(DOCUMENT_INDICES.values()))
         .query(
             "match",
             autocomplete={

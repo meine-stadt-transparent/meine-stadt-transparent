@@ -25,6 +25,12 @@ expected_params = {
             ]
         }
     },
+    "indices_boost": [
+        {"meine-stadt-transparent-person": 5},
+        {"meine-stadt-transparent-organization": 4},
+        {"meine-stadt-transparent-paper": 2},
+    ],
+    "_source": ["id", "name"],
     "aggs": {
         "_filter_document_type": {
             "filter": {"match_all": {}},
@@ -80,7 +86,7 @@ class TestSearchtools(TestCase):
     def test_params_to_query(self):
         main_search = MainappSearch(self.params)
         self.assertEqual(main_search.errors, [])
-        self.assertEqual(main_search._s.to_dict(), expected_params)
+        self.assertEqual(main_search.build_search().to_dict(), expected_params)
 
     def test_params_to_search_string(self):
         expected = "document-type:file,committee radius:50 sort:date_newest word radius anotherword"

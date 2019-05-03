@@ -20,7 +20,9 @@ class Command(BaseCommand):
 
     def analyze(self, text: str) -> Dict[str, List[Dict]]:
         """ Shows what elasticsearch does with the tokens """
-        return elastic_index_file.analyze(analyzer="text_analyzer", text=text)
+        return elastic_index_file.analyze(
+            body={"analyzer": "text_analyzer", "text": text}
+        )
 
     def handle(self, *args, **options):
         """
@@ -28,7 +30,7 @@ class Command(BaseCommand):
          * "rese" should match "research", but currently doesn't
          * "contain(|sng|ing)" should match "containing" by stemming, preserving the original and fuzzy
          * "here" matches "here's" due to language analysis
-         * "Knutt" should prefer "Knutt" over "Knuth", but currently prefers ferequency
+         * "Knutt" should prefer "Knutt" over "Knuth", but currently prefers frequency
          * "Schulhaus" is for big german dataset performance
         """
         if options.get("rebuild"):

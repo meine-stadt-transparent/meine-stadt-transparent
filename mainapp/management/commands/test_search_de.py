@@ -3,7 +3,6 @@ The whether the elasticsearch analyzer yields the right tokens for the german an
 
 Check the comments in mainapp.documents.index for more details
 """
-
 from django.core.management.base import BaseCommand
 from elasticsearch_dsl import Index
 
@@ -16,6 +15,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         text_analyzer = get_text_analyzer("german")
         elastic_index = Index("mst_debug")
+        if not elastic_index.exists():
+            elastic_index.create()
         elastic_index.close()
         elastic_index.analyzer(text_analyzer)
         elastic_index.save()
@@ -34,6 +35,8 @@ class Command(BaseCommand):
         ]
 
         for word in words:
-            analysis = elastic_index.analyze(analyzer="text_analyzer", text=word)
+            analysis = elastic_index.analyze(
+                body={"analyzer": "text_analyzer", "text": word}
+            )
             tokens = [i["token"] for i in analysis["tokens"]]
             self.stdout.write("{} {}\n".format(word, tokens))

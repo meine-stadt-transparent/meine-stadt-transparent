@@ -1,3 +1,4 @@
+import json
 import logging
 from typing import Tuple, List
 
@@ -193,8 +194,6 @@ class Cli:
             if len(exact_matches) == 1:
                 matching = exact_matches
             else:
-                import json
-
                 logger.warning(
                     "Found those entries: {}".format(json.dumps(matching, indent=4))
                 )

@@ -10,7 +10,7 @@ from mainapp.functions.document_parsing import (
     extract_persons,
 )
 from mainapp.models import File, Person
-from mainapp.tests.tools import test_media_root
+from mainapp.tests.main import test_media_root
 
 values = {
     "Tel-Aviv-Straße, Köln, Deutschland": {"lng": 6.9541377, "lat": 50.9315404},

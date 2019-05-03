@@ -1,6 +1,5 @@
 from unittest import mock
 
-from django.test import Client
 from django.test import TestCase
 
 from mainapp.tests.live.helper import MockMainappSearch

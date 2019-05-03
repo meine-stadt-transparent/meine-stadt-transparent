@@ -12,8 +12,8 @@ from django.utils import timezone
 from django.views.generic import DetailView
 from requests.utils import quote
 
-from mainapp.documents import DOCUMENT_TYPE_NAMES, DOCUMENT_TYPE_NAMES_PL
 from mainapp.functions.minio import minio_client, minio_file_bucket
+from mainapp.functions.search_tools import DOCUMENT_TYPE_NAMES_PL
 from mainapp.models import (
     Body,
     File,
@@ -26,7 +26,7 @@ from mainapp.models import (
 )
 from mainapp.models.organization import ORGANIZATION_TYPE_NAMES_PLURAL
 from mainapp.models.organization_type import OrganizationType
-from mainapp.views import person_grid_context, HttpResponse
+from mainapp.views import person_grid_context, HttpResponse, DOCUMENT_TYPE_NAMES
 from mainapp.views.utils import build_map_object
 
 logger = logging.getLogger(__name__)

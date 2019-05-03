@@ -5,6 +5,8 @@ from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_tools import (
     NotificationSearchResult,
     params_to_search_string,
+    DOCUMENT_TYPE_NAMES,
+    DOCUMENT_TYPE_NAMES_PL,
 )
 from mainapp.models import Person, Organization
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
@@ -19,8 +21,6 @@ def params_are_subscribable(params: dict):
 
 
 def search_result_for_notification(result) -> NotificationSearchResult:
-    from mainapp.documents import DOCUMENT_TYPE_NAMES
-
     if result["type"] == "meeting":
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse("meeting", args=[result["id"]])
@@ -44,8 +44,6 @@ def search_result_for_notification(result) -> NotificationSearchResult:
 
 
 def params_to_human_string(params: dict):
-    from mainapp.documents import DOCUMENT_TYPE_NAMES_PL
-
     if "document-type" in params:
         split = params["document-type"].split(",")
         what = []

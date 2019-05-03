@@ -6,11 +6,7 @@ from mainapp.functions.search_tools import MainappSearch
 hit_template = {
     "_type": "file_document",
     "_id": "159",
-    "_source": {
-        "id": 159,
-        "name": "long name nolight",
-        "short_name": "short name nolight",
-    },
+    "_source": {"id": 159},
     "highlight": {
         "name": ["long name <mark>hightlight</mark>"],
         "short_name": ["short name <mark>highlight</mark>"],
@@ -53,6 +49,7 @@ template = {
         "created": "2017-11-24T09:06:05.159381+00:00",
         "modified": "2017-12-01T10:56:37.297771+00:00",
     },
+    "_score": 1,
     "doc_type": "file_document",
     "highlight": {"name": ["Title <mark>Highlight</mark>"]},
 }
