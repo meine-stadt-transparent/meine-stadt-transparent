@@ -58,15 +58,14 @@ class SternbergLoader(BaseLoader):
             and "modified_since" in query
             and data == self.empty_list_error
         ):
-            response = self.empty_page
+            data = self.empty_page
         else:
             response.raise_for_status()
-            response = response.json()
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
-            if "data" in response:
-                for data in response["data"]:
+            if "data" in data:
+                for data in data["data"]:
                     if "location" in data.keys() and isinstance(data["location"], dict):
                         data["location"][
                             "type"
@@ -74,49 +73,49 @@ class SternbergLoader(BaseLoader):
 
                 # There are deleted entries in unfiltered external lists (which they shouldn't) and then
                 # they don't even have type attributes (which are mandatory)
-                for entry in response["data"][:]:
+                for entry in data["data"][:]:
                     if entry.get("deleted") and not "type" in entry:
-                        response["data"].remove(entry)
+                        data["data"].remove(entry)
 
             # Add missing "type"-attributes in single bodies
-            if "location" in response.keys() and isinstance(response["location"], dict):
-                response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in data.keys() and isinstance(data["location"], dict):
+                data["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Location in Person must be a url, not an object
-            if "/person" in url and "data" in response:
-                for data in response["data"]:
+            if "/person" in url and "data" in data:
+                for data in data["data"]:
                     if "location" in data and isinstance(data["location"], dict):
                         data["location"] = data["location"]["id"]
 
-            if "/organization" in url and "data" in response:
-                for data in response["data"]:
+            if "/organization" in url and "data" in data:
+                for data in data["data"]:
                     if "id" in data and "type" not in data:
                         data["type"] = "https://schema.oparl.org/1.0/Organization"
 
         if "/membership" in url:
             # If an array is returned instead of an object, we just skip all list entries except for the last one
-            if isinstance(response, list):
-                response = response[0]
+            if isinstance(data, list):
+                data = data[0]
 
         if "/person" in url:
-            if "location" in response and not isinstance(response["location"], str):
-                response["location"] = response["location"]["id"]
+            if "location" in data and not isinstance(data["location"], str):
+                data["location"] = data["location"]["id"]
 
         if "/meeting" in url:
-            if "location" in response and not isinstance(response["location"], str):
-                response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in data and not isinstance(data["location"], str):
+                data["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
-        if response.get("type") == "https://schema.oparl.org/1.0/File":
-            if "accessUrl" in response:
-                response["accessUrl"] = response["accessUrl"].replace(
+        if data.get("type") == "https://schema.oparl.org/1.0/File":
+            if "accessUrl" in data:
+                data["accessUrl"] = data["accessUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
-            if "downloadUrl" in response:
-                response["downloadUrl"] = response["downloadUrl"].replace(
+            if "downloadUrl" in data:
+                data["downloadUrl"] = data["downloadUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
 
-        return response
+        return data
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         content, content_type = super().load_file(url)
