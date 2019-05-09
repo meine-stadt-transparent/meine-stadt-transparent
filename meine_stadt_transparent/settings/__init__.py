@@ -167,9 +167,6 @@ WEBPACK_LOADER = {
 # Elastic
 ELASTICSEARCH_ENABLED = env.bool("ELASTICSEARCH_ENABLED", True)
 
-if ELASTICSEARCH_ENABLED:
-    INSTALLED_APPS.append("django_elasticsearch_dsl")
-
 ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 
 ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL}}
@@ -263,6 +260,7 @@ if SENTRY_DSN:
         scope.set_tag("env_path", env_file)
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
+MAINAPP_LOG_LEVEL = env.str("MAINAPP_LOG_LEVEL", None)
 IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
 
 LOG_DIRECTORY = env.str("LOG_DIRECTORY", "log")
@@ -321,7 +319,7 @@ LOGGING = {
     "loggers": {
         "mainapp": {
             "handlers": ["console", "django-error", "django"],
-            "level": DJANGO_LOG_LEVEL or "INFO",
+            "level": MAINAPP_LOG_LEVEL or "INFO",
             "propagate": False,
         },
         "importer": {

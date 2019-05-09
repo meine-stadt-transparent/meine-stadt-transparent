@@ -1,5 +1,9 @@
+from typing import Optional, TYPE_CHECKING
+
 from django.db import models
 
+if TYPE_CHECKING:
+    from mainapp.models import AgendaItem
 from .default_fields import DefaultFields
 from .meeting import Meeting
 from .organization import Organization
@@ -22,6 +26,6 @@ class Consultation(DefaultFields):
     def __str__(self):
         return "{} {} {}".format(self.meeting, self.meeting.id, self.paper)
 
-    def single_agenda_item(self):
+    def single_agenda_item(self) -> Optional["AgendaItem"]:
         if self.agendaitem_set.count() == 1:
             return self.agendaitem_set.first()

@@ -29,6 +29,7 @@ class PaperDocument(DocType):
             "legal_date",
             "created",
             "name",
+            "reference_number",
             "modified",
             "sort_date",
         ]

@@ -161,7 +161,7 @@ Even though it's possible to change those, you shouldn't need change them in pro
  * `DEBUG`: Should always be `False` in production
  * `DEBUG_STYLES`: Adds 'unsafe-inline' to the style src csp making it easier to use your browser's developer tools
  * `DEBUG_TESTING`: Makes chromedriver open an actual chrome window
- * `DJANGO_LOG_LEVEL`: Manually overrides the default log level for all loggers
+ * `DJANGO_LOG_LEVEL`, `MAINAPP_LOG_LEVEL` and `IMPORTER_LOG_LEVEL`: Overrides the default log level for that component
  * `ENABLE_PGP` and `SKS_KEYSERVER`: While support pgp encrypted notifications with a UI for selecting the key from an sks keyserver, this feature is disabled by default because encrypted notifications end up as plain text which breaks our UX. Before you can enable it, you need to run `poetry install --extras pgp`.
  * `OPARL_INDEX`: Used to determine the oparl body id based on the city name by searching for a body with a fitting name in the [oparl mirror](https://politik-bei-uns.de/info/schnittstelle) of [Politik bei Uns](https://politik-bei-uns.de/).
  * `ELASTICSEARCH_ENABLED`: Allows to disable elasticsearch for development or test environment

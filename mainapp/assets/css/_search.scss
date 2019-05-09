@@ -171,15 +171,7 @@
     margin-top: 15px;
 
     &:hover {
-      background-color: map-get($theme-colors, dark);
-
-      a {
-        text-decoration: none;
-
-        div, i {
-          color: map_get($theme-colors, light);
-        }
-      }
+      box-shadow: $box-shadow;
     }
 
     i {

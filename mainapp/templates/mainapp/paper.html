@@ -114,7 +114,7 @@
                                                 <div class="text-black font-weight-bold">{{ consultation.title }}</div>
                                             {% endif %}
                                             {% if item %}
-                                                <div class="font-weight-bold">{{ item.meeting }}</div>
+                                                <div class="font-weight-bold">{{ item.meeting.name }}</div>
                                                 <div class="text-dark">{{ item.key }}. {{ item.name }}</div>
                                                 {% if item.result %}
                                                     <div class="result">{{ item.result }}</div>
@@ -135,7 +135,8 @@
                                     </div>
                                 {% else %}
                                     <div class="consultation-speech-bubble">
-                                        <div class="font-weight-bold"><i>{% trans "No information available" %}</i>
+                                        <div class="font-weight-bold">
+                                            <i>{% trans "No information available" %}</i>
                                         </div>
                                     </div>
                                 {% endif %}

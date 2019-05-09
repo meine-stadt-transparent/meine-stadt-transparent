@@ -27,4 +27,5 @@ class Command(BaseCommand):
         search = main_search.build_search()
         self.stdout.write(json.dumps(search.to_dict()))
         executed = main_search.execute()
-        self.stdout.write(str(executed.to_dict()))
+        del executed["_faceted_search"]
+        self.stdout.write(json.dumps(executed.to_dict()))
