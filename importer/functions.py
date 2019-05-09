@@ -102,3 +102,5 @@ def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) 
         loader = get_loader_from_body(body.oparl_id)
         importer = Importer(loader, body, ignore_modified=ignore_modified)
         importer.update(body.oparl_id)
+        importer.force_singlethread = True
+        importer.load_files(body.short_name)
