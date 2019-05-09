@@ -33,8 +33,7 @@ INSTALLED_APPS = [
     "wagtail.core",
     "modelcluster",
     "taggit",
-    "django_elasticsearch_dsl"
-    # Note: The social login apps integration is added further below
+    # Note: The social login apps and elasticsearch integration is added further below
 ]
 
 MIDDLEWARE = [

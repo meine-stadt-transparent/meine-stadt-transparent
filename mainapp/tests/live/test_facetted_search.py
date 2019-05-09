@@ -25,10 +25,9 @@ class FacettedSearchTest(ChromeDriverTestCase):
         ]
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
-    @mock.patch("mainapp.views.Search.execute", new=mock_search_autocomplete)
+    @mock.patch("mainapp.functions.search.Search.execute", new=mock_search_autocomplete)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_landing_page_redirect(self):
         """ There was a case where the redirect would lead to the wrong page """
@@ -45,8 +44,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_word(self):
         self.visit("/search/query/word/")
@@ -54,8 +52,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_document_type(self):
         self.visit("/search/query/word/")
@@ -76,8 +73,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_time_range(self):
         self.visit("/search/query/word/")
@@ -97,8 +93,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_person_filter(self):
         self.visit("/search/query/word/")
@@ -114,8 +109,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_sorting(self):
         self.visit("/search/query/word/")
@@ -131,8 +125,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_dropdown_filter(self):
         self.visit("/search/query/word/")
@@ -149,8 +142,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     @skip
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_dropdown_filter_preseted(self):
         self.visit("/search/query/organization:1 word/")
@@ -164,7 +156,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
 
     @override_settings(ELASTICSEARCH_ENABLED=True)
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
+        "mainapp.functions.search.MainappSearch.execute",
         new=MockMainappSearchEndlessScroll.execute,
     )
     def test_endless_scroll(self):

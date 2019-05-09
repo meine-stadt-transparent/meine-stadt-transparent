@@ -4,7 +4,7 @@ import unittest
 import urllib.parse
 
 from django.core.management import call_command
-from django.test import override_settings, TestCase
+from django.test import override_settings, TestCase, modify_settings
 from django.test.utils import captured_stderr
 from django_elasticsearch_dsl import Index
 from django_elasticsearch_dsl.management.commands import search_index
@@ -14,6 +14,9 @@ from mainapp.documents.index import get_text_analyzer
 from mainapp.functions.search import MainappSearch
 
 
+@override_settings(ELASTICSEARCH_ENABLED=True)
+@override_settings(ELASTICSEARCH_PREFIX="mst-test")
+@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 def is_es_online(connection_alias="default"):
     """ Source: https://github.com/sabricot/django-elasticsearch-dsl/pull/169 """
     with captured_stderr():
@@ -23,6 +26,7 @@ def is_es_online(connection_alias="default"):
 
 @override_settings(ELASTICSEARCH_ENABLED=True)
 @override_settings(ELASTICSEARCH_PREFIX="mst-test")
+@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 @unittest.skipUnless(is_es_online(), "Elasticsearch is offline")
 class TestElasticsearch(TestCase):
     """ Tests validating our elasticsearch config against a real elasticsearch instance.

@@ -18,8 +18,7 @@ class TestRSS(TestCase):
         self.assertIn("Frank Underwood", response)
 
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_search_results(self):
         response = self.client.get("/search/query/complexity/feed/").content.decode()

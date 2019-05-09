@@ -30,8 +30,7 @@ class TestNotifyUsers(TestCase):
 
     @mock.patch("mainapp.functions.notify_users.send_mail")
     @mock.patch(
-        "mainapp.functions.search_tools.MainappSearch.execute",
-        new=MockMainappSearch.execute,
+        "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_notify(self, send_mail_function):
         self._create_user_with_alerts("test@example.org", ["test"])

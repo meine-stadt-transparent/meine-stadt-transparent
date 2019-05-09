@@ -167,6 +167,9 @@ WEBPACK_LOADER = {
 # Elastic
 ELASTICSEARCH_ENABLED = env.bool("ELASTICSEARCH_ENABLED", True)
 
+if ELASTICSEARCH_ENABLED:
+    INSTALLED_APPS.append("django_elasticsearch_dsl")
+
 ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 
 ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL}}

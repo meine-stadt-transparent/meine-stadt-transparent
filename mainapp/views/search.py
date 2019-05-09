@@ -122,7 +122,8 @@ def search_results_only(request, query):
     )
 
     executed = main_search.execute()
-    logger.debug("Elasticsearch query took {}ms".format(executed.took))
+    # The mocked results don't have a took value
+    logger.debug("Elasticsearch query took {}ms".format(executed.to_dict().get("took")))
     results = [parse_hit(hit) for hit in executed.hits]
     context = _search_to_context(normalized, main_search, executed, results, request)
 
