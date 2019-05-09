@@ -111,7 +111,7 @@ class JsonToDb:
 
         externalized = list(externalize(self.loader.load(oparl_id)))
 
-        # To aboid endless recursion, we sort the objects so that if A links to B then B gets imported first
+        # To avoid endless recursion, we sort the objects so that if A links to B then B gets imported first
         externalized.sort(
             key=lambda key: import_order.index(
                 getattr(models, key.data["type"].split("/")[-1])
@@ -141,6 +141,11 @@ class JsonToDb:
         instance = type_class()
         self.init_base(data, instance)
         self.type_to_function(type_class)(data, instance)
+        # There exists e.g. the case where a consultation needs the paper, which itself imports the consultation,
+        # so that we must not save here because it would clash with the just saved object
+        maybe_faster = type_class.objects.filter(oparl_id=instance.oparl_id).first()
+        if maybe_faster:
+            return maybe_faster
         instance.save()
 
         return instance
