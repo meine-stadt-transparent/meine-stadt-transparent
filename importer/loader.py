@@ -1,5 +1,5 @@
 import logging
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 import requests
 
@@ -18,7 +18,7 @@ class BaseLoader:
     def __init__(self, system: JSON) -> None:
         self.system = system
 
-    def load(self, url: str, query: Optional[dict] = None) -> JSON:
+    def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
         logger.debug("Loader is loading {}".format(url))
         if query is None:
             query = dict()
@@ -36,8 +36,32 @@ class BaseLoader:
 
 
 class SternbergLoader(BaseLoader):
-    def load(self, url: str, query: Optional[dict] = None) -> JSON:
-        response = super(SternbergLoader, self).load(url, query)
+    empty_list_error = {
+        "error": "Die angeforderte Ressource wurde nicht gefunden.",
+        "code": 802,
+        "type": "SD.NET RIM Webservice",
+    }
+
+    empty_page = {"data": [], "links": {}, "pagination": {}}
+
+    def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
+        logger.debug("Loader is loading {}".format(url))
+        if query is None:
+            query = dict()
+
+        response = requests.get(url, params=query)
+        data = response.json()
+
+        # An error is returned when the list would have been empty
+        if (
+            response.status_code == 404
+            and "modified_since" in query
+            and data == self.empty_list_error
+        ):
+            response = self.empty_page
+        else:
+            response.raise_for_status()
+            response = response.json()
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists

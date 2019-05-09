@@ -23,3 +23,6 @@ class CachedObject(models.Model):
 
     def __eq__(self, other):
         return self.url == other.url
+
+    def __str__(self):
+        return "{}: {} ({})".format(self.oparl_type, self.url, self.to_import)
