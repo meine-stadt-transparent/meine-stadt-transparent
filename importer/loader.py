@@ -49,23 +49,24 @@ class SternbergLoader(BaseLoader):
         if query is None:
             query = dict()
 
+        # TODO: Better naming
         response = requests.get(url, params=query)
-        data = response.json()
+        response_json = response.json()
 
         # An error is returned when the list would have been empty
         if (
             response.status_code == 404
             and "modified_since" in query
-            and data == self.empty_list_error
+            and response_json == self.empty_list_error
         ):
-            data = self.empty_page
+            response_json = self.empty_page
         else:
             response.raise_for_status()
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
-            if "data" in data:
-                for data in data["data"]:
+            if "data" in response_json:
+                for data in response_json["data"]:
                     if "location" in data.keys() and isinstance(data["location"], dict):
                         data["location"][
                             "type"
@@ -73,49 +74,49 @@ class SternbergLoader(BaseLoader):
 
                 # There are deleted entries in unfiltered external lists (which they shouldn't) and then
                 # they don't even have type attributes (which are mandatory)
-                for entry in data["data"][:]:
+                for entry in response_json["data"][:]:
                     if entry.get("deleted") and not "type" in entry:
-                        data["data"].remove(entry)
+                        response_json["data"].remove(entry)
 
             # Add missing "type"-attributes in single bodies
-            if "location" in data.keys() and isinstance(data["location"], dict):
-                data["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in response_json.keys() and isinstance(response_json["location"], dict):
+                response_json["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Location in Person must be a url, not an object
-            if "/person" in url and "data" in data:
-                for data in data["data"]:
+            if "/person" in url and "data" in response_json:
+                for data in response_json["data"]:
                     if "location" in data and isinstance(data["location"], dict):
                         data["location"] = data["location"]["id"]
 
-            if "/organization" in url and "data" in data:
-                for data in data["data"]:
+            if "/organization" in url and "data" in response_json:
+                for data in response_json["data"]:
                     if "id" in data and "type" not in data:
                         data["type"] = "https://schema.oparl.org/1.0/Organization"
 
         if "/membership" in url:
             # If an array is returned instead of an object, we just skip all list entries except for the last one
-            if isinstance(data, list):
-                data = data[0]
+            if isinstance(response_json, list):
+                response_json = response_json[0]
 
         if "/person" in url:
-            if "location" in data and not isinstance(data["location"], str):
-                data["location"] = data["location"]["id"]
+            if "location" in response_json and not isinstance(response_json["location"], str):
+                response_json["location"] = response_json["location"]["id"]
 
         if "/meeting" in url:
-            if "location" in data and not isinstance(data["location"], str):
-                data["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in response_json and not isinstance(response_json["location"], str):
+                response_json["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
-        if data.get("type") == "https://schema.oparl.org/1.0/File":
-            if "accessUrl" in data:
-                data["accessUrl"] = data["accessUrl"].replace(
+        if response_json.get("type") == "https://schema.oparl.org/1.0/File":
+            if "accessUrl" in response_json:
+                response_json["accessUrl"] = response_json["accessUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
-            if "downloadUrl" in data:
-                data["downloadUrl"] = data["downloadUrl"].replace(
+            if "downloadUrl" in response_json:
+                response_json["downloadUrl"] = response_json["downloadUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
 
-        return data
+        return response_json
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         content, content_type = super().load_file(url)
