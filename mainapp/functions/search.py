@@ -348,14 +348,19 @@ def autocomplete(query: str) -> Response:
     "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
     """
     search_query = Search(index=list(DOCUMENT_INDICES.values()))
-    search_query.query(
-        "match", autocomplete={"query": escape_elasticsearch_query(query)}
+    search_query = search_query.query(
+        "match", autocomplete={
+            "query": escape_elasticsearch_query(query),
+            "analyzer": "standard",
+            "fuzziness": "AUTO",
+            "prefix_length": 1,
+        }
     )
-    search_query.extra(min_score=1)
-    search_query.update_from_dict(
+    search_query = search_query.extra(min_score=1)
+    search_query = search_query.update_from_dict(
         {
             "indices_boost": [
-                {DOCUMENT_INDICES["person"]: 6},
+                {DOCUMENT_INDICES["person"]: 4},
                 {DOCUMENT_INDICES["organization"]: 4},
                 {DOCUMENT_INDICES["paper"]: 2},
             ]
