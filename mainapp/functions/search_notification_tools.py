@@ -2,7 +2,7 @@ from django.urls import reverse
 from django.utils.translation import pgettext
 
 from mainapp.functions.geo_functions import latlng_to_address
-from mainapp.functions.search_tools import (
+from mainapp.functions.search import (
     NotificationSearchResult,
     params_to_search_string,
     DOCUMENT_TYPE_NAMES,

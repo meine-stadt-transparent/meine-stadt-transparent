@@ -1,0 +1,363 @@
+[
+    {
+        "model": "mainapp.person",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:48:22.296Z",
+            "modified": "2019-05-07T14:48:22.296Z",
+            "deleted": false,
+            "name": "Frank Unterholz",
+            "given_name": "Frank",
+            "family_name": "Unterholz",
+            "location": null
+        }
+    },
+    {
+        "model": "mainapp.person",
+        "pk": 2,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:48:39.266Z",
+            "modified": "2019-05-07T14:48:39.266Z",
+            "deleted": false,
+            "name": "Frank Underholz",
+            "given_name": "Frank",
+            "family_name": "Underholz",
+            "location": null
+        }
+    },
+    {
+        "model": "mainapp.file",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T15:29:28.594Z",
+            "modified": "2019-05-07T15:33:04.716Z",
+            "deleted": false,
+            "name": "Antrag zur \u00c4nderung der Satzung",
+            "filename": "antrag.pdf",
+            "mime_type": "application/pdf",
+            "legal_date": null,
+            "sort_date": "2019-05-07T15:27:30Z",
+            "filesize": null,
+            "page_count": null,
+            "parsed_text": "Lorem Ipsum Bebauungsplan",
+            "license": null,
+            "description": "",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.file",
+        "pk": 2,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T15:29:44.021Z",
+            "modified": "2019-05-07T15:29:44.021Z",
+            "deleted": false,
+            "name": "Anhang 1",
+            "filename": "anhang-1.pdf",
+            "mime_type": "application/pdf",
+            "legal_date": null,
+            "sort_date": "2019-05-07T15:29:28Z",
+            "filesize": null,
+            "page_count": null,
+            "parsed_text": "",
+            "license": null,
+            "description": "",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.file",
+        "pk": 3,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T15:38:47.564Z",
+            "modified": "2019-05-07T15:38:47.565Z",
+            "deleted": false,
+            "name": "Antrag (Frank Unterholz)",
+            "filename": "Antrag (Frank Unterholz)",
+            "mime_type": "application/pdf",
+            "legal_date": null,
+            "sort_date": "2019-05-07T15:38:39Z",
+            "filesize": null,
+            "page_count": null,
+            "parsed_text": "",
+            "license": null,
+            "description": "",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.file",
+        "pk": 4,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T15:38:59.758Z",
+            "modified": "2019-05-07T15:38:59.758Z",
+            "deleted": false,
+            "name": "Antrag (Frank Underholz)",
+            "filename": "Antrag (Frank Underholz)",
+            "mime_type": "application/pdf",
+            "legal_date": null,
+            "sort_date": "2019-05-07T15:38:47Z",
+            "filesize": null,
+            "page_count": null,
+            "parsed_text": "",
+            "license": null,
+            "description": "",
+            "oparl_access_url": null,
+            "oparl_download_url": null,
+            "locations": [],
+            "mentioned_persons": []
+        }
+    },
+    {
+        "model": "mainapp.body",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T13:34:21.841Z",
+            "modified": "2019-05-07T13:34:21.841Z",
+            "deleted": false,
+            "name": "Stadt",
+            "short_name": "Stadt",
+            "center": null,
+            "outline": null,
+            "ags": null,
+            "legislative_terms": []
+        }
+    },
+    {
+        "model": "mainapp.organizationtype",
+        "pk": 1,
+        "fields": {
+            "name": "Club"
+        }
+    },
+    {
+        "model": "mainapp.organization",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:49:14.227Z",
+            "modified": "2019-05-07T14:49:14.227Z",
+            "deleted": false,
+            "name": "Der Unterholz Club",
+            "short_name": "Club",
+            "start": null,
+            "end": null,
+            "body": 1,
+            "location": null,
+            "color": null,
+            "logo": null,
+            "organization_type": 1,
+            "legislative_terms": []
+        }
+    },
+    {
+        "model": "mainapp.organization",
+        "pk": 2,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:49:26.311Z",
+            "modified": "2019-05-07T14:49:26.311Z",
+            "deleted": false,
+            "name": "Der Underholz Club",
+            "short_name": "Club",
+            "start": null,
+            "end": null,
+            "body": 1,
+            "location": null,
+            "color": null,
+            "logo": null,
+            "organization_type": 1,
+            "legislative_terms": []
+        }
+    },
+    {
+        "model": "mainapp.meeting",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:50:11.198Z",
+            "modified": "2019-05-07T14:50:11.198Z",
+            "deleted": false,
+            "name": "Ortstermin mit Frank Unterholz",
+            "short_name": "Ortstermin",
+            "cancelled": false,
+            "start": "2019-05-07T10:00:00Z",
+            "end": null,
+            "location": null,
+            "invitation": null,
+            "results_protocol": null,
+            "verbatim_protocol": null,
+            "public": 0,
+            "organizations": [],
+            "persons": [],
+            "auxiliary_files": []
+        }
+    },
+    {
+        "model": "mainapp.meeting",
+        "pk": 2,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T14:50:30.441Z",
+            "modified": "2019-05-07T14:50:30.441Z",
+            "deleted": false,
+            "name": "Ortstermin mit Frank Underholz",
+            "short_name": "Ortstermin",
+            "cancelled": false,
+            "start": "2019-05-07T10:00:00Z",
+            "end": null,
+            "location": null,
+            "invitation": null,
+            "results_protocol": null,
+            "verbatim_protocol": null,
+            "public": 0,
+            "organizations": [],
+            "persons": [],
+            "auxiliary_files": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 1,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-04-04T14:09:57.002Z",
+            "modified": "2019-05-07T15:32:28.111Z",
+            "deleted": false,
+            "name": "Antrag zur \u00c4nderung der Satzung",
+            "short_name": "Antrag",
+            "reference_number": "1234/89",
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-04-04T14:09:57Z",
+            "main_file": 1,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": [
+                2
+            ]
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 2,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-04-04T14:09:57.002Z",
+            "modified": "2019-04-04T14:09:57.002Z",
+            "deleted": false,
+            "name": "Vorlage (Frank Unterholz)",
+            "short_name": "Vorlage",
+            "reference_number": null,
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-04-04T14:09:57.002Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 3,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-04-04T14:09:57.002Z",
+            "modified": "2019-04-04T14:09:57.002Z",
+            "deleted": false,
+            "name": "Vorlage (Frank Underholz)",
+            "short_name": "Vorlage",
+            "reference_number": null,
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-04-04T14:09:57.002Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 4,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-04-04T14:09:57.002Z",
+            "modified": "2019-04-04T14:09:57.002Z",
+            "deleted": false,
+            "name": "Bebauungsplan",
+            "short_name": "Plan",
+            "reference_number": null,
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-04-04T14:09:57.002Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 5,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-04-04T14:09:57.002Z",
+            "modified": "2019-04-04T14:09:57.002Z",
+            "deleted": false,
+            "name": "Bebaungsplan",
+            "short_name": "Plan",
+            "reference_number": null,
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-04-04T14:09:57.002Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": []
+        }
+    },
+    {
+        "model": "mainapp.paper",
+        "pk": 6,
+        "fields": {
+            "oparl_id": null,
+            "created": "2019-05-07T15:33:43.681Z",
+            "modified": "2019-05-07T15:33:43.681Z",
+            "deleted": false,
+            "name": "Bebauungsplan II",
+            "short_name": "Plan II",
+            "reference_number": null,
+            "change_request_of": null,
+            "legal_date": null,
+            "sort_date": "2019-05-07T15:33:21Z",
+            "main_file": null,
+            "paper_type": null,
+            "organizations": [],
+            "persons": [],
+            "files": []
+        }
+    }
+]

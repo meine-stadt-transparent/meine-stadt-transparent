@@ -5,11 +5,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 
 from mainapp.documents.index import elastic_index_file
-from mainapp.functions.search_tools import (
-    search_string_to_params,
-    MainappSearch,
-    parse_hit,
-)
+from mainapp.functions.search import search_string_to_params, MainappSearch, parse_hit
 
 
 class Command(BaseCommand):

@@ -1,8 +1,3 @@
-"""
-The whether the elasticsearch analyzer yields the right tokens for the german analyzer.
-
-Check the comments in mainapp.documents.index for more details
-"""
 from django.core.management.base import BaseCommand
 from elasticsearch_dsl import Index
 
@@ -10,7 +5,10 @@ from mainapp.documents.index import get_text_analyzer
 
 
 class Command(BaseCommand):
-    help = "Search for some predefined terms to check how the search is working"
+    help = "View the tokenizations of some word with the elasticsearch tokenizer"
+
+    def add_arguments(self, parser):
+        parser.add_argument("words", nargs="+")
 
     def handle(self, *args, **options):
         text_analyzer = get_text_analyzer("german")
@@ -23,18 +21,7 @@ class Command(BaseCommand):
         elastic_index.open()
         elastic_index.flush()
 
-        words = [
-            "die",
-            "hunde",
-            "wi-fi",
-            "Feuerwehr",
-            "oktopoden",
-            "Äpfel",
-            "ging",
-            "schwierigste",
-        ]
-
-        for word in words:
+        for word in options["words"]:
             analysis = elastic_index.analyze(
                 body={"analyzer": "text_analyzer", "text": word}
             )

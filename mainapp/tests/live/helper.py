@@ -1,7 +1,7 @@
 from elasticsearch_dsl import AttrList, AttrDict
 from elasticsearch_dsl.response import Hit, AggResponse
 
-from mainapp.functions.search_tools import MainappSearch
+from mainapp.functions.search import MainappSearch
 
 hit_template = {
     "_type": "file_document",

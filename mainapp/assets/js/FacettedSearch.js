@@ -52,7 +52,7 @@ export default class FacettedSearch {
     }
 
     static parseQuerystring(str) {
-        // Keep in sync with: mainapp/functions/search_tools.py
+        // Keep in sync with: mainapp/functions/search.py
         const known_params = ["document-type", "radius", "lat", "lng", "person", "organization", "after", "before", "sort"];
 
         str = str.replace(/ {2,}/, ' ').replace(/^ /, '').replace(/ $/, '');

@@ -11,7 +11,7 @@ from html2text import html2text
 
 from mainapp.functions.mail import send_mail
 from mainapp.functions.search_notification_tools import search_result_for_notification
-from mainapp.functions.search_tools import MainappSearch, parse_hit
+from mainapp.functions.search import MainappSearch, parse_hit
 from mainapp.models import UserAlert
 
 logger = logging.getLogger(__name__)

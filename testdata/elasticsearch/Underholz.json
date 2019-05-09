@@ -1,0 +1,221 @@
+{
+    "hits": {
+        "total": 10,
+        "max_score": 2.3014567,
+        "hits": [
+            {
+                "_index": "mst-test-organization",
+                "_type": "organization_document",
+                "_id": "2",
+                "_score": 2.3014567,
+                "_source": {
+                    "name": "Der Underholz Club",
+                    "id": 2
+                },
+                "highlight": {
+                    "name": [
+                        "Der <mark>Underholz</mark> Club"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-person",
+                "_type": "person_document",
+                "_id": "2",
+                "_score": 2.3014567,
+                "_source": {
+                    "name": "Frank Underholz",
+                    "id": 2
+                },
+                "highlight": {
+                    "name": [
+                        "Frank <mark>Underholz</mark>"
+                    ],
+                    "family_name": [
+                        "<mark>Underholz</mark>"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-paper",
+                "_type": "paper_document",
+                "_id": "2",
+                "_score": 1.447597,
+                "_source": {
+                    "legal_date": null,
+                    "name": "Vorlage (Frank Unterholz)",
+                    "id": 2,
+                    "reference_number": null
+                },
+                "highlight": {
+                    "name": [
+                        "Vorlage (Frank <mark>Unterholz</mark>)"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-file",
+                "_type": "file_document",
+                "_id": "4",
+                "_score": 1.3862944,
+                "_source": {
+                    "name": "Antrag (Frank Underholz)",
+                    "id": 4
+                },
+                "highlight": {
+                    "filename": [
+                        "Antrag (Frank <mark>Underholz</mark>)"
+                    ],
+                    "name": [
+                        "Antrag (Frank <mark>Underholz</mark>)"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-paper",
+                "_type": "paper_document",
+                "_id": "3",
+                "_score": 1.1507283,
+                "_source": {
+                    "legal_date": null,
+                    "name": "Vorlage (Frank Underholz)",
+                    "id": 3,
+                    "reference_number": null
+                },
+                "highlight": {
+                    "name": [
+                        "Vorlage (Frank <mark>Underholz</mark>)"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-organization",
+                "_type": "organization_document",
+                "_id": "1",
+                "_score": 1.0228697,
+                "_source": {
+                    "name": "Der Unterholz Club",
+                    "id": 1
+                },
+                "highlight": {
+                    "name": [
+                        "Der <mark>Unterholz</mark> Club"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-person",
+                "_type": "person_document",
+                "_id": "1",
+                "_score": 1.0228697,
+                "_source": {
+                    "name": "Frank Unterholz",
+                    "id": 1
+                },
+                "highlight": {
+                    "name": [
+                        "Frank <mark>Unterholz</mark>"
+                    ],
+                    "family_name": [
+                        "<mark>Unterholz</mark>"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-meeting",
+                "_type": "meeting_document",
+                "_id": "2",
+                "_score": 0.5753642,
+                "_source": {
+                    "name": "Ortstermin mit Frank Underholz",
+                    "id": 2
+                },
+                "highlight": {
+                    "name": [
+                        "Ortstermin mit Frank <mark>Underholz</mark>"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-meeting",
+                "_type": "meeting_document",
+                "_id": "1",
+                "_score": 0.25571743,
+                "_source": {
+                    "name": "Ortstermin mit Frank Unterholz",
+                    "id": 1
+                },
+                "highlight": {
+                    "name": [
+                        "Ortstermin mit Frank <mark>Unterholz</mark>"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-file",
+                "_type": "file_document",
+                "_id": "3",
+                "_score": 0.25571743,
+                "_source": {
+                    "name": "Antrag (Frank Unterholz)",
+                    "id": 3
+                },
+                "highlight": {
+                    "filename": [
+                        "Antrag (Frank <mark>Unterholz</mark>)"
+                    ],
+                    "name": [
+                        "Antrag (Frank <mark>Unterholz</mark>)"
+                    ]
+                }
+            }
+        ]
+    },
+    "aggregations": {
+        "_filter_document_type": {
+            "doc_count": 10,
+            "document_type": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": [
+                    {
+                        "key": "mst-test-file",
+                        "doc_count": 2
+                    },
+                    {
+                        "key": "mst-test-meeting",
+                        "doc_count": 2
+                    },
+                    {
+                        "key": "mst-test-organization",
+                        "doc_count": 2
+                    },
+                    {
+                        "key": "mst-test-paper",
+                        "doc_count": 2
+                    },
+                    {
+                        "key": "mst-test-person",
+                        "doc_count": 2
+                    }
+                ]
+            }
+        },
+        "_filter_person": {
+            "doc_count": 10,
+            "person": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        },
+        "_filter_organization": {
+            "doc_count": 10,
+            "organization": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        }
+    }
+}

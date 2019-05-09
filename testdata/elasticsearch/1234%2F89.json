@@ -1,0 +1,56 @@
+{
+    "hits": {
+        "total": 1,
+        "max_score": 2.3014567,
+        "hits": [
+            {
+                "_index": "mst-test-paper",
+                "_type": "paper_document",
+                "_id": "1",
+                "_score": 2.3014567,
+                "_source": {
+                    "legal_date": null,
+                    "name": "Antrag zur \u00c4nderung der Satzung",
+                    "id": 1,
+                    "reference_number": "1234/89"
+                },
+                "highlight": {
+                    "reference_number": [
+                        "<mark>1234</mark>/<mark>89</mark>"
+                    ]
+                }
+            }
+        ]
+    },
+    "aggregations": {
+        "_filter_document_type": {
+            "doc_count": 1,
+            "document_type": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": [
+                    {
+                        "key": "mst-test-paper",
+                        "doc_count": 1
+                    }
+                ]
+            }
+        },
+        "_filter_person": {
+            "doc_count": 1,
+            "person": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        },
+        "_filter_organization": {
+            "doc_count": 1,
+            "organization": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        }
+    }
+}

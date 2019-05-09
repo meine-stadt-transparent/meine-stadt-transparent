@@ -13,7 +13,7 @@ from django.views.generic import DetailView
 from requests.utils import quote
 
 from mainapp.functions.minio import minio_client, minio_file_bucket
-from mainapp.functions.search_tools import DOCUMENT_TYPE_NAMES_PL
+from mainapp.functions.search import DOCUMENT_TYPE_NAMES_PL
 from mainapp.models import (
     Body,
     File,

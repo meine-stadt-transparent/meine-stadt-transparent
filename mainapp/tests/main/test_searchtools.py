@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from mainapp.functions.search_tools import (
+from mainapp.functions.search import (
     search_string_to_params,
     params_to_search_string,
     MainappSearch,
@@ -9,53 +9,45 @@ from mainapp.functions.search_tools import (
 
 expected_params = {
     "query": {
-        "multi_match": {
-            "query": "word radius anotherword",
-            "operator": "and",
-            "fields": MULTI_MATCH_FIELDS,
-            "fuzziness": "1",
-            "prefix_length": 1,
-        }
-    },
-    "post_filter": {
-        "terms": {
-            "_index": [
-                "meine-stadt-transparent-file",
-                "meine-stadt-transparent-committee",
+        "bool": {
+            "should": [
+                {
+                    "multi_match": {
+                        "query": "word radius anotherword",
+                        "operator": "and",
+                        "fields": MULTI_MATCH_FIELDS,
+                    }
+                },
+                {
+                    "multi_match": {
+                        "query": "word radius anotherword",
+                        "operator": "and",
+                        "fields": MULTI_MATCH_FIELDS,
+                        "fuzziness": "1",
+                        "prefix_length": 1,
+                    }
+                },
             ]
         }
     },
+    "post_filter": {"terms": {"_index": ["mst-test-file", "mst-test-committee"]}},
     "indices_boost": [
-        {"meine-stadt-transparent-person": 5},
-        {"meine-stadt-transparent-organization": 4},
-        {"meine-stadt-transparent-paper": 2},
+        {"mst-test-person": 4},
+        {"mst-test-organization": 4},
+        {"mst-test-paper": 2},
     ],
-    "_source": ["id", "name"],
+    "_source": ["id", "name", "legal_date", "reference_number"],
     "aggs": {
         "_filter_document_type": {
             "filter": {"match_all": {}},
             "aggs": {"document_type": {"terms": {"field": "_index"}}},
         },
         "_filter_person": {
-            "filter": {
-                "terms": {
-                    "_index": [
-                        "meine-stadt-transparent-file",
-                        "meine-stadt-transparent-committee",
-                    ]
-                }
-            },
+            "filter": {"terms": {"_index": ["mst-test-file", "mst-test-committee"]}},
             "aggs": {"person": {"terms": {"field": "person_ids"}}},
         },
         "_filter_organization": {
-            "filter": {
-                "terms": {
-                    "_index": [
-                        "meine-stadt-transparent-file",
-                        "meine-stadt-transparent-committee",
-                    ]
-                }
-            },
+            "filter": {"terms": {"_index": ["mst-test-file", "mst-test-committee"]}},
             "aggs": {"organization": {"terms": {"field": "organization_ids"}}},
         },
     },
@@ -63,13 +55,13 @@ expected_params = {
     "highlight": {
         "fields": {
             "*": {"fragment_size": 150, "pre_tags": "<mark>", "post_tags": "</mark>"}
-        },
-        "require_field_match": False,
+        }
     },
 }
 
 
 class TestSearchtools(TestCase):
+    maxDiff = None
     params = {
         "document-type": "file,committee",
         "radius": "50",

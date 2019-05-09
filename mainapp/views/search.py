@@ -9,18 +9,16 @@ from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils.translation import ugettext as _
-from elasticsearch_dsl import Search
 
 from mainapp.functions.geo_functions import latlng_to_address
 from mainapp.functions.search_notification_tools import params_are_subscribable
-from mainapp.functions.search_tools import (
+from mainapp.functions.search import (
     search_string_to_params,
-    escape_elasticsearch_query,
     MainappSearch,
     parse_hit,
     params_to_search_string,
     DOCUMENT_TYPE_NAMES,
-    DOCUMENT_INDICES,
+    autocomplete,
 )
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
@@ -79,7 +77,6 @@ def search(request, query):
 
 
 def aggs_to_context(executed):
-    # TODO: Optimize this to get the names from elasticsearch
     new_facets_context = {}
     org = settings.SITE_DEFAULT_ORGANIZATION
     bucketing = {
@@ -125,6 +122,7 @@ def search_results_only(request, query):
     )
 
     executed = main_search.execute()
+    logger.debug("Elasticsearch query took {}ms".format(executed.took))
     results = [parse_hit(hit) for hit in executed.hits]
     context = _search_to_context(normalized, main_search, executed, results, request)
 
@@ -152,25 +150,7 @@ def search_autocomplete(_, query):
         results = [{"name": _("search disabled"), "url": reverse("index")}]
         return HttpResponse(json.dumps(results), content_type="application/json")
 
-    # https://www.elastic.co/guide/en/elasticsearch/guide/current/_index_time_search_as_you_type.html
-    # We use the ngram-based autocomplete-analyzer for indexing, but the standard analyzer for searching
-    # This way we enforce that the whole entered word has to be matched (save for some fuzziness) and the algorithm
-    # does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
-    # "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
-    search_query = (
-        Search(index=list(DOCUMENT_INDICES.values()))
-        .query(
-            "match",
-            autocomplete={
-                "query": escape_elasticsearch_query(query),
-                "analyzer": "standard",
-                "fuzziness": "AUTO",
-                "prefix_length": 1,
-            },
-        )
-        .extra(min_score=1)
-    )
-    response = search_query.execute()
+    response = autocomplete(query)
 
     multibody = Body.objects.count() > 1
 

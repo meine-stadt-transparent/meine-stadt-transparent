@@ -4,7 +4,7 @@ from typing import Dict, List
 from django.core.management.base import BaseCommand
 
 from mainapp.documents.index import elastic_index_file
-from mainapp.functions.search_tools import search_string_to_params, MainappSearch
+from mainapp.functions.search import search_string_to_params, MainappSearch
 
 
 class Command(BaseCommand):

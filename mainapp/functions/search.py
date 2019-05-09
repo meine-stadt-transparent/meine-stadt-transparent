@@ -1,3 +1,5 @@
+import json
+import logging
 from collections import namedtuple
 from typing import Dict, Optional, Any
 
@@ -7,11 +9,14 @@ from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
 from django_elasticsearch_dsl.search import Search
-from elasticsearch_dsl import Q, FacetedSearch, TermsFacet
+from elasticsearch_dsl import Q, FacetedSearch, TermsFacet, Search, AttrDict
+from elasticsearch_dsl.query import Bool, MultiMatch
+from elasticsearch_dsl.response import Response
 from requests.utils import quote
 
 from mainapp.functions.geo_functions import latlng_to_address
 
+logger = logging.getLogger(__name__)
 
 DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
 DOCUMENT_INDICES = {
@@ -58,6 +63,7 @@ MULTI_MATCH_FIELDS = [
     "parsed_text^0.5",
     "short_name",
     "type",
+    "reference_number",
 ]
 
 NotificationSearchResult = namedtuple(
@@ -119,30 +125,40 @@ class MainappSearch(FacetedSearch):
         super().__init__(self.params.get("searchterm"), filters, sort)
 
     def highlight(self, search):
-        search = search.highlight_options(require_field_match=False)
+        # TODO: Why did we have this?
+        # search = search.highlight_options(require_field_match=False)
         search = search.highlight(
             "*", fragment_size=150, pre_tags="<mark>", post_tags="</mark>"
         )
         return search
 
-    def query(self, search: Search, query):
+    def query(self, search: Search, query: str) -> Search:
         if query:
             self.options["searchterm"] = query
             # Fuzzines AUTO(=2) gives more error tolerance, but is also a lot slower and has many false positives
+            # We're using https://stackoverflow.com/a/35375562/3549270 to make exact matches score higher than fuzzy
+            # matches
             search = search.query(
-                "multi_match",
-                **{
-                    "query": escape_elasticsearch_query(query),
-                    "operator": "and",
-                    "fields": self.fields,
-                    "fuzziness": "1",
-                    "prefix_length": 1,
-                }
+                Bool(
+                    should=[
+                        MultiMatch(
+                            query=escape_elasticsearch_query(query),
+                            operator="and",
+                            fields=self.fields,
+                        ),
+                        MultiMatch(
+                            query=escape_elasticsearch_query(query),
+                            operator="and",
+                            fields=self.fields,
+                            fuzziness="1",
+                            prefix_length=1,
+                        ),
+                    ]
+                )
             )
-
         return search
 
-    def search(self):
+    def search(self) -> Search:
         search = super().search()  # type: Search
         try:
             lat = float(self.params.get("lat", ""))
@@ -169,15 +185,15 @@ class MainappSearch(FacetedSearch):
 
         # indices_boost: Titles often repeat the organization name and the test contains person names, but
         # when searching for those proper nouns, the person/organization itself should be at the top
-        # _source: Take only the fields we use (highlights are extra)
+        # _source: Take only the fields we use, and especially ignore the huge parsed_text
         search.update_from_dict(
             {
                 "indices_boost": [
-                    {DOCUMENT_INDICES["person"]: 5},
+                    {DOCUMENT_INDICES["person"]: 4},
                     {DOCUMENT_INDICES["organization"]: 4},
                     {DOCUMENT_INDICES["paper"]: 2},
                 ],
-                "_source": ["id", "name"],
+                "_source": ["id", "name", "legal_date", "reference_number"],
             }
         )
 
@@ -188,6 +204,12 @@ class MainappSearch(FacetedSearch):
             else:
                 search = search[: self.limit]
 
+        return search
+
+    def build_search(self) -> Search:
+        search = super().build_search()
+        if logger.isEnabledFor(logging.DEBUG):
+            logger.debug("Elasticsearch query: {}".format(json.dumps(search.to_dict())))
         return search
 
 
@@ -229,11 +251,13 @@ def _add_date_before(search, params, options, errors):
     return search
 
 
-def escape_elasticsearch_query(query):
+def escape_elasticsearch_query(query: str) -> str:
     return query.replace("/", "\/")
 
 
-def html_escape_highlight(highlight):
+def html_escape_highlight(highlight: Optional[str]) -> Optional[str]:
+    if not highlight:
+        return None
     escaped = escape(highlight)
     escaped = escaped.replace("&lt;mark&gt;", "<mark>").replace(
         "&lt;/mark&gt;", "</mark>"
@@ -241,7 +265,7 @@ def html_escape_highlight(highlight):
     return escaped
 
 
-def search_string_to_params(query: str):
+def search_string_to_params(query: str) -> Dict[str, Any]:
     query = query.replace("  ", " ").strip(
         " "
     )  # Normalize so we don't get empty splits
@@ -259,7 +283,7 @@ def search_string_to_params(query: str):
     return params
 
 
-def params_to_search_string(params: dict):
+def params_to_search_string(params: Dict[str, Any]) -> str:
     values = []
     for key, value in sorted(params.items()):
         if key != "searchterm":
@@ -277,6 +301,8 @@ def get_highlights(hit, parsed):
             for field_highlight in field_highlights:
                 if field_name == "name":
                     parsed["name"] = field_highlight
+                elif field_name == "reference_number":
+                    parsed["reference_number"] = field_highlight
                 elif field_name == "short_name":
                     pass
                 else:
@@ -284,8 +310,8 @@ def get_highlights(hit, parsed):
     return highlights
 
 
-def parse_hit(hit, highlighting: bool = True) -> Dict[str, Any]:
-    parsed = hit.to_dict()
+def parse_hit(hit: AttrDict, highlighting: bool = True) -> Dict[str, Any]:
+    parsed = hit.to_dict()  # Adds name and reference_number if available
     parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
     parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
     parsed["url"] = reverse(parsed["type"], args=[hit.id])
@@ -301,9 +327,39 @@ def parse_hit(hit, highlighting: bool = True) -> Dict[str, Any]:
         else:
             parsed["highlight"] = None
             parsed["highlight_extracted"] = None
-        parsed["name_escaped"] = html_escape_highlight(parsed["name"])
 
         if hit.type == "file" and hit.highlight_extracted:
             parsed["url"] += "?pdfjs_search=" + quote(parsed["highlight_extracted"])
 
+    parsed["name_escaped"] = html_escape_highlight(parsed["name"])
+    parsed["reference_number_escaped"] = html_escape_highlight(
+        parsed.get("reference_number")
+    )
+
     return parsed
+
+
+def autocomplete(query: str) -> Response:
+    """
+    https://www.elastic.co/guide/en/elasticsearch/guide/current/_index_time_search_as_you_type.html
+    We use the ngram-based autocomplete-analyzer for indexing, but the standard analyzer for searching
+    This way we enforce that the whole entered word has to be matched (save for some fuzziness) and the algorithm
+    does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
+    "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
+    """
+    search_query = Search(index=list(DOCUMENT_INDICES.values()))
+    search_query.query(
+        "match", autocomplete={"query": escape_elasticsearch_query(query)}
+    )
+    search_query.extra(min_score=1)
+    search_query.update_from_dict(
+        {
+            "indices_boost": [
+                {DOCUMENT_INDICES["person"]: 6},
+                {DOCUMENT_INDICES["organization"]: 4},
+                {DOCUMENT_INDICES["paper"]: 2},
+            ]
+        }
+    )
+    response = search_query.execute()
+    return response

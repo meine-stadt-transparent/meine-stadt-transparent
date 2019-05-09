@@ -15,6 +15,12 @@
                             aria-hidden="true">
                         </span>
                         <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
+
+                        {% if result.reference_number_escaped %}
+                            <span>|</span>
+                            <span>{{ result.reference_number_escaped | safe }}</span>
+                        {% endif %}
+
                         {% if result.legal_date %}
                             <span>|</span>
                             <span>{{ result.legal_date }}</span>
