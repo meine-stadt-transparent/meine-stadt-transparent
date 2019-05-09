@@ -50,23 +50,26 @@ class SternbergLoader(BaseLoader):
             query = dict()
 
         # TODO: Better naming
-        response = requests.get(url, params=query)
-        response_json = response.json()
+        request_response = requests.get(url, params=query)
+        response = request_response.json()
 
         # An error is returned when the list would have been empty
         if (
-            response.status_code == 404
+            request_response.status_code == 404
             and "modified_since" in query
-            and response_json == self.empty_list_error
+            and response == self.empty_list_error
         ):
-            response_json = self.empty_page
+            response = self.empty_page
         else:
-            response.raise_for_status()
+            request_response.raise_for_status()
+
+        # TODO: Temporary for weirdness
+        logger.info("{}".format(response))
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
-            if "data" in response_json:
-                for data in response_json["data"]:
+            if "data" in response:
+                for data in response["data"]:
                     if "location" in data.keys() and isinstance(data["location"], dict):
                         data["location"][
                             "type"
@@ -74,49 +77,49 @@ class SternbergLoader(BaseLoader):
 
                 # There are deleted entries in unfiltered external lists (which they shouldn't) and then
                 # they don't even have type attributes (which are mandatory)
-                for entry in response_json["data"][:]:
+                for entry in response["data"][:]:
                     if entry.get("deleted") and not "type" in entry:
-                        response_json["data"].remove(entry)
+                        response["data"].remove(entry)
 
             # Add missing "type"-attributes in single bodies
-            if "location" in response_json.keys() and isinstance(response_json["location"], dict):
-                response_json["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in response.keys() and isinstance(response["location"], dict):
+                response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
             # Location in Person must be a url, not an object
-            if "/person" in url and "data" in response_json:
-                for data in response_json["data"]:
+            if "/person" in url and "data" in response:
+                for data in response["data"]:
                     if "location" in data and isinstance(data["location"], dict):
                         data["location"] = data["location"]["id"]
 
-            if "/organization" in url and "data" in response_json:
-                for data in response_json["data"]:
+            if "/organization" in url and "data" in response:
+                for data in response["data"]:
                     if "id" in data and "type" not in data:
                         data["type"] = "https://schema.oparl.org/1.0/Organization"
 
         if "/membership" in url:
             # If an array is returned instead of an object, we just skip all list entries except for the last one
-            if isinstance(response_json, list):
-                response_json = response_json[0]
+            if isinstance(response, list):
+                response = response[0]
 
         if "/person" in url:
-            if "location" in response_json and not isinstance(response_json["location"], str):
-                response_json["location"] = response_json["location"]["id"]
+            if "location" in response and not isinstance(response["location"], str):
+                response["location"] = response["location"]["id"]
 
         if "/meeting" in url:
-            if "location" in response_json and not isinstance(response_json["location"], str):
-                response_json["location"]["type"] = "https://schema.oparl.org/1.0/Location"
+            if "location" in response and not isinstance(response["location"], str):
+                response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
-        if response_json.get("type") == "https://schema.oparl.org/1.0/File":
-            if "accessUrl" in response_json:
-                response_json["accessUrl"] = response_json["accessUrl"].replace(
+        if response.get("type") == "https://schema.oparl.org/1.0/File":
+            if "accessUrl" in response:
+                response["accessUrl"] = response["accessUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
-            if "downloadUrl" in response_json:
-                response_json["downloadUrl"] = response_json["downloadUrl"].replace(
+            if "downloadUrl" in response:
+                response["downloadUrl"] = response["downloadUrl"].replace(
                     r"files//rim", r"files/rim"
                 )
 
-        return response_json
+        return response
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         content, content_type = super().load_file(url)
