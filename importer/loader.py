@@ -53,7 +53,7 @@ class SternbergLoader(BaseLoader):
         request_response = requests.get(url, params=query)
         response = request_response.json()
 
-        # An error is returned when the list would have been empty
+        # Sometimes, an error is returned when the list would have been empty
         if (
             request_response.status_code == 404
             and "modified_since" in query
@@ -63,8 +63,9 @@ class SternbergLoader(BaseLoader):
         else:
             request_response.raise_for_status()
 
-        # TODO: Temporary for weirdness
-        logger.info("{}".format(response))
+        # Sometime, an empty list is returned instead of an object with an empty list
+        if "modified_since" in query and response == []:
+            response = self.empty_page
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
