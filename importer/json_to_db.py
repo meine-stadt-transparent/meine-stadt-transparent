@@ -161,8 +161,8 @@ class JsonToDb:
         else:
             if warn and self.warn_missing and object_type != Location:
                 logger.warning(
-                    "Object {} was supposed to be a part of the external lists, but isn't".format(
-                        oparl_id
+                    "{} {} was supposed to be a part of the external lists, but isn't".format(
+                        object_type, oparl_id
                     )
                 )
 
