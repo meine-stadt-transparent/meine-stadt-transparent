@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/system",
+    "name": "Gemeinde N\u00f6rvenich",
+    "ags": "5358052",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Gemeinde N\u00f6rvenich ",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4160/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.809201000000002,
+                    6.6424050000000001
+                ]
+            }
+        },
+        "streetAddress": "Bahnhofstra\u00dfe 25",
+        "postalCode": "52388\u00a0",
+        "locality": "N\u00f6rvenich"
+    }
+}

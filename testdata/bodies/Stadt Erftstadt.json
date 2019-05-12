@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/system",
+    "name": "Stadt Erftstadt",
+    "ags": "5362020",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Stadt Erftstadt ",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.802509000000001,
+                    6.815131
+                ]
+            }
+        },
+        "streetAddress": "Holzdamm 10",
+        "postalCode": "50374",
+        "locality": "Erftstadt"
+    }
+}

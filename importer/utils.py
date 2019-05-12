@@ -63,10 +63,8 @@ class Utils:
         date_as_datime = datetime.combine(data, datetime.min.time())
         return date_as_datime.replace(tzinfo=current_timezone)
 
-    def normalize_body_name(self, body: Body) -> None:
+    def normalize_body_name(self, short_name: str) -> str:
         """ Cuts away e.g. "Stadt" from "Stadt Leipzig" and normalizes the spaces """
-        name = body.short_name
         for affix in settings.CITY_AFFIXES:
-            name = name.replace(affix, "")
-        name = re.sub(" +", " ", name).strip()
-        body.short_name = name
+            short_name = short_name.replace(affix, "")
+        return re.sub(" +", " ", short_name).strip()

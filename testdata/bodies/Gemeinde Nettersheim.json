@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Nettersheim",
+    "ags": "5366032",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Gemeinde Nettersheim",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4580/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.509050000000002,
+                    6.6562130000000002
+                ]
+            }
+        },
+        "streetAddress": "Krausstra\u00dfe 2",
+        "postalCode": "53947",
+        "locality": "Nettersheim"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "id": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://ris.krefeld.de/webservice/oparl/v1.0/system",
+    "name": "Stadt Krefeld",
+    "website": "https://www.krefeld.de",
+    "ags": "051140000",
+    "rgs": "051140000000",
+    "contactEmail": "ratundehrenamt@krefeld.de",
+    "contactName": "Karsten Sch\u00fcller",
+    "organization": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location"
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "id": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Leopoldsh\u00f6he",
+    "organization": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1/organization",
+    "person": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1/person",
+    "meeting": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "http://leopoldshoehe.ratsinfomanagement.net/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location"
+    }
+}

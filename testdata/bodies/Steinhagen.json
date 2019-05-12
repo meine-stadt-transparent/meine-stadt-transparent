@@ -1,0 +1,36 @@
+{
+    "id": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Steinhagen",
+    "website": "www.steinhagen.de",
+    "ags": "05754040",
+    "rgs": "057540040040",
+    "equivalent": [
+        "www.gemeinde-steinhagen.de"
+    ],
+    "contactEmail": "Internet@steinhagen.de",
+    "contactName": "Internetredaktion der Gemeinde Steinhagen",
+    "organization": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://ratsinfo.steinhagen.de/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    52,
+                    8
+                ]
+            }
+        },
+        "streetAddress": "Am Pulverbach 25",
+        "postalCode": "33803",
+        "subLocality": "Steinhagen",
+        "locality": "Steinhagen"
+    }
+}

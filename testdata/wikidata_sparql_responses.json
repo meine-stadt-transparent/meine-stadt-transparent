@@ -1,0 +1,292 @@
+[
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Euskirchen\". }\n  UNION\n  { ?city rdfs:label \"Euskirchen\"@de. }\n  UNION\n  { ?city rdfs:label \"Euskirchen\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": [
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q6280"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "05366"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Kreis Euskirchen"
+                        }
+                    },
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q4074"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "05366016"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Euskirchen"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"KT\". }\n  UNION\n  { ?city rdfs:label \"KT\"@de. }\n  UNION\n  { ?city rdfs:label \"KT\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": []
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp?id=1\". }\n  UNION\n  { ?city rdfs:label \"http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp?id=1\"@de. }\n  UNION\n  { ?city rdfs:label \"http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp?id=1\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": []
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Landkreis M\u00e4rkisch-Oderland\". }\n  UNION\n  { ?city rdfs:label \"Landkreis M\u00e4rkisch-Oderland\"@de. }\n  UNION\n  { ?city rdfs:label \"Landkreis M\u00e4rkisch-Oderland\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": [
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q6181"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "12064"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Landkreis M\u00e4rkisch-Oderland"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Leopoldsh\u00f6he\". }\n  UNION\n  { ?city rdfs:label \"Leopoldsh\u00f6he\"@de. }\n  UNION\n  { ?city rdfs:label \"Leopoldsh\u00f6he\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": [
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q242385"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "05766048"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Leopoldsh\u00f6he"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Rat\". }\n  UNION\n  { ?city rdfs:label \"Rat\"@de. }\n  UNION\n  { ?city rdfs:label \"Rat\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": []
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"http://ratsinfo.erkelenz.de/bi/oparl/1.0/bodies.asp?id=1\". }\n  UNION\n  { ?city rdfs:label \"http://ratsinfo.erkelenz.de/bi/oparl/1.0/bodies.asp?id=1\"@de. }\n  UNION\n  { ?city rdfs:label \"http://ratsinfo.erkelenz.de/bi/oparl/1.0/bodies.asp?id=1\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": []
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Rat der Stadt Erkelenz\". }\n  UNION\n  { ?city rdfs:label \"Rat der Stadt Erkelenz\"@de. }\n  UNION\n  { ?city rdfs:label \"Rat der Stadt Erkelenz\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": []
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Erkelenz\". }\n  UNION\n  { ?city rdfs:label \"Erkelenz\"@de. }\n  UNION\n  { ?city rdfs:label \"Erkelenz\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": [
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q7025"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "05370004"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Erkelenz"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "params": {
+            "format": "json",
+            "query": "\nSELECT DISTINCT ?city ?cityLabel ?ags WHERE {\n  { ?city rdfs:label \"Leipzig\". }\n  UNION\n  { ?city rdfs:label \"Leipzig\"@de. }\n  UNION\n  { ?city rdfs:label \"Leipzig\"@en. }\n  { ?city wdt:P440 ?ags. }\n  UNION\n  { ?city wdt:P439 ?ags. }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\n"
+        },
+        "response": {
+            "head": {
+                "vars": [
+                    "city",
+                    "cityLabel",
+                    "ags"
+                ]
+            },
+            "results": {
+                "bindings": [
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q2079"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "14713"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Leipzig"
+                        }
+                    },
+                    {
+                        "city": {
+                            "type": "uri",
+                            "value": "http://www.wikidata.org/entity/Q2079"
+                        },
+                        "ags": {
+                            "type": "literal",
+                            "value": "14713000"
+                        },
+                        "cityLabel": {
+                            "xml:lang": "de",
+                            "type": "literal",
+                            "value": "Leipzig"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+]

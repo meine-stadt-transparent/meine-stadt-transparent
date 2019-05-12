@@ -1,0 +1,13 @@
+{
+    "id": "https://ratsinfo.leipzig.de/bi/oparl/1.0/system.asp",
+    "type": "https://schema.oparl.org/1.0/System",
+    "oparlVersion": "https://schema.oparl.org/1.0/",
+    "license": "Datenlizenz Deutschland Namensnennung 2.0",
+    "body": "https://ratsinfo.leipzig.de/bi/oparl/1.0/bodies.asp",
+    "name": "N/A",
+    "contactName": "Stadt Leipzig",
+    "contactEmail": "katrin.roehner@lecos.de",
+    "website": "N/A",
+    "vendor": "http://cc-egov.de/",
+    "product": "http://cc-egov.de/produkte/allris"
+}

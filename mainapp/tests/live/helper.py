@@ -59,7 +59,7 @@ class MockMainappSearch(MainappSearch):
     """ The execute method is injected in the test methods """
 
     def execute(self):
-        hits = AttrList([Hit(template)])
+        hits = AttrList([Hit(template.copy())])
         hits.__setattr__("total", 1)
         return AttrDict({"hits": hits, "facets": get_aggregations()})
 
@@ -79,9 +79,15 @@ class MockMainappSearchEndlessScroll(MainappSearch):
         ):
             result = template.copy()
             result["highlight"] = {"name": ["<mark>" + str(position) + "</mark>"]}
-            result["fields"]["name"] = str(position)
-            result["fields"]["name_escaped"] = str(position)
-            result["fields"]["id"] = position
+            result["fields"] = {
+                "id": position,
+                "name": str(position),
+                "name_escaped": str(position),
+                "type": "file",
+                "type_translated": "File",
+                "created": "2017-11-24T09:06:05.159381+00:00",
+                "modified": "2017-12-01T10:56:37.297771+00:00",
+            }
             out.append(Hit(result))
         hits = AttrList(out)
         hits.__setattr__("total", len(out) * 2)

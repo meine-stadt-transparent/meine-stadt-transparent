@@ -14,6 +14,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("cityname")
+        parser.add_argument("--ags", help="The Amtliche Gemeindeschlüssel")
         parser.add_argument(
             "--mirror",
             action="store_true",
@@ -37,4 +38,4 @@ class Command(BaseCommand):
             [body] = importer.import_bodies()
             logger.info("The body id is {}".format(body.id))
         else:
-            cli.import_body_and_metadata(body_id, importer, userinput)
+            cli.import_body_and_metadata(body_id, importer, userinput, options["ags"])

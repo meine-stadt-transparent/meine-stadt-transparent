@@ -47,7 +47,10 @@ class TestImporter(TestCase):
                     if entry.data["id"] not in cls.api_data:
                         cls.api_data[entry.data["id"]] = entry.data
 
-        cls.converter = JsonToDb(cls.loader)
+        # Used by test_location_default_body
+        body = Body()
+        body.short_name = "München"
+        cls.converter = JsonToDb(cls.loader, default_body=body)
         cls.converter.warn_missing = False
         cls.utils = Utils()
 
@@ -72,8 +75,8 @@ class TestImporter(TestCase):
     @mock.patch("mainapp.functions.document_parsing.geocode", new=geocode)
     def test_location(self):
         location = Location()
-        liboject = self.api_data["https://oparl.example.org/location/0"]
-        self.converter.location(liboject, location)
+        libobject = self.api_data["https://oparl.example.org/location/0"]
+        self.converter.location(libobject, location)
         self.assertEqual(
             location.description,
             "Deutscher Bundestag, Platz der Republik 1, 11011 Berlin",
@@ -87,6 +90,22 @@ class TestImporter(TestCase):
         self.assertTrue(location.is_official)
         self.assertAlmostEqual(location.coordinates()["lat"], 52.518855)
         self.assertAlmostEqual(location.coordinates()["lon"], 13.376198)
+
+    def test_location_default_body(self):
+        """ Test that the default body is used when locality isn't given """
+        city_center = {"coordinates": [48.1375, 11.575833], "type": "Point"}
+
+        def geocode_city_center(search_str: str) -> dict:
+            if search_str == "Marienplatz 1, München Deutschland":
+                return city_center
+            else:
+                raise AssertionError(search_str)
+
+        with mock.patch("importer.json_to_db.geocode", new=geocode_city_center):
+            location = Location()
+            libobject = {"streetAddress": "Marienplatz 1"}
+            self.converter.location(libobject, location)
+            self.assertEqual(location.geometry, city_center)
 
     def test_legislative_term(self):
         term = LegislativeTerm()

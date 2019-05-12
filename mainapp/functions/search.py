@@ -349,12 +349,13 @@ def autocomplete(query: str) -> Response:
     """
     search_query = Search(index=list(DOCUMENT_INDICES.values()))
     search_query = search_query.query(
-        "match", autocomplete={
+        "match",
+        autocomplete={
             "query": escape_elasticsearch_query(query),
             "analyzer": "standard",
             "fuzziness": "AUTO",
             "prefix_length": 1,
-        }
+        },
     )
     search_query = search_query.extra(min_score=1)
     search_query = search_query.update_from_dict(

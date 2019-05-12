@@ -1,0 +1,29 @@
+{
+    "id": "https://ratsinfo.leipzig.de/bi/oparl/1.0/bodies.asp?id=2387",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://ratsinfo.leipzig.de/bi/oparl/1.0/system.asp",
+    "name": "Stadt Leipzig",
+    "shortName": "",
+    "organization": "https://ratsinfo.leipzig.de/bi/oparl/1.0/organizations.asp?body=2387",
+    "person": "https://ratsinfo.leipzig.de/bi/oparl/1.0/persons.asp?body=2387",
+    "meeting": "https://ratsinfo.leipzig.de/bi/oparl/1.0/meetings.asp?body=2387",
+    "paper": "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387",
+    "legislativeTerm": [
+        {
+            "id": "https://ratsinfo.leipzig.de/bi/oparl/1.0/legislativeTerms.asp?id=1",
+            "type": "https://schema.oparl.org/1.0/LegislativeTerm",
+            "name": "Wahlperiode V",
+            "startDate": "2009-11-11",
+            "endDate": "2014-12-17"
+        },
+        {
+            "id": "https://ratsinfo.leipzig.de/bi/oparl/1.0/legislativeTerms.asp?id=2",
+            "type": "https://schema.oparl.org/1.0/LegislativeTerm",
+            "name": "Wahlperiode VI",
+            "startDate": "2014-12-18",
+            "endDate": "2019-05-31"
+        }
+    ],
+    "created": "",
+    "modified": "2018-12-17T14:48:52+01:00"
+}

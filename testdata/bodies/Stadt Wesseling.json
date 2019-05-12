@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/system",
+    "name": "Stadt Wesseling",
+    "ags": "5362040",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Stadt Wesseling ",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4420/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.824970999999998,
+                    6.9819800000000001
+                ]
+            }
+        },
+        "streetAddress": "Alfons-M\u00fcller-Platz 1",
+        "postalCode": "50389\u00a0",
+        "locality": "Wesseling"
+    }
+}

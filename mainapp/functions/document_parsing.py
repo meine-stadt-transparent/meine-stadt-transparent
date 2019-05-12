@@ -206,12 +206,13 @@ def format_location_name(location: Dict[str, str]) -> str:
 
 
 def extract_locations(
-    text: str,
-    fallback_city: Optional[str] = settings.GEOEXTRACT_DEFAULT_CITY,
-    pipeline: Optional[AddressPipeline] = None,
+    text: str, fallback_city: Optional[str], pipeline: Optional[AddressPipeline] = None
 ) -> List[Location]:
     if not text:
         return []
+
+    if not fallback_city:
+        fallback_city = Body.objects.get(id=settings.SITE_DEFAULT_BODY).short_name
 
     if not pipeline:
         pipeline = AddressPipeline(create_geoextract_data())

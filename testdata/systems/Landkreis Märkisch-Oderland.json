@@ -1,0 +1,13 @@
+{
+    "id": "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/system.asp",
+    "type": "https://schema.oparl.org/1.0/System",
+    "oparlVersion": "https://schema.oparl.org/1.0/",
+    "license": "Nutzung nur nach Genehmigung.",
+    "body": "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp",
+    "name": "Landkreis M\u00e4rkisch-Oderland",
+    "contactName": "Landkreis M\u00e4rkisch-Oderland - Kreistagsb\u00fcro",
+    "contactEmail": "buero_kreistag@landkreismol.de",
+    "website": "http://ratsinfo-online.net/landkreis-mol-bi/",
+    "vendor": "http://cc-egov.de/",
+    "product": "http://cc-egov.de/produkte/allris"
+}

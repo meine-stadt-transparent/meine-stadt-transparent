@@ -1,0 +1,19 @@
+{
+    "id": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://ris.schwalmtal.de/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Schwalmtal",
+    "website": "http://www.schwalmtal.de",
+    "ags": "05166024",
+    "rgs": "051660024024",
+    "contactEmail": "info@gemeinde-schwalmtal.de",
+    "contactName": "Sabine H\u00f6pfner",
+    "organization": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://ris.schwalmtal.de/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location"
+    }
+}

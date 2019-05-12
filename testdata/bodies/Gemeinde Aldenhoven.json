@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Aldenhoven",
+    "ags": "05358004",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Gemeinde Aldenhoven",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4210/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.893732,
+                    6.2835099999999997
+                ]
+            }
+        },
+        "streetAddress": "Dietrich-M\u00fclfahrt-Stra\u00dfe 11-13",
+        "postalCode": "52457",
+        "locality": "Aldenhoven"
+    }
+}

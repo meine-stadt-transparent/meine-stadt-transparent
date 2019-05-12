@@ -13,7 +13,8 @@ class Command(BaseCommand):
             action="store_true",
             help="Use the oparl mirror instead of the original oparl api",
         )
+        parser.add_argument("--ags", help="The Amtliche Gemeindeschlüssel")
 
     def handle(self, *args, **options):
         cli = Cli()
-        cli.from_userinput(options["cityname"], options["mirror"])
+        cli.from_userinput(options["cityname"], options["mirror"], options["ags"])

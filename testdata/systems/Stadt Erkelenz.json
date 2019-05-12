@@ -1,0 +1,13 @@
+{
+    "id": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/system.asp",
+    "type": "https://schema.oparl.org/1.0/System",
+    "oparlVersion": "https://schema.oparl.org/1.0/",
+    "license": "Nutzung nur nach Genehmigung.",
+    "body": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/bodies.asp",
+    "name": "Stadt Erkelenz",
+    "contactName": "Stadt Erkelenz - Jos\u00e9 Coenen",
+    "contactEmail": "jose.coenen@erkelenz.de",
+    "website": "http://ratsinfo.erkelenz.de/bi/",
+    "vendor": "http://cc-egov.de/",
+    "product": "http://cc-egov.de/produkte/allris"
+}

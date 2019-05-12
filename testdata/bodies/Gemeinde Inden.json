@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Inden",
+    "ags": "5358020",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Stadt Inden",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4230/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.846313000000002,
+                    6.3585279999999997
+                ]
+            }
+        },
+        "streetAddress": "Rathausstra\u00dfe 1",
+        "postalCode": "52459\u00a0",
+        "locality": "Inden"
+    }
+}

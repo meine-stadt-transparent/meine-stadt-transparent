@@ -1,0 +1,13 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/system",
+    "type": "https://schema.oparl.org/1.0/System",
+    "oparlVersion": "https://schema.oparl.org/1.0/",
+    "body": "https://sdnetrim.kdvz-frechen.de/rim4490/webservice/oparl/v1.0/body",
+    "name": "SD.NET RIM",
+    "contactEmail": "info@sternberg24.de",
+    "contactName": "STERNBERG Software GmbH & Co. KG",
+    "website": "https://www.ratsinfomanagement.net/",
+    "vendor": "https://www.sitzungsdienst.net/",
+    "product": "https://www.sitzungsdienst.net/produkte/gremieninformationssystem/oparl-schnittstelle/",
+    "STERNBERG:RIMVersion": "4.7.3a"
+}

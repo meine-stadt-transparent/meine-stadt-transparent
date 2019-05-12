@@ -6,7 +6,7 @@ from importer.importer import Importer
 from importer.json_to_db import JsonToDb
 from importer.tests.utils import MockLoader
 from importer.utils import Utils
-from mainapp.models import Body, Membership, Person, Organization
+from mainapp.models import Membership, Person, Organization
 
 test_data_dir = "testdata/oparl2"
 
@@ -41,18 +41,11 @@ class TestFunctions(TestCase):
 
     def test_normalize_body_name(self):
         utils = Utils()
-        body = Body()
-        body.short_name = "Stadt  Bedburg"
-        utils.normalize_body_name(body)
-        self.assertEqual("Bedburg", body.short_name)
-
-        body.short_name = "Leipzig"
-        utils.normalize_body_name(body)
-        self.assertEqual("Leipzig", body.short_name)
-
-        body.short_name = "Stadt Bad  Münstereifel "
-        utils.normalize_body_name(body)
-        self.assertEqual("Bad Münstereifel", body.short_name)
+        self.assertEqual("Bedburg", utils.normalize_body_name("Stadt  Bedburg"))
+        self.assertEqual("Leipzig", utils.normalize_body_name("Leipzig"))
+        self.assertEqual(
+            "Bad Münstereifel", utils.normalize_body_name("Stadt Bad  Münstereifel ")
+        )
 
     def test_person_only_name(self):
         data = {

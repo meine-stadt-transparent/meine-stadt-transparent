@@ -1,0 +1,118 @@
+{
+    "Gemeinde Aldenhoven.json": {
+        "ags": "05358004",
+        "short_name": "Aldenhoven"
+    },
+    "Gemeinde Hürtgenwald.json": {
+        "ags": "05358016",
+        "short_name": "Hürtgenwald"
+    },
+    "Gemeinde Inden.json": {
+        "ags": "05358020",
+        "short_name": "Inden"
+    },
+    "Gemeinde Kall.json": {
+        "ags": "05366024",
+        "short_name": "Kall"
+    },
+    "Gemeinde Kreuzau.json": {
+        "ags": "05358028",
+        "short_name": "Kreuzau"
+    },
+    "Gemeinde Langerwehe.json": {
+        "ags": "05358032",
+        "short_name": "Langerwehe"
+    },
+    "Gemeinde Merzenich.json": {
+        "ags": "05358040",
+        "short_name": "Merzenich"
+    },
+    "Gemeinde Nettersheim.json": {
+        "ags": "05366032",
+        "short_name": "Nettersheim"
+    },
+    "Gemeinde Nörvenich.json": {
+        "ags": "05358052",
+        "short_name": "Nörvenich"
+    },
+    "Gemeinde Schwalmtal.json": {
+        "ags": "05166024",
+        "short_name": "Schwalmtal"
+    },
+    "Gemeinde Titz.json": {
+        "ags": "05358056",
+        "short_name": "Titz"
+    },
+    "Gemeinde Vettweiß.json": {
+        "ags": "05358060",
+        "short_name": "Vettweiß"
+    },
+    "Gemeinde Weilerswist.json": {
+        "ags": "05366040",
+        "short_name": "Weilerswist"
+    },
+    "Kolpingstadt Kerpen.json": {
+        "ags": "05362032",
+        "short_name": "Kolpingstadt Kerpen"
+    },
+    "Kreisverwaltung Euskirchen.json": {
+        "ags": "05366",
+        "short_name": "Euskirchen"
+    },
+    "Landkreis Märkisch-Oderland.json": {
+        "ags": "12064",
+        "short_name": "Landkreis Märkisch-Oderland"
+    },
+    "Leopoldshöhe.json": {
+        "ags": "05766048",
+        "short_name": "Leopoldshöhe"
+    },
+    "Stadt Bad Münstereifel.json": {
+        "ags": "05366004",
+        "short_name": "Bad Münstereifel"
+    },
+    "Stadt Bedburg.json": {
+        "ags": "05362004",
+        "short_name": "Bedburg"
+    },
+    "Stadt Brühl.json": {
+        "ags": "05362012",
+        "short_name": "Brühl"
+    },
+    "Stadt Erftstadt.json": {
+        "ags": "05362020",
+        "short_name": "Erftstadt"
+    },
+    "Stadt Erkelenz.json": {
+        "ags": "05370004",
+        "short_name": "Erkelenz"
+    },
+    "Stadt Jülich.json": {
+        "ags": "05358024",
+        "short_name": "Jülich"
+    },
+    "Stadt Krefeld.json": {
+        "ags": "051140000",
+        "short_name": "Krefeld"
+    },
+    "Stadt Leipzig.json": {
+        "ags": "14713000",
+        "short_name": "Leipzig"
+    },
+    "Stadt Linnich.json": {
+        "ags": "05358036",
+        "short_name": "Linnich"
+    },
+    "Stadt Wesseling.json": {
+        "ags": "05362040",
+        "short_name": "Wesseling"
+    },
+    "Stadt Willich.json": {
+        "ags": "05166036",
+        "short_name": "Willich"
+    },
+    "Steinhagen.json": {
+        "ags": "05754040",
+        "short_name": "Steinhagen"
+    }
+}

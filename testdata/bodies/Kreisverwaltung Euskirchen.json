@@ -1,0 +1,29 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/system",
+    "name": "Kreisverwaltung Euskirchen",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Kreis Euskirchen",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4520/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.670915000000001,
+                    6.7854450000000002
+                ]
+            }
+        },
+        "streetAddress": "J\u00fclicher Ring 32",
+        "postalCode": "53879\u00a0",
+        "locality": "Euskirchen"
+    }
+}

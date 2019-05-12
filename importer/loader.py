@@ -44,6 +44,24 @@ class SternbergLoader(BaseLoader):
 
     empty_page = {"data": [], "links": {}, "pagination": {}}
 
+    def visit_object(self, response: JSON):
+        if response.get("type") == "https://schema.oparl.org/1.0/File":
+            if "accessUrl" in response:
+                response["accessUrl"] = response["accessUrl"].replace(
+                    r"files//rim", r"files/rim"
+                )
+            if "downloadUrl" in response:
+                response["downloadUrl"] = response["downloadUrl"].replace(
+                    r"files//rim", r"files/rim"
+                )
+
+        if response.get("type") == "https://schema.oparl.org/1.0/Body":
+            # Check for a missing leading zero
+            ags = response.get("ags")
+            if ags and len(ags) == 7:
+                # noinspection PyTypeChecker
+                response["ags"] = "0" + ags
+
     def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
         logger.debug("Loader is loading {}".format(url))
         if query is None:
@@ -110,15 +128,11 @@ class SternbergLoader(BaseLoader):
             if "location" in response and not isinstance(response["location"], str):
                 response["location"]["type"] = "https://schema.oparl.org/1.0/Location"
 
-        if response.get("type") == "https://schema.oparl.org/1.0/File":
-            if "accessUrl" in response:
-                response["accessUrl"] = response["accessUrl"].replace(
-                    r"files//rim", r"files/rim"
-                )
-            if "downloadUrl" in response:
-                response["downloadUrl"] = response["downloadUrl"].replace(
-                    r"files//rim", r"files/rim"
-                )
+        if "data" in response:
+            for data in response["data"]:
+                self.visit_object(data)
+        else:
+            self.visit_object(response)
 
         return response
 

@@ -247,8 +247,8 @@ class JsonToDb:
             if location.locality:
                 if location.postal_code:
                     search_str += location.postal_code + " " + location.locality
-            else:
-                search_str += settings.GEOEXTRACT_DEFAULT_CITY
+            elif self.default_body:
+                search_str += self.default_body.short_name
             search_str += " " + settings.GEOEXTRACT_SEARCH_COUNTRY
 
             location.geometry = geocode(search_str)
@@ -351,7 +351,7 @@ class JsonToDb:
         return membership
 
     def body(self, libobject: JSON, body: Body) -> Body:
-        self.utils.normalize_body_name(body)
+        body.short_name = self.utils.normalize_body_name(body.short_name)
 
         body.ags = libobject.get("ags")
         if body.ags:

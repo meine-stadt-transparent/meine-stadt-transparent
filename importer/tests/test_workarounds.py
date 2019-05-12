@@ -50,4 +50,6 @@ class TestSternberg(TestCase):
             self.assertEqual(data["data"], [])
 
             with pytest.raises(ConnectionError):
-                loader.load("https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting")
+                loader.load(
+                    "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting"
+                )

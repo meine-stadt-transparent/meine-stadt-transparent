@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Kreuzau",
+    "ags": "5358028",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Gemeinde Kreuzau",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4250/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.751280000000001,
+                    6.4874289999999997
+                ]
+            }
+        },
+        "streetAddress": "Bahnhofstra\u00dfe 7",
+        "postalCode": "52372\u00a0",
+        "locality": "Kreuzau"
+    }
+}

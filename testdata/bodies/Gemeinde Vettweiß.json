@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/system",
+    "name": "Gemeinde Vettwei\u00df",
+    "ags": "5358060",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Gemeinde Vettwei\u00df",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4180/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.742289999999997,
+                    6.6020830000000004
+                ]
+            }
+        },
+        "streetAddress": "Gereonstra\u00dfe 14",
+        "postalCode": "52391\u00a0",
+        "locality": "Vettwei\u00df"
+    }
+}

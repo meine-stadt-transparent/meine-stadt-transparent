@@ -1,0 +1,30 @@
+{
+    "id": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/system",
+    "name": "Stadt Bad M\u00fcnstereifel",
+    "ags": "5366004",
+    "contactEmail": "sdnetrim@kdvz-frechen.de",
+    "contactName": "Stadt Bad M\u00fcnstereifel ",
+    "organization": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1/organization",
+    "person": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1/person",
+    "meeting": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1/meeting",
+    "paper": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1/paper",
+    "location": {
+        "id": "https://sdnetrim.kdvz-frechen.de/rim4500/webservice/oparl/v1.0/body/1/location/0-1",
+        "type": "https://schema.oparl.org/1.0/Location",
+        "geojson": {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    50.554062999999999,
+                    6.7626660000000003
+                ]
+            }
+        },
+        "streetAddress": "Marktstra\u00dfe 11-15",
+        "postalCode": "53902\u00a0",
+        "locality": "Bad M\u00fcnstereifel"
+    }
+}

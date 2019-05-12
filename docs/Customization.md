@@ -48,7 +48,6 @@ MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/
 
 The oparl importer should tell you the values for those options.
 
-  * `GEOEXTRACT_DEFAULT_CITY`: This makes sure the geocoding service finds the street in your city and not somewhere else.
   * `SITE_DEFAULT_BODY`: The database id of the body that represents the current city. Defaults to 1 which is correct when you have only imported one body.
 
 ## Overriding templates and styles
@@ -131,7 +130,8 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `LANGUAGE_CODE`: Defaults to "de-de"
  * `TIME_ZONE`: Defaults to "Europe/Berlin"
  * `ELASTICSEARCH_LANG`: Texts in different languages need different preprocessing. Defaults to "german"
- * `CITY_AFFIXES`: Often the data we get contains additional information in city names, e.g. "Landdeshauptstadt München" instead of "München", which we need to cut away. `CITY_AFFIXES` contains a list of those prefixes in German, currently "Stadt", "Landeshauptstadt", "Gemeinde", "Kreis" and "Landkreis".
+ * `CITY_AFFIXES`: Often the data we get contains additional information in city names, e.g. "Landdeshauptstadt München" instead of "München", which we need to cut away. `CITY_AFFIXES` contains a list of those prefixes in German, currently "Stadt", "Landeshauptstadt", "Gemeinde", "Kreisverwaltung", "Landkreis" and "Kreis.
+ * `DISTRICT_REGEX`: Sometimes, there's a city and a district of the same name. Those are disambiguated by checking whether the name matches this regex. Defaults to "(^| )kreis|kreis( |$)"
  * `GEOEXTRACT_SEARCH_COUNTRY`: Sets the country for the geocoding service. Defaults to "Deutschland"
   * `GEOEXTRACT_LANGUAGE`: Language passed to geopy for geocoding, defaults to the first part of `LANGUAGE_CODE`, i.e. "de"
 

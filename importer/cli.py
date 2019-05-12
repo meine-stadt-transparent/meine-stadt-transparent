@@ -1,6 +1,7 @@
 import json
 import logging
-from typing import Tuple, List
+import re
+from typing import Tuple, List, Optional
 
 import requests
 from django import db
@@ -10,6 +11,7 @@ from django.core.validators import URLValidator
 from importer import JSON
 from importer.importer import Importer
 from importer.loader import get_loader_from_system
+from importer.utils import Utils
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
 from mainapp.models import Body
@@ -26,8 +28,13 @@ class Cli:
     """
 
     def __init__(self):
-        self.bodies = []  # type: List[Tuple[str, str, str]]
+        self.index = []  # type: List[Tuple[str, str, str]]
+        self.utils = Utils()
 
+    def load_index(self) -> List[Tuple[str, str, str]]:
+        """" Loads the list of known endpoints from the oparl mirror if it has not been loaded yet """
+        if self.index:
+            return self.index
         next_page = settings.OPARL_INDEX
         while next_page:
             response = requests.get(next_page)
@@ -37,7 +44,7 @@ class Cli:
             for body in data["data"]:
                 if not "oparl-mirror:originalId" in body:
                     continue
-                self.bodies.append(
+                self.index.append(
                     (
                         body.get("name") or body["oparl-mirror:originalId"],
                         body["oparl-mirror:originalId"],
@@ -45,10 +52,14 @@ class Cli:
                     )
                 )
 
-    def from_userinput(self, userinput: str, mirror: bool) -> None:
+        return self.index
+
+    def from_userinput(self, userinput: str, mirror: bool, ags: Optional[str]) -> None:
         body_id, entrypoint = self.get_entrypoint_and_body(userinput, mirror)
         importer = Importer(get_loader_from_system(entrypoint))
-        body_data, dotenv = self.import_body_and_metadata(body_id, importer, userinput)
+        body_data, dotenv = self.import_body_and_metadata(
+            body_id, importer, userinput, ags
+        )
 
         logger.info("Loading the bulk data from the oparl api")
         importer.fetch_lists_initial([body_data])
@@ -71,7 +82,7 @@ class Cli:
             )
 
     def import_body_and_metadata(
-        self, body_id: str, importer: Importer, userinput: str
+        self, body_id: str, importer: Importer, userinput: str, ags: Optional[str]
     ) -> Tuple[JSON, str]:
         logger.info("Fetching the body {}".format(body_id))
         [body_data] = importer.load_bodies(body_id)
@@ -79,8 +90,20 @@ class Cli:
         [body] = importer.import_bodies()
         importer.converter.default_body = body
         logger.info("Looking up the Amtliche Gemeindeschlüssel")
-        ags = self.get_ags(body, userinput)
-        body.ags = ags
+        if ags:
+            if len(ags) != 5 and len(ags) != 8:
+                logger.warning(
+                    "Your Amtlicher Gemeindeschlüssel has {} digits instead of 5 or 8".format(
+                        len(ags)
+                    )
+                )
+            body.ags = ags
+        else:
+            ags, match_name = self.get_ags(body, importer.loader.system, userinput)
+            body.ags = ags
+            # Sometimes there's a bad short name (e.g. "Rat" for Erkelenz),
+            # so we use the name that's in wikidata instead
+            body.short_name = match_name
         body.save()
         logger.info(
             "Using {} as Amtliche Gemeindeschlüssel for '{}'".format(
@@ -88,8 +111,6 @@ class Cli:
             )
         )
         dotenv = ""
-        if settings.GEOEXTRACT_DEFAULT_CITY != userinput:
-            dotenv += "GEOEXTRACT_DEFAULT_CITY={}\n".format(body.short_name)
         if body.id != settings.SITE_DEFAULT_BODY:
             dotenv += "SITE_DEFAULT_BODY={}\n".format(body.id)
         if dotenv:
@@ -103,7 +124,9 @@ class Cli:
         import_streets(body, ags)
         return body_data.data, dotenv
 
-    def get_entrypoint_and_body(self, userinput: str, mirror: bool) -> Tuple[str, str]:
+    def get_entrypoint_and_body(
+        self, userinput: str, mirror: bool = False
+    ) -> Tuple[str, str]:
         try:
             URLValidator()(userinput)
             is_url = True
@@ -130,44 +153,62 @@ class Cli:
         if data.get("type") != "https://schema.oparl.org/1.0/Body":
             raise RuntimeError("The url you provided didn't point to an oparl body")
         endpoint_system = data["system"]
-        endpoint_id = userinput
+        endpoint_id = data["id"]
+        if userinput != endpoint_id:
+            logger.warning(
+                "The body's url '{}' doesn't match the body's id '{}'".format(
+                    userinput, endpoint_id
+                )
+            )
         return endpoint_system, endpoint_id
 
-    def get_ags(self, body: Body, userinput: str) -> str:
+    def get_ags(self, body: Body, system: JSON, userinput: str) -> Tuple[str, str]:
         """
         This function tries:
          1. The ags field in the oparl body
-         2. Querying wikidata with the body's short name
-         3. Querying wikidata with the user's input
-         4. Querying wikidata with the body's full name
+         2. Querying wikidata with
+            a) the body's short name
+            b) the user's input
+            c) the body's full name
+            d) the system's name
+            e) locality in the location
+
+        Returns the ags and the name that did match
         """
         ags = body.ags
-        # The len(ags) check is necessary because there's Kall and Jülich
-        # which failed to add the leading zero
-        # https://sdnetrim.kdvz-frechen.de/rim4550/webservice/oparl/v1/body
-        if ags and (len(ags) == 8 or len(ags) == 5):
-            return ags
-
-        ags = city_to_ags(body.short_name)
         if ags:
-            logger.debug(
-                "Found ags using the body's short name '{}'".format(body.short_name)
-            )
-            return ags
+            if len(ags) == 8 or len(ags) == 5:
+                return ags, body.short_name
+            else:
+                logger.error(
+                    "Ignoring ags '{}' with invalid legth {}".format(ags, len(ags))
+                )
 
-        ags = city_to_ags(userinput)
-        if ags:
-            logger.debug("Found ags using the user input '{}'".format(userinput))
-            return ags
+        district = bool(re.match(settings.DISTRICT_REGEX, body.name, re.IGNORECASE))
 
-        ags = city_to_ags(body.name)
-        if ags:
-            logger.debug("Found ags using the body's full name '{}'".format(body.name))
-            return ags
+        to_check = [
+            ("body short name", body.short_name),
+            ("user input", userinput),
+            ("body name", body.name),
+        ]
+
+        if system.get("name"):
+            short_system_name = self.utils.normalize_body_name(system["name"])
+            to_check.append(("system name", short_system_name))
+
+        if body.center and body.center.locality:
+            locality = body.center.locality
+            to_check.append(("body location locality", locality))
+
+        for source, value in to_check:
+            ags = city_to_ags(value, district)
+            if ags:
+                logger.debug("Found ags using the {}: '{}'".format(source, value))
+                return ags, value
 
         raise RuntimeError(
-            "Could not determine the Amtliche Gemeindeschlüssel for '{}', '{}' and '{}'".format(
-                body.short_name, userinput, body.name
+            "Could not determine the Amtliche Gemeindeschlüssel using {}".format(
+                to_check
             )
         )
 
@@ -175,7 +216,7 @@ class Cli:
         self, userinput: str, mirror: bool
     ) -> Tuple[str, str]:
         matching = []  # type: List[Tuple[str, str, str]]
-        for (name, original_id, mirror_id) in self.bodies:
+        for (name, original_id, mirror_id) in self.load_index():
             if userinput.casefold() in name.casefold():
                 # The oparl mirror doesn't give us the system id we need
                 response = requests.get(original_id)

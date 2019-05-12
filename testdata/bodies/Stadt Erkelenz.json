@@ -1,0 +1,15 @@
+{
+    "id": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/bodies.asp?id=1",
+    "type": "https://schema.oparl.org/1.0/Body",
+    "system": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/system.asp",
+    "name": "Rat der Stadt Erkelenz",
+    "shortName": "Rat",
+    "organization": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/organizations.asp?body=1",
+    "person": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/persons.asp?body=1",
+    "meeting": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/meetings.asp?body=1",
+    "paper": "http://ratsinfo.erkelenz.de/bi/oparl/1.0/papers.asp?body=1",
+    "legislativeTerm": [
+    ],
+    "created": "2004-01-01T12:00:00+01:00",
+    "modified": "2004-01-01T12:00:00+01:00"
+}

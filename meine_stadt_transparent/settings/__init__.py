@@ -189,13 +189,21 @@ if GEOEXTRACT_ENGINE.lower() == "opencage":
 
 # Settings for Geo-Extraction
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
-GEOEXTRACT_DEFAULT_CITY = env.str("GEOEXTRACT_DEFAULT_CITY", None)
-GEOEXTRACT_LANGUAGE = env.str(LANGUAGE_CODE.split("-")[0], "de")
+GEOEXTRACT_LANGUAGE = env.str("GEOEXTRACT_LANGUAGE", LANGUAGE_CODE.split("-")[0])
 
 CITY_AFFIXES = env.list(
     "CITY_AFFIXES",
-    default=["Stadt", "Landeshauptstadt", "Gemeinde", "Kreis", "Landkreis"],
+    default=[
+        "Stadt",
+        "Landeshauptstadt",
+        "Gemeinde",
+        "Kreisverwaltung",
+        "Landkreis",
+        "Kreis",
+    ],
 )
+
+DISTRICT_REGEX = env.str("DISTRICT_REGEX", r"(^| )kreis|kreis( |$)")
 
 TEXT_CHUNK_SIZE = env.int("TEXT_CHUNK_SIZE", 1024 * 1024)
 
