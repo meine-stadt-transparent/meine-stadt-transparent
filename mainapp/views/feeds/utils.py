@@ -2,8 +2,10 @@ from html import escape
 
 from django.utils.translation import ugettext as _
 
+from mainapp.models import Paper
 
-def paper_description(paper):
+
+def paper_description(paper: Paper, url_base: str) -> str:
     info = ""
 
     if paper.name:
@@ -31,10 +33,10 @@ def paper_description(paper):
     if paper.main_file or paper.files.all():
         info += "<p>" + escape(_("Files")) + "</p><ul>"
         if paper.main_file:
-            info += '<li><a href="' + escape(paper.main_file.get_default_link()) + '">'
+            info += '<li><a href="' + escape(url_base + paper.main_file.get_default_link()) + '">'
             info += escape(paper.main_file.name) + "</a></li>"
         for file in paper.files.all():
-            info += '<li><a href="' + escape(file.get_default_link()) + '">'
+            info += '<li><a href="' + escape(url_base + file.get_default_link()) + '">'
             info += escape(file.name) + "</a></li>"
         info += "</ul>"
 

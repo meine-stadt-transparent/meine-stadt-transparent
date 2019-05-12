@@ -11,9 +11,10 @@ class TestRSS(TestCase):
     def test_paper_feed(self):
         response = self.client.get("/paper/feed/").content.decode()
         self.assertIn("<rss", response)
-        self.assertIn("Latest papers", response)
+        self.assertIn("<title>Meine Stadt Transparent: Latest papers</title>", response)
         self.assertIn(
-            '&lt;a href="/file/5/"&gt;Some obligatory cat content.&lt;/a&gt;', response
+            '&lt;a href="https://meine-stadt-transparent.local/file/5/"&gt;Some obligatory cat content.&lt;/a&gt;',
+            response,
         )
         self.assertIn("Frank Underwood", response)
 
@@ -25,4 +26,5 @@ class TestRSS(TestCase):
         self.assertIn("<rss", response)
         self.assertIn("The latest search results", response)
         self.assertIn("File: Title", response)
+        self.assertIn("<enclosure", response)
         self.assertNotIn("Frank Underwood", response)

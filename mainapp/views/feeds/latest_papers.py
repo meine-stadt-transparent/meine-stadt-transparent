@@ -7,8 +7,10 @@ from mainapp.views.feeds.utils import paper_description
 
 
 class LatestPapersFeed(Feed):
-    title = _("Latest papers")
+    title = "{}: {}".format(settings.PRODUCT_NAME, _("Latest papers"))
     link = settings.ABSOLUTE_URI_BASE
+    description = _("The latest paper")
+    author_name = settings.PRODUCT_NAME
 
     def items(self):
         return Paper.objects.order_by("-sort_date")[:20]
@@ -17,7 +19,7 @@ class LatestPapersFeed(Feed):
         return paper.name
 
     def item_description(self, item):
-        return paper_description(item)
+        return paper_description(item, settings.ABSOLUTE_URI_BASE)
 
     def item_link(self, paper):
         return paper.get_default_link()
