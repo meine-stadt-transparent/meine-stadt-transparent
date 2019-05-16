@@ -109,8 +109,11 @@ class JsonToDb:
 
         to_return = None
 
-        externalized = list(externalize(self.loader.load(oparl_id)))
-
+        loaded = self.loader.load(oparl_id)
+        # When a resourced moved, the use specified id might be different from the object's id
+        # The loader prints a warning in that case
+        oparl_id = loaded["id"]
+        externalized = list(externalize(loaded))
         # To avoid endless recursion, we sort the objects so that if A links to B then B gets imported first
         externalized.sort(
             key=lambda key: import_order.index(
@@ -138,15 +141,23 @@ class JsonToDb:
     def import_any_externalized(self, data: JSON) -> DefaultFields:
         type_split = data["type"].split("/")[-1]
         type_class = getattr(models, type_split)
-        instance = type_class()
-        self.init_base(data, instance)
-        self.type_to_function(type_class)(data, instance)
+
         # There exists e.g. the case where a consultation needs the paper, which itself imports the consultation,
         # so that we must not save here because it would clash with the just saved object
-        maybe_faster = type_class.objects.filter(oparl_id=instance.oparl_id).first()
-        if maybe_faster:
-            return maybe_faster
+        instance = type_class.objects_with_deleted.filter(
+            oparl_id=data["id"]
+        ).first()  # type: DefaultFields
+        if not instance:
+            instance = type_class()
+        self.init_base(data, instance)
+        if not instance.deleted:
+            self.type_to_function(type_class)(data, instance)
         instance.save()
+        logger.debug(
+            "Saved {} individually as {} {}".format(
+                instance.oparl_id, type_class, instance.id
+            )
+        )
 
         return instance
 

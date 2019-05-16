@@ -7,7 +7,8 @@ from importer.loader import SternbergLoader
 
 
 class TestSternberg(TestCase):
-    """
+    """ Tests for the workaround for the bugs in Sterberg's OParl implementation
+
     The exact urls might not return an error anymore, but any timestamp in the future will work
     """
 
@@ -53,3 +54,19 @@ class TestSternberg(TestCase):
                 loader.load(
                     "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting"
                 )
+
+    def test_deleted_missing_type(self):
+        data = {
+            "id": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/file/2-19309",
+            "created": "2019-03-19T09:59:05+01:00",
+            "modified": "2019-04-16T09:02:31+02:00",
+            "deleted": True,
+        }
+
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(requests_mock.GET, data["id"], json=data)
+
+            loader = SternbergLoader({})
+            data = loader.load(data["id"])
+
+            self.assertEqual(data["type"], "https://schema.oparl.org/1.0/File")

@@ -25,7 +25,7 @@ from mainapp.models import (
 logger = logging.getLogger(__name__)
 
 
-class TestImporter(TestCase):
+class TestDataset(TestCase):
     dummy_data = "testdata/oparl"
     base_timestamp = timezone.now().astimezone().replace(microsecond=0)
     new_timestamp = None

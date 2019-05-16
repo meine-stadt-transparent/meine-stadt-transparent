@@ -49,7 +49,7 @@ class SearchResultsFeed(Feed):
     def item_enclosures(self, item) -> List[Enclosure]:
         if item["type"] == "file":
             file = File.objects.get(pk=item["id"])
-            url = settings.ABSOLUTE_URI_BASE + reverse('file-content', args=[file.id])
+            url = settings.ABSOLUTE_URI_BASE + reverse("file-content", args=[file.id])
             return [Enclosure(url, str(file.filesize), file.mime_type)]
         return []
 

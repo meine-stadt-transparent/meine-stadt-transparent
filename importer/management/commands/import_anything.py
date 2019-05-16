@@ -10,10 +10,9 @@ class Command(ImportBaseCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument("id", help="The id of the object")
-        parser.add_argument("--update", action="store_true")
+        parser.add_argument("ids", nargs="+", help="The oparl ids of the objects")
 
     def handle(self, *args, **options):
         importer, _body = self.get_importer(options)
-
-        importer.converter.import_anything(options["id"], options["update"]).save()
+        for oparl_id in options["ids"]:
+            importer.import_anything(oparl_id).save()

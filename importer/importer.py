@@ -1,6 +1,7 @@
 import logging
 import sys
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+from itertools import repeat
 from tempfile import NamedTemporaryFile
 from typing import Optional, List, Type
 from typing import TypeVar, Any, Set
@@ -12,7 +13,6 @@ from django.core.validators import URLValidator
 from django.db import IntegrityError, transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
-from itertools import repeat
 from requests import HTTPError
 from tqdm import tqdm
 
@@ -75,14 +75,7 @@ class Importer:
         self.converter.default_body = body
         self.import_objects()
 
-    def import_anything(self, oparl_id: str, update: bool = False) -> DefaultFields:
-        if update:
-            externalized = externalize(self.loader.load(oparl_id))
-            for entry in externalized:
-                CachedObject.objects.filter(url=entry.url).exclude(
-                    data=entry.data
-                ).update(data=entry.data)
-
+    def import_anything(self, oparl_id: str) -> DefaultFields:
         return self.converter.import_anything(oparl_id)
 
     def fetch_lists_initial(self, bodies: List[JSON]) -> None:

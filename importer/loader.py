@@ -1,7 +1,8 @@
 import logging
-from typing import Optional, Tuple, Dict
+from typing import Optional, Tuple, Dict, Any
 
 import requests
+from requests import HTTPError
 
 from importer import JSON
 from importer.models import CachedObject
@@ -24,7 +25,12 @@ class BaseLoader:
             query = dict()
         response = requests.get(url, params=query)
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        if "id" in data and data["id"] != url:
+            logger.warning(
+                "Mismatch between url and id. url: {} id: {}".format(url, data["id"])
+            )
+        return data
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         """ Returns the content and the content type """
@@ -63,27 +69,30 @@ class SternbergLoader(BaseLoader):
                 response["ags"] = "0" + ags
 
     def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
-        logger.debug("Loader is loading {}".format(url))
         if query is None:
             query = dict()
 
-        # TODO: Better naming
-        request_response = requests.get(url, params=query)
-        response = request_response.json()
-
-        # Sometimes, an error is returned when the list would have been empty
-        if (
-            request_response.status_code == 404
-            and "modified_since" in query
-            and response == self.empty_list_error
-        ):
-            response = self.empty_page
-        else:
-            request_response.raise_for_status()
+        try:
+            response = super().load(url, query)  # type: Dict[str, Any]
+        except HTTPError as error:
+            # Sometimes, an error is returned when the list would have been empty
+            if (
+                error.response.status_code == 404
+                and "modified_since" in query
+                and error.response.json() == self.empty_list_error
+            ):
+                response = self.empty_page
+            else:
+                raise error
 
         # Sometime, an empty list is returned instead of an object with an empty list
         if "modified_since" in query and response == []:
             response = self.empty_page
+
+        if response.get("deleted", False) and not "type" in response:
+            response["type"] = (
+                "https://schema.oparl.org/1.0/" + url.split("/")[-2].title()
+            )
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
@@ -154,9 +163,17 @@ class CCEgovLoader(BaseLoader):
                     del data[key]
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
-        response = super(CCEgovLoader, self).load(url, query)
+        response = super().load(url, query)
         self.visit(response)
         return response
+
+    def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
+        """ Returns the content and the content type """
+        response = requests.get(url)
+        response.raise_for_status()
+        content = response.content
+        content_type = response.headers.get("Content-Type")
+        return content, content_type
 
 
 def get_loader_from_system(entrypoint: str) -> BaseLoader:

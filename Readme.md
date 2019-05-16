@@ -135,7 +135,7 @@ docker-compose up
  - A recent node version (8 or 10) with npm (npm 6 is tested)
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
- - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 5.6 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/5.6/_installation.html)
+ - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 6.7 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/install-elasticsearch.html)
 
 On Debian/Ubuntu:
 

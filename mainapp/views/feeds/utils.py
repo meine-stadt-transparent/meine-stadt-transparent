@@ -33,7 +33,11 @@ def paper_description(paper: Paper, url_base: str) -> str:
     if paper.main_file or paper.files.all():
         info += "<p>" + escape(_("Files")) + "</p><ul>"
         if paper.main_file:
-            info += '<li><a href="' + escape(url_base + paper.main_file.get_default_link()) + '">'
+            info += (
+                '<li><a href="'
+                + escape(url_base + paper.main_file.get_default_link())
+                + '">'
+            )
             info += escape(paper.main_file.name) + "</a></li>"
         for file in paper.files.all():
             info += '<li><a href="' + escape(url_base + file.get_default_link()) + '">'
