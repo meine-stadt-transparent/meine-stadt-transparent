@@ -70,3 +70,15 @@ class TestSternberg(TestCase):
             data = loader.load(data["id"])
 
             self.assertEqual(data["type"], "https://schema.oparl.org/1.0/File")
+
+    def test_mixed_up_extensions(self):
+        url_wrong = "https://oparl.example.org/download/file.eml.eml"
+        url_correct = "https://oparl.example.org/download/file.eml.pdf"
+
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(requests_mock.GET, url_wrong, status=404)
+            requests_mock.add(requests_mock.GET, url_correct, body=b"OK")
+
+            loader = SternbergLoader({})
+            content, content_type = loader.load_file(url_wrong)
+            self.assertEqual(content, b"OK")

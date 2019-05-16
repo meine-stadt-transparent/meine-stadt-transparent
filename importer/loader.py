@@ -146,7 +146,21 @@ class SternbergLoader(BaseLoader):
         return response
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
-        content, content_type = super().load_file(url)
+        try:
+            content, content_type = super().load_file(url)
+        except HTTPError as error:
+            # Sometimes (if there's a dot in the filename(?)), the extension gets overriden
+            # by repeating the part after the dot in the extension-less filename
+            splitted = error.response.url.split(".")
+            if (
+                error.response.status_code == 404
+                and len(splitted) > 2
+                and splitted[-2] == splitted[-1]
+            ):
+                new_url = ".".join(splitted[:-1]) + ".pdf"
+                content, content_type = super().load_file(new_url)
+            else:
+                raise error
         if content_type == "application/octetstream; charset=UTF-8":
             content_type = None
         return content, content_type
