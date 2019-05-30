@@ -8,8 +8,6 @@ from django.conf import settings
 from django.utils import timezone
 from django.utils.dateparse import parse_date, parse_datetime
 
-from mainapp.models import Body
-
 logger = logging.getLogger(__name__)
 
 

@@ -5,6 +5,7 @@ import requests
 from requests import HTTPError
 
 from importer import JSON
+from importer.functions import requests_get
 from importer.models import CachedObject
 
 logger = logging.getLogger(__name__)
@@ -23,8 +24,7 @@ class BaseLoader:
         logger.debug("Loader is loading {}".format(url))
         if query is None:
             query = dict()
-        response = requests.get(url, params=query)
-        response.raise_for_status()
+        response = requests_get(url, params=query)
         data = response.json()
         if "id" in data and data["id"] != url:
             logger.warning(
@@ -34,8 +34,7 @@ class BaseLoader:
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         """ Returns the content and the content type """
-        response = requests.get(url)
-        response.raise_for_status()
+        response = requests_get(url)
         content = response.content
         content_type = response.headers.get("Content-Type")
         return content, content_type
@@ -183,15 +182,15 @@ class CCEgovLoader(BaseLoader):
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         """ Returns the content and the content type """
-        response = requests.get(url)
-        response.raise_for_status()
+        response = requests_get(url)
         content = response.content
         content_type = response.headers.get("Content-Type")
         return content, content_type
 
 
 def get_loader_from_system(entrypoint: str) -> BaseLoader:
-    system = requests.get(entrypoint).json()
+    response = requests_get(entrypoint)
+    system = response.json()
     if system.get("contactName") == "STERNBERG Software GmbH & Co. KG":
         logger.info("Using Sternberg patches")
         return SternbergLoader(system)
@@ -215,8 +214,7 @@ def get_loader_from_body(body_id: str) -> BaseLoader:
         system_id = cached_body.data["system"]
     else:
         logger.info("Fetching the body {}".format(body_id))
-        response = requests.get(body_id)
-        response.raise_for_status()
+        response = requests_get(body_id)
         data = response.json()
         CachedObject.objects.create(
             url=data["id"], oparl_type=data["type"], data=data, to_import=False

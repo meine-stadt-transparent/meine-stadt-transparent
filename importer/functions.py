@@ -1,8 +1,9 @@
 import logging
 from typing import Optional, Set, List, Type
 
+import requests
+
 from importer import JSON
-from importer.loader import get_loader_from_body
 from importer.models import CachedObject, ExternalList
 from mainapp.models import (
     LegislativeTerm,
@@ -18,6 +19,7 @@ from mainapp.models import (
     AgendaItem,
     DefaultFields,
 )
+from meine_stadt_transparent import settings
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +36,17 @@ import_order = [
     Consultation,
     AgendaItem,
 ]  # type: List[Type[DefaultFields]]
+
+
+def requests_get(url, params=None, **kwargs) -> requests.Response:
+    """ Makes a request with the custom user agent """
+    user_agent = "{} ({})".format(
+        settings.PRODUCT_NAME, settings.TEMPLATE_META["github"]
+    )
+    kwargs["headers"] = kwargs.get("headers", {}).update({"User-Agent": user_agent})
+    response = requests.get(url, params, **kwargs)
+    response.raise_for_status()
+    return response
 
 
 def externalize(
@@ -92,6 +105,7 @@ def clear_import(prefix: str, include_cache: bool = True) -> None:
 
 def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) -> None:
     from importer.importer import Importer
+    from importer.loader import get_loader_from_body
 
     if body_id:
         bodies = Body.objects.filter(oparl_id=body_id).all()

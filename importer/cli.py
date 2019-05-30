@@ -3,12 +3,12 @@ import logging
 import re
 from typing import Tuple, List, Optional
 
-import requests
 from django import db
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
 
 from importer import JSON
+from importer.functions import requests_get
 from importer.importer import Importer
 from importer.loader import get_loader_from_system
 from importer.utils import Utils
@@ -37,8 +37,7 @@ class Cli:
             return self.index
         next_page = settings.OPARL_INDEX
         while next_page:
-            response = requests.get(next_page)
-            response.raise_for_status()
+            response = requests_get(next_page)
             data = response.json()
             next_page = data["links"].get("next")
             for body in data["data"]:
@@ -147,8 +146,7 @@ class Cli:
         # We can't use the resolver here as we don't know the system url yet, which the resolver needs for determining
         # the cache folder
         logging.info("Using {} as url".format(userinput))
-        response = requests.get(userinput)
-        response.raise_for_status()
+        response = requests_get(userinput)
         data = response.json()
         if data.get("type") != "https://schema.oparl.org/1.0/Body":
             raise RuntimeError("The url you provided didn't point to an oparl body")
@@ -219,8 +217,7 @@ class Cli:
         for (name, original_id, mirror_id) in self.load_index():
             if userinput.casefold() in name.casefold():
                 # The oparl mirror doesn't give us the system id we need
-                response = requests.get(original_id)
-                response.raise_for_status()
+                response = requests_get(original_id)
                 system_id = response.json()["system"]
                 if mirror:
                     matching.append((name, system_id, mirror_id))
