@@ -142,16 +142,23 @@ class JsonToDb:
         type_split = data["type"].split("/")[-1]
         type_class = getattr(models, type_split)
 
-        # There exists e.g. the case where a consultation needs the paper, which itself imports the consultation,
-        # so that we must not save here because it would clash with the just saved object
-        instance = type_class.objects_with_deleted.filter(
-            oparl_id=data["id"]
-        ).first()  # type: DefaultFields
-        if not instance:
-            instance = type_class()
+        instance = type_class()
         self.init_base(data, instance)
         if not instance.deleted:
             self.type_to_function(type_class)(data, instance)
+
+        # There exists e.g. the case where a consultation needs the paper, which itself imports the consultation,
+        # which would cause an integrity error on save
+        existing = type_class.objects_with_deleted.filter(oparl_id=data["id"]).first()
+        if existing:
+            self.init_base(data, existing)
+            if not instance.deleted:
+                self.type_to_function(type_class)(data, existing)
+            existing.save()
+
+            logger.info("Avoided cyclic import for {}".format(data["id"]))
+            return existing
+
         instance.save()
         logger.debug(
             "Saved {} individually as {} {}".format(
@@ -160,6 +167,7 @@ class JsonToDb:
         )
 
         return instance
+
 
     def retrieve(
         self, object_type: Type[T], oparl_id: Optional[str], warn: bool = True

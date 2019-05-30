@@ -63,7 +63,7 @@ class TestCron(TestCase):
         # Run cron. Check that nothing happend
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
             with mock.patch(
-                "importer.functions.get_loader_from_body", new=lambda body_id: loader
+                "importer.loader.get_loader_from_body", new=lambda body_id: loader
             ):
                 call_command("cron")
 
