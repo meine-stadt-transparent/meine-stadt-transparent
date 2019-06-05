@@ -47,7 +47,7 @@
     "fullcalendar": "^3.10.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
-    "leaflet": "^1.4.0",
+    "leaflet": "^1.5.1",
     "leaflet.markercluster": "^1.4.1",
     "list.js": "^1.5.0",
     "moment": "^2.24.0",
