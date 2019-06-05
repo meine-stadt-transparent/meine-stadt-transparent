@@ -5,6 +5,7 @@ from typing import Dict, Optional, Any
 
 from dateutil.parser import parse
 from django.conf import settings
+from django.core.serializers.json import DjangoJSONEncoder
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
@@ -209,7 +210,7 @@ class MainappSearch(FacetedSearch):
     def build_search(self) -> Search:
         search = super().build_search()
         if logger.isEnabledFor(logging.DEBUG):
-            logger.debug("Elasticsearch query: {}".format(json.dumps(search.to_dict())))
+            logger.debug("Elasticsearch query: {}".format(json.dumps(search.to_dict(), cls=DjangoJSONEncoder)))
         return search
 
 
