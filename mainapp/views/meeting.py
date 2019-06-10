@@ -79,33 +79,6 @@ def calendar_data(request):
 def meeting(request, pk):
     selected_meeting = get_object_or_404(Meeting, id=pk)
 
-    start = selected_meeting.start
-    if start:
-        # FIXME: That ain't nice for localization
-        start_date = start.astimezone(tz.tzlocal()).strftime("%d.%m.%Y")
-        start_time = formats.time_format(start.astimezone(tz.tzlocal()))
-    else:
-        start_date = None
-        start_time = None
-
-    end = selected_meeting.end
-    if end:
-        end_date = end.astimezone(tz.tzlocal()).strftime("%d.%m.%Y")
-        end_time = formats.time_format(end.astimezone(tz.tzlocal()))
-    else:
-        end_date = None
-        end_time = None
-
-    if start_date and start_date == end_date:
-        # Don't repeat the date
-        time = "{} {} - {}".format(start_date, start_time, end_time)
-    elif end_date:
-        time = "{} {} - {} {}".format(start_date, start_time, end_date, end_time)
-    elif start_date:
-        time = "{} {}".format(start_date, start_time)
-    else:
-        time = _("Unknown")
-
     if selected_meeting.location and selected_meeting.location.geometry:
         location_geom = selected_meeting.location.geometry
     else:
@@ -126,7 +99,6 @@ def meeting(request, pk):
     # Excludes meetings with more than one organization
     context = {
         "meeting": selected_meeting,
-        "time": time,
         "map": build_map_object(),
         "location_json": json.dumps(location_geom),
         "agenda_items": agenda_items,
@@ -141,8 +113,8 @@ def meeting(request, pk):
             .order_by("start")
         )
 
-        context["previous"] = query.filter(start__lt=start).last()
-        context["following"] = query.filter(start__gt=start).first()
+        context["previous"] = query.filter(start__lt=selected_meeting.start).last()
+        context["following"] = query.filter(start__gt=selected_meeting.start).first()
 
     if selected_meeting.location:
         for_maps = selected_meeting.location.for_maps()

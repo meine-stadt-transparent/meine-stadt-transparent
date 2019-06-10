@@ -36,17 +36,26 @@
                 <div class="d-flex">
                     <div>
                         {% if previous %}
-                            <a class="btn btn-sm btn-outline-dark" href="{% url 'meeting' previous.id %}">
-                                <span class="fa fa-chevron-left" aria-hidden="true"></span>
-                                <span> {% trans 'Previous Meeting' %}</span>
+                            <a class="btn btn-sm btn-light d-flex flex-column" href="{% url 'meeting' previous.id %}"
+                               title="{{ previous.start.date }}: {{ previous }}">
+                                <div>
+                                    <span class="fa fa-chevron-left mr-1" aria-hidden="true"></span>
+                                    <span>{% trans 'Previous Meeting' %}</span>
+                                </div>
+                                {# TODO: Do we want that ? #}
+                                {# <small class="text-muted text-sm ">{{ previous.start.date }}</small> #}
                             </a>
                         {% endif %}
                     </div>
                     <div class="pl-3">
                         {% if following %}
-                            <a class="btn btn-sm btn-outline-dark" href="{% url 'meeting' following.id %}">
-                                {% trans 'Following Meeting' %}
-                                <span class="fa fa-chevron-right" aria-hidden="true"></span>
+                            <a class="btn btn-sm btn-light d-flex flex-column" href="{% url 'meeting' following.id %}"
+                               title="{{ following.start.date }}: {{ following }}">
+                                <div>
+                                    <span>{% trans 'Following Meeting' %}</span>
+                                    <span class="fa fa-chevron-right ml-1" aria-hidden="true"></span>
+                                </div>
+                                {# <small class="text-muted text-sm ">{{ following.start.date }}</small> #}
                             </a>
                         {% endif %}
                     </div>
@@ -55,15 +64,21 @@
         </section>
 
         <section class="container meeting-section">
+            {# The extra div around icons of d-flex parents places the icon on the height as the text #}
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 {% if meeting.location.geometry %}
                     <div class="dropdown location-dropdown std-element"
                          data-map-data="{{ map }}" data-location="{{ location_json }}">
-                        <button class="btn btn-sm btn-transparent dropdown-toggle text-wrap" type="button"
+                        <button class="btn btn-sm btn-transparent" type="button" role="button"
+                                name="meeting-location-dropdown"
                                 id="locationShowButton" title="{{ meeting.location.description }}"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
-                            {{ meeting.location.short }}
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                tabindex="0">
+                            {# div is not allowed inside buttons, but span also works #}
+                            <span class="d-flex text-left">
+                                <span><span class="fa-custom fa-map-marker" aria-hidden="true"></span></span>
+                                <span class="dropdown-toggle text-wrap">{{ meeting.location.short }}</span>
+                            </span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="locationShowButton">
                             <p class="m-2">{{ meeting.location.description }}</p>
@@ -81,22 +96,36 @@
                         </div>
                     </div>
                 {% else %}
-                    <div title="{% trans 'Place of the meeting' %}" class="std-element">
-                        <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
+                    <div title="{% trans 'Place of the meeting' %}" class="std-element d-flex">
+                        <div>
+                            <span class="fa-custom fa-map-marker" aria-hidden="true"></span>
+                        </div>
                         {% if meeting.location %}
-                            <span title="{{ meeting.location.description }}">{{ meeting.location.short }}</span>
+                            <div title="{{ meeting.location.description }}">{{ meeting.location.short }}</div>
                         {% else %}
                             <i>{% trans "Unknown" %}</i>
                         {% endif %}
                     </div>
                 {% endif %}
 
-                <div title="{% trans 'Time of the Meeting' %}" class="std-element">
-                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{{ time }}
+                <div title="{% trans 'Time of the Meeting' %}" class="std-element mx-1 flex-shrink-0">
+                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>
+
+                    {% if meeting.end and meeting.start.date == meeting.end.date %}
+                        <span>{{ meeting.start.date }} {{ meeting.start.time }} - {{ meeting.end.time }}</span>
+                    {% elif meeting.end %}
+                        <span>{{ meeting.start.date }} {{ meeting.start.time }} - {{ meeting.end.date }} {{ meeting.end.time }}</span>
+                    {% elif meeting.start.time %}
+                        <span>{{ meeting.start.date }} {{ meeting.start.time }}</span>
+                    {% elif meeting.start.date %}
+                        <span>{{ meeting.start.date }}</span>
+                    {% else %}
+                        <i>{% trans "Unknown" %}</i>
+                    {% endif %}
                 </div>
 
                 {% if meeting.organizations.all|length == 1 %}
-                    <div class="std-element"
+                    <div class="std-element mx-1 flex-shrink-0"
                          title="{% trans 'Main organization of the meeting: ' %}{{ meeting.organizations.all.0.name }}"
                     >
                         <a href="{% url 'organization' meeting.organizations.all.0.id %}">
@@ -106,11 +135,11 @@
                     </div>
                 {% endif %}
 
-                <div class="std-element">
+                <div class="std-element mx-1 flex-shrink-0">
                     <a href="{% url 'meeting-ical' meeting.id %}"
                        title="{% trans 'Download the meeting in a format readable by most calendars' %}">
                         <span class="fa-custom fa-calendar-plus-o" aria-hidden="true"></span>
-                        {% trans 'iCal-Export' %}
+                        <span>{% trans 'iCal-Export' %}</span>
                     </a>
                 </div>
             </div>
