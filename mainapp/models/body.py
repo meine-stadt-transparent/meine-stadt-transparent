@@ -36,3 +36,6 @@ class Body(DefaultFields, ShortableNameFields):
             return reverse("index")
         else:
             return reverse("body", args=[self.id])
+
+    def is_default_body(self) -> bool:
+        return settings.SITE_DEFAULT_BODY == self.id

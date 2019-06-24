@@ -143,7 +143,7 @@ def organization(request, pk):
         "parliamentary_groups": parliamentarygroups,
         "organization": organization,
         "papers": Paper.objects.filter(organizations__in=[pk]).order_by(
-            "legal_date", "modified"
+            "-legal_date", "modified"
         )[:25],
         "paper_count": Paper.objects.filter(organizations__in=[pk]).count(),
         "meetings": Meeting.objects.filter(organizations__in=[pk]).order_by(
