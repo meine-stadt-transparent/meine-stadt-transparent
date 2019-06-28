@@ -130,13 +130,14 @@ class Importer:
             else:
                 instance = type_class()
             self.converter.init_base(to_import.data, instance)
-            import_function(to_import.data, instance)
-            self.converter.utils.call_custom_hook(
-                "sanitize_" + type_name.lower(), instance
-            )
+            if not instance.deleted:
+                import_function(to_import.data, instance)
+                self.converter.utils.call_custom_hook(
+                    "sanitize_" + type_name.lower(), instance
+                )
 
             instance.save()
-            if related_function:
+            if related_function and not instance.deleted:
                 related_function(to_import.data, instance)
             all_instances.append(instance)
 
