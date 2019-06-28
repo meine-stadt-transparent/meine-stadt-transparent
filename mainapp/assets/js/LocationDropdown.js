@@ -19,7 +19,7 @@ export default class LocationDropdown {
     }
 
     initDropdownListener(mapIsInitialized) {
-        this.$widget.on("shown.bs.dropdown", () => {
+        this.$widget.on("shown.bs.modal", () => {
             if (!mapIsInitialized) {
                 let location = this.$widget.data("location");
                 let pos = new L.LatLng(location['coordinates'][1], location['coordinates'][0]);

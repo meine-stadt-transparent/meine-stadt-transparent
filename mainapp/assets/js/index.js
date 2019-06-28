@@ -64,9 +64,9 @@ $(function () {
 
 $(function () {
     // Styling inspired by the public domain https://github.com/b44rd/jsbug/blob/master/jsbug.js
-    let style = "color: #000;font-size:12pt;font-weight:normal;padding:2px;background-color: #44A2C0";
-    console.log("%cHey there!", style);
-    console.log("%cWant to help to make Meine Stadt Transparent even better?", style);
-    console.log("%cWe're small, friendly and well-documented project always happy about contributions, whether it is code, design or something else", style);
-    console.log("%chttps://github.com/meine-stadt-transparent/meine-stadt-transparent", style)
+    //let style = "color: #000;font-size:12pt;font-weight:normal;padding:2px;background-color: #44A2C0";
+    //console.log("%cHey there!", style);
+    //console.log("%cWant to help to make Meine Stadt Transparent even better?", style);
+    //console.log("%cWe're small, friendly and well-documented project always happy about contributions, whether it is code, design or something else", style);
+    //console.log("%chttps://github.com/meine-stadt-transparent/meine-stadt-transparent", style)
 });

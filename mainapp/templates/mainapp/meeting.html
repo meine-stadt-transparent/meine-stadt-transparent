@@ -67,31 +67,49 @@
             {# The extra div around icons of d-flex parents places the icon on the height as the text #}
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 {% if meeting.location.geometry %}
-                    <div class="dropdown location-dropdown std-element"
-                         data-map-data="{{ map }}" data-location="{{ location_json }}">
-                        <button class="btn btn-sm btn-transparent" type="button" role="button"
-                                name="meeting-location-dropdown"
-                                id="locationShowButton" title="{{ meeting.location.description }}"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                    <div class="dropdown location-dropdown std-element" data-location="{{ location_json }}">
+                        <button type="button" class="btn btn-sm btn-transparent" data-toggle="modal"
+                                data-target="#locationModal" name="meeting-location-dropdown" id="locationShowButton"
+                                title="{{ meeting.location.description }}" aria-haspopup="true" aria-expanded="false"
                                 tabindex="0">
+
                             {# div is not allowed inside buttons, but span also works #}
                             <span class="d-flex text-left">
                                 <span><span class="fa-custom fa-map-marker" aria-hidden="true"></span></span>
                                 <span class="dropdown-toggle text-wrap">{{ meeting.location.short }}</span>
                             </span>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="locationShowButton">
-                            <p class="m-2">{{ meeting.location.description }}</p>
-                            <div class="location-map" id="location-select-map" data-map-data="{{ map }}"></div>
-                            <div>
-                                <a href="{{ google_maps_url }}" target="_blank" rel="noopener noreferrer"
-                                   class="btn btn-sm btn-transparent">
-                                    <span class="fa fa-external-link" aria-hidden="true"></span> Google Maps
-                                </a>
-                                <a href="{{ osm_url }}" target="_blank" rel="noopener noreferrer"
-                                   class="btn btn-sm btn-transparent">
-                                    <span class="fa fa-external-link" aria-hidden="true"></span> OpenStreetMaps
-                                </a>
+
+                        <div class="modal fade" id="locationModal" tabindex="-1" role="dialog"
+                             aria-labelledby="MapModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content dynamic-location-modal">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title"
+                                            id="MapModalLabel">{{ meeting.location.description }}</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="location-map" id="location-select-map"
+                                             data-map-data="{{ map }}"></div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="{{ google_maps_url }}" target="_blank" rel="noopener noreferrer"
+                                           class="btn btn-secondary">
+                                            <span class="fa fa-external-link" aria-hidden="true"></span> Google Maps
+                                        </a>
+                                        <a href="{{ osm_url }}" target="_blank" rel="noopener noreferrer"
+                                           class="btn btn-secondary">
+                                            <span class="fa fa-external-link" aria-hidden="true"></span>
+                                            OpenStreetMaps
+                                        </a>
+                                        <button type="button" class="btn btn-primary"
+                                                data-dismiss="modal">{% trans 'Close' %}
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
