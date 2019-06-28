@@ -65,7 +65,7 @@ To reindex the elasticsearch index (requires elastic search to be enabled):
 ### Translating strings
 
 ```
-./manage.py makemessages -a
+./manage.py makemessages --locale de
 # translate django.po
 ./manage.py compilemessages
 ```

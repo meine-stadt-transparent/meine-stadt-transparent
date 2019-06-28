@@ -12,9 +12,12 @@
         {% block exttendmeta %}
             {% if organization.start %}
                 <p>
-                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>{% trans 'Timeframe of existence:' %}
-                    {{ organization.start }}
-                    {% if organization.end %} - {{ organization.end }}{% endif %}
+                    <span class="fa-custom fa-clock-o" aria-hidden="true"></span>
+                    {% if organization.end %}
+                        {% trans 'Existed from' %} {{ organization.start }} {% trans 'until' %} {{ organization.end }}
+                    {% else %}
+                        {% trans 'Exists since' %} {{ organization.start }}
+                    {% endif %}
                 </p>
             {% endif %}
 

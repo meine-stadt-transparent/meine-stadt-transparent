@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-10 23:52+0200\n"
+"POT-Creation-Date: 2019-06-28 09:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -915,59 +915,67 @@ msgstr "Tagesordnung"
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
-#: mainapp/templates/mainapp/organization.html:15
-msgid "Timeframe of existence:"
-msgstr "Zeitraum des Bestehens:"
+#: mainapp/templates/mainapp/organization.html:17
+msgid "Existed from"
+msgstr "Bestand von"
 
-#: mainapp/templates/mainapp/organization.html:21
+#: mainapp/templates/mainapp/organization.html:17
+msgid "until"
+msgstr "bis"
+
+#: mainapp/templates/mainapp/organization.html:19
+msgid "Exists since"
+msgstr "Besteht seit"
+
+#: mainapp/templates/mainapp/organization.html:24
 msgctxt "List name"
 msgid "Legislative Terms:"
 msgstr "Legislaturperioden:"
 
-#: mainapp/templates/mainapp/organization.html:25
+#: mainapp/templates/mainapp/organization.html:29
 msgid "Belongs to this body"
 msgstr "Gehört zu dieser Körperschaft"
 
-#: mainapp/templates/mainapp/organization.html:30
+#: mainapp/templates/mainapp/organization.html:35
 msgid "Is located there"
 msgstr "Standort"
 
-#: mainapp/templates/mainapp/organization.html:38
+#: mainapp/templates/mainapp/organization.html:43
 msgid "Unfortunately, there is only few information about this organization"
 msgstr "Leider gibt es zu diesem Gremium nur sehr wenige Informationen"
 
-#: mainapp/templates/mainapp/organization.html:43
-#: mainapp/templates/mainapp/organization.html:45
+#: mainapp/templates/mainapp/organization.html:48
+#: mainapp/templates/mainapp/organization.html:50
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: mainapp/templates/mainapp/organization.html:52
-#: mainapp/templates/mainapp/organization.html:53
+#: mainapp/templates/mainapp/organization.html:57
+#: mainapp/templates/mainapp/organization.html:58
 msgctxt "Header"
 msgid "Paper"
 msgstr "Vorlagen"
 
-#: mainapp/templates/mainapp/organization.html:60
-#: mainapp/templates/mainapp/organization.html:61
+#: mainapp/templates/mainapp/organization.html:65
+#: mainapp/templates/mainapp/organization.html:66
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
 
-#: mainapp/templates/mainapp/organization.html:72
+#: mainapp/templates/mainapp/organization.html:77
 #: mainapp/templates/mainapp/person.html:33
 msgid "Open in Search"
 msgstr "In der Suche öffnen"
 
-#: mainapp/templates/mainapp/organization.html:76
+#: mainapp/templates/mainapp/organization.html:104
 msgid "Remaining files omitted. They can be found with the search"
 msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 
-#: mainapp/templates/mainapp/organization.html:82
+#: mainapp/templates/mainapp/organization.html:111
 msgid "Subscribe (iCal)"
 msgstr "Abonnieren (iCal)"
 
-#: mainapp/templates/mainapp/organization.html:94
+#: mainapp/templates/mainapp/organization.html:124
 msgid "Remaining meetings omitted. They can be found with the search"
 msgstr "Die restlichen Termine können über die Suche gefunden werden"
 
@@ -1400,3 +1408,6 @@ msgstr "Suche deaktiviert"
 #: mainapp/views/special.py:64
 msgid "Search for documents of %CITY%'s city council"
 msgstr ""
+
+#~ msgid "Timeframe of existence:"
+#~ msgstr "Zeitraum des Bestehens:"
