@@ -44,7 +44,7 @@ django-decorator-include = "^2.1"
 [tool.poetry.dev-dependencies]
 selenium = "3.141.0"
 tox = "^3.13"
-django-debug-toolbar = "^1.11"
+django-debug-toolbar = "^2.0"
 responses = "^0.10.6"
 pytest-django = "^3.5"
 black = "19.3b0"
