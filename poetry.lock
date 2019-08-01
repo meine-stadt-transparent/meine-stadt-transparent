@@ -148,7 +148,7 @@ description = "Django email integration for Amazon SES, Mailgun, Mailjet, Postma
 name = "django-anymail"
 optional = false
 python-versions = "*"
-version = "6.0"
+version = "6.1.0"
 
 [package.dependencies]
 django = ">=1.11"
@@ -963,7 +963,7 @@ version = "0.5.1"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "212a6c5ee1fd10847ab081ec1e04882029be4e62fe4e5de87c96f112e2fccbec"
+content-hash = "8c56f5bf3e1d31fae07c66cb5ad381366cd650339b1b59df9bcf7efe83badd12"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -982,7 +982,7 @@ cryptography = ["066f815f1fe46020877c5983a7e747ae140f517f1b09030ec098503575265ce
 defusedxml = ["6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93", "f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"]
 django = ["65e2a548a52fca560cdd4e35f4fa1a79140f405af48950e59702a37e4227e958", "d4244e2c9653e1349b37ab0cdf108607ba9d1e41f71d0711ac71360e4026ce94"]
 django-allauth = ["4444434c2f43188e16e0a7732c3638e12787ca7e5032f69b6d30b2912f53809e"]
-django-anymail = ["ab5cbfb280492c9cb2ef0497f8ebda4dcb3f99603dcf63c88ae623a66cad71f4", "f872089943f30283d485d121924598f4156f5bfa76a0885fd66df5205102be0b"]
+django-anymail = ["72549db8823c144a334bf88c8e749becb1fc82911658129549f46bfb84de311c", "947c9c5de009036771ff9c4295da1836c950fdee4d7c27441181ce1021c370a8"]
 django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a890", "ba68e98b817c6f01d71d10849f359979617b3fe4cefb7f289adefddced092ddc"]
 django-csp = ["04600237701e6d6ff78ed7d41209ff923988148bf292c128f6b474b9befe444f", "8b9997df89a7a936d7c397e051367f974aa1d1a97d0b32acb4300087b3bed071"]
 django-debug-toolbar = ["17c53cd6bf4e7d69902aedf9a1d26c5d3b7369b54c5718744704f27b5a72f35d", "9a23ada2e43cd989195db3c18710b5d7451134a0d48127ab64c1d2ad81700342"]
