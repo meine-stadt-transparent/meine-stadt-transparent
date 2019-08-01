@@ -694,7 +694,7 @@ description = "A Python Slugify application that handles Unicode"
 name = "python-slugify"
 optional = false
 python-versions = "*"
-version = "3.0.2"
+version = "3.0.3"
 
 [package.dependencies]
 text-unidecode = "1.2"
@@ -1035,7 +1035,7 @@ pypdf2 = ["e28f902f2f0a1603ea95ebe21dff311ef09be3d0f0ef29a3e44a932729564385"]
 pytest = ["136632a40451162cdfc18fe4d7ecc5d169b558a3d4bbb1603d4005308a42fd03", "62b129bf8368554ca7a942cbdb57ea26aafef46cc65bc317cdac3967e54483a3"]
 pytest-django = ["264fb4c506db5d48a6364c311a0b00b7b48a52715bad8839b2d8bee9b99ed6bb", "4adfe5fb3ed47f0ba55506dd3daf688b1f74d5e69148c10ad2dd2f79f40c0d62"]
 python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
-python-slugify = ["57163ffb345c7e26063435a27add1feae67fa821f1ef4b2f292c25847575d758"]
+python-slugify = ["a9f468227cb11e20e251670d78e1b5f6b0b15dd37bbd5c9814a25a904e44ff66"]
 python3-openid = ["0086da6b6ef3161cfe50fb1ee5cceaf2cda1700019fda03c2c5c440ca6abe4fa", "628d365d687e12da12d02c6691170f4451db28d6d68d050007e4a40065868502"]
 pytz = ["303879e36b721603cc54604edcac9d20401bdbe31e1e4fdee5b9f98d5d31dfda", "d747dd3d23d77ef44c6a3526e274af6efeb0a6f1afd5a69ba4d5be4098c8e141"]
 requests = ["11e007a8a2aa0323f5a921e9e6a2d7e4e67d9877e85773fba9ba6419025cbeb4", "9cf5292fcd0f598c671cfc1e0d7d1a7f13bb8085e9a590f48c010551dc6c4b31"]
