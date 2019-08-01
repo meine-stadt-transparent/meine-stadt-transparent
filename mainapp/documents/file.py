@@ -1,15 +1,13 @@
-from django_elasticsearch_dsl import DocType, GeoPointField, IntegerField, TextField
+from django.conf import settings
+from django_elasticsearch_dsl import Document, GeoPointField, IntegerField, TextField
+from django_elasticsearch_dsl.registries import registry
 
-from mainapp.documents.index import (
-    autocomplete_analyzer,
-    text_analyzer,
-    elastic_index_file,
-)
+from mainapp.documents.index import autocomplete_analyzer, text_analyzer
 from mainapp.models import File
 
 
-@elastic_index_file.doc_type
-class FileDocument(DocType):
+@registry.register_document
+class FileDocument(Document):
     autocomplete = TextField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
     coordinates = GeoPointField(attr="coordinates")
     person_ids = IntegerField(attr="person_ids")
@@ -26,7 +24,10 @@ class FileDocument(DocType):
             .order_by("id")
         )
 
-    class Meta:
+    class Index:
+        name = settings.ELASTICSEARCH_PREFIX + "-file"
+
+    class Django:
         model = File
         queryset_pagination = 500
 

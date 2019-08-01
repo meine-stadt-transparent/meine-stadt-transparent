@@ -4,7 +4,8 @@ from elasticsearch_dsl.response import Hit, AggResponse
 from mainapp.functions.search import MainappSearch
 
 hit_template = {
-    "_type": "file_document",
+    "_index": "mst-test-file",
+    "_type": "doc",
     "_id": "159",
     "_source": {"id": 159},
     "highlight": {
@@ -50,7 +51,8 @@ template = {
         "modified": "2017-12-01T10:56:37.297771+00:00",
     },
     "_score": 1,
-    "doc_type": "file_document",
+    "doc_type": "doc",
+    "index": "mst-test-file",
     "highlight": {"name": ["Title <mark>Highlight</mark>"]},
 }
 

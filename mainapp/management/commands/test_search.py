@@ -1,10 +1,12 @@
 import time
 from typing import Dict, List
 
+from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
+from django_elasticsearch_dsl import Index
 
-from mainapp.documents.index import elastic_index_file
+from mainapp.documents.index import autocomplete_analyzer, text_analyzer
 from mainapp.functions.search import search_string_to_params, MainappSearch, parse_hit
 
 
@@ -16,6 +18,10 @@ class Command(BaseCommand):
 
     def analyze(self, text: str) -> Dict[str, List[Dict]]:
         """ Shows what elasticsearch does with the tokens """
+
+        elastic_index_file = Index(settings.ELASTICSEARCH_PREFIX + "-file")
+        elastic_index_file.analyzer(autocomplete_analyzer)
+        elastic_index_file.analyzer(text_analyzer)
         return elastic_index_file.analyze(
             body={"analyzer": "text_analyzer", "text": text}
         )

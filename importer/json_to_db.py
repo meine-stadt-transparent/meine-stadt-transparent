@@ -168,7 +168,6 @@ class JsonToDb:
 
         return instance
 
-
     def retrieve(
         self, object_type: Type[T], oparl_id: Optional[str], warn: bool = True
     ) -> Optional[T]:

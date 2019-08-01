@@ -203,10 +203,10 @@ description = "Wrapper around elasticsearch-dsl-py for django models"
 name = "django-elasticsearch-dsl"
 optional = false
 python-versions = "*"
-version = "0.5.1"
+version = "6.4.2"
 
 [package.dependencies]
-elasticsearch-dsl = ">=2.1.0,<6.2.0"
+elasticsearch-dsl = ">=6.4.0,<7.0.0"
 
 [[package]]
 category = "main"
@@ -321,7 +321,7 @@ description = "Python client for Elasticsearch"
 name = "elasticsearch"
 optional = false
 python-versions = "*"
-version = "5.5.3"
+version = "6.4.0"
 
 [package.dependencies]
 urllib3 = ">=1.21.1"
@@ -332,10 +332,10 @@ description = "Python client for Elasticsearch"
 name = "elasticsearch-dsl"
 optional = false
 python-versions = "*"
-version = "5.4.0"
+version = "6.4.0"
 
 [package.dependencies]
-elasticsearch = ">=5.0.0,<6.0.0"
+elasticsearch = ">=6.0.0,<7.0.0"
 python-dateutil = "*"
 six = "*"
 
@@ -978,7 +978,7 @@ version = "0.5.2"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "017c8812da13260a3fe6218a06722e219ba027ceae78050a2921c25412d4b73e"
+content-hash = "691b652743e2f250196a7b582245c579214736ce93d5f4b4ac6e30edc8b9d393"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1002,7 +1002,7 @@ django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a8
 django-csp = ["04600237701e6d6ff78ed7d41209ff923988148bf292c128f6b474b9befe444f", "8b9997df89a7a936d7c397e051367f974aa1d1a97d0b32acb4300087b3bed071"]
 django-debug-toolbar = ["17c53cd6bf4e7d69902aedf9a1d26c5d3b7369b54c5718744704f27b5a72f35d", "9a23ada2e43cd989195db3c18710b5d7451134a0d48127ab64c1d2ad81700342"]
 django-decorator-include = ["41df70c2b9bd5fe0143d01d6469c522c5e301d3e34f2df5c22a25cae798d8971", "fd2d6735a6225c3836908b3cca6366e0f5b556a44a47ac92cc1f08c86fa5a3dc"]
-django-elasticsearch-dsl = ["114889f0f70d584e300953b9fc75f312b447e3ff96136dad03028654ba9f4cbd", "8c96714d8eef30763e820a2909663b236df765e5c6c8508721489dc9713dfef7"]
+django-elasticsearch-dsl = ["ba043005eca1647d3f48b9e60d760c2b4daf886cbaa9312e658592b59ab57be2", "e0aa448efd751909a40dfebad67d0206d37a15777ee455bbde63630f1eaa636a"]
 django-environ = ["6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde", "c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"]
 django-geojson = ["7a892e1f8f17f10ffbced9f737c347eae975eb340cd3f00bc9e3896ecce4135d"]
 django-modelcluster = ["59672386191d38c69d6f994c3f9aaab3ff93910ec71e78a0bb6aa9abd4d1b90a", "eea507f2dd8bd283600c1cfa4de6776501a28f199089bb00613c1621505e80cc"]
@@ -1014,8 +1014,8 @@ django-webpack-loader = ["60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93
 django-widget-tweaks = ["65c960f3d75008a285e4b10f4d21f9eae4160fd77a0f6097ad545185f8648bd6", "f2e2c9c9be1ccc59061e248dcc2144f4906d594abe1a563902f4bdf6aa14e432"]
 djangorestframework = ["42979bd5441bb4d8fd69d0f385024a114c3cae7df0f110600b718751250f6929", "aedb48010ebfab9651aaab1df5fd3b4848eb4182afc909852a2110c24f89a359"]
 draftjs-exporter = ["503f222c81de9a0619158d8f88b638f9069af8de233dc020faa782c7a3b22100"]
-elasticsearch = ["658380fd60bdaf746fef12958f0abc49063218ce93ee1ae4ca1fe6291c896433", "ae91b089f2f2b5b3daa04297949e5f805ab12d187218cb587273f472656fd250"]
-elasticsearch-dsl = ["197246ddd556b4b7d2738dfa9e4831068c9b5cb21706f6aca035136d42849109", "cbef6467085d7debc870bc450d996c7ba5b8822eb86a6033bba09134ffb01ba8"]
+elasticsearch = ["1f0f633e3b500d5042424f75a505badf8c4b9962c1b4734cdfb3087fb67920be", "fb5ab15ee283f104b5a7a5695c7e879cb2927e4eb5aed9c530811590b41259ad"]
+elasticsearch-dsl = ["26416f4dd46ceca43d62ef74970d9de4bdd6f4b0f163316f0b432c9e61a08bec", "f60aea7fd756ac1fbe7ce114bbf4949aefbf495dfe8896640e787c67344f12f6"]
 filelock = ["18d82244ee114f543149c66a6e0c14e9c4f8a1044b5cdaadd0f82159d6a6ff59", "929b7d63ec5b7d6b71b0fa5ac14e030b3f70b75747cef1b10da9b879fef15836"]
 flask = ["13f9f196f330c7c2c5d7a5cf91af894110ca0215ac051b5844701f2bfd934d52", "45eb5a6fd193d6cf7e0cf5d8a5b31f83d5faae0293695626f539a823e93b13f6"]
 future = ["67045236dcfd6816dc439556d009594abf643e5eb48992e36beac09c2ca659b8"]

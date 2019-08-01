@@ -1,7 +1,8 @@
 from typing import Optional, Dict, Any
 
+from django.conf import settings
 from django_elasticsearch_dsl import (
-    DocType,
+    Document,
     GeoPointField,
     NestedField,
     TextField,
@@ -9,14 +10,14 @@ from django_elasticsearch_dsl import (
     BooleanField,
     DateField,
 )
+from django_elasticsearch_dsl.registries import registry
 
-from mainapp.documents.index import elastic_index_meeting
 from mainapp.models import Meeting
 from .index import text_analyzer
 
 
-@elastic_index_meeting.doc_type
-class MeetingDocument(DocType):
+@registry.register_document
+class MeetingDocument(Document):
     location = GeoPointField()
     sort_date = DateField()
 
@@ -42,7 +43,10 @@ class MeetingDocument(DocType):
             .order_by("id")
         )
 
-    class Meta:
+    class Index:
+        name = settings.ELASTICSEARCH_PREFIX + "-meeting"
+
+    class Django:
         model = Meeting
         queryset_pagination = 500
 

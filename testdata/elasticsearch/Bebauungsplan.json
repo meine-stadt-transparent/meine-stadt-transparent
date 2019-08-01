@@ -5,7 +5,7 @@
         "hits": [
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "4",
                 "_score": 2.363447,
                 "_source": {
@@ -22,7 +22,7 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "6",
                 "_score": 1.8800145,
                 "_source": {
@@ -39,7 +39,7 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "5",
                 "_score": 0.5274172,
                 "_source": {
@@ -56,7 +56,7 @@
             },
             {
                 "_index": "mst-test-file",
-                "_type": "file_document",
+                "_type": "doc",
                 "_id": "1",
                 "_score": 0.320456,
                 "_source": {

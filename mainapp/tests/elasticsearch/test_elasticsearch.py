@@ -46,9 +46,8 @@ class TestElasticsearch(TestCase):
     def test_scoring(self):
         """ Checks that the search results are in the intended order
 
-        1234/89: Checks that looking for reference numbers works, checks that the slash
-        (which is split by the tokenizer) works and that
-
+        1234/89: Checks that looking for reference numbers works and checks that the slash
+        (which is split by the tokenizer) works
         """
         fixtures_dir = "testdata/elasticsearch"
         for filename in os.listdir(fixtures_dir):

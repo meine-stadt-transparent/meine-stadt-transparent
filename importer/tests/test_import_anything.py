@@ -26,7 +26,7 @@ class TestImportAnything(TestCase):
             requests_mock.add(requests_mock.GET, file["id"], json=file)
             call_command(import_anything.Command(), file["id"])
 
-        self.assertEqual(File.objects.get(id=1).name, "Old")
+        self.assertEqual(File.objects.get(oparl_id=file["id"]).name, "Old")
 
         # Update an existing object
         file["name"] = "New"
@@ -35,7 +35,7 @@ class TestImportAnything(TestCase):
             requests_mock.add(requests_mock.GET, file["id"], json=file)
             call_command(import_anything.Command(), file["id"])
 
-        self.assertEqual(File.objects.get(id=1).name, "New")
+        self.assertEqual(File.objects.get(oparl_id=file["id"]).name, "New")
 
     def test_warn_import_mismatch_url_id(self):
         with open("testdata/oparl/File.json") as fp:

@@ -160,7 +160,7 @@ def search_autocomplete(_, query):
     limit_per_type = 5
 
     for hit in response.hits:
-        if hit.meta.doc_type == "person_document":
+        if hit.meta.index.split("-")[-1] == "person":
             if num_persons < limit_per_type:
                 results.append(
                     {"name": hit.name, "url": reverse("person", args=[hit.id])}
