@@ -1,12 +1,13 @@
-from django_elasticsearch_dsl import DocType, TextField, IntegerField
+from django.conf import settings
+from django_elasticsearch_dsl import Document, TextField, IntegerField
+from django_elasticsearch_dsl.registries import registry
 
-from mainapp.documents.index import elastic_index_paper
 from mainapp.models.paper import Paper
 from .index import autocomplete_analyzer
 
 
-@elastic_index_paper.doc_type
-class PaperDocument(DocType):
+@registry.register_document
+class PaperDocument(Document):
     autocomplete = TextField(attr="get_autocomplete", analyzer=autocomplete_analyzer)
     main_file = IntegerField(attr="main_file_id")
     person_ids = IntegerField(attr="person_ids")
@@ -19,7 +20,10 @@ class PaperDocument(DocType):
             .order_by("id")
         )
 
-    class Meta:
+    class Index:
+        name = settings.ELASTICSEARCH_PREFIX + "-paper"
+
+    class Django:
         model = Paper
         queryset_pagination = 500
 

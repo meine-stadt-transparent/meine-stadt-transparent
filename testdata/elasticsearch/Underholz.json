@@ -5,7 +5,7 @@
         "hits": [
             {
                 "_index": "mst-test-organization",
-                "_type": "organization_document",
+                "_type": "doc",
                 "_id": "2",
                 "_score": 2.3014567,
                 "_source": {
@@ -20,7 +20,7 @@
             },
             {
                 "_index": "mst-test-person",
-                "_type": "person_document",
+                "_type": "doc",
                 "_id": "2",
                 "_score": 2.3014567,
                 "_source": {
@@ -38,7 +38,7 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "2",
                 "_score": 1.447597,
                 "_source": {
@@ -55,7 +55,7 @@
             },
             {
                 "_index": "mst-test-file",
-                "_type": "file_document",
+                "_type": "doc",
                 "_id": "4",
                 "_score": 1.3862944,
                 "_source": {
@@ -73,7 +73,7 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "3",
                 "_score": 1.1507283,
                 "_source": {
@@ -90,7 +90,7 @@
             },
             {
                 "_index": "mst-test-organization",
-                "_type": "organization_document",
+                "_type": "doc",
                 "_id": "1",
                 "_score": 1.0228697,
                 "_source": {
@@ -105,7 +105,7 @@
             },
             {
                 "_index": "mst-test-person",
-                "_type": "person_document",
+                "_type": "doc",
                 "_id": "1",
                 "_score": 1.0228697,
                 "_source": {
@@ -123,7 +123,7 @@
             },
             {
                 "_index": "mst-test-meeting",
-                "_type": "meeting_document",
+                "_type": "doc",
                 "_id": "2",
                 "_score": 0.5753642,
                 "_source": {
@@ -138,7 +138,7 @@
             },
             {
                 "_index": "mst-test-meeting",
-                "_type": "meeting_document",
+                "_type": "doc",
                 "_id": "1",
                 "_score": 0.25571743,
                 "_source": {
@@ -153,7 +153,7 @@
             },
             {
                 "_index": "mst-test-file",
-                "_type": "file_document",
+                "_type": "doc",
                 "_id": "3",
                 "_score": 0.25571743,
                 "_source": {

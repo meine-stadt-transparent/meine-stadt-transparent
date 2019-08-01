@@ -114,14 +114,14 @@ class MainappSearch(FacetedSearch):
 
         if "sort" in self.params:
             if self.params["sort"] == "date_newest":
-                sort = "-sort_date"
+                sort = ["-sort_date"]
             elif self.params["sort"] == "date_oldest":
-                sort = "sort_date"
+                sort = ["sort_date"]
             else:
-                sort = "_score"
+                sort = ["_score"]
             self.options["sort"] = self.params["sort"]
         else:
-            sort = "_score"
+            sort = ["_score"]
 
         super().__init__(self.params.get("searchterm"), filters, sort)
 
@@ -210,7 +210,11 @@ class MainappSearch(FacetedSearch):
     def build_search(self) -> Search:
         search = super().build_search()
         if logger.isEnabledFor(logging.DEBUG):
-            logger.debug("Elasticsearch query: {}".format(json.dumps(search.to_dict(), cls=DjangoJSONEncoder)))
+            logger.debug(
+                "Elasticsearch query: {}".format(
+                    json.dumps(search.to_dict(), cls=DjangoJSONEncoder)
+                )
+            )
         return search
 
 
@@ -313,7 +317,7 @@ def get_highlights(hit, parsed):
 
 def parse_hit(hit: AttrDict, highlighting: bool = True) -> Dict[str, Any]:
     parsed = hit.to_dict()  # Adds name and reference_number if available
-    parsed["type"] = hit.meta.doc_type.replace("_document", "").replace("_", "-")
+    parsed["type"] = hit.meta.index.split("-")[-1]
     parsed["type_translated"] = DOCUMENT_TYPE_NAMES[parsed["type"]]
     parsed["url"] = reverse(parsed["type"], args=[hit.id])
     parsed["score"] = hit.meta.score

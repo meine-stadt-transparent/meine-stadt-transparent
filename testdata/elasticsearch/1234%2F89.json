@@ -5,7 +5,7 @@
         "hits": [
             {
                 "_index": "mst-test-paper",
-                "_type": "paper_document",
+                "_type": "doc",
                 "_id": "1",
                 "_score": 2.3014567,
                 "_source": {

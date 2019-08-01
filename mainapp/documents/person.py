@@ -1,13 +1,14 @@
+from django.conf import settings
 from django.db.models import Prefetch
-from django_elasticsearch_dsl import DocType, TextField, IntegerField, DateField
+from django_elasticsearch_dsl import Document, TextField, IntegerField, DateField
+from django_elasticsearch_dsl.registries import registry
 
-from mainapp.documents.index import elastic_index_person
 from mainapp.models import Person, Membership
 from .index import autocomplete_analyzer
 
 
-@elastic_index_person.doc_type
-class PersonDocument(DocType):
+@registry.register_document
+class PersonDocument(Document):
     autocomplete = TextField(attr="name_autocomplete", analyzer=autocomplete_analyzer)
     sort_date = DateField()
     organization_ids = IntegerField(attr="organization_ids")
@@ -29,7 +30,10 @@ class PersonDocument(DocType):
             )
         )
 
-    class Meta:
+    class Index:
+        name = settings.ELASTICSEARCH_PREFIX + "-person"
+
+    class Django:
         model = Person
         queryset_pagination = 500
 

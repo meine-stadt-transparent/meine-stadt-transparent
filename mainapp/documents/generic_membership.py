@@ -9,5 +9,5 @@ class GenericMembershipDocument:
 
     body = ObjectField(properties={"id": IntegerField(), "name": TextField()})
 
-    class Meta:
+    class Django:
         fields = ["id", "name", "short_name"]
