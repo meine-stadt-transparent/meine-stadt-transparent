@@ -1,7 +1,6 @@
 import logging
 from typing import Optional, Tuple, Dict, Any
 
-import requests
 from requests import HTTPError
 
 from importer import JSON

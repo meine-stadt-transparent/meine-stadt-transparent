@@ -106,7 +106,7 @@ class Cli:
         body.save()
         logger.info(
             "Using {} as Amtliche Gemeindeschlüssel for '{}'".format(
-                ags, body.short_name
+                body.ags, body.short_name
             )
         )
         dotenv = ""
@@ -118,9 +118,9 @@ class Cli:
                 "(you'll be reminded again after the import finished): \n\n" + dotenv
             )
         logger.info("Importing the shape of the city")
-        import_outline(body, ags)
+        import_outline(body)
         logger.info("Importing the streets")
-        import_streets(body, ags)
+        import_streets(body)
         return body_data.data, dotenv
 
     def get_entrypoint_and_body(

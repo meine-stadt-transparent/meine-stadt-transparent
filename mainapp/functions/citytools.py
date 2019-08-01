@@ -2,6 +2,7 @@ import json
 import logging
 import subprocess
 import tempfile
+from typing import Optional
 
 import requests
 from django.db import IntegrityError
@@ -29,7 +30,10 @@ out geom;
 """
 
 
-def import_streets(body: Body, gemeindeschluessel: str):
+def import_streets(body: Body, gemeindeschluessel: Optional[str] = None):
+    gemeindeschluessel = gemeindeschluessel or body.ags
+    assert gemeindeschluessel is not None
+
     logger.info("Importing streets from {}".format(gemeindeschluessel))
 
     query = streets_query_template.format(gemeindeschluessel)
@@ -57,7 +61,12 @@ def import_streets(body: Body, gemeindeschluessel: str):
         )
 
 
-def import_outline(body: Body, gemeindeschluessel: str):
+def import_outline(body: Body, gemeindeschluessel: Optional[str] = None):
+    gemeindeschluessel = gemeindeschluessel or body.ags
+    assert gemeindeschluessel is not None
+
+    logger.info("Importing outline from {}".format(gemeindeschluessel))
+
     if not body.outline:
         outline = Location()
         outline.name = "Outline of " + body.name
@@ -65,8 +74,6 @@ def import_outline(body: Body, gemeindeschluessel: str):
         outline.is_official = False
     else:
         outline = body.outline
-
-    logger.info("Importing outline from {}".format(gemeindeschluessel))
 
     query = query_template_outline.format(gemeindeschluessel)
 

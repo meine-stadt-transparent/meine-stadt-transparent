@@ -29,7 +29,7 @@ class Body(DefaultFields, ShortableNameFields):
     ags = models.CharField(max_length=8, null=True, blank=True)
 
     def __str__(self):
-        return self.short_name
+        return f"{self.short_name} ({self.ags})"
 
     def get_default_link(self):
         if settings.SITE_DEFAULT_BODY == self.id:

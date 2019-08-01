@@ -20,7 +20,7 @@ PUBLICALITY = (
 
 
 class Meeting(DefaultFields, ShortableNameFields):
-    cancelled = models.BooleanField()
+    cancelled = models.BooleanField(default=False)
     start = models.DateTimeField()
     end = models.DateTimeField(null=True, blank=True)
     location = models.ForeignKey(

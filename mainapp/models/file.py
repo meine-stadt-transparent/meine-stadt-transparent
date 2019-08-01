@@ -30,7 +30,7 @@ class File(DefaultFields):
     oparl_download_url = models.CharField(max_length=512, null=True, blank=True)
 
     def __str__(self):
-        return self.filename
+        return self.filename or self.name
 
     def coordinates(self) -> List[Dict[str, Any]]:
         coordinates = []
