@@ -2,6 +2,7 @@ import logging
 from typing import Optional, Set, List, Type
 
 import requests
+from slugify import slugify
 
 from importer import JSON
 from importer.models import CachedObject, ExternalList
@@ -41,9 +42,10 @@ import_order = [
 def requests_get(url, params=None, **kwargs) -> requests.Response:
     """ Makes a request with the custom user agent """
     user_agent = "{} ({})".format(
-        settings.PRODUCT_NAME, settings.TEMPLATE_META["github"]
+        slugify(settings.PRODUCT_NAME), settings.TEMPLATE_META["github"]
     )
-    kwargs["headers"] = kwargs.get("headers", {}).update({"User-Agent": user_agent})
+    kwargs.setdefault("headers", {})
+    kwargs["headers"]["User-Agent"] = user_agent
     response = requests.get(url, params, **kwargs)
     response.raise_for_status()
     return response
