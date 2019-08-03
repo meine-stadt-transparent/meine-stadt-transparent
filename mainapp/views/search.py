@@ -160,13 +160,14 @@ def search_autocomplete(_, query):
     limit_per_type = 5
 
     for hit in response.hits:
-        if hit.meta.index.split("-")[-1] == "person":
+        doc_type = hit.meta.index.split("-")[-1]
+        if doc_type == "person":
             if num_persons < limit_per_type:
                 results.append(
                     {"name": hit.name, "url": reverse("person", args=[hit.id])}
                 )
                 num_persons += 1
-        elif hit.meta.doc_type == "organization_document":
+        elif doc_type == "organization":
             if num_organizations < limit_per_type:
                 if multibody and hit.body:
                     name = hit.name + " (" + hit.body.name + ")"
@@ -176,18 +177,9 @@ def search_autocomplete(_, query):
                     {"name": name, "url": reverse("organization", args=[hit.id])}
                 )
                 num_organizations += 1
-        elif hit.meta.doc_type in [
-            "file_document",
-            "paper_document",
-            "meeting_document",
-        ]:
+        elif doc_type in ["file", "paper", "meeting"]:
             name = hit.name
-            results.append(
-                {
-                    "name": name,
-                    "url": reverse(hit.meta.doc_type.split("_")[0], args=[hit.id]),
-                }
-            )
+            results.append({"name": name, "url": reverse(doc_type, args=[hit.id])})
         else:
             logger.error(
                 "Unknown document type in elastic search response: %s"
