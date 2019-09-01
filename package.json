@@ -34,7 +34,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^3.12.0",
     "webpack-bundle-tracker": "^0.3.0",
-    "webpack-merge": "^4.2.1"
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
     "@sentry/browser": "^5.5.0",
