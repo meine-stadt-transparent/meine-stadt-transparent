@@ -1,9 +1,12 @@
 import logging
 
+import requests
 from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
 from django.db.models import Q, Count
+from django.http import HttpRequest
+from django.http import StreamingHttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.templatetags.static import static
 from django.urls import reverse
@@ -11,7 +14,9 @@ from django.utils import html
 from django.utils import timezone
 from django.views.generic import DetailView
 from requests.utils import quote
+from slugify import slugify
 
+from importer.functions import requests_get
 from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.functions.search import DOCUMENT_TYPE_NAMES_PL
 from mainapp.models import (
@@ -193,11 +198,13 @@ def file(request, pk, context_meeting_id=None):
         "context_meeting": context_meeting,
     }
 
-    if renderer == "pdf":
+    if renderer == "pdf" or (renderer is None and settings.PROXY_ONLY_TEMPLATE):
         context["pdfjs_iframe_url"] = static("web/viewer.html")
-        context["pdfjs_iframe_url"] += "?file=" + reverse(
-            "file-content", args=[file.id]
-        )
+        if settings.PROXY_ONLY_TEMPLATE:
+            file_url = reverse("file-content-proxy", args=[int(file.oparl_id)])
+        else:
+            file_url = reverse("file-content", args=[file.id])
+        context["pdfjs_iframe_url"] += "?file=" + file_url
         if request.GET.get("pdfjs_search"):
             context["pdfjs_iframe_url"] += "#search=" + quote(
                 request.GET.get("pdfjs_search")
@@ -208,6 +215,16 @@ def file(request, pk, context_meeting_id=None):
                 )
 
     return render(request, "mainapp/file/file.html", context)
+
+
+def file_serve_proxy(
+    request: HttpRequest, original_file_id: int
+) -> StreamingHttpResponse:
+    """ Util to proxy back to the original RIS in case we don't want to download all the files """
+    url = settings.PROXY_ONLY_TEMPLATE.format(original_file_id)
+
+    response = requests_get(url, stream=True)
+    return StreamingHttpResponse(response.iter_content(), status=response.status_code)
 
 
 def file_serve(request, id):

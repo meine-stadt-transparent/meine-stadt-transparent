@@ -217,12 +217,17 @@
                                 <a href="#item-{{ agenda_item.key }}" class="text-dark">{{ agenda_item.key }}</a>
                             </dt>
                             <dd>
-                                {{ agenda_item.name }}
+                                {{ agenda_item.name|linebreaksbr }}
                                 {% if agenda_item.paper %}
                                     <a href="{% url 'paper' agenda_item.paper.id %}">{{ agenda_item.title }}</a>
                                 {% else %}
-                                    {{ agenda_item.title }}
+                                    <div>{{ agenda_item.title }}</div>
                                 {% endif %}
+
+                                    {% if agenda_item.result %}
+                                        <div class="my-1 font-italic">{{ agenda_item.result }}</div>
+                                    {% endif %}
+
                                 {% if agenda_item.consultation.paper %}
                                     <div class="additional-links">
                                         {% if agenda_item.consultation.paper.main_file %}
@@ -242,6 +247,7 @@
                                         {% endif %}
                                     </div>
                                 {% endif %}
+
                             </dd>
                         </div>
                     {% endfor %}

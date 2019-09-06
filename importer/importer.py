@@ -366,13 +366,14 @@ class Importer:
                 )
             )
 
-            minio_client().put_object(
-                minio_file_bucket,
-                str(file.id),
-                tmpfile.file,
-                file.filesize,
-                content_type=file.mime_type,
-            )
+            if not settings.PROXY_ONLY_TEMPLATE:
+                minio_client().put_object(
+                    minio_file_bucket,
+                    str(file.id),
+                    tmpfile.file,
+                    file.filesize,
+                    content_type=file.mime_type,
+                )
 
             # If the api has text, keep that
             if self.download_files and not file.parsed_text:

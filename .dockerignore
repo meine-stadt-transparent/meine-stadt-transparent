@@ -16,3 +16,5 @@ mainapp/assets/bundles
 .tox
 .env*
 *.log
+.pytest-cache/
+log/

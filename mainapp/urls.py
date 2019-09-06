@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import url
 
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
@@ -80,3 +81,12 @@ urlpatterns = [
     url(r"^404/$", views.error404, name="error-404"),
     url(r"^500/$", views.error500, name="error-500"),
 ]
+
+if settings.PROXY_ONLY_TEMPLATE:
+    urlpatterns.append(
+        url(
+            r"^file-content-proxy/(?P<original_file_id>.*)$",
+            views.file_serve_proxy,
+            name="file-content-proxy",
+        )
+    )

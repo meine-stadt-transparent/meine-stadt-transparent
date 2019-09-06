@@ -385,6 +385,9 @@ SETTINGS_EXPORT = [
 # Mandatory but afaik unsused value
 WAGTAIL_SITE_NAME = SITE_NAME
 
+# Workaround to avoid filling up disk space
+PROXY_ONLY_TEMPLATE = env.str("PROXY_ONLY_TEMPLATE", None)
+
 DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
