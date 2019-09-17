@@ -62,6 +62,17 @@ $(function () {
     $(".scroll-into-view").each((_, element) => element.scrollIntoView({block: "end"}));
 });
 
+// Easy linking to tabs e.g. on the organization page
+$(function () {
+    // https://github.com/twbs/bootstrap/issues/25220#issuecomment-379216474
+    const anchor = window.location.hash;
+    $(`a[href="${anchor}"]`).tab('show');
+    // https://stackoverflow.com/a/50540931/3549270
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        history.pushState({}, '', e.target.hash);
+    });
+});
+
 $(function () {
     // Styling inspired by the public domain https://github.com/b44rd/jsbug/blob/master/jsbug.js
     //let style = "color: #000;font-size:12pt;font-weight:normal;padding:2px;background-color: #44A2C0";
