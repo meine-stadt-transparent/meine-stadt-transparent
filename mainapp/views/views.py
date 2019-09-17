@@ -1,6 +1,5 @@
 import logging
 
-import requests
 from csp.decorators import csp_update
 from django.conf import settings
 from django.conf.urls.static import static
@@ -14,7 +13,6 @@ from django.utils import html
 from django.utils import timezone
 from django.views.generic import DetailView
 from requests.utils import quote
-from slugify import slugify
 
 from importer.functions import requests_get
 from mainapp.functions.minio import minio_client, minio_file_bucket
@@ -187,6 +185,8 @@ def file(request, pk, context_meeting_id=None):
 
     if not file.filesize:
         renderer = None
+        if settings.PROXY_ONLY_TEMPLATE:
+            renderer = "pdf"
 
     context = {
         "file": file,
@@ -198,7 +198,7 @@ def file(request, pk, context_meeting_id=None):
         "context_meeting": context_meeting,
     }
 
-    if renderer == "pdf" or (renderer is None and settings.PROXY_ONLY_TEMPLATE):
+    if renderer == "pdf":
         context["pdfjs_iframe_url"] = static("web/viewer.html")
         if settings.PROXY_ONLY_TEMPLATE:
             file_url = reverse("file-content-proxy", args=[int(file.oparl_id)])
@@ -224,7 +224,7 @@ def file_serve_proxy(
     url = settings.PROXY_ONLY_TEMPLATE.format(original_file_id)
 
     response = requests_get(url, stream=True)
-    return StreamingHttpResponse(response.iter_content(), status=response.status_code)
+    return StreamingHttpResponse(response.iter_content(chunk_size=None), status=response.status_code)
 
 
 def file_serve(request, id):
