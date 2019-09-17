@@ -7,6 +7,7 @@ from typing import List, TypeVar, Type, Optional, Callable
 from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from requests import HTTPError
 from slugify.slugify import slugify
 
 from importer import JSON
@@ -189,7 +190,13 @@ class JsonToDb:
                     )
                 )
 
-            return self.import_anything(oparl_id)
+            try:
+                return self.import_anything(oparl_id)
+            except HTTPError:
+                logger.exception(
+                    "Failed to download the {} {}".format(object_type, oparl_id)
+                )
+                return None
 
     def retrieve_many(
         self,

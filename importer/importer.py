@@ -124,7 +124,9 @@ class Importer:
         for to_import in all_to_import:
             if update:
                 instance = (
-                    type_class.objects.filter(oparl_id=to_import.url).first()
+                    type_class.objects_with_deleted.filter(
+                        oparl_id=to_import.url
+                    ).first()
                     or type_class()
                 )
             else:

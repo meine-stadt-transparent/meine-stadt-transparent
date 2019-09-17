@@ -224,7 +224,9 @@ def file_serve_proxy(
     url = settings.PROXY_ONLY_TEMPLATE.format(original_file_id)
 
     response = requests_get(url, stream=True)
-    return StreamingHttpResponse(response.iter_content(chunk_size=None), status=response.status_code)
+    return StreamingHttpResponse(
+        response.iter_content(chunk_size=None), status=response.status_code
+    )
 
 
 def file_serve(request, id):
