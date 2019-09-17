@@ -57,18 +57,6 @@
   }
 }
 
-.meeting-list-simple {
-  .meeting {
-    margin-bottom: 15px;
-  }
-
-  .date {
-    display: block;
-    @extend .text-muted;
-    font-size: 0.8rem;
-  }
-}
-
 // https://stackoverflow.com/a/13184714/3549270
 .offsetted-anchor {
   display: block;
