@@ -1,6 +1,6 @@
 {% if object.has_alternative_short_name %}
     <h1>{{ object.short_name }}</h1>
-    <p class="lead">{{ object.name }}</p>
+    <p class="lead">{{ object.name|linebreaksbr }}</p>
 {% else %}
-    <h1>{{ object.name }}</h1>
+    <h1>{{ object.name|linebreaksbr }}</h1>
 {% endif %}

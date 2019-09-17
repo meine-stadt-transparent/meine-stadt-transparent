@@ -1009,7 +1009,7 @@ msgstr "Keine Historie für Dateien"
 
 #: mainapp/templates/mainapp/paper.html:93
 msgid "No files attached"
-msgstr "Keine Dateien angehägnt"
+msgstr "Keine Dateien angehängt"
 
 #: mainapp/templates/mainapp/paper.html:99
 msgid "Consultations"

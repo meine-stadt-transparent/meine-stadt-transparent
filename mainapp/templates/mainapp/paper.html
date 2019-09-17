@@ -115,16 +115,14 @@
                                             {% endif %}
                                             {% if item %}
                                                 <div class="font-weight-bold">{{ item.meeting.name }}</div>
-                                                <div class="text-dark">{{ item.key }}. {{ item.name }}</div>
+                                                <div class="text-dark">{{ item.key }}. {{ item.name|linebreaksbr }}</div>
                                                 {% if item.result %}
                                                     <div class="result">{{ item.result }}</div>
                                                 {% endif %}
                                                 {% if item.public != None %}
-                                                    <div
-                                                        class="public text-muted">{% trans "public agenda item" %}</div>
+                                                    <div class="public text-muted">{% trans "public agenda item" %}</div>
                                                 {% else %}
-                                                    <div
-                                                        class="non-public text-muted">{% trans "non-public agenda item" %}</div>
+                                                    <div class="non-public text-muted">{% trans "non-public agenda item" %}</div>
                                                 {% endif %}
                                             {% endif %}
                                         </div>

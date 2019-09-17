@@ -5,8 +5,8 @@
         <li class="clearfix result result-type-{{ result.type }}">
             <a href="{{ result.url }}" class="no-link-color">
                 <div class="py-2 container">
-                    <div class="lead font-weight-normal" title="{{ result.name_escaped | safe }}">
-                        {{ result.name_escaped | safe }}
+                    <div class="lead font-weight-normal" title="{{ result.name_escaped | safe}}">
+                        {{ result.name_escaped | safe | linebreaksbr  }}
                     </div>
 
                     <div class="text-truncate results-small">
