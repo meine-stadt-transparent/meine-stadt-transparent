@@ -908,11 +908,11 @@ description = "A Django content management system."
 name = "wagtail"
 optional = false
 python-versions = "*"
-version = "2.5.2"
+version = "2.6.1"
 
 [package.dependencies]
 Django = ">=2.0,<2.3"
-Pillow = ">=4.0.0,<6.0"
+Pillow = ">=4.0.0,<7.0.0"
 Unidecode = ">=0.04.14,<2.0"
 Willow = ">=1.1,<1.2"
 beautifulsoup4 = ">=4.5.1,<4.6.1"
@@ -978,7 +978,7 @@ version = "0.5.2"
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "55a345c04e472eab4a7db09d5f77a43de8e778224125349436d1c2068b2afe00"
+content-hash = "e9e2f4dd567bf90e6b0f7b5fad872030323613ae794cd9648e161f8150658991"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1071,7 +1071,7 @@ tqdm = ["14a285392c32b6f8222ecfbcd217838f88e11630affe9006cd0e94c7eff3cb61", "25d
 unidecode = ["1d7a042116536098d05d599ef2b8616759f02985c85b4fef50c78a5aaf10822a", "2b6aab710c2a1647e928e36d69c21e76b453cd455f4e2621000e54b2a9b8cce8"]
 urllib3 = ["b246607a25ac80bedac05c6f282e3cdaf3afb65420fd024ac94435cabe6e18d1", "dbe59173209418ae49d485b87d1681aefa36252ee85884c31346debd19463232"]
 virtualenv = ["6cb2e4c18d22dbbe283d0a0c31bb7d90771a606b2cb3415323eea008eaee6a9d", "909fe0d3f7c9151b2df0a2cb53e55bdb7b0d61469353ff7a49fd47b0f0ab9285"]
-wagtail = ["07e3adb1a3ed3385a803257859482c364a7fb37929b22a214e5a93df0725b402", "6fe4f9438e48fdb56b9446a219b4276345ced49099521f90ae500e21665bae08"]
+wagtail = ["8b66ecf74d40ccc7070944ff2e5a3ae33e42ecf92eb98b92c155410e48f4c974", "f0793d4de7d9064df04f6086e93992a5c1b07fb97f76996ea1a550bce3d57a16"]
 wand = ["13a96818a2f89e7684704ba3bfc20bdb21a15e08736c3fdf74035eeaeefd7873", "8cfa30a71a3c65efd1d90678790297fec287300715ebcdf17e119fe075148dd0"]
 wcwidth = ["3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e", "f4ebe71925af7b40a864553f761ed559b43544f8f71746c2d756c7fe788ade7c"]
 webencodings = ["a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"]
