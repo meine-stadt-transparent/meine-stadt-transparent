@@ -27,7 +27,7 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:5.6.13
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.7.1
     container_name: elasticsearch
     environment:
       - cluster.name=docker-cluster
