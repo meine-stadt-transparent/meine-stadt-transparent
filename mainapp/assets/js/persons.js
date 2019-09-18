@@ -54,7 +54,6 @@ $(function () {
     };
 
 
-
     // Make the items tabbable in the correct order, without breaking the natural tab order of the page
     let recalcTabindexes = () => {
         let lastTabindex = 1;
@@ -89,7 +88,8 @@ $(function () {
         let tabId = $gridEl.parents(".tab-pane").attr("id"),
             $tab = $(".nav-link[href=\"#" + tabId + "\"]");
         $tab.on("shown.bs.tab hidden.bs.tab", () => {
-            recalcTabindexes();
+            // TODO: We don't actually need to update and show the effect every time
+            grid.update();
         });
     }
 

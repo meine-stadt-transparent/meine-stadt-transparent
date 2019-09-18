@@ -66,7 +66,11 @@ $(function () {
 $(function () {
     // https://github.com/twbs/bootstrap/issues/25220#issuecomment-379216474
     const anchor = window.location.hash;
-    $(`a[href="${anchor}"]`).tab('show');
+    if (anchor !== "") {
+        $(`a[href="${anchor}"]`).tab('show');
+    } else {
+        $('a.nav-link.mst-active').tab('show');
+    }
     // https://stackoverflow.com/a/50540931/3549270
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         history.pushState({}, '', e.target.hash);

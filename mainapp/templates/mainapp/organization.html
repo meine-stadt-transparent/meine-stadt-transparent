@@ -44,7 +44,7 @@
         {% endif %}
         <ul class="nav nav-pills nav-fill" role="tablist">
             <li class="nav-item">
-                <a class="nav-link {% if members %}active{% endif %} {% if not members %}disabled{% endif %}"
+                <a class="nav-link mst-active {% if not members %}text-muted{% endif %}"
                    id="member-tab" data-toggle="tab"
                    role="tab" aria-controls="{% trans 'Members' context 'Header' %}" aria-selected="true"
                    href="#member-list">
@@ -53,7 +53,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if not members %}active{% endif %} {% if not papers %}disabled{% endif %}"
+                <a class="nav-link {% if not papers %}text-muted{% endif %}"
                    id="paper-tab" data-toggle="tab" role="tab"
                    href="#paper-list"
                    aria-controls="{% trans 'Paper' context 'Header' %}" aria-selected="false">
@@ -62,7 +62,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if not meetings %}disabled{% endif %}" id="meeting-tab" data-toggle="tab"
+                <a class="nav-link {% if not meetings %}text-muted{% endif %}" id="meeting-tab" data-toggle="tab"
                    href="#calendar-list" role="tab"
                    aria-controls="{% trans 'Meetings' context 'Header' %}" aria-selected="false">
                     <span>{% trans "Meetings" context "Header" %}</span>
@@ -71,11 +71,14 @@
             </li>
         </ul>
         <div class="tab-content pt-3">
-            <div id="member-list" class="tab-pane fade active {% if members %}show{% endif %}" role="tabpanel"
+            <div id="member-list" class="tab-pane fade" role="tabpanel"
                  aria-labelledby="member-tab">
                 <div class="d-flex flex-column">{% include "partials/person_grid.html" %}</div>
+                {% if members|length == 0 %}
+                    <p class="font-italic">{% trans "No members for this organization" %}</p>
+                {% endif %}
             </div>
-            <div id="paper-list" class="tab-pane fade active {% if not members %}show{% endif %}" role="tabpanel"
+            <div id="paper-list" class="tab-pane fade" role="tabpanel"
                  aria-labelledby="paper-tab">
                 <a href="{{ to_search_url }}" class="btn btn-primary btn-sm pull-right">
                     {% trans "Open in Search" %}
@@ -102,11 +105,13 @@
                                 </a></li>
                         {% endfor %}
                     </ul>
-                {% endif %}
-                {% if paper_count > papers|length %}
-                    <a href="{{ to_search_url }}">
-                        <p>{% trans "Remaining files omitted. They can be found with the search" %}</p>
-                    </a>
+                    {% if paper_count > papers|length %}
+                        <a href="{{ to_search_url }}">
+                            <p>{% trans "Remaining files omitted. They can be found with the search" %}</p>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <p class="font-italic">{% trans "No papers for this organization" %}</p>
                 {% endif %}
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
