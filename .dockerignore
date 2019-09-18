@@ -18,3 +18,4 @@ mainapp/assets/bundles
 *.log
 .pytest-cache/
 log/
+*.sqlite3

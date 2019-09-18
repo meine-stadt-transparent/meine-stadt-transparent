@@ -8,7 +8,7 @@ RUN apt-get update && \
     apt-get install -y curl gnupg && \
     curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y python3-pip python3-venv python3-dev \
-    nodejs git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev gettext && \
+    nodejs git libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
     apt-get autoremove -y && \
     apt-get clean
 
