@@ -7,7 +7,8 @@ set -e
 npm ci --dev
 npm run build:prod
 npm run build:email
-cp etc/env-template .env
+cp etc/template.env .env
+mkdir /app/log
 poetry run python manage.py compilemessages
 poetry run python manage.py collectstatic --noinput
 rm .env
