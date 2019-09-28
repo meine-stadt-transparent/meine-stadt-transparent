@@ -47,20 +47,22 @@ def city_to_ags_all(city_name: str) -> List[Tuple[str, str]]:
 def city_to_ags(city_name: str, district: bool) -> Optional[str]:
     """ Returns the Amtliche Gemeindeschlüssel"""
     ags_list = city_to_ags_all(city_name)
-    if len(ags_list) == 1:
+    if len(ags_list) == 0:
+        return None
+    elif len(ags_list) == 1:
         return ags_list[0][1]
-
-    # Disambiguate between district and city
-    if len(ags_list) == 2:
-        if len(ags_list[0][1]) == 5 and len(ags_list[1][1]) == 8:
-            if district:
-                return ags_list[0][1]
+    else:
+        # Try to disambiguate between district and city
+        districts = []
+        cities = []
+        for single_ags in ags_list:
+            if len(single_ags[1]) == 8:
+                cities.append(single_ags)
             else:
-                return ags_list[1][1]
-        elif len(ags_list[0][1]) == 8 and len(ags_list[1][1]) == 5:
-            if district:
-                return ags_list[1][1]
-            else:
-                return ags_list[0][1]
+                districts.append(single_ags)
+        if district and len(districts) == 1:
+            return districts[0][1]
+        if not district and len(cities) == 1:
+            return cities[0][1]
 
     return None
