@@ -20,7 +20,8 @@ class Command(ImportBaseCommand):
             help="Use only that many processes for the import",
         )
         parser.add_argument(
-            "--mock-body", help="Don't try to determine the body from its oparl id"
+            "--mock-body",
+            help="Don't try to determine the body from its oparl id. The value is the body's short name",
         )
 
     def handle(self, *args, **options):

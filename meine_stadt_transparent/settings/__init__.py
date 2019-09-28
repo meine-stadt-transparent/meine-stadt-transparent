@@ -263,7 +263,10 @@ if SENTRY_DSN:
         # Note however that logging isn't configured at this point
         import pkg_resources
 
-        version = pkg_resources.get_distribution("meine_stadt_transparent").version
+        try:
+            version = pkg_resources.get_distribution("meine_stadt_transparent").version
+        except pkg_resources.DistributionNotFound:
+            version = "unknown"
         release = "meine-stadt-transparent@" + version
 
     sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release)
