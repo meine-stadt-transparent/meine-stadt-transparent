@@ -71,7 +71,7 @@ def extract_from_file(
 
     parsed_text = None
     page_count = None
-    if mime_type == "application/pdf":
+    if mime_type == "application/pdf" or mime_type.startswith("application/pdf;"):
         try:
             command = ["pdftotext", filename, "-"]
             completed = subprocess.run(
@@ -94,6 +94,8 @@ def extract_from_file(
             logger.exception(message)
     elif mime_type == "text/text":
         parsed_text = file.read()
+    else:
+        logger.warning(f"Unknown mime type: '{mime_type}")
     return parsed_text, page_count
 
 
@@ -235,17 +237,20 @@ def extract_locations(
 
         location_name = format_location_name(found_location)
 
-        defaults = {"description": location_name, "is_official": False}
-
+        search_str = get_search_string(found_location, fallback_city)
+        defaults = {
+            "description": location_name,
+            "is_official": False,
+            "search_str": search_str,
+        }
         # Avoid "MySQL server has gone away" errors due to timeouts
         # https://stackoverflow.com/a/32720475/3549270
         db.close_old_connections()
         location, created = Location.objects_with_deleted.get_or_create(
-            description=location_name, defaults=defaults
+            search_str=search_str, defaults=defaults
         )
 
         if created:
-            search_str = get_search_string(found_location, fallback_city)
             location.geometry = geocode(search_str)
             location.save()
 
