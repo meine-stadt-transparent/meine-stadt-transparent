@@ -170,7 +170,9 @@ def file(request, pk, context_meeting_id=None):
 
     renderer = "download"
 
-    if file.mime_type == "application/pdf":
+    if file.mime_type == "application/pdf" or file.mime_type.startswith(
+        "application/pdf;"
+    ):
         renderer = "pdf"
     elif file.mime_type == "text/plain":
         renderer = "txt"

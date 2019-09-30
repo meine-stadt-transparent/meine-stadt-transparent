@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import ugettext as _
 
 from mainapp.models import UserAlert, Body, Paper
 
@@ -31,10 +32,14 @@ def index_papers_to_geodata(papers: List[Paper]) -> Dict[str, Any]:
                         "papers": {},
                     }
                 if paper.id not in geodata[location.id]["papers"]:
+                    if paper.paper_type:
+                        paper_type = paper.paper_type.paper_type
+                    else:
+                        paper_type = _("Paper")
                     geodata[location.id]["papers"][paper.id] = {
                         "id": paper.id,
                         "name": paper.name,
-                        "type": paper.paper_type.paper_type,
+                        "type": paper_type,
                         "url": reverse("paper", args=[paper.id]),
                         "files": [],
                     }
