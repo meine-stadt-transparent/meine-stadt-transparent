@@ -10,7 +10,9 @@ from .default_fields import DefaultFields
 class Location(DefaultFields):
     description = models.TextField(null=True, blank=True)
     # Unique field to avoid duplicating addresses through location extraction
-    search_str = models.TextField(null=True, blank=True, unique=True)
+    # The 767 is a limitation of InnoDB for indexed columns
+    # See https://stackoverflow.com/q/1827063/3549270
+    search_str = models.CharField(max_length=767, null=True, blank=True, unique=True)
 
     street_address = models.CharField(max_length=512, null=True, blank=True)
     postal_code = models.CharField(max_length=512, null=True, blank=True)

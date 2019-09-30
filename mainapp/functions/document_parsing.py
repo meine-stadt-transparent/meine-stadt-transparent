@@ -241,7 +241,8 @@ def extract_locations(
         defaults = {
             "description": location_name,
             "is_official": False,
-            "search_str": search_str,
+            # This cutoff comes from a limitation of InnoDB
+            "search_str": search_str[:767],
         }
         # Avoid "MySQL server has gone away" errors due to timeouts
         # https://stackoverflow.com/a/32720475/3549270
