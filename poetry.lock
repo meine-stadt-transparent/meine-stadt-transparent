@@ -149,10 +149,11 @@ description = "A high-level Python Web framework that encourages rapid developme
 name = "django"
 optional = false
 python-versions = ">=3.5"
-version = "2.1.12"
+version = "2.2.5"
 
 [package.dependencies]
 pytz = "*"
+sqlparse = "*"
 
 [[package]]
 category = "main"
@@ -887,7 +888,7 @@ selenium = ">=3.141.0"
 six = "*"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Non-validating SQL parser"
 name = "sqlparse"
 optional = false
@@ -1063,7 +1064,7 @@ import-json = ["dataclasses", "dataclasses_json"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "900c5380cbe6f5d97e8437140f3ed3478fc6dc3d653ee38091526bbf47a262f5"
+content-hash = "333edc99a9d8190d6381720910eb402bdc7dfd4db56c4b3757008dac71954c32"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1082,7 +1083,7 @@ cryptography = ["24b61e5fcb506424d3ec4e18bca995833839bf13c59fc43e530e488f28d46b8
 dataclasses = ["454a69d788c7fda44efd71e259be79577822f5e3f53f029a22d08004e951dc9f", "6988bd2b895eef432d562370bb707d540f32f7360ab13da45340101bc2307d84"]
 dataclasses-json = ["4040d1c84061929fc79a53b2d1816249d7468e8a84d1a776b33421f38e71a08c", "71eb3ba2f133d2380c12d79a4b622f6a95395e0aa0ab52ef2f8043d8bf2e3d4c"]
 defusedxml = ["6687150770438374ab581bb7a1b327a847dd9c5749e396102de3fad4e8a3ef93", "f684034d135af4c6cbb949b8a4d2ed61634515257a67299e5f940fbaa34377f5"]
-django = ["33e4bb3f3268ecc362a7bd982c7f19fff30597c749fedbc1fd3773ebb82ec38c", "f4351f1f921bb6c3de03e24cdba823365fb9a79a44f607ba2560e9e3b7f16ff3"]
+django = ["148a4a2d1a85b23883b0a4e99ab7718f518a83675e4485e44dc0c1d36988c5fa", "deb70aa038e59b58593673b15e9a711d1e5ccd941b5973b30750d5d026abfd56"]
 django-allauth = ["4444434c2f43188e16e0a7732c3638e12787ca7e5032f69b6d30b2912f53809e"]
 django-anymail = ["72549db8823c144a334bf88c8e749becb1fc82911658129549f46bfb84de311c", "947c9c5de009036771ff9c4295da1836c950fdee4d7c27441181ce1021c370a8"]
 django-braces = ["a457d74ea29478123c0c4652272681b3cea0bf1232187fd9f9b6f1d97d32a890", "ba68e98b817c6f01d71d10849f359979617b3fe4cefb7f289adefddced092ddc"]
