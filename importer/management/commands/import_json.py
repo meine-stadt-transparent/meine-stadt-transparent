@@ -89,7 +89,9 @@ class Command(BaseCommand):
         file_id_map = make_id_map(models.File.objects)
         self.import_paper_files(ris_data, paper_id_map, file_id_map)
         self.import_organizations(body, ris_data)
-        self.import_meetings(ris_data)
+        self.import_meeting_locations(ris_data)
+        locations = dict(models.Location.objects.values_list("description", "id"))
+        self.import_meetings(ris_data, locations)
         meeting_id_map = make_id_map(
             models.Meeting.objects.filter(oparl_id__isnull=False)
         )
@@ -263,7 +265,23 @@ class Command(BaseCommand):
             db_meeting_to_organization, batch_size=100
         )
 
-    def import_meetings(self, ris_data: RisData):
+    def import_meeting_locations(self, ris_data: RisData):
+        logger.info("Processing the meeting locations")
+        db_locations: Dict[str, models.Location] = dict()
+        for csv_meeting in ris_data.meetings:
+            if not csv_meeting.location or csv_meeting.location in db_locations:
+                continue
+
+            # TODO: Try to normalize the locations
+            #   and geocode after everything else has been done
+            db_location = models.Location(
+                description=csv_meeting.location,
+                is_official=True,  # TODO: Is this true after geocoding?
+            )
+            db_locations[csv_meeting.location] = db_location
+        models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
+
+    def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
         logger.info("Processing the meetings")
         db_meetings = []
         for csv_meeting in ris_data.meetings:
@@ -272,6 +290,7 @@ class Command(BaseCommand):
                 short_name=csv_meeting.title[:50],  # TODO: Better normalization,
                 start=csv_meeting.start,
                 end=csv_meeting.end,
+                location_id=locations[csv_meeting.location],
                 oparl_id=csv_meeting.original_id,
                 cancelled=False,
             )

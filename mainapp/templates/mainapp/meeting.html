@@ -208,7 +208,7 @@
 
         <section class="container meeting-section">
             <h2>{% trans 'Agenda' %}</h2>
-            {% if meeting.agendaitem_set.all %}
+            {% if agenda_items %}
                 <dl class="agenda">
                     {% for agenda_item in agenda_items %}
                         <span id="item-{{ agenda_item.key }}" class="offsetted-anchor"></span>

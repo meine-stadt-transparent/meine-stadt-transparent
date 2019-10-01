@@ -68,7 +68,7 @@ SKS_KEYSERVER = env.str("SKS_KEYSERVER", "gpg.mozilla.org")
 
 DATABASES = {"default": env.db()}
 # https://stackoverflow.com/a/45233653/3549270
-SILENCED_SYSTEM_CHECKS = ['mysql.E001']
+SILENCED_SYSTEM_CHECKS = ["mysql.E001"]
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
