@@ -63,7 +63,7 @@ module.exports = {
             })
         }, {
             test: /\.js$/,
-            exclude: /(node_modules\/bootstrap\-daterangepicker\/)/,
+            exclude: /(node_modules\/bootstrap-daterangepicker\/)/,
             use: {
                 loader: 'babel-loader',
                 options: {

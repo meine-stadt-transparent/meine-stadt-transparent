@@ -258,7 +258,13 @@ SENTRY_DSN = env.str("SENTRY_DSN", None)
 
 if SENTRY_DSN:
     try:
-        git_tag = subprocess.check_output(["git", "rev-parse", "HEAD"]).strip().decode()
+        git_tag = (
+            subprocess.check_output(
+                ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
+            )
+            .strip()
+            .decode()
+        )
         release = "meine-stadt-transparent@" + git_tag
     except CalledProcessError:
         # pkg_resources is part of setuptools, so we might want to handle the case we have an ImportError.
