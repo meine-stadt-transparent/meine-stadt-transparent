@@ -87,7 +87,7 @@ def extract_from_file(
             page_count = PdfFileReader(
                 file, strict=False, overwriteWarnings=False
             ).getNumPages()
-        except PdfReadError:
+        except (PdfReadError, KeyError):
             message = "File {}: Pdf does not allow to read the number of pages".format(
                 file_id
             )
