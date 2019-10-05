@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Type, Dict, Tuple
 
 from django.conf import settings
+from django.core.exceptions import MultipleObjectsReturned
 from django.core.management import BaseCommand, CommandParser
 
 from importer.importer import Importer
@@ -59,6 +60,13 @@ class Command(BaseCommand):
             default=False,
             help="Do not download and parse the files",
         )
+        parser.add_argument(
+            "--skip-body-extra",
+            action="store_true",
+            dest="skip_body_extra",
+            default=False,
+            help="Do not download streets and shape of the body",
+        )
 
     def handle(self, *args, **options):
         input_file: Path = options["input"]
@@ -78,8 +86,9 @@ class Command(BaseCommand):
             logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
             body = Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
             body.save()
-            import_outline(body)
-            import_streets(body)
+            if not options["skip_body_extra"]:
+                import_outline(body)
+                import_streets(body)
         else:
             logging.info("Using existing body")
 
@@ -247,9 +256,20 @@ class Command(BaseCommand):
             if csv_meeting.original_id:
                 associated_meeting_id = meeting_id_map[csv_meeting.original_id]
             else:
-                associated_meeting_id = models.Meeting.objects.get(
-                    name=csv_meeting.title, start=csv_meeting.start
-                ).id
+                try:
+                    associated_meeting_id = models.Meeting.objects.get(
+                        name=csv_meeting.title, start=csv_meeting.start
+                    ).id
+                except MultipleObjectsReturned:
+                    logger.error(
+                        [
+                            (i.name, i.start)
+                            for i in models.Meeting.objects.filter(
+                                name=csv_meeting.title, start=csv_meeting.start
+                            ).all()
+                        ]
+                    )
+                    raise
             associated_organization_id = organization_name_id_map.get(
                 csv_meeting.organization_name
             )
@@ -285,12 +305,15 @@ class Command(BaseCommand):
         logger.info("Processing the meetings")
         db_meetings = []
         for csv_meeting in ris_data.meetings:
+            location_id = (
+                locations[csv_meeting.location] if csv_meeting.location else None
+            )
             db_meeting = models.Meeting(
                 name=csv_meeting.title,
                 short_name=csv_meeting.title[:50],  # TODO: Better normalization,
                 start=csv_meeting.start,
                 end=csv_meeting.end,
-                location_id=locations[csv_meeting.location],
+                location_id=location_id,
                 oparl_id=csv_meeting.original_id,
                 cancelled=False,
             )
