@@ -53,6 +53,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser: CommandParser):
         # noinspection PyTypeChecker
         parser.add_argument("input", type=Path, help="Path to the json file")
+        parser.add_argument("--ags", help="The Amtliche Gemeindeschlüssel")
         parser.add_argument(
             "--skip-download",
             action="store_true",
@@ -78,12 +79,15 @@ class Command(BaseCommand):
         if not body:
             logger.info("Building the body")
 
-            ags = city_to_ags(ris_data.name, False)
-            if not ags:
-                raise RuntimeError(
-                    f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'"
-                )
-            logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
+            if options["ags"]:
+                ags = options["ags"]
+            else:
+                ags = city_to_ags(ris_data.name, False)
+                if not ags:
+                    raise RuntimeError(
+                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'. Please look it up yourself and specify it with `--ags`"
+                    )
+                logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
             body = Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
             body.save()
             if not options["skip_body_extra"]:
@@ -135,7 +139,7 @@ class Command(BaseCommand):
             )
 
     def import_memberships(self, ris_data: RisData):
-        logger.info("Processing the Memberships")
+        logger.info("Processing the memberships")
         # TODO: Currently, the persons list is incomplete. This patches it up until that's solved
         #   properly by a rewrite of the relevant scraper part
         #   Use https://buergerinfo.ulm.de/kp0043.php?__swords=%22%22&__sgo=Suchen instead to get all persons and memberships
@@ -160,7 +164,10 @@ class Command(BaseCommand):
             name: person_id
             for name, person_id in models.Person.objects.values_list("name", "id")
         }
-        organization_id_map = make_id_map(models.Organization.objects)
+        # Assumption: Organizations that don't have an id in the overview page aren't linked anywhere
+        organization_id_map = make_id_map(
+            models.Organization.objects.filter(oparl_id__isnull=False)
+        )
         db_memberships = []
         for csv_membership in ris_data.memberships:
             person_id = person_name_map[normalize_name(csv_membership.person_name)[2]]
@@ -184,7 +191,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info("Processing the Agenda Items")
+        logger.info("Processing the agenda items")
         db_agenda_items = []
         for csv_agenda_item in ris_data.agenda_items:
             if csv_agenda_item.result and csv_agenda_item.voting:
@@ -217,7 +224,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info("Processing the Consultations")
+        logger.info("Processing the consultations")
         db_consultations = []
         for csv_agenda_item in ris_data.agenda_items:
             if csv_agenda_item.paper_original_id:
@@ -328,12 +335,16 @@ class Command(BaseCommand):
         )
         db_organizations = []
         for csv_organization in ris_data.organizations:
+            if csv_organization.original_id:
+                oparl_id = str(csv_organization.original_id)
+            else:
+                oparl_id = None
             db_organization = models.Organization(
                 name=csv_organization.name,
                 short_name=csv_organization.name[:50],  # TODO: Better normalization
                 body=body,
                 organization_type=committee_type,
-                oparl_id=str(csv_organization.original_id),
+                oparl_id=oparl_id,
             )
             db_organizations.append(db_organization)
         models.Organization.objects.bulk_create(db_organizations, batch_size=100)

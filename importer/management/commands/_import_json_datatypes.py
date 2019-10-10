@@ -60,7 +60,7 @@ class File:
 @dataclass(frozen=True)
 class Meeting:
     organization_name: str
-    title: Optional[str]
+    title: str
     location: Optional[str]
     note: Optional[str]
     original_id: Optional[int]
@@ -99,7 +99,7 @@ class AgendaItem:
     original_id: Optional[int]
     result: Optional[str]
     voting: Optional[str]
-    note: Optional[str] = None  # TODO: Fix the Amtzell test and remove this
+    note: Optional[str]
 
 
 @dataclass_json
