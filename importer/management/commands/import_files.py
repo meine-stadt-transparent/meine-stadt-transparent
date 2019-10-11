@@ -27,6 +27,7 @@ class Command(ImportBaseCommand):
     def handle(self, *args, **options):
         if options["mock_body"]:
             importer = Importer(BaseLoader(dict()))
+            importer.force_singlethread = options["force_singlethread"]
             body_short_name = options["mock_body"]
         else:
             importer, body = self.get_importer(options)

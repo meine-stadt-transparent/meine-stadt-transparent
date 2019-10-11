@@ -4,13 +4,11 @@ from typing import List
 
 import dateutil.parser
 from dateutil.relativedelta import relativedelta
-from dateutil.tz import tz
 from django.conf import settings
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from django.utils import formats
 from django.utils.http import urlencode
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
