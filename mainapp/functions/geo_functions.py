@@ -40,7 +40,7 @@ def geocode(search: str) -> Optional[Dict[str, Any]]:
                 )
         except GeocoderServiceError as e:
             logger.warning(
-                f"Geocoding with {name} failed, falling back to {Nominatim}: {e}"
+                f"Geocoding with {name} failed: {e}"
             )
             continue
 
