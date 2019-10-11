@@ -30,19 +30,19 @@ The e-mail-configuration can be tested using the following command line call, wh
 
 See the [djangop docs](https://docs.djangoproject.com/en/2.1/topics/email/) if you want to configure your only mail server instead.
 
-### Geocoding
-
-By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. In case you want to switch to the [OpenCage Geocoder](https://geocoder.opencagedata.com/), you can register it by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage".
-
 ### Map tiles
 
 By default, the map uses the tiles provided by [OpenStreetMap](https://wiki.openstreetmap.org/wiki/Standard_tile_layer). However, for production use, it is recommended to use another provider. For now, we support [Mapbox](https://www.mapbox.com/). To use it, you need to sign up for an account, choose a map style (default is fine) and add the following information to the ``.env``-file:
 
 ```
 MAP_TILES_PROVIDER=Mapbox
-MAP_TILES_MAPBOX_TOKEN=pk....
+MAPBOX_TOKEN=pk....
 MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/{x}/{y}{highres}?access_token={accessToken}
 ```
+
+### Geocoding
+
+By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. You can switch to [OpenCage Geocoder](https://geocoder.opencagedata.com/), by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage", or you can switch to [Mapbox](TODO) by setting `GEOEXTRACT_ENGINE` to "Mapbox" and setting `MAPBOX_TOKEN` (same as for the maps).
 
 ## Determined by the importer
 

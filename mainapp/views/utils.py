@@ -114,7 +114,7 @@ def build_map_object(body: Optional[Body] = None, geo_papers=None):
         "tiles": {
             "provider": settings.MAP_TILES_PROVIDER,
             "url": settings.MAP_TILES_URL,
-            "token": settings.MAP_TILES_MAPBOX_TOKEN,
+            "token": settings.MAPBOX_TOKEN,
         },
     }
 

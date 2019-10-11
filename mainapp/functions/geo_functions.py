@@ -1,55 +1,58 @@
 import logging
 import re
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List, Tuple
 
 from django.conf import settings
-from geopy import OpenCage, Nominatim
+from geopy import OpenCage, Nominatim, MapBox
 from geopy.exc import GeocoderServiceError
+from geopy.geocoders.base import Geocoder
 from slugify import slugify
 
 logger = logging.getLogger(__name__)
 
 
-def get_geolocator(fallback=False):
-    if settings.GEOEXTRACT_ENGINE.lower() == "opencage" and not fallback:
+def get_geolocators() -> List[Tuple[str, Geocoder]]:
+    geolocators = []
+    if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
         if not settings.OPENCAGE_KEY:
             raise ValueError(
                 "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"
             )
-        geolocator = OpenCage(settings.OPENCAGE_KEY)
-    else:
-        geolocator = Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0")
+        geolocators.append(("opencage", OpenCage(settings.OPENCAGE_KEY)))
+    if settings.MAPBOX_TOKEN:
+        geolocators.append(("mapbox", MapBox(settings.MAPBOX_TOKEN)))
+    geolocators.append(
+        ("nominatim", Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0"))
+    )
 
-    return geolocator
+    return geolocators
 
 
 def geocode(search: str) -> Optional[Dict[str, Any]]:
-    try:
-        location = get_geolocator().geocode(
-            search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
-        )
-    except GeocoderServiceError as e:
-        logger.warning(e)
+    for name, geolocator in get_geolocators():
         try:
-            location = get_geolocator(fallback=True).geocode(
-                search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
+            if name == "mapbox":
+                location = geolocator.geocode(search, exactly_one=False)
+            else:
+                # noinspection PyArgumentList
+                location = geolocator.geocode(
+                    search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
+                )
+        except GeocoderServiceError as e:
+            logger.warning(
+                f"Geocoding with {name} failed, falling back to {Nominatim}: {e}"
             )
-        except GeocoderServiceError:
-            logger.exception(
-                "Geocoder fallback service failed. Search string was {}".format(search)
-            )
-            return None
+            continue
 
-    if not location:
-        return None
-
-    return {
-        "type": "Point",
-        "coordinates": [location[0].longitude, location[0].latitude],
-    }
+        return {
+            "type": "Point",
+            "coordinates": [location[0].longitude, location[0].latitude],
+        }
+    logger.error(f"All geocoding attempts failed. Search string was {search}")
+    return None
 
 
-def _format_opencage_location(location):
+def _format_opencage_location(location) -> str:
     components = location.raw["components"]
     if "road" in components:
         address = components["road"]
@@ -62,7 +65,7 @@ def _format_opencage_location(location):
     return address
 
 
-def _format_nominatim_location(location):
+def _format_nominatim_location(location) -> str:
     if re.match("^\d", location.split(",")[0]):
         # Number at the beginning: probably a house number
         return location.split(",")[1] + " " + location.split(",")[0]
@@ -70,13 +73,21 @@ def _format_nominatim_location(location):
         return location.split(",")[0]
 
 
-def latlng_to_address(lat, lng):
-    geolocator = get_geolocator()
-    location = geolocator.reverse(str(lat) + ", " + str(lng))
-    if len(location) > 0:
-        if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
+def latlng_to_address(lat, lng) -> str:
+    search_str = str(lat) + ", " + str(lng)
+
+    if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
+        if not settings.OPENCAGE_KEY:
+            raise ValueError(
+                "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"
+            )
+        location = OpenCage(settings.OPENCAGE_KEY).reverse(search_str)
+        if len(location) > 0:
             return _format_opencage_location(location[0])
-        else:
-            return _format_nominatim_location(location[0])
     else:
-        return str(lat) + ", " + str(lng)
+        location = Nominatim(
+            user_agent=slugify(settings.PRODUCT_NAME) + "/1.0"
+        ).reverse(search_str)
+        if len(location) > 0:
+            return _format_nominatim_location(location[0])
+    return search_str

@@ -268,14 +268,13 @@ class Command(BaseCommand):
                         name=csv_meeting.title, start=csv_meeting.start
                     ).id
                 except MultipleObjectsReturned:
-                    logger.error(
-                        [
-                            (i.name, i.start)
-                            for i in models.Meeting.objects.filter(
-                                name=csv_meeting.title, start=csv_meeting.start
-                            ).all()
-                        ]
-                    )
+                    meetings_found = [
+                        (i.name, i.start)
+                        for i in models.Meeting.objects.filter(
+                            name=csv_meeting.title, start=csv_meeting.start
+                        ).all()
+                    ]
+                    logger.error(f"Multiple meetings found: {meetings_found}")
                     raise
             associated_organization_id = organization_name_id_map.get(
                 csv_meeting.organization_name

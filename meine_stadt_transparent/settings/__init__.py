@@ -183,7 +183,7 @@ ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")
 
 # Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencage
 GEOEXTRACT_ENGINE = env.str("GEOEXTRACT_ENGINE", "Nominatim")
-if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "opencage"]:
+if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "mapbox", "opencage"]:
     raise ValueError("Unknown Geocoder: " + GEOEXTRACT_ENGINE)
 
 if GEOEXTRACT_ENGINE.lower() == "opencage":
@@ -222,7 +222,7 @@ SITE_DEFAULT_ORGANIZATION = env.int("SITE_DEFAULT_ORGANIZATION", 1)
 # Possible values: OSM, Mapbox
 MAP_TILES_PROVIDER = env.str("MAP_TILES_PROVIDER", "OSM")
 MAP_TILES_URL = env.str("MAP_TILES_URL", None)
-MAP_TILES_MAPBOX_TOKEN = env.str("MAP_TILES_MAPBOX_TOKEN", None)
+MAPBOX_TOKEN = env.str("MAPBOX_TOKEN", None)
 
 CUSTOM_IMPORT_HOOKS = env.str("CUSTOM_IMPORT_HOOKS", None)
 
