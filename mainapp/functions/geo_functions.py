@@ -39,15 +39,17 @@ def geocode(search: str) -> Optional[Dict[str, Any]]:
                     search, language=settings.GEOEXTRACT_LANGUAGE, exactly_one=False
                 )
         except GeocoderServiceError as e:
-            logger.warning(
-                f"Geocoding with {name} failed: {e}"
-            )
+            logger.warning(f"Geocoding with {name} failed: {e}")
             continue
 
-        return {
-            "type": "Point",
-            "coordinates": [location[0].longitude, location[0].latitude],
-        }
+        if location:
+            return {
+                "type": "Point",
+                "coordinates": [location[0].longitude, location[0].latitude],
+            }
+        else:
+            logger.debug(f"No location found for {search}")
+            return None
     logger.error(f"All geocoding attempts failed. Search string was {search}")
     return None
 
