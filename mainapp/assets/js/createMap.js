@@ -60,7 +60,11 @@ function setTiles(leaflet, initData) {
 }
 
 function setBoundsAndOutline(leaflet, polygons) {
+    // Create a bound around all polygons
     let cityBounds = L.polygon(polygons[0]).getBounds();
+    for (let polygon of polygons) {
+        cityBounds = cityBounds.extend(L.polygon(polygon).getBounds());
+    }
     let paddedBounds = cityBounds.pad(1);
 
     // View is limit to the city and a bit of surrounding area
