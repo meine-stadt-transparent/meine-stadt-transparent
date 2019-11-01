@@ -1,3 +1,4 @@
+import json
 import logging
 from pathlib import Path
 from typing import Type, Dict, Tuple
@@ -8,7 +9,7 @@ from django.core.management import BaseCommand, CommandParser
 
 from importer.importer import Importer
 from importer.loader import BaseLoader
-from importer.management.commands._import_json_datatypes import RisData
+from importer.json_datatypes import RisData, converter
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
@@ -73,7 +74,8 @@ class Command(BaseCommand):
         input_file: Path = options["input"]
 
         logger.info("Loading the data")
-        ris_data: RisData = RisData.from_json(input_file.read_text())
+        with input_file.open() as fp:
+            ris_data: RisData = converter.structure(json.load(fp), RisData)
 
         body = Body.objects.filter(name=ris_data.name).first()
         if not body:

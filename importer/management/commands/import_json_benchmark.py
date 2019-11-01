@@ -5,7 +5,7 @@ from pathlib import Path
 
 from django.core.management import BaseCommand
 
-from importer.management.commands._import_json_datatypes import RisData
+from importer.json_datatypes import RisData
 
 logger = logging.getLogger(__name__)
 
