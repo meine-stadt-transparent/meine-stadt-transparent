@@ -16,7 +16,6 @@ from importer.loader import BaseLoader
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
-from mainapp.models import Body, OrganizationType
 from mainapp.models.default_fields import SoftDeleteModelManager
 
 logger = logging.getLogger(__name__)
@@ -82,7 +81,7 @@ class Command(BaseCommand):
         with input_file.open() as fp:
             ris_data: RisData = converter.structure(json.load(fp), RisData)
 
-        body = Body.objects.filter(name=ris_data.name).first()
+        body = models.Body.objects.filter(name=ris_data.name).first()
         if not body:
             logger.info("Building the body")
 
@@ -95,7 +94,7 @@ class Command(BaseCommand):
                         f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'. Please look it up yourself and specify it with `--ags`"
                     )
                 logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
-            body = Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
+            body = models.Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
             body.save()
             if not options["skip_body_extra"]:
                 import_outline(body)
@@ -337,7 +336,7 @@ class Command(BaseCommand):
     def import_organizations(self, body: models.Body, ris_data: RisData):
         logger.info("Processing the organizations")
         committee = settings.COMMITTEE_TYPE
-        committee_type, _ = OrganizationType.objects.get_or_create(
+        committee_type, _ = models.OrganizationType.objects.get_or_create(
             id=committee[0], defaults={"name": committee[1]}
         )
         db_organizations = []

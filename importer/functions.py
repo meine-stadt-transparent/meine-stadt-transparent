@@ -159,4 +159,4 @@ def fix_sort_date(fallback_date: datetime.datetime, import_date: datetime.dateti
     ).update(sort_date=F("legal_date"), modified=F("legal_date"))
     logger.info(f"{num} files were changed")
     num = File.objects.filter(legal_date__isnull=True).update(sort_date=fallback_date)
-    logger.info(f"{num} files were nnot determinable")
+    logger.info(f"{num} files were not determinable")
