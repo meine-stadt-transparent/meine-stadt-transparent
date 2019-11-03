@@ -1,7 +1,9 @@
+import datetime
 import logging
 from typing import Optional, Set, List, Type
 
 import requests
+from django.db.models import OuterRef, Q, Subquery, F
 from slugify import slugify
 
 from importer import JSON
@@ -120,3 +122,41 @@ def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) 
         importer.update(body.oparl_id)
         importer.force_singlethread = True
         importer.load_files(body.short_name)
+
+
+def fix_sort_date(fallback_date: datetime.datetime, import_date: datetime.datetime):
+    """
+    Tries to guess the correct sort date for all papers and files that were created no later
+    than import_date by looking at a) the legal date, b) the the date of the earliest
+    consultation or c) falling back to fallback_date
+    """
+    logger.info("Fixing the sort date of the papers")
+    num = Paper.objects.filter(
+        created__lte=import_date, legal_date__isnull=False
+    ).update(sort_date=F("legal_date"), modified=F("legal_date"))
+    logger.info(f"Changed the sort date of {num} papers")
+
+    num = Paper.objects.filter(legal_date__isnull=True).update(sort_date=fallback_date)
+    logger.info(f"{num} papers were not fixable due to missing legal date")
+
+    # Use the date of the earliest consultation
+    earliest_consultation = (
+        Consultation.objects.filter(paper=OuterRef("pk"), meeting__isnull=False)
+        .order_by("meeting__start")
+        .values("meeting__start")[:1]
+    )
+    num = (
+        Paper.objects.filter(Q(sort_date=fallback_date) | ~Q(sort_date=F("legal_date")))
+        .annotate(earliest_consultation=Subquery(earliest_consultation))
+        .filter(earliest_consultation__isnull=False)
+        .update(sort_date=F("earliest_consultation"))
+    )
+    logger.info(f"{num} sort dates were fix by the earliest consultation")
+
+    logger.info("Fixing the sort date of the files")
+    num = File.objects.filter(
+        created__lte=import_date, legal_date__isnull=False
+    ).update(sort_date=F("legal_date"), modified=F("legal_date"))
+    logger.info(f"{num} files were changed")
+    num = File.objects.filter(legal_date__isnull=True).update(sort_date=fallback_date)
+    logger.info(f"{num} files were nnot determinable")

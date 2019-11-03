@@ -95,7 +95,7 @@ def extract_from_file(
     elif mime_type == "text/text":
         parsed_text = file.read()
     else:
-        logger.warning(f"Unknown mime type: '{mime_type}")
+        logger.warning(f"File {file_id} has an unknown mime type: '{mime_type}'")
     return parsed_text, page_count
 
 

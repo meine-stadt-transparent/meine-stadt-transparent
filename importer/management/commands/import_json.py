@@ -1,15 +1,18 @@
+import datetime
 import json
 import logging
 from pathlib import Path
 from typing import Type, Dict, Tuple
 
+from dateutil import tz
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.management import BaseCommand, CommandParser
 
+from importer.functions import fix_sort_date
 from importer.importer import Importer
-from importer.loader import BaseLoader
 from importer.json_datatypes import RisData, converter
+from importer.loader import BaseLoader
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
@@ -28,6 +31,8 @@ office_replaces = {
     "Oberbürgermeister": "",
 }
 honors_replaces = {"Dr.": "", "Pfarrerin": "", "Pfarrer": ""}
+# Assumption: This is older than the oldest data
+fallback_date = datetime.datetime(1997, 1, 1, 0, 0, 0, tzinfo=tz.tzlocal())
 
 
 def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
@@ -133,6 +138,7 @@ class Command(BaseCommand):
             ris_data, consultation_map, meeting_id_map, paper_id_map
         )
         self.import_memberships(ris_data)
+        fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
 
         if not options["skip_download"]:
             logger.info("Downloading and parsing the files")
