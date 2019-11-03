@@ -48,7 +48,7 @@ toml = ">=0.9.4"
 category = "main"
 description = "Composable complex class support for attrs."
 name = "cattrs"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.0.0rc0"
 
@@ -59,6 +59,7 @@ attrs = ">=17.3"
 reference = "7311176e15970cba50c7c435a4e6e353c00bfeaf"
 type = "git"
 url = "https://github.com/Tinche/cattrs"
+
 [[package]]
 category = "main"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -810,11 +811,11 @@ description = "Python client for Sentry (https://getsentry.com)"
 name = "sentry-sdk"
 optional = false
 python-versions = "*"
-version = "0.11.2"
+version = "0.13.1"
 
 [package.dependencies]
 certifi = "*"
-urllib3 = "*"
+urllib3 = ">=1.10.0"
 
 [[package]]
 category = "main"
@@ -1005,7 +1006,7 @@ import-json = ["dataclasses", "cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "ed7ce7f2fdb49f8fbfee2bdeb6c162ec1102bec7564671f1b314a4ccf88b63ac"
+content-hash = "c4477cfd5beb3226e96e0ea6dac0c5ff8ccf4f43ee3f65a4b8e502308a0982ed"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1087,7 +1088,7 @@ requests-oauthlib = ["bd6533330e8748e94bf0b214775fed487d309b8b8fe823dc45641ebcd9
 responses = ["502d9c0c8008439cfcdef7e251f507fcfdd503b56e8c0c87c3c3e3393953f790", "97193c0183d63fba8cd3a041c75464e4b09ea0aff6328800d1546598567dde0b"]
 scipy = ["0baa64bf42592032f6f6445a07144e355ca876b177f47ad8d0612901c9375bef", "243b04730d7223d2b844bda9500310eecc9eda0cba9ceaf0cde1839f8287dfa8", "2643cfb46d97b7797d1dbdb6f3c23fe3402904e3c90e6facfe6a9b98d808c1b5", "396eb4cdad421f846a1498299474f0a3752921229388f91f60dc3eda55a00488", "3ae3692616975d3c10aca6d574d6b4ff95568768d4525f76222fb60f142075b9", "435d19f80b4dcf67dc090cc04fde2c5c8a70b3372e64f6a9c58c5b806abfa5a8", "46a5e55850cfe02332998b3aef481d33f1efee1960fe6cfee0202c7dd6fc21ab", "75b513c462e58eeca82b22fc00f0d1875a37b12913eee9d979233349fce5c8b2", "7ccfa44a08226825126c4ef0027aa46a38c928a10f0a8a8483c80dd9f9a0ad44", "89dd6a6d329e3f693d1204d5562dd63af0fd7a17854ced17f9cbc37d5b853c8d", "a81da2fe32f4eab8b60d56ad43e44d93d392da228a77e229e59b51508a00299c", "a9d606d11eb2eec7ef893eb825017fbb6eef1e1d0b98a5b7fc11446ebeb2b9b1", "ac37eb652248e2d7cbbfd89619dce5ecfd27d657e714ed049d82f19b162e8d45", "cbc0611699e420774e945f6a4e2830f7ca2b3ee3483fca1aa659100049487dd5", "d02d813ec9958ed63b390ded463163685af6025cb2e9a226ec2c477df90c6957", "dd3b52e00f93fd1c86f2d78243dfb0d02743c94dd1d34ffea10055438e63b99d"]
 selenium = ["2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c", "deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"]
-sentry-sdk = ["528f936118679e9a52dacb96bfefe20acb5d63e0797856c64a582cc3c2bc1f9e", "b4edcb1296fee107439345d0f8b23432b8732b7e28407f928367d0a4a36301a9"]
+sentry-sdk = ["cf4b0f8401f4d146e6b8c5579b24397273126c9a0576fa7eb9581ad27b330f13", "f6e850f304382d87c5c52c01db8c0004d2ced6a0b073df2f2257168cf31b31aa"]
 singledispatch = ["5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c", "833b46966687b3de7f438c761ac475213e53b306740f1abfaa86e1d1aae56aa8"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 splinter = ["170d21d4f04f8c5c076a34716e36779f07f3533d3b3d8a82523993b21b40bb35", "c5d40b8ee480d1c1c33f085c3fdfe9fd32b9ce22515f46cfde179966452d020a"]
