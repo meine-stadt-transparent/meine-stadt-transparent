@@ -63,6 +63,113 @@ def find_new(old: List[X], new: List[X]) -> List[X]:
     return [indexed_new[i] for i in missing]
 
 
+def convert_agenda_item(
+    consultation_map, csv_agenda_item, meeting_id_map, paper_id_map
+):
+    if csv_agenda_item.result and csv_agenda_item.voting:
+        result = csv_agenda_item.result + ", " + csv_agenda_item.voting
+    else:
+        result = csv_agenda_item.result
+    consultation = consultation_map.get(
+        (
+            meeting_id_map[csv_agenda_item.meeting_id],
+            paper_id_map.get(csv_agenda_item.paper_original_id),
+        )
+    )
+    return models.AgendaItem(
+        key=csv_agenda_item.key[:20],  # TODO: Better normalization
+        position=csv_agenda_item.position,
+        name=csv_agenda_item.title,
+        consultation_id=consultation,
+        meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
+        public=True,
+        result=result,
+        oparl_id=csv_agenda_item.original_id,
+    )
+
+
+def convert_consultation(csv_agenda_item, meeting_id_map, paper_id_map):
+    # TODO: authoritative and role (this information exists at least on the
+    # consultations page of the paper in some ris
+    return models.Consultation(
+        meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
+        paper_id=paper_id_map[csv_agenda_item.paper_original_id],
+        oparl_id=csv_agenda_item.original_id,
+    )
+
+
+def convert_person(family_name, given_names, name):
+    return models.Person(name=name, given_name=given_names, family_name=family_name)
+
+
+def convert_location(csv_meeting):
+    # TODO: Try to normalize the locations
+    #   and geocode after everything else has been done
+    return models.Location(
+        description=csv_meeting.location,
+        is_official=True,  # TODO: Is this true after geocoding?
+    )
+
+
+def convert_meeting(csv_meeting, locations):
+    location_id = locations[csv_meeting.location] if csv_meeting.location else None
+    return models.Meeting(
+        name=csv_meeting.title,
+        short_name=csv_meeting.title[:50],  # TODO: Better normalization,
+        start=csv_meeting.start,
+        end=csv_meeting.end,
+        location_id=location_id,
+        oparl_id=csv_meeting.original_id,
+        cancelled=False,
+    )
+
+
+def convert_paper(csv_paper):
+    db_paper = models.Paper(
+        short_name=csv_paper.short_title[:50],  # TODO: Better normalization
+        name=csv_paper.title,
+        reference_number=csv_paper.reference_number,
+        oparl_id=csv_paper.original_id,
+    )
+    if csv_paper.paper_type:
+        paper_type, created = models.PaperType.objects.get_or_create(
+            paper_type=csv_paper.paper_type
+        )
+        db_paper.paper_type = paper_type
+    return db_paper
+
+
+def convert_organization(body, committee_type, csv_organization):
+    if csv_organization.original_id:
+        oparl_id = str(csv_organization.original_id)
+    else:
+        oparl_id = None
+    return models.Organization(
+        name=csv_organization.name,
+        short_name=csv_organization.name[:50],  # TODO: Better normalization
+        body=body,
+        organization_type=committee_type,
+        oparl_id=oparl_id,
+    )
+
+
+def convert_file_to_paper(csv_file, file_id_map, paper_id_map):
+    return models.Paper.files.through(
+        paper_id=paper_id_map[csv_file.paper_original_id],
+        file_id=file_id_map[csv_file.original_id],
+    )
+
+
+def convert_file(csv_file):
+    assert csv_file.paper_original_id is not None
+    return models.File(
+        name=csv_file.title[:200],  # TODO: Better normalization
+        oparl_download_url=csv_file.url,
+        oparl_access_url=csv_file.url,
+        oparl_id=csv_file.original_id,
+    )
+
+
 class Command(BaseCommand):
     help = "Imports a municipality from a json file"
 
@@ -217,15 +324,14 @@ class Command(BaseCommand):
             person_id = person_name_map[normalize_name(csv_membership.person_name)[2]]
             organization = organization_id_map[csv_membership.organization_original_id]
 
-            db_memberships.append(
-                models.Membership(
-                    person_id=person_id,
-                    start=csv_membership.start_date,
-                    end=csv_membership.end_date,
-                    role=csv_membership.role,
-                    organization_id=organization,
-                )
+            db_membership = models.Membership(
+                person_id=person_id,
+                start=csv_membership.start_date,
+                end=csv_membership.end_date,
+                role=csv_membership.role,
+                organization_id=organization,
             )
+            db_memberships.append(db_membership)
         models.Membership.objects.bulk_create(db_memberships, 100)
 
     def import_agenda_items(
@@ -236,30 +342,12 @@ class Command(BaseCommand):
         paper_id_map: Dict[int, int],
     ):
         logger.info(f"Processing {len(ris_data.agenda_items)} agenda items")
-        db_agenda_items = []
-        for csv_agenda_item in ris_data.agenda_items:
-            if csv_agenda_item.result and csv_agenda_item.voting:
-                result = csv_agenda_item.result + ", " + csv_agenda_item.voting
-            else:
-                result = csv_agenda_item.result
-            consultation = consultation_map.get(
-                (
-                    meeting_id_map[csv_agenda_item.meeting_id],
-                    paper_id_map.get(csv_agenda_item.paper_original_id),
-                )
+        db_agenda_items = [
+            convert_agenda_item(
+                consultation_map, csv_agenda_item, meeting_id_map, paper_id_map
             )
-            db_agenda_items.append(
-                models.AgendaItem(
-                    key=csv_agenda_item.key[:20],  # TODO: Better normalization
-                    position=csv_agenda_item.position,
-                    name=csv_agenda_item.title,
-                    consultation_id=consultation,
-                    meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
-                    public=True,
-                    result=result,
-                    oparl_id=csv_agenda_item.original_id,
-                )
-            )
+            for csv_agenda_item in ris_data.agenda_items
+        ]
         models.AgendaItem.objects.bulk_create(db_agenda_items, 100)
 
     def import_consultations(
@@ -271,16 +359,12 @@ class Command(BaseCommand):
         logger.info(f"Processing {len(ris_data.agenda_items)} consultations")
         db_consultations = []
         for csv_agenda_item in ris_data.agenda_items:
-            if csv_agenda_item.paper_original_id:
-                db_consultations.append(
-                    # TODO: authoritative and role (this information exists at least on the
-                    # consultations page of the paper in some ris
-                    models.Consultation(
-                        meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
-                        paper_id=paper_id_map[csv_agenda_item.paper_original_id],
-                        oparl_id=csv_agenda_item.original_id,
-                    )
-                )
+            if not csv_agenda_item.paper_original_id:
+                continue
+            db_consultation = convert_consultation(
+                csv_agenda_item, meeting_id_map, paper_id_map
+            )
+            db_consultations.append(db_consultation)
         models.Consultation.objects.bulk_create(db_consultations, 100)
 
     def import_persons(self, ris_data: RisData):
@@ -291,11 +375,8 @@ class Command(BaseCommand):
             logger.debug(
                 f"Normalizing {csv_person.name}: '{name}', '{given_names}', '{family_name}'"
             )
-            db_persons.append(
-                models.Person(
-                    name=name, given_name=given_names, family_name=family_name
-                )
-            )
+            person = convert_person(family_name, given_names, name)
+            db_persons.append(person)
         models.Person.objects.bulk_create(db_persons, 100)
 
     def import_meeting_organization(
@@ -342,32 +423,15 @@ class Command(BaseCommand):
             if not csv_meeting.location or csv_meeting.location in db_locations:
                 continue
 
-            # TODO: Try to normalize the locations
-            #   and geocode after everything else has been done
-            db_location = models.Location(
-                description=csv_meeting.location,
-                is_official=True,  # TODO: Is this true after geocoding?
-            )
+            db_location = convert_location(csv_meeting)
             db_locations[csv_meeting.location] = db_location
         models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
         logger.info(f"Processing {len(ris_data.meetings)} meetings")
-        db_meetings = []
-        for csv_meeting in ris_data.meetings:
-            location_id = (
-                locations[csv_meeting.location] if csv_meeting.location else None
-            )
-            db_meeting = models.Meeting(
-                name=csv_meeting.title,
-                short_name=csv_meeting.title[:50],  # TODO: Better normalization,
-                start=csv_meeting.start,
-                end=csv_meeting.end,
-                location_id=location_id,
-                oparl_id=csv_meeting.original_id,
-                cancelled=False,
-            )
-            db_meetings.append(db_meeting)
+        db_meetings = [
+            convert_meeting(csv_meeting, locations) for csv_meeting in ris_data.meetings
+        ]
         models.Meeting.objects.bulk_create(db_meetings, batch_size=100)
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
@@ -376,20 +440,10 @@ class Command(BaseCommand):
         committee_type, _ = models.OrganizationType.objects.get_or_create(
             id=committee[0], defaults={"name": committee[1]}
         )
-        db_organizations = []
-        for csv_organization in ris_data.organizations:
-            if csv_organization.original_id:
-                oparl_id = str(csv_organization.original_id)
-            else:
-                oparl_id = None
-            db_organization = models.Organization(
-                name=csv_organization.name,
-                short_name=csv_organization.name[:50],  # TODO: Better normalization
-                body=body,
-                organization_type=committee_type,
-                oparl_id=oparl_id,
-            )
-            db_organizations.append(db_organization)
+        db_organizations = [
+            convert_organization(body, committee_type, csv_organization)
+            for csv_organization in ris_data.organizations
+        ]
         models.Organization.objects.bulk_create(db_organizations, batch_size=100)
 
     def import_paper_files(
@@ -399,46 +453,18 @@ class Command(BaseCommand):
         file_id_map: Dict[int, int],
     ):
         logger.info("Processing the file-paper-associations")
-        db_file_to_paper = []
-        for csv_file in ris_data.files:
-            db_file_to_paper.append(
-                models.Paper.files.through(
-                    paper_id=paper_id_map[csv_file.paper_original_id],
-                    file_id=file_id_map[csv_file.original_id],
-                )
-            )
+        db_file_to_paper = [
+            convert_file_to_paper(csv_file, file_id_map, paper_id_map)
+            for csv_file in ris_data.files
+        ]
         models.Paper.files.through.objects.bulk_create(db_file_to_paper, batch_size=100)
 
     def import_papers(self, ris_data: RisData):
         logger.info(f"Processing {len(ris_data.papers)} paper")
-
-        db_paper_all = []
-        for csv_paper in ris_data.papers:
-            db_paper = models.Paper(
-                short_name=csv_paper.short_title[:50],  # TODO: Better normalization
-                name=csv_paper.title,
-                reference_number=csv_paper.reference_number,
-                oparl_id=csv_paper.original_id,
-            )
-
-            if csv_paper.paper_type:
-                paper_type, created = models.PaperType.objects.get_or_create(
-                    paper_type=csv_paper.paper_type
-                )
-                db_paper.paper_type = paper_type
-            db_paper_all.append(db_paper)
+        db_paper_all = [convert_paper(csv_paper) for csv_paper in ris_data.papers]
         models.Paper.objects.bulk_create(db_paper_all, batch_size=100)
 
     def import_files(self, ris_data: RisData):
         logger.info(f"Processing {len(ris_data.files)} files")
-        db_files = []
-        for csv_file in ris_data.files:
-            assert csv_file.paper_original_id is not None
-            db_file = models.File(
-                name=csv_file.title[:200],  # TODO: Better normalization
-                oparl_download_url=csv_file.url,
-                oparl_access_url=csv_file.url,
-                oparl_id=csv_file.original_id,
-            )
-            db_files.append(db_file)
+        db_files = [convert_file(csv_file) for csv_file in ris_data.files]
         models.File.objects.bulk_create(db_files, batch_size=100)
