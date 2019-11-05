@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 from pathlib import Path
-from typing import Type, Dict, Tuple
+from typing import Type, Dict, Tuple, Optional, TypeVar, List
 
 from dateutil import tz
 from django.conf import settings
@@ -52,6 +52,17 @@ def normalize_name(name: str) -> Tuple[str, str, str]:
     return family_name, given_names, name
 
 
+X = TypeVar("X")
+
+
+def find_new(old: List[X], new: List[X]) -> List[X]:
+    """ Finds the items that were not contained in old """
+    indexed_new = {i.get_unique(): i for i in new}
+    indexed_old = {i.get_unique(): i for i in old}
+    missing = set(indexed_new.keys()) - set(indexed_old.keys())
+    return [indexed_new[i] for i in missing]
+
+
 class Command(BaseCommand):
     help = "Imports a municipality from a json file"
 
@@ -74,12 +85,38 @@ class Command(BaseCommand):
             help="Do not download streets and shape of the body",
         )
 
+        # noinspection PyTypeChecker
+        parser.add_argument("--old", type=Path, help="Update from this old import")
+
     def handle(self, *args, **options):
         input_file: Path = options["input"]
+        old_input = options["old"]
 
+        # from importer.management.commands.import_json import *
+        # input_file = Path("moers-new.json")
+        # old_input = Path("moers-old.json")
         logger.info("Loading the data")
         with input_file.open() as fp:
             ris_data: RisData = converter.structure(json.load(fp), RisData)
+
+        if old_input:
+            logger.info("Loading the old data")
+            with old_input.open() as fp:
+                old_data: Optional[RisData] = converter.structure(
+                    json.load(fp), RisData
+                )
+
+            ris_data = RisData(
+                name=ris_data.name,
+                main_organization=ris_data.main_organization,
+                files=find_new(old_data.files, ris_data.files),
+                papers=find_new(old_data.papers, ris_data.papers),
+                persons=find_new(old_data.persons, ris_data.persons),
+                organizations=find_new(old_data.organizations, ris_data.organizations),
+                meetings=find_new(old_data.meetings, ris_data.meetings),
+                memberships=find_new(old_data.memberships, ris_data.memberships),
+                agenda_items=find_new(old_data.agenda_items, ris_data.agenda_items),
+            )
 
         body = models.Body.objects.filter(name=ris_data.name).first()
         if not body:
@@ -146,7 +183,7 @@ class Command(BaseCommand):
             )
 
     def import_memberships(self, ris_data: RisData):
-        logger.info("Processing the memberships")
+        logger.info(f"Processing {len(ris_data.memberships)} memberships")
         # TODO: Currently, the persons list is incomplete. This patches it up until that's solved
         #   properly by a rewrite of the relevant scraper part
         #   Use https://buergerinfo.ulm.de/kp0043.php?__swords=%22%22&__sgo=Suchen instead to get all persons and memberships
@@ -198,7 +235,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info("Processing the agenda items")
+        logger.info(f"Processing {len(ris_data.agenda_items)} agenda items")
         db_agenda_items = []
         for csv_agenda_item in ris_data.agenda_items:
             if csv_agenda_item.result and csv_agenda_item.voting:
@@ -231,7 +268,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info("Processing the consultations")
+        logger.info(f"Processing {len(ris_data.agenda_items)} consultations")
         db_consultations = []
         for csv_agenda_item in ris_data.agenda_items:
             if csv_agenda_item.paper_original_id:
@@ -247,7 +284,7 @@ class Command(BaseCommand):
         models.Consultation.objects.bulk_create(db_consultations, 100)
 
     def import_persons(self, ris_data: RisData):
-        logger.info("Processing the persons")
+        logger.info(f"Processing {len(ris_data.persons)} persons")
         db_persons = []
         for csv_person in ris_data.persons:
             family_name, given_names, name = normalize_name(csv_person.name)
@@ -299,7 +336,7 @@ class Command(BaseCommand):
         )
 
     def import_meeting_locations(self, ris_data: RisData):
-        logger.info("Processing the meeting locations")
+        logger.info(f"Processing {len(ris_data.meetings)} meeting locations")
         db_locations: Dict[str, models.Location] = dict()
         for csv_meeting in ris_data.meetings:
             if not csv_meeting.location or csv_meeting.location in db_locations:
@@ -315,7 +352,7 @@ class Command(BaseCommand):
         models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
-        logger.info("Processing the meetings")
+        logger.info(f"Processing {len(ris_data.meetings)} meetings")
         db_meetings = []
         for csv_meeting in ris_data.meetings:
             location_id = (
@@ -334,7 +371,7 @@ class Command(BaseCommand):
         models.Meeting.objects.bulk_create(db_meetings, batch_size=100)
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
-        logger.info("Processing the organizations")
+        logger.info(f"Processing {len(ris_data.organizations)} organizations")
         committee = settings.COMMITTEE_TYPE
         committee_type, _ = models.OrganizationType.objects.get_or_create(
             id=committee[0], defaults={"name": committee[1]}
@@ -373,7 +410,7 @@ class Command(BaseCommand):
         models.Paper.files.through.objects.bulk_create(db_file_to_paper, batch_size=100)
 
     def import_papers(self, ris_data: RisData):
-        logger.info("Processing the paper")
+        logger.info(f"Processing {len(ris_data.papers)} paper")
 
         db_paper_all = []
         for csv_paper in ris_data.papers:
@@ -393,7 +430,7 @@ class Command(BaseCommand):
         models.Paper.objects.bulk_create(db_paper_all, batch_size=100)
 
     def import_files(self, ris_data: RisData):
-        logger.info("Processing the files")
+        logger.info(f"Processing {len(ris_data.files)} files")
         db_files = []
         for csv_file in ris_data.files:
             assert csv_file.paper_original_id is not None

@@ -5,6 +5,7 @@ from typing import Optional, Union
 import attr
 import dateutil.parser
 from cattr.converters import Converter
+from dateutil import tz
 
 converter = Converter()
 converter.register_unstructure_hook(datetime, lambda dt: dt.isoformat())
@@ -26,6 +27,9 @@ class Person:
     begin: Optional[date] = None
     end: Optional[date] = None
 
+    def get_unique(self):
+        return self.name
+
 
 @attr.s(frozen=True, auto_attribs=True)
 class Paper:
@@ -35,6 +39,9 @@ class Paper:
     paper_type: Optional[str]
     original_id: Optional[int] = None
 
+    def get_unique(self):
+        return self.reference_number
+
 
 @attr.s(frozen=True, auto_attribs=True)
 class File:
@@ -43,6 +50,9 @@ class File:
     url: str
     claimed_size: Optional[int]
     paper_original_id: Optional[int]
+
+    def get_unique(self):
+        return self.original_id
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -56,11 +66,17 @@ class Meeting:
     end: Optional[datetime] = None
     cancelled: bool = False
 
+    def get_unique(self):
+        return self.title, self.start.astimezone(tz.tzutc())
+
 
 @attr.s(frozen=True, auto_attribs=True)
 class Organization:
     name: str
     original_id: Optional[int]
+
+    def get_unique(self):
+        return self.name
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -72,6 +88,9 @@ class Membership:
     on_behalf_of: Optional[str]
     start_date: Optional[date]
     end_date: Optional[date]
+
+    def get_unique(self):
+        return self.organization_original_id, self.person_name
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -86,6 +105,9 @@ class AgendaItem:
     result: Optional[str]
     voting: Optional[str]
     note: Optional[str]
+
+    def get_unique(self):
+        return self.meeting_id, self.title
 
 
 @attr.s(frozen=True, auto_attribs=True)
