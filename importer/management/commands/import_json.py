@@ -2,12 +2,15 @@ import datetime
 import json
 import logging
 from pathlib import Path
-from typing import Type, Dict, Tuple, Optional, TypeVar, List
+from typing import Type, Dict, Tuple
 
+import django.db.models
 from dateutil import tz
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.management import BaseCommand, CommandParser
+from django.core.management.color import no_style
+from django.db import connection
 
 from importer.functions import fix_sort_date
 from importer.importer import Importer
@@ -52,15 +55,17 @@ def normalize_name(name: str) -> Tuple[str, str, str]:
     return family_name, given_names, name
 
 
-X = TypeVar("X")
+def flush_model(model: Type[django.db.models.Model]):
+    """ Hand-made flush implementatin using `DELETE FROM <table_name>`
 
-
-def find_new(old: List[X], new: List[X]) -> List[X]:
-    """ Finds the items that were not contained in old """
-    indexed_new = {i.get_unique(): i for i in new}
-    indexed_old = {i.get_unique(): i for i in old}
-    missing = set(indexed_new.keys()) - set(indexed_old.keys())
-    return [indexed_new[i] for i in missing]
+    See django.core.management.commands.flush and django.core.management.sql.sqlflush for reference
+    """
+    logger.info(f"Removing all {model.objects.count()} {model.__name__}")
+    seqs = connection.introspection.sequence_list()
+    statements = connection.ops.sql_flush(
+        no_style(), [model._meta.db_table], seqs, False
+    )
+    connection.ops.execute_sql_flush("default", statements)
 
 
 def convert_agenda_item(
@@ -197,33 +202,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         input_file: Path = options["input"]
-        old_input = options["old"]
 
         # from importer.management.commands.import_json import *
         # input_file = Path("moers-new.json")
-        # old_input = Path("moers-old.json")
         logger.info("Loading the data")
         with input_file.open() as fp:
             ris_data: RisData = converter.structure(json.load(fp), RisData)
-
-        if old_input:
-            logger.info("Loading the old data")
-            with old_input.open() as fp:
-                old_data: Optional[RisData] = converter.structure(
-                    json.load(fp), RisData
-                )
-
-            ris_data = RisData(
-                name=ris_data.name,
-                main_organization=ris_data.main_organization,
-                files=find_new(old_data.files, ris_data.files),
-                papers=find_new(old_data.papers, ris_data.papers),
-                persons=find_new(old_data.persons, ris_data.persons),
-                organizations=find_new(old_data.organizations, ris_data.organizations),
-                meetings=find_new(old_data.meetings, ris_data.meetings),
-                memberships=find_new(old_data.memberships, ris_data.memberships),
-                agenda_items=find_new(old_data.agenda_items, ris_data.agenda_items),
-            )
 
         body = models.Body.objects.filter(name=ris_data.name).first()
         if not body:
@@ -246,14 +230,17 @@ class Command(BaseCommand):
         else:
             logging.info("Using existing body")
 
+        flush_model(models.Paper)
         self.import_papers(ris_data)
         self.import_files(ris_data)
         paper_id_map = make_id_map(models.Paper.objects)
         file_id_map = make_id_map(models.File.objects)
         self.import_paper_files(ris_data, paper_id_map, file_id_map)
+        flush_model(models.Organization)
         self.import_organizations(body, ris_data)
         self.import_meeting_locations(ris_data)
         locations = dict(models.Location.objects.values_list("description", "id"))
+        flush_model(models.Meeting)
         self.import_meetings(ris_data, locations)
         meeting_id_map = make_id_map(
             models.Meeting.objects.filter(oparl_id__isnull=False)
@@ -265,7 +252,9 @@ class Command(BaseCommand):
             meeting_id_map, organization_name_id_map, ris_data
         )
 
+        flush_model(models.Person)
         self.import_persons(ris_data)
+        flush_model(models.Consultation)
         self.import_consultations(ris_data, meeting_id_map, paper_id_map)
 
         # We don't have original ids for all agenda items (yet?),
@@ -277,6 +266,7 @@ class Command(BaseCommand):
             )
         }
 
+        flush_model(models.AgendaItem)
         self.import_agenda_items(
             ris_data, consultation_map, meeting_id_map, paper_id_map
         )
@@ -418,13 +408,20 @@ class Command(BaseCommand):
 
     def import_meeting_locations(self, ris_data: RisData):
         logger.info(f"Processing {len(ris_data.meetings)} meeting locations")
+        existing_locations = set(
+            models.Location.objects.values_list("description", flat=True)
+        )
         db_locations: Dict[str, models.Location] = dict()
         for csv_meeting in ris_data.meetings:
             if not csv_meeting.location or csv_meeting.location in db_locations:
                 continue
 
+            if csv_meeting.location in existing_locations:
+                continue
+
             db_location = convert_location(csv_meeting)
             db_locations[csv_meeting.location] = db_location
+        logger.info(f"Saving {len(db_locations)} new meeting locations")
         models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
@@ -466,5 +463,11 @@ class Command(BaseCommand):
 
     def import_files(self, ris_data: RisData):
         logger.info(f"Processing {len(ris_data.files)} files")
-        db_files = [convert_file(csv_file) for csv_file in ris_data.files]
-        models.File.objects.bulk_create(db_files, batch_size=100)
+        existing_file_ids = make_id_map(models.File.objects)
+        new_files = []
+        for csv_file in ris_data.files:
+            if csv_file.original_id in existing_file_ids:
+                continue
+            new_files.append(convert_file(csv_file))
+        logger.info(f"Saving {len(new_files)} new files")
+        models.File.objects.bulk_create(new_files, batch_size=100)
