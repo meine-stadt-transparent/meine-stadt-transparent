@@ -113,6 +113,7 @@ class AgendaItem:
 @attr.s(frozen=True, auto_attribs=True)
 class RisData:
     name: str
+    ags: Optional[str]  # For the migration period this is optional
     main_organization: Optional[Organization]
     persons: List[Person]
     organizations: List[Organization]

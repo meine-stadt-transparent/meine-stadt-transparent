@@ -213,8 +213,8 @@ class Command(BaseCommand):
         if not body:
             logger.info("Building the body")
 
-            if options["ags"]:
-                ags = options["ags"]
+            if options["ags"] or ris_data.ags:
+                ags = options["ags"] or ris_data.ags
             else:
                 ags = city_to_ags(ris_data.name, False)
                 if not ags:
