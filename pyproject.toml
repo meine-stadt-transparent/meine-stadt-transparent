@@ -7,7 +7,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 Django = "~2.1"
-django-allauth = "^0.39"
+django-allauth = "^0.40"
 django-anymail = "^7.0"
 django-braces = "^1.13"
 django_csp = "^3.4"
