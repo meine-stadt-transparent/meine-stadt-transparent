@@ -197,9 +197,6 @@ class Command(BaseCommand):
             help="Do not download streets and shape of the body",
         )
 
-        # noinspection PyTypeChecker
-        parser.add_argument("--old", type=Path, help="Update from this old import")
-
     def handle(self, *args, **options):
         input_file: Path = options["input"]
 
@@ -235,6 +232,7 @@ class Command(BaseCommand):
         self.import_files(ris_data)
         paper_id_map = make_id_map(models.Paper.objects)
         file_id_map = make_id_map(models.File.objects)
+        flush_model(models.Paper.files.through)
         self.import_paper_files(ris_data, paper_id_map, file_id_map)
         flush_model(models.Organization)
         self.import_organizations(body, ris_data)
@@ -248,6 +246,7 @@ class Command(BaseCommand):
         organization_name_id_map = dict(
             models.Organization.objects.values_list("name", "id")
         )
+        flush_model(models.Meeting.organizations.through)
         self.import_meeting_organization(
             meeting_id_map, organization_name_id_map, ris_data
         )
@@ -270,6 +269,7 @@ class Command(BaseCommand):
         self.import_agenda_items(
             ris_data, consultation_map, meeting_id_map, paper_id_map
         )
+        flush_model(models.Membership)
         self.import_memberships(ris_data)
         fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
 
