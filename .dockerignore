@@ -6,7 +6,7 @@ storage/
 testdata/
 webpack-stats.json
 db.sqlite3
-Dockerfile
+Dockerfile*
 etc/docker-compose.yml
 docker-dev.yml
 **/__pycache__

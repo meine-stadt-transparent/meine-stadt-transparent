@@ -15,6 +15,42 @@ RUN npm run build:prod && npm run build:email
 
 FROM python:3.7-slim-buster AS django-static
 
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y \
+      nodejs git build-essential default-libmysqlclient-dev gettext
+
+RUN pip install wheel
+
+COPY pyproject.toml /app/pyproject.toml
+COPY poetry.lock /app/poetry.lock
+WORKDIR /app
+
+RUN pip install --upgrade poetry \
+    && poetry config settings.virtualenvs.in-project true \
+    && poetry config settings.virtualenvs.in-project true \
+    && poetry install --no-dev -E import-json
+
+COPY . /app/
+
+COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
+COPY --from=front-end /app/node_modules /app/node_modules
+
+RUN cp etc/template.env .env && \
+  mkdir -p /app/log && \
+  poetry run python manage.py compilemessages && \
+  poetry run python manage.py collectstatic --noinput && \
+  rm .env
+
+RUN poetry build
+
+RUN mkdir -p tmp_node_modules/.bin && \
+  cp -r node_modules/.bin/osmtogeojson tmp_node_modules/.bin/osmtogeojson && \
+  cp -r node_modules/osmtogeojson tmp_node_modules/osmtogeojson && \
+  rm -rf node_modules && \
+  mv tmp_node_modules node_modules
+
 FROM python:3.7-slim-buster
 
 ENV PYTHONUNBUFFERED=1 \
@@ -24,13 +60,11 @@ RUN apt-get update && \
     apt-get install -y curl gnupg && \
     curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y \
-    nodejs default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    nodejs default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev && \
     apt-get purge -y curl gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Setup the python part
 
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
@@ -38,13 +72,10 @@ WORKDIR /app
 
 RUN pip install --upgrade poetry \
     && poetry config settings.virtualenvs.in-project true \
-    && poetry install --no-dev -E import-json
+    && poetry config settings.virtualenvs.in-project true
 
-COPY . /app/
-
-COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
-
-RUN etc/docker-init.sh
+COPY --from=django-static --chown=www-data /app /app
+COPY --from=django-static --chown=www-data /static /static
 
 EXPOSE 8000
 
