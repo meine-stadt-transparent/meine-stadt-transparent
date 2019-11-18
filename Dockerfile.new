@@ -1,0 +1,54 @@
+FROM node:10 AS front-end
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+COPY package.json /app/package.json
+COPY package-lock.json /app/package-lock.json
+
+RUN npm ci --dev
+
+COPY etc /app/etc
+COPY customization /app/customization
+COPY mainapp/assets /app/mainapp/assets
+RUN npm run build:prod && npm run build:email
+
+FROM python:3.7-slim-buster AS django-static
+
+FROM python:3.7-slim-buster
+
+ENV PYTHONUNBUFFERED=1 \
+  NODE_ENV=production
+
+RUN apt-get update && \
+    apt-get install -y curl gnupg && \
+    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+    apt-get install -y \
+    nodejs default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    apt-get purge -y curl gnupg && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Setup the python part
+
+COPY pyproject.toml /app/pyproject.toml
+COPY poetry.lock /app/poetry.lock
+WORKDIR /app
+
+RUN pip install --upgrade poetry \
+    && poetry config settings.virtualenvs.in-project true \
+    && poetry install --no-dev -E import-json
+
+COPY . /app/
+
+COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
+
+RUN etc/docker-init.sh
+
+EXPOSE 8000
+
+USER www-data
+
+ENTRYPOINT ["poetry", "run"]
+CMD ["gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
