@@ -31,5 +31,5 @@ EXPOSE 8000
 
 USER www-data
 
-ENTRYPOINT ["poetry", "run"]
-CMD ["gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
+ENTRYPOINT ["/app/.venv/bin/python"]
+CMD ["/app/.venv/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
