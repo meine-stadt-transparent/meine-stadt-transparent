@@ -44,13 +44,14 @@ function setTiles(leaflet, initData) {
     let tiles = initData["tiles"];
     switch (tiles["provider"]) {
         case "OSM":
-            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            let OsmTileUrl = (tiles["url"] ? tiles["url"] : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png");
+            L.tileLayer(OsmTileUrl, {
                 attribution: 'Map data © <a href="https://www.openstreetmap.org">OpenStreetMap</a>',
             }).addTo(leaflet);
             break;
         case "Mapbox":
-            let tileUrl = (tiles["tileUrl"] ? tiles["tileUrl"] : "https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}");
-            L.tileLayer(tileUrl, {
+            let MapboxTileUrl = (tiles["url"] ? tiles["url"] : "https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}");
+            L.tileLayer(MapboxTileUrl, {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
                 accessToken: tiles['token'],
                 highres: (window.devicePixelRatio > 1.5 ? '@2x' : '')
