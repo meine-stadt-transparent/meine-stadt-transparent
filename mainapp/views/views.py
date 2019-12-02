@@ -36,7 +36,17 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    main_body = get_object_or_404(Body, id=settings.SITE_DEFAULT_BODY)
+    main_body = Body.objects.filter(pk=settings.SITE_DEFAULT_BODY).first()
+
+    if not main_body:
+        if Body.objects.count() == 0:
+            return render(request, "mainapp/installation_successful.html")
+        else:
+            context = {
+                "site_default_body": settings.SITE_DEFAULT_BODY,
+                "bodies": Body.objects.all(),
+            }
+            return render(request, "mainapp/default_body_missing.html", context)
 
     latest_paper = Paper.objects.order_by("-sort_date")[:10]
     for paper in latest_paper:
@@ -75,11 +85,9 @@ def index(request):
     }
 
     if request.GET.get("version", "v2") == "v2":
-        x = render(request, "mainapp/index_v2/index.html", context)
+        return render(request, "mainapp/index_v2/index.html", context)
     else:
-        x = render(request, "mainapp/index/index.html", context)
-
-    return x
+        return render(request, "mainapp/index/index.html", context)
 
 
 def organizations(request):
