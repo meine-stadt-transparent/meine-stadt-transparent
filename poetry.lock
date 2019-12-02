@@ -250,8 +250,8 @@ category = "main"
 description = "Django extension to allow working with 'clusters' of models as a single unit, independently of the database"
 name = "django-modelcluster"
 optional = false
-python-versions = "*"
-version = "4.4"
+python-versions = ">=3.5"
+version = "5.0"
 
 [package.dependencies]
 pytz = ">=2015.2"
@@ -283,8 +283,8 @@ category = "main"
 description = "django-taggit is a reusable Django application for simple tagging."
 name = "django-taggit"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.24.0"
+python-versions = ">=3.5"
+version = "1.1.0"
 
 [package.dependencies]
 Django = ">=1.11"
@@ -912,16 +912,16 @@ description = "A Django content management system."
 name = "wagtail"
 optional = false
 python-versions = "*"
-version = "2.6.3"
+version = "2.7"
 
 [package.dependencies]
 Django = ">=2.0,<2.3"
 Pillow = ">=4.0.0,<7.0.0"
 Unidecode = ">=0.04.14,<2.0"
-Willow = ">=1.1,<1.2"
+Willow = ">=1.3,<1.4"
 beautifulsoup4 = ">=4.5.1,<4.6.1"
-django-modelcluster = ">=4.2,<5.0"
-django-taggit = ">=0.23,<1.0"
+django-modelcluster = ">=5.0,<6.0"
+django-taggit = ">=1.0,<2.0"
 django-treebeard = ">=4.2.0,<5.0"
 djangorestframework = ">=3.7.4,<4.0"
 draftjs-exporter = ">=2.1.5,<3.0"
@@ -968,7 +968,7 @@ description = "A Python image library that sits on top of Pillow, Wand and OpenC
 name = "willow"
 optional = false
 python-versions = "*"
-version = "1.1"
+version = "1.3"
 
 [[package]]
 category = "dev"
@@ -987,7 +987,7 @@ import-json = ["dataclasses", "cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "d36af89b0932ab4445741cbfdc48292d91cbfc9950581ec8371d185857d926ad"
+content-hash = "9fc2559e5c50cc934146431e9c362e4309fea43b872a084f81ac9198de4c8f11"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1015,10 +1015,10 @@ django-decorator-include = ["41df70c2b9bd5fe0143d01d6469c522c5e301d3e34f2df5c22a
 django-elasticsearch-dsl = ["ba043005eca1647d3f48b9e60d760c2b4daf886cbaa9312e658592b59ab57be2", "e0aa448efd751909a40dfebad67d0206d37a15777ee455bbde63630f1eaa636a"]
 django-environ = ["6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde", "c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"]
 django-geojson = ["7a892e1f8f17f10ffbced9f737c347eae975eb340cd3f00bc9e3896ecce4135d"]
-django-modelcluster = ["59672386191d38c69d6f994c3f9aaab3ff93910ec71e78a0bb6aa9abd4d1b90a", "eea507f2dd8bd283600c1cfa4de6776501a28f199089bb00613c1621505e80cc"]
+django-modelcluster = ["a293a1875cb97c1b6e131f53857f0c47e297330c1b5df47737afa54bc10a967d", "c43d4b17844bf2a3f62a9043675e03bc464abf766afd78a4294818141f8d1b81"]
 django-settings-export = ["fceeae49fc597f654c1217415d8e049fc81c930b7154f5d8f28c432db738ff79"]
 django-simple-history = ["7273add61d3f89453c475531627f8c69cbfc41d6fb99d45278dddc3bafe39284", "7f3044439e401fb02b12231b675590865a27a149f6bd99587e429cbe6a9dd6a6"]
-django-taggit = ["710b4d15ec1996550cc68a0abbc41903ca7d832540e52b1336e6858737e410d8", "bb8f27684814cd1414b2af75b857b5e26a40912631904038a7ecacd2bfafc3ac"]
+django-taggit = ["01bf163f66f385de3777378f43338aba93aae8673891d8ba9a20695b2ffb8e10", "c13dfc1808a3084b64898e591af1d2f49b672d108388654804b170ee0ac5caf0"]
 django-treebeard = ["c21db06a8d4943bf2a28d9d7a119058698fb76116df2679ecbf15a46a501de42"]
 django-webpack-loader = ["60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93d3ebd5f520", "970b968c2a8975fb7eff56a3bab5d0d90d396740852d1e0c50c5cfe2b824199a"]
 django-widget-tweaks = ["65c960f3d75008a285e4b10f4d21f9eae4160fd77a0f6097ad545185f8648bd6", "f2e2c9c9be1ccc59061e248dcc2144f4906d594abe1a563902f4bdf6aa14e432"]
@@ -1079,10 +1079,10 @@ tqdm = ["156a0565f09d1f0ef8242932a0e1302462c93827a87ba7b4423d90f01befe94c", "c0f
 unidecode = ["1d7a042116536098d05d599ef2b8616759f02985c85b4fef50c78a5aaf10822a", "2b6aab710c2a1647e928e36d69c21e76b453cd455f4e2621000e54b2a9b8cce8"]
 urllib3 = ["a8a318824cc77d1fd4b2bec2ded92646630d7fe8619497b142c84a9e6f5a7293", "f3c5fd51747d450d4dcf6f923c81f78f811aab8205fda64b0aba34a4e48b0745"]
 virtualenv = ["116655188441670978117d0ebb6451eb6a7526f9ae0796cc0dee6bd7356909b0", "b57776b44f91511866594e477dd10e76a6eb44439cdd7f06dcd30ba4c5bd854f"]
-wagtail = ["3cc722fce4baa48cf3d31e4e3c890bd05bf3f027e5d2515b78aed4411e9fb537", "4fc81c712df0a539b5ef1efc9a256ddc3cae5dc934804727462e162e242d3e9f"]
+wagtail = ["644784604a5ec2fbd28b49975c9478ae241ef16e89830b2b773de198be831d2d", "7c13bad090da20ae7be66af4954329319f6d0088235d85b6439163a143bd317a"]
 wand = ["13a96818a2f89e7684704ba3bfc20bdb21a15e08736c3fdf74035eeaeefd7873", "8cfa30a71a3c65efd1d90678790297fec287300715ebcdf17e119fe075148dd0"]
 wcwidth = ["3df37372226d6e63e1b1e1eda15c594bca98a22d33a23832a90998faa96bc65e", "f4ebe71925af7b40a864553f761ed559b43544f8f71746c2d756c7fe788ade7c"]
 webencodings = ["a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78", "b36a1c245f2d304965eb4e0a82848379241dc04b865afcc4aab16748587e1923"]
 werkzeug = ["7280924747b5733b246fe23972186c6b348f9ae29724135a6dfc1e53cea433e7", "e5f4a1f98b52b18a93da705a7458e55afb26f32bff83ff5d19189f92462d65c4"]
-willow = ["76a8874304356b7d86923405f5ca1df125c3540fb55b32747e7a33ba59bc1744", "818ee11803c90a0a6d49c94b0453d6266be1ef83ae00de72731c45fae4d3e78c"]
+willow = ["4f84c46f65b6a1982e63dbd4d94c6bae705ff21f839164c31e105c3e251bec37", "8897a6827c0bb7dee2ac908af53f0d358720bd6032ed20bab3175507e34d739a"]
 zipp = ["3718b1cbcd963c7d4c5511a8240812904164b7f381b647143a89d3b98f9bcd8e", "f06903e9f1f43b12d371004b4ac7b06ab39a44adc747266928ae6debfa7b3335"]
