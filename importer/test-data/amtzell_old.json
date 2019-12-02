@@ -1,0 +1,151 @@
+{
+    "meta": {
+        "name": "Amtzell",
+        "vendor": "somacos",
+        "url": "https://www.ris-amtzell.de/bi/infobi.php",
+        "population": 4213,
+        "wikidata_item": "http://www.wikidata.org/entity/Q481414",
+        "website": "https://www.amtzell.de/",
+        "ags": "08436006",
+        "version": "5.0.8 bi (Layout 4)"
+    },
+    "main_organization": {
+        "name": "Gemeinderat",
+        "original_id": 1,
+        "has_memberships": true
+    },
+    "persons": [
+        {
+            "name": "Otto Allmendinger",
+            "party": "Unabh\u00e4ngige Liste (UL)",
+            "begin": null,
+            "end": null
+        },
+        {
+            "name": "Birgit Arnegger",
+            "party": "B\u00fcrger f\u00fcr Amtzell und Pf\u00e4rrich (BAP)",
+            "begin": null,
+            "end": null
+        }
+    ],
+    "organizations": [
+        {
+            "name": "Gemeinderat",
+            "original_id": 1,
+            "has_memberships": true
+        },
+        {
+            "name": "Technischer Ausschuss",
+            "original_id": 3,
+            "has_memberships": false
+        }
+    ],
+    "papers": [
+        {
+            "short_name": "@mtzell digital - Digitalisierungsstrategie f\u00fcr die Gemeinde Amtzell",
+            "name": "@mtzell digital - Digitalisierungsstrategie f\u00fcr die Gemeinde Amtzell",
+            "reference": "002/2019",
+            "paper_type": "Drucksache",
+            "original_id": 306
+        },
+        {
+            "short_name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
+            "name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
+            "reference": "073/2018",
+            "paper_type": "Drucksache",
+            "original_id": 277
+        }
+    ],
+    "files": [
+        {
+            "url": "https://www.ris-amtzell.de/bi/getfile.php?id=3502&type=do",
+            "paper_original_id": 306,
+            "original_id": 3502,
+            "claimed_size": 107000,
+            "name": "Vorlage"
+        },
+        {
+            "name": "Digitalisierungsstrategie Amtzell",
+            "claimed_size": 11000000,
+            "paper_original_id": 306,
+            "url": "https://www.ris-amtzell.de/bi/getfile.php?id=3513&type=do",
+            "original_id": 3513
+        },
+        {
+            "original_id": 2937,
+            "paper_original_id": 277,
+            "url": "https://www.ris-amtzell.de/bi/getfile.php?id=2937&type=do",
+            "name": "Vorlage",
+            "claimed_size": 145000
+        }
+    ],
+    "meetings": [
+        {
+            "organization_name": "Gemeinderat",
+            "name": "Gemeinderat",
+            "location": "Amtzell,  Sitzungssaal des Rathauses",
+            "note": null,
+            "original_id": 55,
+            "start": "2019-02-18T19:00:00+01:00",
+            "end": null,
+            "cancelled": false
+        },
+        {
+            "organization_name": "Gemeinderat",
+            "name": "Gemeinderat",
+            "location": "Amtzell,  Sitzungssaal des Rathauses",
+            "note": null,
+            "original_id": 40,
+            "start": "2018-07-02T19:00:00+02:00",
+            "end": "2018-07-02T22:05:00+02:00",
+            "cancelled": false
+        }
+    ],
+    "memberships": [
+        {
+            "organization_original_id": 1,
+            "person_original_id": 14,
+            "person_name": "Otto Allmendinger",
+            "role": "Ordentliches Mitglied",
+            "on_behalf_of": "Gemeinder\u00e4te",
+            "start_date": null,
+            "end_date": null
+        },
+        {
+            "organization_original_id": 1,
+            "person_original_id": 12,
+            "person_name": "Birgit Arnegger",
+            "role": "Ordentliches Mitglied",
+            "on_behalf_of": "Gemeinder\u00e4te",
+            "start_date": null,
+            "end_date": null
+        }
+    ],
+    "agenda_items": [
+        {
+            "key": "4",
+            "position": 3,
+            "name": "@mtzell digital - Digitalisierungsstrategie f\u00fcr die Gemeinde Amtzell",
+            "meeting_id": 55,
+            "paper_reference": "002/2019",
+            "paper_original_id": 306,
+            "original_id": 1880,
+            "result": "",
+            "voting": null,
+            "note": null
+        },
+        {
+            "key": "7",
+            "position": 6,
+            "name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
+            "meeting_id": 40,
+            "paper_reference": "073/2018",
+            "paper_original_id": 277,
+            "original_id": 1302,
+            "result": "",
+            "voting": null,
+            "note": null
+        }
+    ],
+    "format_version": 2
+}

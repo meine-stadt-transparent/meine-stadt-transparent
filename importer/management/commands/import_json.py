@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 from pathlib import Path
-from typing import Type, Dict, Tuple
+from typing import Dict, Type, Any, Tuple, List, Callable, Iterable, TypeVar
 
 import django.db.models
 from dateutil import tz
@@ -15,7 +15,7 @@ from django.core.management import (
     call_command,
 )
 from django.core.management.color import no_style
-from django.db import connection
+from django.db import connection, transaction
 
 from importer import json_datatypes
 from importer.functions import fix_sort_date
@@ -42,6 +42,95 @@ honors_replaces = {"Dr.": "", "Pfarrerin": "", "Pfarrer": ""}
 # Assumption: This is older than the oldest data
 fallback_date = datetime.datetime(1997, 1, 1, 0, 0, 0, tzinfo=tz.tzlocal())
 
+field_lists: Dict[Type, List[str]] = {
+    models.AgendaItem: [
+        "key",
+        "position",
+        "name",
+        "consultation_id",
+        "meeting_id",
+        "public",
+        "result",
+        "oparl_id",
+    ],
+    models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
+    models.Meeting: [
+        "name",
+        "short_name",
+        "start",
+        "end",
+        "location_id",
+        "oparl_id",
+        "cancelled",
+    ],
+    models.Consultation: ["meeting_id", "paper_id", "oparl_id"],
+}
+
+
+def get_unique(data: Dict[str, Any], for_type: Type) -> Tuple:
+    unique_field_dict: Dict[Type, List[str]] = {
+        models.AgendaItem: ["meeting_id", "name"],
+        models.Consultation: ["meeting_id", "paper_id"],
+        models.Paper: ["oparl_id"],
+        models.Meeting: ["oparl_id"],
+    }
+
+    return tuple(data[i] for i in unique_field_dict[for_type])
+
+
+def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict]:
+    db_value_list = current_model.objects.values_list("id", *field_lists[current_model])
+    db_ids = dict()
+    db_map = dict()
+    for db_entry in db_value_list:
+        tuple_id = get_unique(
+            dict(zip(field_lists[current_model], db_entry[1:])), current_model
+        )
+        db_ids[tuple_id] = db_entry[0]
+        db_map[tuple_id] = db_entry[1:]
+    return db_ids, db_map
+
+
+T = TypeVar("T")
+
+
+def incremental_import(
+    current_model: Type[django.db.models.Model],
+    objects: Iterable[T],
+    json_to_dict: Callable[[T], Dict[str, Any]],
+):
+    """ Compared the objects in the database with the json data for a given objects and
+    creates, updates and (soft-)deletes the appropriate records- """
+    json_dicts = [json_to_dict(i) for i in objects]
+    json_map = {get_unique(i, current_model): i for i in json_dicts}
+    db_ids, db_map = get_from_db(current_model)
+
+    common = set(json_map.keys()) & set(db_map.keys())
+    to_be_created = set(json_map.keys()) - common
+    to_be_deleted = set(db_map.keys()) - common
+
+    update_queue = []
+    for existing in common:
+        if json_map[existing] != db_map[existing]:
+            update_queue.append((json_map[existing], db_ids[existing]))
+
+    to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
+
+    # TODO: Don't use bulk create here which makes the initial import much
+    #       slower but also allows us to skip the search index recreation?
+    #       Or can we retrieve the renewed entries and reindex only them in elasticsearch?
+    logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
+    current_model.objects.bulk_create(to_be_created)
+
+    logger.info(f"Updating {len(update_queue)} {current_model.__name__}")
+    with transaction.atomic():
+        for json_object, pk in update_queue:
+            current_model.objects.filter(pk=pk).update(**json_object)
+
+    deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
+    current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
+    # TODO: Delete files
+
 
 def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
     return dict((int(i), j) for i, j in cls.values_list("oparl_id", "id"))
@@ -62,7 +151,7 @@ def normalize_name(name: str) -> Tuple[str, str, str]:
 
 
 def flush_model(model: Type[django.db.models.Model]):
-    """ Hand-made flush implementatin using `DELETE FROM <table_name>`
+    """ Hand-made flush implementation using `DELETE FROM <table_name>`
 
     See django.core.management.commands.flush and django.core.management.sql.sqlflush for reference
     """
@@ -74,123 +163,164 @@ def flush_model(model: Type[django.db.models.Model]):
     connection.ops.execute_sql_flush("default", statements)
 
 
+"""
+def incremental_update(
+    current_model: Type[django.db.models.Model],
+    json_objects: Iterable,
+    convert_function: Callable[[Any], Dict[str, Any]],
+):
+    db_value_list = current_model.objects.values_list("id", *field_lists[current_model])
+    db_dicts = [dict(zip(field_lists[current_model], i[1:])) for i in db_value_list]
+    db_to_id = {
+        get_unique(i, models.AgendaItem): i[0] for i, j in zip(db_value_list, db_dicts)
+    }
+    db_to_dict = {
+        get_unique(i, models.AgendaItem): j for i, j in zip(db_value_list, db_dicts)
+    }
+
+    for_insert = []
+    for_update = []
+    for json_agenda_item in json_objects:
+        unique = json_agenda_item.get_unique()
+        json_dict = convert_function(json_agenda_item)
+        if unique in db_to_dict:
+            if db_to_dict[unique] == json_dict:
+                # Existing, identical
+                continue
+            else:
+                # Existing, changed
+                for_update.append((db_to_id[unique], json_dict))
+        else:
+            # New
+            for_insert.append(current_model(**json_dict))
+
+    logger.info(f"Updating {len(for_update)} {current_model.__name__}")
+    with transaction.atomic():
+        for pk, json_object in for_update:
+            current_model.objects.filter(pk=pk).update(**json_object)
+
+    logger.info(f"Creating {len(for_insert)} {current_model.__name__}")
+    current_model.objects.bulk_create(for_insert, 100)
+"""
+
+
 def convert_agenda_item(
+    json_agenda_item: json_datatypes.AgendaItem,
     consultation_map: Dict[Tuple[int, int], int],
-    csv_agenda_item: json_datatypes.AgendaItem,
     meeting_id_map: Dict[int, int],
     paper_id_map: Dict[int, int],
-) -> models.AgendaItem:
-    if csv_agenda_item.result and csv_agenda_item.voting:
-        result = csv_agenda_item.result + ", " + csv_agenda_item.voting
+) -> Dict[str, Any]:
+    if json_agenda_item.result and json_agenda_item.voting:
+        result = json_agenda_item.result + ", " + json_agenda_item.voting
     else:
-        result = csv_agenda_item.result
+        result = json_agenda_item.result
     consultation = consultation_map.get(
         (
-            meeting_id_map[csv_agenda_item.meeting_id],
-            paper_id_map.get(csv_agenda_item.paper_original_id),
+            meeting_id_map[json_agenda_item.meeting_id],
+            paper_id_map.get(json_agenda_item.paper_original_id),
         )
     )
-    return models.AgendaItem(
-        key=csv_agenda_item.key[:20],  # TODO: Better normalization
-        position=csv_agenda_item.position,
-        name=csv_agenda_item.name,
-        consultation_id=consultation,
-        meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
-        public=True,
-        result=result,
-        oparl_id=csv_agenda_item.original_id,
-    )
+    return {
+        "key": json_agenda_item.key[:20],  # TODO: Better normalization
+        "position": json_agenda_item.position,
+        "name": json_agenda_item.name,
+        "consultation_id": consultation,
+        "meeting_id": meeting_id_map[json_agenda_item.meeting_id],
+        "public": True,
+        "result": result,
+        "oparl_id": str(json_agenda_item.original_id),
+    }
 
 
 def convert_consultation(
-    csv_agenda_item: json_datatypes.AgendaItem,
+    json_agenda_item: json_datatypes.AgendaItem,
     meeting_id_map: Dict[int, int],
     paper_id_map: Dict[int, int],
-) -> models.Consultation:
+) -> Dict[str, Any]:
     # TODO: authoritative and role (this information exists at least on the
     # consultations page of the paper in some ris
-    return models.Consultation(
-        meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
-        paper_id=paper_id_map[csv_agenda_item.paper_original_id],
-        oparl_id=csv_agenda_item.original_id,
-    )
+    return {
+        "meeting_id": meeting_id_map[json_agenda_item.meeting_id],
+        "paper_id": paper_id_map[json_agenda_item.paper_original_id],
+        "oparl_id": json_agenda_item.original_id,
+    }
 
 
 def convert_person(family_name: str, given_names: str, name: str) -> models.Person:
     return models.Person(name=name, given_name=given_names, family_name=family_name)
 
 
-def convert_location(csv_meeting: json_datatypes.Meeting) -> models.Location:
+def convert_location(json_meeting: json_datatypes.Meeting) -> models.Location:
     # TODO: Try to normalize the locations
     #   and geocode after everything else has been done
     return models.Location(
-        description=csv_meeting.location,
+        description=json_meeting.location,
         is_official=True,  # TODO: Is this true after geocoding?
     )
 
 
 def convert_meeting(
-    csv_meeting: json_datatypes.Meeting, locations: Dict[str, int]
-) -> models.Meeting:
-    location_id = locations[csv_meeting.location] if csv_meeting.location else None
-    return models.Meeting(
-        name=csv_meeting.name,
-        short_name=csv_meeting.name[:50],  # TODO: Better normalization,
-        start=csv_meeting.start,
-        end=csv_meeting.end,
-        location_id=location_id,
-        oparl_id=csv_meeting.original_id,
-        cancelled=False,
-    )
+    json_meeting: json_datatypes.Meeting, locations: Dict[str, int]
+) -> Dict[str, Any]:
+    location_id = locations[json_meeting.location] if json_meeting.location else None
+    return {
+        "name": json_meeting.name,
+        "short_name": json_meeting.name[:50],  # TODO: Better normalization,
+        "start": json_meeting.start,
+        "end": json_meeting.end,
+        "location_id": location_id,
+        "oparl_id": str(json_meeting.original_id),
+        "cancelled": False,
+    }
 
 
-def convert_paper(csv_paper: json_datatypes.Paper) -> models.Paper:
-    db_paper = models.Paper(
-        short_name=csv_paper.short_name[:50],  # TODO: Better normalization
-        name=csv_paper.name,
-        reference_number=csv_paper.reference,
-        oparl_id=csv_paper.original_id,
-    )
-    if csv_paper.paper_type:
+def convert_paper(json_paper: json_datatypes.Paper) -> Dict[str, Any]:
+    db_paper = {
+        "short_name": json_paper.short_name[:50],  # TODO: Better normalization
+        "name": json_paper.name,
+        "reference_number": json_paper.reference,
+        "oparl_id": str(json_paper.original_id),
+    }
+    if json_paper.paper_type:
         paper_type, created = models.PaperType.objects.get_or_create(
-            paper_type=csv_paper.paper_type
+            paper_type=json_paper.paper_type
         )
-        db_paper.paper_type = paper_type
+        db_paper["paper_type"] = paper_type
     return db_paper
 
 
 def convert_organization(
     body: models.Body,
     committee_type: models.OrganizationType,
-    csv_organization: json_datatypes.Organization,
+    json_organization: json_datatypes.Organization,
 ) -> models.Organization:
-    if csv_organization.original_id:
-        oparl_id = str(csv_organization.original_id)
+    if json_organization.original_id:
+        oparl_id = str(json_organization.original_id)
     else:
         oparl_id = None
     return models.Organization(
-        name=csv_organization.name,
-        short_name=csv_organization.name[:50],  # TODO: Better normalization
+        name=json_organization.name,
+        short_name=json_organization.name[:50],  # TODO: Better normalization
         body=body,
         organization_type=committee_type,
         oparl_id=oparl_id,
     )
 
 
-def convert_file_to_paper(csv_file, file_id_map, paper_id_map):
+def convert_file_to_paper(json_file, file_id_map, paper_id_map):
     return models.Paper.files.through(
-        paper_id=paper_id_map[csv_file.paper_original_id],
-        file_id=file_id_map[csv_file.original_id],
+        paper_id=paper_id_map[json_file.paper_original_id],
+        file_id=file_id_map[json_file.original_id],
     )
 
 
-def convert_file(csv_file):
-    assert csv_file.paper_original_id is not None
+def convert_file(json_file):
+    assert json_file.paper_original_id is not None
     return models.File(
-        name=csv_file.name[:200],  # TODO: Better normalization
-        oparl_download_url=csv_file.url,
-        oparl_access_url=csv_file.url,
-        oparl_id=csv_file.original_id,
+        name=json_file.name[:200],  # TODO: Better normalization
+        oparl_download_url=json_file.url,
+        oparl_access_url=json_file.url,
+        oparl_id=json_file.original_id,
     )
 
 
@@ -206,7 +336,7 @@ def handle_counts(ris_data: RisData, allow_shrinkage: bool):
         "Agenda Item": models.AgendaItem.objects.count(),
     }
     new_counts = ris_data.get_counts()
-    formatter = lambda x: " | ".join(f"{key} {value}" for key, value in x.items())
+    formatter = lambda x: " | ".join(f"{key_} {value_}" for key_, value_ in x.items())
     logger.info(f"Existing: {formatter(existing_counts)}")
     logger.info(f"New: {formatter(new_counts)}")
     if not allow_shrinkage:
@@ -292,7 +422,19 @@ class Command(BaseCommand):
         # TODO: Reenable this after some more thorough testing
         # handle_counts(ris_data, options["allow_shrinkage"])
 
-        flush_model(models.Paper)
+        self.import_data(body, ris_data)
+
+        fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
+
+        # With the current bulk indexing we need to do this manually
+        call_command("search_index", action="populate")
+
+        if not options["skip_download"]:
+            Importer(BaseLoader(dict()), force_singlethread=True).load_files(
+                fallback_city=body.short_name
+            )
+
+    def import_data(self, body: models.Body, ris_data: RisData):
         self.import_papers(ris_data)
         self.import_files(ris_data)
         paper_id_map = make_id_map(models.Paper.objects)
@@ -303,7 +445,6 @@ class Command(BaseCommand):
         self.import_organizations(body, ris_data)
         self.import_meeting_locations(ris_data)
         locations = dict(models.Location.objects.values_list("description", "id"))
-        flush_model(models.Meeting)
         self.import_meetings(ris_data, locations)
         meeting_id_map = make_id_map(
             models.Meeting.objects.filter(oparl_id__isnull=False)
@@ -315,12 +456,9 @@ class Command(BaseCommand):
         self.import_meeting_organization(
             meeting_id_map, organization_name_id_map, ris_data
         )
-
         flush_model(models.Person)
         self.import_persons(ris_data)
-        flush_model(models.Consultation)
         self.import_consultations(ris_data, meeting_id_map, paper_id_map)
-
         # We don't have original ids for all agenda items (yet?),
         # so we just assume meeting x paper is unique
         consultation_map = {
@@ -329,22 +467,12 @@ class Command(BaseCommand):
                 "meeting_id", "paper_id", "id"
             )
         }
-
-        flush_model(models.AgendaItem)
+        # flush_model(models.AgendaItem) # It's incremental!
         self.import_agenda_items(
             ris_data, consultation_map, meeting_id_map, paper_id_map
         )
         flush_model(models.Membership)
         self.import_memberships(ris_data)
-        fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
-
-        # With the current bulk indexing we need to do this manually
-        call_command("search_index", action="populate")
-
-        if not options["skip_download"]:
-            Importer(BaseLoader(dict()), force_singlethread=True).load_files(
-                fallback_city=body.short_name
-            )
 
     def import_memberships(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.memberships)} memberships")
@@ -358,8 +486,8 @@ class Command(BaseCommand):
         }
         db_persons_fixup = []
         persons_fixup_done = set()
-        for csv_membership in ris_data.memberships:
-            family_name, given_names, name = normalize_name(csv_membership.person_name)
+        for json_membership in ris_data.memberships:
+            family_name, given_names, name = normalize_name(json_membership.person_name)
             if not name in person_name_map and name not in persons_fixup_done:
                 db_persons_fixup.append(
                     models.Person(
@@ -377,15 +505,15 @@ class Command(BaseCommand):
             models.Organization.objects.filter(oparl_id__isnull=False)
         )
         db_memberships = []
-        for csv_membership in ris_data.memberships:
-            person_id = person_name_map[normalize_name(csv_membership.person_name)[2]]
-            organization = organization_id_map[csv_membership.organization_original_id]
+        for json_membership in ris_data.memberships:
+            person_id = person_name_map[normalize_name(json_membership.person_name)[2]]
+            organization = organization_id_map[json_membership.organization_original_id]
 
             db_membership = models.Membership(
                 person_id=person_id,
-                start=csv_membership.start_date,
-                end=csv_membership.end_date,
-                role=csv_membership.role,
+                start=json_membership.start_date,
+                end=json_membership.end_date,
+                role=json_membership.role,
                 organization_id=organization,
             )
             db_memberships.append(db_membership)
@@ -398,14 +526,14 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info(f"Importing {len(ris_data.agenda_items)} agenda items")
-        db_agenda_items = [
-            convert_agenda_item(
-                consultation_map, csv_agenda_item, meeting_id_map, paper_id_map
+        logger.info(f"Processing {len(ris_data.agenda_items)} agenda items")
+
+        def convert_function(x):
+            return convert_agenda_item(
+                x, consultation_map, meeting_id_map, paper_id_map
             )
-            for csv_agenda_item in ris_data.agenda_items
-        ]
-        models.AgendaItem.objects.bulk_create(db_agenda_items, 100)
+
+        incremental_import(models.AgendaItem, ris_data.agenda_items, convert_function)
 
     def import_consultations(
         self,
@@ -414,23 +542,24 @@ class Command(BaseCommand):
         paper_id_map: Dict[int, int],
     ):
         logger.info(f"Importing {len(ris_data.agenda_items)} consultations")
-        db_consultations = []
-        for csv_agenda_item in ris_data.agenda_items:
-            if not csv_agenda_item.paper_original_id:
-                continue
-            db_consultation = convert_consultation(
-                csv_agenda_item, meeting_id_map, paper_id_map
-            )
-            db_consultations.append(db_consultation)
-        models.Consultation.objects.bulk_create(db_consultations, 100)
+
+        agenda_items_filtered = []
+        for json_agenda_item in ris_data.agenda_items:
+            if json_agenda_item.paper_original_id:
+                agenda_items_filtered.append(json_agenda_item)
+
+        def convert_function(json_agenda_item_):
+            return convert_consultation(json_agenda_item_, meeting_id_map, paper_id_map)
+
+        incremental_import(models.Consultation, agenda_items_filtered, convert_function)
 
     def import_persons(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.persons)} persons")
         db_persons = []
-        for csv_person in ris_data.persons:
-            family_name, given_names, name = normalize_name(csv_person.name)
+        for json_person in ris_data.persons:
+            family_name, given_names, name = normalize_name(json_person.name)
             logger.debug(
-                f"Normalizing {csv_person.name}: '{name}', '{given_names}', '{family_name}'"
+                f"Normalizing {json_person.name}: '{name}', '{given_names}', '{family_name}'"
             )
             person = convert_person(family_name, given_names, name)
             db_persons.append(person)
@@ -441,25 +570,25 @@ class Command(BaseCommand):
     ):
         logger.info("Processing the meeting-organization-associations")
         db_meeting_to_organization = []
-        for csv_meeting in ris_data.meetings:
-            if csv_meeting.original_id:
-                associated_meeting_id = meeting_id_map[csv_meeting.original_id]
+        for json_meeting in ris_data.meetings:
+            if json_meeting.original_id:
+                associated_meeting_id = meeting_id_map[json_meeting.original_id]
             else:
                 try:
                     associated_meeting_id = models.Meeting.objects.get(
-                        name=csv_meeting.name, start=csv_meeting.start
+                        name=json_meeting.name, start=json_meeting.start
                     ).id
                 except MultipleObjectsReturned:
                     meetings_found = [
                         (i.name, i.start)
                         for i in models.Meeting.objects.filter(
-                            name=csv_meeting.name, start=csv_meeting.start
+                            name=json_meeting.name, start=json_meeting.start
                         ).all()
                     ]
                     logger.error(f"Multiple meetings found: {meetings_found}")
                     raise
             associated_organization_id = organization_name_id_map.get(
-                csv_meeting.organization_name
+                json_meeting.organization_name
             )
 
             if associated_organization_id:
@@ -479,24 +608,25 @@ class Command(BaseCommand):
             models.Location.objects.values_list("description", flat=True)
         )
         db_locations: Dict[str, models.Location] = dict()
-        for csv_meeting in ris_data.meetings:
-            if not csv_meeting.location or csv_meeting.location in db_locations:
+        for json_meeting in ris_data.meetings:
+            if not json_meeting.location or json_meeting.location in db_locations:
                 continue
 
-            if csv_meeting.location in existing_locations:
+            if json_meeting.location in existing_locations:
                 continue
 
-            db_location = convert_location(csv_meeting)
-            db_locations[csv_meeting.location] = db_location
+            db_location = convert_location(json_meeting)
+            db_locations[json_meeting.location] = db_location
         logger.info(f"Saving {len(db_locations)} new meeting locations")
         models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
         logger.info(f"Importing {len(ris_data.meetings)} meetings")
-        db_meetings = [
-            convert_meeting(csv_meeting, locations) for csv_meeting in ris_data.meetings
-        ]
-        models.Meeting.objects.bulk_create(db_meetings, batch_size=100)
+
+        def convert_function(x: json_datatypes.Meeting):
+            return convert_meeting(x, locations)
+
+        incremental_import(models.Meeting, ris_data.meetings, convert_function)
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.organizations)} organizations")
@@ -505,8 +635,8 @@ class Command(BaseCommand):
             id=committee[0], defaults={"name": committee[1]}
         )
         db_organizations = [
-            convert_organization(body, committee_type, csv_organization)
-            for csv_organization in ris_data.organizations
+            convert_organization(body, committee_type, json_organization)
+            for json_organization in ris_data.organizations
         ]
         models.Organization.objects.bulk_create(db_organizations, batch_size=100)
 
@@ -518,23 +648,22 @@ class Command(BaseCommand):
     ):
         logger.info("Processing the file-paper-associations")
         db_file_to_paper = [
-            convert_file_to_paper(csv_file, file_id_map, paper_id_map)
-            for csv_file in ris_data.files
+            convert_file_to_paper(json_file, file_id_map, paper_id_map)
+            for json_file in ris_data.files
         ]
         models.Paper.files.through.objects.bulk_create(db_file_to_paper, batch_size=100)
 
     def import_papers(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.papers)} paper")
-        db_paper_all = [convert_paper(csv_paper) for csv_paper in ris_data.papers]
-        models.Paper.objects.bulk_create(db_paper_all, batch_size=100)
+        incremental_import(models.Paper, ris_data.papers, convert_paper)
 
     def import_files(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.files)} files")
         existing_file_ids = make_id_map(models.File.objects)
         new_files = []
-        for csv_file in ris_data.files:
-            if csv_file.original_id in existing_file_ids:
+        for json_file in ris_data.files:
+            if json_file.original_id in existing_file_ids:
                 continue
-            new_files.append(convert_file(csv_file))
+            new_files.append(convert_file(json_file))
         logger.info(f"Saving {len(new_files)} new files")
         models.File.objects.bulk_create(new_files, batch_size=100)
