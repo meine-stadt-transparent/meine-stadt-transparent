@@ -7,8 +7,8 @@
 {% block content %}
     <div class="container">
         <h2>{% trans "The configured default body does not exist" %}</h2>
-        <p>{% blocktrans %}The value of <code>SITE_DEFAULT_BODY</code> is {{ site_default_body }}, but the the following
-            bodies are in the database{% endblocktrans %}:</p>
+        <p>{% blocktrans %}The value of <code>SITE_DEFAULT_BODY</code> is {{ site_default_body }}, but only the
+            following bodies are in the database{% endblocktrans %}:</p>
         <ul>
             {% for body in bodies %}
                 <li>{{ body.id }}: {{ body }}</li>

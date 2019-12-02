@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-28 09:53+0200\n"
+"POT-Creation-Date: 2019-12-02 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,7 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/functions/search.py:224
+#: mainapp/functions/search.py:228
 msgid ""
 "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
 "DD HH:MM:SS: "
@@ -79,7 +79,7 @@ msgstr ""
 "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DDoder YYYY-"
 "MM-DD HH:MM:SS: "
 
-#: mainapp/functions/search.py:243
+#: mainapp/functions/search.py:247
 msgid ""
 "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
 "DD HH:MM:SS "
@@ -132,8 +132,9 @@ msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/models/location.py:23 mainapp/templates/mainapp/meeting.html:106
-#: mainapp/templates/mainapp/meeting.html:123
+#: mainapp/models/location.py:27 mainapp/templates/mainapp/meeting.html:124
+#: mainapp/templates/mainapp/meeting.html:141
+#: mainapp/templates/mainapp/organization.html:142
 msgid "Unknown"
 msgstr "Unbekannt"
 
@@ -648,6 +649,19 @@ msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
 msgid "iCal"
 msgstr "iCal"
 
+#: mainapp/templates/mainapp/default_body_missing.html:9
+msgid "The configured default body does not exist"
+msgstr "Die ausgewählte Köperschaft existiert nicht"
+
+#: mainapp/templates/mainapp/default_body_missing.html:10
+msgid ""
+"The value of <code>SITE_DEFAULT_BODY</code> is %(site_default_body)s, but "
+"only the\n"
+"            following bodies are in the database"
+msgstr ""
+"Der Wert von <code>SITE_DEFAULT_BODY</code> ist %(site_default_body)s, aber "
+"die Datenbank enthält nur die folgenden Körperschaften"
+
 #: mainapp/templates/mainapp/file/file.html:5
 msgid "File"
 msgstr "Datei"
@@ -669,15 +683,15 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:165
+#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:163
 msgid "Meeting"
 msgstr "Sitzung"
 
 #: mainapp/templates/mainapp/file/info_lg.html:14
 #: mainapp/templates/mainapp/file/info_lg.html:24
 #: mainapp/templates/mainapp/file/info_sm.html:48
-#: mainapp/templates/mainapp/meeting.html:214
-#: mainapp/templates/mainapp/meeting.html:221
+#: mainapp/templates/mainapp/meeting.html:237
+#: mainapp/templates/mainapp/meeting.html:244 mainapp/views/utils.py:38
 msgid "Paper"
 msgstr "Vorlage"
 
@@ -848,6 +862,14 @@ msgstr "Suche im Volltext von %(num)s Dokumenten"
 msgid "Search for example for \"School\", \"Bikes\" or \"Budget\""
 msgstr "Suche z.B. nach „Schule“, „Fahrräder“ oder „Haushalt“"
 
+#: mainapp/templates/mainapp/installation_successful.html:9
+msgid "Installation Successful"
+msgstr "Installation erfolgreich"
+
+#: mainapp/templates/mainapp/installation_successful.html:10
+msgid "The installation was successful, but no data has been imported yet"
+msgstr "Die Installation war erfolgreich, aber es sind noch keine Daten importiert worden"
+
 #: mainapp/templates/mainapp/meeting.html:18
 #: mainapp/templates/mainapp/paper.html:55
 msgctxt "X revisions"
@@ -862,56 +884,61 @@ msgstr "Vorige Sitzung"
 msgid "Following Meeting"
 msgstr "Folgende Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:99
+#: mainapp/templates/mainapp/meeting.html:109
+msgid "Close"
+msgstr "Schließen"
+
+#: mainapp/templates/mainapp/meeting.html:117
+#: mainapp/templates/mainapp/organization.html:136
 msgid "Place of the meeting"
 msgstr "Ort der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:111
+#: mainapp/templates/mainapp/meeting.html:129
 msgid "Time of the Meeting"
 msgstr "Zeitpunkt der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:129
+#: mainapp/templates/mainapp/meeting.html:147
 msgid "Main organization of the meeting: "
 msgstr "Träger der Sitzung: "
 
-#: mainapp/templates/mainapp/meeting.html:140
+#: mainapp/templates/mainapp/meeting.html:158
 msgid "Download the meeting in a format readable by most calendars"
 msgstr ""
 "Diesen Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
 
-#: mainapp/templates/mainapp/meeting.html:142
+#: mainapp/templates/mainapp/meeting.html:160
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: mainapp/templates/mainapp/meeting.html:148
+#: mainapp/templates/mainapp/meeting.html:166
 msgid "This meeting has been cancelled"
 msgstr "Dieser Termin wurde abgesagt."
 
-#: mainapp/templates/mainapp/meeting.html:154
+#: mainapp/templates/mainapp/meeting.html:172
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: mainapp/templates/mainapp/meeting.html:157
+#: mainapp/templates/mainapp/meeting.html:175
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: mainapp/templates/mainapp/meeting.html:162
+#: mainapp/templates/mainapp/meeting.html:180
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: mainapp/templates/mainapp/meeting.html:168
+#: mainapp/templates/mainapp/meeting.html:186
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:174
+#: mainapp/templates/mainapp/meeting.html:192
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:192
+#: mainapp/templates/mainapp/meeting.html:210
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: mainapp/templates/mainapp/meeting.html:232
+#: mainapp/templates/mainapp/meeting.html:256
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
@@ -944,38 +971,46 @@ msgstr "Standort"
 msgid "Unfortunately, there is only few information about this organization"
 msgstr "Leider gibt es zu diesem Gremium nur sehr wenige Informationen"
 
-#: mainapp/templates/mainapp/organization.html:48
-#: mainapp/templates/mainapp/organization.html:50
+#: mainapp/templates/mainapp/organization.html:49
+#: mainapp/templates/mainapp/organization.html:51
 msgctxt "Header"
 msgid "Members"
 msgstr "Mitglieder"
 
-#: mainapp/templates/mainapp/organization.html:57
-#: mainapp/templates/mainapp/organization.html:58
+#: mainapp/templates/mainapp/organization.html:59
+#: mainapp/templates/mainapp/organization.html:60
 msgctxt "Header"
 msgid "Paper"
 msgstr "Vorlagen"
 
-#: mainapp/templates/mainapp/organization.html:65
-#: mainapp/templates/mainapp/organization.html:66
+#: mainapp/templates/mainapp/organization.html:67
+#: mainapp/templates/mainapp/organization.html:68
 msgctxt "Header"
 msgid "Meetings"
 msgstr "Sitzungen"
 
-#: mainapp/templates/mainapp/organization.html:77
+#: mainapp/templates/mainapp/organization.html:78
+msgid "No members for this organization"
+msgstr ""
+
+#: mainapp/templates/mainapp/organization.html:84
 #: mainapp/templates/mainapp/person.html:33
 msgid "Open in Search"
 msgstr "In der Suche öffnen"
 
-#: mainapp/templates/mainapp/organization.html:104
+#: mainapp/templates/mainapp/organization.html:110
 msgid "Remaining files omitted. They can be found with the search"
 msgstr "Die restlichen Dateien können über die Suche gefunden werden"
 
-#: mainapp/templates/mainapp/organization.html:111
+#: mainapp/templates/mainapp/organization.html:114
+msgid "No papers for this organization"
+msgstr "Keine Vorlagen für dieses Gremium"
+
+#: mainapp/templates/mainapp/organization.html:121
 msgid "Subscribe (iCal)"
 msgstr "Abonnieren (iCal)"
 
-#: mainapp/templates/mainapp/organization.html:124
+#: mainapp/templates/mainapp/organization.html:152
 msgid "Remaining meetings omitted. They can be found with the search"
 msgstr "Die restlichen Termine können über die Suche gefunden werden"
 
@@ -1015,15 +1050,15 @@ msgstr "Keine Dateien angehängt"
 msgid "Consultations"
 msgstr "Beratungen"
 
-#: mainapp/templates/mainapp/paper.html:124
+#: mainapp/templates/mainapp/paper.html:123
 msgid "public agenda item"
 msgstr "Öffentlicher Tagesordnungspunkt"
 
-#: mainapp/templates/mainapp/paper.html:127
+#: mainapp/templates/mainapp/paper.html:125
 msgid "non-public agenda item"
 msgstr "Nichtöffentlicher Tagesordnungspunkt"
 
-#: mainapp/templates/mainapp/paper.html:139
+#: mainapp/templates/mainapp/paper.html:137
 #, fuzzy
 msgid "No information available"
 msgstr "Keine Informationen verfügbar"
@@ -1363,11 +1398,11 @@ msgstr "Neueste Dokumente"
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:173
+#: mainapp/views/meeting.py:171
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:186
+#: mainapp/views/meeting.py:184
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 
@@ -1407,7 +1442,7 @@ msgstr "Suche deaktiviert"
 
 #: mainapp/views/special.py:64
 msgid "Search for documents of %CITY%'s city council"
-msgstr ""
+msgstr "Suche nach Dokumenten des Stadrats von %CITY%"
 
 #~ msgid "Timeframe of existence:"
 #~ msgstr "Zeitraum des Bestehens:"

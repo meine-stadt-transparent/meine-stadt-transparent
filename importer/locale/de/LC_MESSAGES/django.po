@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-28 09:53+0200\n"
+"POT-Creation-Date: 2019-12-02 15:36+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: importer/json_to_db.py:359 importer/json_to_db.py:510
-#: importer/json_to_db.py:519 importer/json_to_db.py:523
+#: importer/json_to_db.py:365 importer/json_to_db.py:516
+#: importer/json_to_db.py:525 importer/json_to_db.py:529
 msgid "Unknown"
-msgstr ""
+msgstr "Unbekannt"
