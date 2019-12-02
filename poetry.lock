@@ -422,8 +422,11 @@ category = "main"
 description = "WSGI HTTP Server for UNIX"
 name = "gunicorn"
 optional = false
-python-versions = ">=2.6, !=3.0.*, !=3.1.*"
-version = "19.10.0"
+python-versions = ">=3.4"
+version = "20.0.4"
+
+[package.dependencies]
+setuptools = ">=3.0"
 
 [[package]]
 category = "main"
@@ -1014,7 +1017,7 @@ import-json = ["dataclasses", "cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "3eca20de662f320614ab813788dd6e59bf516de7fab0a65deefc0486fd867170"
+content-hash = "4a01e45d62515805bd56278d45e5e6c001d673038241fa75877ceda452ce2819"
 python-versions = "^3.6"
 
 [metadata.hashes]
@@ -1058,7 +1061,7 @@ flask = ["13f9f196f330c7c2c5d7a5cf91af894110ca0215ac051b5844701f2bfd934d52", "45
 geoextract = ["54f3d75bceebe2c82fdca64aa40f63ffc41df442dffe16d82a1aa95568f430bc", "e2fd249361c05a3c3d9cf0d7e9ce18c7f62e08202bd39568d4f7020eeb2009d9"]
 geographiclib = ["12bd46ee7ec25b291ea139b17aa991e7ef373e21abd053949b75c0e9ca55c632", "51cfa698e7183792bce27d8fb63ac8e83689cd8170a730bf35e1a5c5bf8849b9"]
 geopy = ["6239cbf4d8e8a10460c10cf2ae1949c9e9d011e9f25c4e49202734455cc5e884", "9419bc90ee6231590c4ae7acf1cf126cefbd0736942da7a6a1436946e80830e2"]
-gunicorn = ["c3930fe8de6778ab5ea716cab432ae6335fa9f03b3f2c3e02529214c476f4bcb", "f9de24e358b841567063629cd0a656b26792a41e23a24d0dcb40224fc3940081"]
+gunicorn = ["1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626", "cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"]
 html2text = ["55ce85704f244fc18890c5ded89fa22ff7333e41e9f3cad04d51f48d62ad8834", "6f56057c5c2993b5cc5b347cb099bdf6d095828fef1b53ef4e2a2bf2a1be9b4f"]
 html5lib = ["20b159aa3badc9d5ee8f5c647e5efd02ed2a66ab8d354930bd9ff139fc1dc0a3", "66cb0dcfdbbc4f9c3ba1a63fdb511ffdbd4f513b2b6d81b80cd26ce6b3fb3736"]
 icalendar = ["347151cb935f5f2f83d58f6dd8aef8558df69f6c1709f1d2cab2000b36def299", "45b9bd1b59107b25db688160ebd8d3916b5a8fae65992dae5d7fc0b102a9ab21"]
