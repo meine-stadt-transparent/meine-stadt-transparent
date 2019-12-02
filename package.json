@@ -37,7 +37,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@sentry/browser": "^5.7.1",
+    "@sentry/browser": "^5.9.1",
     "bootstrap": "~4.3.1",
     "bootstrap-datepicker": "^1.9.0",
     "bootstrap-daterangepicker": "^2.1.30",
@@ -47,14 +47,14 @@
     "fullcalendar": "^3.10.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
-    "leaflet": "^1.5.1",
+    "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "list.js": "^1.5.0",
     "moment": "^2.24.0",
     "mousetrap": "^1.6.3",
-    "osmtogeojson": "^3.0.0-beta.3",
+    "osmtogeojson": "^3.0.0-beta.4",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
-    "popper.js": "^1.15.0",
+    "popper.js": "^1.16.0",
     "postcss-loader": "^3.0.0",
     "shufflejs": "^5.2.3"
   },
