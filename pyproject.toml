@@ -49,7 +49,7 @@ tox = "^3.13"
 django-debug-toolbar = "^2.0"
 responses = "^0.10.6"
 pytest-django = "^3.5"
-black = "19.3b0"
+black = "19.10b0"
 
 [tool.poetry.extras]
 pgp = ["pgpy"]
