@@ -175,6 +175,31 @@ def convert_file(csv_file):
     )
 
 
+def handle_counts(ris_data: RisData, allow_shrinkage: bool):
+    """ Prints the old and new counts and makes sure we don't accidentally delete entries """
+    existing_counts = {
+        "Paper": models.Paper.objects.count(),
+        "File": models.File.objects.count(),
+        "Person": models.Person.objects.count(),
+        "Meeting": models.Meeting.objects.count(),
+        "Organization": models.Organization.objects.count(),
+        "Membership": models.Membership.objects.count(),
+        "Agenda Item": models.AgendaItem.objects.count(),
+    }
+    new_counts = ris_data.get_counts()
+    formatter = lambda x: " | ".join(f"{key} {value}" for key, value in x.items())
+    logger.info(f"Existing: {formatter(existing_counts)}")
+    logger.info(f"New: {formatter(new_counts)}")
+    if not allow_shrinkage:
+        for key, value in existing_counts.items():
+            if new_counts[key] < value:
+                raise RuntimeError(
+                    f"There are {value} {key} in the database, but only {new_counts[key]} in "
+                    f"the imported dataset. This indicates a scraper failure. "
+                    f"Use `--allow-shrinkage` to override."
+                )
+
+
 class Command(BaseCommand):
     help = "Imports a municipality from a json file"
 
@@ -196,6 +221,13 @@ class Command(BaseCommand):
             default=False,
             help="Do not download streets and shape of the body",
         )
+        parser.add_argument(
+            "--allow-shrinkage",
+            action="store_true",
+            dest="allow_shrinkage",
+            default=False,
+            help="Don't fail when trying to import a smaller dataset over a bigger existing one",
+        )
 
     def handle(self, *args, **options):
         input_file: Path = options["input"]
@@ -214,7 +246,8 @@ class Command(BaseCommand):
                 ags = city_to_ags(ris_data.name, False)
                 if not ags:
                     raise RuntimeError(
-                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'. Please look it up yourself and specify it with `--ags`"
+                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'. "
+                        f"Please look it up yourself and specify it with `--ags`"
                     )
                 logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
             body = models.Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
@@ -224,6 +257,8 @@ class Command(BaseCommand):
                 import_streets(body)
         else:
             logging.info("Using existing body")
+
+        handle_counts(ris_data, options["allow_shrinkage"])
 
         flush_model(models.Paper)
         self.import_papers(ris_data)
@@ -272,13 +307,12 @@ class Command(BaseCommand):
         fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
 
         if not options["skip_download"]:
-            logger.info("Downloading and parsing the files")
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(
                 fallback_city=body.short_name
             )
 
     def import_memberships(self, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.memberships)} memberships")
+        logger.info(f"Importing {len(ris_data.memberships)} memberships")
         # TODO: Currently, the persons list is incomplete. This patches it up until that's solved
         #   properly by a rewrite of the relevant scraper part
         #   Use https://buergerinfo.ulm.de/kp0043.php?__swords=%22%22&__sgo=Suchen instead to get all persons and memberships
@@ -329,7 +363,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info(f"Processing {len(ris_data.agenda_items)} agenda items")
+        logger.info(f"Importing {len(ris_data.agenda_items)} agenda items")
         db_agenda_items = [
             convert_agenda_item(
                 consultation_map, csv_agenda_item, meeting_id_map, paper_id_map
@@ -344,7 +378,7 @@ class Command(BaseCommand):
         meeting_id_map: Dict[int, int],
         paper_id_map: Dict[int, int],
     ):
-        logger.info(f"Processing {len(ris_data.agenda_items)} consultations")
+        logger.info(f"Importing {len(ris_data.agenda_items)} consultations")
         db_consultations = []
         for csv_agenda_item in ris_data.agenda_items:
             if not csv_agenda_item.paper_original_id:
@@ -356,7 +390,7 @@ class Command(BaseCommand):
         models.Consultation.objects.bulk_create(db_consultations, 100)
 
     def import_persons(self, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.persons)} persons")
+        logger.info(f"Importing {len(ris_data.persons)} persons")
         db_persons = []
         for csv_person in ris_data.persons:
             family_name, given_names, name = normalize_name(csv_person.name)
@@ -405,7 +439,7 @@ class Command(BaseCommand):
         )
 
     def import_meeting_locations(self, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.meetings)} meeting locations")
+        logger.info(f"Importing {len(ris_data.meetings)} meeting locations")
         existing_locations = set(
             models.Location.objects.values_list("description", flat=True)
         )
@@ -423,14 +457,14 @@ class Command(BaseCommand):
         models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
-        logger.info(f"Processing {len(ris_data.meetings)} meetings")
+        logger.info(f"Importing {len(ris_data.meetings)} meetings")
         db_meetings = [
             convert_meeting(csv_meeting, locations) for csv_meeting in ris_data.meetings
         ]
         models.Meeting.objects.bulk_create(db_meetings, batch_size=100)
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.organizations)} organizations")
+        logger.info(f"Importing {len(ris_data.organizations)} organizations")
         committee = settings.COMMITTEE_TYPE
         committee_type, _ = models.OrganizationType.objects.get_or_create(
             id=committee[0], defaults={"name": committee[1]}
@@ -455,12 +489,12 @@ class Command(BaseCommand):
         models.Paper.files.through.objects.bulk_create(db_file_to_paper, batch_size=100)
 
     def import_papers(self, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.papers)} paper")
+        logger.info(f"Importing {len(ris_data.papers)} paper")
         db_paper_all = [convert_paper(csv_paper) for csv_paper in ris_data.papers]
         models.Paper.objects.bulk_create(db_paper_all, batch_size=100)
 
     def import_files(self, ris_data: RisData):
-        logger.info(f"Processing {len(ris_data.files)} files")
+        logger.info(f"Importing {len(ris_data.files)} files")
         existing_file_ids = make_id_map(models.File.objects)
         new_files = []
         for csv_file in ris_data.files:

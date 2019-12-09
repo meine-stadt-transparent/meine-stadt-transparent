@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from typing import List
+from typing import List, Dict
 from typing import Optional, Union
 
 import attr
@@ -113,7 +113,7 @@ class AgendaItem:
 @attr.s(frozen=True, auto_attribs=True)
 class RisData:
     name: str
-    ags: Optional[str]  # For the migration period this is optional
+    ags: str
     main_organization: Optional[Organization]
     persons: List[Person]
     organizations: List[Organization]
@@ -122,3 +122,14 @@ class RisData:
     meetings: List[Meeting]
     memberships: List[Membership]
     agenda_items: List[AgendaItem]
+
+    def get_counts(self) -> Dict[str, int]:
+        return {
+            "Paper": len(self.papers),
+            "File": len(self.files),
+            "Person": len(self.persons),
+            "Meeting": len(self.meetings),
+            "Organization": len(self.organizations),
+            "Membership": len(self.memberships),
+            "Agenda Item": len(self.agenda_items),
+        }
