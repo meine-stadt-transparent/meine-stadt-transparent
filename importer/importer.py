@@ -13,7 +13,7 @@ from django.core.validators import URLValidator
 from django.db import IntegrityError, transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
-from requests import HTTPError
+from requests import HTTPError, RequestException
 from tqdm import tqdm
 
 from importer import JSON
@@ -358,7 +358,7 @@ class Importer:
                 tmpfile.write(content)
                 tmpfile.file.seek(0)
                 file.filesize = len(content)
-            except HTTPError:
+            except RequestException:
                 logger.exception("File {}: Failed to download {}".format(file.id, url))
                 return False
 

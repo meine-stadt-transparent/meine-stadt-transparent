@@ -200,8 +200,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         input_file: Path = options["input"]
 
-        # from importer.management.commands.import_json import *
-        # input_file = Path("moers-new.json")
         logger.info("Loading the data")
         with input_file.open() as fp:
             ris_data: RisData = converter.structure(json.load(fp), RisData)
