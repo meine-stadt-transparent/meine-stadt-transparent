@@ -124,9 +124,11 @@ class RisData:
     agenda_items: List[AgendaItem]
 
     def get_counts(self) -> Dict[str, int]:
+        files_size_mb = sum(i.claimed_size for i in self.files) // 10 ** 6
         return {
             "Paper": len(self.papers),
             "File": len(self.files),
+            "Size (MB)": files_size_mb,
             "Person": len(self.persons),
             "Meeting": len(self.meetings),
             "Organization": len(self.organizations),
