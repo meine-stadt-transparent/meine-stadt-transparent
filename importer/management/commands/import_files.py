@@ -1,7 +1,5 @@
 import logging
 
-from importer.importer import Importer
-from importer.loader import BaseLoader
 from importer.management.commands._import_base_command import ImportBaseCommand
 from mainapp.functions.document_parsing import AddressPipeline, create_geoextract_data
 
@@ -19,25 +17,16 @@ class Command(ImportBaseCommand):
             type=int,
             help="Use only that many processes for the import",
         )
-        parser.add_argument(
-            "--mock-body",
-            help="Don't try to determine the body from its oparl id. The value is the body's short name",
-        )
 
     def handle(self, *args, **options):
-        if options["mock_body"]:
-            importer = Importer(BaseLoader(dict()))
-            importer.force_singlethread = options["force_singlethread"]
-            body_short_name = options["mock_body"]
-        else:
-            importer, body = self.get_importer(options)
-            body_short_name = body.short_name
+        importer, body = self.get_importer(options)
+        logger.info(f"Using '{body.short_name}' as geotagging city")
         if options["ids"]:
             address_pipeline = AddressPipeline(create_geoextract_data())
             failed = 0
             for file in options["ids"]:
                 succeeded = importer.download_and_analyze_file(
-                    file, address_pipeline, body_short_name
+                    file, address_pipeline, body.short_name
                 )
 
                 if not succeeded:
@@ -47,5 +36,5 @@ class Command(ImportBaseCommand):
                 logger.error("{} files failed to download".format(failed))
         else:
             importer.load_files(
-                max_workers=options["max_workers"], fallback_city=body_short_name
+                max_workers=options["max_workers"], fallback_city=body.short_name
             )
