@@ -13,7 +13,7 @@ from django.core.validators import URLValidator
 from django.db import IntegrityError, transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
-from requests import HTTPError, RequestException
+from requests import RequestException
 from tqdm import tqdm
 
 from importer import JSON
