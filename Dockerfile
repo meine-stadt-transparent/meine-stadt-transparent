@@ -24,6 +24,7 @@ RUN apt-get update && \
     curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
     apt-get install -y python3-pip python3-venv python3-dev \
     nodejs git libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 && \
     apt-get purge -y curl gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
@@ -33,9 +34,8 @@ COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
 WORKDIR /app
 
-RUN pip3 install --upgrade poetry && \
-    poetry config settings.virtualenvs.in-project true && \
-    poetry install --no-dev -E import-json
+RUN $HOME/.poetry/bin/poetry config virtualenvs.in-project true && \
+    $HOME/.poetry/bin/poetry install --no-dev -E import-json
 COPY . /app/
 
 COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
