@@ -148,7 +148,10 @@ class Cli:
         logging.info("Using {} as url".format(userinput))
         response = requests_get(userinput)
         data = response.json()
-        if data.get("type") != "https://schema.oparl.org/1.0/Body":
+        if data.get("type") not in [
+            "https://schema.oparl.org/1.0/Body",
+            "https://schema.oparl.org/1.1/Body",
+        ]:
             raise RuntimeError("The url you provided didn't point to an oparl body")
         endpoint_system = data["system"]
         endpoint_id = data["id"]

@@ -170,9 +170,25 @@ class CCEgovLoader(BaseLoader):
         for key, value in data.copy().items():
             if isinstance(value, dict):
                 self.visit(value)
+            if isinstance(value, list):
+                for i in value:
+                    if isinstance(i, dict):
+                        self.visit(i)
             elif isinstance(value, str):
                 if value == "N/A" or not value.strip():
                     del data[key]
+
+        # There's a double colon instead of a single colon between the timezone offset's hour and minute
+        timezone_fields = ["created", "modified"]
+        for field_name in timezone_fields:
+            if field_name in data:
+                data[field_name] = data[field_name].replace("::", ":")
+
+        # These are date fields, not datetime field
+        date_fields = ["startDate", "endDate"]
+        for field_name in date_fields:
+            if field_name in data:
+                data[field_name] = data[field_name].split("T")[0]
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
         response = super().load(url, query)
@@ -193,7 +209,7 @@ def get_loader_from_system(entrypoint: str) -> BaseLoader:
     if system.get("contactName") == "STERNBERG Software GmbH & Co. KG":
         logger.info("Using Sternberg patches")
         return SternbergLoader(system)
-    elif system.get("vendor") == "http://cc-egov.de/":
+    elif system.get("vendor") == "http://cc-egov.de/" or system.get("vendor") == "https://www.cc-egov.de":
         logger.info("Using CC e-gov patches")
         return CCEgovLoader(system)
     else:
