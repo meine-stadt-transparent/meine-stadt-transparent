@@ -177,6 +177,8 @@ ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL}}
 
 ELASTICSEARCH_PREFIX = env.str("ELASTICSEARCH_PREFIX", "meine-stadt-transparent")
+if not ELASTICSEARCH_PREFIX.islower():
+    raise ValueError("ELASTICSEARCH_PREFIX must be lowercase")
 
 # Language use for stemming, stop words, etc.
 ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")

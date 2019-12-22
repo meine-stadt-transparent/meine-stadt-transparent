@@ -209,7 +209,10 @@ def get_loader_from_system(entrypoint: str) -> BaseLoader:
     if system.get("contactName") == "STERNBERG Software GmbH & Co. KG":
         logger.info("Using Sternberg patches")
         return SternbergLoader(system)
-    elif system.get("vendor") == "http://cc-egov.de/" or system.get("vendor") == "https://www.cc-egov.de":
+    elif (
+        system.get("vendor") == "http://cc-egov.de/"
+        or system.get("vendor") == "https://www.cc-egov.de"
+    ):
         logger.info("Using CC e-gov patches")
         return CCEgovLoader(system)
     else:
