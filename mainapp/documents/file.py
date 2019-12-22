@@ -29,7 +29,7 @@ class FileDocument(Document):
 
     class Django:
         model = File
-        queryset_pagination = 500
+        queryset_pagination = 100
 
         fields = [
             "id",
