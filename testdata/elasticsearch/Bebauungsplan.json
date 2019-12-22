@@ -1,13 +1,16 @@
 {
     "hits": {
-        "total": 4,
-        "max_score": 2.363447,
+        "total": {
+            "value": 4,
+            "relation": "eq"
+        },
+        "max_score": 5.458224,
         "hits": [
             {
                 "_index": "mst-test-paper",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "4",
-                "_score": 2.363447,
+                "_score": 5.458224,
                 "_source": {
                     "legal_date": null,
                     "name": "Bebauungsplan",
@@ -22,9 +25,9 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "6",
-                "_score": 1.8800145,
+                "_score": 4.485471,
                 "_source": {
                     "legal_date": null,
                     "name": "Bebauungsplan II",
@@ -39,9 +42,9 @@
             },
             {
                 "_index": "mst-test-paper",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "5",
-                "_score": 0.5274172,
+                "_score": 2.5016859,
                 "_source": {
                     "legal_date": null,
                     "name": "Bebaungsplan",
@@ -56,7 +59,7 @@
             },
             {
                 "_index": "mst-test-file",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "1",
                 "_score": 0.320456,
                 "_source": {

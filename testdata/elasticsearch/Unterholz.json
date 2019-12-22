@@ -1,13 +1,16 @@
 {
     "hits": {
-        "total": 10,
-        "max_score": 3.2570932,
+        "total": {
+            "value": 10,
+            "relation": "eq"
+        },
+        "max_score": 5.6957636,
         "hits": [
             {
                 "_index": "mst-test-paper",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "2",
-                "_score": 3.2570932,
+                "_score": 5.6957636,
                 "_source": {
                     "legal_date": null,
                     "name": "Vorlage (Frank Unterholz)",
@@ -22,9 +25,9 @@
             },
             {
                 "_index": "mst-test-organization",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "1",
-                "_score": 2.3014567,
+                "_score": 5.5451775,
                 "_source": {
                     "name": "Der Unterholz Club",
                     "id": 1
@@ -37,9 +40,9 @@
             },
             {
                 "_index": "mst-test-person",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "1",
-                "_score": 2.3014567,
+                "_score": 5.5451775,
                 "_source": {
                     "name": "Frank Unterholz",
                     "id": 1
@@ -54,10 +57,45 @@
                 }
             },
             {
+                "_index": "mst-test-paper",
+                "_type": "_doc",
+                "_id": "3",
+                "_score": 2.5314503,
+                "_source": {
+                    "legal_date": null,
+                    "name": "Vorlage (Frank Underholz)",
+                    "id": 3,
+                    "reference_number": null
+                },
+                "highlight": {
+                    "name": [
+                        "Vorlage (Frank <mark>Underholz</mark>)"
+                    ]
+                }
+            },
+            {
+                "_index": "mst-test-file",
+                "_type": "_doc",
+                "_id": "3",
+                "_score": 2.4861822,
+                "_source": {
+                    "name": "Antrag (Frank Unterholz)",
+                    "id": 3
+                },
+                "highlight": {
+                    "filename": [
+                        "Antrag (Frank <mark>Unterholz</mark>)"
+                    ],
+                    "name": [
+                        "Antrag (Frank <mark>Unterholz</mark>)"
+                    ]
+                }
+            },
+            {
                 "_index": "mst-test-organization",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "2",
-                "_score": 1.0228697,
+                "_score": 2.4645233,
                 "_source": {
                     "name": "Der Underholz Club",
                     "id": 2
@@ -70,9 +108,9 @@
             },
             {
                 "_index": "mst-test-person",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "2",
-                "_score": 1.0228697,
+                "_score": 2.4645233,
                 "_source": {
                     "name": "Frank Underholz",
                     "id": 2
@@ -87,10 +125,25 @@
                 }
             },
             {
+                "_index": "mst-test-meeting",
+                "_type": "_doc",
+                "_id": "1",
+                "_score": 1.3862944,
+                "_source": {
+                    "name": "Ortstermin mit Frank Unterholz",
+                    "id": 1
+                },
+                "highlight": {
+                    "name": [
+                        "Ortstermin mit Frank <mark>Unterholz</mark>"
+                    ]
+                }
+            },
+            {
                 "_index": "mst-test-file",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "4",
-                "_score": 0.6161308,
+                "_score": 1.1049697,
                 "_source": {
                     "name": "Antrag (Frank Underholz)",
                     "id": 4
@@ -106,59 +159,9 @@
             },
             {
                 "_index": "mst-test-meeting",
-                "_type": "doc",
-                "_id": "1",
-                "_score": 0.5753642,
-                "_source": {
-                    "name": "Ortstermin mit Frank Unterholz",
-                    "id": 1
-                },
-                "highlight": {
-                    "name": [
-                        "Ortstermin mit Frank <mark>Unterholz</mark>"
-                    ]
-                }
-            },
-            {
-                "_index": "mst-test-file",
-                "_type": "doc",
-                "_id": "3",
-                "_score": 0.5753642,
-                "_source": {
-                    "name": "Antrag (Frank Unterholz)",
-                    "id": 3
-                },
-                "highlight": {
-                    "filename": [
-                        "Antrag (Frank <mark>Unterholz</mark>)"
-                    ],
-                    "name": [
-                        "Antrag (Frank <mark>Unterholz</mark>)"
-                    ]
-                }
-            },
-            {
-                "_index": "mst-test-paper",
-                "_type": "doc",
-                "_id": "3",
-                "_score": 0.51143485,
-                "_source": {
-                    "legal_date": null,
-                    "name": "Vorlage (Frank Underholz)",
-                    "id": 3,
-                    "reference_number": null
-                },
-                "highlight": {
-                    "name": [
-                        "Vorlage (Frank <mark>Underholz</mark>)"
-                    ]
-                }
-            },
-            {
-                "_index": "mst-test-meeting",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "2",
-                "_score": 0.25571743,
+                "_score": 0.6161308,
                 "_source": {
                     "name": "Ortstermin mit Frank Underholz",
                     "id": 2

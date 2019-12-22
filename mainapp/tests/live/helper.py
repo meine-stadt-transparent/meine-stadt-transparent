@@ -5,7 +5,7 @@ from mainapp.functions.search import MainappSearch
 
 hit_template = {
     "_index": "mst-test-file",
-    "_type": "doc",
+    "_type": "_doc",
     "_id": "159",
     "_source": {"id": 159},
     "highlight": {
@@ -15,7 +15,7 @@ hit_template = {
 }
 
 response_premade = {
-    "hits": {"total": 117, "hits": [hit_template]},
+    "hits": {"total": {"relation": "eq", "value": 117}, "hits": [hit_template]},
     "aggregations": {
         "_filter_document_type": {
             "doc_count": 1337,
@@ -51,7 +51,7 @@ template = {
         "modified": "2017-12-01T10:56:37.297771+00:00",
     },
     "_score": 1,
-    "doc_type": "doc",
+    "doc_type": "_doc",
     "index": "mst-test-file",
     "highlight": {"name": ["Title <mark>Highlight</mark>"]},
 }
@@ -62,7 +62,7 @@ class MockMainappSearch(MainappSearch):
 
     def execute(self):
         hits = AttrList([Hit(template.copy())])
-        hits.__setattr__("total", 1)
+        hits.__setattr__("total", {"value": 1, "relation": "eq"})
         return AttrDict({"hits": hits, "facets": get_aggregations()})
 
 
@@ -92,7 +92,7 @@ class MockMainappSearchEndlessScroll(MainappSearch):
             }
             out.append(Hit(result))
         hits = AttrList(out)
-        hits.__setattr__("total", len(out) * 2)
+        hits.__setattr__("total", {"value": len(out) * 2, "relation": "eq"})
 
         return AttrDict({"hits": hits, "facets": get_aggregations()})
 

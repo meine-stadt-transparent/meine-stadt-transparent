@@ -1,11 +1,14 @@
 {
     "hits": {
-        "total": 1,
+        "total": {
+            "value": 1,
+            "relation": "eq"
+        },
         "max_score": 2.3014567,
         "hits": [
             {
                 "_index": "mst-test-paper",
-                "_type": "doc",
+                "_type": "_doc",
                 "_id": "1",
                 "_score": 2.3014567,
                 "_source": {

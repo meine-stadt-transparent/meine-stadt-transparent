@@ -58,7 +58,7 @@ class TestElasticsearch(TestCase):
             actual = search.execute().to_dict()
             for i in ["took", "timed_out", "_shards", "_faceted_search"]:
                 del actual[i]
-            self.assertEqual(expected, actual)
+            self.assertEqual(expected, actual, filename)
 
     def test_tokenization(self):
         """
