@@ -192,7 +192,8 @@ def handle_counts(ris_data: RisData, allow_shrinkage: bool):
     logger.info(f"New: {formatter(new_counts)}")
     if not allow_shrinkage:
         for key, value in existing_counts.items():
-            if new_counts[key] < value:
+            # The -3 is to allow some deletion or some failed page
+            if new_counts[key] < value - 3:
                 raise RuntimeError(
                     f"There are {value} {key} in the database, but only {new_counts[key]} in "
                     f"the imported dataset. This indicates a scraper failure. "
