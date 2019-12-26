@@ -192,6 +192,9 @@ def handle_counts(ris_data: RisData, allow_shrinkage: bool):
     logger.info(f"New: {formatter(new_counts)}")
     if not allow_shrinkage:
         for key, value in existing_counts.items():
+            # TODO: This check currently doesn't work because there's a fixup creating persons in the membership part
+            if key == "Person":
+                continue
             # The -3 is to allow some deletion or some failed page
             if new_counts[key] < value - 3:
                 raise RuntimeError(
