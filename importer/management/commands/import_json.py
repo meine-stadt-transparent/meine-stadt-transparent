@@ -12,6 +12,7 @@ from django.core.management import BaseCommand, CommandParser
 from django.core.management.color import no_style
 from django.db import connection
 
+from importer import json_datatypes
 from importer.functions import fix_sort_date
 from importer.importer import Importer
 from importer.json_datatypes import RisData, converter
@@ -69,8 +70,11 @@ def flush_model(model: Type[django.db.models.Model]):
 
 
 def convert_agenda_item(
-    consultation_map, csv_agenda_item, meeting_id_map, paper_id_map
-):
+    consultation_map: Dict[Tuple[int, int], int],
+    csv_agenda_item: json_datatypes.AgendaItem,
+    meeting_id_map: Dict[int, int],
+    paper_id_map: Dict[int, int],
+) -> models.AgendaItem:
     if csv_agenda_item.result and csv_agenda_item.voting:
         result = csv_agenda_item.result + ", " + csv_agenda_item.voting
     else:
@@ -84,7 +88,7 @@ def convert_agenda_item(
     return models.AgendaItem(
         key=csv_agenda_item.key[:20],  # TODO: Better normalization
         position=csv_agenda_item.position,
-        name=csv_agenda_item.title,
+        name=csv_agenda_item.name,
         consultation_id=consultation,
         meeting_id=meeting_id_map[csv_agenda_item.meeting_id],
         public=True,
@@ -93,7 +97,11 @@ def convert_agenda_item(
     )
 
 
-def convert_consultation(csv_agenda_item, meeting_id_map, paper_id_map):
+def convert_consultation(
+    csv_agenda_item: json_datatypes.AgendaItem,
+    meeting_id_map: Dict[int, int],
+    paper_id_map: Dict[int, int],
+) -> models.Consultation:
     # TODO: authoritative and role (this information exists at least on the
     # consultations page of the paper in some ris
     return models.Consultation(
@@ -103,11 +111,11 @@ def convert_consultation(csv_agenda_item, meeting_id_map, paper_id_map):
     )
 
 
-def convert_person(family_name, given_names, name):
+def convert_person(family_name: str, given_names: str, name: str) -> models.Person:
     return models.Person(name=name, given_name=given_names, family_name=family_name)
 
 
-def convert_location(csv_meeting):
+def convert_location(csv_meeting: json_datatypes.Meeting) -> models.Location:
     # TODO: Try to normalize the locations
     #   and geocode after everything else has been done
     return models.Location(
@@ -116,11 +124,13 @@ def convert_location(csv_meeting):
     )
 
 
-def convert_meeting(csv_meeting, locations):
+def convert_meeting(
+    csv_meeting: json_datatypes.Meeting, locations: Dict[str, int]
+) -> models.Meeting:
     location_id = locations[csv_meeting.location] if csv_meeting.location else None
     return models.Meeting(
-        name=csv_meeting.title,
-        short_name=csv_meeting.title[:50],  # TODO: Better normalization,
+        name=csv_meeting.name,
+        short_name=csv_meeting.name[:50],  # TODO: Better normalization,
         start=csv_meeting.start,
         end=csv_meeting.end,
         location_id=location_id,
@@ -129,11 +139,11 @@ def convert_meeting(csv_meeting, locations):
     )
 
 
-def convert_paper(csv_paper):
+def convert_paper(csv_paper: json_datatypes.Paper) -> models.Paper:
     db_paper = models.Paper(
-        short_name=csv_paper.short_title[:50],  # TODO: Better normalization
-        name=csv_paper.title,
-        reference_number=csv_paper.reference_number,
+        short_name=csv_paper.short_name[:50],  # TODO: Better normalization
+        name=csv_paper.name,
+        reference_number=csv_paper.reference,
         oparl_id=csv_paper.original_id,
     )
     if csv_paper.paper_type:
@@ -144,7 +154,11 @@ def convert_paper(csv_paper):
     return db_paper
 
 
-def convert_organization(body, committee_type, csv_organization):
+def convert_organization(
+    body: models.Body,
+    committee_type: models.OrganizationType,
+    csv_organization: json_datatypes.Organization,
+) -> models.Organization:
     if csv_organization.original_id:
         oparl_id = str(csv_organization.original_id)
     else:
@@ -168,7 +182,7 @@ def convert_file_to_paper(csv_file, file_id_map, paper_id_map):
 def convert_file(csv_file):
     assert csv_file.paper_original_id is not None
     return models.File(
-        name=csv_file.title[:200],  # TODO: Better normalization
+        name=csv_file.name[:200],  # TODO: Better normalization
         oparl_download_url=csv_file.url,
         oparl_access_url=csv_file.url,
         oparl_id=csv_file.original_id,
@@ -240,21 +254,23 @@ class Command(BaseCommand):
         with input_file.open() as fp:
             ris_data: RisData = converter.structure(json.load(fp), RisData)
 
-        body = models.Body.objects.filter(name=ris_data.name).first()
+        body = models.Body.objects.filter(name=ris_data.meta.name).first()
         if not body:
             logger.info("Building the body")
 
-            if options["ags"] or ris_data.ags:
-                ags = options["ags"] or ris_data.ags
+            if options["ags"] or ris_data.meta.ags:
+                ags = options["ags"] or ris_data.meta.ags
             else:
-                ags = city_to_ags(ris_data.name, False)
+                ags = city_to_ags(ris_data.meta.name, False)
                 if not ags:
                     raise RuntimeError(
-                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.name}'. "
+                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.meta.name}'. "
                         f"Please look it up yourself and specify it with `--ags`"
                     )
                 logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
-            body = models.Body(name=ris_data.name, short_name=ris_data.name, ags=ags)
+            body = models.Body(
+                name=ris_data.meta.name, short_name=ris_data.meta.name, ags=ags
+            )
             body.save()
             if not options["skip_body_extra"]:
                 import_outline(body)
@@ -262,7 +278,8 @@ class Command(BaseCommand):
         else:
             logging.info("Using existing body")
 
-        handle_counts(ris_data, options["allow_shrinkage"])
+        # TODO: Reenable this after some more thorough testing
+        # handle_counts(ris_data, options["allow_shrinkage"])
 
         flush_model(models.Paper)
         self.import_papers(ris_data)
@@ -416,13 +433,13 @@ class Command(BaseCommand):
             else:
                 try:
                     associated_meeting_id = models.Meeting.objects.get(
-                        name=csv_meeting.title, start=csv_meeting.start
+                        name=csv_meeting.name, start=csv_meeting.start
                     ).id
                 except MultipleObjectsReturned:
                     meetings_found = [
                         (i.name, i.start)
                         for i in models.Meeting.objects.filter(
-                            name=csv_meeting.title, start=csv_meeting.start
+                            name=csv_meeting.name, start=csv_meeting.start
                         ).all()
                     ]
                     logger.error(f"Multiple meetings found: {meetings_found}")
