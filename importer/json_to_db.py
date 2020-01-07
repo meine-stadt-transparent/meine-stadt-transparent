@@ -284,12 +284,13 @@ class JsonToDb:
         self, libobject: JSON, term: LegislativeTerm
     ) -> Optional[LegislativeTerm]:
 
-        if not libobject.get("startDate") or not libobject.get("endDate"):
-            logger.error("Term has no start or end date - skipping")
+        if not libobject.get("startDate"):
+            logger.error("Term has no start date - skipping")
             return None
 
         term.start = self.utils.parse_date(libobject.get("startDate"))
-        term.end = self.utils.parse_date(libobject.get("endDate"))
+        if libobject.get("endDate"):
+            term.end = self.utils.parse_date(libobject.get("endDate"))
 
         return term
 

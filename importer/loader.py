@@ -178,18 +178,6 @@ class CCEgovLoader(BaseLoader):
                 if value == "N/A" or not value.strip():
                     del data[key]
 
-        # There's a double colon instead of a single colon between the timezone offset's hour and minute
-        timezone_fields = ["created", "modified"]
-        for field_name in timezone_fields:
-            if field_name in data:
-                data[field_name] = data[field_name].replace("::", ":")
-
-        # These are date fields, not datetime field
-        date_fields = ["startDate", "endDate"]
-        for field_name in date_fields:
-            if field_name in data:
-                data[field_name] = data[field_name].split("T")[0]
-
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
         response = super().load(url, query)
         self.visit(response)
