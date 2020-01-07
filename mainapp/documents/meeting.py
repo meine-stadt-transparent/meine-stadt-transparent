@@ -48,6 +48,6 @@ class MeetingDocument(Document):
 
     class Django:
         model = Meeting
-        queryset_pagination = 500
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION
 
         fields = ["id", "name", "short_name", "start", "end", "created", "modified"]

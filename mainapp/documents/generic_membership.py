@@ -1,5 +1,6 @@
 from django_elasticsearch_dsl import TextField, IntegerField, ObjectField, DateField
 
+from meine_stadt_transparent import settings
 from .index import autocomplete_analyzer
 
 
@@ -11,3 +12,4 @@ class GenericMembershipDocument:
 
     class Django:
         fields = ["id", "name", "short_name"]
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION

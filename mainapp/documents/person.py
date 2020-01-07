@@ -35,6 +35,6 @@ class PersonDocument(Document):
 
     class Django:
         model = Person
-        queryset_pagination = 500
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION
 
         fields = ["id", "name", "given_name", "family_name"]

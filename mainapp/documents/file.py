@@ -29,7 +29,7 @@ class FileDocument(Document):
 
     class Django:
         model = File
-        queryset_pagination = 50
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION
 
         fields = [
             "id",

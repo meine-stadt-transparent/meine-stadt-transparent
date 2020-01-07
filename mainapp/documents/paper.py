@@ -25,7 +25,7 @@ class PaperDocument(Document):
 
     class Django:
         model = Paper
-        queryset_pagination = 500
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION
 
         fields = [
             "id",

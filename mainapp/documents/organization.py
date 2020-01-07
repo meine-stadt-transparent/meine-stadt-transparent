@@ -27,6 +27,6 @@ class OrganizationDocument(Document, GenericMembershipDocument):
 
     class Django(GenericMembershipDocument.Django):
         model = Organization
-        queryset_pagination = 500
+        queryset_pagination = settings.ELASTICSEARCH_QUERYSET_PAGINATION
 
         fields = ["id", "name", "short_name", "start", "end", "created", "modified"]

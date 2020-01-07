@@ -182,6 +182,7 @@ if not ELASTICSEARCH_PREFIX.islower():
 
 # Language use for stemming, stop words, etc.
 ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")
+ELASTICSEARCH_QUERYSET_PAGINATION = env.int("ELASTICSEARCH_QUERYSET_PAGINATION", 50)
 
 # Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencage
 GEOEXTRACT_ENGINE = env.str("GEOEXTRACT_ENGINE", "Nominatim")
