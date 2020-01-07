@@ -172,10 +172,10 @@ description = "Integrated set of Django applications addressing authentication, 
 name = "django-allauth"
 optional = false
 python-versions = "*"
-version = "0.40.0"
+version = "0.41.0"
 
 [package.dependencies]
-Django = ">=1.11"
+Django = ">=2.0"
 python3-openid = ">=3.0.8"
 requests = "*"
 requests-oauthlib = ">=0.3.0"
@@ -1206,7 +1206,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "5abefcb150ba5ce34f44f22aed707cf75a7350831644bf8da25d27821161c7a2"
+content-hash = "ccd4597e075173af59fbd1f1dd99dfc531af901655bc3be9fa12d62a1de4741c"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1315,7 +1315,7 @@ django = [
     {file = "Django-2.2.9.tar.gz", hash = "sha256:662a1ff78792e3fd77f16f71b1f31149489434de4b62a74895bd5d6534e635a5"},
 ]
 django-allauth = [
-    {file = "django-allauth-0.40.0.tar.gz", hash = "sha256:6a189fc4d3ee23596c3fd6e9f49c59b5b15618980118171a50675dd6a27cc589"},
+    {file = "django-allauth-0.41.0.tar.gz", hash = "sha256:7ab91485b80d231da191d5c7999ba93170ef1bf14ab6487d886598a1ad03e1d8"},
 ]
 django-anymail = [
     {file = "django-anymail-7.0.0.tar.gz", hash = "sha256:dfa4a00a1608d40893cf818ed3632046a0bb01cf2a2bb3a64d31ff146151533a"},

@@ -125,15 +125,19 @@ if SOCIALACCOUNT_USE_FACEBOOK:
     SOCIALACCOUNT_PROVIDERS["facebook"] = {
         "EXCHANGE_TOKEN": True,
         "VERIFIED_EMAIL": False,
-        "CLIENT_ID": env.str("FACEBOOK_CLIENT_ID"),
-        "SECRET_KEY": env.str("FACEBOOK_SECRET_KEY"),
+        "APP": {
+            "client_id": env.str("FACEBOOK_CLIENT_ID"),
+            "secret": env.str("FACEBOOK_SECRET_KEY"),
+        },
     }
     INSTALLED_APPS.append("allauth.socialaccount.providers.facebook")
 
 if SOCIALACCOUNT_USE_TWITTER:
     SOCIALACCOUNT_PROVIDERS["twitter"] = {
-        "CLIENT_ID": env.str("TWITTER_CLIENT_ID"),
-        "SECRET_KEY": env.str("TWITTER_SECRET_KEY"),
+        "APP": {
+            "client_id": env.str("TWITTER_CLIENT_ID"),
+            "secret": env.str("TWITTER_SECRET_KEY"),
+        }
     }
     INSTALLED_APPS.append("allauth.socialaccount.providers.twitter")
 

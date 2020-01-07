@@ -93,7 +93,7 @@ To enable login via twitter or facebook, create an app in the corresponding deve
 
 For twitter, you'll also need [https://stackoverflow.com/a/32852370/3549270](https://stackoverflow.com/a/32852370/3549270) or users will be prompted to enter an email adress after login.
 
-For facebook, you'll need to go to `https://developers.facebook.com/apps/[your appp id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
+For facebook, you'll need to go to `https://developers.facebook.com/apps/[your app id]/fb-login/settings/` and add the site's url in "valid oauth redirect urls".
 
 You can then activate them in your `.env`-file:
 
@@ -108,8 +108,6 @@ SOCIALACCOUNT_USE_TWITTER=True
 TWITTER_CLIENT_ID=[app id]
 TWITTER_SECRET_KEY=[app secret]
 ```
-
-After changing any token, use `./manage.py register_social_accounts` to apply the changes.
 
 ### Microsoft Azure: OCR
 
