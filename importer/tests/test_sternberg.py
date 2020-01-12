@@ -82,3 +82,39 @@ class TestSternberg(TestCase):
             loader = SternbergLoader({})
             content, content_type = loader.load_file(url_wrong)
             self.assertEqual(content, b"OK")
+
+    def test_object_instead_of_list(self):
+        body = {
+            "id": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1",
+            "type": "https://schema.oparl.org/1.0/Body",
+            "system": "https://ris.krefeld.de/webservice/oparl/v1.0/system",
+            "name": "Stadt Krefeld",
+            "website": "https://www.krefeld.de",
+            "ags": "051140000",
+            "rgs": "051140000000",
+            "contactEmail": "ratundehrenamt@krefeld.de",
+            "contactName": "Karsten Sch\u00fcller",
+            "organization": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/organization",
+            "person": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/person",
+            "meeting": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting",
+            "paper": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper",
+            "location": {
+                "id": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/location/0-1",
+                "type": "https://schema.oparl.org/1.0/Location",
+            },
+        }
+
+        with responses.RequestsMock() as requests_mock:
+            requests_mock.add(
+                requests_mock.GET,
+                "https://ris.krefeld.de/webservice/oparl/v1.0/body",
+                json=body,
+            )
+
+            loader = SternbergLoader({})
+            data = loader.load(
+                "https://ris.krefeld.de/webservice/oparl/v1.0/body",
+            )
+
+            self.assertTrue("data" in data)
+            self.assertFalse("id" in data)
