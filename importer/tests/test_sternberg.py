@@ -112,9 +112,7 @@ class TestSternberg(TestCase):
             )
 
             loader = SternbergLoader({})
-            data = loader.load(
-                "https://ris.krefeld.de/webservice/oparl/v1.0/body",
-            )
+            data = loader.load("https://ris.krefeld.de/webservice/oparl/v1.0/body",)
 
             self.assertTrue("data" in data)
             self.assertFalse("id" in data)

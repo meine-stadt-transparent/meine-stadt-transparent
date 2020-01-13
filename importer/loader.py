@@ -95,11 +95,7 @@ class SternbergLoader(BaseLoader):
         # Instead of the body list, there's only a body
         # https://ris.krefeld.de/webservice/oparl/v1.0/body
         if url.endswith("/body") and "id" in response:
-            response = {
-                "data": [response],
-                "pagination": {},
-                "links": {}
-            }
+            response = {"data": [response], "pagination": {}, "links": {}}
 
         if "/body" in url:
             # Add missing "type"-attributes in body-lists
