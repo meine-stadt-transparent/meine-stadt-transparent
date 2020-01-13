@@ -62,7 +62,7 @@ class Meeting:
     location: Optional[str]
     note: Optional[str]
     original_id: Optional[int]
-    start: Union[date, datetime] = None
+    start: Optional[Union[date, datetime]] = None
     end: Optional[datetime] = None
     cancelled: bool = False
 
@@ -74,6 +74,8 @@ class Meeting:
 class Organization:
     name: str
     original_id: Optional[int]
+    # Whether there is a page with memberships (which may be empty)
+    has_memberships: bool
 
     def get_unique(self):
         return self.name
@@ -119,6 +121,7 @@ class RisMeta:
     wikidata_item: str
     website: str
     ags: str
+    version: Optional[str]
 
     @property
     def wikidata_id(self) -> str:
