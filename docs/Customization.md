@@ -141,6 +141,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `CSP_EXTRA_SCRIPT` and `CSP_EXTRA_IMG`: Add values to the script src and image src csp directive, e.g. for loading matomo scripts.
  * `ELASTICSEARCH_PREFIX`: The elasticsearch indices used by Meine Stadt Transparent will be prefixed by this. Defaults to "meine-stadt-transparent"
  * `ELASTICSEARCH_QUERYSET_PAGINATION`: The batch size for the elasticsearch indexing. See [django-elasticsearch-dsl docs](https://django-elasticsearch-dsl.readthedocs.io/en/latest/quickstart.html?highlight=queryset_pagination#declare-data-to-index) for details.
+ * `ELASTICSEARCH_TIMEOUT`: Timeout in seconds for the elasticsearch client for indexing.
  * `MINIO_PREFIX`: All minio bucket names will be prefixed with this string. Default to "meine-stadt-transparent-"
   * `CUSTOM_IMPORT_HOOKS`: Used to hook up your own code with the default importer. See the readme for usage details.
  * `EMAIL_FROM` and `EMAIL_FROM_NAME`: Sender address and name for notifications. Defaults to `info@REAL_HOST` and `SITE_NAME`
