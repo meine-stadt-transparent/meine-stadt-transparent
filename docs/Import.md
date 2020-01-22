@@ -67,19 +67,19 @@ The last `import_body` has printed the body-id, the primary key of the database 
 Import the streets of that city:
 
 ```
-./manage.py import_streets 05315000 1 # Gemeindeschlüssel of Köln, Body-ID 1
+./manage.py import_streets 1 --ags 05315000 # Gemeindeschlüssel of Köln, Body-ID 1
 ```
 
 Import OpenStreetMap-Amenities of a given city (Not required yet):
 
 ```
-./manage.py import_amenities 05315000 school 1 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
+./manage.py import_amenities school 1 --ags 05315000 # Gemeindeschlüssel of Köln, Amenity, Body-ID 1
 ```
 
 Import the outer shape of a city from OpenStreetMap:
 
 ```
-./manage.py import_outline 09162000 1 # Gemeindeschlüssel of Munich, Body-ID 1
+./manage.py import_outline 1 --ags 09162000 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
 
 ### Step 2: Fetch the data

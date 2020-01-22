@@ -178,7 +178,12 @@ if ELASTICSEARCH_ENABLED:
 
 ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
 
-ELASTICSEARCH_DSL = {"default": {"hosts": ELASTICSEARCH_URL, "timeout": env.int("ELASTICSEARCH_TIMEOUT", 10)}}
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": ELASTICSEARCH_URL,
+        "timeout": env.int("ELASTICSEARCH_TIMEOUT", 10),
+    }
+}
 
 ELASTICSEARCH_PREFIX = env.str("ELASTICSEARCH_PREFIX", "meine-stadt-transparent")
 if not ELASTICSEARCH_PREFIX.islower():

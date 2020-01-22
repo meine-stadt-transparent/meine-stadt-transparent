@@ -2,12 +2,11 @@ import inspect
 import logging
 
 from django.core.management.base import BaseCommand
-from mainapp import models
+from django.db.models import Count
 from django.db.models import Model
 
-from mainapp.models import File, Body, Person
-from django.db.models import Count
-
+from mainapp import models
+from mainapp.models import File, Body
 
 logger = logging.getLogger(__name__)
 
