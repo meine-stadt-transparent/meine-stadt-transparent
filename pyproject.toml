@@ -53,7 +53,7 @@ black = "19.10b0"
 
 [tool.poetry.extras]
 pgp = ["pgpy"]
-import-json = ["dataclasses", "cattrs"]
+import-json = ["cattrs"]
 
 [tool.black]
 include = '\.pyi?$'
