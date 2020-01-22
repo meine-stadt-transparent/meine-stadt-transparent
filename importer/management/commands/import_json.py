@@ -8,14 +8,14 @@ import django.db.models
 from dateutil import tz
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
-from django.core.management import BaseCommand, CommandParser
+from django.core.management import BaseCommand, CommandParser, CommandError
 from django.core.management.color import no_style
 from django.db import connection
 
 from importer import json_datatypes
 from importer.functions import fix_sort_date
 from importer.importer import Importer
-from importer.json_datatypes import RisData, converter
+from importer.json_datatypes import RisData, converter, format_version
 from importer.loader import BaseLoader
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
@@ -252,7 +252,13 @@ class Command(BaseCommand):
 
         logger.info("Loading the data")
         with input_file.open() as fp:
-            ris_data: RisData = converter.structure(json.load(fp), RisData)
+            json_data = json.load(fp)
+            if json_data["format_version"] != format_version:
+                raise CommandError(
+                    f"This version of {settings.PRODUCT_NAME} can only import json format version {format_version}, "
+                    f"but the json file you provided is version {json_data['format_version']}"
+                )
+            ris_data: RisData = converter.structure(json_data, RisData)
 
         body = models.Body.objects.filter(name=ris_data.meta.name).first()
         if not body:

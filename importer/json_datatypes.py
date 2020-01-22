@@ -19,6 +19,8 @@ converter.register_structure_hook(
     else dateutil.parser.parse(ts),
 )
 
+format_version = 2
+
 
 @attr.s(frozen=True, auto_attribs=True)
 class Person:
@@ -143,7 +145,7 @@ class RisData:
     meetings: List[Meeting]
     memberships: List[Membership]
     agenda_items: List[AgendaItem]
-    format_version: int = 1
+    format_version: int = format_version
 
     def get_counts(self) -> Dict[str, int]:
         files_size_mb = sum((i.claimed_size or 0) for i in self.files) // 10 ** 6
