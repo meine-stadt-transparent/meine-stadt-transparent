@@ -67,18 +67,13 @@ description = "Composable complex class support for attrs."
 name = "cattrs"
 optional = true
 python-versions = "*"
-version = "1.0.0rc0"
+version = "1.0.0"
 
 [package.dependencies]
 attrs = ">=17.3"
 
 [package.extras]
-dev = ["sphinx", "bumpversion", "coverage", "flake8", "hypothesis", "pendulum", "pytest", "tox", "watchdog", "wheel"]
-
-[package.source]
-reference = "7311176e15970cba50c7c435a4e6e353c00bfeaf"
-type = "git"
-url = "https://github.com/Tinche/cattrs"
+dev = ["bumpversion", "wheel", "watchdog", "flake8", "tox", "coverage", "sphinx", "pytest", "hypothesis", "pendulum"]
 
 [[package]]
 category = "main"
@@ -1195,7 +1190,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "0ea78960fa72483a01d1e1ba5cd2a4a789f9d9368daed0c907c4c89c4f1e261f"
+content-hash = "aa63c2d2e02a8c555ca26dd2ce75806173f9f5a8781c0fd82c17ae54df41c0f7"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1220,7 +1215,10 @@ black = [
     {file = "black-19.10b0-py36-none-any.whl", hash = "sha256:1b30e59be925fafc1ee4565e5e08abef6b03fe455102883820fe5ee2e4734e0b"},
     {file = "black-19.10b0.tar.gz", hash = "sha256:c2edb73a08e9e0e6f65a0e6af18b059b8b1cdd5bef997d7a0b181df93dc81539"},
 ]
-cattrs = []
+cattrs = [
+    {file = "cattrs-1.0.0-py2.py3-none-any.whl", hash = "sha256:616972ae3dfa6e623a40ad3cb845420e64942989152774ab055e5c2b2f89f997"},
+    {file = "cattrs-1.0.0.tar.gz", hash = "sha256:b7ab5cf8ad127c42eefd01410c1c6e28569a45a255ea80ed968511873c433c7a"},
+]
 certifi = [
     {file = "certifi-2019.11.28-py2.py3-none-any.whl", hash = "sha256:017c25db2a153ce562900032d5bc68e9f191e44e9a0f762f373977de9df1fbb3"},
     {file = "certifi-2019.11.28.tar.gz", hash = "sha256:25b64c7da4cd7479594d035c08c2d809eb4aab3a26e5a990ea98cc450c320f1f"},
