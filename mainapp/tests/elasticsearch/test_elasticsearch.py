@@ -49,7 +49,7 @@ class TestElasticsearch(TestCase):
         1234/89: Checks that looking for reference numbers works and checks that the slash
         (which is split by the tokenizer) works
         """
-        fixtures_dir = "testdata/elasticsearch"
+        fixtures_dir = "testdata/elasticsearch_scoring"
         for filename in os.listdir(fixtures_dir):
             with open(os.path.join(fixtures_dir, filename)) as fp:
                 expected = json.load(fp)

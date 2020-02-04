@@ -1,0 +1,21 @@
+{% load i18n %}
+
+{% include "partials/mixed_results.html" %}
+
+<button class="btn btn-secondary w-100 mb-3" id="start-endless-scroll"
+        data-url="{% url "search_results_only" query %}"
+        data-pagination-length="{{ pagination_length }}"
+    {% if total_hits.value == results|length %} hidden="hidden" {% endif %}>
+    <span>{% trans "Load More" %}</span>
+    <span class="total-hits badge badge-light">
+        {% if total_hits.relation == "eq" %}
+            {{ total_hits.value }}
+        {% else %}
+            {% trans "Over " %}{{ total_hits.value }}
+        {% endif %}
+    </span>
+</button>
+
+<div class="p-2 nothing-found" {% if results|length > 0 %} hidden="hidden" {% endif %}>
+    <p class="alert alert-danger">{% trans "Nothing Found :(" %}</p>
+</div>

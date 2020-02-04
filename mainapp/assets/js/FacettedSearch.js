@@ -73,24 +73,16 @@ export default class FacettedSearch {
     }
 
     static updateEndlessScroll(data) {
+        // noinspection JSJQueryEfficiency
+        let endlessScroll = $("#start-endless-scroll").data('widget');
         let $data = $(data['results']);
-        let $btn = $("#start-endless-scroll");
-        let current = $data.find("> li").length;
-        let $nothingFound = $('.nothing-found');
-        if (parseInt(data['total_results'], 10) === 0) {
-            $btn.attr('hidden', 'hidden');
-            $nothingFound.removeAttr('hidden');
-        } else if (data['total_results'] > current) {
-            $btn.find('.total-hits').text(data['total_results'] - current);
-            $btn.removeAttr('hidden');
-            $nothingFound.attr('hidden', 'hidden');
-        } else {
-            $btn.attr('hidden', 'hidden');
-            $nothingFound.attr('hidden', 'hidden');
-        }
-        $btn.data('url', data['more_link']);
-        $btn.data('widget').reset();
-        $("#endless-scroll-target").html($data.find("> li"));
+        // Replace the complete search results section with the new content
+        $("#results-section").html($data);
+        // noinspection JSJQueryEfficiency
+        let $newBtn = $("#start-endless-scroll");
+        endlessScroll.reset();
+        endlessScroll.retarget($newBtn);
+        $newBtn.data("widget", endlessScroll);
     }
 
     updateSearchResults(querystring) {

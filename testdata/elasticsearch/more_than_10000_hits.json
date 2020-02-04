@@ -1,0 +1,368 @@
+{
+  "took" : 252,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 172,
+    "successful" : 172,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 10000,
+      "relation" : "gte"
+    },
+    "max_score" : 4.0,
+    "hits" : [
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "1",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Rat",
+          "id" : 1
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "2",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Haupt- und Finanzausschuss",
+          "id" : 2
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "3",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Gleichstellung",
+          "id" : 3
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "4",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Kinder, Jugendliche und Familien",
+          "id" : 4
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "5",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Liegenschaften, Wirtschaft und strategisches Flächenmanagement",
+          "id" : 5
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "6",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Personal, Organisation, Sicherheit, Ordnung und E-Government",
+          "id" : 6
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "7",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Schule und Weiterbildung",
+          "id" : 7
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "8",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Soziales, Stiftungen, Gesundheit, Verbraucherschutz und Arbeitsförderung",
+          "id" : 8
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "9",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Stadtplanung, Stadtentwicklung, Verkehr und Wohnen",
+          "id" : 9
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "10",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Ausschuss für Umweltschutz, Klimaschutz und Bauwesen",
+          "id" : 10
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "11",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Betriebsausschuss der Abfallwirtschaftsbetriebe",
+          "id" : 11
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "12",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Betriebsausschuss der citeq",
+          "id" : 12
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "13",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Betriebsausschuss Münster Marketing",
+          "id" : 13
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "14",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Kulturausschuss",
+          "id" : 14
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "15",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Rechnungsprüfungsausschuss",
+          "id" : 15
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "16",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Sportausschuss",
+          "id" : 16
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "17",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Vergabeausschuss",
+          "id" : 17
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "18",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Wahlausschuss",
+          "id" : 18
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "19",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Wahlausschuss zur Europawahl 2019",
+          "id" : 19
+        }
+      },
+      {
+        "_index" : "bonn-organization",
+        "_type" : "_doc",
+        "_id" : "20",
+        "_score" : 4.0,
+        "_source" : {
+          "name" : "Wahlprüfungsausschuss",
+          "id" : 20
+        }
+      }
+    ]
+  },
+  "aggregations" : {
+    "_filter_document_type" : {
+      "doc_count" : 99091,
+      "document_type" : {
+        "doc_count_error_upper_bound" : 0,
+        "sum_other_doc_count" : 8603,
+        "buckets" : [
+          {
+            "key" : "bonn-file",
+            "doc_count" : 30316
+          },
+          {
+            "key" : "ulm-file",
+            "doc_count" : 14257
+          },
+          {
+            "key" : "bonn-paper",
+            "doc_count" : 13526
+          },
+          {
+            "key" : "meine-stadt-transparent-file",
+            "doc_count" : 8337
+          },
+          {
+            "key" : "oelde-file",
+            "doc_count" : 5578
+          },
+          {
+            "key" : "bonn-meeting",
+            "doc_count" : 4635
+          },
+          {
+            "key" : "ulm-paper",
+            "doc_count" : 4257
+          },
+          {
+            "key" : "oelde-paper",
+            "doc_count" : 3685
+          },
+          {
+            "key" : "meine-stadt-transparent-paper",
+            "doc_count" : 3397
+          },
+          {
+            "key" : "dresden-paper",
+            "doc_count" : 2500
+          }
+        ]
+      }
+    },
+    "_filter_person" : {
+      "doc_count" : 99091,
+      "person" : {
+        "doc_count_error_upper_bound" : 55,
+        "sum_other_doc_count" : 3294,
+        "buckets" : [
+          {
+            "key" : 365,
+            "doc_count" : 318
+          },
+          {
+            "key" : 1,
+            "doc_count" : 301
+          },
+          {
+            "key" : 22,
+            "doc_count" : 289
+          },
+          {
+            "key" : 23,
+            "doc_count" : 281
+          },
+          {
+            "key" : 6,
+            "doc_count" : 272
+          },
+          {
+            "key" : 2,
+            "doc_count" : 193
+          },
+          {
+            "key" : 284,
+            "doc_count" : 144
+          },
+          {
+            "key" : 356,
+            "doc_count" : 124
+          },
+          {
+            "key" : 107,
+            "doc_count" : 108
+          },
+          {
+            "key" : 9,
+            "doc_count" : 94
+          }
+        ]
+      }
+    },
+    "_filter_organization" : {
+      "doc_count" : 99091,
+      "organization" : {
+        "doc_count_error_upper_bound" : 42,
+        "sum_other_doc_count" : 5236,
+        "buckets" : [
+          {
+            "key" : 149,
+            "doc_count" : 460
+          },
+          {
+            "key" : 56,
+            "doc_count" : 353
+          },
+          {
+            "key" : 88,
+            "doc_count" : 173
+          },
+          {
+            "key" : 49,
+            "doc_count" : 168
+          },
+          {
+            "key" : 29,
+            "doc_count" : 135
+          },
+          {
+            "key" : 89,
+            "doc_count" : 119
+          },
+          {
+            "key" : 31,
+            "doc_count" : 113
+          },
+          {
+            "key" : 61,
+            "doc_count" : 104
+          },
+          {
+            "key" : 71,
+            "doc_count" : 91
+          },
+          {
+            "key" : 62,
+            "doc_count" : 90
+          }
+        ]
+      }
+    }
+  }
+}

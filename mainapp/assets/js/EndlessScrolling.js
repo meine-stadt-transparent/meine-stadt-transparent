@@ -11,6 +11,11 @@ export default class EndlessScrolling {
         this.$button.click(this.activate.bind(this));
     }
 
+    retarget($newBtn) {
+        this.$button = $newBtn;
+        this.$button.click(this.activate.bind(this));
+    }
+
     activate() {
         this.$button.hide();
         this.isActive = true;

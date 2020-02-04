@@ -32,9 +32,7 @@ logger = logging.getLogger(__name__)
 
 
 def _search_to_context(query, main_search: MainappSearch, executed, results, request):
-    # When this fails we know we need to change the UI
-    # to deal with ES 7 having a cutoff for the total result count
-    assert executed.hits.total["relation"] == "eq"
+    assert executed.hits.total["relation"] in ["eq", "gte"]
 
     context = {
         "query": query,
@@ -43,7 +41,7 @@ def _search_to_context(query, main_search: MainappSearch, executed, results, req
         "document_types": DOCUMENT_TYPE_NAMES,
         "map": build_map_object(),
         "pagination_length": settings.SEARCH_PAGINATION_LENGTH,
-        "total_hits": executed.hits.total["value"],
+        "total_hits": executed.hits.total,
         "subscribable": params_are_subscribable(main_search.params),
         "is_subscribed": is_subscribed_to_search(request.user, main_search.params),
     }
@@ -131,15 +129,17 @@ def search_results_only(request, query):
     results = [parse_hit(hit) for hit in executed.hits]
     context = _search_to_context(normalized, main_search, executed, results, request)
 
-    # When this fails we know we need to change the UI
-    # to deal with ES 7 having a cutoff for the total result count
-    assert executed.hits.total["relation"] == "eq"
+    assert executed.hits.total["relation"] in ["eq", "gte"]
+
+    total_results = executed.hits.total
+    if not isinstance(total_results, dict):
+        total_results = total_results.to_dict()
 
     result = {
         "results": loader.render_to_string(
-            "partials/mixed_results.html", context, request
+            "mainapp/search/results_section.html", context, request
         ),
-        "total_results": executed.hits.total["value"],
+        "total_results": total_results,
         "subscribe_widget": loader.render_to_string(
             "partials/subscribe_widget.html", context, request
         ),
