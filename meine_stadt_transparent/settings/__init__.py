@@ -289,7 +289,7 @@ if SENTRY_DSN:
             version = "unknown"
         release = "meine-stadt-transparent@" + version
 
-    sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release)
+    sentry_sdk.init(SENTRY_DSN, integrations=[DjangoIntegration()], release=release, ignore_errors=[KeyboardInterrupt])
     with configure_scope() as scope:
         scope.set_tag("env_path", env_file)
 
