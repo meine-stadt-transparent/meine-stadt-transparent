@@ -1,0 +1,9 @@
+site_name: Meine Stadt Transparent
+nav:
+    - Import: Import.md
+    - Customization: Customization.md
+    - Development: Development.md
+    - Design: Design.md
+markdown_extensions:
+    - toc:
+        permalink: True
