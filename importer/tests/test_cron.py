@@ -15,6 +15,7 @@ from importer.tests.utils import (
     make_file,
     make_paper,
 )
+from mainapp.tests.main import MinioMock
 
 
 class TestCron(TestCase):
@@ -52,6 +53,7 @@ class TestCron(TestCase):
             },
         )
 
+    @mock.patch("mainapp.functions.minio.minio_singleton", new=MinioMock())
     def test_cron(self):
         """ WIP """
         self.external_list_fixture()
