@@ -407,6 +407,8 @@ class Importer:
 
     def load_files(self, fallback_city: str, max_workers: Optional[int] = None) -> None:
         """ Downloads and analyses the actual file for the file entries in the database """
+        # Create missing buckets here to avoid race conditions
+        minio_client()
         # This is partially bound by waiting on external resources, but mostly very cpu intensive,
         # so we can spawn a bunch of processes to make this a lot faster.
         # We need to build a list because mysql connections and process pools don't pair well.
