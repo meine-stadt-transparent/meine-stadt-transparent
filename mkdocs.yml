@@ -1,0 +1,12 @@
+# Run `cp Readme.md docs/index.md` before building and `cp -r etc site/etc` after building
+
+site_name: Meine Stadt Transparent
+repo_url: https://github.com/meine-stadt-transparent/meine-stadt-transparent
+nav:
+  - Import: Import.md
+  - Customization: Customization.md
+  - Development: Development.md
+  - Design: Design.md
+markdown_extensions:
+  - toc:
+      permalink: True

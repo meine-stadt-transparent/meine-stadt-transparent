@@ -7,9 +7,11 @@ static/
 config/
 cache/
 media/
+site/
 /*.env*
 testdata/fake_cache
 ./custom_*/
+docs/index.md
 
 # Python Stuff
 __pycache__/

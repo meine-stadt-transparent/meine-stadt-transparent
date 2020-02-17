@@ -29,7 +29,7 @@ It includes many features regarding data research and staying up to date, target
 
 Meine Stadt Transparent is *not* a complete replacement for traditional council information systems, however: it focuses on displaying already published information to the public. It does not provide a user-accessible backend for content authoring. It relies on the availability of an API provided by a council information system backend. Currently, the open [Oparl-Standard](https://oparl.org/) is supported.
 
-# Production setup with docker compose
+## Production setup with docker compose
 
 Prerequisites: A host with root access and enough ram for elasticsearch and mariadb. If you don't have much ram, create a big swapfile for memory spikes in the import.
 
