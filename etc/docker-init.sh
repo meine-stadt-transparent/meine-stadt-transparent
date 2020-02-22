@@ -5,7 +5,7 @@ set -e
 
 # Generate all static files and clean up all node stuff
 cp etc/template.env .env
-mkdir /app/log
+mkdir -p /app/log
 /app/.venv/bin/python manage.py compilemessages
 /app/.venv/bin/python manage.py collectstatic --noinput
 rm .env
