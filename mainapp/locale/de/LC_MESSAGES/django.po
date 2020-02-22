@@ -76,7 +76,7 @@ msgid ""
 "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
 "DD HH:MM:SS: "
 msgstr ""
-"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DDoder YYYY-"
+"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD oder YYYY-"
 "MM-DD HH:MM:SS: "
 
 #: mainapp/functions/search.py:247
@@ -84,7 +84,7 @@ msgid ""
 "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
 "DD HH:MM:SS "
 msgstr ""
-"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DDoder YYYY-"
+"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD oder YYYY-"
 "MM-DD HH:MM:SS: "
 
 #: mainapp/functions/search_notification_tools.py:55
