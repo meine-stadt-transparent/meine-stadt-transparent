@@ -34,7 +34,9 @@
                         <span class="fa fa-feed"></span>
                         <span class="sr-only">RSS-Feed</span>
                     </a>
-                    {% include 'partials/subscribe_widget.html' %}
+                    {% if settings.ACCOUNT_MANAGEMENT_VISIBLE %}
+                        {% include 'partials/subscribe_widget.html' %}
+                    {% endif %}
                 </div>
             </div>
         </div>

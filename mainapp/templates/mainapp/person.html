@@ -6,7 +6,9 @@
 {% block content %}
     <div class="container">
         <section class="person-section-head">
-            <div class="float-right">{% include 'partials/subscribe_widget.html' %}</div>
+            {% if settings.ACCOUNT_MANAGEMENT_VISIBLE %}
+                <div class="float-right">{% include 'partials/subscribe_widget.html' %}</div>
+            {% endif %}
             <h1>{{ person }}</h1>
         </section>
         {% if papers %}

@@ -20,7 +20,9 @@ We highly recommend configuring at least mailjet, mapbox and opencage.
 
 ### E-Mail
 
-By default, we send e-mails using the local SMTP server. [Mailjet](https://dev.mailjet.com/) can be set up as an alternative for sending e-mails. Add `MAIL_PROVIDER=Mailjet` and set `MAILJET_API_KEY` and `MAILJET_SECRET_KEY` to your keys.
+By default, we send e-mails using djangos built in SMTP sending. Configure SMTP server and credentials by setting the [`EMAIL_URL`](https://github.com/joke2k/django-environ/blob/b32c07d7ed57cdeaef246f995a29e5fe39a076b3/README.rst#supported-types) environment key.
+
+[Mailjet](https://dev.mailjet.com/) can be set up as an alternative for sending e-mails. Add `MAIL_PROVIDER=Mailjet` and set `MAILJET_API_KEY` and `MAILJET_SECRET_KEY` to your keys.
 
 The e-mail-configuration can be tested using the following command line call, which sends a test e-mail to the given e-mail-address:
 
@@ -28,7 +30,9 @@ The e-mail-configuration can be tested using the following command line call, wh
 ./manage.py test-email test@example.org
 ```
 
-See the [djangop docs](https://docs.djangoproject.com/en/2.1/topics/email/) if you want to configure your only mail server instead.
+### User management
+
+User management requires a valid E-Mail configuration. If you want to hide links to register/sign in, set `ACCOUNT_MANAGEMENT_VISIBLE=False`.
 
 ### Map tiles
 
@@ -170,4 +174,3 @@ Even though it's possible to change those, you shouldn't need change them in pro
  * `ALLOWED_HOSTS`: [docs](https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts)
  * `PRODUCT_NAME`: Set to "Meine Stadt Transparent". Used e.g. as user agent.
  * `SECURE_HSTS_INCLUDE_SUBDOMAINS`: Wether to include subdomains in the hsts header. Defaults to true.
-

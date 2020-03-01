@@ -53,6 +53,9 @@ if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
         "MAILJET_SECRET_KEY": env.str("MAILJET_SECRET_KEY"),
     }
     EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+else:
+    EMAIL_CONFIG = env.email_url('EMAIL_URL')
+    vars().update(EMAIL_CONFIG)
 
 EMAIL_FROM = env.str("EMAIL_FROM", "info@" + REAL_HOST)
 EMAIL_FROM_NAME = env.str("EMAIL_FROM_NAME", SITE_NAME)
@@ -95,6 +98,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_ADAPTER = "mainapp.account_adapter.AccountAdapter"
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
 SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_MANAGEMENT_VISIBLE = env.bool("ACCOUNT_MANAGEMENT_VISIBLE", True)
 # Needed by allauth
 SITE_ID = 1
 
