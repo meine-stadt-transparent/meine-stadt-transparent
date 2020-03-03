@@ -412,6 +412,7 @@ SETTINGS_EXPORT = [
     "FILE_DISCLAIMER",
     "FILE_DISCLAIMER_URL",
     "ABSOLUTE_URI_BASE",
+    "ACCOUNT_MANAGEMENT_VISIBLE",
 ]
 
 # Mandatory but afaik unsused value
