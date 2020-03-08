@@ -107,6 +107,8 @@ export default class FacettedSearch {
 
             window.history.pushState({}, "", url);
 
+            $(".search-feed").attr("href", url + "feed/")
+
             this.$refreshSpinner.attr("hidden", "hidden");
         });
     }
