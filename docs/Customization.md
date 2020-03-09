@@ -58,9 +58,9 @@ Two examples are bundled with this repository:
 - [juelich_transparent](../customization_examples/juelich_transparent): Only the [contact form](../mainapp/templates/info/contact.html) is overridden
 - [bedburg_transparent](../customization_examples/bedburg_transparent): The contact form is overriden and a custom style sheet is provided.
 
-You can easily add your own customizations by putting them into a folder inside `customizations`. Copying over one of the examples should by a good starting point.
+You can easily add your own customizations by putting them into a folder inside the `customization` folder. Copying over one of the examples should by a good starting point.
 
-To override a templates, set `TEMPLATE_DIRS` in ``.env`` to the ``templates``-folder within the city directory, e.g. ``TEMPLATE_DIRS=customization/juelich_transparent/templates``
+To override templates, set `TEMPLATE_DIRS` in ``.env`` to the ``templates``-folder within the city directory, e.g. ``TEMPLATE_DIRS=customization/juelich_transparent/templates``
 
 The following parts are required to change styles or javascript:
   - A ``webpack.config.js`` file registering an entry point for Webpack. The entry point needs to point to a js-File. Note that the paths in that file are realtive to [etc](../etc).
