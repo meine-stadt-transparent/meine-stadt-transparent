@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "meine-stadt-transparent"
-version = "0.2.0"
+version = "0.2.1"
 description = "A website to bring municipal politics to citizens"
 authors = ["Tobias Hößl <tobias@hoessl.eu>", "Konstantin Schütze <konstin@mailbox.org>"]
 license = "MIT"
