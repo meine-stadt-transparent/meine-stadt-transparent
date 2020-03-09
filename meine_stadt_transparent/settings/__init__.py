@@ -53,9 +53,15 @@ if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
         "MAILJET_SECRET_KEY": env.str("MAILJET_SECRET_KEY"),
     }
     EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+elif "EMAIL_URL" in env:
+    # If EMAIL_URL is not configured, django's SMTP defaults will be used
+    EMAIL_CONFIG = env.email_url('EMAIL_URL')
+    vars().update(EMAIL_CONFIG)
 
 EMAIL_FROM = env.str("EMAIL_FROM", "info@" + REAL_HOST)
 EMAIL_FROM_NAME = env.str("EMAIL_FROM_NAME", SITE_NAME)
+# required for django-allauth. See https://github.com/pennersr/django-allauth/blob/0.41.0/allauth/account/adapter.py#L95
+DEFAULT_FROM_EMAIL = f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>"
 
 # Encrypted email are currently plaintext only (html is just rendered as plaintext in thunderbird),
 # which is why this feature is disabled by default
@@ -95,6 +101,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_ADAPTER = "mainapp.account_adapter.AccountAdapter"
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
 SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_MANAGEMENT_VISIBLE = env.bool("ACCOUNT_MANAGEMENT_VISIBLE", True)
 # Needed by allauth
 SITE_ID = 1
 
@@ -408,6 +415,7 @@ SETTINGS_EXPORT = [
     "FILE_DISCLAIMER",
     "FILE_DISCLAIMER_URL",
     "ABSOLUTE_URI_BASE",
+    "ACCOUNT_MANAGEMENT_VISIBLE",
 ]
 
 # Mandatory but afaik unsused value
