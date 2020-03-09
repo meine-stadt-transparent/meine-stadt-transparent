@@ -1,7 +1,7 @@
 {% load i18n %}
 
 {% if subscribable %}
-    <form method="POST">
+    <form method="POST" class="subscribe-widget">
         {% csrf_token %}
         {% if is_subscribed %}
             <button class="btn btn-unsubscribe btn-sm" name="unsubscribe" value="unsubscribe">
