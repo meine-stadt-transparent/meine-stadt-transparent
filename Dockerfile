@@ -48,4 +48,4 @@ EXPOSE 8000
 USER www-data
 
 ENTRYPOINT ["/app/.venv/bin/python"]
-CMD ["/app/.venv/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w 2", "-b :8000", "--capture-output"]
+CMD ["/app/.venv/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w", "2", "-b", ":8000", "--capture-output", "--log-file", "-", "--access-logfile", "-"]
