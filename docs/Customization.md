@@ -71,6 +71,7 @@ The following parts are required to change styles or javascript:
   - The js File, usually ``assets/js/mycity-main.js``. This file includes the main SCSS file with an ES6 import.
   - The SCSS-File, usually ``assets/css/mainapp-mycity.scss``. This file includes the main [mainapp.scss](../mainapp/assets/css/mainapp.scss), but can define its own variables and styles as well. It will be compiled to a regular CSS file of the same base filename.
   - The new CSS-File needs to be registered in the ``.env``-file, e.g. ``TEMPLATE_MAIN_CSS=mainapp-mycity``
+  - If you want to use translations, create a `locale` folder first (https://stackoverflow.com/a/24937512/3549270).
 
 Hints:
  - Do not modify our files without creating a pull request. You'll have huge problems updating otherwise. Also put your files in a version control system (i.e. git).

@@ -1,11 +1,15 @@
 import json
+import logging
 
 from django.conf import settings
 from minio import Minio
+from minio.error import BucketAlreadyExists, BucketAlreadyOwnedByYou
 
 """
 Minio policy: files are publicly readable, cache and pgp keys are private
 """
+
+logger = logging.getLogger(__name__)
 
 bucket_list = ["files", "cache", "pgp-keys"]
 
@@ -35,27 +39,23 @@ minio_cache_bucket = settings.MINIO_PREFIX + "cache"
 minio_pgp_keys_bucket = settings.MINIO_PREFIX + "pgp-keys"
 
 
-def init_minio() -> Minio:
-    minio = Minio(
-        settings.MINIO_HOST,
-        access_key=settings.MINIO_ACCESS_KEY,
-        secret_key=settings.MINIO_SECRET_KEY,
-        secure=False,
-    )
-
+def setup_minio():
+    minio = minio_client()
     for bucket in bucket_list:
-        if not minio.bucket_exists(settings.MINIO_PREFIX + bucket):
+        # Checking beforehand is not race-safe
+        try:
             minio.make_bucket(settings.MINIO_PREFIX + bucket)
+            logger.info(f"Creating minio bucket {settings.MINIO_PREFIX + bucket}")
+        except (BucketAlreadyExists, BucketAlreadyOwnedByYou):
+            logger.info(f"minio bucket {settings.MINIO_PREFIX + bucket} already exists")
 
     files_bucket = settings.MINIO_PREFIX + "files"
     minio.set_bucket_policy(
         files_bucket, json.dumps(get_read_only_policy(files_bucket))
     )
 
-    return minio
 
-
-minio_singleton = None
+_minio_singleton = None
 
 
 def minio_client() -> Minio:
@@ -63,7 +63,12 @@ def minio_client() -> Minio:
     If we eagerly create a minio connection, we can only allow importing inside of functions
     because otherwise django autoloading will load minio and we don't even get to mocking for the tests.
     """
-    global minio_singleton
-    if not minio_singleton:
-        minio_singleton = init_minio()
-    return minio_singleton
+    global _minio_singleton
+    if not _minio_singleton:
+        _minio_singleton = Minio(
+            settings.MINIO_HOST,
+            access_key=settings.MINIO_ACCESS_KEY,
+            secret_key=settings.MINIO_SECRET_KEY,
+            secure=False,
+        )
+    return _minio_singleton

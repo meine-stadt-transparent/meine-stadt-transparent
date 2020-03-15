@@ -60,10 +60,10 @@ docker-compose up
 
 Wait until the elasticsearch log says `Cluster health status changed from [RED] to [YELLOW]` and open another terminal. You can later start the services as daemons with `-d` or stop them with `docker-compose down`.
 
-Then we can run the migrations:
+Then we can run the migrations, create the buckets for minio (our file storage) and create the elasticsearch indices. If something failed you can rerun the setup command, it will only create missing indices.
 
 ```
-docker-compose run --rm django ./manage.py migrate
+docker-compose run --rm django ./manage.py setup
 ```
 
 Let's load some dummy data to check everythings wokring:

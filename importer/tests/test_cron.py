@@ -53,7 +53,7 @@ class TestCron(TestCase):
             },
         )
 
-    @mock.patch("mainapp.functions.minio.minio_singleton", new=MinioMock())
+    @mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
     def test_cron(self):
         """ WIP """
         self.external_list_fixture()

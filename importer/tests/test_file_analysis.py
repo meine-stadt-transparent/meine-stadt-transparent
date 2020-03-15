@@ -26,7 +26,7 @@ class TestFileAnalysis(TestCase):
     fixtures = ["file-analysis"]
 
     @mock.patch("mainapp.functions.document_parsing.geocode", new=geocode)
-    @mock.patch("mainapp.functions.minio.minio_singleton", new=MinioMock())
+    @mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
     def test_file_analysis(self):
         loader = MockLoader()
         with open(filename, "rb") as fp:

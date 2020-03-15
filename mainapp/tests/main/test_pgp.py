@@ -9,7 +9,7 @@ from mainapp.tests.main import MinioMock
 
 
 class TestPGP(TestCase):
-    @mock.patch("mainapp.functions.minio.minio_singleton", new=MinioMock())
+    @mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
     @skipIf(not settings.ENABLE_PGP, "pgp not enabled")
     def test_key_handling(self):
         user = User.objects.create_user(username="John Doe", email="doe@example.com")
