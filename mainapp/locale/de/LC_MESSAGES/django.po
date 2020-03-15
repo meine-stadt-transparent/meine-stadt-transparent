@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-02 15:36+0100\n"
+"POT-Creation-Date: 2020-03-15 23:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -317,7 +317,7 @@ msgid "Verify now"
 msgstr "Jetzt bestätigen"
 
 #: mainapp/templates/account/home.html:19
-#: mainapp/templates/partials/base_navbar_mainmenu.html:34
+#: mainapp/templates/partials/base_navbar_mainmenu.html:35
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -354,7 +354,7 @@ msgid "Edit email"
 msgstr "E-Mail-Adresse bearbeiten"
 
 #: mainapp/templates/account/home.html:68
-#: mainapp/templates/partials/base_navbar_mainmenu.html:38
+#: mainapp/templates/partials/base_navbar_mainmenu.html:39
 msgid "Change your password"
 msgstr "Passwort ändern"
 
@@ -538,7 +538,7 @@ msgstr "Gremien"
 
 #: mainapp/templates/email/user-alert.html:91
 #: mainapp/templates/mainapp/index/index_main_buttons.html:13
-#: mainapp/templates/partials/base_navbar_mainmenu.html:23
+#: mainapp/templates/partials/base_navbar_mainmenu.html:24
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
@@ -654,6 +654,7 @@ msgid "The configured default body does not exist"
 msgstr "Die ausgewählte Köperschaft existiert nicht"
 
 #: mainapp/templates/mainapp/default_body_missing.html:10
+#, python-format
 msgid ""
 "The value of <code>SITE_DEFAULT_BODY</code> is %(site_default_body)s, but "
 "only the\n"
@@ -791,7 +792,7 @@ msgstr "Suche nach Dokumenten, Personen, Themen..."
 
 #: mainapp/templates/mainapp/index/index_search.html:10
 #: mainapp/templates/mainapp/index_v2/index_search.html:17
-#: mainapp/templates/mainapp/search/search.html:56
+#: mainapp/templates/mainapp/search/search.html:58
 #: mainapp/templates/partials/base_navbar.html:22
 msgid "Search (Alt+F)"
 msgstr "Suche (Alt+F)"
@@ -800,8 +801,8 @@ msgstr "Suche (Alt+F)"
 #: mainapp/templates/mainapp/index/index_search.html:14
 #: mainapp/templates/mainapp/index_v2/index_search.html:20
 #: mainapp/templates/mainapp/index_v2/index_search.html:21
-#: mainapp/templates/mainapp/search/search.html:59
-#: mainapp/templates/mainapp/search/search.html:60
+#: mainapp/templates/mainapp/search/search.html:61
+#: mainapp/templates/mainapp/search/search.html:62
 #: mainapp/templates/partials/base_navbar.html:25
 #: mainapp/templates/partials/base_navbar.html:26
 msgctxt "aria label"
@@ -868,7 +869,9 @@ msgstr "Installation erfolgreich"
 
 #: mainapp/templates/mainapp/installation_successful.html:10
 msgid "The installation was successful, but no data has been imported yet"
-msgstr "Die Installation war erfolgreich, aber es sind noch keine Daten importiert worden"
+msgstr ""
+"Die Installation war erfolgreich, aber es sind noch keine Daten importiert "
+"worden"
 
 #: mainapp/templates/mainapp/meeting.html:18
 #: mainapp/templates/mainapp/paper.html:55
@@ -994,7 +997,7 @@ msgid "No members for this organization"
 msgstr ""
 
 #: mainapp/templates/mainapp/organization.html:84
-#: mainapp/templates/mainapp/person.html:33
+#: mainapp/templates/mainapp/person.html:35
 msgid "Open in Search"
 msgstr "In der Suche öffnen"
 
@@ -1063,15 +1066,15 @@ msgstr "Nichtöffentlicher Tagesordnungspunkt"
 msgid "No information available"
 msgstr "Keine Informationen verfügbar"
 
-#: mainapp/templates/mainapp/person.html:14
+#: mainapp/templates/mainapp/person.html:16
 msgid "Submitted Papers"
 msgstr "Eingereichte Dokumente"
 
-#: mainapp/templates/mainapp/person.html:24
+#: mainapp/templates/mainapp/person.html:26
 msgid "Memberships"
 msgstr "Mitgliedschaften"
 
-#: mainapp/templates/mainapp/person.html:31
+#: mainapp/templates/mainapp/person.html:33
 msgid "Mentioned in"
 msgstr "Namentliche Erwähnungen"
 
@@ -1204,9 +1207,21 @@ msgctxt "search_form"
 msgid "Select"
 msgstr "Auswählen"
 
+#: mainapp/templates/mainapp/search/results_section.html:9
+msgid "Load More"
+msgstr "Mehr laden"
+
+#: mainapp/templates/mainapp/search/results_section.html:14
+msgid "Over "
+msgstr "Über "
+
+#: mainapp/templates/mainapp/search/results_section.html:20
+msgid "Nothing Found :("
+msgstr "Nichts gefunden"
+
 #: mainapp/templates/mainapp/search/search.html:5
 #: mainapp/templates/mainapp/search/search.html:23
-#: mainapp/templates/mainapp/search/search.html:43
+#: mainapp/templates/mainapp/search/search.html:45
 #: mainapp/templates/partials/base_navbar.html:19
 msgctxt "page_title"
 msgid "Search"
@@ -1220,20 +1235,12 @@ msgstr "Suchergebnisse"
 msgid "Search results as RSS-Feed"
 msgstr "Suchergebnisse als RSS-Feed"
 
-#: mainapp/templates/mainapp/search/search.html:48
-#: mainapp/templates/mainapp/search/search.html:54
-#: mainapp/templates/mainapp/search/search.html:55
+#: mainapp/templates/mainapp/search/search.html:50
+#: mainapp/templates/mainapp/search/search.html:56
+#: mainapp/templates/mainapp/search/search.html:57
 msgctxt "search_form"
 msgid "Search term"
 msgstr "Suche"
-
-#: mainapp/templates/mainapp/search/search.html:80
-msgid "Load More"
-msgstr "Mehr laden"
-
-#: mainapp/templates/mainapp/search/search.html:85
-msgid "Nothing Found :("
-msgstr "Nichts gefunden"
 
 #: mainapp/templates/mainapp/search/sorter_widget.html:14
 msgctxt "search_form"
@@ -1259,11 +1266,11 @@ msgctxt "navigation"
 msgid "About"
 msgstr "Diese Seite"
 
-#: mainapp/templates/partials/base_navbar_mainmenu.html:43
+#: mainapp/templates/partials/base_navbar_mainmenu.html:44
 msgid "Sign Out"
 msgstr "Ausloggen"
 
-#: mainapp/templates/partials/base_navbar_mainmenu.html:51
+#: mainapp/templates/partials/base_navbar_mainmenu.html:52
 msgctxt "navigation"
 msgid "Sign In"
 msgstr "Einloggen"
@@ -1410,7 +1417,7 @@ msgstr "Alle Sitzungen"
 msgid "You will now receive notifications about new documents."
 msgstr "Sie werden nun über neue Dokumente informiert."
 
-#: mainapp/views/persons.py:124 mainapp/views/search.py:64
+#: mainapp/views/persons.py:124 mainapp/views/search.py:66
 msgid "You will no longer receive notifications."
 msgstr ""
 "Sie werden keine weiteren Informationen über neue Dokumente dieser Suche "
@@ -1420,7 +1427,7 @@ msgstr ""
 msgid "You have already subscribed to this person."
 msgstr "Sie haben diese Person bereits abonniert"
 
-#: mainapp/views/profile.py:27 mainapp/views/search.py:63
+#: mainapp/views/profile.py:27 mainapp/views/search.py:65
 msgid "You will now receive notifications about new search results."
 msgstr "Bei neuen Dokumenten werden Sie nun benachrichtigt."
 
@@ -1432,11 +1439,11 @@ msgstr "Ihre Benacharichtigung werden mit PGP verschlüsselt"
 msgid "You're notifications won't be pgp encrypted anymore"
 msgstr "Ihre Benachrichtigungen werden nicht mehr mit PGP verschlüsselt"
 
-#: mainapp/views/search.py:65
+#: mainapp/views/search.py:67
 msgid "You have already subscribed to this search."
 msgstr "Sie haben diese Abfrage bereits abonniert."
 
-#: mainapp/views/search.py:151
+#: mainapp/views/search.py:159
 msgid "search disabled"
 msgstr "Suche deaktiviert"
 
