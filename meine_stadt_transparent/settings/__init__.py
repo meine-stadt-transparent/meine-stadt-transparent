@@ -55,7 +55,7 @@ if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
     EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
 elif "EMAIL_URL" in env:
     # If EMAIL_URL is not configured, django's SMTP defaults will be used
-    EMAIL_CONFIG = env.email_url('EMAIL_URL')
+    EMAIL_CONFIG = env.email_url("EMAIL_URL")
     vars().update(EMAIL_CONFIG)
 
 EMAIL_FROM = env.str("EMAIL_FROM", "info@" + REAL_HOST)
@@ -310,11 +310,15 @@ MAINAPP_LOG_LEVEL = env.str("MAINAPP_LOG_LEVEL", None)
 IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
 
 LOG_DIRECTORY = env.str("LOG_DIRECTORY", "log")
+NO_LOG_FILES = env.bool("NO_LOG_FILES", False)
 
 
 def make_handler(
     log_name: str, level: Optional[str] = None
 ) -> Dict[str, Union[str, int]]:
+    if NO_LOG_FILES:
+        return {"class": "logging.NullHandler"}
+
     handler = {
         "class": "logging.handlers.RotatingFileHandler",
         "filename": os.path.join(LOG_DIRECTORY, log_name),

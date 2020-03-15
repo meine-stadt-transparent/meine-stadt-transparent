@@ -157,6 +157,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `SITE_SEO_NOINDEX`: Set this to true to hide the site from the google index.
  * `TEMPLATE_DIRS`: Allows customization by overriding templates. See the readme for more details.
  * `TEXT_CHUNK_SIZE`: Our location extraction library fails with big inputs (see https://github.com/stadt-karlsruhe/geoextract/issues/7). That's why we split the text before analysing it, by default into 1MB chunks.
+ * `NO_LOG_FILES`: Don't create any actual log files, only log to stdout/stderr. Useful when working with docker and log aggregation.
 
 ## Appendix
 
@@ -165,7 +166,8 @@ Even though it's possible to change those, you shouldn't need change them in pro
  * `DEBUG`: Should always be `False` in production
  * `DEBUG_STYLES`: Adds 'unsafe-inline' to the style src csp making it easier to use your browser's developer tools
  * `DEBUG_TESTING`: Makes chromedriver open an actual chrome window
- * `DJANGO_LOG_LEVEL`, `MAINAPP_LOG_LEVEL` and `IMPORTER_LOG_LEVEL`: Overrides the default log level for that component
+ * `DJANGO_LOG_LEVEL`, `MAINAPP_LOG_LEVEL` and `IMPORTER_LOG_LEVEL`: Overrides the default log level for that component.
+ * `LOG_DIRECTORY`: The directory in which the log files will be created. Ignored if `NO_LOG_FILES` is set.
  * `ENABLE_PGP` and `SKS_KEYSERVER`: While support pgp encrypted notifications with a UI for selecting the key from an sks keyserver, this feature is disabled by default because encrypted notifications end up as plain text which breaks our UX. Before you can enable it, you need to run `poetry install --extras pgp`.
  * `OPARL_INDEX`: Used to determine the oparl body id based on the city name by searching for a body with a fitting name in the [oparl mirror](https://politik-bei-uns.de/info/schnittstelle) of [Politik bei Uns](https://politik-bei-uns.de/).
  * `ELASTICSEARCH_ENABLED`: Allows to disable elasticsearch for development or test environment
