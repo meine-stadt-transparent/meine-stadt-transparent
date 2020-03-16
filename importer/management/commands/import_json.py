@@ -8,7 +8,12 @@ import django.db.models
 from dateutil import tz
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
-from django.core.management import BaseCommand, CommandParser, CommandError
+from django.core.management import (
+    BaseCommand,
+    CommandParser,
+    CommandError,
+    call_command,
+)
 from django.core.management.color import no_style
 from django.db import connection
 
@@ -332,6 +337,9 @@ class Command(BaseCommand):
         flush_model(models.Membership)
         self.import_memberships(ris_data)
         fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
+
+        # With the current bulk indexing we need to do this manually
+        call_command("search_index", action="populate")
 
         if not options["skip_download"]:
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(
