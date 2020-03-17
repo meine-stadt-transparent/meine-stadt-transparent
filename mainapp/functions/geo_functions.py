@@ -50,7 +50,8 @@ def geocode(search: str) -> Optional[Dict[str, Any]]:
         else:
             logger.debug(f"No location found for {search}")
             return None
-    logger.error(f"All geocoding attempts failed. Search string was {search}")
+    # exc_info to help sentry with grouping
+    logger.error(f"All geocoding attempts failed. Search string was {search}", exc_info=True)
     return None
 
 
