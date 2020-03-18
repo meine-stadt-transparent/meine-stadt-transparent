@@ -1,9 +1,18 @@
 [tool.poetry]
 name = "meine-stadt-transparent"
-version = "0.2.2"
+version = "0.2.4"
 description = "A website to bring municipal politics to citizens"
 authors = ["Tobias Hößl <tobias@hoessl.eu>", "Konstantin Schütze <konstin@mailbox.org>"]
 license = "MIT"
+readme = "Readme.md"
+include = ["mainapp/assets/bundles/**/*", "mainapp/migrations/*", "manage.py", "node_modules/pdfjs-dist/viewer/**/*"]
+exclude = ["mainapp/assets/*"]
+packages = [
+    { include = "cms" },
+    { include = "importer" },
+    { include = "mainapp" },
+    { include = "meine_stadt_transparent" },
+]
 
 [tool.poetry.dependencies]
 Django = "~2.2"
@@ -54,6 +63,9 @@ black = "19.10b0"
 [tool.poetry.extras]
 pgp = ["pgpy"]
 import-json = ["cattrs"]
+
+[tool.poetry.scripts]
+mst-manage = 'manage:main'
 
 [tool.black]
 include = '\.pyi?$'

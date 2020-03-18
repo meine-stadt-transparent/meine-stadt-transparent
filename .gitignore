@@ -8,7 +8,6 @@ config/
 cache/
 media/
 /*.env*
-urls-to-import.txt
 testdata/fake_cache
 ./custom_*/
 
@@ -23,6 +22,7 @@ venv*
 pip-log.txt
 pip-delete-this-directory.txt
 pip-wheel-metadata
+dist
 
 # Translations
 *.mo

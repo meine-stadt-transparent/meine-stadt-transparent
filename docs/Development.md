@@ -118,3 +118,28 @@ Exporting:
 ```
 ./manage.py dumpdata --indent 4 wagtailcore.page wagtailcore.site
 ```
+
+### Installation as python package
+
+_This works but needs some more testing/polishing_
+
+```shell script
+# First, update the tools so we don't fail due old versions not supporting what we want
+pip install --upgrade pip virtualenv
+virtualenv venv
+. venv/bin/activate
+pip install meine-stadt-transparent
+```
+
+Set `STATIC_ROOT` to the actual location (e.g. `static` or `/var/www/static`), otherwise configure it through `.env` the same way as for the other deployment methods.
+
+```shell script
+mst-manage collectstatic
+mst-manage migrate
+
+gunicorn meine_stadt_transparent.wsgi:application -w 2 -b :8000 --capture-output
+```
+
+TODO: Customizations
+
+Sidenote: The python package actually install 4 modules (meine-stadt-transparent, cms, importer, mainapp), so you should not try to combine with other python packages using these module names.
