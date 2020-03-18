@@ -34,6 +34,10 @@ COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
 WORKDIR /app
 
+# Poetry wants these
+RUN mkdir cms importer mainapp meine_stadt_transparent && \
+    touch Readme.md cms/__init__.py importer/__init__.py mainapp/__init__.py meine_stadt_transparent/__init__.py
+
 RUN $HOME/.poetry/bin/poetry config virtualenvs.in-project true && \
     $HOME/.poetry/bin/poetry install --no-dev -E import-json
 COPY . /app/
