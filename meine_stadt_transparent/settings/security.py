@@ -10,8 +10,8 @@ SECURE_HSTS_PRELOAD = True
 # There might be deployments where a subdomain is still without https
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
-CSP_SCRIPT_SRC = ("'self'",) + tuple(env.list("CSP_EXTRA_SCRIPT", default=[]))
-CSP_IMG_SRC = ("'self'", "data:") + tuple(env.list("CSP_EXTRA_IMG", default=[]))
+CSP_SCRIPT_SRC = ("'self'",) + env.tuple("CSP_EXTRA_SCRIPT", default=tuple())
+CSP_IMG_SRC = ("'self'", "data:") + env.tuple("CSP_EXTRA_IMG", default=tuple())
 
 if env.str("MAP_TILES_PROVIDER", "OSM") == "OSM":
     CSP_IMG_SRC = CSP_IMG_SRC + (
@@ -31,5 +31,5 @@ if SENTRY_HEADER_ENDPOINT:
 
 # Those are not covered by default-src
 CSP_FORM_ACTION = ("'self'",)
-CSP_FRAME_SRC = ("'self'",)
-CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_FRAME_SRC = ("'self'",) + env.tuple("CSP_FRAME", default=tuple())
+CSP_FRAME_ANCESTORS = ("'self'",) + env.tuple("CSP_FRAME", default=tuple())

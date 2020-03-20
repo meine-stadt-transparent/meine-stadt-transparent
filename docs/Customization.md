@@ -143,7 +143,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
  * `CALENDAR_DEFAULT_VIEW`: Possible values: `month`, `listYear`, `listMonth`, `listDay`, `basicWeek`, `basicDay`, `agendaWeek`, `agendaDay`
  * `CALENDAR_HIDE_WEEKENDS`: Whether the week and month view of the calendar should include weekends. Defaults to true.
  * `CALENDAR_MIN_TIME` and `CALENDAR_MAX_TIME`: In the day view, only this part of the day is shown. Defaults to "08:00:00" and "21:00:00".
- * `CSP_EXTRA_SCRIPT` and `CSP_EXTRA_IMG`: Add values to the script src and image src csp directive, e.g. for loading matomo scripts.
+ * `CSP_EXTRA_SCRIPT`, `CSP_EXTRA_IMG` and `CSP_FRAME`: Add values to the script src, the image src as well as the `CSP_FRAME_SRC` and `CSP_FRAME_ANCESTORS` csp directives, e.g. for loading matomo scripts.
  * `ELASTICSEARCH_PREFIX`: The elasticsearch indices used by Meine Stadt Transparent will be prefixed by this. Defaults to "meine-stadt-transparent"
  * `ELASTICSEARCH_QUERYSET_PAGINATION`: The batch size for the elasticsearch indexing. See [django-elasticsearch-dsl docs](https://django-elasticsearch-dsl.readthedocs.io/en/latest/quickstart.html?highlight=queryset_pagination#declare-data-to-index) for details.
  * `ELASTICSEARCH_TIMEOUT`: Timeout in seconds for the elasticsearch client for indexing.
