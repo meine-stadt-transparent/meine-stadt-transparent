@@ -1,0 +1,21 @@
+name: Docker build
+
+on:
+  push:
+    branches: [ '*' ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v1.0.1
+      with:
+        username: konstin2
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: konstin2/mst-docker-test
+        tag_with_ref: true
