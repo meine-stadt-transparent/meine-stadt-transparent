@@ -11,7 +11,6 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
-from django.views.decorators.clickjacking import xframe_options_exempt
 from django.views.generic import DetailView
 from requests.utils import quote
 
