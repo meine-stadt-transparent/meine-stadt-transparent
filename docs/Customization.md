@@ -46,7 +46,9 @@ MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/
 
 ### Geocoding
 
-By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. You can switch to [OpenCage Geocoder](https://geocoder.opencagedata.com/), by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage", or you can switch to [Mapbox](TODO) by setting `GEOEXTRACT_ENGINE` to "Mapbox" and setting `MAPBOX_TOKEN` (same as for the maps).
+By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. If you're running your own Nominatim instance, you can configure the importer to use it by setting `NOMINATIM_URL`.
+
+You can switch to [OpenCage Geocoder](https://geocoder.opencagedata.com/), by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage", or you can switch to [Mapbox](TODO) by setting `GEOEXTRACT_ENGINE` to "Mapbox" and setting `MAPBOX_TOKEN` (same as for the maps).
 
 ## Determined by the importer
 

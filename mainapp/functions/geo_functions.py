@@ -7,6 +7,7 @@ from geopy import OpenCage, Nominatim, MapBox
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders.base import Geocoder
 from slugify import slugify
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -21,8 +22,10 @@ def get_geolocators() -> List[Tuple[str, Geocoder]]:
         geolocators.append(("opencage", OpenCage(settings.OPENCAGE_KEY)))
     if settings.MAPBOX_TOKEN:
         geolocators.append(("mapbox", MapBox(settings.MAPBOX_TOKEN)))
+    nominatim_url = urlparse(settings.NOMINATIM_URL)
     geolocators.append(
-        ("nominatim", Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0"))
+        ("nominatim", Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0",
+                                domain=nominatim_url.netloc, scheme=nominatim_url.scheme))
     )
 
     return geolocators

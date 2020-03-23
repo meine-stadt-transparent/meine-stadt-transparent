@@ -208,6 +208,9 @@ if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "mapbox", "opencage"]:
 if GEOEXTRACT_ENGINE.lower() == "opencage":
     OPENCAGE_KEY = env.str("OPENCAGE_KEY")
 
+if GEOEXTRACT_ENGINE.lower() == "nominatim":
+    NOMINATIM_URL = env.str("NOMINATIM_URL", "https://nominatim.openstreetmap.org")
+
 # Settings for Geo-Extraction
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
 GEOEXTRACT_LANGUAGE = env.str("GEOEXTRACT_LANGUAGE", LANGUAGE_CODE.split("-")[0])
