@@ -1,8 +1,8 @@
-## Import
+# Import
 
 We support importing data from an oparl api.
 
-### The easy way
+## The easy way
 
 ```
 ./manage.py import Springfield
@@ -16,7 +16,7 @@ If you've added the cron job, the data will automatically be updated. Otherwise 
 ./manage.py import_update
 ```
 
-### The manual way
+## The manual way
 
 We import the data in four steps:
 
@@ -27,7 +27,7 @@ We import the data in four steps:
 
 All commands have more options available through `--help`.
 
-#### Step 1: Body
+## Step 1: Body
 
 For the first step, you can use the magic from `import_body` with the case-sensitive cityname or the body id:
 
@@ -82,7 +82,7 @@ Import the outer shape of a city from OpenStreetMap:
 ./manage.py import_outline 1 --ags 09162000 # Gemeindeschlüssel of Munich, Body-ID 1
 ```
 
-### Step 2: Fetch the data
+## Step 2: Fetch the data
 
 Now we can import the actual data from the OParl backend. This is going to take quite a while because those servers are really slow:
 
@@ -90,7 +90,7 @@ Now we can import the actual data from the OParl backend. This is going to take 
 ./manage.py import_fetch
 ```
 
-### Step 3: Import the data
+## Step 3: Import the data
 
 Import the loaded data into the database:
 
@@ -98,7 +98,7 @@ Import the loaded data into the database:
 ./manage.py import_objects
 ```
 
-### Step 4: Load and analyse the files
+## Step 4: Load and analyse the files
 
 We've now got a fully working instance, just without files. Their import speed is limited by the cpu-intensive analysis:
 
@@ -106,7 +106,7 @@ We've now got a fully working instance, just without files. Their import speed i
 ./manage.py import_files
 ```
 
-### Importing only a single object
+## Importing only a single object
 
 Instead of crawling the whole API, it is possible to update only one specific item using the `import_anything`-command. You will need to specify the urlof the OParl-Object. Here are examples how to import a person, a paper and a meeting:
 
@@ -116,7 +116,7 @@ Instead of crawling the whole API, it is possible to update only one specific it
 ./manage.py import_anything https://sdnetrim.kdvz-frechen.de/rim4240/webservice/oparl/v1/body/1/meeting/7298
 ```
 
-### Sanitizing values coming from an OParl-API
+## Sanitizing values coming from an OParl-API
 
 Sometimes, redundant, unnecessary or unnormalized information comes from an API that you might want to clean up during the import. To do that on an per-instance-basis without the need to patch the importer itself, we provide hooks you can attach custom sanitize-callbacks to. The callbacks are simple Python-scripts that take an object as input and return it in a sanitized version.
 
