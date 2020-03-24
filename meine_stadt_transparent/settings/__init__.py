@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import subprocess
@@ -47,12 +48,11 @@ WSGI_APPLICATION = "meine_stadt_transparent.wsgi.application"
 # forcing request.build_absolute_uri to return https
 os.environ["HTTPS"] = "on"
 
-if env.str("MAIL_PROVIDER", "local").lower() == "mailjet":
-    ANYMAIL = {
-        "MAILJET_API_KEY": env.str("MAILJET_API_KEY"),
-        "MAILJET_SECRET_KEY": env.str("MAILJET_SECRET_KEY"),
-    }
-    EMAIL_BACKEND = "anymail.backends.mailjet.EmailBackend"
+MAIL_PROVIDER = env.str("MAIL_PROVIDER", "smtp").lower()
+if MAIL_PROVIDER != "smtp":
+    ANYMAIL = json.loads(env.str("ANYMAIL"))
+    # TODO: Validation of MAIL_PROVIDER
+    EMAIL_BACKEND = f"anymail.backends.{MAIL_PROVIDER}.EmailBackend"
 elif "EMAIL_URL" in env:
     # If EMAIL_URL is not configured, django's SMTP defaults will be used
     EMAIL_CONFIG = env.email_url("EMAIL_URL")

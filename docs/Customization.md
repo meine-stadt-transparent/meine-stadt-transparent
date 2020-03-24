@@ -22,7 +22,21 @@ We highly recommend configuring at least mailjet, mapbox and opencage.
 
 By default, we send e-mails using djangos built in SMTP sending. Configure SMTP server and credentials by setting the [`EMAIL_URL`](https://github.com/joke2k/django-environ/blob/b32c07d7ed57cdeaef246f995a29e5fe39a076b3/README.rst#supported-types) environment key.
 
-[Mailjet](https://dev.mailjet.com/) can be set up as an alternative for sending e-mails. Add `MAIL_PROVIDER=Mailjet` and set `MAILJET_API_KEY` and `MAILJET_SECRET_KEY` to your keys.
+You can also use any other e-mail services supported by [django-anymail](https://anymail.readthedocs.io/en/stable/esps/) by setting `MAIL_PROVIDER` to the name of the service and adding the secrets in `ANYMAIL` as json. For mailjet you would e.g. use
+
+```
+MAIL_PROVIDER=mailjet
+ANYMAIL={"MAILJET_API_KEY": "1234", "MAILJET_SECRET_KEY": "asdf"}
+```
+
+For sendgrid:
+
+```
+MAIL_PROVIDER=sendgrid
+ANYMAIL={"SENDGRID_API_KEY": "asdf.9876"}
+```
+
+See [django-anymail docs](https://anymail.readthedocs.io/en/stable/esps/) for other providers.
 
 The e-mail-configuration can be tested using the following command line call, which sends a test e-mail to the given e-mail-address:
 
@@ -48,7 +62,7 @@ MAP_TILES_URL=https://api.mapbox.com/styles/v1/username/stylename/tiles/256/{z}/
 
 By default, we use [Nominatim](https://wiki.openstreetmap.org/wiki/Nominatim) to resolve addresses to coordinates. If you're running your own Nominatim instance, you can configure the importer to use it by setting `NOMINATIM_URL`.
 
-You can switch to [OpenCage Geocoder](https://geocoder.opencagedata.com/), by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage", or you can switch to [Mapbox](TODO) by setting `GEOEXTRACT_ENGINE` to "Mapbox" and setting `MAPBOX_TOKEN` (same as for the maps).
+You can switch to [OpenCage Geocoder](https://geocoder.opencagedata.com/), by adding your key as `OPENCAGE_KEY` and setting `GEOEXTRACT_ENGINE` to "OpenCage", or you can switch to [Mapbox](https://www.mapbox.com/) by setting `GEOEXTRACT_ENGINE` to "Mapbox" and setting `MAPBOX_TOKEN` (same as for the maps).
 
 ## Determined by the importer
 
