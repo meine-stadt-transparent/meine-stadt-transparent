@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 def get_geolocators() -> List[Tuple[str, Geocoder]]:
     geolocators = []
-    if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
+    if settings.GEOEXTRACT_ENGINE == "opencage":
         if not settings.OPENCAGE_KEY:
             raise ValueError(
                 "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"
@@ -24,8 +24,14 @@ def get_geolocators() -> List[Tuple[str, Geocoder]]:
         geolocators.append(("mapbox", MapBox(settings.MAPBOX_TOKEN)))
     nominatim_url = urlparse(settings.NOMINATIM_URL)
     geolocators.append(
-        ("nominatim", Nominatim(user_agent=slugify(settings.PRODUCT_NAME) + "/1.0",
-                                domain=nominatim_url.netloc, scheme=nominatim_url.scheme))
+        (
+            "nominatim",
+            Nominatim(
+                user_agent=slugify(settings.PRODUCT_NAME) + "/1.0",
+                domain=nominatim_url.netloc,
+                scheme=nominatim_url.scheme,
+            ),
+        )
     )
 
     return geolocators
@@ -84,7 +90,7 @@ def _format_nominatim_location(location) -> str:
 def latlng_to_address(lat, lng) -> str:
     search_str = str(lat) + ", " + str(lng)
 
-    if settings.GEOEXTRACT_ENGINE.lower() == "opencage":
+    if settings.GEOEXTRACT_ENGINE == "opencage":
         if not settings.OPENCAGE_KEY:
             raise ValueError(
                 "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"

@@ -201,15 +201,14 @@ ELASTICSEARCH_LANG = env.str("ELASTICSEARCH_LANG", "german")
 ELASTICSEARCH_QUERYSET_PAGINATION = env.int("ELASTICSEARCH_QUERYSET_PAGINATION", 50)
 
 # Valid values for GEOEXTRACT_ENGINE: Nominatim, Opencage, Mapbox
-GEOEXTRACT_ENGINE = env.str("GEOEXTRACT_ENGINE", "Nominatim")
-if GEOEXTRACT_ENGINE.lower() not in ["nominatim", "mapbox", "opencage"]:
+GEOEXTRACT_ENGINE = env.str("GEOEXTRACT_ENGINE", "Nominatim").lower()
+if GEOEXTRACT_ENGINE not in ["nominatim", "mapbox", "opencage"]:
     raise ValueError("Unknown Geocoder: " + GEOEXTRACT_ENGINE)
 
-if GEOEXTRACT_ENGINE.lower() == "opencage":
+if GEOEXTRACT_ENGINE == "opencage":
     OPENCAGE_KEY = env.str("OPENCAGE_KEY")
 
-if GEOEXTRACT_ENGINE.lower() == "nominatim":
-    NOMINATIM_URL = env.str("NOMINATIM_URL", "https://nominatim.openstreetmap.org")
+NOMINATIM_URL = env.str("NOMINATIM_URL", "https://nominatim.openstreetmap.org")
 
 # Settings for Geo-Extraction
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
