@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.db.models import Model
 
 from mainapp import models
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import File, Body
 
 logger = logging.getLogger(__name__)
@@ -49,3 +50,16 @@ class Command(BaseCommand):
         self.stdout.write(
             f"Bodies with an outline: {bodies_with_outline}; with an ags: {bodies_with_ags}"
         )
+
+        # Check if there are files which are listed as imported but aren't in minio
+        existing_files = set(
+            file.object_name for file in minio_client().list_objects(minio_file_bucket)
+        )
+        expected_files = set(
+            File.objects.filter(filesize__gt=0).values_list("id", flat=True)
+        )
+        missing_files = len(expected_files - existing_files)
+        if missing_files > 0:
+            self.stdout.write(
+                f"{missing_files} files are marked as imported but aren't available in minio"
+            )
