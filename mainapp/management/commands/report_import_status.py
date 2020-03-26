@@ -52,11 +52,13 @@ class Command(BaseCommand):
         )
 
         # Check if there are files which are listed as imported but aren't in minio
+        # We convert everything to strings because there might be non-numeric files in minio
         existing_files = set(
             file.object_name for file in minio_client().list_objects(minio_file_bucket)
         )
         expected_files = set(
-            File.objects.filter(filesize__gt=0).values_list("id", flat=True)
+            str(i)
+            for i in File.objects.filter(filesize__gt=0).values_list("id", flat=True)
         )
         missing_files = len(expected_files - existing_files)
         if missing_files > 0:
