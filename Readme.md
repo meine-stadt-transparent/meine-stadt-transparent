@@ -127,6 +127,10 @@ mkdir /var/www/meine-stadt-transparent-static
 docker-compose up
 ```
 
+### Kubernetes
+
+If you have a Kubernetes cluster, you can have a look at [this experimental setup](https://github.com/codeformuenster/kubernetes-deployment/tree/master/sources/meine-stadt-transparent) which is used by Münster.
+
 ## Manual Setup
 
 ### Requirements
