@@ -280,7 +280,7 @@ description = "Serve vectorial map layers with Django"
 name = "django-geojson"
 optional = false
 python-versions = "*"
-version = "2.12.0"
+version = "3.0.0"
 
 [package.dependencies]
 Django = "*"
@@ -1256,7 +1256,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "475346ed2c5ef164ff6451205b822ddcc90433ca921fa13b3b7a488420104294"
+content-hash = "688a3aa8b67a288fa5b6e2ca4f5967479aa9a684eb1eacc45d9c3986503e88fe"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1397,7 +1397,7 @@ django-environ = [
     {file = "django_environ-0.4.5-py2.py3-none-any.whl", hash = "sha256:c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"},
 ]
 django-geojson = [
-    {file = "django-geojson-2.12.0.tar.gz", hash = "sha256:7a892e1f8f17f10ffbced9f737c347eae975eb340cd3f00bc9e3896ecce4135d"},
+    {file = "django-geojson-3.0.0.tar.gz", hash = "sha256:9cb043a5d72cd68dffa6d5fa04f276f96c330b0e611344db1f7b0da1482f4ae6"},
 ]
 django-modelcluster = [
     {file = "django-modelcluster-5.0.1.tar.gz", hash = "sha256:6f857bb0251c0982afeb35474aeedb3ec72260df81a0262188df8108067467ba"},

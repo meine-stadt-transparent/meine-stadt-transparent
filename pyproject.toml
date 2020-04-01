@@ -21,7 +21,7 @@ django-anymail = { version = "^7.0", extras = ["mailjet", "sendgrid"] }
 django_csp = "^3.4"
 django-elasticsearch-dsl = "~7.1.0"
 django-environ = "^0.4"
-django-geojson = "^2.12"
+django-geojson = ">=2.12,<4.0"
 django-settings-export = "^1.2"
 django-simple-history = "^2.3"
 django-webpack-loader = ">=0.6,<0.8"
