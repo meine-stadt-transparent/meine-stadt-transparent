@@ -618,12 +618,11 @@ category = "main"
 description = "A reusable Django field that allows you to store validated JSON in your model."
 name = "jsonfield"
 optional = false
-python-versions = "*"
-version = "2.1.1"
+python-versions = ">=3.6"
+version = "3.1.0"
 
 [package.dependencies]
-Django = ">=1.11"
-six = "*"
+Django = ">=2.2"
 
 [[package]]
 category = "main"
@@ -1256,7 +1255,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "475346ed2c5ef164ff6451205b822ddcc90433ca921fa13b3b7a488420104294"
+content-hash = "49fc3841dd12245acbc3b38691ed983901463d9a292e96e75a312840fc8715f3"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1497,8 +1496,8 @@ jinja2 = [
     {file = "Jinja2-2.11.1.tar.gz", hash = "sha256:93187ffbc7808079673ef52771baa950426fd664d3aad1d0fa3e95644360e250"},
 ]
 jsonfield = [
-    {file = "jsonfield-2.1.1-py2.py3-none-any.whl", hash = "sha256:1ae437686daab56dfb619291d4774ac075016ab4cad24abf445ad05da03a85a8"},
-    {file = "jsonfield-2.1.1.tar.gz", hash = "sha256:ed7c5e1829e9453e24a8bebef1e702ffe402e6def6b326f0e0b88764c59a6dc7"},
+    {file = "jsonfield-3.1.0-py3-none-any.whl", hash = "sha256:df857811587f252b97bafba42e02805e70a398a7a47870bc6358a0308dd689ed"},
+    {file = "jsonfield-3.1.0.tar.gz", hash = "sha256:7e4e84597de21eeaeeaaa7cc5da08c61c48a9b64d0c446b2d71255d01812887a"},
 ]
 "keyrings.alt" = [
     {file = "keyrings.alt-3.4.0-py2.py3-none-any.whl", hash = "sha256:1cfd6525594169fa427aa2cfc72b1853a1af93c18cb1da663c3792e53916e1a9"},
