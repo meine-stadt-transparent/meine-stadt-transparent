@@ -1024,7 +1024,7 @@ description = "browser abstraction for web acceptance testing"
 name = "splinter"
 optional = false
 python-versions = "*"
-version = "0.11.0"
+version = "0.13.0"
 
 [package.dependencies]
 selenium = ">=3.141.0"
@@ -1245,7 +1245,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "27acb79d0dff21e622025f9519df49375f74ce7667b426e89ac538da1ae2b254"
+content-hash = "ff3c86077e8847e28a608b7dca228961ba0eb8f1bea4fd290161b9bcd8daf694"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1749,8 +1749,8 @@ six = [
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
 ]
 splinter = [
-    {file = "splinter-0.11.0-py2-none-any.whl", hash = "sha256:c5d40b8ee480d1c1c33f085c3fdfe9fd32b9ce22515f46cfde179966452d020a"},
-    {file = "splinter-0.11.0.tar.gz", hash = "sha256:170d21d4f04f8c5c076a34716e36779f07f3533d3b3d8a82523993b21b40bb35"},
+    {file = "splinter-0.13.0-py2-none-any.whl", hash = "sha256:62b5876757f0ac09324a7d5e5f94886110219c2b85300516ec39a914d7992d91"},
+    {file = "splinter-0.13.0.tar.gz", hash = "sha256:9e92535f273622507ac157612c3bb0e9cee7b5ccd2aa097d47b408e34c2ca356"},
 ]
 sqlparse = [
     {file = "sqlparse-0.3.1-py2.py3-none-any.whl", hash = "sha256:022fb9c87b524d1f7862b3037e541f68597a730a8843245c349fc93e1643dc4e"},
