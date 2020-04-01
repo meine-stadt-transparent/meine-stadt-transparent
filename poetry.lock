@@ -513,7 +513,7 @@ description = "Turn HTML into equivalent Markdown-structured text."
 name = "html2text"
 optional = false
 python-versions = ">=3.5"
-version = "2019.9.26"
+version = "2020.1.16"
 
 [[package]]
 category = "main"
@@ -1245,7 +1245,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "c4915120a80d4e39d96545c8721e40e52892d6389a2ad243c7778c00e696203e"
+content-hash = "2455883c69ca238250b82d052084f021e83df7ed6ce7180f6eab9d11882acfa0"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1454,8 +1454,8 @@ gunicorn = [
     {file = "gunicorn-20.0.4.tar.gz", hash = "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626"},
 ]
 html2text = [
-    {file = "html2text-2019.9.26-py3-none-any.whl", hash = "sha256:55ce85704f244fc18890c5ded89fa22ff7333e41e9f3cad04d51f48d62ad8834"},
-    {file = "html2text-2019.9.26.tar.gz", hash = "sha256:6f56057c5c2993b5cc5b347cb099bdf6d095828fef1b53ef4e2a2bf2a1be9b4f"},
+    {file = "html2text-2020.1.16-py3-none-any.whl", hash = "sha256:c7c629882da0cf377d66f073329ccf34a12ed2adf0169b9285ae4e63ef54c82b"},
+    {file = "html2text-2020.1.16.tar.gz", hash = "sha256:e296318e16b059ddb97f7a8a1d6a5c1d7af4544049a01e261731d2d5cc277bbb"},
 ]
 html5lib = [
     {file = "html5lib-1.0.1-py2.py3-none-any.whl", hash = "sha256:20b159aa3badc9d5ee8f5c647e5efd02ed2a66ab8d354930bd9ff139fc1dc0a3"},
