@@ -63,6 +63,13 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
         "cancelled",
     ],
+    models.Organization: [
+        "name",
+        "short_name",
+        "body",
+        "organization_type",
+        "oparl_id",
+    ],
     models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
     models.Person: ["name", "given_name", "family_name"],
 }
@@ -167,47 +174,6 @@ def flush_model(model: Type[django.db.models.Model]):
     connection.ops.execute_sql_flush("default", statements)
 
 
-"""
-def incremental_update(
-    current_model: Type[django.db.models.Model],
-    json_objects: Iterable,
-    convert_function: Callable[[Any], Dict[str, Any]],
-):
-    db_value_list = current_model.objects.values_list("id", *field_lists[current_model])
-    db_dicts = [dict(zip(field_lists[current_model], i[1:])) for i in db_value_list]
-    db_to_id = {
-        get_unique(i, models.AgendaItem): i[0] for i, j in zip(db_value_list, db_dicts)
-    }
-    db_to_dict = {
-        get_unique(i, models.AgendaItem): j for i, j in zip(db_value_list, db_dicts)
-    }
-
-    for_insert = []
-    for_update = []
-    for json_agenda_item in json_objects:
-        unique = json_agenda_item.get_unique()
-        json_dict = convert_function(json_agenda_item)
-        if unique in db_to_dict:
-            if db_to_dict[unique] == json_dict:
-                # Existing, identical
-                continue
-            else:
-                # Existing, changed
-                for_update.append((db_to_id[unique], json_dict))
-        else:
-            # New
-            for_insert.append(current_model(**json_dict))
-
-    logger.info(f"Updating {len(for_update)} {current_model.__name__}")
-    with transaction.atomic():
-        for pk, json_object in for_update:
-            current_model.objects.filter(pk=pk).update(**json_object)
-
-    logger.info(f"Creating {len(for_insert)} {current_model.__name__}")
-    current_model.objects.bulk_create(for_insert, 100)
-"""
-
-
 def convert_agenda_item(
     json_agenda_item: json_datatypes.AgendaItem,
     consultation_map: Dict[Tuple[int, int], int],
@@ -298,18 +264,18 @@ def convert_organization(
     body: models.Body,
     committee_type: models.OrganizationType,
     json_organization: json_datatypes.Organization,
-) -> models.Organization:
+) -> Dict[str, Any]:
     if json_organization.original_id:
         oparl_id = str(json_organization.original_id)
     else:
         oparl_id = None
-    return models.Organization(
-        name=json_organization.name,
-        short_name=json_organization.name[:50],  # TODO: Better normalization
-        body=body,
-        organization_type=committee_type,
-        oparl_id=oparl_id,
-    )
+    return {
+        "name": json_organization.name,
+        "short_name": json_organization.name[:50],  # TODO: Better normalization
+        "body": body,
+        "organization_type": committee_type,
+        "oparl_id": oparl_id,
+    }
 
 
 def convert_file_to_paper(json_file, file_id_map, paper_id_map):
@@ -446,7 +412,6 @@ class Command(BaseCommand):
         file_id_map = make_id_map(models.File.objects)
         flush_model(models.Paper.files.through)
         self.import_paper_files(ris_data, paper_id_map, file_id_map)
-        flush_model(models.Organization)
         self.import_organizations(body, ris_data)
         self.import_meeting_locations(ris_data)
         locations = dict(models.Location.objects.values_list("description", "id"))
@@ -631,11 +596,13 @@ class Command(BaseCommand):
         committee_type, _ = models.OrganizationType.objects.get_or_create(
             id=committee[0], defaults={"name": committee[1]}
         )
-        db_organizations = [
-            convert_organization(body, committee_type, json_organization)
-            for json_organization in ris_data.organizations
-        ]
-        models.Organization.objects.bulk_create(db_organizations, batch_size=100)
+
+        def convert_function(json_organization: json_datatypes.Organization):
+            return convert_organization(body, committee_type, json_organization)
+
+        incremental_import(
+            models.Organization, ris_data.organizations, convert_function
+        )
 
     def import_paper_files(
         self,

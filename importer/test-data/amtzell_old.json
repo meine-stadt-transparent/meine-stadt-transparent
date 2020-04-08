@@ -35,8 +35,8 @@
             "has_memberships": true
         },
         {
-            "name": "Technischer Ausschuss",
-            "original_id": 3,
+            "name": "Allgemeiner Ausschuss",
+            "original_id": 2,
             "has_memberships": false
         }
     ],
