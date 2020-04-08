@@ -53,7 +53,7 @@ field_lists: Dict[Type, List[str]] = {
         "result",
         "oparl_id",
     ],
-    models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
+    models.Consultation: ["meeting_id", "paper_id", "oparl_id"],
     models.Meeting: [
         "name",
         "short_name",
@@ -63,19 +63,20 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
         "cancelled",
     ],
-    models.Consultation: ["meeting_id", "paper_id", "oparl_id"],
+    models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
+    models.Person: ["name", "given_name", "family_name"],
 }
 
-
-def get_unique(data: Dict[str, Any], for_type: Type) -> Tuple:
-    unique_field_dict: Dict[Type, List[str]] = {
-        models.AgendaItem: ["meeting_id", "name"],
-        models.Consultation: ["meeting_id", "paper_id"],
-        models.Paper: ["oparl_id"],
-        models.Meeting: ["oparl_id"],
-    }
-
-    return tuple(data[i] for i in unique_field_dict[for_type])
+unique_field_dict: Dict[Type, List[str]] = {
+    models.AgendaItem: ["meeting_id", "name"],
+    models.Consultation: ["meeting_id", "paper_id"],
+    models.File: ["oparl_id"],
+    models.Meeting: ["oparl_id"],
+    models.Membership: [...],
+    models.Organization: ["oparl_id"],
+    models.Paper: ["oparl_id"],
+    models.Person: ["name"],
+}
 
 
 def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict]:
@@ -83,9 +84,8 @@ def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict
     db_ids = dict()
     db_map = dict()
     for db_entry in db_value_list:
-        tuple_id = get_unique(
-            dict(zip(field_lists[current_model], db_entry[1:])), current_model
-        )
+        field_dict = dict(zip(field_lists[current_model], db_entry[1:]))
+        tuple_id = tuple(field_dict[i] for i in unique_field_dict[current_model])
         db_ids[tuple_id] = db_entry[0]
         db_map[tuple_id] = db_entry[1:]
     return db_ids, db_map
@@ -96,23 +96,27 @@ T = TypeVar("T")
 
 def incremental_import(
     current_model: Type[django.db.models.Model],
-    objects: Iterable[T],
+    json_objects: Iterable[T],
     json_to_dict: Callable[[T], Dict[str, Any]],
 ):
     """ Compared the objects in the database with the json data for a given objects and
-    creates, updates and (soft-)deletes the appropriate records- """
-    json_dicts = [json_to_dict(i) for i in objects]
-    json_map = {get_unique(i, current_model): i for i in json_dicts}
+    creates, updates and (soft-)deletes the appropriate records. """
+
+    json_map = dict()
+    for json_object in json_objects:
+        json_dict = json_to_dict(json_object)
+        key = tuple(json_dict[j] for j in unique_field_dict[current_model])
+        json_map[key] = json_dict
+
     db_ids, db_map = get_from_db(current_model)
 
     common = set(json_map.keys()) & set(db_map.keys())
     to_be_created = set(json_map.keys()) - common
     to_be_deleted = set(db_map.keys()) - common
-
-    update_queue = []
+    to_be_updated = []
     for existing in common:
         if json_map[existing] != db_map[existing]:
-            update_queue.append((json_map[existing], db_ids[existing]))
+            to_be_updated.append((json_map[existing], db_ids[existing]))
 
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
 
@@ -122,9 +126,9 @@ def incremental_import(
     logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
     current_model.objects.bulk_create(to_be_created)
 
-    logger.info(f"Updating {len(update_queue)} {current_model.__name__}")
+    logger.info(f"Updating {len(to_be_updated)} {current_model.__name__}")
     with transaction.atomic():
-        for json_object, pk in update_queue:
+        for json_object, pk in to_be_updated:
             current_model.objects.filter(pk=pk).update(**json_object)
 
     deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
@@ -246,8 +250,9 @@ def convert_consultation(
     }
 
 
-def convert_person(family_name: str, given_names: str, name: str) -> models.Person:
-    return models.Person(name=name, given_name=given_names, family_name=family_name)
+def convert_person(args: Tuple[str, str, str]) -> Dict[str, Any]:
+    family_name, given_names, name = args
+    return {"name": name, "given_name": given_names, "family_name": family_name}
 
 
 def convert_location(json_meeting: json_datatypes.Meeting) -> models.Location:
@@ -456,7 +461,6 @@ class Command(BaseCommand):
         self.import_meeting_organization(
             meeting_id_map, organization_name_id_map, ris_data
         )
-        flush_model(models.Person)
         self.import_persons(ris_data)
         self.import_consultations(ris_data, meeting_id_map, paper_id_map)
         # We don't have original ids for all agenda items (yet?),
@@ -555,15 +559,8 @@ class Command(BaseCommand):
 
     def import_persons(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.persons)} persons")
-        db_persons = []
-        for json_person in ris_data.persons:
-            family_name, given_names, name = normalize_name(json_person.name)
-            logger.debug(
-                f"Normalizing {json_person.name}: '{name}', '{given_names}', '{family_name}'"
-            )
-            person = convert_person(family_name, given_names, name)
-            db_persons.append(person)
-        models.Person.objects.bulk_create(db_persons, 100)
+        persons = [normalize_name(json_person.name) for json_person in ris_data.persons]
+        incremental_import(models.Person, persons, convert_person)
 
     def import_meeting_organization(
         self, meeting_id_map, organization_name_id_map, ris_data
