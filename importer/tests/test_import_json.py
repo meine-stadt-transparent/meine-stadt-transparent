@@ -97,7 +97,9 @@ def test_incremental_agenda_items():
     def convert_function(x):
         return convert_agenda_item(x, consultation_map, meeting_id_map, paper_id_map)
 
-    incremental_import(models.AgendaItem, old.agenda_items, convert_function)
+    incremental_import(
+        models.AgendaItem, [convert_function(i) for i in old.agenda_items]
+    )
 
     agenda_items = sorted(models.AgendaItem.objects.values_list("oparl_id", flat=True))
     agenda_items_with_deleted = sorted(
@@ -106,7 +108,9 @@ def test_incremental_agenda_items():
     assert agenda_items == ["1302", "1880"]
     assert agenda_items_with_deleted == ["1302", "1880"]
 
-    incremental_import(models.AgendaItem, new.agenda_items, convert_function)
+    incremental_import(
+        models.AgendaItem, [convert_function(i) for i in new.agenda_items]
+    )
 
     agenda_items = sorted(models.AgendaItem.objects.values_list("oparl_id", flat=True))
     agenda_items_with_deleted = sorted(

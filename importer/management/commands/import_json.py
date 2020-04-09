@@ -108,16 +108,14 @@ T = TypeVar("T")
 
 def incremental_import(
     current_model: Type[django.db.models.Model],
-    json_objects: Iterable[T],
-    json_to_dict: Callable[[T], Dict[str, Any]],
+    json_objects: Iterable[Dict[str, Any]],
     soft_delete: bool = True,
 ):
     """ Compared the objects in the database with the json data for a given objects and
     creates, updates and (soft-)deletes the appropriate records. """
 
     json_map = dict()
-    for json_object in json_objects:
-        json_dict = json_to_dict(json_object)
+    for json_dict in json_objects:
         key = tuple(json_dict[j] for j in unique_field_dict[current_model])
         json_map[key] = json_dict
 
@@ -479,7 +477,9 @@ class Command(BaseCommand):
                 "organization_id": organization,
             }
 
-        incremental_import(models.Membership, ris_data.memberships, convert_function)
+        incremental_import(
+            models.Membership, [convert_function(i) for i in ris_data.memberships]
+        )
 
     def import_agenda_items(
         self,
@@ -495,7 +495,9 @@ class Command(BaseCommand):
                 x, consultation_map, meeting_id_map, paper_id_map
             )
 
-        incremental_import(models.AgendaItem, ris_data.agenda_items, convert_function)
+        incremental_import(
+            models.AgendaItem, [convert_function(i) for i in ris_data.agenda_items]
+        )
 
     def import_consultations(
         self,
@@ -513,12 +515,14 @@ class Command(BaseCommand):
         def convert_function(json_agenda_item_):
             return convert_consultation(json_agenda_item_, meeting_id_map, paper_id_map)
 
-        incremental_import(models.Consultation, agenda_items_filtered, convert_function)
+        incremental_import(
+            models.Consultation, [convert_function(i) for i in agenda_items_filtered]
+        )
 
     def import_persons(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.persons)} persons")
         persons = [normalize_name(json_person.name) for json_person in ris_data.persons]
-        incremental_import(models.Person, persons, convert_person)
+        incremental_import(models.Person, [convert_person(i) for i in persons])
 
     def import_meeting_organization(
         self, meeting_id_map, organization_name_id_map, ris_data
@@ -558,8 +562,7 @@ class Command(BaseCommand):
 
         incremental_import(
             models.Meeting.organizations.through,
-            json_meetings,
-            convert_function,
+            [convert_function(i) for i in json_meetings],
             soft_delete=False,
         )
 
@@ -587,7 +590,9 @@ class Command(BaseCommand):
         def convert_function(x: json_datatypes.Meeting):
             return convert_meeting(x, locations)
 
-        incremental_import(models.Meeting, ris_data.meetings, convert_function)
+        incremental_import(
+            models.Meeting, [convert_function(i) for i in ris_data.meetings]
+        )
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.organizations)} organizations")
@@ -600,7 +605,7 @@ class Command(BaseCommand):
             return convert_organization(body, committee_type, json_organization)
 
         incremental_import(
-            models.Organization, ris_data.organizations, convert_function
+            models.Organization, [convert_function(i) for i in ris_data.organizations]
         )
 
     def import_paper_files(
@@ -616,14 +621,13 @@ class Command(BaseCommand):
 
         incremental_import(
             models.Paper.files.through,
-            ris_data.files,
-            convert_function,
+            [convert_function(i) for i in ris_data.files],
             soft_delete=False,
         )
 
     def import_papers(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.papers)} paper")
-        incremental_import(models.Paper, ris_data.papers, convert_paper)
+        incremental_import(models.Paper, [convert_paper(i) for i in ris_data.papers])
 
     def import_files(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.files)} files")
