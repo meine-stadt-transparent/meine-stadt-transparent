@@ -63,7 +63,8 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
         "cancelled",
     ],
-    models.Membership: ["person_id", "start", "end", "role", "organization_id",],
+    models.Meeting.organizations.through: ["meeting_id", "organization_id"],
+    models.Membership: ["person_id", "start", "end", "role", "organization_id"],
     models.Organization: [
         "name",
         "short_name",
@@ -72,6 +73,7 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
     ],
     models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
+    models.Paper.files.through: ["paper_id", "file_id"],
     models.Person: ["name", "given_name", "family_name"],
 }
 
@@ -80,9 +82,11 @@ unique_field_dict: Dict[Type, List[str]] = {
     models.Consultation: ["meeting_id", "paper_id"],
     models.File: ["oparl_id"],
     models.Meeting: ["oparl_id"],
+    models.Meeting.organizations.through: ["meeting_id", "organization_id"],
     models.Membership: ["person_id", "organization_id"],
     models.Organization: ["oparl_id"],
     models.Paper: ["oparl_id"],
+    models.Paper.files.through: ["paper_id", "file_id"],
     models.Person: ["name"],
 }
 
@@ -106,6 +110,7 @@ def incremental_import(
     current_model: Type[django.db.models.Model],
     json_objects: Iterable[T],
     json_to_dict: Callable[[T], Dict[str, Any]],
+    soft_delete: bool = True,
 ):
     """ Compared the objects in the database with the json data for a given objects and
     creates, updates and (soft-)deletes the appropriate records. """
@@ -140,7 +145,10 @@ def incremental_import(
             current_model.objects.filter(pk=pk).update(**json_object)
 
     deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
-    current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
+    if soft_delete:
+        current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
+    else:
+        current_model.objects.filter(id__in=deletion_ids).delete()
     # TODO: Delete files
 
 
@@ -160,19 +168,6 @@ def normalize_name(name: str) -> Tuple[str, str, str]:
     given_names = unhonored[: unhonored.rfind(" ")]
     family_name = unhonored[unhonored.rfind(" ") + 1 :]
     return family_name, given_names, name
-
-
-def flush_model(model: Type[django.db.models.Model]):
-    """ Hand-made flush implementation using `DELETE FROM <table_name>`
-
-    See django.core.management.commands.flush and django.core.management.sql.sqlflush for reference
-    """
-    logger.info(f"Removing all {model.objects.count()} {model.__name__}")
-    seqs = connection.introspection.sequence_list()
-    statements = connection.ops.sql_flush(
-        no_style(), [model._meta.db_table], seqs, False
-    )
-    connection.ops.execute_sql_flush("default", statements)
 
 
 def convert_agenda_item(
@@ -279,11 +274,11 @@ def convert_organization(
     }
 
 
-def convert_file_to_paper(json_file, file_id_map, paper_id_map):
-    return models.Paper.files.through(
-        paper_id=paper_id_map[json_file.paper_original_id],
-        file_id=file_id_map[json_file.original_id],
-    )
+def convert_file_to_paper(json_file, file_id_map, paper_id_map) -> Dict[str, Any]:
+    return {
+        "paper_id": paper_id_map[json_file.paper_original_id],
+        "file_id": file_id_map[json_file.original_id],
+    }
 
 
 def convert_file(json_file):
@@ -411,7 +406,6 @@ class Command(BaseCommand):
         self.import_files(ris_data)
         paper_id_map = make_id_map(models.Paper.objects)
         file_id_map = make_id_map(models.File.objects)
-        flush_model(models.Paper.files.through)
         self.import_paper_files(ris_data, paper_id_map, file_id_map)
         self.import_organizations(body, ris_data)
         self.import_meeting_locations(ris_data)
@@ -423,7 +417,6 @@ class Command(BaseCommand):
         organization_name_id_map = dict(
             models.Organization.objects.values_list("name", "id")
         )
-        flush_model(models.Meeting.organizations.through)
         self.import_meeting_organization(
             meeting_id_map, organization_name_id_map, ris_data
         )
@@ -474,14 +467,14 @@ class Command(BaseCommand):
             models.Organization.objects.filter(oparl_id__isnull=False)
         )
 
-        def convert_function(json_membership):
-            person_id = person_name_map[normalize_name(json_membership.person_name)[2]]
-            organization = organization_id_map[json_membership.organization_original_id]
+        def convert_function(membership):
+            person_id = person_name_map[normalize_name(membership.person_name)[2]]
+            organization = organization_id_map[membership.organization_original_id]
 
             return {
                 "person_id": person_id,
-                "start": json_membership.start_date,
-                "end": json_membership.end_date,
+                "start": membership.start_date,
+                "end": membership.end_date,
                 "role": json_membership.role,
                 "organization_id": organization,
             }
@@ -531,37 +524,43 @@ class Command(BaseCommand):
         self, meeting_id_map, organization_name_id_map, ris_data
     ):
         logger.info("Processing the meeting-organization-associations")
-        db_meeting_to_organization = []
+        json_meetings = []
         for json_meeting in ris_data.meetings:
-            if json_meeting.original_id:
-                associated_meeting_id = meeting_id_map[json_meeting.original_id]
-            else:
-                try:
-                    associated_meeting_id = models.Meeting.objects.get(
-                        name=json_meeting.name, start=json_meeting.start
-                    ).id
-                except MultipleObjectsReturned:
-                    meetings_found = [
-                        (i.name, i.start)
-                        for i in models.Meeting.objects.filter(
-                            name=json_meeting.name, start=json_meeting.start
-                        ).all()
-                    ]
-                    logger.error(f"Multiple meetings found: {meetings_found}")
-                    raise
             associated_organization_id = organization_name_id_map.get(
                 json_meeting.organization_name
             )
 
             if associated_organization_id:
-                db_meeting_to_organization.append(
-                    models.Meeting.organizations.through(
-                        meeting_id=associated_meeting_id,
-                        organization_id=associated_organization_id,
-                    )
-                )
-        models.Meeting.organizations.through.objects.bulk_create(
-            db_meeting_to_organization, batch_size=100
+                json_meetings.append(json_meeting)
+
+        def convert_function(meeting):
+            if meeting.original_id:
+                associated_meeting_id = meeting_id_map[meeting.original_id]
+            else:
+                try:
+                    associated_meeting_id = models.Meeting.objects.get(
+                        name=meeting.name, start=meeting.start
+                    ).id
+                except MultipleObjectsReturned:
+                    meetings_found = [
+                        (i.name, i.start)
+                        for i in models.Meeting.objects.filter(
+                            name=meeting.name, start=meeting.start
+                        ).all()
+                    ]
+                    logger.error(f"Multiple meetings found: {meetings_found}")
+                    raise
+
+            return {
+                "meeting_id": associated_meeting_id,
+                "organization_id": associated_organization_id,
+            }
+
+        incremental_import(
+            models.Meeting.organizations.through,
+            json_meetings,
+            convert_function,
+            soft_delete=False,
         )
 
     def import_meeting_locations(self, ris_data: RisData):
@@ -611,11 +610,16 @@ class Command(BaseCommand):
         file_id_map: Dict[int, int],
     ):
         logger.info("Processing the file-paper-associations")
-        db_file_to_paper = [
-            convert_file_to_paper(json_file, file_id_map, paper_id_map)
-            for json_file in ris_data.files
-        ]
-        models.Paper.files.through.objects.bulk_create(db_file_to_paper, batch_size=100)
+
+        def convert_function(json_file):
+            return convert_file_to_paper(json_file, file_id_map, paper_id_map)
+
+        incremental_import(
+            models.Paper.files.through,
+            ris_data.files,
+            convert_function,
+            soft_delete=False,
+        )
 
     def import_papers(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.papers)} paper")
