@@ -63,6 +63,7 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
         "cancelled",
     ],
+    models.Membership: ["person_id", "start", "end", "role", "organization_id",],
     models.Organization: [
         "name",
         "short_name",
@@ -79,7 +80,7 @@ unique_field_dict: Dict[Type, List[str]] = {
     models.Consultation: ["meeting_id", "paper_id"],
     models.File: ["oparl_id"],
     models.Meeting: ["oparl_id"],
-    models.Membership: [...],
+    models.Membership: ["person_id", "organization_id"],
     models.Organization: ["oparl_id"],
     models.Paper: ["oparl_id"],
     models.Person: ["name"],
@@ -440,7 +441,6 @@ class Command(BaseCommand):
         self.import_agenda_items(
             ris_data, consultation_map, meeting_id_map, paper_id_map
         )
-        flush_model(models.Membership)
         self.import_memberships(ris_data)
 
     def import_memberships(self, ris_data: RisData):
@@ -473,20 +473,20 @@ class Command(BaseCommand):
         organization_id_map = make_id_map(
             models.Organization.objects.filter(oparl_id__isnull=False)
         )
-        db_memberships = []
-        for json_membership in ris_data.memberships:
+
+        def convert_function(json_membership):
             person_id = person_name_map[normalize_name(json_membership.person_name)[2]]
             organization = organization_id_map[json_membership.organization_original_id]
 
-            db_membership = models.Membership(
-                person_id=person_id,
-                start=json_membership.start_date,
-                end=json_membership.end_date,
-                role=json_membership.role,
-                organization_id=organization,
-            )
-            db_memberships.append(db_membership)
-        models.Membership.objects.bulk_create(db_memberships, 100)
+            return {
+                "person_id": person_id,
+                "start": json_membership.start_date,
+                "end": json_membership.end_date,
+                "role": json_membership.role,
+                "organization_id": organization,
+            }
+
+        incremental_import(models.Membership, ris_data.memberships, convert_function)
 
     def import_agenda_items(
         self,
