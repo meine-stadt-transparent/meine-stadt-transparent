@@ -2,7 +2,7 @@ import datetime
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Type, Any, Tuple, List, Callable, Iterable, TypeVar
+from typing import Dict, Type, Any, Tuple, List, Iterable, TypeVar
 
 import django.db.models
 from dateutil import tz
@@ -14,8 +14,7 @@ from django.core.management import (
     CommandError,
     call_command,
 )
-from django.core.management.color import no_style
-from django.db import connection, transaction
+from django.db import transaction
 
 from importer import json_datatypes
 from importer.functions import fix_sort_date
@@ -465,21 +464,21 @@ class Command(BaseCommand):
             models.Organization.objects.filter(oparl_id__isnull=False)
         )
 
-        def convert_function(membership):
-            person_id = person_name_map[normalize_name(membership.person_name)[2]]
-            organization = organization_id_map[membership.organization_original_id]
+        objects = []
+        for i in ris_data.memberships:
+            person_id = person_name_map[normalize_name(i.person_name)[2]]
+            organization = organization_id_map[i.organization_original_id]
 
-            return {
-                "person_id": person_id,
-                "start": membership.start_date,
-                "end": membership.end_date,
-                "role": json_membership.role,
-                "organization_id": organization,
-            }
-
-        incremental_import(
-            models.Membership, [convert_function(i) for i in ris_data.memberships]
-        )
+            objects.append(
+                {
+                    "person_id": person_id,
+                    "start": i.start_date,
+                    "end": i.end_date,
+                    "role": i.role,
+                    "organization_id": organization,
+                }
+            )
+        incremental_import(models.Membership, objects)
 
     def import_agenda_items(
         self,
@@ -490,14 +489,13 @@ class Command(BaseCommand):
     ):
         logger.info(f"Processing {len(ris_data.agenda_items)} agenda items")
 
-        def convert_function(x):
-            return convert_agenda_item(
-                x, consultation_map, meeting_id_map, paper_id_map
+        objects = []
+        for i in ris_data.agenda_items:
+            objects.append(
+                convert_agenda_item(i, consultation_map, meeting_id_map, paper_id_map)
             )
 
-        incremental_import(
-            models.AgendaItem, [convert_function(i) for i in ris_data.agenda_items]
-        )
+        incremental_import(models.AgendaItem, objects)
 
     def import_consultations(
         self,
@@ -507,17 +505,16 @@ class Command(BaseCommand):
     ):
         logger.info(f"Importing {len(ris_data.agenda_items)} consultations")
 
-        agenda_items_filtered = []
+        objects = []
         for json_agenda_item in ris_data.agenda_items:
-            if json_agenda_item.paper_original_id:
-                agenda_items_filtered.append(json_agenda_item)
+            if not json_agenda_item.paper_original_id:
+                continue
 
-        def convert_function(json_agenda_item_):
-            return convert_consultation(json_agenda_item_, meeting_id_map, paper_id_map)
+            objects.append(
+                convert_consultation(json_agenda_item, meeting_id_map, paper_id_map)
+            )
 
-        incremental_import(
-            models.Consultation, [convert_function(i) for i in agenda_items_filtered]
-        )
+        incremental_import(models.Consultation, objects)
 
     def import_persons(self, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.persons)} persons")
@@ -528,16 +525,15 @@ class Command(BaseCommand):
         self, meeting_id_map, organization_name_id_map, ris_data
     ):
         logger.info("Processing the meeting-organization-associations")
-        json_meetings = []
-        for json_meeting in ris_data.meetings:
+        objects = []
+        for meeting in ris_data.meetings:
             associated_organization_id = organization_name_id_map.get(
-                json_meeting.organization_name
+                meeting.organization_name
             )
 
-            if associated_organization_id:
-                json_meetings.append(json_meeting)
+            if not associated_organization_id:
+                continue
 
-        def convert_function(meeting):
             if meeting.original_id:
                 associated_meeting_id = meeting_id_map[meeting.original_id]
             else:
@@ -555,15 +551,14 @@ class Command(BaseCommand):
                     logger.error(f"Multiple meetings found: {meetings_found}")
                     raise
 
-            return {
-                "meeting_id": associated_meeting_id,
-                "organization_id": associated_organization_id,
-            }
-
+            objects.append(
+                {
+                    "meeting_id": associated_meeting_id,
+                    "organization_id": associated_organization_id,
+                }
+            )
         incremental_import(
-            models.Meeting.organizations.through,
-            [convert_function(i) for i in json_meetings],
-            soft_delete=False,
+            models.Meeting.organizations.through, objects, soft_delete=False,
         )
 
     def import_meeting_locations(self, ris_data: RisData):
@@ -587,12 +582,11 @@ class Command(BaseCommand):
     def import_meetings(self, ris_data: RisData, locations: Dict[str, int]):
         logger.info(f"Importing {len(ris_data.meetings)} meetings")
 
-        def convert_function(x: json_datatypes.Meeting):
-            return convert_meeting(x, locations)
+        objects = []
+        for i in ris_data.meetings:
+            objects.append(convert_meeting(i, locations))
 
-        incremental_import(
-            models.Meeting, [convert_function(i) for i in ris_data.meetings]
-        )
+        incremental_import(models.Meeting, objects)
 
     def import_organizations(self, body: models.Body, ris_data: RisData):
         logger.info(f"Importing {len(ris_data.organizations)} organizations")
@@ -601,12 +595,11 @@ class Command(BaseCommand):
             id=committee[0], defaults={"name": committee[1]}
         )
 
-        def convert_function(json_organization: json_datatypes.Organization):
-            return convert_organization(body, committee_type, json_organization)
+        objects = []
+        for i in ris_data.organizations:
+            objects.append(convert_organization(body, committee_type, i))
 
-        incremental_import(
-            models.Organization, [convert_function(i) for i in ris_data.organizations]
-        )
+        incremental_import(models.Organization, objects)
 
     def import_paper_files(
         self,
@@ -616,13 +609,12 @@ class Command(BaseCommand):
     ):
         logger.info("Processing the file-paper-associations")
 
-        def convert_function(json_file):
-            return convert_file_to_paper(json_file, file_id_map, paper_id_map)
+        objects = []
+        for i in ris_data.files:
+            objects.append(convert_file_to_paper(i, file_id_map, paper_id_map))
 
         incremental_import(
-            models.Paper.files.through,
-            [convert_function(i) for i in ris_data.files],
-            soft_delete=False,
+            models.Paper.files.through, objects, soft_delete=False,
         )
 
     def import_papers(self, ris_data: RisData):
