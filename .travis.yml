@@ -22,7 +22,7 @@ cache:
 install:
   - npm ci
   - pip install poetry --upgrade
-  - poetry install
+  - poetry install -E import-json
 
 script:
   # Ensure our migrations are working (squashing can cause weird problems)
