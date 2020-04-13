@@ -5,7 +5,12 @@ from pathlib import Path
 
 import pytest
 
-from importer.import_json import import_data, make_id_map, convert_agenda_item, incremental_import
+from importer.import_json import (
+    import_data,
+    make_id_map,
+    convert_agenda_item,
+    incremental_import,
+)
 from importer.json_datatypes import RisData, converter
 from mainapp import models
 from mainapp.models import Body, DefaultFields

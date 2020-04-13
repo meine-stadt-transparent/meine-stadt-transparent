@@ -64,7 +64,7 @@ unique_field_dict: Dict[Type, List[str]] = {
     models.AgendaItem: ["meeting_id", "name"],
     models.Consultation: ["meeting_id", "paper_id"],
     models.File: ["oparl_id"],
-    models.Meeting: ["oparl_id"],
+    models.Meeting: ["name", "start"],
     models.Meeting.organizations.through: ["meeting_id", "organization_id"],
     models.Membership: ["person_id", "organization_id"],
     models.Organization: ["oparl_id"],
@@ -217,7 +217,7 @@ def convert_meeting(
         "start": json_meeting.start,
         "end": json_meeting.end,
         "location_id": location_id,
-        "oparl_id": str(json_meeting.original_id),
+        "oparl_id": str(json_meeting.original_id) if json_meeting.original_id else None,
         "cancelled": False,
     }
 
