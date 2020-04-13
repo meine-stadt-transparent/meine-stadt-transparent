@@ -11,9 +11,17 @@ converter = Converter()
 converter.register_unstructure_hook(datetime, lambda dt: dt.isoformat())
 converter.register_structure_hook(datetime, lambda ts, _: dateutil.parser.parse(ts))
 converter.register_unstructure_hook(date, lambda dt: dt.isoformat())
-converter.register_structure_hook(date, lambda ts, _: dateutil.parser.parse(ts))
+converter.register_structure_hook(date, lambda ts, _: dateutil.parser.parse(ts).date())
+# For python 3.6
 converter.register_structure_hook(
     Union[date, datetime],
+    lambda ts, _: dateutil.parser.parse(ts).date()
+    if len(ts) == 10
+    else dateutil.parser.parse(ts),
+)
+# For python 3.7
+converter.register_structure_hook(
+    Optional[Union[date, datetime]],
     lambda ts, _: dateutil.parser.parse(ts).date()
     if len(ts) == 10
     else dateutil.parser.parse(ts),

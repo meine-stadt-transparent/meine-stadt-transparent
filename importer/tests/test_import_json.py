@@ -2,16 +2,11 @@ import inspect
 import json
 import logging
 from pathlib import Path
-from typing import Any
 
 import pytest
 
-from importer.json_datatypes import *
-from importer.management.commands.import_json import (
-    Command as ImportCommand,
-    incremental_import,
-)
-from importer.management.commands.import_json import convert_agenda_item, make_id_map
+from importer.import_json import import_data, make_id_map, convert_agenda_item, incremental_import
+from importer.json_datatypes import RisData, converter
 from mainapp import models
 from mainapp.models import Body, DefaultFields
 
@@ -45,23 +40,13 @@ def test_import_json():
     body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
     body.save()
 
-    ImportCommand().import_data(body, old)
-
-    def load_and_normalize(fp) -> List[Dict[str, Any]]:
-        data: List[Dict[str, Any]] = json.load(fp)
-        data.sort(key=lambda x: (x["model"], x["fields"].get("oparl_id")))
-        for record in data:
-            record["pk"] = None  # pk don't need to be equal with bulk_save
-            for field_name in ["created", "modified", "sort_date", "history_date"]:
-                if field_name in record["fields"]:
-                    record["fields"][field_name] = None
-        return data
+    import_data(body, old)
 
     actual = make_db_snapshot()
     expected = json.loads(Path("importer/test-data/amtzell_old_db.json").read_text())
     assert expected == actual
 
-    ImportCommand().import_data(body, new)
+    import_data(body, new)
 
     actual = make_db_snapshot()
     expected = json.loads(Path("importer/test-data/amtzell_new_db.json").read_text())
@@ -79,7 +64,7 @@ def test_incremental_agenda_items():
     body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
     body.save()
 
-    ImportCommand().import_data(body, old)
+    import_data(body, old)
     models.AgendaItem.objects_with_deleted.all().delete()
 
     # We don't have original ids for all agenda items (yet?),
