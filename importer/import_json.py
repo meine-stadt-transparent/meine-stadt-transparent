@@ -175,7 +175,7 @@ def convert_agenda_item(
         "meeting_id": meeting_id_map[json_agenda_item.meeting_id],
         "public": True,
         "result": result,
-        "oparl_id": str(json_agenda_item.original_id),
+        "oparl_id": str(json_agenda_item.original_id) if json_agenda_item.original_id else None,
     }
 
 
