@@ -1,6 +1,6 @@
 import datetime
 import logging
-from typing import Dict, Type, List, Tuple, TypeVar, Iterable, Any
+from typing import Dict, Type, List, Tuple, TypeVar, Iterable, Any, Optional
 
 import django.db
 from dateutil import tz
@@ -74,6 +74,13 @@ unique_field_dict: Dict[Type, List[str]] = {
 }
 
 
+def str_or_none(value: Any) -> Optional[str]:
+    if value is not None:
+        return str(value)
+    else:
+        return None
+
+
 def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict]:
     db_value_list = current_model.objects.values_list("id", *field_lists[current_model])
     db_ids = dict()
@@ -82,7 +89,7 @@ def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict
         field_dict = dict(zip(field_lists[current_model], db_entry[1:]))
         tuple_id = tuple(field_dict[i] for i in unique_field_dict[current_model])
         db_ids[tuple_id] = db_entry[0]
-        db_map[tuple_id] = db_entry[1:]
+        db_map[tuple_id] = dict(zip(field_lists[current_model], db_entry[1:]))
     return db_ids, db_map
 
 
@@ -175,7 +182,7 @@ def convert_agenda_item(
         "meeting_id": meeting_id_map[json_agenda_item.meeting_id],
         "public": True,
         "result": result,
-        "oparl_id": str(json_agenda_item.original_id) if json_agenda_item.original_id else None,
+        "oparl_id": str_or_none(json_agenda_item.original_id),
     }
 
 
@@ -189,7 +196,7 @@ def convert_consultation(
     return {
         "meeting_id": meeting_id_map[json_agenda_item.meeting_id],
         "paper_id": paper_id_map[json_agenda_item.paper_original_id],
-        "oparl_id": json_agenda_item.original_id,
+        "oparl_id": str_or_none(json_agenda_item.original_id),
     }
 
 
@@ -217,7 +224,7 @@ def convert_meeting(
         "start": json_meeting.start,
         "end": json_meeting.end,
         "location_id": location_id,
-        "oparl_id": str(json_meeting.original_id) if json_meeting.original_id else None,
+        "oparl_id": str_or_none(json_meeting.original_id),
         "cancelled": False,
     }
 
@@ -227,13 +234,13 @@ def convert_paper(json_paper: json_datatypes.Paper) -> Dict[str, Any]:
         "short_name": json_paper.short_name[:50],  # TODO: Better normalization
         "name": json_paper.name,
         "reference_number": json_paper.reference,
-        "oparl_id": str(json_paper.original_id),
+        "oparl_id": str_or_none(json_paper.original_id),
     }
     if json_paper.paper_type:
         paper_type, created = models.PaperType.objects.get_or_create(
             paper_type=json_paper.paper_type
         )
-        db_paper["paper_type"] = paper_type
+        db_paper["paper_type"] = paper_type.id
     return db_paper
 
 
@@ -249,9 +256,9 @@ def convert_organization(
     return {
         "name": json_organization.name,
         "short_name": json_organization.name[:50],  # TODO: Better normalization
-        "body": body,
-        "organization_type": committee_type,
-        "oparl_id": oparl_id,
+        "body": body.id,
+        "organization_type": committee_type.id,
+        "oparl_id": str_or_none(oparl_id),
     }
 
 
@@ -268,7 +275,7 @@ def convert_file(json_file):
         name=json_file.name[:200],  # TODO: Better normalization
         oparl_download_url=json_file.url,
         oparl_access_url=json_file.url,
-        oparl_id=json_file.original_id,
+        oparl_id=str_or_none(json_file.original_id),
     )
 
 
