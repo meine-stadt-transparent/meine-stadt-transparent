@@ -14,7 +14,15 @@ COPY customization /app/customization
 COPY mainapp/assets /app/mainapp/assets
 RUN npm run build:prod && npm run build:email
 
-# Stage 2: Build the .venv folder
+# Stage 2: Cache npm install osmtogeojson, which is called from python
+FROM node:10 AS osmtogeojson
+
+ENV NODE_ENV=production
+WORKDIR /app
+
+RUN npm install osmtogeojson
+
+# Stage 3: Build the .venv folder
 FROM python:3.7-slim-buster AS venv-build
 
 COPY pyproject.toml /app/pyproject.toml
@@ -30,7 +38,7 @@ RUN apt-get update && \
     $HOME/.poetry/bin/poetry config virtualenvs.in-project true && \
     $HOME/.poetry/bin/poetry install --no-dev -E import-json
 
-# Stage 3: The actual container
+# Stage 4: The actual container
 FROM python:3.7-slim-buster
 
 ENV PYTHONUNBUFFERED=1 NODE_ENV=production
@@ -48,9 +56,10 @@ WORKDIR /app
 
 COPY . /app/
 
+COPY --from=osmtogeojson /app/node_modules /app/node_modules
 COPY --from=venv-build /app/.venv /app/.venv
 COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
-COPY --from=front-end /app/node_modules /app/node_modules
+COPY --from=front-end /app/node_modules/pdfjs-dist /app/node_modules/pdfjs-dist
 
 RUN etc/docker-init.sh
 
