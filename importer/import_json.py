@@ -52,11 +52,17 @@ field_lists: Dict[Type, List[str]] = {
     models.Organization: [
         "name",
         "short_name",
-        "body",
-        "organization_type",
+        "body_id",
+        "organization_type_id",
         "oparl_id",
     ],
-    models.Paper: ["short_name", "name", "reference_number", "oparl_id", "paper_type"],
+    models.Paper: [
+        "short_name",
+        "name",
+        "reference_number",
+        "oparl_id",
+        "paper_type_id",
+    ],
     models.Paper.files.through: ["paper_id", "file_id"],
     models.Person: ["name", "given_name", "family_name"],
 }
@@ -240,7 +246,7 @@ def convert_paper(json_paper: json_datatypes.Paper) -> Dict[str, Any]:
         paper_type, created = models.PaperType.objects.get_or_create(
             paper_type=json_paper.paper_type
         )
-        db_paper["paper_type"] = paper_type.id
+        db_paper["paper_type_id"] = paper_type.id
     return db_paper
 
 
@@ -256,8 +262,8 @@ def convert_organization(
     return {
         "name": json_organization.name,
         "short_name": json_organization.name[:50],  # TODO: Better normalization
-        "body": body.id,
-        "organization_type": committee_type.id,
+        "body_id": body.id,
+        "organization_type_id": committee_type.id,
         "oparl_id": str_or_none(oparl_id),
     }
 
