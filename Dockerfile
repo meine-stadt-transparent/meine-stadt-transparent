@@ -50,22 +50,28 @@ RUN apt-get update && \
     apt-get purge -y curl gnupg && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    mkdir /static && \
+    chown www-data:www-data -R /static
+
+USER www-data
+
+COPY --chown=www-data:www-data . /app/
+COPY --chown=www-data:www-data --from=osmtogeojson /app/node_modules /app/node_modules
+COPY --chown=www-data:www-data --from=venv-build /app/.venv /app/.venv
+COPY --chown=www-data:www-data --from=front-end /app/mainapp/assets /app/mainapp/assets
+COPY --chown=www-data:www-data --from=front-end /app/node_modules/pdfjs-dist /app/node_modules/pdfjs-dist
 
 WORKDIR /app
 
-COPY . /app/
-
-COPY --from=osmtogeojson /app/node_modules /app/node_modules
-COPY --from=venv-build /app/.venv /app/.venv
-COPY --from=front-end /app/mainapp/assets /app/mainapp/assets
-COPY --from=front-end /app/node_modules/pdfjs-dist /app/node_modules/pdfjs-dist
-
-RUN etc/docker-init.sh
+# Generate all static files and clean up all node stuff
+RUN cp etc/template.env .env && \
+    mkdir -p /app/log && \
+    /app/.venv/bin/python manage.py compilemessages -l de -l en && \
+    /app/.venv/bin/python manage.py collectstatic --noinput && \
+    rm .env
 
 EXPOSE 8000
-
-USER www-data
 
 ENTRYPOINT ["/app/.venv/bin/python"]
 CMD ["/app/.venv/bin/gunicorn", "meine_stadt_transparent.wsgi:application", "-w", "2", "-b", ":8000", "--capture-output", "--log-file", "-", "--access-logfile", "-"]
