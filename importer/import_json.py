@@ -123,13 +123,9 @@ def incremental_import(
         if json_map[existing] != db_map[existing]:
             to_be_updated.append((json_map[existing], db_ids[existing]))
 
-    to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
-
-    # TODO: Don't use bulk create here which makes the initial import much
-    #       slower but also allows us to skip the search index recreation?
-    #       Or can we retrieve the renewed entries and reindex only them in elasticsearch?
     logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
-    current_model.objects.bulk_create(to_be_created)
+    for i in to_be_created:
+        current_model(**json_map[i]).save()
 
     logger.info(f"Updating {len(to_be_updated)} {current_model.__name__}")
     with transaction.atomic():
@@ -352,18 +348,14 @@ def import_memberships(ris_data: RisData):
         name: person_id
         for name, person_id in models.Person.objects.values_list("name", "id")
     }
-    db_persons_fixup = []
     persons_fixup_done = set()
     for json_membership in ris_data.memberships:
         family_name, given_names, name = normalize_name(json_membership.person_name)
         if not name in person_name_map and name not in persons_fixup_done:
-            db_persons_fixup.append(
-                models.Person(
-                    given_name=given_names, family_name=family_name, name=name
-                )
-            )
+            models.Person(
+                given_name=given_names, family_name=family_name, name=name
+            ).save()
             persons_fixup_done.add(name)
-    models.Person.objects.bulk_create(db_persons_fixup, 100)
     person_name_map = {
         name: person_id
         for name, person_id in models.Person.objects.values_list("name", "id")
@@ -483,9 +475,9 @@ def import_meeting_locations(ris_data: RisData):
             continue
 
         db_location = convert_location(json_meeting)
+        db_location.save()
         db_locations[json_meeting.location] = db_location
     logger.info(f"Saving {len(db_locations)} new meeting locations")
-    models.Location.objects.bulk_create(db_locations.values(), batch_size=100)
 
 
 def import_meetings(ris_data: RisData, locations: Dict[str, int]):
@@ -534,10 +526,7 @@ def import_papers(ris_data: RisData):
 def import_files(ris_data: RisData):
     logger.info(f"Importing {len(ris_data.files)} files")
     existing_file_ids = make_id_map(models.File.objects)
-    new_files = []
     for json_file in ris_data.files:
         if json_file.original_id in existing_file_ids:
             continue
-        new_files.append(convert_file(json_file))
-    logger.info(f"Saving {len(new_files)} new files")
-    models.File.objects.bulk_create(new_files, batch_size=100)
+        convert_file(json_file).save()

@@ -99,9 +99,6 @@ class Command(BaseCommand):
 
         fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
 
-        # With the current bulk indexing we need to do this manually
-        call_command("search_index", action="populate")
-
         if not options["skip_download"]:
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(
                 fallback_city=body.short_name
