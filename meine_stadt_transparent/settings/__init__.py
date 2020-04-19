@@ -305,7 +305,7 @@ if SENTRY_DSN:
         ignore_errors=[KeyboardInterrupt],
     )
     with configure_scope() as scope:
-        scope.set_tag("env_path", env_file)
+        scope.set_tag("real_host", REAL_HOST)
 
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 MAINAPP_LOG_LEVEL = env.str("MAINAPP_LOG_LEVEL", None)

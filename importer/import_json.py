@@ -1,9 +1,7 @@
-import datetime
 import logging
 from typing import Dict, Type, List, Tuple, TypeVar, Iterable, Any, Optional
 
 import django.db
-from dateutil import tz
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import transaction
