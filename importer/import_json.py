@@ -5,6 +5,8 @@ import django.db
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import transaction
+from django.utils import timezone
+from django_elasticsearch_dsl.registries import registry
 
 from importer import json_datatypes
 from importer.json_datatypes import RisData
@@ -123,9 +125,21 @@ def incremental_import(
         if json_map[existing] != db_map[existing]:
             to_be_updated.append((json_map[existing], db_ids[existing]))
 
+    before_bulk_create = timezone.now()
+    to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
     logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
-    for i in to_be_created:
-        current_model(**json_map[i]).save()
+    current_model.objects.bulk_create(to_be_created)
+
+    # Bulk create doesn't update the search index, so we do this manually
+    if settings.ELASTICSEARCH_ENABLED and current_model in registry.get_models():
+        qs = current_model.objects.filter(modified__gte=before_bulk_create)
+        qs_count = qs.count()
+        assert qs_count >= len(
+            to_be_created
+        ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
+        logger.info(f"Indexing {qs_count} {current_model.__name__}")
+        [current_doc] = registry.get_documents([current_model])
+        current_doc().update(qs)
 
     logger.info(f"Updating {len(to_be_updated)} {current_model.__name__}")
     with transaction.atomic():
@@ -400,7 +414,7 @@ def import_agenda_items(
 
 
 def import_consultations(
-    ris_data: RisData, meeting_id_map: Dict[int, int], paper_id_map: Dict[int, int],
+    ris_data: RisData, meeting_id_map: Dict[int, int], paper_id_map: Dict[int, int]
 ):
     logger.info(f"Importing {len(ris_data.agenda_items)} consultations")
 
@@ -456,9 +470,7 @@ def import_meeting_organization(meeting_id_map, organization_name_id_map, ris_da
                 "organization_id": associated_organization_id,
             }
         )
-    incremental_import(
-        models.Meeting.organizations.through, objects, soft_delete=False,
-    )
+    incremental_import(models.Meeting.organizations.through, objects, soft_delete=False)
 
 
 def import_meeting_locations(ris_data: RisData):
@@ -505,7 +517,7 @@ def import_organizations(body: models.Body, ris_data: RisData):
 
 
 def import_paper_files(
-    ris_data: RisData, paper_id_map: Dict[int, int], file_id_map: Dict[int, int],
+    ris_data: RisData, paper_id_map: Dict[int, int], file_id_map: Dict[int, int]
 ):
     logger.info("Processing the file-paper-associations")
 
@@ -513,9 +525,7 @@ def import_paper_files(
     for i in ris_data.files:
         objects.append(convert_file_to_paper(i, file_id_map, paper_id_map))
 
-    incremental_import(
-        models.Paper.files.through, objects, soft_delete=False,
-    )
+    incremental_import(models.Paper.files.through, objects, soft_delete=False)
 
 
 def import_papers(ris_data: RisData):
