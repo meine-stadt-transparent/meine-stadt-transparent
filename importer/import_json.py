@@ -38,6 +38,7 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
     ],
     models.Consultation: ["meeting_id", "paper_id", "oparl_id"],
+    models.File: ["name", "oparl_download_url", "oparl_access_url", "oparl_id"],
     models.Meeting: [
         "name",
         "short_name",
@@ -283,14 +284,14 @@ def convert_file_to_paper(json_file, file_id_map, paper_id_map) -> Dict[str, Any
     }
 
 
-def convert_file(json_file):
+def convert_file(json_file) -> Dict[str, Any]:
     assert json_file.paper_original_id is not None
-    return models.File(
-        name=json_file.name[:200],  # TODO: Better normalization
-        oparl_download_url=json_file.url,
-        oparl_access_url=json_file.url,
-        oparl_id=str_or_none(json_file.original_id),
-    )
+    return {
+        "name": json_file.name[:200],  # TODO: Better normalization
+        "oparl_download_url": json_file.url,
+        "oparl_access_url": json_file.url,
+        "oparl_id": str_or_none(json_file.original_id),
+    }
 
 
 def handle_counts(ris_data: RisData, allow_shrinkage: bool):
@@ -535,8 +536,5 @@ def import_papers(ris_data: RisData):
 
 def import_files(ris_data: RisData):
     logger.info(f"Importing {len(ris_data.files)} files")
-    existing_file_ids = make_id_map(models.File.objects)
-    for json_file in ris_data.files:
-        if json_file.original_id in existing_file_ids:
-            continue
-        convert_file(json_file).save()
+    incremental_import(models.File, [convert_file(i) for i in ris_data.files])
+    # TODO: Move deleted files to a deleted bucket
