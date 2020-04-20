@@ -25,7 +25,6 @@ office_replaces = {
 }
 honors_replaces = {"Dr.": "", "Pfarrerin": "", "Pfarrer": ""}
 
-# Assumption: This is older than the oldest data
 field_lists: Dict[Type, List[str]] = {
     models.AgendaItem: [
         "key",

@@ -1,8 +1,8 @@
 import pytest
 import responses
 from django.test import TestCase
-
 from requests.exceptions import ConnectionError
+
 from importer.loader import SternbergLoader
 
 

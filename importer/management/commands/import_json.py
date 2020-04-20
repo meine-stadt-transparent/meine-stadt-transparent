@@ -9,7 +9,6 @@ from django.core.management import (
     BaseCommand,
     CommandParser,
     CommandError,
-    call_command,
 )
 
 from importer.functions import fix_sort_date
@@ -23,6 +22,7 @@ from mainapp.functions.citytools import import_outline, import_streets
 
 logger = logging.getLogger(__name__)
 
+# Assumption: This is older than the oldest data
 fallback_date = datetime.datetime(1997, 1, 1, 0, 0, 0, tzinfo=tz.tzlocal())
 
 
