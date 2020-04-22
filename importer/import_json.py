@@ -128,6 +128,12 @@ def incremental_import(
     # We need to delete first and then create to avoid conflicts e.g. when the start of a meeting with an oparl_id
     # changed
     deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
+    logger.info(
+        f"{current_model.__name__}: "
+        f"Deleting {len(to_be_deleted)}, "
+        f"Creating {len(to_be_created)} and "
+        f"Updating {len(to_be_updated)}"
+    )
     if soft_delete:
         current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
     else:
@@ -136,7 +142,6 @@ def incremental_import(
 
     before_bulk_create = timezone.now()
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
-    logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
     current_model.objects.bulk_create(to_be_created)
 
     # Bulk create doesn't update the search index, so we do this manually
@@ -150,7 +155,6 @@ def incremental_import(
         [current_doc] = registry.get_documents([current_model])
         current_doc().update(qs)
 
-    logger.info(f"Updating {len(to_be_updated)} {current_model.__name__}")
     with transaction.atomic():
         for json_object, pk in to_be_updated:
             current_model.objects.filter(pk=pk).update(**json_object)
