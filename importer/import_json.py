@@ -125,6 +125,15 @@ def incremental_import(
         if json_map[existing] != db_map[existing]:
             to_be_updated.append((json_map[existing], db_ids[existing]))
 
+    # We need to delete first and then create to avoid conflicts e.g. when the start of a meeting with an oparl_id
+    # changed
+    deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
+    if soft_delete:
+        current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
+    else:
+        current_model.objects.filter(id__in=deletion_ids).delete()
+    # TODO: Delete files
+
     before_bulk_create = timezone.now()
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
     logger.info(f"Creating {len(to_be_created)} {current_model.__name__}")
@@ -145,13 +154,6 @@ def incremental_import(
     with transaction.atomic():
         for json_object, pk in to_be_updated:
             current_model.objects.filter(pk=pk).update(**json_object)
-
-    deletion_ids = [db_ids[i1] for i1 in to_be_deleted]
-    if soft_delete:
-        current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
-    else:
-        current_model.objects.filter(id__in=deletion_ids).delete()
-    # TODO: Delete files
 
 
 def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
