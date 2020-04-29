@@ -46,7 +46,7 @@
     "font-awesome": "^4.7.0",
     "fullcalendar": "^3.10.1",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "list.js": "^1.5.0",
