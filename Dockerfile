@@ -25,16 +25,17 @@ RUN npm install osmtogeojson
 # Stage 3: Build the .venv folder
 FROM python:3.7-slim-buster AS venv-build
 
+RUN apt-get update && \
+    apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
 WORKDIR /app
 
 # Poetry needs the __init__.py files
-RUN apt-get update && \
-    apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
-    mkdir cms importer mainapp meine_stadt_transparent && \
+RUN mkdir cms importer mainapp meine_stadt_transparent && \
     touch Readme.md cms/__init__.py importer/__init__.py mainapp/__init__.py meine_stadt_transparent/__init__.py && \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python && \
     $HOME/.poetry/bin/poetry config virtualenvs.in-project true && \
     $HOME/.poetry/bin/poetry install --no-dev -E import-json
 
