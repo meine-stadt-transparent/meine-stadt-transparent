@@ -9,6 +9,7 @@ from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
 
 import sentry_sdk
+from django.core.exceptions import DisallowedHost
 from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -302,7 +303,7 @@ if SENTRY_DSN:
         SENTRY_DSN,
         integrations=[DjangoIntegration()],
         release=release,
-        ignore_errors=[KeyboardInterrupt],
+        ignore_errors=[KeyboardInterrupt, DisallowedHost],
     )
     with configure_scope() as scope:
         scope.set_tag("real_host", REAL_HOST)

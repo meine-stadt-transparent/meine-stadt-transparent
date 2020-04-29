@@ -91,7 +91,7 @@ def extract_from_file(
             message = "File {}: Pdf does not allow to read the number of pages".format(
                 file_id
             )
-            logger.exception(message)
+            logger.warning(message)
     elif mime_type == "text/text":
         parsed_text = file.read()
     else:

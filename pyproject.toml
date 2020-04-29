@@ -36,7 +36,7 @@ jsonfield = "^3.1"
 mysqlclient = "^1.3"
 pgpy = { version = "^0.5.2", optional = true }
 PyPDF2 = "^1.26"
-python = "^3.6"
+python = "^3.7"
 python-slugify = "^4.0"
 requests = "^2.22"
 splinter = ">=0.11,<0.14"

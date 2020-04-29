@@ -1,7 +1,7 @@
 import logging
 from typing import Dict, Type, List, Tuple, TypeVar, Iterable, Any, Optional
 
-import django.db
+import django.db.models
 from django.conf import settings
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import transaction
@@ -504,6 +504,21 @@ def import_meetings(ris_data: RisData, locations: Dict[str, int]):
     objects = []
     for i in ris_data.meetings:
         objects.append(convert_meeting(i, locations))
+
+    # Handle the case where the start of a meeting with an id changed.
+    db_data = models.Meeting.objects_with_deleted.filter(
+        oparl_id__isnull=False
+    ).values_list("start", "oparl_id")
+    oparl_id_to_start = {oparl_id: start for start, oparl_id in db_data}
+    for meeting in objects:
+        if (
+            meeting["oparl_id"] in oparl_id_to_start
+            and meeting["start"] != oparl_id_to_start[meeting["oparl_id"]]
+        ):
+            print(meeting, oparl_id_to_start[meeting["oparl_id"]])
+            models.Meeting.objects_with_deleted.filter(
+                oparl_id=meeting["oparl_id"]
+            ).update(start=meeting["start"])
 
     incremental_import(models.Meeting, objects)
 
