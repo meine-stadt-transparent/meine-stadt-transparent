@@ -2,9 +2,10 @@ const path = require('path');
 const fs = require('fs');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const merge = require('webpack-merge');
 const Autoprefixer = require('autoprefixer');
+var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
     context: path.resolve(__dirname),
@@ -24,7 +25,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
-        filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js')
+        filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js'),
+        pathinfo: false, // https://github.com/webpack/webpack/issues/6767#issuecomment-410899686
     },
     devtool: 'source-map',
     resolveLoader: {
@@ -33,41 +35,36 @@ module.exports = {
     module: {
         rules: [{
             test: /\.scss$/,
-            use: ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                //resolve-url-loader may be chained before sass-loader if necessary
-                use: [{
-                    loader: 'css-loader',
-                    options: {
-                        sourceMap: true,
-                        minimize: true
-                    }
-                }, {
-                    loader: 'resolve-url-loader',
-                    options: {
-                        sourceMap: true
-                    }
-                }, {
-                    loader: 'postcss-loader',
-                    options: {
-                        plugins: () => [Autoprefixer({browsers: ["defaults"]})],
-                        remove: false,
-                        sourceMap: true
-                    }
-                }, {
-                    loader: 'sass-loader',
-                    options: {
-                        sourceMap: true
-                    }
-                }]
-            })
+            use: [MiniCssExtractPlugin.loader, {
+                loader: 'css-loader',
+                options: {
+                    sourceMap: true,
+                }
+            }, {
+                loader: 'resolve-url-loader',
+                options: {
+                    sourceMap: true
+                }
+            }, {
+                loader: 'postcss-loader',
+                options: {
+                    plugins: () => [Autoprefixer({})],
+                    remove: false,
+                    sourceMap: true
+                }
+            }, {
+                loader: 'sass-loader',
+                options: {
+                    sourceMap: true
+                }
+            }]
         }, {
             test: /\.js$/,
             exclude: /(node_modules\/bootstrap-daterangepicker\/)/,
             use: {
                 loader: 'babel-loader',
                 options: {
-                    presets: ["env"],
+                    "presets": ["@babel/preset-env"],
                     sourceMap: true
                 }
             }
@@ -93,9 +90,8 @@ module.exports = {
             path: path.resolve(__dirname, '../mainapp/assets/bundles'),
             filename: './webpack-stats.json'
         }),
-        new ExtractTextPlugin({
-            filename: process.env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css',
-            allChunks: true
+        new MiniCssExtractPlugin({
+            filename: process.env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css'
         }),
         new webpack.ProvidePlugin({
             $: "jquery",
@@ -104,10 +100,17 @@ module.exports = {
             "Popper": "popper.js",
             "L": "leaflet"
         }),
-        new webpack.optimize.CommonsChunkPlugin('vendor')
-    ]
+        new HardSourceWebpackPlugin() // https://github.com/webpack/webpack/issues/6767#issuecomment-410899686
+    ],
+    //optimization: {
+    //   splitChunks: {
+    //     cacheGroups: {
+    //       default: false
+    //     }
+    //   }
+    // }
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
 };
-
 
 
 let customization_folder = "./customization/";
