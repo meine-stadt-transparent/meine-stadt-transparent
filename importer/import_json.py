@@ -11,6 +11,7 @@ from django_elasticsearch_dsl.registries import registry
 from importer import json_datatypes
 from importer.json_datatypes import RisData
 from mainapp import models
+from mainapp.models import DefaultFields
 from mainapp.models.default_fields import SoftDeleteModelManager
 
 logger = logging.getLogger(__name__)
@@ -109,6 +110,19 @@ def incremental_import(
 ):
     """ Compared the objects in the database with the json data for a given objects and
     creates, updates and (soft-)deletes the appropriate records. """
+
+    # Handle undeleted objects, e.g. papers that disappeared and reappeared
+    if issubclass(current_model, DefaultFields):
+        deleted = current_model.objects_with_deleted.filter(
+            deleted=True, oparl_id__isnull=False
+        ).values_list("oparl_id", flat=True)
+        oparls_ids = [i.get("oparl_id") for i in json_objects]
+        to_undelete = set(deleted) & set(oparls_ids)
+        if to_undelete:
+            logger.info(f"{current_model.__name__}: Undeleting {len(to_undelete)}")
+            current_model.objects_with_deleted.filter(oparl_id__in=to_undelete).update(
+                deleted=False
+            )
 
     json_map = dict()
     for json_dict in json_objects:
@@ -515,7 +529,6 @@ def import_meetings(ris_data: RisData, locations: Dict[str, int]):
             meeting["oparl_id"] in oparl_id_to_start
             and meeting["start"] != oparl_id_to_start[meeting["oparl_id"]]
         ):
-            print(meeting, oparl_id_to_start[meeting["oparl_id"]])
             models.Meeting.objects_with_deleted.filter(
                 oparl_id=meeting["oparl_id"]
             ).update(start=meeting["start"])
