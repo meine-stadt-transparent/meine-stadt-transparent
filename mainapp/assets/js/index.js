@@ -18,8 +18,6 @@ import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
 // noinspection ES6UnusedImports
 import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
 
-import 'bootstrap';
-
 /*
  Convention: Each widget has an assigned object that handles the behavior.
  The object SHOULD only modify elements that lie within the root element,
@@ -48,13 +46,16 @@ $(function () {
         });
     }
 
-    for (let selector in REGISTERED_CLASSES) {
-        if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
-            $(selector).each(function () {
-                $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
-            });
+    // Allow webpack to optimize bootstrap into the vendor bundle
+    import('bootstrap').then(_ => {
+        for (let selector in REGISTERED_CLASSES) {
+            if (REGISTERED_CLASSES.hasOwnProperty(selector)) {
+                $(selector).each(function () {
+                    $(this).data("widget", new REGISTERED_CLASSES[selector]($(this)));
+                });
+            }
         }
-    }
+    });
 
     trapMice();
     // block: end prevents the page from scrolling down
@@ -63,16 +64,18 @@ $(function () {
 
 // Easy linking to tabs e.g. on the organization page
 $(function () {
-    // https://github.com/twbs/bootstrap/issues/25220#issuecomment-379216474
-    const anchor = window.location.hash;
-    if (anchor !== "") {
-        $(`a[href="${anchor}"]`).tab('show');
-    } else {
-        $('a.nav-link.mst-active').tab('show');
-    }
-    // https://stackoverflow.com/a/50540931/3549270
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        history.pushState({}, '', e.target.hash);
+    import('bootstrap').then(_ => {
+        // https://github.com/twbs/bootstrap/issues/25220#issuecomment-379216474
+        const anchor = window.location.hash;
+        if (anchor !== "") {
+            $(`a[href="${anchor}"]`).tab('show');
+        } else {
+            $('a.nav-link.mst-active').tab('show');
+        }
+        // https://stackoverflow.com/a/50540931/3549270
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            history.pushState({}, '', e.target.hash);
+        });
     });
 });
 

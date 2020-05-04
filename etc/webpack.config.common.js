@@ -3,9 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const {merge} = require('webpack-merge');
-const Autoprefixer = require('autoprefixer');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const merge = require('webpack-merge');
 
 module.exports = {
     context: path.resolve(__dirname),
@@ -13,49 +11,46 @@ module.exports = {
         mainapp: '../mainapp/assets/js/index',
         persons: '../mainapp/assets/js/persons',
         calendar: '../mainapp/assets/js/calendar',
-        vendor: [
-            'jquery',
-            'hammerjs/hammer',
-            'popper.js',
-            'leaflet/src/Leaflet',
-            'corejs-typeahead/dist/typeahead.jquery',
-        ]
     },
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
         filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js'),
-        pathinfo: false, // https://github.com/webpack/webpack/issues/6767#issuecomment-410899686
+        publicPath: "",
     },
     devtool: 'source-map',
-    resolveLoader: {
-        moduleExtensions: ['-loader']
-    },
     module: {
         rules: [{
             test: /\.scss$/,
-            use: [MiniCssExtractPlugin.loader, {
-                loader: 'css-loader',
-                options: {
-                    sourceMap: true,
-                }
-            }, {
-                loader: 'resolve-url-loader',
-                options: {
-                    sourceMap: true
-                }
-            }, {
-                loader: 'postcss-loader',
-                options: {
-                    plugins: () => [Autoprefixer({})],
-                    remove: false,
-                    sourceMap: true
-                }
-            }, {
-                loader: 'sass-loader',
-                options: {
-                    sourceMap: true
-                }
-            }]
+            use: [
+                MiniCssExtractPlugin.loader, {
+                    loader: 'css-loader',
+                    options: {
+                        sourceMap: true,
+                    }
+                }, {
+                    loader: 'resolve-url-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }, {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugins: [
+                                [
+                                    'autoprefixer',
+                                    {},
+                                ],
+                            ],
+                        },
+                        sourceMap: true
+                    }
+                }, {
+                    loader: 'sass-loader',
+                    options: {
+                        sourceMap: true
+                    }
+                }]
         }, {
             test: /\.js$/,
             exclude: /(node_modules\/bootstrap-daterangepicker\/)/,
@@ -68,10 +63,21 @@ module.exports = {
             }
         }, {
             test: /\.(jpe?g|gif|png)$/,
-            use: 'file-loader?outputPath=images/&name=[name].[ext]' // adding -[hash] would be better, but seems to lead to problems with default leaflet markers
+            use: {
+                loader: 'file-loader',
+                options: {
+                    "outputPath": "images",
+                    "name": "[name].[ext]"
+                }
+            } // adding -[hash] would be better, but seems to lead to problems with default leaflet markers
         }, {
             test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-            loader: 'file-loader?name=fonts/[name].[ext]'
+            use: {
+                loader: 'file-loader',
+                options: {
+                    "name": "[name].[ext]"
+                }
+            }
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
@@ -98,8 +104,18 @@ module.exports = {
             "Popper": "popper.js",
             "L": "leaflet"
         }),
-        new HardSourceWebpackPlugin() // https://github.com/webpack/webpack/issues/6767#issuecomment-410899686
     ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
 };
 

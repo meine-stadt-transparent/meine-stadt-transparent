@@ -7,8 +7,8 @@
     "url": "https://github.com/CatoTH/opensourceris"
   },
   "scripts": {
-    "build:dev": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js",
-    "build:prod": "NODE_ENV=production webpack --config etc/webpack.config.prod.js",
+    "build:dev": "NODE_ENV=dev webpack --config ./etc/webpack.config.dev.js",
+    "build:prod": "NODE_ENV=production webpack --config ./etc/webpack.config.prod.js",
     "build:email": "heml build mainapp/assets/email/user-alert.heml -o mainapp/templates/email/user-alert.html",
     "watch": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js --watch",
     "watch:email": "heml develop mainapp/assets/email/user-alert.heml"
@@ -16,32 +16,30 @@
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "autoprefixer": "^9.7.6",
-    "babel-loader": "^8.1.0",
-    "babel-minify-webpack-plugin": "^0.3.1",
-    "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
-    "browser-sync": "^2.26.7",
-    "css-loader": "^4.3.0",
-    "file-loader": "^6.0.0",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "autoprefixer": "^10.0.2",
+    "babel-loader": "^8.2.1",
+    "browser-sync": "^2.26.13",
+    "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
     "gulp": "^4.0.2",
-    "hard-source-webpack-plugin": "^0.13.1",
     "heml": "^1.1.3",
-    "mini-css-extract-plugin": "^0.10.1",
-    "node-sass": "^4.14.1",
-    "resolve-url-loader": "^3.1.1",
-    "sass-loader": "^9",
-    "style-loader": "^1.3.0",
-    "url-loader": "^4",
-    "webpack": "^4.44.2",
+    "mini-css-extract-plugin": "^1.3.1",
+    "node-sass": "^4.0.0",
+    "postcss": "^8.1.7",
+    "postcss-loader": "^4.0.4",
+    "resolve-url-loader": "^3.1.2",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.0.0",
     "webpack-bundle-tracker": "^0.4.3",
-    "webpack-cli": "^3.3.11",
-    "webpack-merge": "^5.1.4"
+    "webpack-cli": "^4.2.0",
+    "webpack-merge": "^5.4.0"
   },
   "dependencies": {
-    "@sentry/browser": "^5.25.0",
-    "bootstrap": "~4.5.2",
+    "@sentry/browser": "^5.27.4",
+    "bootstrap": "~4.5.3",
     "bootstrap-datepicker": "^1.9.0",
     "bootstrap-daterangepicker": "^2.1.30",
     "chromedriver": "^86.0.0",
@@ -57,11 +55,7 @@
     "mousetrap": "^1.6.5",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
     "popper.js": "^1.16.1",
-    "postcss-loader": "^3.0.0",
     "shufflejs": "^5.2.3"
-  },
-  "resolutions": {
-    "webpack-sources": "1.0.1"
   },
   "browserslist": [
     "defaults"
