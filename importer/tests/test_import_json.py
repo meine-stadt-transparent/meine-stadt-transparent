@@ -5,6 +5,7 @@ from pathlib import Path
 
 import dateutil.parser
 import pytest
+from django.core import serializers
 
 from importer.import_json import (
     import_data,
@@ -206,3 +207,53 @@ def test_undelete():
 
     [paper] = models.Paper.objects_with_deleted.all()
     assert paper.deleted == False
+
+
+@pytest.mark.parametrize(
+    "fixture,target_number,target_number_with_deleted",
+    [
+        ("importer/fixtures/duplicate_meetings_with_id.json", 1, 2),
+        ("importer/fixtures/duplicate_meetings_some_id.json", 1, 2),
+    ],
+)
+@pytest.mark.django_db
+def test_duplicate_meetings_with_id(fixture, target_number, target_number_with_deleted):
+    """
+    There are two meetings with the same name/start, and
+        a) different ids,
+        b) with and without id,
+        c) without ids.
+    Inspired by https://ris.wuppertal.de/si0057.php?__ksinr=18329 and
+    https://ris.wuppertal.de/si0057.php?__ksinr=18837
+    """
+
+    for meeting in serializers.deserialize("json", Path(fixture).read_text()):
+        meeting.save()
+
+    new_meeting = converter.structure(
+        {
+            "organization_name": "BV Uellendahl-Katernberg",
+            "name": "BV Uellendahl-Katernberg",
+            "location": "Rathaus Barmen, Ratssaal, Johannes-Rau-Platz 1, 42275 Wuppertal",
+            "note": None,
+            "original_id": 18329,
+            "start": "2020-04-23T18:30:00+02:00",
+            "end": "2020-04-23T19:20:00+02:00",
+            "cancelled": False,
+        },
+        Meeting,
+    )
+
+    with_paper = RisData(sample_city, None, [], [], [], [], [new_meeting], [], [], 2)
+    body = Body(
+        name=with_paper.meta.name,
+        short_name=with_paper.meta.name,
+        ags=with_paper.meta.ags,
+    )
+    body.save()
+
+    import_data(body, with_paper)
+    assert models.Meeting.objects.count() == target_number, list(
+        models.Meeting.objects.values_list("oparl_id", "name", "start")
+    )
+    assert models.Meeting.objects_with_deleted.count() == target_number_with_deleted

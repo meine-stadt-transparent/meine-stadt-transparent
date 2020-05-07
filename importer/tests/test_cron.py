@@ -19,7 +19,7 @@ from mainapp.tests.main import MinioMock
 
 
 class TestCron(TestCase):
-    """ [WIP] Tests that an file change sends out exactely one mail to only the subscribed user. """
+    """ [WIP] Tests that an file change sends out exactly one mail to only the subscribed user. """
 
     fixtures = ["cron.json"]
 
@@ -28,7 +28,7 @@ class TestCron(TestCase):
 
     def external_list_fixture(self):
         """
-        Loads a fixture with two papers and two users, with one user beeing subscribed
+        Loads a fixture with two papers and two users, with one user being subscribed
         to one paper, and the external lists loaded.
 
         Should probably be moved into a json file
@@ -62,7 +62,7 @@ class TestCron(TestCase):
         self.run_cron(loader, 0)
 
     def run_cron(self, loader: BaseLoader, expected_mail_count: int):
-        # Run cron. Check that nothing happend
+        # Run cron. Check that nothing happened
         with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
             with mock.patch(
                 "importer.loader.get_loader_from_body", new=lambda body_id: loader
@@ -72,7 +72,7 @@ class TestCron(TestCase):
     def cron_unfinished(self, loader):
         # In[]
 
-        # Mock an extern list with changes to both paper
+        # Mock an external list with changes to both paper
 
         new_date = timezone.now().astimezone().replace(microsecond=0)
 
@@ -89,7 +89,7 @@ class TestCron(TestCase):
 
         # In[]
 
-        # Check that exactely the one user got one notification for the one paper
+        # Check that exactly the one user got one notification for the one paper
         self.run_cron(loader, 1)
 
         # In[]

@@ -1,0 +1,48 @@
+[
+    {
+        "model": "mainapp.meeting",
+        "pk": 62,
+        "fields": {
+            "oparl_id": null,
+            "created": "2020-04-21T13:12:27.877Z",
+            "modified": "2020-04-21T13:12:27.877Z",
+            "deleted": false,
+            "name": "BV Uellendahl-Katernberg",
+            "short_name": "BV Uellendahl-Katernberg",
+            "cancelled": false,
+            "start": "2020-04-23T16:30:00Z",
+            "end": null,
+            "location": null,
+            "invitation": null,
+            "results_protocol": null,
+            "verbatim_protocol": null,
+            "public": 0,
+            "organizations": [],
+            "persons": [],
+            "auxiliary_files": []
+        }
+    },
+    {
+        "model": "mainapp.meeting",
+        "pk": 63,
+        "fields": {
+            "oparl_id": null,
+            "created": "2020-04-21T13:12:27.877Z",
+            "modified": "2020-04-21T13:12:27.877Z",
+            "deleted": false,
+            "name": "BV Uellendahl-Katernberg",
+            "short_name": "BV Uellendahl-Katernberg",
+            "cancelled": false,
+            "start": "2020-04-23T16:30:00Z",
+            "end": null,
+            "location": null,
+            "invitation": null,
+            "results_protocol": null,
+            "verbatim_protocol": null,
+            "public": 0,
+            "organizations": [],
+            "persons": [],
+            "auxiliary_files": []
+        }
+    }
+]

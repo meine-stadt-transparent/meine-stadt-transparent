@@ -71,7 +71,7 @@ unique_field_dict: Dict[Type, List[str]] = {
     models.AgendaItem: ["meeting_id", "name"],
     models.Consultation: ["meeting_id", "paper_id"],
     models.File: ["oparl_id"],
-    models.Meeting: ["name", "start"],
+    models.Meeting: ["oparl_id", "name", "start"],
     models.Meeting.organizations.through: ["meeting_id", "organization_id"],
     models.Membership: ["person_id", "organization_id"],
     models.Organization: ["oparl_id"],
@@ -519,19 +519,20 @@ def import_meetings(ris_data: RisData, locations: Dict[str, int]):
     for i in ris_data.meetings:
         objects.append(convert_meeting(i, locations))
 
-    # Handle the case where the start of a meeting with an id changed.
+    # Handle the case where the start or name of a meeting with an id changed.
     db_data = models.Meeting.objects_with_deleted.filter(
         oparl_id__isnull=False
-    ).values_list("start", "oparl_id")
-    oparl_id_to_start = {oparl_id: start for start, oparl_id in db_data}
-    for meeting in objects:
-        if (
-            meeting["oparl_id"] in oparl_id_to_start
-            and meeting["start"] != oparl_id_to_start[meeting["oparl_id"]]
-        ):
-            models.Meeting.objects_with_deleted.filter(
-                oparl_id=meeting["oparl_id"]
-            ).update(start=meeting["start"])
+    ).values_list("start", "name", "oparl_id")
+
+    # We can ignore the None case
+    oparl_id_to_object = {meeting["oparl_id"]: meeting for meeting in objects}
+    for start, name, oparl_id in db_data:
+        if oparl_id in oparl_id_to_object:
+            meeting_dict = oparl_id_to_object[oparl_id]
+            if start != meeting_dict["start"] or name != meeting_dict["name"]:
+                models.Meeting.objects_with_deleted.filter(oparl_id=oparl_id).update(
+                    start=meeting_dict["start"], name=meeting_dict["name"]
+                )
 
     incremental_import(models.Meeting, objects)
 
