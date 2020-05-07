@@ -6,7 +6,7 @@ from django.test import modify_settings
 from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 
-chromedriver_path = "node_modules/.bin/chromedriver"
+chromedriver_path = "node_modules/chromedriver/bin/chromedriver"
 
 logger = logging.getLogger(__name__)
 
