@@ -28,8 +28,8 @@ jobs:
           id: cache-venv
           path: .venv
           key: poetry-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
-          restore-keys: |
-              - poetry-${{ runner.os }}-${{ matrix.python-version }}
+          restore-keys:
+              - poetry-${{ runner.os }}-${{ matrix.python-version }}-
       - name: Install depencies
         run: $HOME/.poetry/bin/poetry install -E import-json
       - name: Test migrations
