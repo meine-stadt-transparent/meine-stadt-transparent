@@ -19,6 +19,7 @@ from importer.loader import BaseLoader
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
+from mainapp.functions.notify_users import NotifyUsers
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,13 @@ class Command(BaseCommand):
             dest="skip_body_extra",
             default=False,
             help="Do not download streets and shape of the body",
+        )
+        parser.add_argument(
+            "--no-notify-users",
+            action="store_true",
+            dest="no_notify_users",
+            default=False,
+            help="Don't send notifications",
         )
         parser.add_argument(
             "--allow-shrinkage",
@@ -92,7 +100,7 @@ class Command(BaseCommand):
         else:
             logging.info("Using existing body")
 
-        # TODO: Reenable this after some more thorough testing
+        # TODO: Re-enable this after some more thorough testing
         # handle_counts(ris_data, options["allow_shrinkage"])
 
         import_data(body, ris_data)
@@ -103,3 +111,7 @@ class Command(BaseCommand):
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(
                 fallback_city=body.short_name
             )
+
+        if not options["no_notify_users"]:
+            logger.info("Sending notifications")
+            NotifyUsers().notify_all()
