@@ -79,7 +79,7 @@ class NotifyUsers:
             logger.info("Sending notification to: %s" % user.email)
             send_mail(
                 user.email,
-                _("New search results"),
+                settings.PRODUCT_NAME + ": " + _("New search results"),
                 message_text,
                 message_html,
                 user.profile,
