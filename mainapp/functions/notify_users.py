@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.translation import ugettext as _
+from elasticsearch_dsl import Q
 from html2text import html2text
 
 from mainapp.functions.mail import send_mail
@@ -34,14 +35,12 @@ class NotifyUsers:
         else:
             since = timezone.now() - self.fallback_timeframe
 
-        params = alert.get_search_params()
-        params["after"] = str(since)
-        mainapp_search = MainappSearch(params)
-
-        executed = mainapp_search.execute()
-        results = [parse_hit(hit) for hit in executed.hits]
-
-        return results
+        search = MainappSearch(
+            alert.get_search_params(),
+            extra_filter=[Q("range", modified={"gte": since.isoformat()})],
+        )
+        executed = search.execute()
+        return [parse_hit(hit) for hit in executed.hits]
 
     def notify_user(self, user: User) -> None:
         context = {
@@ -52,13 +51,13 @@ class NotifyUsers:
         }
 
         for alert in user.useralert_set.all():
-            notifyobjects = self.perform_search(alert)
-            for obj in notifyobjects:
+            notify_objects = self.perform_search(alert)
+            for obj in notify_objects:
                 search_result_for_notification(obj)
 
-            if len(notifyobjects) > 0:
+            if len(notify_objects) > 0:
                 results = []
-                for obj in notifyobjects:
+                for obj in notify_objects:
                     results.append(search_result_for_notification(obj))
                 context["alerts"].append({"title": str(alert), "results": results})
 
@@ -77,7 +76,7 @@ class NotifyUsers:
             logging.info(message_text)
         else:
             # TODO: When this is called by cron it shouldn't write to stdout
-            logging.info("Sending notification to: %s" % user.email)
+            logger.info("Sending notification to: %s" % user.email)
             send_mail(
                 user.email,
                 _("New search results"),

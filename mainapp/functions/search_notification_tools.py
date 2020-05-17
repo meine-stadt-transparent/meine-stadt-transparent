@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from django.urls import reverse
 from django.utils.translation import pgettext
 
@@ -12,7 +14,7 @@ from mainapp.models import Person, Organization
 from meine_stadt_transparent.settings import ABSOLUTE_URI_BASE
 
 
-def params_are_subscribable(params: dict):
+def params_are_subscribable(params: Dict[str, Any]) -> bool:
     if "after" in params:
         return False
     if "before" in params:
@@ -20,7 +22,7 @@ def params_are_subscribable(params: dict):
     return True
 
 
-def search_result_for_notification(result) -> NotificationSearchResult:
+def search_result_for_notification(result: Dict[str, Any]) -> NotificationSearchResult:
     if result["type"] == "meeting":
         title = result["name"]
         url = ABSOLUTE_URI_BASE + reverse("meeting", args=[result["id"]])
@@ -43,7 +45,7 @@ def search_result_for_notification(result) -> NotificationSearchResult:
     )
 
 
-def params_to_human_string(params: dict):
+def params_to_human_string(params: Dict[str, Any]) -> str:
     if "document-type" in params:
         split = params["document-type"].split(",")
         what = []
@@ -122,7 +124,7 @@ def params_to_human_string(params: dict):
     return description
 
 
-def params_are_equal(params1: dict, params2: dict):
+def params_are_equal(params1: dict, params2: dict) -> bool:
     # Comparison should be case-insensitive, as you usually don't subscribe to "school" and "School" at the same time
     return (
         params_to_search_string(params1).lower()

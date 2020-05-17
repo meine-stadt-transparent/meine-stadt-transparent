@@ -1,7 +1,8 @@
 import json
 import logging
 from collections import namedtuple
-from typing import Dict, Optional, Any
+from typing import Dict, Optional, Any, List
+from urllib.parse import quote
 
 from dateutil.parser import parse
 from django.conf import settings
@@ -11,9 +12,8 @@ from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
 from django_elasticsearch_dsl.search import Search
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet, Search, AttrDict
-from elasticsearch_dsl.query import Bool, MultiMatch
+from elasticsearch_dsl.query import Bool, MultiMatch, Query
 from elasticsearch_dsl.response import Response
-from requests.utils import quote
 
 from mainapp.functions.geo_functions import latlng_to_address
 
@@ -86,12 +86,14 @@ class MainappSearch(FacetedSearch):
         params: Dict[str, str],
         offset: Optional[int] = None,
         limit: Optional[int] = None,
+        extra_filter: Optional[List[Query]] = None,
     ):
         self.params = params
         self.errors = []
         self.offset = offset
         self.limit = limit
         self.index = list(DOCUMENT_INDICES.values())
+        self.extra_filter: List[Query] = extra_filter or []
 
         # Note that for django templates it makes a difference if a value is undefined or None
         self.options = {}
@@ -125,7 +127,7 @@ class MainappSearch(FacetedSearch):
 
         super().__init__(self.params.get("searchterm"), filters, sort)
 
-    def highlight(self, search):
+    def highlight(self, search: Search) -> Search:
         # TODO: Why did we have this?
         # search = search.highlight_options(require_field_match=False)
         search = search.highlight(
@@ -184,6 +186,9 @@ class MainappSearch(FacetedSearch):
             # options['before'] added by _add_date_before
             search = _add_date_before(search, self.params, self.options, self.errors)
 
+        for extra_filter in self.extra_filter:
+            search = search.filter(extra_filter)
+
         # indices_boost: Titles often repeat the organization name and the test contains person names, but
         # when searching for those proper nouns, the person/organization itself should be at the top
         # _source: Take only the fields we use, and especially ignore the huge parsed_text
@@ -218,15 +223,16 @@ class MainappSearch(FacetedSearch):
         return search
 
 
-def _add_date_after(search, params, options, errors):
+def _add_date_after(
+    search: Search, params: Dict[str, Any], options, errors: List[str]
+) -> Search:
     """ Filters by a date given a string, catching parsing errors. """
     try:
         after = parse(params["after"])
     except (ValueError, OverflowError) as e:
         errors.append(
             ugettext(
-                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS: "
-                + str(e)
+                f"The value for after is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
         return search
@@ -237,15 +243,14 @@ def _add_date_after(search, params, options, errors):
     return search
 
 
-def _add_date_before(search, params, options, errors):
+def _add_date_before(search: Search, params: Dict[str, Any], options, errors) -> Search:
     """ Filters by a date given a string, catching parsing errors. """
     try:
         before = parse(params["before"])
     except (ValueError, OverflowError) as e:
         errors.append(
             ugettext(
-                "The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-DD HH:MM:SS "
-                + str(e)
+                f"The value for before is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
         return search

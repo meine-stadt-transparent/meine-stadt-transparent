@@ -1,11 +1,16 @@
+import contextlib
 import inspect
 import json
 import logging
+from datetime import datetime
 from pathlib import Path
+from unittest import mock
 
-import dateutil.parser
 import pytest
+from django.contrib.auth.models import User
 from django.core import serializers
+from django.test import modify_settings, override_settings
+from django.utils import timezone
 
 from importer.import_json import (
     import_data,
@@ -22,7 +27,10 @@ from importer.json_datatypes import (
     Paper,
 )
 from mainapp import models
-from mainapp.models import Body, DefaultFields
+from mainapp.functions.notify_users import NotifyUsers
+from mainapp.models import Body, DefaultFields, UserAlert, UserProfile
+from mainapp.tests.elasticsearch.test_elasticsearch import is_es_online
+from mainapp.tests.utils import ElasticsearchMock
 
 logger = logging.getLogger(__name__)
 
@@ -57,11 +65,14 @@ def make_db_snapshot():
     return snapshot
 
 
+@override_settings(ELASTICSEARCH_ENABLED=is_es_online())
+@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
+@mock.patch("mainapp.functions.notify_users.send_mail")
 @pytest.mark.django_db
-def test_import_json():
+def test_import_json(send_mail_function):
+    """ This test runs with elasticsearch if available and otherwise uses saved responses """
+    # Create the base state
     old = load_ris_data("importer/test-data/amtzell_old.json")
-    new = load_ris_data("importer/test-data/amtzell_new.json")
-
     body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
     body.save()
 
@@ -71,14 +82,56 @@ def test_import_json():
     expected = json.loads(Path("importer/test-data/amtzell_old_db.json").read_text())
     assert expected == actual
 
+    last_notification = timezone.now()
+
+    # Create notification
+    user = User(username="JohnDoe", email="john.doe@example.org")
+    user.save()
+    UserProfile.objects.create(user=user)
+
+    user_alert = UserAlert(
+        user=user,
+        search_string="Digitalisierungsstrategie",
+        created=datetime.fromisoformat("2008-01-01T12:00:00+01:00"),
+    )
+    user_alert.save()
+
+    # Import the new data
+    new = load_ris_data("importer/test-data/amtzell_new.json")
     import_data(body, new)
 
     actual = make_db_snapshot()
     expected = json.loads(Path("importer/test-data/amtzell_new_db.json").read_text())
     assert expected == actual
 
+    # Check that the notification was sent
+    elasticsearch_mock = ElasticsearchMock(
+        {
+            "importer/test-data/notification_request.json": "importer/test-data/notification_response.json"
+        }
+    )
+    if is_es_online():
+        context = contextlib.nullcontext()
+    else:
+        context = mock.patch(
+            "elasticsearch_dsl.search.get_connection",
+            new=lambda _alias: elasticsearch_mock,
+        )
+    with context:
+        if is_es_online():
+            notifier = NotifyUsers(last_notification)
+        else:
+            notifier = NotifyUsers(
+                datetime.fromisoformat("2020-05-17T12:07:37.887853+00:00")
+            )
+        notifier.notify_all()
+
+        assert send_mail_function.call_count == 1
+        assert send_mail_function.call_args[0][0] == "john.doe@example.org"
+        assert "Digitalisierungsstrategie" in send_mail_function.call_args[0][2]
+        assert "Digitalisierungsstrategie" in send_mail_function.call_args[0][3]
+
     # TODO: Check that the deleted file was correctly deleted
-    # TODO: Run notifier and check that notifications were sent
 
 
 @pytest.mark.django_db
@@ -146,7 +199,7 @@ def test_meeting_start_change():
             None,
             None,
             None,
-            start=dateutil.parser.parse("2020-01-01T09:00:00+01:00"),
+            start=datetime.fromisoformat("2020-01-01T09:00:00+01:00"),
         ),
         Meeting(
             "City Council",
@@ -154,7 +207,7 @@ def test_meeting_start_change():
             None,
             None,
             2,
-            start=dateutil.parser.parse("2020-02-01T09:00:00+01:00"),
+            start=datetime.fromisoformat("2020-02-01T09:00:00+01:00"),
         ),
     ]
     meetings_new = [
@@ -164,7 +217,7 @@ def test_meeting_start_change():
             None,
             None,
             None,
-            start=dateutil.parser.parse("2020-01-01T09:00:10+01:00"),
+            start=datetime.fromisoformat("2020-01-01T09:00:10+01:00"),
         ),
         Meeting(
             "City Council",
@@ -172,7 +225,7 @@ def test_meeting_start_change():
             None,
             None,
             2,
-            start=dateutil.parser.parse("2020-02-01T09:00:05+01:00"),
+            start=datetime.fromisoformat("2020-02-01T09:00:05+01:00"),
         ),
     ]
     old = RisData(sample_city, None, [], organizations, [], [], meetings_old, [], [], 2)

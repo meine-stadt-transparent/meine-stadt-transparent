@@ -1,10 +1,27 @@
 # This is needed for our development workflow
 # https://xkcd.com/1172/
+# See etc/docker-compose.yml for a production template
 
 version: '3'
 services:
+  mariadb-dev:
+    image: mariadb:10
+    container_name: mariadb-dev
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_DATABASE=meinestadttransparent
+      - MYSQL_USER=meinestadttransparent
+      - MYSQL_PASSWORD=meinestadttransparent
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+    networks:
+      - mst_dev
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
   elasticsearch-dev:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.6.1
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.7.0
     container_name: elasticsearch-dev
     environment:
       - discovery.type=single-node
@@ -18,38 +35,39 @@ services:
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:
-        - 9200:9200
-        - 9300:9300
+      - 9200:9200
+      - 9300:9300
     networks:
       - mst_dev
 
   kibana-dev:
-      image: docker.elastic.co/kibana/kibana-oss:7.6.1
-      container_name: kibana-dev
-      environment:
-        - ELASTICSEARCH_HOSTS=http://elasticsearch-dev:9200
-      ports:
-        - 5601:5601
-      networks:
-        - mst_dev
+    image: docker.elastic.co/kibana/kibana-oss:7.7.0
+    container_name: kibana-dev
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-dev:9200
+    ports:
+      - 5601:5601
+    networks:
+      - mst_dev
 
   minio-dev:
-      image: minio/minio
-      container_name: minio-dev
-      volumes:
-        - minio_data:/minio_data
-      environment:
-        MINIO_ACCESS_KEY: meinestadttransparent
-        MINIO_SECRET_KEY: meinestadttransparent
-      ports:
-        - 9000:9000
-      networks:
-        - mst_dev
-      command: server /minio_data
+    image: minio/minio
+    container_name: minio-dev
+    volumes:
+      - minio_data:/minio_data
+    environment:
+      MINIO_ACCESS_KEY: meinestadttransparent
+      MINIO_SECRET_KEY: meinestadttransparent
+    ports:
+      - 9000:9000
+    networks:
+      - mst_dev
+    command: server /minio_data
 
 volumes:
   elasticsearch_data:
   minio_data:
+  mariadb_data:
 
 networks:
   mst_dev:

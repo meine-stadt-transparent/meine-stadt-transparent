@@ -1,0 +1,67 @@
+{
+    "took": 16,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "skipped": 0,
+        "failed": 0
+    },
+    "hits": {
+        "total": {
+            "value": 1,
+            "relation": "eq"
+        },
+        "max_score": 1.67846,
+        "hits": [
+            {
+                "_index": "mst-test-paper",
+                "_type": "_doc",
+                "_id": "3",
+                "_score": 1.67846,
+                "_source": {
+                    "legal_date": null,
+                    "name": "Landeswettbewerb \"digitale Zukunftskommune@bw\" - Digitalisierungsstrategie \"@mtzell.digital\"",
+                    "id": 3,
+                    "reference_number": "049/2018"
+                },
+                "highlight": {
+                    "name": [
+                        "Landeswettbewerb \"digitale Zukunftskommune@bw\" - <mark>Digitalisierungsstrategie</mark> \"@mtzell.digital\""
+                    ]
+                }
+            }
+        ]
+    },
+    "aggregations": {
+        "_filter_document_type": {
+            "doc_count": 1,
+            "document_type": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": [
+                    {
+                        "key": "mst-test-paper",
+                        "doc_count": 1
+                    }
+                ]
+            }
+        },
+        "_filter_person": {
+            "doc_count": 1,
+            "person": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        },
+        "_filter_organization": {
+            "doc_count": 1,
+            "organization": {
+                "doc_count_error_upper_bound": 0,
+                "sum_other_doc_count": 0,
+                "buckets": []
+            }
+        }
+    }
+}
