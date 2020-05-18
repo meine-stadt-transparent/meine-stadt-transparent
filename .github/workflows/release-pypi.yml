@@ -1,9 +1,10 @@
 name: Release python package to PyPI
 
 on:
-  tags:
-    - v*.*.*
-    - v*.*.*-*
+  push:
+    tags:
+      - v*.*.*
+      - v*.*.*-*
 
 jobs:
   release-pypi:

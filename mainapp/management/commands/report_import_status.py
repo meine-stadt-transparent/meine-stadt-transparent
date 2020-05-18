@@ -1,13 +1,14 @@
 import inspect
 import logging
 
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 from django.db.models import Model
 
 from mainapp import models
 from mainapp.functions.minio import minio_client, minio_file_bucket
-from mainapp.models import File, Body
+from mainapp.models import File, Body, UserAlert
 
 logger = logging.getLogger(__name__)
 
@@ -49,6 +50,13 @@ class Command(BaseCommand):
         bodies_with_ags = Body.objects.filter(ags__isnull=False).count()
         self.stdout.write(
             f"Bodies with an outline: {bodies_with_outline}; with an ags: {bodies_with_ags}"
+        )
+
+        users_with_alerts = UserAlert.objects.values("user").distinct().count()
+        users = User.objects.count()
+        alerts = UserAlert.objects.count()
+        self.stdout.write(
+            f"There are {alerts} alerts by {users_with_alerts} of {users} users"
         )
 
         # Check if there are files which are listed as imported but aren't in minio
