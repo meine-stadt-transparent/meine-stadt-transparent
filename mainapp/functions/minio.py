@@ -4,6 +4,7 @@ import logging
 from django.conf import settings
 from minio import Minio
 from minio.error import BucketAlreadyExists, BucketAlreadyOwnedByYou
+from urllib3.exceptions import RequestError
 
 """
 Minio policy: files are publicly readable, cache and pgp keys are private
@@ -71,4 +72,11 @@ def minio_client() -> Minio:
             secret_key=settings.MINIO_SECRET_KEY,
             secure=False,
         )
+        # Give a helpful error message
+        try:
+            _minio_singleton.bucket_exists(minio_file_bucket)
+        except RequestError as e:
+            raise RuntimeError(
+                f"Could not reach minio at {settings.MINIO_HOST}. Please make sure that minio is working."
+            ) from e
     return _minio_singleton
