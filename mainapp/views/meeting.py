@@ -10,7 +10,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.http import urlencode
-from django.utils.timezone import now
+from django.utils.timezone import now, get_current_timezone
 from django.utils.translation import ugettext as _
 from icalendar import Calendar
 from pytz import timezone
@@ -97,6 +97,9 @@ def meeting(request, pk):
     # Excludes meetings with more than one organization
     context = {
         "meeting": selected_meeting,
+        # Workaround missing timezone support in sqlite and mariadb
+        "start": get_current_timezone().normalize(selected_meeting.start),
+        "end": get_current_timezone().normalize(selected_meeting.end),
         "map": build_map_object(),
         "location_json": json.dumps(location_geom),
         "agenda_items": agenda_items,

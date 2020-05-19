@@ -37,7 +37,11 @@ class TestNotifyUsers(TestCase):
         self._create_user_with_alerts("test@example.org", ["test"])
 
         out = StringIO()
-        call_command("notifyusers", stdout=out, override_since=datetime.fromisoformat("2017-01-01"))
+        call_command(
+            "notifyusers",
+            stdout=out,
+            override_since=datetime.fromisoformat("2017-01-01"),
+        )
 
         self.assertEqual(send_mail_function.call_count, 1)
         self.assertEqual(send_mail_function.call_args[0][0], "test@example.org")

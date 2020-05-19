@@ -6,7 +6,7 @@
 ![Docker build](https://github.com/meine-stadt-transparent/meine-stadt-transparent/workflows/Docker%20build/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
 
-Meine Stadt Transparent is a free council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinforamtionssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources.
+Meine Stadt Transparent is a free council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinformationssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources.
 
 Our sample live system using the data of the city [Krefeld](https://www.krefeld.de/) is available at: [https://krefeld.meine-stadt-transparent.de/](https://krefeld.meine-stadt-transparent.de/). We provide a public chat on riot at `#meine-stadt-transparent:matrix.org`, which you can join on [matrix](https://matrix.to/#/!cEDbUmQZdyVTciakty:matrix.org?via=matrix.org).
 
@@ -21,7 +21,7 @@ Meine Stadt Transparent makes decision-making in city councils and administratio
 It includes many features regarding data research and staying up to date, targeted both towards citizens and journalists:
 
 - Information about city councillors, administrative organizations and meetings of the city council are provided.
-- All published documents are searchable in a flexible manner, be it motions, resolutions, meeting agendas or protocols. The search supports both simple full-text searchs and flexible criteria-based filters.
+- All published documents are searchable in a flexible manner, be it motions, resolutions, meeting agendas or protocols. The search supports both simple full-text searches and flexible criteria-based filters.
 - Documents are automatically searched for mentioned places. A map is provided indicating places that are mentioned. Thus, it is easy to identify documents that affect places in your living neighborhood.
 - You can subscribe to topics / search expressions to get notified by e-mail, once new documents matching your query are published.
 - It supports several ways of subscribing to new content: different kinds of RSS-feeds and subscribing to the meeting calendar using the iCal-format.

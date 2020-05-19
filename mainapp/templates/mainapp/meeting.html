@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load tz %}
 
 {% block title %}{{ meeting.name|wordwrap:60 }}{% endblock %}
 
@@ -62,6 +63,8 @@
                 </div>
             </div>
         </section>
+
+
 
         <section class="container meeting-section">
             {# The extra div around icons of d-flex parents places the icon on the height as the text #}
@@ -129,14 +132,14 @@
                 <div title="{% trans 'Time of the Meeting' %}" class="std-element mx-1 flex-shrink-0">
                     <span class="fa-custom fa-clock-o" aria-hidden="true"></span>
 
-                    {% if meeting.end and meeting.start.date == meeting.end.date %}
-                        <span>{{ meeting.start.date }} {{ meeting.start.time }} - {{ meeting.end.time }}</span>
-                    {% elif meeting.end %}
-                        <span>{{ meeting.start.date }} {{ meeting.start.time }} - {{ meeting.end.date }} {{ meeting.end.time }}</span>
-                    {% elif meeting.start.time %}
-                        <span>{{ meeting.start.date }} {{ meeting.start.time }}</span>
-                    {% elif meeting.start.date %}
-                        <span>{{ meeting.start.date }}</span>
+                    {% if end and start.date == end.date %}
+                        <span>{{ start.date }} {{ start.time }} - {{ end.time }}</span>
+                    {% elif end %}
+                        <span>{{ start.date }} {{ start.time }} - {{ end.date }} {{ end.time }}</span>
+                    {% elif start.time %}
+                        <span>{{ start.date }} {{ start.time }}</span>
+                    {% elif start.date %}
+                        <span>{{ start.date }}</span>
                     {% else %}
                         <i>{% trans "Unknown" %}</i>
                     {% endif %}
@@ -224,9 +227,9 @@
                                     <div>{{ agenda_item.title }}</div>
                                 {% endif %}
 
-                                    {% if agenda_item.result %}
-                                        <div class="my-1 font-italic">{{ agenda_item.result }}</div>
-                                    {% endif %}
+                                {% if agenda_item.result %}
+                                    <div class="my-1 font-italic">{{ agenda_item.result }}</div>
+                                {% endif %}
 
                                 {% if agenda_item.consultation.paper %}
                                     <div class="additional-links">
