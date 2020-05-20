@@ -11,6 +11,7 @@ from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
 from django_elasticsearch_dsl.search import Search
+from elasticsearch import TransportError
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet, Search, AttrDict
 from elasticsearch_dsl.query import Bool, MultiMatch, Query
 from elasticsearch_dsl.response import Response
@@ -70,6 +71,14 @@ MULTI_MATCH_FIELDS = [
 NotificationSearchResult = namedtuple(
     "NotificationSearchResult", ["title", "url", "type", "type_name", "highlight"]
 )
+
+
+class ElasticsearchNotAvailableError(Exception):
+    def __str__(self):
+        return (
+            f"Couldn't connect to elasticsearch at {settings.ELASTICSEARCH_URL}. "
+            f"See error trace for details"
+        )
 
 
 class MainappSearch(FacetedSearch):
@@ -221,6 +230,13 @@ class MainappSearch(FacetedSearch):
                 )
             )
         return search
+
+    def execute(self):
+        # Return a more useful error message in debug mode
+        try:
+            return super().execute()
+        except TransportError as e:
+            raise ElasticsearchNotAvailableError() from e
 
 
 def _add_date_after(
