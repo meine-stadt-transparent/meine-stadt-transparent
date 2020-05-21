@@ -25,6 +25,7 @@ from importer.json_datatypes import (
     Organization,
     RisMeta,
     Paper,
+    AgendaItem,
 )
 from mainapp import models
 from mainapp.functions.notify_users import NotifyUsers
@@ -310,3 +311,60 @@ def test_duplicate_meetings_with_id(fixture, target_number, target_number_with_d
         models.Meeting.objects.values_list("oparl_id", "name", "start")
     )
     assert models.Meeting.objects_with_deleted.count() == target_number_with_deleted
+
+
+@pytest.mark.django_db
+def test_agenda_item_with_id_name_changed():
+    organizations = [Organization("City Council", 1, True)]
+    meetings = [
+        Meeting(
+            "City Council",
+            "City Council Meeting 1",
+            None,
+            None,
+            1,
+            start=datetime.fromisoformat("2020-01-01T09:00:00+01:00"),
+        ),
+    ]
+
+    agenda_items_old = [
+        AgendaItem(
+            key="1",
+            position=0,
+            name="Old name",
+            meeting_id=1,
+            paper_reference=None,
+            paper_original_id=None,
+            original_id=1,
+            result=None,
+            voting=None,
+            note=None,
+        )
+    ]
+    agenda_items_new = [
+        AgendaItem(
+            key="1",
+            position=0,
+            name="New name",
+            meeting_id=1,
+            paper_reference=None,
+            paper_original_id=None,
+            original_id=1,
+            result=None,
+            voting=None,
+            note=None,
+        )
+    ]
+
+    old = RisData(
+        sample_city, None, [], organizations, [], [], meetings, [], agenda_items_old, 2
+    )
+    new = RisData(
+        sample_city, None, [], organizations, [], [], meetings, [], agenda_items_new, 2
+    )
+    body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
+    body.save()
+    import_data(body, old)
+    import_data(body, new)
+    assert models.AgendaItem.objects_with_deleted.count() == 1
+    assert models.AgendaItem.objects.count() == 1

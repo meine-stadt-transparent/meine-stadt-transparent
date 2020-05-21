@@ -430,6 +430,22 @@ def import_agenda_items(
             convert_agenda_item(i, consultation_map, meeting_id_map, paper_id_map)
         )
 
+    # Handle the case where the start or name of a meeting with an id changed.
+    db_data = models.AgendaItem.objects_with_deleted.filter(
+        oparl_id__isnull=False
+    ).values_list("oparl_id", "name")
+
+    # We can ignore the None case
+    oparl_id_to_name = {
+        agenda_item["oparl_id"]: agenda_item["name"] for agenda_item in objects
+    }
+    for oparl_id, name in db_data:
+        if oparl_id in oparl_id_to_name:
+            if name != oparl_id_to_name[oparl_id]:
+                models.AgendaItem.objects_with_deleted.filter(oparl_id=oparl_id).update(
+                    name=oparl_id_to_name[oparl_id]
+                )
+
     incremental_import(models.AgendaItem, objects)
 
 
