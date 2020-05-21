@@ -156,7 +156,7 @@ def incremental_import(
 
     before_bulk_create = timezone.now()
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
-    current_model.objects.bulk_create(to_be_created)
+    current_model.objects.bulk_create(to_be_created, batch_size=100)
 
     # Bulk create doesn't update the search index, so we do this manually
     if settings.ELASTICSEARCH_ENABLED and current_model in registry.get_models():
