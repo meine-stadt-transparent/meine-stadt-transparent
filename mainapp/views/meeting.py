@@ -93,18 +93,23 @@ def meeting(request, pk):
     )
     extra_persons = set(selected_meeting.persons.all()) - meeting_persons
 
-    # Try to find a previous or following meetings using the organization
-    # Excludes meetings with more than one organization
+    if selected_meeting.end:
+        end = get_current_timezone().normalize(selected_meeting.end)
+    else:
+        end = None
+
     context = {
         "meeting": selected_meeting,
         # Workaround missing timezone support in sqlite and mariadb
         "start": get_current_timezone().normalize(selected_meeting.start),
-        "end": get_current_timezone().normalize(selected_meeting.end),
+        "end": end,
         "map": build_map_object(),
         "location_json": json.dumps(location_geom),
         "agenda_items": agenda_items,
         "extra_persons": extra_persons,
     }
+    # Try to find a previous or following meetings using the organization
+    # Excludes meetings with more than one organization
     if selected_meeting.organizations.count() == 1:
         organization = selected_meeting.organizations.first()
         query = (
