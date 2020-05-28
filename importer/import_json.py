@@ -64,6 +64,7 @@ field_lists: Dict[Type, List[str]] = {
         "reference_number",
         "oparl_id",
         "paper_type_id",
+        "sort_date",
     ],
     models.Paper.files.through: ["paper_id", "file_id"],
     models.Person: ["name", "given_name", "family_name"],
