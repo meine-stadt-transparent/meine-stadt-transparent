@@ -18,7 +18,7 @@ converter.register_structure_hook(
     else datetime.fromisoformat(ts),
 )
 
-format_version = 2
+format_version = 3
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -38,6 +38,7 @@ class Paper:
     name: str
     reference: str
     paper_type: Optional[str]
+    sort_date: datetime
     original_id: Optional[int] = None
 
     def get_unique(self):

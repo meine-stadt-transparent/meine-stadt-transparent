@@ -46,14 +46,16 @@
             "name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
             "reference": "073/2018",
             "paper_type": "Drucksache",
-            "original_id": 277
+            "original_id": 277,
+            "sort_date": "2018-01-01T00:00:00+01:00"
         },
         {
             "short_name": "Landeswettbewerb \"digitale Zukunftskommune@bw\" - Digitalisierungsstrategie \"@mtzell.digital\"",
             "name": "Landeswettbewerb \"digitale Zukunftskommune@bw\" - Digitalisierungsstrategie \"@mtzell.digital\"",
             "reference": "049/2018",
             "paper_type": "Drucksache",
-            "original_id": 253
+            "original_id": 253,
+            "sort_date": "2018-01-01T00:00:00+01:00"
         }
     ],
     "files": [

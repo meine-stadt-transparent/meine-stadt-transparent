@@ -46,14 +46,16 @@
             "name": "@mtzell digital - Digitalisierungsstrategie f\u00fcr die Gemeinde Amtzell",
             "reference": "002/2019",
             "paper_type": "Drucksache",
-            "original_id": 306
+            "original_id": 306,
+            "sort_date": "2019-01-01T00:00:00+01:00"
         },
         {
             "short_name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
             "name": "Teilnahme am Projekt \"Digitalisierung und Heimat\"",
             "reference": "073/2018",
             "paper_type": "Drucksache",
-            "original_id": 277
+            "original_id": 277,
+            "sort_date": "2018-01-01T00:00:00+01:00"
         }
     ],
     "files": [

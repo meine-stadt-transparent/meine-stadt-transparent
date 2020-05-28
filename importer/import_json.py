@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 from typing import Dict, Type, List, Tuple, TypeVar, Iterable, Any, Optional
 
 import django.db.models
@@ -263,12 +264,15 @@ def convert_meeting(
     }
 
 
-def convert_paper(json_paper: json_datatypes.Paper) -> Dict[str, Any]:
+def convert_paper(
+    json_paper: json_datatypes.Paper, consultations: Dict[int, datetime]
+) -> Dict[str, Any]:
     db_paper = {
         "short_name": json_paper.short_name[:50],  # TODO: Better normalization
         "name": json_paper.name,
         "reference_number": json_paper.reference,
         "oparl_id": str_or_none(json_paper.original_id),
+        "sort_date": consultations.get(json_paper.original_id) or json_paper.sort_date,
     }
     if json_paper.paper_type:
         paper_type, created = models.PaperType.objects.get_or_create(
@@ -581,10 +585,30 @@ def import_paper_files(
 
 def import_papers(ris_data: RisData):
     logger.info(f"Importing {len(ris_data.papers)} paper")
-    incremental_import(models.Paper, [convert_paper(i) for i in ris_data.papers])
+
+    # Heuristic to determine the sort date:
+    # If there are consultations, use the date of the first consultation,
+    # otherwise fall back to the year and month from the scraper (which
+    # uses the date from the search)
+    meetings = {meeting.original_id: meeting for meeting in ris_data.meetings}
+    consultations = dict()
+    for agenda_item in ris_data.agenda_items:
+        paper_id = agenda_item.paper_original_id
+        if paper_id in consultations:
+            # We want the first consultation
+            consultations[paper_id] = min(
+                consultations[paper_id], meetings[agenda_item.meeting_id].start
+            )
+        else:
+            consultations[paper_id] = meetings[agenda_item.meeting_id].start
+
+    incremental_import(
+        models.Paper, [convert_paper(i, consultations) for i in ris_data.papers]
+    )
 
 
 def import_files(ris_data: RisData):
     logger.info(f"Importing {len(ris_data.files)} files")
+
     incremental_import(models.File, [convert_file(i) for i in ris_data.files])
     # TODO: Move deleted files to a deleted bucket

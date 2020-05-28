@@ -245,7 +245,14 @@ def test_meeting_start_change():
 @pytest.mark.django_db
 def test_undelete():
     """ A paper gets created, (spuriously?) deleted, and then undeleted """
-    sample_paper = Paper("Antrag", "Stadtratsantrag", "2020/1", None, 38423)
+    sample_paper = Paper(
+        "Antrag",
+        "Stadtratsantrag",
+        "2020/1",
+        None,
+        datetime.fromisoformat("2020-01-01T00:00:00+01:00"),
+        38423,
+    )
     with_paper = RisData(sample_city, None, [], [], [sample_paper], [], [], [], [], 2)
     without_paper = RisData(sample_city, None, [], [], [], [], [], [], [], 2)
     body = Body(
@@ -260,7 +267,7 @@ def test_undelete():
     import_data(body, with_paper)
 
     [paper] = models.Paper.objects_with_deleted.all()
-    assert paper.deleted == False
+    assert not paper.deleted
 
 
 @pytest.mark.parametrize(
