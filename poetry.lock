@@ -116,7 +116,7 @@ version = "7.1.2"
 [[package]]
 category = "dev"
 description = "Cross-platform colored terminal text."
-marker = "platform_system == \"Windows\" or sys_platform == \"win32\""
+marker = "sys_platform == \"win32\" or platform_system == \"Windows\""
 name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -481,7 +481,7 @@ description = "Python Geocoding Toolbox"
 name = "geopy"
 optional = false
 python-versions = "*"
-version = "1.21.0"
+version = "1.22.0"
 
 [package.dependencies]
 geographiclib = ">=1.49,<2"
@@ -1460,8 +1460,8 @@ geographiclib = [
     {file = "geographiclib-1.50.tar.gz", hash = "sha256:12bd46ee7ec25b291ea139b17aa991e7ef373e21abd053949b75c0e9ca55c632"},
 ]
 geopy = [
-    {file = "geopy-1.21.0-py2.py3-none-any.whl", hash = "sha256:5de6fed0ee982e43a8e4243410477567cfccac22f8530edffc422761adf4e612"},
-    {file = "geopy-1.21.0.tar.gz", hash = "sha256:dc02b43ca5202696907b6b4f72431c8df455c812889dbb4e1240a672857f3adc"},
+    {file = "geopy-1.22.0-py2.py3-none-any.whl", hash = "sha256:d0adba79a4c50a0e253d4a9d2d86aea4a3c1c2ec0889c5c61500ea914dafb9a5"},
+    {file = "geopy-1.22.0.tar.gz", hash = "sha256:f860fd1d68d5951551c676a871a7a2eee0ad3f1da2f2eb318b28fb45b19ad74b"},
 ]
 gunicorn = [
     {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},
