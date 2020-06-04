@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from icalendar import Event
@@ -58,11 +59,19 @@ class Meeting(DefaultFields, ShortableNameFields):
     public = models.IntegerField(choices=PUBLICALITY, default=0, blank=True)
 
     def as_ical_event(self) -> Event:
+        url = settings.ABSOLUTE_URI_BASE + reverse("meeting", args=[self.id])
         event = Event()
         event.add("uid", "meeting-{}@{}".format(self.id, settings.REAL_HOST))
         event.add("summary", self.short_name)
-        event.add("description", self.name)
+        event.add("description", self.name + "\n" + url)
+        # https://stackoverflow.com/questions/854036/html-in-ical-attachment
+        # https://docs.microsoft.com/en-us/openspecs/exchange_server_protocols/ms-oxcical/d7f285da-9c7a-4597-803b-b74193c898a8
+        html_desc = render_to_string(
+            "mainapp/meeting_ical_alt_desc.html", {"description": self.name, "url": url}
+        ).strip()
+        event.add("X-ALT-DESC;FMTTYPE=text/html", html_desc)
         event.add("dtstart", timezone.localtime(self.start))
+        event.add("url", url)
         if self.end:
             event.add("dtend", timezone.localtime(self.end))
 
