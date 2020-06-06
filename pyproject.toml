@@ -15,7 +15,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-Django = "~2.2"
+Django = "~2.2.13"
 django-allauth = ">=0.41,<0.43"
 django-anymail = { version = "^7.0", extras = ["mailjet", "sendgrid"] }
 django_csp = "^3.4"

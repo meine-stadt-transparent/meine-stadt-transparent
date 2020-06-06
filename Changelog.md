@@ -5,6 +5,7 @@
  * Fixed a regression with meeting without end from 0.2.7
  * Updated the json importer to format version 3
  * The json importer now has a better heuristic for determining the date of a paper
+ * The ics export has an html description (which is used e.g. by google calendar and outlook) which includes a link to the meeting.
 
 ## 0.2.7
 
