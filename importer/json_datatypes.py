@@ -27,9 +27,23 @@ class Person:
     party: Optional[str]
     begin: Optional[date] = None
     end: Optional[date] = None
+    original_id: Optional[int] = None
 
     def get_unique(self):
         return self.name
+
+
+@attr.s(frozen=True, auto_attribs=True)
+class PersonDetail:
+    original_id: int
+    location: Optional[str]
+    street_address: Optional[str]
+    phone_private: Optional[str]
+    fax_private: Optional[str]
+    email: Optional[str]
+
+    def get_unique(self):
+        return self.original_id
 
 
 @attr.s(frozen=True, auto_attribs=True)
