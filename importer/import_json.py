@@ -8,6 +8,7 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.db import transaction
 from django.utils import timezone
 from django_elasticsearch_dsl.registries import registry
+from tqdm import tqdm
 
 from importer import json_datatypes
 from importer.json_datatypes import RisData
@@ -172,12 +173,14 @@ def incremental_import(
         assert qs_count >= len(
             to_be_created
         ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
-        logger.info(f"Indexing {qs_count} {current_model.__name__}")
+        logger.info(f"Indexing {qs_count} {current_model.__name__} new objects")
         search_bulk_index(current_model, qs)
 
     with transaction.atomic():
-        for json_object, pk in to_be_updated:
-            current_model.objects.filter(pk=pk).update(**json_object)
+        for json_object, pk in tqdm(to_be_updated, disable=not to_be_updated):
+            current_model.objects_with_deleted.update_or_create(
+                pk=pk, defaults=json_object
+            )
 
 
 def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
@@ -278,7 +281,9 @@ def convert_paper(
         "reference_number": json_paper.reference,
         "oparl_id": str_or_none(json_paper.original_id),
         "sort_date": consultations.get(json_paper.original_id) or fallback_date,
-        "display_date": consultations.get(json_paper.original_id) or fallback_date,
+        "display_date": (
+            consultations.get(json_paper.original_id) or fallback_date
+        ).date(),
     }
     if json_paper.paper_type:
         paper_type, created = models.PaperType.objects.get_or_create(
