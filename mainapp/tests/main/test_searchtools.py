@@ -36,7 +36,7 @@ expected_params = {
         {"mst-test-organization": 4},
         {"mst-test-paper": 2},
     ],
-    "_source": ["id", "name", "legal_date", "reference_number"],
+    "_source": ["id", "name", "legal_date", "reference_number", "display_date"],
     "aggs": {
         "_filter_document_type": {
             "filter": {"match_all": {}},

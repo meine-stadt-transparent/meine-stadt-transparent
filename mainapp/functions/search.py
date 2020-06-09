@@ -1,15 +1,18 @@
 import json
 import logging
 from collections import namedtuple
-from typing import Dict, Optional, Any, List
+from typing import Dict, Optional, Any, List, Type
 from urllib.parse import quote
 
 from dateutil.parser import parse
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Model
+from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import ugettext, pgettext
+from django_elasticsearch_dsl.registries import registry
 from django_elasticsearch_dsl.search import Search
 from elasticsearch import TransportError
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet, Search, AttrDict
@@ -208,7 +211,13 @@ class MainappSearch(FacetedSearch):
                     {DOCUMENT_INDICES["organization"]: 4},
                     {DOCUMENT_INDICES["paper"]: 2},
                 ],
-                "_source": ["id", "name", "legal_date", "reference_number"],
+                "_source": [
+                    "id",
+                    "name",
+                    "legal_date",
+                    "reference_number",
+                    "display_date",
+                ],
             }
         )
 
@@ -395,3 +404,12 @@ def autocomplete(query: str) -> Response:
     )
     response = search_query.execute()
     return response
+
+
+def search_bulk_index(model: Type[Model], qs: QuerySet):
+    """ Django orm bulk functions such as `bulk_create`, `bulk_index` and
+    `update`do not send signals for the modified objects and therefore do not
+    automatically update the elasticsearch index. This function therefore
+    bulk-reindexes the changed objects. """
+    [current_doc] = registry.get_documents([model])
+    return current_doc().update(qs)

@@ -5,14 +5,13 @@
         <li class="clearfix result result-type-{{ result.type }}">
             <a href="{{ result.url }}" class="no-link-color">
                 <div class="py-2 container">
-                    <div class="lead font-weight-normal" title="{{ result.name_escaped | safe}}">
-                        {{ result.name_escaped | safe | linebreaksbr  }}
+                    <div class="lead font-weight-normal" title="{{ result.name_escaped | safe }}">
+                        {{ result.name_escaped | safe | linebreaksbr }}
                     </div>
 
                     <div class="text-truncate results-small">
-                        <span
-                            class="fa fa-fw fa-1x result-icon {% include "partials/type_to_fa_icon.html" with type=result.type %}"
-                            aria-hidden="true">
+                        <span class="fa fa-fw fa-1x result-icon {% include "partials/type_to_fa_icon.html" with type=result.type %}"
+                              aria-hidden="true">
                         </span>
                         <span>{% firstof result.type_translated result.paper_type.paper_type %}</span>
 
@@ -24,6 +23,9 @@
                         {% if result.legal_date %}
                             <span>|</span>
                             <span>{{ result.legal_date }}</span>
+                        {% elif result.display_date %}
+                            <span>|</span>
+                            <span><i class="fa fa-calendar"></i> {{ result.display_date }}</span>
                         {% endif %}
                     </div>
 

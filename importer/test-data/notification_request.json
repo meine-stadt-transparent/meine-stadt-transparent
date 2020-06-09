@@ -119,7 +119,8 @@
             "id",
             "name",
             "legal_date",
-            "reference_number"
+            "reference_number",
+            "display_date"
         ],
         "highlight": {
             "fields": {

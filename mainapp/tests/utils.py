@@ -31,7 +31,10 @@ class ElasticsearchMock:
 
         from elasticsearch_dsl.connections import get_connection
 
-        response = get_connection().search(*args, **query)
-        logger.warning("query: " + json.dumps(query, cls=DjangoJSONEncoder))
-        logger.warning("response: " + json.dumps(response, cls=DjangoJSONEncoder))
+        try:
+            response = get_connection().search(*args, **query)
+            logger.warning("query: " + json.dumps(query, cls=DjangoJSONEncoder))
+            logger.warning("response: " + json.dumps(response, cls=DjangoJSONEncoder))
+        except Exception:
+            logger.warning("query: " + json.dumps(query, cls=DjangoJSONEncoder))
         raise RuntimeError(f"Query not found")

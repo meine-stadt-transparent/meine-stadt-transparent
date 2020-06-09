@@ -1,12 +1,16 @@
+from datetime import datetime
 from typing import Optional, List, Dict, Any
 
+from dateutil import tz
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 
 from .default_fields import DefaultFields
 from .location import Location
 from .person import Person
+
+# Assumption: This is older than the oldest data
+fallback_date = datetime(1995, 1, 1, 0, 0, 0, tzinfo=tz.tzlocal())
 
 
 class File(DefaultFields):
@@ -15,7 +19,7 @@ class File(DefaultFields):
     # https://stackoverflow.com/a/643772/3549270#comment11618045_643772
     mime_type = models.CharField(max_length=255)
     legal_date = models.DateField(null=True, blank=True)
-    sort_date = models.DateTimeField(default=timezone.now)
+    sort_date = models.DateTimeField(default=fallback_date)
     filesize = models.IntegerField(null=True, blank=True)
     locations = models.ManyToManyField(Location, blank=True)
     mentioned_persons = models.ManyToManyField(Person, blank=True)

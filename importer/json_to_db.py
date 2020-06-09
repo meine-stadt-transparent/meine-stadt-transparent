@@ -33,6 +33,7 @@ from mainapp.models import (
     OrganizationType,
     PaperType,
 )
+from mainapp.models.file import fallback_date
 from mainapp.models.default_fields import ShortableNameFields
 
 logger = logging.getLogger(__name__)
@@ -430,14 +431,15 @@ class JsonToDb:
                     )
                 )
 
-        paper.legal_date = self.utils.parse_date(libobject.get("date"))
-        paper.sort_date = (
-            self.utils.date_to_datetime(paper.legal_date)
-            or self.utils.parse_datetime(libobject.get("created"))
-            or timezone.now()
-        )
         paper.reference_number = libobject.get("reference")
         paper.main_file = self.retrieve(File, libobject.get("mainFile"))
+
+        paper.legal_date = self.utils.parse_date(libobject.get("date"))
+        # At this point we don't have the agenda items yet. We'll fix up the
+        # cases where there are consultations but no legal date later
+        paper.display_date = paper.legal_date
+        # If we don't have a good date, sort them behind those with a good date
+        paper.sort_date = self.utils.date_to_datetime(paper.legal_date) or fallback_date
 
         return paper
 

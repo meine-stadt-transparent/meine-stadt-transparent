@@ -36,4 +36,5 @@ class PaperDocument(Document):
             "reference_number",
             "modified",
             "sort_date",
+            "display_date",
         ]

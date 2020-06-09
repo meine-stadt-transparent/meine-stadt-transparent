@@ -1,5 +1,5 @@
 {
-    "took": 16,
+    "took": 177,
     "timed_out": false,
     "_shards": {
         "total": 5,
@@ -9,18 +9,19 @@
     },
     "hits": {
         "total": {
-            "value": 1,
+            "value": 3,
             "relation": "eq"
         },
-        "max_score": 1.67846,
+        "max_score": 4.026261,
         "hits": [
             {
                 "_index": "mst-test-paper",
                 "_type": "_doc",
                 "_id": "3",
-                "_score": 1.67846,
+                "_score": 1.9213841,
                 "_source": {
                     "legal_date": null,
+                    "display_date": "2018-07-02",
                     "name": "Landeswettbewerb \"digitale Zukunftskommune@bw\" - Digitalisierungsstrategie \"@mtzell.digital\"",
                     "id": 3,
                     "reference_number": "049/2018"
@@ -42,6 +43,10 @@
                 "buckets": [
                     {
                         "key": "mst-test-paper",
+                        "doc_count": 2
+                    },
+                    {
+                        "key": "mst-test-file",
                         "doc_count": 1
                     }
                 ]

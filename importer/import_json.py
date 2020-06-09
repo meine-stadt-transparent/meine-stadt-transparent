@@ -12,8 +12,10 @@ from django_elasticsearch_dsl.registries import registry
 from importer import json_datatypes
 from importer.json_datatypes import RisData
 from mainapp import models
+from mainapp.functions.search import search_bulk_index
 from mainapp.models import DefaultFields
 from mainapp.models.default_fields import SoftDeleteModelManager
+from mainapp.models.file import fallback_date
 
 logger = logging.getLogger(__name__)
 office_replaces = {
@@ -65,6 +67,7 @@ field_lists: Dict[Type, List[str]] = {
         "oparl_id",
         "paper_type_id",
         "sort_date",
+        "display_date",
     ],
     models.Paper.files.through: ["paper_id", "file_id"],
     models.Person: ["name", "given_name", "family_name"],
@@ -156,6 +159,8 @@ def incremental_import(
         current_model.objects.filter(id__in=deletion_ids).delete()
     # TODO: Delete files
 
+    # Since we don't get the bulk created object ids back from django (yet?),
+    # we just do this by timestamp - indexing more that more isn't wrong anyway
     before_bulk_create = timezone.now()
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
     current_model.objects.bulk_create(to_be_created, batch_size=100)
@@ -168,8 +173,7 @@ def incremental_import(
             to_be_created
         ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
         logger.info(f"Indexing {qs_count} {current_model.__name__}")
-        [current_doc] = registry.get_documents([current_model])
-        current_doc().update(qs)
+        search_bulk_index(current_model, qs)
 
     with transaction.atomic():
         for json_object, pk in to_be_updated:
@@ -273,7 +277,8 @@ def convert_paper(
         "name": json_paper.name,
         "reference_number": json_paper.reference,
         "oparl_id": str_or_none(json_paper.original_id),
-        "sort_date": consultations.get(json_paper.original_id) or json_paper.sort_date,
+        "sort_date": consultations.get(json_paper.original_id) or fallback_date,
+        "display_date": consultations.get(json_paper.original_id) or fallback_date,
     }
     if json_paper.paper_type:
         paper_type, created = models.PaperType.objects.get_or_create(

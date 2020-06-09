@@ -36,6 +36,7 @@ class TestElasticsearch(TestCase):
     fixtures = ["search.json"]
 
     allow_database_queries = True
+    maxDiff = 100000
 
     @classmethod
     def setUpClass(cls):
