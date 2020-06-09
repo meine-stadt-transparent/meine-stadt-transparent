@@ -2,10 +2,9 @@ from typing import Generator
 
 from django.db import models
 from django.urls import reverse
-from django.utils import timezone
 
 from .default_fields import DefaultFields, ShortableNameFields
-from .file import File
+from .file import File, fallback_date
 from .organization import Organization
 from .paper_type import PaperType
 from .person import Person
@@ -20,9 +19,19 @@ class Paper(DefaultFields, ShortableNameFields):
     change_request_of = models.ForeignKey(
         "self", null=True, blank=True, on_delete=models.CASCADE
     )
-    # This is relevant e.g. for deadlines
+
+    # We store three kinds of dates with decreasing quality:
+    # * legal_date: The official date, which is e.g. used for deadlines.
+    #   This does not necessarily match the date of publication.
+    #   Unfortunately it's often not available.
+    # * display_date: This date is either the legal_date or the date of the
+    #   first consultation. We consider it good enough to be shown to the user
+    # * sort_date: This always has a value which is potentially really wrong.
+    #   Only used in the search
     legal_date = models.DateField(null=True, blank=True)
-    sort_date = models.DateTimeField(default=timezone.now)
+    display_date = models.DateField(null=True, blank=True)
+    sort_date = models.DateTimeField(default=fallback_date)
+
     main_file = models.ForeignKey(
         File,
         null=True,

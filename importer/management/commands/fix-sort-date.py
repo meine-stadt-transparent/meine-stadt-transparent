@@ -16,15 +16,9 @@ class Command(BaseCommand):
         )
         parser.add_argument("import_date", type=str, help=help_str)
 
-        help_str = "If no date can be determined, this will be used as fallback. Should be far in the past."
-        parser.add_argument("fallback_date", type=str, help=help_str)
-
     def handle(self, *args, **options):
         import_date = datetime.datetime.strptime(
             options["import_date"] + " 23:59:59", "%Y-%m-%d %H:%M:%S"
         ).replace(tzinfo=tz.tzlocal())
-        fallback_date = datetime.datetime.strptime(
-            options["fallback_date"], "%Y-%m-%d"
-        ).replace(tzinfo=tz.tzlocal())
 
-        fix_sort_date(fallback_date, import_date)
+        fix_sort_date(import_date)

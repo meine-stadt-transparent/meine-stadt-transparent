@@ -12,6 +12,7 @@
                 "_id": "2",
                 "_score": 5.6957636,
                 "_source": {
+                    "display_date": null,
                     "legal_date": null,
                     "name": "Vorlage (Frank Unterholz)",
                     "id": 2,

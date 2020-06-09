@@ -12,6 +12,7 @@
                 "_id": "1",
                 "_score": 2.3014567,
                 "_source": {
+                    "display_date": null,
                     "legal_date": null,
                     "name": "Antrag zur \u00c4nderung der Satzung",
                     "id": 1,

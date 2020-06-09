@@ -8,6 +8,7 @@ from slugify import slugify
 
 from importer import JSON
 from importer.models import CachedObject, ExternalList
+from mainapp.functions.search import search_bulk_index
 from mainapp.models import (
     LegislativeTerm,
     Location,
@@ -22,6 +23,7 @@ from mainapp.models import (
     AgendaItem,
     DefaultFields,
 )
+from mainapp.models.file import fallback_date
 from meine_stadt_transparent import settings
 
 logger = logging.getLogger(__name__)
@@ -124,33 +126,36 @@ def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) 
         importer.load_files(body.short_name)
 
 
-def fix_sort_date(fallback_date: datetime.datetime, import_date: datetime.datetime):
+def fix_sort_date(import_date: datetime.datetime):
     """
     Tries to guess the correct sort date for all papers and files that were created no later
-    than import_date by looking at a) the legal date, b) the the date of the earliest
-    consultation or c) falling back to fallback_date
+    than import_date by looking at
+      a) the legal date,
+      b) the the date of the earliest consultation or
+      c) falling back to fallback_date
     """
     logger.info("Fixing the sort date of the papers")
-    num = Paper.objects.filter(
-        created__lte=import_date, legal_date__isnull=False
-    ).update(sort_date=F("legal_date"), modified=F("legal_date"))
-    logger.info(f"Changed the sort date of {num} papers")
-
-    num = Paper.objects.filter(legal_date__isnull=True).update(sort_date=fallback_date)
-    logger.info(f"{num} papers were not fixable due to missing legal date")
-
     # Use the date of the earliest consultation
     earliest_consultation = (
         Consultation.objects.filter(paper=OuterRef("pk"), meeting__isnull=False)
         .order_by("meeting__start")
         .values("meeting__start")[:1]
     )
-    num = (
+    papers_with_consultation = (
         Paper.objects.filter(Q(sort_date=fallback_date) | ~Q(sort_date=F("legal_date")))
         .annotate(earliest_consultation=Subquery(earliest_consultation))
         .filter(earliest_consultation__isnull=False)
-        .update(sort_date=F("earliest_consultation"))
+        # We filter on these to only update those necessary in elasticsearch
+        .filter(
+            ~Q(sort_date=F("earliest_consultation"))
+            & ~Q(display_date=F("earliest_consultation"))
+        )
     )
+    num = papers_with_consultation.update(
+        sort_date=F("earliest_consultation"), display_date=F("earliest_consultation")
+    )
+    if settings.ELASTICSEARCH_ENABLED:
+        search_bulk_index(Paper, papers_with_consultation)
     logger.info(f"{num} sort dates were fix by the earliest consultation")
 
     logger.info("Fixing the sort date of the files")
@@ -158,5 +163,20 @@ def fix_sort_date(fallback_date: datetime.datetime, import_date: datetime.dateti
         created__lte=import_date, legal_date__isnull=False
     ).update(sort_date=F("legal_date"), modified=F("legal_date"))
     logger.info(f"{num} files were changed")
-    num = File.objects.filter(legal_date__isnull=True).update(sort_date=fallback_date)
-    logger.info(f"{num} files were not determinable")
+
+    earliest_paper = (
+        Paper.objects.filter(files__pk=OuterRef("pk"))
+        .order_by("sort_date")
+        .values("sort_date")[:1]
+    )
+    file_with_paper = (
+        File.objects.filter(legal_date__isnull=True)
+        .annotate(earliest_paper=Subquery(earliest_paper))
+        .filter(earliest_paper__isnull=False)
+        # We filter on these to only update those necessary in elasticsearch
+        .filter(~Q(sort_date=F("earliest_paper")))
+    )
+    num = file_with_paper.update(sort_date=F("earliest_paper"))
+    if settings.ELASTICSEARCH_ENABLED:
+        search_bulk_index(Paper, file_with_paper)
+    logger.info(f"{num} files updated")

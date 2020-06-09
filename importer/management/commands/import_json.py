@@ -16,15 +16,13 @@ from importer.import_json import import_data
 from importer.importer import Importer
 from importer.json_datatypes import RisData, converter, format_version
 from importer.loader import BaseLoader
+from mainapp.models.file import fallback_date
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets
 from mainapp.functions.notify_users import NotifyUsers
 
 logger = logging.getLogger(__name__)
-
-# Assumption: This is older than the oldest data
-fallback_date = datetime.datetime(1997, 1, 1, 0, 0, 0, tzinfo=tz.tzlocal())
 
 
 class Command(BaseCommand):
@@ -105,7 +103,7 @@ class Command(BaseCommand):
 
         import_data(body, ris_data)
 
-        fix_sort_date(fallback_date, datetime.datetime.now(tz=tz.tzlocal()))
+        fix_sort_date(datetime.datetime.now(tz=tz.tzlocal()))
 
         if not options["skip_download"]:
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(

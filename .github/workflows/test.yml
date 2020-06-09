@@ -25,7 +25,6 @@ jobs:
           $HOME/.poetry/bin/poetry config virtualenvs.in-project true
       - uses: actions/cache@v1
         with:
-          id: cache-venv
           path: .venv
           key: poetry-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
           restore-keys: |
