@@ -7,7 +7,7 @@ from importlib.util import find_spec
 from logging import Filter, LogRecord
 from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
-
+from sentry_sdk.integrations.logging import ignore_logger
 import sentry_sdk
 from django.core.exceptions import DisallowedHost
 from sentry_sdk import configure_scope
@@ -303,8 +303,9 @@ if SENTRY_DSN:
         SENTRY_DSN,
         integrations=[DjangoIntegration()],
         release=release,
-        ignore_errors=[KeyboardInterrupt, DisallowedHost],
+        ignore_errors=[KeyboardInterrupt],
     )
+    ignore_logger("django.security.DisallowedHost")
     with configure_scope() as scope:
         scope.set_tag("real_host", REAL_HOST)
 
