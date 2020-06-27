@@ -1,0 +1,7 @@
+FROM konstin2/meine-stadt-transparent
+
+ENV ENV_PATH etc/oparl-test.env
+
+RUN /app/.venv/bin/python /app/manage.py migrate
+
+ENTRYPOINT ["/app/.venv/bin/python", "/app/manage.py", "import", "--skip-body-extra"]

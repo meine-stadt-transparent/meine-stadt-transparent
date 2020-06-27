@@ -13,8 +13,20 @@ class Command(BaseCommand):
             action="store_true",
             help="Use the oparl mirror instead of the original oparl api",
         )
+        parser.add_argument(
+            "--skip-body-extra",
+            action="store_true",
+            dest="skip_body_extra",
+            default=False,
+            help="Do not download streets and shape of the body",
+        )
         parser.add_argument("--ags", help="The Amtliche Gemeindeschlüssel")
 
     def handle(self, *args, **options):
         cli = Cli()
-        cli.from_userinput(options["cityname"], options["mirror"], options["ags"])
+        cli.from_userinput(
+            options["cityname"],
+            options["mirror"],
+            options["ags"],
+            skip_body_extra=options["skip_body_extra"],
+        )

@@ -1,4 +1,4 @@
-name: Docker publish
+name: oparl test publish
 
 on:
   push:
@@ -13,9 +13,9 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v1.1.0
         with:
+          path: etc
+          dockerfile: etc/Dockerfile.oparl-test
           username: konstin2
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: konstin2/meine-stadt-transparent
-          cache-from: konstin2/meine-stadt-transparent
+          repository: konstin2/mst-oparl-test
           tag_with_ref: true
-          build_args: BUILDKIT_INLINE_CACHE=1

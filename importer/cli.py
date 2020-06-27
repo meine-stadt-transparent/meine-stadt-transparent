@@ -53,11 +53,17 @@ class Cli:
 
         return self.index
 
-    def from_userinput(self, userinput: str, mirror: bool, ags: Optional[str]) -> None:
+    def from_userinput(
+        self,
+        userinput: str,
+        mirror: bool,
+        ags: Optional[str],
+        skip_body_extra: bool = False,
+    ) -> None:
         body_id, entrypoint = self.get_entrypoint_and_body(userinput, mirror)
         importer = Importer(get_loader_from_system(entrypoint))
         body_data, dotenv = self.import_body_and_metadata(
-            body_id, importer, userinput, ags
+            body_id, importer, userinput, ags, skip_body_extra
         )
 
         logger.info("Loading the bulk data from the oparl api")
@@ -81,7 +87,12 @@ class Cli:
             )
 
     def import_body_and_metadata(
-        self, body_id: str, importer: Importer, userinput: str, ags: Optional[str]
+        self,
+        body_id: str,
+        importer: Importer,
+        userinput: str,
+        ags: Optional[str],
+        skip_body_extra: bool = False,
     ) -> Tuple[JSON, str]:
         logger.info("Fetching the body {}".format(body_id))
         [body_data] = importer.load_bodies(body_id)
@@ -117,10 +128,11 @@ class Cli:
                 "Found the oparl endpoint. Please add the following line to your dotenv file "
                 "(you'll be reminded again after the import finished): \n\n" + dotenv
             )
-        logger.info("Importing the shape of the city")
-        import_outline(body)
-        logger.info("Importing the streets")
-        import_streets(body)
+        if not skip_body_extra:
+            logger.info("Importing the shape of the city")
+            import_outline(body)
+            logger.info("Importing the streets")
+            import_streets(body)
         return body_data.data, dotenv
 
     def get_entrypoint_and_body(
