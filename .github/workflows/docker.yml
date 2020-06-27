@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build and push Docker images
+      - name: Build and push konstin2/meine-stadt-transparent
         uses: docker/build-push-action@v1.1.0
         with:
           username: konstin2
@@ -19,3 +19,12 @@ jobs:
           cache-from: konstin2/meine-stadt-transparent
           tag_with_ref: true
           build_args: BUILDKIT_INLINE_CACHE=1
+      - name: Build and push konstin2/mst-oparl-test
+        uses: docker/build-push-action@v1.1.0
+        with:
+          path: etc
+          dockerfile: etc/Dockerfile.oparl-test
+          username: konstin2
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: konstin2/mst-oparl-test
+          tag_with_ref: true
