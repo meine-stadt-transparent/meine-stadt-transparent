@@ -203,7 +203,7 @@ class JsonToDb:
         self,
         object_type: Type[DefaultFields],
         oparl_ids: Optional[List[str]],
-        warn: bool = True,
+        debug_id: str,
     ) -> List[int]:
         if not oparl_ids:
             return []
@@ -217,11 +217,10 @@ class JsonToDb:
             missing = sorted((set(oparl_ids) - set(found_ids)))
 
             if missing:
-                if warn and self.warn_missing:
+                if self.warn_missing:
                     logger.warning(
-                        "The objects {} were supposed to be a part of the external lists, but weren't".format(
-                            missing
-                        )
+                        f"The objects {missing} linked from {debug_id} were "
+                        f"supposed to be a part of the external lists, but weren't"
                     )
 
                 for oparl_id in missing:
@@ -360,7 +359,7 @@ class JsonToDb:
 
     def agenda_item_related(self, libobject: JSON, item: AgendaItem) -> None:
         item.auxiliary_file.set(
-            self.retrieve_many(File, libobject.get("auxiliaryFile"))
+            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
         )
 
     def membership(self, libobject: JSON, membership: Membership) -> Membership:
@@ -415,7 +414,9 @@ class JsonToDb:
 
     def body_related(self, libobject: JSON, body: Body) -> None:
         body.legislative_terms.set(
-            self.retrieve_many(LegislativeTerm, libobject.get("legislativeTerm"))
+            self.retrieve_many(
+                LegislativeTerm, libobject.get("legislativeTerm"), libobject["id"]
+            )
         )
 
     def paper(self, libobject: JSON, paper: Paper) -> Paper:
@@ -444,11 +445,19 @@ class JsonToDb:
         return paper
 
     def paper_related(self, libobject: JSON, paper: Paper) -> None:
-        paper.files.set(self.retrieve_many(File, libobject.get("auxiliaryFile")))
-        paper.organizations.set(
-            self.retrieve_many(Organization, libobject.get("underDirectionOf"))
+        paper.files.set(
+            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
         )
-        paper.persons.set(self.retrieve_many(Person, libobject.get("originatorPerson")))
+        paper.organizations.set(
+            self.retrieve_many(
+                Organization, libobject.get("underDirectionOf"), libobject["id"]
+            )
+        )
+        paper.persons.set(
+            self.retrieve_many(
+                Person, libobject.get("originatorPerson"), libobject["id"]
+            )
+        )
 
     def organization(self, libobject: JSON, organization: Organization) -> Organization:
         type_name = libobject.get("organizationType")
@@ -499,11 +508,15 @@ class JsonToDb:
 
     def meeting_related(self, libobject: JSON, meeting: Meeting) -> None:
         meeting.auxiliary_files.set(
-            self.retrieve_many(File, libobject.get("auxiliaryFile"))
+            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
         )
-        meeting.persons.set(self.retrieve_many(Person, libobject.get("participant")))
+        meeting.persons.set(
+            self.retrieve_many(Person, libobject.get("participant"), libobject["id"])
+        )
         meeting.organizations.set(
-            self.retrieve_many(Organization, libobject.get("organization"))
+            self.retrieve_many(
+                Organization, libobject.get("organization"), libobject["id"]
+            )
         )
 
     def person(self, libobject: JSON, person: Person) -> Person:
