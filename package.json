@@ -44,7 +44,7 @@
     "chromedriver": "^83.0.0",
     "corejs-typeahead": "github:meine-stadt-transparent/typeahead.js",
     "font-awesome": "^4.7.0",
-    "fullcalendar": "^3.10.2",
+    "fullcalendar": "^5.1.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
     "leaflet": "^1.6.0",
