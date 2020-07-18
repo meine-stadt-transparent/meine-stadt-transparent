@@ -1212,11 +1212,11 @@ description = "Ctypes-based simple MagickWand API binding for Python"
 name = "wand"
 optional = false
 python-versions = "*"
-version = "0.5.9"
+version = "0.6.2"
 
 [package.extras]
-doc = ["Sphinx (>=1.0)"]
-test = ["pytest (>=2.3.0)", "pytest-xdist (>=1.8)", "psutil (>=1.0.1)"]
+doc = ["Sphinx (>=2.4.1)"]
+test = ["pytest (>=5.3.5)"]
 
 [[package]]
 category = "dev"
@@ -1280,7 +1280,7 @@ import-json = ["cattrs"]
 pgp = ["pgpy"]
 
 [metadata]
-content-hash = "76df967eabb7d3832ce73c297c6a1e41deefefd87cee6d3bcc5630efa2940fcd"
+content-hash = "d2eaf0dae0503080717f2e994b2bc16c5f8da7061066ed163873fc1274ef2f20"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1847,8 +1847,8 @@ wagtail = [
     {file = "wagtail-2.9.2.tar.gz", hash = "sha256:07c08f2582c499f78261e4b514a9bad36353cfc47cb8792a79517d13da8f8d1c"},
 ]
 wand = [
-    {file = "Wand-0.5.9-py2.py3-none-any.whl", hash = "sha256:598e13e46779e48fcecba7b37fd9d61fcdd1e70007ccba5d5b2e731186a2ec2e"},
-    {file = "Wand-0.5.9.tar.gz", hash = "sha256:6eaca78e53fbe329b163f0f0b28f104de98edbd69a847268cc5d6a6e392b9b28"},
+    {file = "Wand-0.6.2-py2.py3-none-any.whl", hash = "sha256:b56b96189df2ac3db586afdc6ba67ca37c886d234c3fd98d94172f03248a8e3b"},
+    {file = "Wand-0.6.2.tar.gz", hash = "sha256:65440e478b595aaa18483e25091adacf6d4458c49c2fd8d59e0fd44a7393a14a"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
