@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib.syndication.views import Feed
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from mainapp.models.paper import Paper
 from mainapp.views.feeds.utils import paper_description

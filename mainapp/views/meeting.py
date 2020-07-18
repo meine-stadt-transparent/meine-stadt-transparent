@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.http import urlencode
 from django.utils.timezone import now, get_current_timezone
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from icalendar import Calendar
 from pytz import timezone
 from slugify import slugify

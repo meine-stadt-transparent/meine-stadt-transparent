@@ -1,6 +1,6 @@
 from html import escape
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from mainapp.models import Paper
 

@@ -1,7 +1,7 @@
 from typing import Optional, Dict, Any
 
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from djgeojson.fields import GeometryField
 
 from .default_fields import DefaultFields

@@ -11,7 +11,7 @@ from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.html import escape
-from django.utils.translation import ugettext, pgettext
+from django.utils.translation import gettext, pgettext
 from django_elasticsearch_dsl.registries import registry
 from django_elasticsearch_dsl.search import Search
 from elasticsearch import TransportError
@@ -256,7 +256,7 @@ def _add_date_after(
         after = parse(params["after"])
     except (ValueError, OverflowError) as e:
         errors.append(
-            ugettext(
+            gettext(
                 f"The value for after is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
@@ -274,7 +274,7 @@ def _add_date_before(search: Search, params: Dict[str, Any], options, errors) ->
         before = parse(params["before"])
     except (ValueError, OverflowError) as e:
         errors.append(
-            ugettext(
+            gettext(
                 f"The value for before is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
