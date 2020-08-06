@@ -10,9 +10,6 @@ ENV ENV_PATH etc/oparl-test.env
 USER root
 RUN apt update && apt-get install -y mariadb-server
 
-ADD oparl-test.env etc/oparl-test.env
-ADD oparl_test_entrypoint.sh etc/oparl_test_entrypoint.sh
-
 # https://stackoverflow.com/a/48648098/3549270
 RUN mysqld_safe & sleep 1; until mysqladmin ping; do sleep 1; done && \
     mysql -e "SET PASSWORD FOR 'root'@'localhost' = PASSWORD('dummy'); FLUSH PRIVILEGES" && \
