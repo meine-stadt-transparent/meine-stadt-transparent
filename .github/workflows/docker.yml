@@ -12,19 +12,25 @@ jobs:
       - uses: actions/checkout@v2
       - name: Build and push konstin2/meine-stadt-transparent
         uses: docker/build-push-action@v1.1.0
+        env:
+          DOCKER_BUILDKIT: 1
         with:
           username: konstin2
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: konstin2/meine-stadt-transparent
-          cache-from: konstin2/meine-stadt-transparent
+          cache-froms: konstin2/meine-stadt-transparent
           tag_with_ref: true
           build_args: BUILDKIT_INLINE_CACHE=1
       - name: Build and push konstin2/mst-oparl-test
         uses: docker/build-push-action@v1.1.0
+        env:
+          DOCKER_BUILDKIT: 1
         with:
           path: etc
-          dockerfile: etc/Dockerfile.oparl-test
+          dockerfile: etc/oparl-test/Dockerfile
           username: konstin2
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: konstin2/mst-oparl-test
+          cache-froms: konstin2/mst-oparl-test
           tag_with_ref: true
+          build_args: BUILDKIT_INLINE_CACHE=1

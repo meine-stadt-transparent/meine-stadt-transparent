@@ -7,11 +7,11 @@ from importlib.util import find_spec
 from logging import Filter, LogRecord
 from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
-from sentry_sdk.integrations.logging import ignore_logger
+
 import sentry_sdk
-from django.core.exceptions import DisallowedHost
 from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.logging import ignore_logger
 
 from meine_stadt_transparent.settings.env import *
 from meine_stadt_transparent.settings.nested import *
@@ -450,7 +450,7 @@ if DEBUG and not TESTING:
         DEBUG_TOOLBAR_ACTIVE = False
 
     if env.bool("DEBUG_SHOW_SQL", False):
-        LOGGING["logggers"]["django.db.backends"] = {
+        LOGGING["loggers"]["django.db.backends"] = {
             "level": "DEBUG",
             "handlers": ["console"],
             "propagate": False,
