@@ -59,6 +59,7 @@ class Cli:
         mirror: bool,
         ags: Optional[str],
         skip_body_extra: bool = False,
+        skip_files: bool = False,
     ) -> None:
         body_id, entrypoint = self.get_entrypoint_and_body(userinput, mirror)
         importer = Importer(get_loader_from_system(entrypoint))
@@ -76,8 +77,9 @@ class Cli:
         logger.info("Loading the data into the database")
         importer.import_objects()
 
-        logger.info("Loading the files")
-        importer.load_files(fallback_city=userinput)
+        if not skip_files:
+            logger.info("Loading the files")
+            importer.load_files(fallback_city=userinput)
 
         if dotenv:
             logger.info(

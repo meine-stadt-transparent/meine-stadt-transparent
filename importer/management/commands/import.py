@@ -20,6 +20,13 @@ class Command(BaseCommand):
             default=False,
             help="Do not download streets and shape of the body",
         )
+        parser.add_argument(
+            "--skip-files",
+            action="store_true",
+            dest="skip_files",
+            default=False,
+            help="Do not download the files",
+        )
         parser.add_argument("--ags", help="The Amtliche Gemeindeschlüssel")
 
     def handle(self, *args, **options):
@@ -29,4 +36,5 @@ class Command(BaseCommand):
             options["mirror"],
             options["ags"],
             skip_body_extra=options["skip_body_extra"],
+            skip_files=options["skip_files"],
         )
