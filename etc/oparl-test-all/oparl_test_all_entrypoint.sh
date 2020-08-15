@@ -6,5 +6,5 @@ mysqld_safe &
 sleep 2
 until mysqladmin ping -s; do sleep 1; done
 
-# Run the import
-/app/.venv/bin/python /app/manage.py import --skip-body-extra --skip-files $1
+# Test all endpoints
+/app/.venv/bin/python /app/etc/oparl-test-all/test_all_endpoints.py
