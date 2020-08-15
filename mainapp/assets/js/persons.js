@@ -109,7 +109,7 @@ $(function () {
         $groupRadios.filter("[value=" + group + "]:not(:checked)").prop("checked", true).trigger("click");
     };
     // Radio-Button-Group version
-    $groupRadios.change(() => {
+    $groupRadios.click(() => {
         setParliamentaryGroup($groupRadios.filter(":checked").val());
     });
     // Drop-Down version

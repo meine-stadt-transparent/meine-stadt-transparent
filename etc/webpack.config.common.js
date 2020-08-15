@@ -18,9 +18,7 @@ module.exports = {
             'hammerjs/hammer',
             'popper.js',
             'leaflet/src/Leaflet',
-            'bootstrap/dist/js/bootstrap.js',
             'corejs-typeahead/dist/typeahead.jquery',
-            'bootstrap-daterangepicker/daterangepicker'
         ]
     },
     output: {
@@ -102,13 +100,6 @@ module.exports = {
         }),
         new HardSourceWebpackPlugin() // https://github.com/webpack/webpack/issues/6767#issuecomment-410899686
     ],
-    //optimization: {
-    //   splitChunks: {
-    //     cacheGroups: {
-    //       default: false
-    //     }
-    //   }
-    // }
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development'
 };
 
