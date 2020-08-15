@@ -1,4 +1,7 @@
 const moment = require('moment');
+// These are required since webpack 4 for some reason
+require('bootstrap-daterangepicker');
+require('bootstrap');
 
 export default class FacetDateRange {
     constructor($facet) {
