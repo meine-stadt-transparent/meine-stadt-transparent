@@ -45,7 +45,7 @@ sentry-sdk = "^0.16"
 minio = "^5.0"
 tqdm = "^4.29"
 python-dateutil = "^2.7"
-wagtail = "~2.9.0"
+wagtail = ">=2.9,<2.11"
 django-decorator-include = ">=2.1,<4.0"
 cattrs = { version = "^1.0.0", optional = true }
 # Apparently this is the solution to some weird bug that otherwise makes pip install fail in docker
