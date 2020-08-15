@@ -7,11 +7,7 @@ class PersonsTest(ChromeDriverTestCase):
     fixtures = ["initdata"]
 
     def _get_pos_by_name(self, name):
-        js = (
-            'window.jQuery(".persons-list").data("get-item-pos-by-name")("'
-            + name
-            + '");'
-        )
+        js = '$(".persons-list").data("get-item-pos-by-name")("' + name + '");'
         pos = self.browser.evaluate_script(js)
         return pos
 
