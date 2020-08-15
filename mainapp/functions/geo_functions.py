@@ -96,8 +96,8 @@ def latlng_to_address(lat, lng) -> str:
                 "OpenCage Data is selected as Geocoder, however no OPENCAGE_KEY is set"
             )
         location = OpenCage(settings.OPENCAGE_KEY).reverse(search_str)
-        if len(location) > 0:
-            return _format_opencage_location(location[0])
+        if location:
+            return _format_opencage_location(location)
     else:
         location = Nominatim(
             user_agent=slugify(settings.PRODUCT_NAME) + "/1.0"
