@@ -18,8 +18,7 @@ import img1 from "../../../node_modules/leaflet/dist/images/marker-icon-2x.png";
 // noinspection ES6UnusedImports
 import img2 from "../../../node_modules/leaflet/dist/images/marker-shadow.png";
 
-
-window.jQuery = require('jquery');
+import 'bootstrap';
 
 /*
  Convention: Each widget has an assigned object that handles the behavior.

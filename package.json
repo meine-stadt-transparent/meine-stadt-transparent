@@ -16,24 +16,27 @@
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "autoprefixer": "^9.7.6",
+    "babel-loader": "^8.1.0",
     "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
-    "babel-preset-env": "^1.7.0",
-    "browser-sync": "^2.26.12",
-    "css-loader": "^0.28.11",
-    "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^2.0.0",
+    "browser-sync": "^2.26.7",
+    "css-loader": "^3.5.3",
+    "file-loader": "^6.0.0",
     "gulp": "^4.0.2",
+    "hard-source-webpack-plugin": "^0.13.1",
     "heml": "^1.1.3",
+    "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "resolve-url-loader": "^3.1.1",
-    "sass-loader": "^7.3.1",
-    "style-loader": "^0.23.1",
-    "url-loader": "^1.1.2",
-    "webpack": "^3.12.0",
+    "sass-loader": "^8",
+    "style-loader": "^1",
+    "url-loader": "^4",
+    "webpack": "^4",
     "webpack-bundle-tracker": "^0.4.3",
+    "webpack-cli": "^3.3.11",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
@@ -60,5 +63,8 @@
   },
   "resolutions": {
     "webpack-sources": "1.0.1"
-  }
+  },
+  "browserslist": [
+    "defaults"
+  ]
 }

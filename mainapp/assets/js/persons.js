@@ -53,7 +53,6 @@ $(function () {
         });
     };
 
-
     // Make the items tabbable in the correct order, without breaking the natural tab order of the page
     let recalcTabindexes = () => {
         let lastTabindex = 1;
@@ -109,31 +108,12 @@ $(function () {
         $groupRadios.filter("[value=" + group + "]:not(:checked)").prop("checked", true).trigger("click");
     };
     // Radio-Button-Group version
-    $groupRadios.change(() => {
+    $groupRadios.click(() => {
         setParliamentaryGroup($groupRadios.filter(":checked").val());
     });
     // Drop-Down version
     $groupDropdownLinks.click((ev) => {
         ev.preventDefault();
         setParliamentaryGroup($(ev.currentTarget).data("filter"));
-    });
-
-
-    /* Functions used by frontend testing to query the grid */
-
-    // Returns the current filtered, sorted items
-    $gridEl.data("get-items", () => {
-        return getSortedItems();
-    });
-    // Given a name of a person, this function returns the position in the list of the corresponding item
-    // Returns null if no person exists with that name of the person is currently not visible
-    $gridEl.data("get-item-pos-by-name", (name) => {
-        let positions = $gridEl.data("get-items")();
-        for (let i = 0; i < positions.length; i++) {
-            if (positions[i].data("name") === name) {
-                return i;
-            }
-        }
-        return null;
     });
 });

@@ -1,4 +1,5 @@
 const moment = require('moment');
+import 'bootstrap-daterangepicker';
 
 export default class FacetDateRange {
     constructor($facet) {
