@@ -42,7 +42,7 @@ class NotifyUsers:
         executed = search.execute()
         return [parse_hit(hit) for hit in executed.hits]
 
-    def notify_user(self, user: User) -> None:
+    def notify_user(self, user: User) -> bool:
         context = {
             "base_url": settings.ABSOLUTE_URI_BASE,
             "site_name": settings.TEMPLATE_META["logo_name"],
@@ -64,7 +64,7 @@ class NotifyUsers:
         logger.debug("User %s: %i results\n" % (user.email, len(context["alerts"])))
 
         if len(context["alerts"]) == 0:
-            return
+            return False
 
         message_html = get_template("email/user-alert.html").render(context)
         message_html = message_html.replace("&lt;mark&gt;", "<mark>").replace(
@@ -90,7 +90,13 @@ class NotifyUsers:
                 alert.last_match = timezone.now()
                 alert.save()
 
-    def notify_all(self) -> None:
+        return True
+
+    def notify_all(self):
+        alerts_send = 0
         users = User.objects.filter(is_active=True).all()
         for user in users:
-            self.notify_user(user)
+            alert_send = self.notify_user(user)
+            if alert_send:
+                alerts_send += 1
+        logger.info(f"Sent notifications to {alerts_send} users")
