@@ -3,7 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 const Autoprefixer = require('autoprefixer');
 var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
