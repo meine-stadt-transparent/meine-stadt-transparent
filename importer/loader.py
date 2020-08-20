@@ -184,7 +184,14 @@ class CCEgovLoader(BaseLoader):
                     del data[key]
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
-        response = super().load(url, query)
+        try:
+            response = super().load(url, query)
+        except HTTPError as e:
+            if e.response.status_code == 500:
+                logger.error(f"Got an 500 for a CC e-gov request, retrying: {e}")
+                response = super().load(url, query)
+            else:
+                raise
         self.visit(response)
         return response
 

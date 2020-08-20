@@ -397,6 +397,10 @@ LOGGING = {
 
 LOGGING.update(env.json("LOGGING", {}))
 
+# Not sure what is going on, but this make caplog work
+if TESTING:
+    LOGGING["loggers"] = {}
+
 logging.captureWarnings(True)
 
 OPARL_INDEX = env.str("OPARL_INDEX", "https://mirror.oparl.org/bodies")
