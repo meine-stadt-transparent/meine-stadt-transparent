@@ -18,32 +18,34 @@ converter.register_structure_hook(
     else datetime.fromisoformat(ts),
 )
 
-format_version = 3
+format_version = 4
 
 
 @attr.s(frozen=True, auto_attribs=True)
 class Person:
+    # Overview page
     name: str
     party: Optional[str]
     begin: Optional[date] = None
     end: Optional[date] = None
     original_id: Optional[int] = None
+    # Detail page
+    location: Optional[str] = None
+    street_address: Optional[str] = None
+    phone_private: Optional[str] = None
+    phone_office: Optional[str] = None
+    fax_private: Optional[str] = None
+    fax_office: Optional[str] = None
+    mobile_office: Optional[str] = None
+    mobile_private: Optional[str] = None
+    email: Optional[str] = None
+    occupation: Optional[str] = None
+    web: Optional[str] = None
+    birthday: Optional[str] = None
+    image: Optional[str] = None
 
     def get_unique(self):
         return self.name
-
-
-@attr.s(frozen=True, auto_attribs=True)
-class PersonDetail:
-    original_id: int
-    location: Optional[str]
-    street_address: Optional[str]
-    phone_private: Optional[str]
-    fax_private: Optional[str]
-    email: Optional[str]
-
-    def get_unique(self):
-        return self.original_id
 
 
 @attr.s(frozen=True, auto_attribs=True)
