@@ -1,9 +1,7 @@
-import json
 import logging
-import subprocess
-import tempfile
 from typing import Optional
 
+import osm2geojson
 import requests
 from django.db import IntegrityError
 
@@ -79,22 +77,9 @@ def import_outline(body: Body, gemeindeschluessel: Optional[str] = None):
 
     response = requests.post(overpass_api, data={"data": query})
     response.raise_for_status()
-    geojson = convert_to_geojson(response.text)
+    geojson = osm2geojson.json2geojson(response.text)
     outline.geometry = geojson
     outline.save()
 
     body.outline = outline
     body.save()
-
-
-def convert_to_geojson(osm):
-    with tempfile.NamedTemporaryFile("w") as file:
-        file.write(osm)
-        filename = file.name
-
-        result = subprocess.check_output(
-            ["node_modules/.bin/osmtogeojson", "-f", "json", "-m", filename]
-        )
-        geojson = json.loads(result.decode())
-
-    return geojson

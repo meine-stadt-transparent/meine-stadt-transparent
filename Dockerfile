@@ -14,15 +14,7 @@ COPY customization /app/customization
 COPY mainapp/assets /app/mainapp/assets
 RUN npm run build:prod && npm run build:email
 
-# Stage 2: Cache npm install osmtogeojson, which is called from python
-FROM node:10 AS osmtogeojson
-
-ENV NODE_ENV=production
-WORKDIR /app
-
-RUN npm install osmtogeojson
-
-# Stage 3: Build the .venv folder
+# Stage 2: Build the .venv folder
 FROM python:3.7-slim-buster AS venv-build
 
 RUN apt-get update && \
@@ -39,16 +31,13 @@ RUN mkdir cms importer mainapp meine_stadt_transparent && \
     $HOME/.poetry/bin/poetry config virtualenvs.in-project true && \
     $HOME/.poetry/bin/poetry install --no-dev -E import-json
 
-# Stage 4: The actual container
+# Stage 3: The actual container
 FROM python:3.7-slim-buster
 
 ENV PYTHONUNBUFFERED=1 NODE_ENV=production
 
 RUN apt-get update && \
-    apt-get install -y curl gnupg && \
-    curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
-    apt-get install -y nodejs git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
-    apt-get purge -y curl gnupg && \
+    apt-get install -y git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
@@ -58,7 +47,6 @@ RUN apt-get update && \
 USER www-data
 
 COPY --chown=www-data:www-data . /app/
-COPY --chown=www-data:www-data --from=osmtogeojson /app/node_modules /app/node_modules
 COPY --chown=www-data:www-data --from=venv-build /app/.venv /app/.venv
 COPY --chown=www-data:www-data --from=front-end /app/mainapp/assets /app/mainapp/assets
 COPY --chown=www-data:www-data --from=front-end /app/node_modules/pdfjs-dist /app/node_modules/pdfjs-dist

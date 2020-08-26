@@ -4,11 +4,11 @@ This document shall explain the important design decision, assumptions and trade
 
 ## Assumptions
 
- * The data has the structure that is used for the OParl format. This is a well tested assumptions as the big comercial vendors have implemented OParl and approved that structure
+ * The data has the structure that is used for the OParl format. This is a well tested assumptions as the big commercial vendors have implemented OParl and approved that structure
  * There is one main body. In Munich e.g. there is the city of Munich in distinction to the 25 city districts.
  * There is one main committee (Mostly the city council)
- * There are mutliple factions / parliamentary groups in the main committee. The filters on the organization page are based on that assumption.
- * There are three main organizatin types: Committee, Department and Parliamentary Group. There are also others, though those three are the most important.
+ * There are multiple factions / parliamentary groups in the main committee. The filters on the organization page are based on that assumption.
+ * There are three main organization types: Committee, Department and Parliamentary Group. There are also others, though those three are the most important.
  * One deployment contains data which is in one timezone.
  * No meeting starting before 8:00 or after 21:00 is a good default
 
@@ -32,7 +32,7 @@ This document shall explain the important design decision, assumptions and trade
  * Displaying a file, mainly with pdf.js
  * Kalendar
  * Meeting with agenda items and attendees
- * Organization with persons and papaer
+ * Organization with persons and paper
  * Login and profile
  * Search with facets ✓
  * One Pager alike landing page ✓

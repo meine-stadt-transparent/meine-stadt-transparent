@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+ * The json import format was update to version 4.
+ * Replaced the node tool osmtogeojson with the python osm2geojson so that the runtime doesn't need node anymore. This also removes a few outdated dependencies.
+
 ## 0.2.8
 
 Note: Please rebuild the search index after installing this version (`./manage.py search_index --rebuild`)

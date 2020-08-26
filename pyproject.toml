@@ -48,9 +48,7 @@ python-dateutil = "^2.7"
 wagtail = ">=2.9,<2.11"
 django-decorator-include = ">=2.1,<4.0"
 cattrs = { version = "^1.0.0", optional = true }
-# Apparently this is the solution to some weird bug that otherwise makes pip install fail in docker
-# See e.g. https://stackoverflow.com/a/54767646/3549270
-"keyrings.alt" = "^3.4.0"
+osm2geojson = "^0.1.28"
 
 [tool.poetry.dev-dependencies]
 selenium = "3.141.0"
