@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 
 class Cli:
-    """ Tries to import all required data (oparl system id, ags and city name for osm) from a user input
+    """Tries to import all required data (oparl system id, ags and city name for osm) from a user input
     that might be the name of a city, the url of a body or the url of a system.
 
     It uses the information from wikidata, open street map and the oparl mirror.

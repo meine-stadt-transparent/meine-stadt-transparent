@@ -114,8 +114,8 @@ def incremental_import(
     json_objects: Iterable[Dict[str, Any]],
     soft_delete: bool = True,
 ):
-    """ Compared the objects in the database with the json data for a given objects and
-    creates, updates and (soft-)deletes the appropriate records. """
+    """Compared the objects in the database with the json data for a given objects and
+    creates, updates and (soft-)deletes the appropriate records."""
 
     # Handle undeleted objects, e.g. papers that disappeared and reappeared
     if issubclass(current_model, DefaultFields):

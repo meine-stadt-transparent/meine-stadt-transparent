@@ -103,9 +103,9 @@ class TestFunctions(TestCase):
             )
 
     def test_membeship_get_or_load(self):
-        """ Sometimes main objects are not in the external lists.
+        """Sometimes main objects are not in the external lists.
 
-        Also check that cycles (between Membership and Person are resolved) """
+        Also check that cycles (between Membership and Person are resolved)"""
         membership = {
             "id": "https://oparl.example.org/membership/0",
             "type": "https://schema.oparl.org/1.1/Membership",

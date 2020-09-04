@@ -407,9 +407,9 @@ def autocomplete(query: str) -> Response:
 
 
 def search_bulk_index(model: Type[Model], qs: QuerySet):
-    """ Django orm bulk functions such as `bulk_create`, `bulk_index` and
+    """Django orm bulk functions such as `bulk_create`, `bulk_index` and
     `update`do not send signals for the modified objects and therefore do not
     automatically update the elasticsearch index. This function therefore
-    bulk-reindexes the changed objects. """
+    bulk-reindexes the changed objects."""
     [current_doc] = registry.get_documents([model])
     return current_doc().update(qs)

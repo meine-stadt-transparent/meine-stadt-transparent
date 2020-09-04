@@ -18,8 +18,8 @@ from mainapp.views.utils import (
 
 
 def persons(request):
-    """ Shows all members of the default organization, which are made filterable by the parliamentary group
-    memberships. """
+    """Shows all members of the default organization, which are made filterable by the parliamentary group
+    memberships."""
     organization = get_object_or_404(
         Organization, id=settings.SITE_DEFAULT_ORGANIZATION
     )

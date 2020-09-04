@@ -29,9 +29,9 @@ def is_es_online(connection_alias="default"):
 @modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 @unittest.skipUnless(is_es_online(), "Elasticsearch is offline")
 class TestElasticsearch(TestCase):
-    """ Tests validating our elasticsearch config against a real elasticsearch instance.
+    """Tests validating our elasticsearch config against a real elasticsearch instance.
 
-    Since I don't want to require elasticsearch to run the tests, """
+    Since I don't want to require elasticsearch to run the tests,"""
 
     fixtures = ["search.json"]
 
@@ -45,7 +45,7 @@ class TestElasticsearch(TestCase):
         call_command(search_index.Command(), action="rebuild", force=True)
 
     def test_scoring(self):
-        """ Checks that the search results are in the intended order
+        """Checks that the search results are in the intended order
 
         1234/89: Checks that looking for reference numbers works and checks that the slash
         (which is split by the tokenizer) works

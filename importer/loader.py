@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class BaseLoader:
-    """ Provides a json and file download function.
+    """Provides a json and file download function.
 
     This class can be overwritten for vendor specific fixups
     """

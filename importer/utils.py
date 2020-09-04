@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class Utils:
-    """ A collection of helper function for the oparl importer.
+    """A collection of helper function for the oparl importer.
 
     These are methods and not functions so they can be easily overwritten.
     """

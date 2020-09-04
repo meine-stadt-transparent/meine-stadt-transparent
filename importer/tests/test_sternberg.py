@@ -7,7 +7,7 @@ from importer.loader import SternbergLoader
 
 
 class TestSternberg(TestCase):
-    """ Tests for the workaround for the bugs in Sterberg's OParl implementation
+    """Tests for the workaround for the bugs in Sterberg's OParl implementation
 
     The exact urls might not return an error anymore, but any timestamp in the future will work
     """
