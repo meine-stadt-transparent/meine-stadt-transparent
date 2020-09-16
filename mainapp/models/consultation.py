@@ -24,7 +24,7 @@ class Consultation(DefaultFields):
     role = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
-        return "{} {} {}".format(self.meeting, self.meeting.id, self.paper)
+        return "{} {} {}".format(self.meeting, self.meeting.id if self.meeting else None, self.paper)
 
     def single_agenda_item(self) -> Optional["AgendaItem"]:
         if self.agendaitem_set.count() == 1:

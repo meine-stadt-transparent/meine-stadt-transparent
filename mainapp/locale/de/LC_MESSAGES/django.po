@@ -1062,7 +1062,6 @@ msgid "non-public agenda item"
 msgstr "Nichtöffentlicher Tagesordnungspunkt"
 
 #: mainapp/templates/mainapp/paper.html:137
-#, fuzzy
 msgid "No information available"
 msgstr "Keine Informationen verfügbar"
 

@@ -110,8 +110,8 @@
                                 {% if item %}
                                     <a href="{% url "meeting" item.meeting.id %}#item-{{ item.key }}">
                                         <div class="consultation-speech-bubble">
-                                            {% if consultation.title %}
-                                                <div class="text-black font-weight-bold">{{ consultation.title }}</div>
+                                            {% if consultation.role %}
+                                                <div class="text-black font-weight-bold">{{ consultation.role }}</div>
                                             {% endif %}
                                             {% if item %}
                                                 <div class="font-weight-bold">{{ item.meeting.name }}</div>
@@ -127,9 +127,10 @@
                                             {% endif %}
                                         </div>
                                     </a>
-                                {% elif consultation.title %}
+                                {# See e.g. https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?id=1016689 where the role is the title #}
+                                {% elif consultation.role %}
                                     <div class="consultation-speech-bubble">
-                                        <div class="font-weight-bold">{{ consultation.title }}</div>
+                                        <div class="font-weight-bold">{{ consultation.role }}</div>
                                     </div>
                                 {% else %}
                                     <div class="consultation-speech-bubble">
