@@ -4,6 +4,14 @@
 
 version: '3'
 services:
+  nginx-dev:
+    image: nginx:1
+    container_name: nginx-dev
+    volumes:
+      - .:/mnt
+      - ./nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
+    network_mode: host
+
   mariadb-dev:
     image: mariadb:10
     container_name: mariadb-dev
@@ -16,8 +24,6 @@ services:
       - MYSQL_USER=meinestadttransparent
       - MYSQL_PASSWORD=meinestadttransparent
       - MYSQL_RANDOM_ROOT_PASSWORD=true
-    networks:
-      - mst_dev
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch-dev:
@@ -37,8 +43,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    networks:
-      - mst_dev
 
   kibana-dev:
     image: docker.elastic.co/kibana/kibana-oss:7.7.0
@@ -47,8 +51,6 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch-dev:9200
     ports:
       - 5601:5601
-    networks:
-      - mst_dev
 
   minio-dev:
     image: minio/minio
@@ -60,14 +62,9 @@ services:
       MINIO_SECRET_KEY: meinestadttransparent
     ports:
       - 9000:9000
-    networks:
-      - mst_dev
     command: server /minio_data
 
 volumes:
   elasticsearch_data:
   minio_data:
   mariadb_data:
-
-networks:
-  mst_dev:
