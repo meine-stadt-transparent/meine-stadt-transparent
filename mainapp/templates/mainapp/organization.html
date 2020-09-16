@@ -75,7 +75,7 @@
                  aria-labelledby="member-tab">
                 <div class="d-flex flex-column">{% include "partials/person_grid.html" %}</div>
                 {% if members|length == 0 %}
-                    <p class="font-italic">{% trans "No members for this organization" %}</p>
+                    <p class="font-italic">{% trans "This organization doesn't have any members listed" %}</p>
                 {% endif %}
             </div>
             <div id="paper-list" class="tab-pane fade" role="tabpanel"

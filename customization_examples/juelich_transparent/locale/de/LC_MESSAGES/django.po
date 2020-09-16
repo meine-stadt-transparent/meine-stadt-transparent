@@ -20,4 +20,4 @@ msgstr ""
 
 #: customization_examples/juelich_transparent/templates/info/contact.html:5
 msgid "Contact"
-msgstr ""
+msgstr "Kontakt"

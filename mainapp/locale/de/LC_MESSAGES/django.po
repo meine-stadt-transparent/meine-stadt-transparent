@@ -563,7 +563,7 @@ msgstr "Feedback"
 
 #: mainapp/templates/email/user-alert.html:129
 msgid "Unsubscribe / Manage your e-mail notifications"
-msgstr ""
+msgstr "Abbestellen / Bearbeiten sie die Benachrichtigungeinstellungen"
 
 #: mainapp/templates/error/404.html:6
 msgid "Not Found"
@@ -597,7 +597,7 @@ msgstr "Fotografiert von Luigi Rosa, CC-BY-SA"
 #: mainapp/templates/error/500.html:21
 msgctxt "Image"
 msgid "Source"
-msgstr ""
+msgstr "Quelle"
 
 #: mainapp/templates/info/about.html:6
 msgid "About this project"
@@ -616,12 +616,12 @@ msgstr "Kontakt"
 #: mainapp/templates/info/contact.html:12
 msgctxt "Contact page"
 msgid "E-Mail"
-msgstr ""
+msgstr "E-Mail"
 
 #: mainapp/templates/info/feedback.html:5
 #: mainapp/templates/info/feedback.html:9
 msgid "Feedback"
-msgstr ""
+msgstr "Feedback"
 
 #: mainapp/templates/info/feedback.html:10
 msgid ""
@@ -829,7 +829,7 @@ msgstr ""
 
 #: mainapp/templates/mainapp/index_v2/index_documents.html:4
 msgid "The latest papers as RSS-Feed"
-msgstr ""
+msgstr "Die neusten Vorlagen als RSS-Feed"
 
 #: mainapp/templates/mainapp/index_v2/index_main_buttons.html:4
 msgid "Information about the city council"
@@ -993,8 +993,8 @@ msgid "Meetings"
 msgstr "Sitzungen"
 
 #: mainapp/templates/mainapp/organization.html:78
-msgid "No members for this organization"
-msgstr ""
+msgid "This organization doesn't have any members listed"
+msgstr "Für dieses Gremium sind keine Mitglieder bekannt"
 
 #: mainapp/templates/mainapp/organization.html:84
 #: mainapp/templates/mainapp/person.html:35
