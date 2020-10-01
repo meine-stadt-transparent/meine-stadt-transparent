@@ -46,7 +46,7 @@ python-dateutil = "^2.7"
 python-slugify = "^4.0"
 requests = "^2.22"
 sentry-sdk = "^0.18"
-splinter = "^0.13.0"
+splinter = ">=0.13,<0.15"
 tqdm = "^4.29"
 wagtail = ">=2.9,<2.11"
 
