@@ -17,7 +17,7 @@ jobs:
           python-version: 3.7
       - name: Install poetry
         run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.0.10
           $HOME/.poetry/bin/poetry config virtualenvs.in-project true
       - name: Publish to PyPI
         run: $HOME/.poetry/bin/poetry publish --build

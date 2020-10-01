@@ -1,5 +1,5 @@
 # Stage 1: Build the frontend assets
-FROM node:10 AS front-end
+FROM node:12 AS front-end
 
 ENV NODE_ENV=production
 WORKDIR /app
@@ -19,7 +19,7 @@ FROM python:3.7-slim-buster AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.0.10
 
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock

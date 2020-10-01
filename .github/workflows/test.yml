@@ -21,7 +21,7 @@ jobs:
         run: npm ci
       - name: Install poetry
         run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.0.10
           $HOME/.poetry/bin/poetry config virtualenvs.in-project true
       - uses: actions/cache@v1
         with:
