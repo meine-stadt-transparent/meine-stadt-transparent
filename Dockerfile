@@ -1,5 +1,5 @@
 # Stage 1: Build the frontend assets
-FROM node:12 AS front-end
+FROM node:14 AS front-end
 
 ENV NODE_ENV=production
 WORKDIR /app
