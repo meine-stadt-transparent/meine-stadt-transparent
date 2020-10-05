@@ -135,12 +135,12 @@ If you have a Kubernetes cluster, you can have a look at [this experimental setu
 
 ### Requirements
 
- - Python 3.7 or 3.8 with pip and [poetry](https://github.com/sdispater/poetry) 1.0 ([not 1.1](https://github.com/python-poetry/poetry/issues/3016))
+ - Python 3.7 or 3.8 with pip and [poetry](https://github.com/sdispater/poetry) 1.1
  - A recent node version (12 or 14) with npm (npm 6 is tested)
  - A webserver (nginx or apache is recommended)
  - A Database (MariaDB is recommended, though anything that django supports should work)
  - [minio](https://docs.min.io/)
- - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 6.7 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/6.7/install-elasticsearch.html)
+ - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 7.9 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/install-elasticsearch.html)
 
 On Debian/Ubuntu:
 

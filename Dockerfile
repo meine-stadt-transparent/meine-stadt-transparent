@@ -19,7 +19,7 @@ FROM python:3.7-slim-buster AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.0.10
+    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.1.1
 
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
