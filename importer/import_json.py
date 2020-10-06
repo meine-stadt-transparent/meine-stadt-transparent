@@ -575,6 +575,14 @@ def import_organizations(body: models.Body, ris_data: RisData):
         id=committee[0], defaults={"name": committee[1]}
     )
 
+    # We want to make the main organization - if known - to get the id 1 so that
+    # the user doesn't need additional config
+    if ris_data.main_organization and not models.Organization.objects.first():
+        models.Organization(
+            id=1,
+            **convert_organization(body, committee_type, ris_data.main_organization),
+        ).save()
+
     objects = []
     for i in ris_data.organizations:
         objects.append(convert_organization(body, committee_type, i))
