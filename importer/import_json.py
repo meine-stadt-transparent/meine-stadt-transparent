@@ -161,7 +161,7 @@ def incremental_import(
     # TODO: Delete files
 
     # Since we don't get the bulk created object ids back from django (yet?),
-    # we just do this by timestamp - indexing more that more isn't wrong anyway
+    # we just do this by timestamp - indexing more that necessary isn't wrong anyway
     before_bulk_create = timezone.now()
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
     current_model.objects.bulk_create(to_be_created, batch_size=100)
