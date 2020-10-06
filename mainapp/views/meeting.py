@@ -3,6 +3,7 @@ from datetime import date
 from typing import List
 
 import dateutil.parser
+from csp.decorators import csp_update
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.db.models import Count
@@ -20,6 +21,8 @@ from mainapp.models import Meeting, Organization, AgendaItem, Person
 from mainapp.views.utils import build_map_object
 
 
+# fullcalendar uses inline styles (at least with the bootstrap theme)
+@csp_update(STYLE_SRC=("'self'", "'unsafe-inline'"))
 def calendar(request, init_view=None, init_date=None):
     context = {
         "default_date": date.today().strftime("%Y-%m-%d"),

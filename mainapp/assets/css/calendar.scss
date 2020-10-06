@@ -1,36 +1,18 @@
 @import "vars";
-@import "~fullcalendar/dist/fullcalendar";
 
-.fc-list-item {
+.fc-list-event {
   cursor: pointer;
+
   &:focus {
     background: #f6f6f6;
   }
+
   &.cancelled {
     text-decoration: line-through;
   }
 }
 
-.fc-scroller {
-  height: 100% !important;
-}
-
-.fc {
-  .btn {
-    padding: $content-switcher-btn-padding;
-    height: auto;
-  }
-}
-
-.fc-event, .fc-event-dot {
-  background-color: $calendarEventBackground;
-  &:focus {
-    background-color: darken($calendarEventBackground, 10%);
-    outline: dotted 1px gray;
-  }
-}
-
 // We don't need a blue dot in the list view
-.fc-event-dot {
+.fc-list-event-graphic {
   display: none;
 }
