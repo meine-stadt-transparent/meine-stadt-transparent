@@ -57,7 +57,7 @@
     "mousetrap": "^1.6.5",
     "pdfjs-dist": "git+https://github.com/meine-stadt-transparent/pdfjs-dist.git#v2.0.494",
     "popper.js": "^1.16.1",
-    "postcss-loader": "^3.0.0",
+    "postcss-loader": "^4.0.4",
     "shufflejs": "^5.2.3"
   },
   "resolutions": {
