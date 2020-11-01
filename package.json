@@ -24,7 +24,7 @@
     "babel-plugin-transform-es2015-modules-strip": "^0.1.1",
     "browser-sync": "^2.26.7",
     "css-loader": "^4.3.0",
-    "file-loader": "^6.0.0",
+    "file-loader": "^6.2.0",
     "gulp": "^4.0.2",
     "hard-source-webpack-plugin": "^0.13.1",
     "heml": "^1.1.3",
