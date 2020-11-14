@@ -105,13 +105,25 @@ class JsonToDb:
 
     T = TypeVar("T", bound=DefaultFields)
 
-    def import_anything(self, oparl_id: str) -> DefaultFields:
+    def import_anything(self, oparl_id: str, object_type: Optional[Type[T]] = None) -> DefaultFields:
         """ Hacky metaprogramming to import any object based on its id """
         logging.info("Importing single object {}".format(oparl_id))
 
         to_return = None
 
-        loaded = self.loader.load(oparl_id)
+        try:
+            loaded = self.loader.load(oparl_id)
+        except HTTPError as e:
+            # This is a horrible workaround for broken oparl implementations
+            # See test_missing.py
+            if object_type and hasattr(object_type, "dummy"):
+                logger.error(f"Failed to load single object {e}. Using dummy instead")
+                dummy = object_type.dummy(oparl_id)
+                dummy.save()
+                return dummy
+            else:
+                raise
+
         # When a resourced moved, the use specified id might be different from the object's id
         # The loader prints a warning in that case
         oparl_id = loaded["id"]
@@ -192,7 +204,7 @@ class JsonToDb:
                 )
 
             try:
-                return self.import_anything(oparl_id)
+                return self.import_anything(oparl_id, object_type)
             except HTTPError:
                 logger.exception(
                     "Failed to download the {} {}".format(object_type, oparl_id)
@@ -224,7 +236,7 @@ class JsonToDb:
                     )
 
                 for oparl_id in missing:
-                    db_objects.append(self.import_anything(oparl_id))
+                    db_objects.append(self.import_anything(oparl_id, object_type))
 
         return db_objects
 

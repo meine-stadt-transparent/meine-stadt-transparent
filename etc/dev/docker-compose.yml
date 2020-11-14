@@ -23,7 +23,7 @@ services:
       - MYSQL_DATABASE=meinestadttransparent
       - MYSQL_USER=meinestadttransparent
       - MYSQL_PASSWORD=meinestadttransparent
-      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_ROOT_PASSWORD=meinestadttransparent
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch-dev:

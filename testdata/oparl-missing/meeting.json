@@ -1,0 +1,54 @@
+{
+  "id": "http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160",
+  "type": "https://schema.oparl.org/1.0/Meeting",
+  "name": "SI/0507/20",
+  "start": "2020-09-29T15:00:00+02:00",
+  "end": "2020-09-29T15:10:00+02:00",
+  "organization": [
+    "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230",
+    "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231"
+  ],
+  "participant": [
+    "http://oparl.wuppertal.de/oparl/bodies/0001/people/292"
+  ],
+  "auxiliaryFile": [
+    {
+      "id": "http://oparl.wuppertal.de/oparl/bodies/0001/files/260914",
+      "type": "https://schema.oparl.org/1.0/File",
+      "name": "Einladung gesamt",
+      "fileName": "00260914.pdf",
+      "mimeType": "application/pdf",
+      "date": "2020-09-21",
+      "accessUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/a/00260914.pdf",
+      "downloadUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/00260914.pdf",
+      "created": "2020-09-21T11:51:06+02:00",
+      "modified": "2020-09-21T12:00:47+02:00"
+    },
+    {
+      "id": "http://oparl.wuppertal.de/oparl/bodies/0001/files/261010",
+      "type": "https://schema.oparl.org/1.0/File",
+      "name": "Niederschrift",
+      "fileName": "00261010.pdf",
+      "mimeType": "application/pdf",
+      "date": "2020-09-30",
+      "accessUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/a/00261010.pdf",
+      "downloadUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/00261010.pdf",
+      "created": "2020-09-30T06:01:41+02:00",
+      "modified": "2020-09-30T06:02:39+02:00"
+    },
+    {
+      "id": "http://oparl.wuppertal.de/oparl/bodies/0001/files/261011",
+      "type": "https://schema.oparl.org/1.0/File",
+      "name": "Zusammenstellung_der_amtlichen_Ergebnisse",
+      "fileName": "00261011.pdf",
+      "mimeType": "application/pdf",
+      "date": "2020-09-30",
+      "accessUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/a/00261011.pdf",
+      "downloadUrl": "http://oparl.wuppertal.de/oparl/bodies/0001/downloadfiles/00261011.pdf",
+      "created": "2020-09-30T06:02:22+02:00",
+      "modified": "2020-09-30T06:02:47+02:00"
+    }
+  ],
+  "created": "2020-09-21T11:42:13+02:00",
+  "modified": "2020-09-30T10:47:08+02:00"
+}

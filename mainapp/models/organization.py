@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
 
 from .body import Body
@@ -48,3 +50,20 @@ class Organization(DefaultFields, ShortableNameFields):
 
     def sort_date(self):
         return self.start
+
+    @staticmethod
+    def dummy(oparl_id: str) -> "Organization":
+        body = (
+            Body.objects.filter(pk=settings.SITE_DEFAULT_BODY).first()
+            or Body.objects.first()
+        )
+        organization_type = OrganizationType.objects.get_or_create(
+            name=_("Missing"), defaults={"name": _("Missing")}
+        )[0]
+        return Organization(
+            name=_("Missing Organization"),
+            short_name=_("Missing"),
+            oparl_id=oparl_id,
+            body=body,
+            organization_type=organization_type,
+        )

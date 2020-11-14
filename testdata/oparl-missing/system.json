@@ -1,0 +1,16 @@
+{
+  "id": "http://oparl.wuppertal.de/oparl/system",
+  "type": "https://schema.oparl.org/1.0/System",
+  "oparlVersion": "https://schema.oparl.org/1.0/",
+  "otherOParlVersions": [],
+  "license": "Stadt Wuppertal",
+  "body": "http://oparl.wuppertal.de/oparl/bodies",
+  "name": "Schnittstelle OParl 1.2.1",
+  "contactEmail": "abdessamad.amaadachou@stadt.wuppertal.de",
+  "contactName": "abdessamad amaadachou",
+  "website": "https://ris.wuppertal.de/",
+  "vendor": "http://www.somacos.de",
+  "product": "Sitzungsmanagementsystem Session  Copyright SOMACOS GmbH & Co. KG",
+  "created": "2020-04-24T00:00:00+02:00",
+  "modified": "2020-04-24T00:00:00+02:00"
+}

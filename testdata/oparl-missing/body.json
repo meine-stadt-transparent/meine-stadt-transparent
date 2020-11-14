@@ -1,0 +1,21 @@
+{
+  "id": "http://oparl.wuppertal.de/oparl/bodies/0001",
+  "type": "https://schema.oparl.org/1.0/Body",
+  "system": "http://oparl.wuppertal.de/oparl/system",
+  "shortName": "I0001",
+  "name": "Instance 0001",
+  "website": "https://ris.wuppertal.de/",
+  "licenseValidSince": "2020-04-24T00:00:00+02:00",
+  "oparlSince": "2020-04-24T00:00:00+02:00",
+  "equivalent": [
+    ""
+  ],
+  "contactEmail": "abdessamad.amaadachou@stadt.wuppertal.de",
+  "contactName": "Abdessamad Amaadachou",
+  "organization": "http://oparl.wuppertal.de/oparl/bodies/0001/organizations",
+  "person": "http://oparl.wuppertal.de/oparl/bodies/0001/people",
+  "meeting": "http://oparl.wuppertal.de/oparl/bodies/0001/meetings",
+  "paper": "http://oparl.wuppertal.de/oparl/bodies/0001/papers",
+  "created": "2020-04-24T00:00:00+02:00",
+  "modified": "2020-04-24T00:00:00+02:00"
+}
