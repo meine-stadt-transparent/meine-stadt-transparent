@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from mainapp.models.default_fields import DefaultFields
+from mainapp.models.helper import DefaultFields
 from .organization import Organization
 from .person import Person
 

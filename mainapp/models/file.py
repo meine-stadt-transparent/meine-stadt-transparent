@@ -5,7 +5,7 @@ from dateutil import tz
 from django.db import models
 from django.urls import reverse
 
-from .default_fields import DefaultFields
+from .helper import DefaultFields
 from .location import Location
 from .person import Person
 

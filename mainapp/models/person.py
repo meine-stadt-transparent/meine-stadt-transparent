@@ -1,11 +1,12 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.translation import gettext as _
 
-from .default_fields import DefaultFields
+from .helper import DefaultFields, DummyInterface
 from .location import Location
 
 
-class Person(DefaultFields):
+class Person(DefaultFields, DummyInterface):
     name = models.CharField(max_length=100)
     given_name = models.CharField(max_length=100)
     family_name = models.CharField(max_length=100)
@@ -41,3 +42,11 @@ class Person(DefaultFields):
             return latest.start
         else:
             return self.created
+
+    @classmethod
+    def dummy(cls, oparl_id: str) -> "Person":
+        return Person(
+            name=_("Missing Person"),
+            given_name=_("Missing"),
+            family_name=_("Missing"),
+        )

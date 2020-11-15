@@ -34,9 +34,11 @@ from mainapp.models import (
     PaperType,
 )
 from mainapp.models.file import fallback_date
-from mainapp.models.default_fields import ShortableNameFields
+from mainapp.models.helper import ShortableNameFields, DummyInterface
 
 logger = logging.getLogger(__name__)
+
+T = TypeVar("T", bound=DefaultFields)
 
 
 class JsonToDb:
@@ -103,9 +105,9 @@ class JsonToDb:
             id=department[0], defaults={"name": department[1]}
         )
 
-    T = TypeVar("T", bound=DefaultFields)
-
-    def import_anything(self, oparl_id: str, object_type: Optional[Type[T]] = None) -> DefaultFields:
+    def import_anything(
+        self, oparl_id: str, object_type: Optional[Type[T]] = None
+    ) -> DefaultFields:
         """ Hacky metaprogramming to import any object based on its id """
         logging.info("Importing single object {}".format(oparl_id))
 
@@ -114,11 +116,13 @@ class JsonToDb:
         try:
             loaded = self.loader.load(oparl_id)
         except HTTPError as e:
+            logger.error(f"Failed to load {oparl_id}: {e}")
             # This is a horrible workaround for broken oparl implementations
             # See test_missing.py
-            if object_type and hasattr(object_type, "dummy"):
-                logger.error(f"Failed to load single object {e}. Using dummy instead")
-                dummy = object_type.dummy(oparl_id)
+            if object_type and issubclass(object_type, DummyInterface):
+                logger.error(f"Using a dummy for {oparl_id}. THIS IS BAD.")
+                # noinspection PyTypeChecker
+                dummy: T = object_type.dummy(oparl_id)
                 dummy.save()
                 return dummy
             else:
@@ -229,13 +233,14 @@ class JsonToDb:
             missing = sorted((set(oparl_ids) - set(found_ids)))
 
             if missing:
-                if self.warn_missing:
-                    logger.warning(
-                        f"The objects {missing} linked from {debug_id} were "
-                        f"supposed to be a part of the external lists, but weren't"
-                    )
-
                 for oparl_id in missing:
+                    if self.warn_missing:
+                        logger.warning(
+                            f"The object {oparl_id} linked from {debug_id} was "
+                            f"supposed to be a part of the external lists, but was not. "
+                            f"This is a bug in the OParl implementation."
+                        )
+
                     db_objects.append(self.import_anything(oparl_id, object_type))
 
         return db_objects

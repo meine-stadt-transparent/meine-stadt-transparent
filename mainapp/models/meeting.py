@@ -5,8 +5,8 @@ from django.urls import reverse
 from django.utils import timezone
 from icalendar import Event
 
-from .default_fields import DefaultFields, ShortableNameFields
 from .file import File
+from .helper import DefaultFields, ShortableNameFields
 from .location import Location
 from .organization import Organization
 from .person import Person

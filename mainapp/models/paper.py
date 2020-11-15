@@ -3,8 +3,8 @@ from typing import Generator
 from django.db import models
 from django.urls import reverse
 
-from .default_fields import DefaultFields, ShortableNameFields
 from .file import File, fallback_date
+from .helper import DefaultFields, ShortableNameFields
 from .organization import Organization
 from .paper_type import PaperType
 from .person import Person

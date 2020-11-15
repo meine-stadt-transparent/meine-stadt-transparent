@@ -1,6 +1,6 @@
 from django.db import models
 
-from .default_fields import DefaultFields, ShortableNameFields
+from .helper import DefaultFields, ShortableNameFields
 
 
 class LegislativeTerm(DefaultFields, ShortableNameFields):

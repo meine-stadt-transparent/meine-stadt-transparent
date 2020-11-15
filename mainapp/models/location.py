@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from djgeojson.fields import GeometryField
 
-from .default_fields import DefaultFields
+from .helper import DefaultFields
 
 
 class Location(DefaultFields):

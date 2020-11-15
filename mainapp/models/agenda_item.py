@@ -2,7 +2,7 @@ from django.db import models
 
 from mainapp.models.consultation import Consultation
 from mainapp.models.file import File
-from .default_fields import DefaultFields
+from .helper import DefaultFields
 from .meeting import Meeting
 
 

@@ -1,7 +1,7 @@
 from django.db import models
 
 from .body import Body
-from .default_fields import DefaultFields
+from .helper import DefaultFields
 
 
 class SearchStreet(DefaultFields):

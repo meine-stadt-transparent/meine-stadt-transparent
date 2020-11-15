@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
-from .default_fields import DefaultFields, ShortableNameFields
+from .helper import DefaultFields, ShortableNameFields
 from .legislative_term import LegislativeTerm
 from .location import Location
 

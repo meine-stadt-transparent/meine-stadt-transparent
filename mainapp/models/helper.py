@@ -1,5 +1,7 @@
 import re
 import textwrap
+from abc import abstractmethod
+from typing import TypeVar, Type
 
 from django.db import models
 from simple_history.models import HistoricalRecords
@@ -78,6 +80,20 @@ class ShortableNameFields(models.Model):
         if len(name) > 50:
             name = textwrap.wrap(name, 49)[0] + "\u2026"
         self.short_name = name
+
+    class Meta:
+        abstract = True
+
+
+# noinspection PyTypeChecker
+T = TypeVar("T", bound="DummyMixin")
+
+
+class DummyInterface:
+    @classmethod
+    @abstractmethod
+    def dummy(cls: Type[T], oparl_id: str) -> T:
+        raise NotImplementedError
 
     class Meta:
         abstract = True

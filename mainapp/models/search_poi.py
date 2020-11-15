@@ -2,7 +2,7 @@ from django.db import models
 from djgeojson.fields import GeometryField
 
 from .body import Body
-from .default_fields import DefaultFields
+from .helper import DefaultFields
 
 
 class SearchPoi(DefaultFields):

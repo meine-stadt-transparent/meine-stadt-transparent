@@ -11,29 +11,13 @@ from responses import RequestsMock
 
 from importer.importer import Importer
 from importer.loader import BaseLoader
-from mainapp.models import Organization
+from mainapp.models import Organization, Person
 
 empty_page = {"data": [], "links": {}, "pagination": {}}
 
-# TODO: Also handle and test missing persons
-person_292 = {
-    "id": "http://oparl.wuppertal.de/oparl/bodies/0001/people/292",
-    "type": "https://schema.oparl.org/1.0/Person",
-    "body": "http://oparl.wuppertal.de/oparl/bodies/0001",
-    "name": "Tobias Wierzba",
-    "familyName": "Wierzba",
-    "givenName": "Tobias",
-    "formOfAdress": "Herr",
-    "gender": "männlich",
-    "membership": [],
-    "created": "2017-12-21T08:21:05+01:00",
-    "modified": "2020-11-09T11:23:31+01:00",
-    "web": "",
-}
-
 
 @pytest.mark.django_db
-def test_missing_organization():
+def test_missing_organization(caplog):
     with RequestsMock() as requests_mock:
         requests_mock.add(
             requests_mock.GET,
@@ -89,7 +73,7 @@ def test_missing_organization():
         requests_mock.add(
             requests_mock.GET,
             "http://oparl.wuppertal.de/oparl/bodies/0001/people/292",
-            json=person_292,
+            status=404,
         )
 
         body_id = "http://oparl.wuppertal.de/oparl/bodies/0001"
@@ -115,3 +99,39 @@ def test_missing_organization():
             "Missing",
             "Missing",
         ]
+
+    assert Person.objects.first().name == "Missing Person"
+
+    assert caplog.messages == [
+        "The object http://oparl.wuppertal.de/oparl/bodies/0001/people/292 linked "
+        "from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed "
+        "to be a part of the external lists, but was not. This is a bug in the OParl "
+        "implementation.",
+        "Failed to load http://oparl.wuppertal.de/oparl/bodies/0001/people/292: 404 "
+        "Client Error: Not Found for url: "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/people/292",
+        "Using a dummy for http://oparl.wuppertal.de/oparl/bodies/0001/people/292. "
+        "THIS IS BAD.",
+        "The object http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230 "
+        "linked from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was "
+        "supposed to be a part of the external lists, but was not. This is a bug in "
+        "the OParl implementation.",
+        "Failed to load "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230: 404 Client "
+        "Error: Not Found for url: "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230",
+        "Using a dummy for "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230. THIS IS "
+        "BAD.",
+        "The object http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231 "
+        "linked from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was "
+        "supposed to be a part of the external lists, but was not. This is a bug in "
+        "the OParl implementation.",
+        "Failed to load "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231: 404 Client "
+        "Error: Not Found for url: "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231",
+        "Using a dummy for "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231. THIS IS "
+        "BAD.",
+    ]

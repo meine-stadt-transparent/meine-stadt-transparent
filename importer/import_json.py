@@ -15,7 +15,7 @@ from importer.json_datatypes import RisData
 from mainapp import models
 from mainapp.functions.search import search_bulk_index
 from mainapp.models import DefaultFields
-from mainapp.models.default_fields import SoftDeleteModelManager
+from mainapp.models.helper import SoftDeleteModelManager
 from mainapp.models.file import fallback_date
 
 logger = logging.getLogger(__name__)
@@ -582,7 +582,9 @@ def import_organizations(body: models.Body, ris_data: RisData):
         if ris_data.main_organization and not models.Organization.objects.first():
             models.Organization(
                 id=1,
-                **convert_organization(body, committee_type, ris_data.main_organization),
+                **convert_organization(
+                    body, committee_type, ris_data.main_organization
+                ),
             ).save()
 
     objects = []

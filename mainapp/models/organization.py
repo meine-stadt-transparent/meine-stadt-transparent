@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.utils.translation import pgettext
 
 from .body import Body
-from .default_fields import DefaultFields, ShortableNameFields
+from .helper import DefaultFields, ShortableNameFields, DummyInterface
 from .legislative_term import LegislativeTerm
 from .location import Location
 from .organization_type import OrganizationType
@@ -25,7 +25,7 @@ ORGANIZATION_TYPE_NAMES_PLURAL = {
 }
 
 
-class Organization(DefaultFields, ShortableNameFields):
+class Organization(DefaultFields, ShortableNameFields, DummyInterface):
     start = models.DateField(null=True, blank=True)
     end = models.DateField(null=True, blank=True)
     body = models.ForeignKey(Body, on_delete=models.CASCADE)
@@ -51,8 +51,8 @@ class Organization(DefaultFields, ShortableNameFields):
     def sort_date(self):
         return self.start
 
-    @staticmethod
-    def dummy(oparl_id: str) -> "Organization":
+    @classmethod
+    def dummy(cls, oparl_id: str) -> "Organization":
         body = (
             Body.objects.filter(pk=settings.SITE_DEFAULT_BODY).first()
             or Body.objects.first()
