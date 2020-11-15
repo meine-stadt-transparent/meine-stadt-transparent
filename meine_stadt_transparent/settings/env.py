@@ -13,5 +13,3 @@ elif TESTING:
     env_file = "etc/test.env"
 
 env.read_env(env_file)
-
-TESTING_TRAVIS = env.bool("TRAVIS", False)
