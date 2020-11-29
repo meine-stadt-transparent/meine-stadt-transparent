@@ -203,6 +203,21 @@ class CCEgovLoader(BaseLoader):
         return content, content_type
 
 
+class SomacosLoader(BaseLoader):
+    def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
+        if query:
+            # Somacos doesn't like encoded urls
+            url = url + "?" + "&".join([key + "=" + value for key, value in query.items()])
+        logger.debug("Loader is loading {}".format(url))
+        response = requests_get(url)
+        data = response.json()
+        if "id" in data and data["id"] != url:
+            logger.warning(
+                "Mismatch between url and id. url: {} id: {}".format(url, data["id"])
+            )
+        return data
+
+
 def get_loader_from_system(entrypoint: str) -> BaseLoader:
     response = requests_get(entrypoint)
     system = response.json()
