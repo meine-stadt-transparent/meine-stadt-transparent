@@ -207,7 +207,11 @@ class SomacosLoader(BaseLoader):
     def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
         if query:
             # Somacos doesn't like encoded urls
-            url = url + "?" + "&".join([key + "=" + value for key, value in query.items()])
+            url = (
+                url
+                + "?"
+                + "&".join([key + "=" + value for key, value in query.items()])
+            )
         logger.debug("Loader is loading {}".format(url))
         response = requests_get(url)
         data = response.json()
@@ -230,6 +234,13 @@ def get_loader_from_system(entrypoint: str) -> BaseLoader:
     ):
         logger.info("Using CC e-gov patches")
         return CCEgovLoader(system)
+    elif (
+        system.get("vendor") == "http://www.somacos.de"
+        or system.get("product")
+        == "Sitzungsmanagementsystem Session  Copyright SOMACOS GmbH & Co. KG"
+    ):
+        logger.info("Using Somacos patches ")
+        return SomacosLoader(system)
     else:
         logger.info("Using no vendor specific patches")
         return BaseLoader(system)
