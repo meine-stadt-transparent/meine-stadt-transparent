@@ -36,15 +36,18 @@ def make_body() -> JSON:
 class MockLoader(BaseLoader):
     """ Loads responses from a predefined dict """
 
+    api_data: Dict[str, JSON]
+    files: Dict[str, Tuple[bytes, str]]
+
     def __init__(
         self, system: Optional[JSON] = None, api_data: Optional[Dict[str, JSON]] = None
     ):
         super().__init__(system)
         if api_data is None:
-            self.api_data = {}  # type: Dict[str, JSON]
+            self.api_data = {}
         else:
             self.api_data = api_data
-        self.files = {}  # type: Dict[str, Tuple[bytes, str]]
+        self.files = {}
         self.system = system
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:

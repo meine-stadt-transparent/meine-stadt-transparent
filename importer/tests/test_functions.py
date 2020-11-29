@@ -1,3 +1,4 @@
+import pytest
 from django.test import TestCase
 
 from importer import json_to_db
@@ -171,3 +172,16 @@ class TestFunctions(TestCase):
         )
         self.assertEqual(Person.objects.count(), 1)
         self.assertEqual(Organization.objects.count(), 1)
+
+
+@pytest.mark.django_db
+def test_fetch_list_update():
+    loader = MockLoader()
+    loader.api_data["https://oparl.wuppertal.de/oparl/bodies/0001/papers"] = {
+        "data": [],
+        "links": {},
+        "pagination": {},
+    }
+    importer = Importer(loader)
+    importer.fetch_list_initial("https://oparl.wuppertal.de/oparl/bodies/0001/papers")
+    importer.fetch_list_update("https://oparl.wuppertal.de/oparl/bodies/0001/papers")

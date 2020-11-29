@@ -251,7 +251,13 @@ class Importer:
                 url, external_list.last_update.isoformat()
             )
         )
-        query = {"modified_since": external_list.last_update.isoformat()}
+        # There must not be microseconds in the query datetimes (Wuppertal rejects that)
+        query = {
+            "modified_since": external_list.last_update.replace(
+                microsecond=0
+            ).isoformat()
+        }
+        print(query)
         next_url = url
         while next_url:
             response = self.loader.load(next_url, query)

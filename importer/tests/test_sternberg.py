@@ -16,7 +16,7 @@ class TestSternberg(TestCase):
         with responses.RequestsMock() as requests_mock:
             requests_mock.add(
                 requests_mock.GET,
-                "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper?modified_since=2019-05-30T22%3A00%3A08.100505%2B00%3A00",
+                "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper?modified_since=2019-05-30T22%3A00%3A08%2B00%3A00",
                 content_type="text/html",
                 status=404,
                 body='{"error":"Die angeforderte Ressource wurde nicht gefunden.","code":802,"type":"SD.NET RIM Webservice"}',
@@ -25,7 +25,7 @@ class TestSternberg(TestCase):
             loader = SternbergLoader({})
             data = loader.load(
                 "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper",
-                query={"modified_since": "2019-05-30T22:00:08.100505+00:00"},
+                query={"modified_since": "2019-05-30T22:00:08+00:00"},
             )
 
             self.assertEqual(data["data"], [])
@@ -37,14 +37,14 @@ class TestSternberg(TestCase):
         with responses.RequestsMock() as requests_mock:
             requests_mock.add(
                 requests_mock.GET,
-                "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting?modified_since=2019-05-09T20%3A51%3A54.198089%2B00%3A00",
+                "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting?modified_since=2019-05-09T20%3A51%3A54%2B00%3A00",
                 json=[],
             )
 
             loader = SternbergLoader({})
             data = loader.load(
                 "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting",
-                query={"modified_since": "2019-05-09T20:51:54.198089+00:00"},
+                query={"modified_since": "2019-05-09T20:51:54+00:00"},
             )
 
             self.assertTrue("data" in data)
