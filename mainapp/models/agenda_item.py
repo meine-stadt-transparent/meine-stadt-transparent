@@ -15,7 +15,7 @@ class AgendaItem(DefaultFields):
     )
     # The agenda items of a meeting are ordered by this field
     position = models.IntegerField()
-    public = models.NullBooleanField(blank=True)
+    public = models.BooleanField(null=True, blank=True)
     result = models.TextField(null=True, blank=True)
     resolution_text = models.TextField(null=True, blank=True)
     resolution_file = models.ForeignKey(

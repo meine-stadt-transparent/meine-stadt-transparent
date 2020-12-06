@@ -19,7 +19,7 @@ class Consultation(DefaultFields):
         Meeting, null=True, blank=True, on_delete=models.CASCADE
     )
     paper = models.ForeignKey(Paper, null=True, blank=True, on_delete=models.CASCADE)
-    authoritative = models.NullBooleanField(blank=True)
+    authoritative = models.BooleanField(null=True, blank=True)
     organizations = models.ManyToManyField(Organization, blank=True)
     role = models.CharField(max_length=200, null=True, blank=True)
 

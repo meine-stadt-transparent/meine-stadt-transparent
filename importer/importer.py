@@ -257,7 +257,6 @@ class Importer:
                 microsecond=0
             ).isoformat()
         }
-        print(query)
         next_url = url
         while next_url:
             response = self.loader.load(next_url, query)
