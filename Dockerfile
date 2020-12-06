@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
-RUN npm ci --dev
+RUN npm ci --also=dev
 
 COPY etc /app/etc
 COPY customization /app/customization
