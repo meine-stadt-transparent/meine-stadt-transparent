@@ -5,6 +5,7 @@ from itertools import repeat
 from tempfile import NamedTemporaryFile
 from typing import Optional, List, Type
 from typing import TypeVar, Any, Set
+from urllib.parse import parse_qs, urlparse
 
 from django import db
 from django.conf import settings
@@ -251,15 +252,21 @@ class Importer:
                 url, external_list.last_update.isoformat()
             )
         )
-        # There must not be microseconds in the query datetimes (Wuppertal rejects that)
-        query = {
+        # There must not be microseconds in the query datetimes
+        # (Wuppertal rejects that and it's not standard compliant)
+        modified_since_query = {
             "modified_since": external_list.last_update.replace(
                 microsecond=0
             ).isoformat()
         }
         next_url = url
         while next_url:
-            response = self.loader.load(next_url, query)
+            # Handles both the case where modified_since is given with
+            # the next url and where it isn't
+            if "modified_since" in parse_qs(urlparse(next_url).query):
+                response = self.loader.load(next_url)
+            else:
+                response = self.loader.load(next_url, modified_since_query)
             for element in response["data"]:
                 fetch_later += self._process_element(element)
 
