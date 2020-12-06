@@ -16,12 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import path
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
-    url(r"^accounts/", include("allauth.urls")),
-    url(r"^", include("mainapp.urls")),
-    url(r"^", include("cms.urls")),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("allauth.urls")),
+    path("", include("mainapp.urls")),
+    path("", include("cms.urls")),
 ]
 
 if settings.DEBUG_TOOLBAR_ACTIVE:
