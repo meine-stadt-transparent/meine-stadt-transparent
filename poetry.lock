@@ -1127,7 +1127,7 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "splinter"
-version = "0.13.0"
+version = "0.14.0"
 description = "browser abstraction for web acceptance testing"
 category = "main"
 optional = false
@@ -1393,7 +1393,7 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "479d059bb65ecbab1fc522319b1a955df77d9adde962ecff5e5d8a4026856bb2"
+content-hash = "8c72da995f6dfd87ff49fb14b189f7863c6462b28c9f452b48267daefdc2413c"
 
 [metadata.files]
 anyascii = [
@@ -2000,8 +2000,8 @@ soupsieve = [
     {file = "soupsieve-2.0.1.tar.gz", hash = "sha256:a59dc181727e95d25f781f0eb4fd1825ff45590ec8ff49eadfd7f1a537cc0232"},
 ]
 splinter = [
-    {file = "splinter-0.13.0-py2-none-any.whl", hash = "sha256:62b5876757f0ac09324a7d5e5f94886110219c2b85300516ec39a914d7992d91"},
-    {file = "splinter-0.13.0.tar.gz", hash = "sha256:9e92535f273622507ac157612c3bb0e9cee7b5ccd2aa097d47b408e34c2ca356"},
+    {file = "splinter-0.14.0-py3-none-any.whl", hash = "sha256:7e5e69c5b76ada909283465cdc3636e2632f7e557932ce96ab9c0432b0b32f7f"},
+    {file = "splinter-0.14.0.tar.gz", hash = "sha256:459e39e7a9f7572db6f1cdb5fdc5ccfc6404f021dccb969ee6287be2386a40db"},
 ]
 sqlparse = [
     {file = "sqlparse-0.4.1-py3-none-any.whl", hash = "sha256:017cde379adbd6a1f15a61873f43e8274179378e95ef3fede90b5aa64d304ed0"},
