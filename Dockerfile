@@ -46,10 +46,10 @@ RUN apt-get update && \
 
 USER www-data
 
-COPY --chown=www-data:www-data . /app/
 COPY --chown=www-data:www-data --from=venv-build /app/.venv /app/.venv
 COPY --chown=www-data:www-data --from=front-end /app/mainapp/assets /app/mainapp/assets
 COPY --chown=www-data:www-data --from=front-end /app/node_modules/pdfjs-dist /app/node_modules/pdfjs-dist
+COPY --chown=www-data:www-data . /app/
 
 WORKDIR /app
 
