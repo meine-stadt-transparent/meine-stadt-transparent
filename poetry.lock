@@ -688,7 +688,7 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 
 [[package]]
 name = "minio"
-version = "5.0.10"
+version = "6.0.2"
 description = "MinIO Python Library for Amazon S3 Compatible Cloud Storage for Python"
 category = "main"
 optional = false
@@ -1393,7 +1393,7 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "479d059bb65ecbab1fc522319b1a955df77d9adde962ecff5e5d8a4026856bb2"
+content-hash = "9ffbb34d8a8202077ce354ee400bebea8ef153df7b2661141f7d4ad868c787fe"
 
 [metadata.files]
 anyascii = [
@@ -1708,9 +1708,9 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
 ]
 minio = [
-    {file = "minio-5.0.10-py2.py3-none-any.whl", hash = "sha256:ba5978a97e3366983c8b4ea11f2ae8e1add995ab4789e0098dd2403199999ac4"},
-    {file = "minio-5.0.10-py3.6.egg", hash = "sha256:71984a47fc8268afdfd1d0ed5e45e72f45f6495591878b0eaa7f77b2503e96ab"},
-    {file = "minio-5.0.10.tar.gz", hash = "sha256:6ecb7637a35f806733e9d112eacfa599a58d7c3d4698fda2b5c86fff5d34b417"},
+    {file = "minio-6.0.2-py2.py3-none-any.whl", hash = "sha256:eec4ab073ff979c34e928e532d8acc1d40d61ba4404709cf27ab3ecdcfa2a561"},
+    {file = "minio-6.0.2-py3.6.egg", hash = "sha256:7cb075b56bac894551304cb824f958069a84e0dd2d0a685f9bed3c05e15727bf"},
+    {file = "minio-6.0.2.tar.gz", hash = "sha256:acae9bfae0aec1b92025bd63e18135ebb4994c84600716c5323e14cb0c9a0b03"},
 ]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
