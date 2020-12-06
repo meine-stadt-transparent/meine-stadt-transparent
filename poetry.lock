@@ -1312,7 +1312,7 @@ testing = ["python-dateutil (>=2.2)", "pytz (>=2014.7)", "elasticsearch (>=1.0.0
 
 [[package]]
 name = "wand"
-version = "0.6.3"
+version = "0.6.5"
 description = "Ctypes-based simple MagickWand API binding for Python"
 category = "main"
 optional = false
@@ -2081,8 +2081,8 @@ wagtail = [
     {file = "wagtail-2.11.1.tar.gz", hash = "sha256:c2fdc2544402c068fbc2b3205ea60a0d1fb06590962381826d1da68338196f51"},
 ]
 wand = [
-    {file = "Wand-0.6.3-py2.py3-none-any.whl", hash = "sha256:566b3d049858efa879096a7ab2e0516d67a240e6c3ffd7a267298c41e81c14b7"},
-    {file = "Wand-0.6.3.tar.gz", hash = "sha256:d21429288fe0de63d829dbbfb26736ebaed9fd0792c2a0dc5943c5cab803a708"},
+    {file = "Wand-0.6.5-py2.py3-none-any.whl", hash = "sha256:473af4a143d2c87693cc43dbd6f64d91ccfd7f0506cf4da53851cd34f114b39d"},
+    {file = "Wand-0.6.5.tar.gz", hash = "sha256:ec981b4f07f7582fc564aba8b57763a549392e9ef8b6a338e9da54cdd229cf95"},
 ]
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},
