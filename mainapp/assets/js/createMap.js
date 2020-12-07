@@ -50,7 +50,7 @@ function setTiles(leaflet, initData) {
             }).addTo(leaflet);
             break;
         case "Mapbox":
-            let MapboxTileUrl = (tiles["url"] ? tiles["url"] : "https://api.tiles.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}{highres}.png?access_token={accessToken}");
+            let MapboxTileUrl = (tiles["url"] ? tiles["url"] : "https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}{highres}?access_token={accessToken}");
             L.tileLayer(MapboxTileUrl, {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org">OpenStreetMap</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com">Mapbox</a>',
                 accessToken: tiles['token'],
