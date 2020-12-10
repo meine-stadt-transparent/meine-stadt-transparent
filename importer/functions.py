@@ -1,10 +1,13 @@
 import datetime
 import logging
+import warnings
+from contextlib import nullcontext
 from typing import Optional, Set, List, Type
 
 import requests
 from django.db.models import OuterRef, Q, Subquery, F
 from slugify import slugify
+from urllib3.exceptions import InsecureRequestWarning
 
 from importer import JSON
 from importer.models import CachedObject, ExternalList
@@ -50,9 +53,15 @@ def requests_get(url, params=None, **kwargs) -> requests.Response:
     )
     kwargs.setdefault("headers", {})
     kwargs["headers"]["User-Agent"] = user_agent
-    response = requests.get(url, params, **kwargs)
-    response.raise_for_status()
-    return response
+    # Hack to make Landshut work with the RIS' broken SSL setup
+    if settings.SSL_NO_VERIFY:
+        kwargs["verify"] = False
+    with warnings.catch_warnings() if settings.SSL_NO_VERIFY else nullcontext():
+        if settings.SSL_NO_VERIFY:
+            warnings.filterwarnings("ignore", category=InsecureRequestWarning)
+        response = requests.get(url, params, **kwargs)
+        response.raise_for_status()
+        return response
 
 
 def externalize(

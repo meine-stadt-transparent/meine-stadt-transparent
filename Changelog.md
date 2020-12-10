@@ -1,5 +1,14 @@
 # Changelog
 
+Please see the [Readme](Readme.md#Update]) on what commands to run after an update.
+
+## v0.2.10
+
+ * webpack 5
+ * Added a somacos loader
+ * `SSL_NO_VERIFY` setting to hack around broken ssl configurations
+ * Fixed the mapbox default url
+
 ## v0.2.9
 
  * The json import format was update to version 4.

@@ -33,3 +33,6 @@ if SENTRY_HEADER_ENDPOINT:
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_SRC = ("'self'",) + env.tuple("CSP_FRAME", default=tuple())
 CSP_FRAME_ANCESTORS = ("'self'",) + env.tuple("CSP_FRAME", default=tuple())
+
+# Hack for Landshut, where the RIS has a broken ssl configuration (intermediate ceritificate missing)
+SSL_NO_VERIFY = env.bool("SSL_NO_VERIFY", False)
