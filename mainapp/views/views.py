@@ -248,7 +248,7 @@ def file_serve(request, id):
     """ Ensure that the file is not deleted in the database """
     get_object_or_404(File, id=id)
 
-    minio_file = minio_client().get_object(minio_file_bucket, id)
+    minio_file = minio_client().get_object(minio_file_bucket, str(id))
     response = HttpResponse(minio_file.read())
 
     response["Content-Type"] = minio_file.headers["Content-Type"]

@@ -2,6 +2,10 @@
 
 Please see the [Readme](Readme.md#Update]) on what commands to run after an update.
 
+## v0.2.11
+
+  * Added a `delete_file` command, which remove the file from minio
+
 ## v0.2.10
 
  * webpack 5
