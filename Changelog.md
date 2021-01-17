@@ -2,6 +2,10 @@
 
 Please see the [Readme](Readme.md#Update]) on what commands to run after an update.
 
+## v0.2.12 - Unreleased
+
+ * Add `SENTRY_TRACES_SAMPLE_RATE` for the sentry integration (https://docs.sentry.io/platforms/python/guides/django/performance/).
+
 ## v0.2.11
 
   * Added a `delete_file` command, which remove the file from minio

@@ -304,6 +304,7 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration()],
         release=release,
         ignore_errors=[KeyboardInterrupt],
+        traces_sample_rate=env.int("SENTRY_TRACES_SAMPLE_RATE", 1),
     )
     ignore_logger("django.security.DisallowedHost")
     with configure_scope() as scope:
