@@ -3,6 +3,7 @@ import responses
 from requests import HTTPError
 
 from importer.loader import SomacosLoader, BaseLoader
+from importer.tests.utils import spurious_500
 
 
 def test_somacos_encoded_urls():
@@ -32,3 +33,11 @@ def test_somacos_encoded_urls():
             "https://oparl.wuppertal.de/oparl/bodies/0001/papers",
             query={"page": "2", "modified_since": "2020-11-26T19:26:34+00:00"},
         )
+
+
+def test_spurious_500(caplog):
+    spurious_500(SomacosLoader)
+    assert caplog.messages == [
+        "Got an 500 for a Somacos request, retrying: 500 Server Error: "
+        "Internal Server Error for url: https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
+    ]

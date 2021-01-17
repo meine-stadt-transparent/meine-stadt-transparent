@@ -213,7 +213,15 @@ class SomacosLoader(BaseLoader):
                 + "&".join([key + "=" + value for key, value in query.items()])
             )
         logger.debug("Loader is loading {}".format(url))
-        response = requests_get(url)
+        try:
+            response = requests_get(url)
+        except HTTPError as e:
+            if e.response.status_code == 500:
+                logger.error(f"Got an 500 for a Somacos request, retrying: {e}")
+                response = requests_get(url)
+            else:
+                raise
+
         data = response.json()
         if "id" in data and data["id"] != url:
             logger.warning(

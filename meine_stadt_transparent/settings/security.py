@@ -24,7 +24,9 @@ if env.str("MAP_TILES_PROVIDER", "OSM") == "Mapbox":
 
 SENTRY_HEADER_ENDPOINT = env.str("SENTRY_HEADER_ENDPOINT", None)
 
-CSP_CONNECT_SRC = ("'self'", "sentry.io") + env.tuple("CSP_CONNECT_SRC", default=tuple())
+CSP_CONNECT_SRC = ("'self'", "sentry.io") + env.tuple(
+    "CSP_CONNECT_SRC", default=tuple()
+)
 
 if SENTRY_HEADER_ENDPOINT:
     CSP_REPORT_URI = SENTRY_HEADER_ENDPOINT
