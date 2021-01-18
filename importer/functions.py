@@ -71,7 +71,8 @@ def externalize(
 
     externalized = []
 
-    for key in libobject.keys():
+    # sorted copies, thereby avoiding modification while iterating
+    for key in sorted(libobject.keys()):
         # Skip the geojson object
         if key == "geojson":
             continue
@@ -83,6 +84,7 @@ def externalize(
                 logger.warning(
                     f"Embedded object at {key} in {libobject['id']} does not have an id, skipping: {entry}"
                 )
+                del libobject[key]
                 continue
 
             if isinstance(key_callback, set):
@@ -100,7 +102,8 @@ def externalize(
                     logger.warning(
                         f"Embedded object at {key} in {libobject['id']} does not have an id, skipping: {entry}"
                     )
-                    continue
+                    del libobject[key]
+                    break
 
                 entry["mst:backref"] = libobject["id"]
                 entry["mst:backrefPosition"] = pos  # We need this for agenda items

@@ -189,7 +189,7 @@ def test_fetch_list_update():
 
 def test_externalize_missing_id(caplog):
     """In http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445, the embedded location does not have an id"""
-    json = {
+    json_in = {
         "id": "http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445",
         "type": "https://schema.oparl.org/1.1/Meeting",
         "name": "Klausurtagung des Gemeinderats",
@@ -202,7 +202,13 @@ def test_externalize_missing_id(caplog):
         "created": "2020-11-11T09:47:04+01:00",
         "modified": "2020-11-11T09:48:13+01:00",
     }
-    assert len(externalize(json)) == 1
+    # Check that location has been removed but everything else remained the same
+    json_out = json_in.copy()
+    del json_out["location"]
+
+    externalized = externalize(json_in)
+    assert len(externalized) == 1
+    assert externalized[0].data == json_out
     assert caplog.messages == [
         "Embedded object at location in "
         "http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445 does not have an "
