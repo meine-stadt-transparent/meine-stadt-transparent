@@ -439,7 +439,7 @@ class JsonToDb:
     def paper(self, libobject: JSON, paper: Paper) -> Paper:
         if libobject.get("paperType"):
             paper_type, created = PaperType.objects.get_or_create(
-                defaults={"paper_type": libobject.get("paperType")}
+                paper_type=libobject.get("paperType")
             )
             paper.paper_type = paper_type
             if created:
