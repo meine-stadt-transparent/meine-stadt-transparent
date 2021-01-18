@@ -185,3 +185,26 @@ def test_fetch_list_update():
     importer = Importer(loader)
     importer.fetch_list_initial("https://oparl.wuppertal.de/oparl/bodies/0001/papers")
     importer.fetch_list_update("https://oparl.wuppertal.de/oparl/bodies/0001/papers")
+
+
+def test_externalize_missing_id(caplog):
+    """In http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445, the embedded location does not have an id"""
+    json = {
+        "id": "http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445",
+        "type": "https://schema.oparl.org/1.1/Meeting",
+        "name": "Klausurtagung des Gemeinderats",
+        "start": "2021-06-12T09:00:00+02:00",
+        "end": "2021-06-12T00:00:00+02:00",
+        "location": {"description": "Ulm-Messe,"},
+        "organization": [
+            "http://buergerinfo.ulm.de/oparl/bodies/0001/organizations/gr/1"
+        ],
+        "created": "2020-11-11T09:47:04+01:00",
+        "modified": "2020-11-11T09:48:13+01:00",
+    }
+    assert len(externalize(json)) == 1
+    assert caplog.messages == [
+        "Embedded object at location in "
+        "http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445 does not have an "
+        "id, skipping: {'description': 'Ulm-Messe,'}"
+    ]

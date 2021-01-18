@@ -67,7 +67,7 @@ def requests_get(url, params=None, **kwargs) -> requests.Response:
 def externalize(
     libobject: JSON, key_callback: Optional[Set[str]] = None
 ) -> List[CachedObject]:
-    """ Converts an oparl object with embedded objects to multiple flat json objeczs """
+    """ Converts an oparl object with embedded objects to multiple flat json objects """
 
     externalized = []
 
@@ -79,6 +79,12 @@ def externalize(
         entry = libobject[key]
 
         if isinstance(entry, dict):
+            if "id" not in entry:
+                logger.warning(
+                    f"Embedded object at {key} in {libobject['id']} does not have an id, skipping: {entry}"
+                )
+                continue
+
             if isinstance(key_callback, set):
                 key_callback.add(key)
             entry["mst:backref"] = libobject["id"]
@@ -90,6 +96,12 @@ def externalize(
             if isinstance(key_callback, set):
                 key_callback.add(key)
             for pos, entry in enumerate(entry):
+                if "id" not in entry:
+                    logger.warning(
+                        f"Embedded object at {key} in {libobject['id']} does not have an id, skipping: {entry}"
+                    )
+                    continue
+
                 entry["mst:backref"] = libobject["id"]
                 entry["mst:backrefPosition"] = pos  # We need this for agenda items
 
