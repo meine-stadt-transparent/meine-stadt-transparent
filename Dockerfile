@@ -63,4 +63,4 @@ RUN cp etc/template.env .env && \
 EXPOSE 8000
 
 ENTRYPOINT ["/app/.venv/bin/python"]
-CMD ["/app/.venv/bin/gunicorn", "--configc", "etc/gunicorn.conf.py", "meine_stadt_transparent.wsgi:application"]
+CMD ["/app/.venv/bin/gunicorn", "--config", "etc/gunicorn.conf.py", "meine_stadt_transparent.wsgi:application"]
