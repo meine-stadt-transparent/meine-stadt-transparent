@@ -15,8 +15,8 @@ from importer.json_datatypes import RisData
 from mainapp import models
 from mainapp.functions.search import search_bulk_index
 from mainapp.models import DefaultFields
-from mainapp.models.helper import SoftDeleteModelManager
 from mainapp.models.file import fallback_date
+from mainapp.models.helper import SoftDeleteModelManager
 
 logger = logging.getLogger(__name__)
 office_replaces = {
@@ -154,20 +154,25 @@ def incremental_import(
         f"Creating {len(to_be_created)} and "
         f"Updating {len(to_be_updated)}"
     )
-    if soft_delete:
-        current_model.objects.filter(id__in=deletion_ids).update(deleted=True)
-    else:
-        current_model.objects.filter(id__in=deletion_ids).delete()
-    # TODO: Delete files
-
     # Since we don't get the bulk created object ids back from django (yet?),
     # we just do this by timestamp - indexing more that necessary isn't wrong anyway
     before_bulk_create = timezone.now()
+
+    if soft_delete:
+        deleted_rows = current_model.objects.filter(id__in=deletion_ids).update(
+            deleted=True, modified=timezone.now()
+        )
+    else:
+        current_model.objects.filter(id__in=deletion_ids).delete()
+        deleted_rows = 0
+    # TODO: Delete files
+
     to_be_created = [current_model(**json_map[i1]) for i1 in to_be_created]
     current_model.objects.bulk_create(to_be_created, batch_size=100)
 
     # Bulk create doesn't update the search index, so we do this manually
     if settings.ELASTICSEARCH_ENABLED and current_model in registry.get_models():
+        # Changed/Created
         qs = current_model.objects.filter(modified__gte=before_bulk_create)
         qs_count = qs.count()
         assert qs_count >= len(
@@ -175,6 +180,16 @@ def incremental_import(
         ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
         logger.info(f"Indexing {qs_count} {current_model.__name__} new objects")
         search_bulk_index(current_model, qs)
+        # Deleted
+        qs = current_model.objects_with_deleted.filter(
+            deleted=True, modified__gte=before_bulk_create
+        )
+        qs_count = qs.count()
+        assert (
+            qs_count >= deleted_rows
+        ), f"Only {qs_count} {current_model.__name__} for deletion, while at least {deleted_rows} were expected"
+        logger.info(f"Deleting {qs_count} {current_model.__name__} from elasticsearch")
+        search_bulk_index(current_model, qs, action="delete")
 
     with transaction.atomic():
         for json_object, pk in tqdm(to_be_updated, disable=not to_be_updated):

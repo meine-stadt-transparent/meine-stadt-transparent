@@ -16,7 +16,6 @@ from importer.import_json import import_data
 from importer.importer import Importer
 from importer.json_datatypes import RisData, converter, format_version
 from importer.loader import BaseLoader
-from mainapp.models.file import fallback_date
 from mainapp import models
 from mainapp.functions.city_to_ags import city_to_ags
 from mainapp.functions.citytools import import_outline, import_streets

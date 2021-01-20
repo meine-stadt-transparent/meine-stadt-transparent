@@ -12,7 +12,8 @@ if env.str("ENV_PATH", None):
     env_file = env.str("ENV_PATH")
     assert Path(env_file).is_file()
 elif TESTING:
-    env_file = "etc/test.env"
-    assert Path(env_file).is_file()
+    # This anchoring allows to run tests below the project root
+    env_file = Path(__file__).parent.parent.parent.joinpath("etc/test.env")
+    assert env_file.is_file(), "The test env is missing"
 
-env.read_env(env_file)
+env.read_env(str(env_file))

@@ -24,10 +24,6 @@ from mainapp.functions.geo_functions import latlng_to_address
 logger = logging.getLogger(__name__)
 
 DOCUMENT_TYPES = ["file", "meeting", "paper", "organization", "person"]
-DOCUMENT_INDICES = {
-    doc_type: settings.ELASTICSEARCH_PREFIX + "-" + doc_type
-    for doc_type in DOCUMENT_TYPES
-}
 
 DOCUMENT_TYPE_NAMES = {
     "file": pgettext("Document Type Name", "File"),
@@ -76,6 +72,14 @@ NotificationSearchResult = namedtuple(
 )
 
 
+def get_document_indices():
+    """We can't make this a constant because we want to change ELASTICSEARCH_PREFIX is the tests"""
+    return {
+        doc_type: settings.ELASTICSEARCH_PREFIX + "-" + doc_type
+        for doc_type in DOCUMENT_TYPES
+    }
+
+
 class ElasticsearchNotAvailableError(Exception):
     def __str__(self):
         return (
@@ -104,7 +108,7 @@ class MainappSearch(FacetedSearch):
         self.errors = []
         self.offset = offset
         self.limit = limit
-        self.index = list(DOCUMENT_INDICES.values())
+        self.index = list(get_document_indices().values())
         self.extra_filter: List[Query] = extra_filter or []
 
         # Note that for django templates it makes a difference if a value is undefined or None
@@ -150,7 +154,7 @@ class MainappSearch(FacetedSearch):
     def query(self, search: Search, query: str) -> Search:
         if query:
             self.options["searchterm"] = query
-            # Fuzzines AUTO(=2) gives more error tolerance, but is also a lot slower and has many false positives
+            # Fuzziness AUTO(=2) gives more error tolerance, but is also a lot slower and has many false positives
             # We're using https://stackoverflow.com/a/35375562/3549270 to make exact matches score higher than fuzzy
             # matches
             search = search.query(
@@ -207,9 +211,9 @@ class MainappSearch(FacetedSearch):
         search.update_from_dict(
             {
                 "indices_boost": [
-                    {DOCUMENT_INDICES["person"]: 4},
-                    {DOCUMENT_INDICES["organization"]: 4},
-                    {DOCUMENT_INDICES["paper"]: 2},
+                    {get_document_indices()["person"]: 4},
+                    {get_document_indices()["organization"]: 4},
+                    {get_document_indices()["paper"]: 2},
                 ],
                 "_source": [
                     "id",
@@ -382,7 +386,7 @@ def autocomplete(query: str) -> Response:
     does not fall back to matching only the first character in extreme cases. This prevents absurd cases where
     "Garret Walker" and "Hector Mendoza" are suggested when we're entering "Mahatma Ghandi"
     """
-    search_query = Search(index=list(DOCUMENT_INDICES.values()))
+    search_query = Search(index=list(get_document_indices().values()))
     search_query = search_query.query(
         "match",
         autocomplete={
@@ -396,9 +400,9 @@ def autocomplete(query: str) -> Response:
     search_query = search_query.update_from_dict(
         {
             "indices_boost": [
-                {DOCUMENT_INDICES["person"]: 4},
-                {DOCUMENT_INDICES["organization"]: 4},
-                {DOCUMENT_INDICES["paper"]: 2},
+                {get_document_indices()["person"]: 4},
+                {get_document_indices()["organization"]: 4},
+                {get_document_indices()["paper"]: 2},
             ]
         }
     )
@@ -406,10 +410,10 @@ def autocomplete(query: str) -> Response:
     return response
 
 
-def search_bulk_index(model: Type[Model], qs: QuerySet):
+def search_bulk_index(model: Type[Model], qs: QuerySet, **kwargs):
     """Django orm bulk functions such as `bulk_create`, `bulk_index` and
     `update`do not send signals for the modified objects and therefore do not
     automatically update the elasticsearch index. This function therefore
     bulk-reindexes the changed objects."""
     [current_doc] = registry.get_documents([model])
-    return current_doc().update(qs)
+    return current_doc().update(qs, **kwargs)

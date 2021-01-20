@@ -314,7 +314,10 @@ DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 MAINAPP_LOG_LEVEL = env.str("MAINAPP_LOG_LEVEL", None)
 IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
 
-LOG_DIRECTORY = env.str("LOG_DIRECTORY", "log")
+# Anchoring this in this file is required for running tests from other directories
+LOG_DIRECTORY = env.str(
+    "LOG_DIRECTORY", Path(__file__).parent.parent.parent.joinpath("log")
+)
 NO_LOG_FILES = env.bool("NO_LOG_FILES", False)
 
 

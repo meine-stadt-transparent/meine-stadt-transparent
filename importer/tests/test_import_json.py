@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.test import modify_settings, override_settings
 from django.utils import timezone
+from django_elasticsearch_dsl.registries import registry
 
 from importer.import_json import (
     import_data,
@@ -26,9 +27,11 @@ from importer.json_datatypes import (
     RisMeta,
     Paper,
     AgendaItem,
+    Person,
 )
 from mainapp import models
 from mainapp.functions.notify_users import NotifyUsers
+from mainapp.functions.search import MainappSearch
 from mainapp.models import Body, DefaultFields, UserAlert, UserProfile
 from mainapp.tests.elasticsearch.test_elasticsearch import is_es_online
 from mainapp.tests.utils import ElasticsearchMock
@@ -375,3 +378,36 @@ def test_agenda_item_with_id_name_changed():
     import_data(body, new)
     assert models.AgendaItem.objects_with_deleted.count() == 1
     assert models.AgendaItem.objects.count() == 1
+
+
+@override_settings(ELASTICSEARCH_ENABLED=is_es_online())
+@override_settings(ELASTICSEARCH_PREFIX="mst-test")
+@modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
+@pytest.mark.skipif(not is_es_online(), reason="Elasticsearch is offline")
+@pytest.mark.django_db
+def test_index_deletion():
+    """Check that deleted persons get deleted from the elasticsearch index"""
+    for index in registry.get_indices(registry.get_models()):
+        index.delete(ignore=404)
+    for index in registry.get_indices(registry.get_models()):
+        index.create()
+
+    old_persons = [
+        Person(name="Frank Underwood", party="Democrats"),
+        Person(name="Claire Underwood", party="Democrats"),
+    ]
+    new_persons = [Person(name="Claire Underwood", party="Democrats")]
+
+    old = RisData(sample_city, None, old_persons, [], [], [], [], [], [], 2)
+    new = RisData(sample_city, None, new_persons, [], [], [], [], [], [], 2)
+    body = Body(
+        name=old.meta.name,
+        short_name=old.meta.name,
+        ags=old.meta.ags,
+    )
+    body.save()
+
+    import_data(body, old)
+    assert len(MainappSearch({"query": "Underwood"}).execute().hits) == 2
+    import_data(body, new)
+    assert len(MainappSearch({"query": "Underwood"}).execute().hits) == 1
