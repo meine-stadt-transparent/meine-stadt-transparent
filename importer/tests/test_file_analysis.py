@@ -7,7 +7,7 @@ from django.test import TestCase
 from importer.importer import Importer
 from importer.tests.utils import MockLoader
 from mainapp.models import Body, File
-from mainapp.tests.main import MinioMock
+from mainapp.tests.utils import MinioMock
 
 download_url = "https://oparl.example.org/download/0"
 

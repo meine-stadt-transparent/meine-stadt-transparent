@@ -15,7 +15,7 @@ from importer.tests.utils import (
     make_file,
     make_paper,
 )
-from mainapp.tests.main import MinioMock
+from mainapp.tests.utils import MinioMock
 
 
 class TestCron(TestCase):

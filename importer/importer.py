@@ -3,7 +3,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from itertools import repeat
 from tempfile import NamedTemporaryFile
-from typing import Optional, List, Type
+from typing import Optional, List, Type, Tuple
 from typing import TypeVar, Any, Set
 from urllib.parse import parse_qs, urlparse
 
@@ -417,8 +417,12 @@ class Importer:
 
         return True
 
-    def load_files(self, fallback_city: str, max_workers: Optional[int] = None) -> None:
-        """ Downloads and analyses the actual file for the file entries in the database """
+    def load_files(
+        self, fallback_city: str, max_workers: Optional[int] = None
+    ) -> Tuple[int, int]:
+        """Downloads and analyses the actual file for the file entries in the database.
+
+        Returns the number of successful and failed files"""
         # This is partially bound by waiting on external resources, but mostly very cpu intensive,
         # so we can spawn a bunch of processes to make this a lot faster.
         # We need to build a list because mysql connections and process pools don't pair well.
@@ -433,6 +437,7 @@ class Importer:
         if sys.stdout.isatty() and not settings.TESTING:
             pbar = tqdm(total=len(files))
         failed = 0
+        successful = 0
 
         if not self.force_singlethread:
             # We need to close the database connections, which will be automatically reopen for
@@ -461,6 +466,8 @@ class Importer:
 
                 if not succeeded:
                     failed += 1
+                else:
+                    successful += 1
 
                 if pbar:
                     pbar.update()
@@ -469,3 +476,5 @@ class Importer:
 
         if failed > 0:
             logger.error("{} files failed to download".format(failed))
+
+        return successful, failed

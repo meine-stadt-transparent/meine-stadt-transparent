@@ -5,6 +5,7 @@ from dateutil import tz
 from django.db import models
 from django.urls import reverse
 
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from .helper import DefaultFields
 from .location import Location
 from .person import Person
@@ -28,6 +29,8 @@ class File(DefaultFields):
     # In case the license is different than the rest of the system, e.g. a CC-licensed picture
     license = models.CharField(max_length=200, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    # Sometimes we need to delete file even if they were not deleted at the source
+    manually_deleted = models.BooleanField(default=False)
 
     # Store these values for we might need them for a proxy
     oparl_access_url = models.CharField(max_length=512, null=True, blank=True)
@@ -56,6 +59,13 @@ class File(DefaultFields):
 
     def get_oparl_url(self) -> Optional[str]:
         return self.oparl_download_url or self.oparl_access_url
+
+    def manually_delete(self):
+        """Sometimes we need to delete files even if they were not deleted at the source"""
+        self.deleted = True
+        self.manually_deleted = True
+        self.save()
+        minio_client().remove_object(minio_file_bucket, str(self.id))
 
     def get_assigned_meetings(self):
         from .meeting import Meeting

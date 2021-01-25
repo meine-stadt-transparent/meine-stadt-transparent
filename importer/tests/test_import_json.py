@@ -7,11 +7,13 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
+import responses
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.test import modify_settings, override_settings
 from django.utils import timezone
 from django_elasticsearch_dsl.registries import registry
+from minio.error import NoSuchKey
 
 from importer.import_json import (
     import_data,
@@ -19,6 +21,7 @@ from importer.import_json import (
     convert_agenda_item,
     incremental_import,
 )
+from importer.importer import Importer
 from importer.json_datatypes import (
     RisData,
     converter,
@@ -28,13 +31,16 @@ from importer.json_datatypes import (
     Paper,
     AgendaItem,
     Person,
+    File,
 )
+from importer.loader import BaseLoader
 from mainapp import models
+from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.functions.notify_users import NotifyUsers
 from mainapp.functions.search import MainappSearch
 from mainapp.models import Body, DefaultFields, UserAlert, UserProfile
 from mainapp.tests.elasticsearch.test_elasticsearch import is_es_online
-from mainapp.tests.utils import ElasticsearchMock
+from mainapp.tests.utils import ElasticsearchMock, MinioMock
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +53,15 @@ sample_city = RisMeta(
     wikidata_item="",
     website="",
     ags="",
+)
+
+sample_paper = Paper(
+    "Antrag",
+    "Stadtratsantrag",
+    "2020/1",
+    None,
+    datetime.fromisoformat("2020-01-01T00:00:00+01:00"),
+    38423,
 )
 
 
@@ -248,14 +263,6 @@ def test_meeting_start_change():
 @pytest.mark.django_db
 def test_undelete():
     """ A paper gets created, (spuriously?) deleted, and then undeleted """
-    sample_paper = Paper(
-        "Antrag",
-        "Stadtratsantrag",
-        "2020/1",
-        None,
-        datetime.fromisoformat("2020-01-01T00:00:00+01:00"),
-        38423,
-    )
     with_paper = RisData(sample_city, None, [], [], [sample_paper], [], [], [], [], 2)
     without_paper = RisData(sample_city, None, [], [], [], [], [], [], [], 2)
     body = Body(
@@ -411,3 +418,64 @@ def test_index_deletion():
     assert len(MainappSearch({"query": "Underwood"}).execute().hits) == 2
     import_data(body, new)
     assert len(MainappSearch({"query": "Underwood"}).execute().hits) == 1
+
+
+@mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
+@pytest.mark.django_db
+def test_manual_deletion(pytestconfig):
+    """Check that after a file has been manually deleted, it can't get re-imported and it's gone from minio"""
+    url = "https://example.org/file/1"
+    file_id = 1
+    sample_file = File(
+        name="Bad File",
+        original_id=file_id,
+        url=url,
+        claimed_size=None,
+        paper_original_id=sample_paper.original_id,
+    )
+    data = RisData(
+        sample_city, None, [], [], [sample_paper], [sample_file], [], [], [], 2
+    )
+    body = Body(
+        name=data.meta.name,
+        short_name=data.meta.name,
+        ags=data.meta.ags,
+    )
+    body.save()
+    import_data(body, data)
+
+    with responses.RequestsMock() as requests_mock:
+        requests_mock.add(
+            responses.GET,
+            url,
+            body=Path(pytestconfig.rootdir)
+            .joinpath("testdata/media/file.txt")
+            .read_bytes(),
+            status=200,
+            content_type="text/plain",
+        )
+        importer = Importer(BaseLoader({}), force_singlethread=True)
+        [successful, failed] = importer.load_files(sample_city.name)
+        assert successful == 1 and failed == 0
+
+    # Ensure that the file is there
+    assert minio_client().get_object(minio_file_bucket, str(file_id))
+    assert models.File.objects.filter(pk=file_id).first()
+
+    # This is what we test
+    models.File.objects.get(pk=file_id).manually_delete()
+
+    with pytest.raises(NoSuchKey):
+        minio_client().get_object(minio_file_bucket, str(file_id))
+
+    # Another import, to ensure that manually delete is respected
+    import_data(body, data)
+
+    assert not models.File.objects.filter(pk=file_id).first()
+    with responses.RequestsMock():
+        importer = Importer(BaseLoader({}), force_singlethread=True)
+        [successful, failed] = importer.load_files(sample_city.name)
+        assert successful == 0 and failed == 0
+
+    with pytest.raises(NoSuchKey):
+        minio_client().get_object(minio_file_bucket, str(file_id))

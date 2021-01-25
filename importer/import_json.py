@@ -117,6 +117,21 @@ def incremental_import(
     """Compared the objects in the database with the json data for a given objects and
     creates, updates and (soft-)deletes the appropriate records."""
 
+    json_map = dict()
+    for json_dict in json_objects:
+        key = tuple(json_dict[j] for j in unique_field_dict[current_model])
+        json_map[key] = json_dict
+
+    # Remove manually deleted files
+    if current_model == models.File:
+        # noinspection PyUnresolvedReferences
+        manually_deleted = current_model.objects_with_deleted.filter(
+            manually_deleted=True
+        ).values_list("oparl_id", flat=True)
+        for i in manually_deleted:
+            if (i,) in json_map:
+                del json_map[(i,)]
+
     # Handle undeleted objects, e.g. papers that disappeared and reappeared
     if issubclass(current_model, DefaultFields):
         deleted = current_model.objects_with_deleted.filter(
@@ -129,11 +144,6 @@ def incremental_import(
             current_model.objects_with_deleted.filter(oparl_id__in=to_undelete).update(
                 deleted=False
             )
-
-    json_map = dict()
-    for json_dict in json_objects:
-        key = tuple(json_dict[j] for j in unique_field_dict[current_model])
-        json_map[key] = json_dict
 
     db_ids, db_map = get_from_db(current_model)
 
@@ -614,9 +624,15 @@ def import_paper_files(
 ):
     logger.info("Processing the file-paper-associations")
 
+    # Remove manually deleted files
+    manually_deleted = models.File.objects_with_deleted.filter(
+        manually_deleted=True
+    ).values_list("oparl_id", flat=True)
+
     objects = []
     for i in ris_data.files:
-        objects.append(convert_file_to_paper(i, file_id_map, paper_id_map))
+        if str(i.original_id) not in manually_deleted:
+            objects.append(convert_file_to_paper(i, file_id_map, paper_id_map))
 
     incremental_import(models.Paper.files.through, objects, soft_delete=False)
 

@@ -1,11 +1,16 @@
 import json
 import logging
+from collections import defaultdict
+from io import BytesIO
 from pathlib import Path
-from typing import List, Tuple, Dict, Union
+from typing import List, Tuple, Dict, Union, DefaultDict
 
 from django.core.serializers.json import DjangoJSONEncoder
+from minio.error import NoSuchKey
 
 logger = logging.getLogger(__name__)
+
+test_media_root = "testdata/media"
 
 
 def get_json(data: Union[str, dict]) -> dict:
@@ -38,3 +43,29 @@ class ElasticsearchMock:
         except Exception:
             logger.warning("query: " + json.dumps(query, cls=DjangoJSONEncoder))
         raise RuntimeError(f"Query not found")
+
+
+class MinioMock:
+    """Mocks a simple minio storage with a dict"""
+
+    storage: DefaultDict[str, Dict[str, bytes]]
+
+    def __init__(self):
+        self.storage = defaultdict(dict)
+
+    # noinspection PyUnusedLocal
+    def put_object(self, bucket, object_name, data, *args, **kwargs):
+        self.storage[bucket][object_name] = data.read()
+
+    def fput_object(self, bucket: str, object_name: str, filepath: str):
+        with open(filepath, "rb") as fp:
+            self.storage[bucket][object_name] = fp.read()
+
+    def get_object(self, bucket: str, object_name: str):
+        if object_name in self.storage[bucket]:
+            return BytesIO(self.storage[bucket][object_name])
+        else:
+            raise NoSuchKey(None)
+
+    def remove_object(self, bucket: str, object_name: str):
+        del self.storage[bucket][object_name]
