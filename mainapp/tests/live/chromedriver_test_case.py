@@ -1,4 +1,5 @@
 import logging
+import os
 
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
@@ -6,7 +7,11 @@ from django.test import modify_settings
 from selenium.webdriver.chrome.options import Options
 from splinter import Browser
 
-chromedriver_path = "node_modules/chromedriver/bin/chromedriver"
+# On ubuntu with chromium installed as snap, we also need to use the chromedriver from the snap
+if os.path.isfile("snap/bin/chromium.chromedriver"):
+    chromedriver_path = "snap/bin/chromium.chromedriver"
+else:
+    chromedriver_path = "/snap/bin/chromium.chromedriver"
 
 logger = logging.getLogger(__name__)
 
