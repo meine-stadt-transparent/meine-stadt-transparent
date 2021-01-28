@@ -7,10 +7,11 @@ Please see the [Readme](Readme.md#Update]) on what commands to run after an upda
  * Add `SENTRY_TRACES_SAMPLE_RATE` for the sentry integration (https://docs.sentry.io/platforms/python/guides/django/performance/).
  * The gunicorn config is now in `etc/gunicorn.conf.py`, which can be overwritten by mounting a different file into the container
  * The `delete_file` command now prevents a file from getting reimported with the json import
+ * Updated pdf.js: The pdf viewer now has a white theme
 
 ## v0.2.11
 
-  * Added a `delete_file` command, which remove the file from minio
+  * Added a `delete_file` command, which removes the file from minio
 
 ## v0.2.10
 

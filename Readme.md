@@ -125,7 +125,7 @@ docker-compose down
 rm -r /var/www/meine-stadt-transparent-static
 mkdir /var/www/meine-stadt-transparent-static
 docker-compose run --rm django ./manage.py setup
-docker-compose up
+docker-compose up -d
 ```
 
 ### Kubernetes
