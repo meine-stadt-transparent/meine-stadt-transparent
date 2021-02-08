@@ -60,7 +60,7 @@
                         {% firstof papers.0.main_file.name papers.0.main_file.filename %}
                     </a>
                 {% endif %}
-                {% for other_file in papers.0.files.all %}
+                {% for other_file in papers.0.files_ordered.all %}
                     <a class="list-group-item list-group-item-action {% if other_file.id == file.id %}active scroll-into-view{% endif %}"
                        href="{% if context_meeting %}{% url 'meeting-file' context_meeting.id other_file.id %}{% else %}{% url 'file' other_file.id %}{% endif %}">
                         <span class="fa-custom fa-file"></span>

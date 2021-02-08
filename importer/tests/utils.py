@@ -127,7 +127,7 @@ def spurious_500(loader_class: Type[BaseLoader]):
                         "web": "N/Avo020.asp?VOLFDNR=1000030",
                         "created": "2014-07-23T12:00:00+02:00",
                         "modified": "2014-09-09T10:03:49+02:00",
-                    },
+                    }
                 ],
                 "pagination": {"elementsPerPage": 20},
                 "links": {
@@ -140,7 +140,7 @@ def spurious_500(loader_class: Type[BaseLoader]):
 
         loader = loader_class({})
         data = loader.load(
-            "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2",
+            "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
         )
 
         assert len(data["data"]) == 1

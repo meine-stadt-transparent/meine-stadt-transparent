@@ -81,7 +81,7 @@
                             </a>
                         </li>
                     {% endif %}
-                    {% for file in paper.files.all %}
+                    {% for file in paper.files_ordered.all %}
                         <li>
                             <a href="{% url 'file' file.id %}">
                                 <span class="fa-custom fa-file"></span>{% firstof file.name file.filename file %}

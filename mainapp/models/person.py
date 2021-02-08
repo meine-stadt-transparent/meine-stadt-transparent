@@ -46,7 +46,5 @@ class Person(DefaultFields, DummyInterface):
     @classmethod
     def dummy(cls, oparl_id: str) -> "Person":
         return Person(
-            name=_("Missing Person"),
-            given_name=_("Missing"),
-            family_name=_("Missing"),
+            name=_("Missing Person"), given_name=_("Missing"), family_name=_("Missing")
         )

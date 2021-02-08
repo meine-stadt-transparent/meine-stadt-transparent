@@ -341,7 +341,7 @@ def test_agenda_item_with_id_name_changed():
             None,
             1,
             start=datetime.fromisoformat("2020-01-01T09:00:00+01:00"),
-        ),
+        )
     ]
 
     agenda_items_old = [
@@ -407,11 +407,7 @@ def test_index_deletion():
 
     old = RisData(sample_city, None, old_persons, [], [], [], [], [], [], 2)
     new = RisData(sample_city, None, new_persons, [], [], [], [], [], [], 2)
-    body = Body(
-        name=old.meta.name,
-        short_name=old.meta.name,
-        ags=old.meta.ags,
-    )
+    body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
     body.save()
 
     import_data(body, old)
@@ -436,11 +432,7 @@ def test_manual_deletion(pytestconfig):
     data = RisData(
         sample_city, None, [], [], [sample_paper], [sample_file], [], [], [], 2
     )
-    body = Body(
-        name=data.meta.name,
-        short_name=data.meta.name,
-        ags=data.meta.ags,
-    )
+    body = Body(name=data.meta.name, short_name=data.meta.name, ags=data.meta.ags)
     body.save()
     import_data(body, data)
 

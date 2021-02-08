@@ -71,5 +71,9 @@ class Paper(DefaultFields, ShortableNameFields):
     def organization_ids(self):
         return [organization.id for organization in self.organizations.all()]
 
+    def files_ordered(self):
+        """Since we don't have an intended order of the non-main file files, we sort them alphabetically"""
+        return self.files.order_by("name")
+
     class Meta:
         indexes = [models.Index(fields=["-sort_date"])]

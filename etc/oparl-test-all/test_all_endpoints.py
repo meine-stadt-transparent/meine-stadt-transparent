@@ -42,10 +42,7 @@ def runner(title: str, system_url) -> Tuple[str, int]:
         body_url,
     ]
     with subprocess.Popen(command, env=db_env, stdout=PIPE, stderr=PIPE) as p:
-        readable = {
-            p.stdout: "OUT",
-            p.stderr: "ERR",
-        }
+        readable = {p.stdout: "OUT", p.stderr: "ERR"}
         while readable:
             for fd in select(readable, [], [])[0]:
                 data = fd.readline()

@@ -46,11 +46,7 @@ urlpatterns = [
     path("person/<int:pk>/", views.person, name="person"),
     path("paper/<int:pk>/", views.paper, name="paper"),
     path("paper/feed/", LatestPapersFeed(), name="paper-feed"),
-    path(
-        "paper/historical/<int:pk>/",
-        views.historical_paper,
-        name="historical_paper",
-    ),
+    path("paper/historical/<int:pk>/", views.historical_paper, name="historical_paper"),
     path("file/<int:pk>/", views.file, name="file"),
     path("meeting/<int:pk>/", views.meeting, name="meeting"),
     path(
@@ -65,16 +61,10 @@ urlpatterns = [
         name="historical_meeting",
     ),
     path(
-        "organization/<int:pk>/ical/",
-        views.organizazion_ical,
-        name="organizazion_ical",
+        "organization/<int:pk>/ical/", views.organizazion_ical, name="organizazion_ical"
     ),
     path("body/<int:pk>/", views.body, name="body"),
-    path(
-        "legislative-term/<int:pk>/",
-        views.legislative_term,
-        name="legislative-term",
-    ),
+    path("legislative-term/<int:pk>/", views.legislative_term, name="legislative-term"),
     path("location/<int:pk>/", views.location, name="location"),
     path("profile/", profile_view, name="profile-home"),
     path("profile/delete/", profile_delete, name="profile-delete"),
