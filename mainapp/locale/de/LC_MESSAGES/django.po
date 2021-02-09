@@ -115,7 +115,7 @@ msgstr "%TO% zugewiesen"
 #: mainapp/functions/search_notification_tools.py:92
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
-msgstr "mit einem Ortsbezug zu \"%PLACE\" (max. %DISTANCE%m entfernt)"
+msgstr "mit einem Ortsbezug zu \"%PLACE%\" (max. %DISTANCE%m entfernt)"
 
 #: mainapp/functions/search_notification_tools.py:102
 msgctxt "Search query"
