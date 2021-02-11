@@ -264,7 +264,12 @@ class JsonToDb:
     def location(self, libobject: JSON, location: Location) -> Location:
         location.description = libobject.get("description")
         location.is_official = self.utils.official_geojson
-        location.geometry = libobject.get("geojson", {}).get("geometry")
+        geometry = libobject.get("geojson", {}).get("geometry")
+        if geometry:
+            if len(geometry["coordinates"]) == 2:
+                location.geometry = geometry
+            else:
+                logger.error(f"Invalid coordinates in {location.oparl_id}: {geometry}")
 
         location.street_address = libobject.get("streetAddress")
         location.room = libobject.get("room")
