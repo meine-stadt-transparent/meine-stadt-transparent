@@ -326,7 +326,7 @@ def params_to_search_string(params: Dict[str, Any]) -> str:
     values = []
     for key, value in sorted(params.items()):
         if key != "searchterm":
-            values.append(key + ":" + value)
+            values.append(key + ":" + str(value))
     if "searchterm" in params:
         values.append(params["searchterm"])
     searchstring = " ".join(values)
