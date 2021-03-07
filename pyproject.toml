@@ -45,10 +45,10 @@ python = "^3.7"
 python-dateutil = "^2.7"
 python-slugify = "^4.0"
 requests = "^2.22"
-sentry-sdk = "^0.20"
+sentry-sdk = "^1.0.0"
 splinter = "^0.14.0"
 tqdm = "^4.29"
-wagtail = ">=2.11,<2.12"
+wagtail = ">=2.12,<2.13"
 
 [tool.poetry.dev-dependencies]
 black = "20.8b1"

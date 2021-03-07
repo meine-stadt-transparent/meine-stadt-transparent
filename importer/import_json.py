@@ -202,7 +202,11 @@ def incremental_import(
         search_bulk_index(current_model, qs, action="delete")
 
     with transaction.atomic():
-        for json_object, pk in tqdm(to_be_updated, disable=not to_be_updated):
+        for json_object, pk in tqdm(
+            to_be_updated,
+            disable=not to_be_updated,
+            desc=f"Update or create for {current_model.__name__}",
+        ):
             current_model.objects_with_deleted.update_or_create(
                 pk=pk, defaults=json_object
             )
