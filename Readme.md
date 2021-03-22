@@ -8,7 +8,7 @@
 
 Meine Stadt Transparent is a free council information system. Its current main focus is presenting data from offical German council information systems, so called "Ratsinformationssysteme". Those are imported using the [OParl](https://oparl.org) API, which can easily customized. You can even write your own importer for arbitrary data sources.
 
-Our sample live system using the data of the city [Krefeld](https://www.krefeld.de/) is available at: [https://krefeld.meine-stadt-transparent.de/](https://krefeld.meine-stadt-transparent.de/). We provide a public chat on riot at `#meine-stadt-transparent:matrix.org`, which you can join on [matrix](https://matrix.to/#/!cEDbUmQZdyVTciakty:matrix.org?via=matrix.org).
+Our sample live system using the data of the city [Krefeld](https://www.krefeld.de/) is available at: [https://krefeld.meine-stadt-transparent.de/](https://krefeld.meine-stadt-transparent.de/). We provide a public chat on riot at `#meine-stadt-transparent:matrix.org`, which you can join on [matrix](https://matrix.to/#/#meine-stadt-transparent:matrix.org?via=matrix.org).
 
 The project was sponsored by the [Prototype Fund](https://prototypefund.de/).
 
