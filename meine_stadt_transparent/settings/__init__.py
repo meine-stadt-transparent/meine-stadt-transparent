@@ -444,10 +444,12 @@ DEBUG_TOOLBAR_ACTIVE = False
 DEBUG_TESTING = env.bool("DEBUG_TESTING", False)
 
 if DEBUG and not TESTING:
+    # For some reason pycharm needs the latter condition (might just be misconfiguration)
     if find_spec("debug_toolbar"):
         # Debug Toolbar
-        INSTALLED_APPS.append("debug_toolbar")
-        MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+        if "debug_toolbar" not in INSTALLED_APPS:
+            INSTALLED_APPS.append("debug_toolbar")
+            MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
         DEBUG_TOOLBAR_CONFIG = {"JQUERY_URL": ""}
         DEBUG_TOOLBAR_ACTIVE = True
     else:
