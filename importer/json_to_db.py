@@ -187,7 +187,11 @@ class JsonToDb:
         return instance
 
     def retrieve(
-        self, object_type: Type[T], oparl_id: Optional[str], warn: bool = True
+        self,
+        object_type: Type[T],
+        oparl_id: Optional[str],
+        debug_id: str,
+        warn: bool = True,
     ) -> Optional[T]:
         if not oparl_id:
             return None
@@ -202,8 +206,10 @@ class JsonToDb:
         else:
             if warn and self.warn_missing and object_type != Location:
                 logger.warning(
-                    "{} {} was supposed to be a part of the external lists, but isn't".format(
-                        object_type, oparl_id
+                    logger.warning(
+                        f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
+                        f"supposed to be a part of the external lists, but was not. "
+                        f"This is a bug in the OParl implementation."
                     )
                 )
 
@@ -211,7 +217,9 @@ class JsonToDb:
                 return self.import_anything(oparl_id, object_type)
             except HTTPError:
                 logger.exception(
-                    "Failed to download the {} {}".format(object_type, oparl_id)
+                    "Failed to download the {} {}".format(
+                        object_type.__name__, oparl_id
+                    )
                 )
                 return None
 
@@ -236,7 +244,7 @@ class JsonToDb:
                 for oparl_id in missing:
                     if self.warn_missing:
                         logger.warning(
-                            f"The object {oparl_id} linked from {debug_id} was "
+                            f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
                             f"supposed to be a part of the external lists, but was not. "
                             f"This is a bug in the OParl implementation."
                         )
@@ -248,33 +256,33 @@ class JsonToDb:
     E = TypeVar("E", bound=DefaultFields)
 
     def init_base(
-        self, libobject: JSON, base: E, name_fixup: Optional[str] = None
+        self, lib_object: JSON, base: E, name_fixup: Optional[str] = None
     ) -> E:
         """ Sets common fields """
 
-        if not libobject["id"]:
-            raise RuntimeError("id is none: " + str(libobject))
-        base.oparl_id = libobject["id"]
-        base.deleted = bool(libobject.get("deleted", False))
+        if not lib_object["id"]:
+            raise RuntimeError("id is none: " + str(lib_object))
+        base.oparl_id = lib_object["id"]
+        base.deleted = bool(lib_object.get("deleted", False))
         if isinstance(base, ShortableNameFields):
-            base.name = libobject.get("name") or name_fixup
-            base.set_short_name(libobject.get("shortName") or base.name)
+            base.name = lib_object.get("name") or name_fixup
+            base.set_short_name(lib_object.get("shortName") or base.name)
         return base
 
-    def location(self, libobject: JSON, location: Location) -> Location:
-        location.description = libobject.get("description")
+    def location(self, lib_object: JSON, location: Location) -> Location:
+        location.description = lib_object.get("description")
         location.is_official = self.utils.official_geojson
-        geometry = libobject.get("geojson", {}).get("geometry")
+        geometry = lib_object.get("geojson", {}).get("geometry")
         if geometry:
             if len(geometry["coordinates"]) == 2:
                 location.geometry = geometry
             else:
                 logger.error(f"Invalid coordinates in {location.oparl_id}: {geometry}")
 
-        location.street_address = libobject.get("streetAddress")
-        location.room = libobject.get("room")
-        location.postal_code = libobject.get("postalCode")
-        location.locality = libobject.get("locality")
+        location.street_address = lib_object.get("streetAddress")
+        location.room = lib_object.get("room")
+        location.postal_code = lib_object.get("postalCode")
+        location.locality = lib_object.get("locality")
 
         if not location.description:
             description = ""
@@ -303,105 +311,113 @@ class JsonToDb:
         return location
 
     def legislative_term(
-        self, libobject: JSON, term: LegislativeTerm
+        self, lib_object: JSON, term: LegislativeTerm
     ) -> Optional[LegislativeTerm]:
 
-        if not libobject.get("startDate"):
+        if not lib_object.get("startDate"):
             logger.error("Term has no start date - skipping")
             return None
 
-        term.start = self.utils.parse_date(libobject.get("startDate"))
-        if libobject.get("endDate"):
-            term.end = self.utils.parse_date(libobject.get("endDate"))
+        term.start = self.utils.parse_date(lib_object.get("startDate"))
+        if lib_object.get("endDate"):
+            term.end = self.utils.parse_date(lib_object.get("endDate"))
 
         return term
 
-    def file(self, libobject: JSON, file: File) -> File:
+    def file(self, lib_object: JSON, file: File) -> File:
         cutoff = self.utils.filename_length_cutoff
-        if libobject.get("fileName"):
-            filename = libobject.get("fileName")
-        elif libobject.get("name"):
+        if lib_object.get("fileName"):
+            filename = lib_object.get("fileName")
+        elif lib_object.get("name"):
             extension = mimetypes.guess_extension("application/pdf") or ""
             length = cutoff - len(extension)
-            filename = slugify(libobject.get("name"))[:length] + extension
+            filename = slugify(lib_object.get("name"))[:length] + extension
         else:
-            access_url = libobject["accessUrl"]
+            access_url = lib_object["accessUrl"]
             filename = slugify(access_url.split("/")[-1])[-cutoff:]
 
-        file.name = libobject.get("name", "")
+        file.name = lib_object.get("name", "")
         if len(file.name) > 200:
             file.name = textwrap.wrap(file.name, 199)[0] + "\u2026"
 
         file.filename = filename
-        file.mime_type = libobject.get("mimeType") or "application/octet-stream"
-        file.legal_date = self.utils.parse_date(libobject.get("date"))
+        file.mime_type = lib_object.get("mimeType") or "application/octet-stream"
+        file.legal_date = self.utils.parse_date(lib_object.get("date"))
         file.sort_date = (
             self.utils.date_to_datetime(file.legal_date)
-            or self.utils.parse_datetime(libobject.get("created"))
+            or self.utils.parse_datetime(lib_object.get("created"))
             or timezone.now()
         )
-        file.oparl_access_url = libobject.get("accessUrl")
-        file.oparl_download_url = libobject.get("downloadUrl")
+        file.oparl_access_url = lib_object.get("accessUrl")
+        file.oparl_download_url = lib_object.get("downloadUrl")
         file.filesize = None
-        file.parsed_text = libobject.get("text")
-        file.license = libobject.get("fileLicense")
+        file.parsed_text = lib_object.get("text")
+        file.license = lib_object.get("fileLicense")
 
         # We current do not handle locations attached to files due
         # to the lack of data and our own location extraction
 
         return file
 
-    def consultation(self, libobject: JSON, consultation: Consultation) -> Consultation:
-        consultation.authoritative = libobject.get("authoritative")
-        consultation.role = libobject.get("role")
+    def consultation(
+        self, lib_object: JSON, consultation: Consultation
+    ) -> Consultation:
+        consultation.authoritative = lib_object.get("authoritative")
+        consultation.role = lib_object.get("role")
 
-        paper_backref = libobject.get("paper") or libobject.get("mst:backref")
-        consultation.paper = self.retrieve(Paper, paper_backref)
-        consultation.meeting = self.retrieve(Meeting, libobject.get("meeting"))
-        consultation.authoritative = libobject.get("authoritative")
+        paper_backref = lib_object.get("paper") or lib_object.get("mst:backref")
+        consultation.paper = self.retrieve(Paper, paper_backref, consultation.oparl_id)
+        consultation.meeting = self.retrieve(
+            Meeting, lib_object.get("meeting"), consultation.oparl_id
+        )
+        consultation.authoritative = lib_object.get("authoritative")
 
         return consultation
 
-    def agenda_item(self, libobject: JSON, item: AgendaItem) -> AgendaItem:
-        item.key = libobject.get("number") or "-"
-        item.name = libobject.get("name")
-        item.public = libobject.get("public")
-        item.result = libobject.get("result")
-        item.resolution_text = libobject.get("resolutionText")
-        item.start = self.utils.parse_datetime(libobject.get("start"))
-        item.end = self.utils.parse_datetime(libobject.get("end"))
-        meeting_backref = libobject.get("meeting") or libobject.get("mst:backref")
-        item.meeting = self.retrieve(Meeting, meeting_backref)
-        item.position = libobject.get("mst:backrefPosition")
+    def agenda_item(self, lib_object: JSON, item: AgendaItem) -> AgendaItem:
+        item.key = lib_object.get("number") or "-"
+        item.name = lib_object.get("name")
+        item.public = lib_object.get("public")
+        item.result = lib_object.get("result")
+        item.resolution_text = lib_object.get("resolutionText")
+        item.start = self.utils.parse_datetime(lib_object.get("start"))
+        item.end = self.utils.parse_datetime(lib_object.get("end"))
+        meeting_backref = lib_object.get("meeting") or lib_object.get("mst:backref")
+        item.meeting = self.retrieve(Meeting, meeting_backref, item.oparl_id)
+        item.position = lib_object.get("mst:backrefPosition")
 
-        item.consultation = self.retrieve(Consultation, libobject.get("consultation"))
-        item.resolution_file = self.retrieve(File, libobject.get("resolutionFile"))
+        item.consultation = self.retrieve(
+            Consultation, lib_object.get("consultation"), item.oparl_id
+        )
+        item.resolution_file = self.retrieve(
+            File, lib_object.get("resolutionFile"), item.oparl_id
+        )
 
         return item
 
-    def agenda_item_related(self, libobject: JSON, item: AgendaItem) -> None:
+    def agenda_item_related(self, lib_object: JSON, item: AgendaItem) -> None:
         item.auxiliary_file.set(
-            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
+            self.retrieve_many(File, lib_object.get("auxiliaryFile"), lib_object["id"])
         )
 
-    def membership(self, libobject: JSON, membership: Membership) -> Membership:
-        role = libobject.get("role") or _("Unknown")
+    def membership(self, lib_object: JSON, membership: Membership) -> Membership:
+        role = lib_object.get("role") or _("Unknown")
 
-        membership.start = self.utils.parse_date(libobject.get("startDate"))
-        membership.end = self.utils.parse_date(libobject.get("endDate"))
+        membership.start = self.utils.parse_date(lib_object.get("startDate"))
+        membership.end = self.utils.parse_date(lib_object.get("endDate"))
         membership.role = role
-        person_backref = libobject.get("person") or libobject.get("mst:backref")
-        membership.person = self.retrieve(Person, person_backref)
+        person_backref = lib_object.get("person") or lib_object.get("mst:backref")
+        membership.person = self.retrieve(Person, person_backref, membership.oparl_id)
         membership.organization = self.retrieve(
-            Organization, libobject.get("organization")
+            Organization, lib_object.get("organization"), membership.oparl_id
         )
 
         return membership
 
-    def body(self, libobject: JSON, body: Body) -> Body:
+    def body(self, lib_object: JSON, body: Body) -> Body:
         body.short_name = self.utils.normalize_body_name(body.short_name)
 
-        body.ags = libobject.get("ags")
+        body.ags = lib_object.get("ags")
         if body.ags:
             body.ags = body.ags.replace(" ", "")
         if len(body.ags or "") > 8:
@@ -417,7 +433,7 @@ class JsonToDb:
 
         # We don't really need the location because we have our own outline
         # importing logic and don't need the city, but we import it for comprehensiveness
-        location = self.retrieve(Location, libobject.get("location"))
+        location = self.retrieve(Location, lib_object.get("location"), body.oparl_id)
         if location and location.geometry:
             if location.geometry["type"] == "Point":
                 body.center = location
@@ -434,30 +450,32 @@ class JsonToDb:
 
         return body
 
-    def body_related(self, libobject: JSON, body: Body) -> None:
+    def body_related(self, lib_object: JSON, body: Body) -> None:
         body.legislative_terms.set(
             self.retrieve_many(
-                LegislativeTerm, libobject.get("legislativeTerm"), libobject["id"]
+                LegislativeTerm, lib_object.get("legislativeTerm"), lib_object["id"]
             )
         )
 
-    def paper(self, libobject: JSON, paper: Paper) -> Paper:
-        if libobject.get("paperType"):
+    def paper(self, lib_object: JSON, paper: Paper) -> Paper:
+        if lib_object.get("paperType"):
             paper_type, created = PaperType.objects.get_or_create(
-                paper_type=libobject.get("paperType")
+                paper_type=lib_object.get("paperType")
             )
             paper.paper_type = paper_type
             if created:
                 logging.info(
                     "Created new paper type {} through {}".format(
-                        paper_type, libobject["id"]
+                        paper_type, lib_object["id"]
                     )
                 )
 
-        paper.reference_number = libobject.get("reference")
-        paper.main_file = self.retrieve(File, libobject.get("mainFile"))
+        paper.reference_number = lib_object.get("reference")
+        paper.main_file = self.retrieve(
+            File, lib_object.get("mainFile"), paper.oparl_id
+        )
 
-        paper.legal_date = self.utils.parse_date(libobject.get("date"))
+        paper.legal_date = self.utils.parse_date(lib_object.get("date"))
         # At this point we don't have the agenda items yet. We'll fix up the
         # cases where there are consultations but no legal date later
         paper.display_date = paper.legal_date
@@ -466,46 +484,51 @@ class JsonToDb:
 
         return paper
 
-    def paper_related(self, libobject: JSON, paper: Paper) -> None:
+    def paper_related(self, lib_object: JSON, paper: Paper) -> None:
         paper.files.set(
-            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
+            self.retrieve_many(File, lib_object.get("auxiliaryFile"), lib_object["id"])
         )
         paper.organizations.set(
             self.retrieve_many(
-                Organization, libobject.get("underDirectionOf"), libobject["id"]
+                Organization, lib_object.get("underDirectionOf"), lib_object["id"]
             )
         )
         paper.persons.set(
             self.retrieve_many(
-                Person, libobject.get("originatorPerson"), libobject["id"]
+                Person, lib_object.get("originatorPerson"), lib_object["id"]
             )
         )
 
-    def organization(self, libobject: JSON, organization: Organization) -> Organization:
-        type_name = libobject.get("organizationType")
+    def organization(
+        self, lib_object: JSON, organization: Organization
+    ) -> Organization:
+        type_name = lib_object.get("organizationType")
 
         # E.g. Leipzig sets organizationType: "Gremium" and classification: "Fraktion" for factions,
         # so we give priority to classification
-        if libobject.get("classification") in self.utils.organization_classification:
-            type_name = libobject["classification"]
+        if lib_object.get("classification") in self.utils.organization_classification:
+            type_name = lib_object["classification"]
 
         type_id = self.utils.organization_classification.get(type_name)
         if type_id:
             orgtype = OrganizationType.objects.get(id=type_id)
         else:
             orgtype, _ = OrganizationType.objects.get_or_create(
-                name=libobject.get("organizationType")
+                name=lib_object.get("organizationType")
             )
         organization.organization_type = orgtype
-        if libobject.get("body"):
-            # If we really have a case with an extra body then this should error because then we need some extra handling
-            organization.body = Body.by_oparl_id(libobject["body"])
+        if lib_object.get("body"):
+            # If we really have a case with an extra body then this should error
+            # because then we need some extra handling
+            organization.body = Body.by_oparl_id(lib_object["body"])
         else:
             organization.body = self.default_body
-        organization.start = self.utils.parse_date(libobject.get("startDate"))
-        organization.end = self.utils.parse_date(libobject.get("endDate"))
+        organization.start = self.utils.parse_date(lib_object.get("startDate"))
+        organization.end = self.utils.parse_date(lib_object.get("endDate"))
 
-        organization.location = self.retrieve(Location, libobject.get("location"))
+        organization.location = self.retrieve(
+            Location, lib_object.get("location"), organization.oparl_id
+        )
 
         if organization.name == organization.short_name and type_name:
             pattern = "[- ]?" + re.escape(type_name) + "[ ]?"
@@ -515,42 +538,48 @@ class JsonToDb:
 
         return organization
 
-    def meeting(self, libobject: JSON, meeting: Meeting) -> Meeting:
-        meeting.start = self.utils.parse_datetime(libobject.get("start"))
-        meeting.end = self.utils.parse_datetime(libobject.get("end"))
-        meeting.location = self.retrieve(Location, libobject.get("location"))
-        meeting.invitation = self.retrieve(File, libobject.get("invitation"))
-        meeting.verbatim_protocol = self.retrieve(
-            File, libobject.get("verbatimProtocol")
+    def meeting(self, lib_object: JSON, meeting: Meeting) -> Meeting:
+        meeting.start = self.utils.parse_datetime(lib_object.get("start"))
+        meeting.end = self.utils.parse_datetime(lib_object.get("end"))
+        meeting.location = self.retrieve(
+            Location, lib_object.get("location"), meeting.oparl_id
         )
-        meeting.results_protocol = self.retrieve(File, libobject.get("resultsProtocol"))
-        meeting.cancelled = libobject.get("cancelled", False)
+        meeting.invitation = self.retrieve(
+            File, lib_object.get("invitation"), meeting.oparl_id
+        )
+        meeting.verbatim_protocol = self.retrieve(
+            File, lib_object.get("verbatimProtocol"), meeting.oparl_id
+        )
+        meeting.results_protocol = self.retrieve(
+            File, lib_object.get("resultsProtocol"), meeting.oparl_id
+        )
+        meeting.cancelled = lib_object.get("cancelled", False)
 
         return meeting
 
-    def meeting_related(self, libobject: JSON, meeting: Meeting) -> None:
+    def meeting_related(self, lib_object: JSON, meeting: Meeting) -> None:
         meeting.auxiliary_files.set(
-            self.retrieve_many(File, libobject.get("auxiliaryFile"), libobject["id"])
+            self.retrieve_many(File, lib_object.get("auxiliaryFile"), lib_object["id"])
         )
         meeting.persons.set(
-            self.retrieve_many(Person, libobject.get("participant"), libobject["id"])
+            self.retrieve_many(Person, lib_object.get("participant"), lib_object["id"])
         )
         meeting.organizations.set(
             self.retrieve_many(
-                Organization, libobject.get("organization"), libobject["id"]
+                Organization, lib_object.get("organization"), lib_object["id"]
             )
         )
 
-    def person(self, libobject: JSON, person: Person) -> Person:
-        name = libobject.get("name")
-        given_name = libobject.get("givenName")
-        family_name = libobject.get("familyName")
+    def person(self, lib_object: JSON, person: Person) -> Person:
+        name = lib_object.get("name")
+        given_name = lib_object.get("givenName")
+        family_name = lib_object.get("familyName")
 
         if not name:
             if given_name and family_name:
                 name = given_name + " " + family_name
             else:
-                logger.warning("Person without name: {}".format(libobject["id"]))
+                logger.warning("Person without name: {}".format(lib_object["id"]))
                 name = _("Unknown")
 
         if not given_name and not family_name and " " in name:
@@ -559,16 +588,18 @@ class JsonToDb:
             logger.warning("Inferring given and family name from compound name")
 
         if not given_name:
-            logger.warning("Person without given name: {}".format(libobject["id"]))
+            logger.warning("Person without given name: {}".format(lib_object["id"]))
             given_name = _("Unknown")
 
         if not family_name:
-            logger.warning("Person without family name: {}".format(libobject["id"]))
+            logger.warning("Person without family name: {}".format(lib_object["id"]))
             family_name = _("Unknown")
 
         person.name = name
         person.given_name = given_name
         person.family_name = family_name
-        person.location = self.retrieve(Location, libobject.get("location"))
+        person.location = self.retrieve(
+            Location, lib_object.get("location"), person.oparl_id
+        )
 
         return person

@@ -12,8 +12,8 @@
                 "_id": "2",
                 "_score": 5.6957636,
                 "_source": {
-                    "display_date": null,
                     "legal_date": null,
+                    "display_date": null,
                     "name": "Vorlage (Frank Unterholz)",
                     "id": 2,
                     "reference_number": null
@@ -28,7 +28,7 @@
                 "_index": "mst-test-organization",
                 "_type": "_doc",
                 "_id": "1",
-                "_score": 5.5451775,
+                "_score": 5.545177,
                 "_source": {
                     "name": "Der Unterholz Club",
                     "id": 1
@@ -43,7 +43,7 @@
                 "_index": "mst-test-person",
                 "_type": "_doc",
                 "_id": "1",
-                "_score": 5.5451775,
+                "_score": 5.545177,
                 "_source": {
                     "name": "Frank Unterholz",
                     "id": 1
@@ -61,9 +61,10 @@
                 "_index": "mst-test-paper",
                 "_type": "_doc",
                 "_id": "3",
-                "_score": 2.5314503,
+                "_score": 2.5314505,
                 "_source": {
                     "legal_date": null,
+                    "display_date": null,
                     "name": "Vorlage (Frank Underholz)",
                     "id": 3,
                     "reference_number": null
@@ -78,7 +79,7 @@
                 "_index": "mst-test-file",
                 "_type": "_doc",
                 "_id": "3",
-                "_score": 2.4861822,
+                "_score": 2.486182,
                 "_source": {
                     "name": "Antrag (Frank Unterholz)",
                     "id": 3
@@ -96,7 +97,7 @@
                 "_index": "mst-test-organization",
                 "_type": "_doc",
                 "_id": "2",
-                "_score": 2.4645233,
+                "_score": 2.464523,
                 "_source": {
                     "name": "Der Underholz Club",
                     "id": 2
@@ -111,7 +112,7 @@
                 "_index": "mst-test-person",
                 "_type": "_doc",
                 "_id": "2",
-                "_score": 2.4645233,
+                "_score": 2.464523,
                 "_source": {
                     "name": "Frank Underholz",
                     "id": 2
@@ -129,7 +130,7 @@
                 "_index": "mst-test-meeting",
                 "_type": "_doc",
                 "_id": "1",
-                "_score": 1.3862944,
+                "_score": 1.3862942,
                 "_source": {
                     "name": "Ortstermin mit Frank Unterholz",
                     "id": 1
@@ -162,7 +163,7 @@
                 "_index": "mst-test-meeting",
                 "_type": "_doc",
                 "_id": "2",
-                "_score": 0.6161308,
+                "_score": 0.61613077,
                 "_source": {
                     "name": "Ortstermin mit Frank Underholz",
                     "id": 2

@@ -4,7 +4,7 @@
   "description": "Meine Stadt Transparent",
   "repository": {
     "type": "git",
-    "url": "https://github.com/CatoTH/opensourceris"
+    "url": "https://github.com/meine-stadt-transparent/meine-stadt-transparent"
   },
   "scripts": {
     "build:dev": "NODE_ENV=dev webpack --config ./etc/webpack.config.dev.js",

@@ -210,7 +210,7 @@ def test_externalize_missing_id(caplog):
     assert len(externalized) == 1
     assert externalized[0].data == json_out
     assert caplog.messages == [
-        "Embedded object at location in "
+        "Embedded object 'location' in "
         "http://buergerinfo.ulm.de/oparl/bodies/0001/meetings/11445 does not have an "
         "id, skipping: {'description': 'Ulm-Messe,'}"
     ]

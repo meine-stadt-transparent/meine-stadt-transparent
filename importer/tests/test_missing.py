@@ -103,7 +103,7 @@ def test_missing_organization(caplog):
     assert Person.objects.first().name == "Missing Person"
 
     assert caplog.messages == [
-        "The object http://oparl.wuppertal.de/oparl/bodies/0001/people/292 linked "
+        "The Person http://oparl.wuppertal.de/oparl/bodies/0001/people/292 linked "
         "from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed "
         "to be a part of the external lists, but was not. This is a bug in the OParl "
         "implementation.",
@@ -112,10 +112,11 @@ def test_missing_organization(caplog):
         "http://oparl.wuppertal.de/oparl/bodies/0001/people/292",
         "Using a dummy for http://oparl.wuppertal.de/oparl/bodies/0001/people/292. "
         "THIS IS BAD.",
-        "The object http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230 "
-        "linked from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was "
-        "supposed to be a part of the external lists, but was not. This is a bug in "
-        "the OParl implementation.",
+        "The Organization "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230 linked from "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed to "
+        "be a part of the external lists, but was not. This is a bug in the OParl "
+        "implementation.",
         "Failed to load "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230: 404 Client "
         "Error: Not Found for url: "
@@ -123,10 +124,11 @@ def test_missing_organization(caplog):
         "Using a dummy for "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230. THIS IS "
         "BAD.",
-        "The object http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231 "
-        "linked from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was "
-        "supposed to be a part of the external lists, but was not. This is a bug in "
-        "the OParl implementation.",
+        "The Organization "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231 linked from "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed to "
+        "be a part of the external lists, but was not. This is a bug in the OParl "
+        "implementation.",
         "Failed to load "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231: 404 Client "
         "Error: Not Found for url: "

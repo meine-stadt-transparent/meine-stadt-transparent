@@ -1,7 +1,8 @@
 import logging
+import time
 from typing import Optional, Tuple, Dict, Any
 
-from requests import HTTPError
+from requests import HTTPError, Response
 
 from importer import JSON
 from importer.functions import requests_get
@@ -204,6 +205,32 @@ class CCEgovLoader(BaseLoader):
 
 
 class SomacosLoader(BaseLoader):
+    max_retries: int = 3
+    error_sleep_seconds: int = 5
+
+    def get_with_retry_on_500(self, url: str) -> Response:
+        """Custom retry logic with logging and backoff"""
+        current_try = 1
+        while True:
+            try:
+                return requests_get(url)
+            except HTTPError as e:
+                if e.response.status_code == 500:
+                    if current_try == self.max_retries:
+                        logger.error(
+                            f"Request failed {self.max_retries} times with an Error 500, aborting: {e}"
+                        )
+                        raise
+                    else:
+                        logger.error(
+                            f"Got an 500 for a Somacos request, retrying after sleeping {self.error_sleep_seconds}s: {e}"
+                        )
+                        time.sleep(self.error_sleep_seconds)
+                        current_try += 1
+                        continue
+                else:
+                    raise
+
     def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
         if query:
             # Somacos doesn't like encoded urls
@@ -213,14 +240,7 @@ class SomacosLoader(BaseLoader):
                 + "&".join([key + "=" + value for key, value in query.items()])
             )
         logger.debug("Loader is loading {}".format(url))
-        try:
-            response = requests_get(url)
-        except HTTPError as e:
-            if e.response.status_code == 500:
-                logger.error(f"Got an 500 for a Somacos request, retrying: {e}")
-                response = requests_get(url)
-            else:
-                raise
+        response = self.get_with_retry_on_500(url)
 
         data = response.json()
         if "id" in data and data["id"] != url:

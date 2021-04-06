@@ -92,7 +92,7 @@ def make_paper(files: List[JSON], paper_id: int = 0) -> JSON:
     }
 
 
-def spurious_500(loader_class: Type[BaseLoader]):
+def spurious_500(loader: BaseLoader):
     with responses.RequestsMock() as requests_mock:
         requests_mock.add(
             responses.GET,
@@ -138,7 +138,6 @@ def spurious_500(loader_class: Type[BaseLoader]):
             },
         )
 
-        loader = loader_class({})
         data = loader.load(
             "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
         )

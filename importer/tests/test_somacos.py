@@ -36,8 +36,11 @@ def test_somacos_encoded_urls():
 
 
 def test_spurious_500(caplog):
-    spurious_500(SomacosLoader)
+    loader = SomacosLoader({})
+    loader.error_sleep_seconds = 0
+    spurious_500(loader)
     assert caplog.messages == [
-        "Got an 500 for a Somacos request, retrying: 500 Server Error: "
-        "Internal Server Error for url: https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
+        "Got an 500 for a Somacos request, retrying after sleeping 0s: 500 Server "
+        "Error: Internal Server Error for url: "
+        "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
     ]
