@@ -22,6 +22,7 @@ jobs:
           tag_with_ref: true
           build_args: BUILDKIT_INLINE_CACHE=1
           add_git_labels: true
+          labels: org.opencontainers.image.revision=${{ env.GITHUB_SHA }}
       # For some reason, this works locally but not on github actions
       #- name: Build and push konstin2/mst-oparl-test
       #  uses: docker/build-push-action@v1.1.0
