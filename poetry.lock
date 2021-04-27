@@ -282,14 +282,14 @@ dev = ["flake8", "isort"]
 
 [[package]]
 name = "django-elasticsearch-dsl"
-version = "7.1.4"
+version = "7.2.0"
 description = "Wrapper around elasticsearch-dsl-py for django models"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-elasticsearch-dsl = ">=7.0.0"
+elasticsearch-dsl = ">=7.2.0"
 six = "*"
 
 [[package]]
@@ -1391,7 +1391,7 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "1b9df74fb5c52a5cae425bf35376fa46fbd4062e3ad059394d5af6a7c9db4468"
+content-hash = "491f1312209bb77f954a909e928005864164b31ac9004521d6686d8daefdd8bf"
 
 [metadata.files]
 anyascii = [
@@ -1532,8 +1532,8 @@ django-decorator-include = [
     {file = "django_decorator_include-3.0-py3-none-any.whl", hash = "sha256:fe7a96afb23f66dcbc6227d3c48430e53cc5704eab30841ddb8bd940e5ea8a5a"},
 ]
 django-elasticsearch-dsl = [
-    {file = "django-elasticsearch-dsl-7.1.4.tar.gz", hash = "sha256:5bbd49a9acb51c08fbbb7fba9beee7c9ce73b481af718cc57e4c8ac3d561888f"},
-    {file = "django_elasticsearch_dsl-7.1.4-py2.py3-none-any.whl", hash = "sha256:e733ccfd0e8b83ad6896d812a2c15ccbd563caf4ebf30fd31640538ad2de8e26"},
+    {file = "django-elasticsearch-dsl-7.2.0.tar.gz", hash = "sha256:f9163ffe314a0562f00789d34cc923332e1d51236bf7d5a38bfa8ea72399ceac"},
+    {file = "django_elasticsearch_dsl-7.2.0-py2.py3-none-any.whl", hash = "sha256:865f9f0d6aa24c923c2cc791b35f608c85cfe766edc8920d00854ced452c326a"},
 ]
 django-environ = [
     {file = "django-environ-0.4.5.tar.gz", hash = "sha256:6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde"},
@@ -1615,6 +1615,7 @@ geopy = [
     {file = "geopy-2.1.0.tar.gz", hash = "sha256:892b219413e7955587b029949af3a1949c6fbac9d5ad17b79d850718f6a9550f"},
 ]
 gunicorn = [
+    {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
     {file = "gunicorn-20.1.0.tar.gz", hash = "sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8"},
 ]
 html2text = [
