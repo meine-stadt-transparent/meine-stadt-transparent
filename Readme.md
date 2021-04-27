@@ -147,7 +147,7 @@ On Debian/Ubuntu:
 
 ```
 sudo apt install python3-pip python3-venv python3-dev nodejs \
-    git libmysqlclient-dev libmagickwand-dev poppler-utils tesseract-ocr libssl-dev gettext
+    git libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext
 ```
 
 Install dependencies.
