@@ -2,16 +2,15 @@
 
 set -xe
 
-git fetch
-git reset --hard origin/main
-
 docker-compose pull
 
-VERSION="meine-stadt-transparent@$(git rev-parse HEAD)"
-export SENTRY_ORG=konstin
+SHA=$(docker inspect -f '{{ index .Config.Labels "org.opencontainers.image.revision" }}' konstin2/meine-stadt-transparent:main)
+VERSION="meine-stadt-transparent@${SHA}"
+echo $VERSION
+SENTRY_ORG=konstin
 
-sentry-cli releases new -p meine-stadt-transparent-de "$VERSION"
-sentry-cli releases set-commits "$VERSION" --auto
+sentry-cli releases new -p mst-many "$VERSION"
+sentry-cli releases set-commits "$VERSION" --commit "meine-stadt-transparent/meine-stadt-transparent@${SHA}"
 
 docker-compose up -d
 echo "Deployment finished"
