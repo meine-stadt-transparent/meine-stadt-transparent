@@ -6,33 +6,29 @@ on:
     tags: [ '*' ]
 
 jobs:
-  docker-build:
+  docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Build and push konstin2/meine-stadt-transparent
-        uses: docker/build-push-action@v1.1.0
-        env:
-          DOCKER_BUILDKIT: 1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Docker meta
+        id: meta
+        uses: crazy-max/ghaction-docker-meta@v2
+        with:
+          images: konstin2/meine-stadt-transparent
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
         with:
           username: konstin2
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: konstin2/meine-stadt-transparent
-          cache_froms: konstin2/meine-stadt-transparent
-          tag_with_ref: true
-          build_args: BUILDKIT_INLINE_CACHE=1
-          add_git_labels: true
-          labels: org.opencontainers.image.revision=${{ env.GITHUB_SHA }}
-      # For some reason, this works locally but not on github actions
-      #- name: Build and push konstin2/mst-oparl-test
-      #  uses: docker/build-push-action@v1.1.0
-      #  env:
-      #    DOCKER_BUILDKIT: 1
-      #  with:
-      #    path: etc
-      #    dockerfile: etc/oparl-test/Dockerfile
-      #    username: konstin2
-      #    password: ${{ secrets.DOCKER_PASSWORD }}
-      #    repository: konstin2/mst-oparl-test
-      #    tag_with_ref: true
-      #    build_args: BUILDKIT_INLINE_CACHE=1
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=konstin2/meine-stadt-transparent:main
+          cache-to: type=inline
