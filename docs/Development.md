@@ -32,7 +32,7 @@ Start the actual server
 
 You can run the tests either with `pytest` or with `./manage.py test`. The tests in `mainapp/tests/live` require a specific version of chrome to be installed.
 
-There's a tox config to ensure 3.6 to 3.7 compatibility which can be run with `tox`.
+There's a tox config to ensure 3.8 and 3.9 compatibility which can be run with `tox`.
 
 ## Dummy data
 

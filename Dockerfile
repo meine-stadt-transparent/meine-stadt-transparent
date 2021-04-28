@@ -15,7 +15,7 @@ COPY mainapp/assets /app/mainapp/assets
 RUN npm run build:prod && npm run build:email
 
 # Stage 2: Build the .venv folder
-FROM python:3.7-slim-buster AS venv-build
+FROM python:3.8-slim-buster AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
@@ -32,7 +32,7 @@ RUN mkdir cms importer mainapp meine_stadt_transparent && \
     $HOME/.poetry/bin/poetry install --no-dev -E import-json
 
 # Stage 3: The actual container
-FROM python:3.7-slim-buster
+FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED=1
 
