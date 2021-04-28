@@ -34,7 +34,7 @@ RUN mkdir cms importer mainapp meine_stadt_transparent && \
 # Stage 3: The actual container
 FROM python:3.7-slim-buster
 
-ENV PYTHONUNBUFFERED=1 NODE_ENV=production
+ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
     apt-get install -y git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
