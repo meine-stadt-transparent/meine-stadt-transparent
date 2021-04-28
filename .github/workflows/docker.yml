@@ -31,5 +31,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: DOCKER_GIT_SHA=${{ env.GITHUB_SHA }}
-          cache-from: type=registry,ref=konstin2/meine-stadt-transparent:main
+          cache-from: type=registry,ref=konstin2/meine-stadt-transparent
           cache-to: type=inline
