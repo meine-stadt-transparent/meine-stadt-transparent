@@ -60,6 +60,10 @@ RUN cp etc/template.env .env && \
     /app/.venv/bin/python manage.py collectstatic --noinput && \
     rm .env
 
+# We inject DOCKER_GIT_SHA in github actions
+ARG DOCKER_GIT_SHA
+ENV DOCKER_GIT_SHA $DOCKER_GIT_SHA
+
 EXPOSE 8000
 
 ENTRYPOINT ["/app/.venv/bin/python"]

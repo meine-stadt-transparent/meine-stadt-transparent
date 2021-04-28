@@ -30,5 +30,12 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: DOCKER_GIT_SHA=${{ env.GITHUB_SHA }}
           cache-from: type=registry,ref=konstin2/meine-stadt-transparent:main
           cache-to: type=inline
+      - name: Update repo description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: konstin2
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: konstin2/meine-stadt-transparent

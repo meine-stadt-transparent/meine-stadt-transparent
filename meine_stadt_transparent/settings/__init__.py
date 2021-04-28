@@ -279,25 +279,26 @@ SENTRY_DSN = env.str("SENTRY_DSN", None)
 # SENTRY_HEADER_ENDPOINT is defined in security.py
 
 if SENTRY_DSN:
-    try:
-        git_tag = (
-            subprocess.check_output(
-                ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
-            )
-            .strip()
-            .decode()
-        )
-        release = "meine-stadt-transparent@" + git_tag
-    except CalledProcessError:
-        # pkg_resources is part of setuptools, so we might want to handle the case we have an ImportError.
-        # Note however that logging isn't configured at this point
-        import pkg_resources
-
+    if os.environ.get("DOCKER_GIT_SHA"):
+        version = os.environ.get("DOCKER_GIT_SHA")
+    else:
         try:
-            version = pkg_resources.get_distribution("meine_stadt_transparent").version
-        except pkg_resources.DistributionNotFound:
-            version = "unknown"
-        release = "meine-stadt-transparent@" + version
+            version = (
+                subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], stderr=subprocess.DEVNULL
+                )
+                .strip()
+                .decode()
+            )
+        except CalledProcessError:
+            # Note however that logging isn't configured at this point
+            import importlib.metadata
+
+            try:
+                version = importlib.metadata.version("meine_stadt_transparent")
+            except importlib.metadata.PackageNotFoundError:
+                version = "unknown"
+    release = "meine-stadt-transparent@" + version
 
     sentry_sdk.init(
         SENTRY_DSN,
