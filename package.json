@@ -38,7 +38,7 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@sentry/browser": "^6.0.2",
+    "@sentry/browser": "^6.3.5",
     "bootstrap": "~4.6.0",
     "bootstrap-datepicker": "^1.9.0",
     "bootstrap-daterangepicker": "^2.1.30",
