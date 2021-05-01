@@ -47,7 +47,7 @@ import_order = [
 
 
 def requests_get(url, params=None, **kwargs) -> requests.Response:
-    """ Makes a request with the custom user agent """
+    """Makes a request with the custom user agent"""
     user_agent = "{} ({})".format(
         slugify(settings.PRODUCT_NAME), settings.TEMPLATE_META["github"]
     )
@@ -67,7 +67,7 @@ def requests_get(url, params=None, **kwargs) -> requests.Response:
 def externalize(
     libobject: JSON, key_callback: Optional[Set[str]] = None
 ) -> List[CachedObject]:
-    """ Converts an oparl object with embedded objects to multiple flat json objects """
+    """Converts an oparl object with embedded objects to multiple flat json objects"""
 
     externalized = []
 
@@ -123,7 +123,7 @@ def externalize(
 
 
 def clear_import(prefix: str, include_cache: bool = True) -> None:
-    """ Clear all data from the oparl api identified by the prefix """
+    """Clear all data from the oparl api identified by the prefix"""
     for class_object in import_order:
         name = class_object.__name__
         stats = class_object.objects.filter(oparl_id__startswith=prefix).delete()

@@ -42,7 +42,7 @@ T = TypeVar("T", bound=DefaultFields)
 
 
 class JsonToDb:
-    """ Converts oparl json to database objects """
+    """Converts oparl json to database objects"""
 
     def __init__(
         self,
@@ -60,7 +60,7 @@ class JsonToDb:
     A = TypeVar("A", bound=DefaultFields)
 
     def type_to_function(self, type_class: Type[A]) -> Callable[[JSON, A], A]:
-        """ Avoiding some metaprogramming by making this explicit """
+        """Avoiding some metaprogramming by making this explicit"""
         mapping = {
             Body: self.body,
             Paper: self.paper,
@@ -82,7 +82,7 @@ class JsonToDb:
     def type_to_related_function(
         self, type_class: Type[B]
     ) -> Optional[Callable[[JSON, B], B]]:
-        """ Avoiding some metaprogramming by making this explicit """
+        """Avoiding some metaprogramming by making this explicit"""
         mapping = {
             Body: self.body_related,
             Paper: self.paper_related,
@@ -108,7 +108,7 @@ class JsonToDb:
     def import_anything(
         self, oparl_id: str, object_type: Optional[Type[T]] = None
     ) -> DefaultFields:
-        """ Hacky metaprogramming to import any object based on its id """
+        """Hacky metaprogramming to import any object based on its id"""
         logging.info("Importing single object {}".format(oparl_id))
 
         to_return = None
@@ -258,7 +258,7 @@ class JsonToDb:
     def init_base(
         self, lib_object: JSON, base: E, name_fixup: Optional[str] = None
     ) -> E:
-        """ Sets common fields """
+        """Sets common fields"""
 
         if not lib_object["id"]:
             raise RuntimeError("id is none: " + str(lib_object))
@@ -376,6 +376,11 @@ class JsonToDb:
 
     def agenda_item(self, lib_object: JSON, item: AgendaItem) -> AgendaItem:
         item.key = lib_object.get("number") or "-"
+        if len(item.key) > 20:
+            logger.warning(
+                f"Overly long AgendaItem key, limiting to 20 character: {item.key}"
+            )
+            item.key = item.key[:20]
         item.name = lib_object.get("name")
         item.public = lib_object.get("public")
         item.result = lib_object.get("result")

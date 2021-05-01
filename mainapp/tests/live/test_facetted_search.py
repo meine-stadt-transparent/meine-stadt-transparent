@@ -19,7 +19,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
     fixtures = ["initdata"]
 
     def get_querystring(self):
-        """ The js writes this value """
+        """The js writes this value"""
         return self.browser.find_by_css("input[name=searchterm]").first[
             "data-querystring"
         ]
@@ -30,7 +30,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         "mainapp.functions.search.MainappSearch.execute", new=MockMainappSearch.execute
     )
     def test_landing_page_redirect(self):
-        """ There was a case where the redirect would lead to the wrong page """
+        """There was a case where the redirect would lead to the wrong page"""
         self.visit("/")
         self.browser.fill("search-query", "word")
         self.browser.find_by_name("search-query").first._element.send_keys(Keys.ENTER)

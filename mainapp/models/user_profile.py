@@ -21,7 +21,7 @@ class UserProfile(models.Model):
     pgp_key_fingerprint = models.CharField(max_length=64, null=True, blank=True)
 
     def add_pgp_key(self, pgp_key_fingerprint: str, pgp_key: str):
-        """ This should eventually be abstracted away into a file manager class """
+        """This should eventually be abstracted away into a file manager class"""
         key_bytes = pgp_key.encode()
         minio_client().put_object(
             minio_pgp_keys_bucket,
@@ -44,7 +44,7 @@ class UserProfile(models.Model):
         self.save()
 
     def get_pgp_key(self) -> Optional[bytes]:
-        """ Returns fingerprint and key """
+        """Returns fingerprint and key"""
         if not self.pgp_key_fingerprint:
             return None
 

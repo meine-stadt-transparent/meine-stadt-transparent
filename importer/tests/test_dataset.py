@@ -76,7 +76,7 @@ class TestDataset(TestCase):
         return obj
 
     def init_mock_loader(self):
-        """ Fakes an oparl server by a creating a prefilled cache. """
+        """Fakes an oparl server by a creating a prefilled cache."""
         system = self.load("System.json")
         self.loader.system = system
 
@@ -148,7 +148,7 @@ class TestDataset(TestCase):
         )
 
     def check_ignoring_unmodified(self):
-        """ Check that not-modified objects are ignored """
+        """Check that not-modified objects are ignored"""
         tables_with_modified = [
             Body,
             Organization,

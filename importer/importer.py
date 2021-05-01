@@ -14,6 +14,7 @@ from django.core.validators import URLValidator
 from django.db import IntegrityError, transaction
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from requests import RequestException
 from tqdm import tqdm
 
@@ -96,7 +97,7 @@ class Importer:
     T = TypeVar("T", bound=DefaultFields)
 
     def import_type(self, type_class: Type[T], update: bool = False) -> List[T]:
-        """ Import all object of a given type """
+        """Import all object of a given type"""
 
         type_name = type_class.__name__
         import_function = self.converter.type_to_function(type_class)
@@ -132,7 +133,9 @@ class Importer:
                 )
             else:
                 instance = type_class()
-            self.converter.init_base(to_import.data, instance)
+            self.converter.init_base(
+                to_import.data, instance, name_fixup=_("[Unknown]")
+            )
             if not instance.deleted:
                 import_function(to_import.data, instance)
                 self.converter.utils.call_custom_hook(
@@ -188,7 +191,7 @@ class Importer:
         return bodies
 
     def fetch_list_initial(self, url: str) -> None:
-        """ Saves a complete external list as flattened json to the database """
+        """Saves a complete external list as flattened json to the database"""
         logger.info("Fetching List {}".format(url))
 
         timestamp = timezone.now()
@@ -242,7 +245,7 @@ class Importer:
         ExternalList(url=url, last_update=timestamp).save()
 
     def fetch_list_update(self, url: str) -> List[str]:
-        """ Saves a complete external list as flattened json to the database """
+        """Saves a complete external list as flattened json to the database"""
         fetch_later = []
 
         timestamp = timezone.now()

@@ -76,7 +76,7 @@ class ShortableNameFields(models.Model):
         else:
             return True
 
-    def set_short_name(self, name):
+    def set_short_name(self, name: str):
         if len(name) > 50:
             name = textwrap.wrap(name, 49)[0] + "\u2026"
         self.short_name = name

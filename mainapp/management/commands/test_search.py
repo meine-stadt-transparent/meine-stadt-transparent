@@ -17,7 +17,7 @@ class Command(BaseCommand):
         parser.add_argument("--rebuild", action="store_true")
 
     def analyze(self, text: str) -> Dict[str, List[Dict]]:
-        """ Shows what elasticsearch does with the tokens """
+        """Shows what elasticsearch does with the tokens"""
 
         elastic_index_file = Index(settings.ELASTICSEARCH_PREFIX + "-file")
         elastic_index_file.analyzer(autocomplete_analyzer)

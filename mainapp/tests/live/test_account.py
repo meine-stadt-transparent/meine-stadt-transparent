@@ -42,7 +42,7 @@ class AccountTest(ChromeDriverTestCase):
         return self.password2
 
     def check_password_invalidated(self, email, password, password2):
-        """ Check that I cannot log in with the old, but therefore with the new password. """
+        """Check that I cannot log in with the old, but therefore with the new password."""
         self.logout()
         self.browser.find_by_css("#main-menu-content .login-link").click()
         self.browser.fill("login", email)

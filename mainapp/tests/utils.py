@@ -24,7 +24,7 @@ class ElasticsearchMock:
     request_response: List[Tuple[dict, dict]]
 
     def __init__(self, pairs: Dict[str, str]):
-        """ Takes the paths to json files with the request and response """
+        """Takes the paths to json files with the request and response"""
         self.request_response = []
         for request, response in pairs.items():
             self.request_response.append((get_json(request), get_json(response)))

@@ -255,7 +255,7 @@ class MainappSearch(FacetedSearch):
 def _add_date_after(
     search: Search, params: Dict[str, Any], options, errors: List[str]
 ) -> Search:
-    """ Filters by a date given a string, catching parsing errors. """
+    """Filters by a date given a string, catching parsing errors."""
     try:
         after = parse(params["after"])
     except (ValueError, OverflowError) as e:
@@ -273,7 +273,7 @@ def _add_date_after(
 
 
 def _add_date_before(search: Search, params: Dict[str, Any], options, errors) -> Search:
-    """ Filters by a date given a string, catching parsing errors. """
+    """Filters by a date given a string, catching parsing errors."""
     try:
         before = parse(params["before"])
     except (ValueError, OverflowError) as e:

@@ -18,7 +18,7 @@ class Person(DefaultFields, DummyInterface):
         return self.name
 
     def name_autocomplete(self):
-        """ A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error """
+        """A workaround to prevent empty values in the autocomplete-field in elasticsearch, which throws an error"""
         return self.name if len(self.name) > 0 else " "
 
     def get_default_link(self):

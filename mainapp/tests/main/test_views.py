@@ -5,7 +5,7 @@ class TestViews(TestCase):
     fixtures = ["initdata"]
 
     def test_meeting_navigation(self):
-        """ 5 is joined with another committee, so it's skipped in this meeting series """
+        """5 is joined with another committee, so it's skipped in this meeting series"""
         contexts = {}
         for i in [3, 4, 5, 6]:
             contexts[i] = self.client.get("/meeting/{}/".format(i)).context

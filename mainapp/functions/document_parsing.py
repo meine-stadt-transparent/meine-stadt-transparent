@@ -67,7 +67,7 @@ class AddressPipeline(geoextract.Pipeline):
 def extract_from_file(
     file: IO[bytes], filename: str, mime_type: str, file_id: int
 ) -> Tuple[Optional[str], Optional[int]]:
-    """ Returns the text and the page count """
+    """Returns the text and the page count"""
 
     parsed_text = None
     page_count = None

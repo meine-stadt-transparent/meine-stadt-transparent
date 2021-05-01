@@ -217,7 +217,7 @@ def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
 
 
 def normalize_name(name: str) -> Tuple[str, str, str]:
-    """ Tries to extract given and family name from a string that might contain titles/form of address. """
+    """Tries to extract given and family name from a string that might contain titles/form of address."""
     for old, new in office_replaces.items():
         name = name.replace(old, new)
     name = name.strip()
@@ -358,7 +358,7 @@ def convert_file(json_file) -> Dict[str, Any]:
 
 
 def handle_counts(ris_data: RisData, allow_shrinkage: bool):
-    """ Prints the old and new counts and makes sure we don't accidentally delete entries """
+    """Prints the old and new counts and makes sure we don't accidentally delete entries"""
     existing_counts = {
         "Paper": models.Paper.objects.count(),
         "File": models.File.objects.count(),

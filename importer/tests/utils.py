@@ -36,7 +36,7 @@ def make_body() -> JSON:
 
 
 class MockLoader(BaseLoader):
-    """ Loads responses from a predefined dict """
+    """Loads responses from a predefined dict"""
 
     api_data: Dict[str, JSON]
     files: Dict[str, Tuple[bytes, str]]
@@ -53,7 +53,7 @@ class MockLoader(BaseLoader):
         self.system = system
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
-        """ Ignores the query fragment to make mocking easy when filters are used """
+        """Ignores the query fragment to make mocking easy when filters are used"""
         return self.api_data[url]
 
     def load_file(self, url: str) -> Tuple[bytes, str]:
@@ -61,7 +61,7 @@ class MockLoader(BaseLoader):
 
 
 def geocode(search_str: str) -> Optional[Dict[str, Any]]:
-    """ Makes sure we don't accidentally call the geocoder in the tests """
+    """Makes sure we don't accidentally call the geocoder in the tests"""
     raise AssertionError(search_str)
 
 

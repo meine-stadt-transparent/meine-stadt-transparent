@@ -104,6 +104,6 @@ class TestICal(TestCase):
         )
 
     def calendar(self):
-        """ Just checks that no excpetion is thrown. """
+        """Just checks that no excpetion is thrown."""
         response = self.client.get("/calendar/ical")
         self.assertEqual(response.status_code, 200)

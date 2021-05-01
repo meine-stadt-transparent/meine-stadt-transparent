@@ -45,7 +45,7 @@ def city_to_ags_all(city_name: str) -> List[Tuple[str, str]]:
 
 
 def city_to_ags(city_name: str, district: bool) -> Optional[str]:
-    """ Returns the Amtliche Gemeindeschlüssel"""
+    """Returns the Amtliche Gemeindeschlüssel"""
     ags_list = city_to_ags_all(city_name)
     if len(ags_list) == 0:
         return None

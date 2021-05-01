@@ -230,7 +230,7 @@ def file(request, pk, context_meeting_id=None):
 def file_serve_proxy(
     request: HttpRequest, original_file_id: int
 ) -> StreamingHttpResponse:
-    """ Ensure that the file is not deleted in the database """
+    """Ensure that the file is not deleted in the database"""
     get_object_or_404(File, id=original_file_id)
 
     """ Util to proxy back to the original RIS in case we don't want to download all the files """

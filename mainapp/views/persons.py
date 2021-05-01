@@ -86,7 +86,7 @@ def person_grid_context(organization):
 
 
 def get_ordered_memberships(selected_person: Person) -> List[List[Membership]]:
-    """ Orders memberships so that the active ones are first, those with unknown end seconds and the ended last. """
+    """Orders memberships so that the active ones are first, those with unknown end seconds and the ended last."""
     memberships_active = (
         selected_person.membership_set.filter(end__gte=timezone.now().date())
         .prefetch_related("organization")

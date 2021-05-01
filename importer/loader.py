@@ -26,6 +26,8 @@ class BaseLoader:
             query = dict()
         response = requests_get(url, params=query)
         data = response.json()
+        if data is None:  # json() can actually return None
+            data = dict()
         if "id" in data and data["id"] != url:
             logger.warning(
                 "Mismatch between url and id. url: {} id: {}".format(url, data["id"])
@@ -33,7 +35,7 @@ class BaseLoader:
         return data
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
-        """ Returns the content and the content type """
+        """Returns the content and the content type"""
         response = requests_get(url)
         content = response.content
         content_type = response.headers.get("Content-Type")
@@ -172,7 +174,14 @@ class SternbergLoader(BaseLoader):
 
 class CCEgovLoader(BaseLoader):
     def visit(self, data: JSON):
-        """ Removes quirks like `"streetAddress": " "` in Location """
+        """Removes quirks like `"streetAddress": " "` in Location"""
+        # `"auxiliaryFile": { ... }` -> `"auxiliaryFile": [{ ... }]`
+        if "auxiliaryFile" in data and isinstance(data["auxiliaryFile"], dict):
+            logger.warning(
+                f"auxiliaryFile is supposed to be an array of objects, "
+                f"but is an object (in {data.get('id')})"
+            )
+            data["auxiliaryFile"] = [data["auxiliaryFile"]]
         for key, value in data.copy().items():
             if isinstance(value, dict):
                 self.visit(value)
@@ -197,7 +206,7 @@ class CCEgovLoader(BaseLoader):
         return response
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
-        """ Returns the content and the content type """
+        """Returns the content and the content type"""
         response = requests_get(url)
         content = response.content
         content_type = response.headers.get("Content-Type")

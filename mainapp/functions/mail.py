@@ -24,7 +24,7 @@ def send_mail(
     message_html: str,
     profile: Optional[UserProfile] = None,
 ) -> None:
-    """ Sends a possibly encrypted email """
+    """Sends a possibly encrypted email"""
     key = None
     if settings.ENABLE_PGP:
         if profile:

@@ -27,14 +27,14 @@ class Location(DefaultFields):
         return self.description or _("Unknown")
 
     def short(self) -> str:
-        """ Tries to return a short description of the adress, with a fallback to the long one """
+        """Tries to return a short description of the adress, with a fallback to the long one"""
         if self.street_address and self.room:
             return "{}, {}".format(self.street_address, self.room)
         else:
             return self.description
 
     def for_maps(self) -> str:
-        """ Tries to build a good search string for google maps / open street map"""
+        """Tries to build a good search string for google maps / open street map"""
         if self.street_address:
             if self.postal_code and self.locality:
                 return "{}, {} {}".format(

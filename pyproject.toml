@@ -43,7 +43,7 @@ osm2geojson = "^0.1.28"
 pgpy = { version = "^0.5.2", optional = true }
 python = "^3.8"
 python-dateutil = "^2.7"
-python-slugify = "^4.0"
+python-slugify = "^5.0"
 requests = "^2.22"
 sentry-sdk = "^1.0.0"
 splinter = "^0.14.0"
@@ -51,7 +51,7 @@ tqdm = "^4.29"
 wagtail = ">=2.12,<2.13"
 
 [tool.poetry.dev-dependencies]
-black = "21.4b1"
+black = "21.4b2"
 django-debug-toolbar = "^3.0"
 pytest-django = "^4.1"
 responses = "^0.13.2"

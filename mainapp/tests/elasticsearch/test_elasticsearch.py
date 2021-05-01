@@ -18,7 +18,7 @@ from mainapp.functions.search import MainappSearch
 @override_settings(ELASTICSEARCH_PREFIX="mst-test")
 @modify_settings(INSTALLED_APPS={"append": "django_elasticsearch_dsl"})
 def is_es_online(connection_alias="default"):
-    """ Source: https://github.com/sabricot/django-elasticsearch-dsl/pull/169 """
+    """Source: https://github.com/sabricot/django-elasticsearch-dsl/pull/169"""
     with captured_stderr():
         es = connections.get_connection(connection_alias)
         return es.ping()

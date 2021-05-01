@@ -40,7 +40,7 @@ def calendar(request, init_view=None, init_date=None):
 
 
 def calendar_data(request):
-    """ Callback for the javascript library to get the meetings. """
+    """Callback for the javascript library to get the meetings."""
     # For some reason I do neither understand nor investigated fullcalendar sometimes send a date without timezone and
     # sometimes a date with 00:00:00 and timezone.
     start = dateutil.parser.parse(request.GET["start"])
@@ -135,7 +135,7 @@ def meeting(request, pk):
 
 
 def historical_meeting(request, pk):
-    """ WIP """
+    """WIP"""
     historical_meeting = get_object_or_404(Meeting.history, history_id=pk)
 
     AgendaItem.history.filter(meeting_id=historical_meeting.id).filter(
@@ -182,7 +182,7 @@ def organizazion_ical(_request, pk):
 
 
 def calendar_ical(_request):
-    """ Returns an ical file containing all meetings from -6 months from now. """
+    """Returns an ical file containing all meetings from -6 months from now."""
     meetings = (
         Meeting.objects.filter(start__gt=now() + relativedelta(months=-6))
         .order_by("start")

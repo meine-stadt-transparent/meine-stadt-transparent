@@ -58,7 +58,7 @@ template = {
 
 
 class MockMainappSearch(MainappSearch):
-    """ The execute method is injected in the test methods """
+    """The execute method is injected in the test methods"""
 
     def execute(self):
         hits = AttrList([Hit(template.copy())])
@@ -71,7 +71,7 @@ def mock_search_autocomplete(*args):
 
 
 class MockMainappSearchEndlessScroll(MainappSearch):
-    """ The execute method is injected in the test for the endless scroll"""
+    """The execute method is injected in the test for the endless scroll"""
 
     def execute(self):
         out = []

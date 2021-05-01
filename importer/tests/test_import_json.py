@@ -89,7 +89,7 @@ def make_db_snapshot():
 @mock.patch("mainapp.functions.notify_users.send_mail")
 @pytest.mark.django_db
 def test_import_json(send_mail_function):
-    """ This test runs with elasticsearch if available and otherwise uses saved responses """
+    """This test runs with elasticsearch if available and otherwise uses saved responses"""
     # Create the base state
     old = load_ris_data("importer/test-data/amtzell_old.json")
     body = Body(name=old.meta.name, short_name=old.meta.name, ags=old.meta.ags)
@@ -262,7 +262,7 @@ def test_meeting_start_change():
 
 @pytest.mark.django_db
 def test_undelete():
-    """ A paper gets created, (spuriously?) deleted, and then undeleted """
+    """A paper gets created, (spuriously?) deleted, and then undeleted"""
     with_paper = RisData(sample_city, None, [], [], [sample_paper], [], [], [], [], 2)
     without_paper = RisData(sample_city, None, [], [], [], [], [], [], [], 2)
     body = Body(

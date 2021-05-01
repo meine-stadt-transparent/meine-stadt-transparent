@@ -19,7 +19,7 @@ from mainapp.tests.utils import MinioMock
 
 
 class TestCron(TestCase):
-    """ [WIP] Tests that an file change sends out exactly one mail to only the subscribed user. """
+    """[WIP] Tests that an file change sends out exactly one mail to only the subscribed user."""
 
     fixtures = ["cron.json"]
 
@@ -55,7 +55,7 @@ class TestCron(TestCase):
 
     @mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
     def test_cron(self):
-        """ WIP """
+        """WIP"""
         self.external_list_fixture()
         loader = self.get_mock_loader()
 

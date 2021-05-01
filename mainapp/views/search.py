@@ -115,7 +115,7 @@ def aggs_to_context(executed):
 
 
 def search_results_only(request, query):
-    """ Returns only the result list items. Used for the endless scrolling """
+    """Returns only the result list items. Used for the endless scrolling"""
     params = search_string_to_params(query)
     normalized = params_to_search_string(params)
     after = int(request.GET.get("after", 0))

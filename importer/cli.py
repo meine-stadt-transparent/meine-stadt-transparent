@@ -32,7 +32,7 @@ class Cli:
         self.utils = Utils()
 
     def load_index(self) -> List[Tuple[str, str, str]]:
-        """" Loads the list of known endpoints from the oparl mirror if it has not been loaded yet """
+        """ " Loads the list of known endpoints from the oparl mirror if it has not been loaded yet"""
         if self.index:
             return self.index
         next_page = settings.OPARL_INDEX

@@ -92,7 +92,7 @@ class TestImporter(TestCase):
         self.assertAlmostEqual(location.coordinates()["lon"], 13.376198)
 
     def test_location_default_body(self):
-        """ Test that the default body is used when locality isn't given """
+        """Test that the default body is used when locality isn't given"""
         city_center = {"coordinates": [48.1375, 11.575833], "type": "Point"}
 
         def geocode_city_center(search_str: str) -> dict:
@@ -228,7 +228,7 @@ class TestImporter(TestCase):
         self.assertEqual(organization.organization_type.name, "committee")
 
     def test_organization_normalization(self):
-        """ Test for the normalization which was mainly built for cc-egov """
+        """Test for the normalization which was mainly built for cc-egov"""
         # Body is mandatory for organization
         self.converter.import_anything("https://oparl.example.org/body/1")
         self.converter.ensure_organization_type()
