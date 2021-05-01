@@ -360,7 +360,7 @@ class Importer:
         file = File.objects.get(id=file_id)
         url = file.get_oparl_url()
 
-        with NamedTemporaryFile() as tmpfile:
+        with NamedTemporaryFile() as tmp_file:
             try:
                 content, content_type = self.loader.load_file(url)
                 if content_type and file.mime_type and content_type != file.mime_type:
@@ -369,12 +369,17 @@ class Importer:
                             file.mime_type, content_type
                         )
                     )
+                if content_type.split(";")[0] == "text/html":
+                    logger.error(
+                        f"File {file.id}: Content type was {content_type}, this seems to be a silent error"
+                    )
+                    return False
                 file.mime_type = content_type or file.mime_type
-                tmpfile.write(content)
-                tmpfile.file.seek(0)
+                tmp_file.write(content)
+                tmp_file.file.seek(0)
                 file.filesize = len(content)
             except RequestException:
-                logger.exception("File {}: Failed to download {}".format(file.id, url))
+                logger.exception(f"File {file.id}: Failed to download {url}")
                 return False
 
             logger.debug(
@@ -387,7 +392,7 @@ class Importer:
                 minio_client().put_object(
                     minio_file_bucket,
                     str(file.id),
-                    tmpfile.file,
+                    tmp_file.file,
                     file.filesize,
                     content_type=file.mime_type,
                 )
@@ -395,7 +400,7 @@ class Importer:
             # If the api has text, keep that
             if self.download_files and not file.parsed_text:
                 file.parsed_text, file.page_count = extract_from_file(
-                    tmpfile.file, tmpfile.name, file.mime_type, file.id
+                    tmp_file.file, tmp_file.name, file.mime_type, file.id
                 )
 
         if file.parsed_text:
