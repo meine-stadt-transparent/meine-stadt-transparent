@@ -19,6 +19,13 @@ class ImportBaseCommand(BaseCommand, ABC):
             "--ignore-modified", dest="ignore_modified", action="store_true"
         )
         parser.add_argument("--force-singlethread", action="store_true")
+        parser.add_argument(
+            "--skip-download",
+            action="store_true",
+            dest="skip_download",
+            default=False,
+            help="Do not download and parse the files",
+        )
 
     def get_importer(self, options: Dict[str, Any]) -> Tuple[Importer, Body]:
         if options.get("body"):
@@ -36,5 +43,6 @@ class ImportBaseCommand(BaseCommand, ABC):
                 BaseLoader(dict()), ignore_modified=options["ignore_modified"]
             )
         importer.force_singlethread = options["force_singlethread"]
+        importer.download_files = not options["skip_download"]
 
         return importer, body

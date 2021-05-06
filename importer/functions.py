@@ -140,7 +140,7 @@ def clear_import(prefix: str, include_cache: bool = True) -> None:
         logger.info(ExternalList.objects.filter(url__startswith=prefix).delete())
 
 
-def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) -> None:
+def import_update(body_id: Optional[str] = None, ignore_modified: bool = False, download_files: bool = True) -> None:
     from importer.importer import Importer
     from importer.loader import get_loader_from_body
 
@@ -154,7 +154,8 @@ def import_update(body_id: Optional[str] = None, ignore_modified: bool = False) 
         importer = Importer(loader, body, ignore_modified=ignore_modified)
         importer.update(body.oparl_id)
         importer.force_singlethread = True
-        importer.load_files(body.short_name)
+        if download_files:
+            importer.load_files(body.short_name)
 
 
 def fix_sort_date(import_date: datetime.datetime):

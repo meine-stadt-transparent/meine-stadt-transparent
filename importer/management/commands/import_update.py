@@ -13,4 +13,8 @@ class Command(ImportBaseCommand):
     """
 
     def handle(self, *args, **options):
-        import_update(options["body"], options["ignore_modified"])
+        import_update(
+            options["body"],
+            ignore_modified=options["ignore_modified"],
+            download_files=not options["skip_download"],
+        )
