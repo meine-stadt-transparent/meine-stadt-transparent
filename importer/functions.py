@@ -46,8 +46,8 @@ import_order = [
 ]  # type: List[Type[DefaultFields]]
 
 
-def requests_get(url, params=None, **kwargs) -> requests.Response:
-    """Makes a request with the custom user agent"""
+def requests_get(url, params=None, retries: int = 3, **kwargs) -> requests.Response:
+    """Makes a request with the custom user agent and retry on connection error"""
     user_agent = "{} ({})".format(
         slugify(settings.PRODUCT_NAME), settings.TEMPLATE_META["github"]
     )
@@ -59,9 +59,16 @@ def requests_get(url, params=None, **kwargs) -> requests.Response:
     with warnings.catch_warnings() if settings.SSL_NO_VERIFY else nullcontext():
         if settings.SSL_NO_VERIFY:
             warnings.filterwarnings("ignore", category=InsecureRequestWarning)
-        response = requests.get(url, params, **kwargs)
-        response.raise_for_status()
-        return response
+        while True:
+            try:
+                response = requests.get(url, params, **kwargs)
+                response.raise_for_status()
+                return response
+            except requests.exceptions.ConnectionError as e:
+                retries -= 1
+                if retries == 0:
+                    raise
+                logger.error(f"Error {e} in request for {url}, retrying")
 
 
 def externalize(
