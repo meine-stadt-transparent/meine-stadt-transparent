@@ -3,7 +3,7 @@ import logging
 
 from django.conf import settings
 from minio import Minio
-from minio.error import BucketAlreadyExists, BucketAlreadyOwnedByYou
+from minio.error import MinioException
 from urllib3.exceptions import RequestError
 
 """
@@ -49,7 +49,7 @@ def setup_minio():
         try:
             minio.make_bucket(settings.MINIO_PREFIX + bucket)
             logger.info(f"Creating minio bucket {settings.MINIO_PREFIX + bucket}")
-        except (BucketAlreadyExists, BucketAlreadyOwnedByYou):
+        except MinioException:
             logger.info(f"minio bucket {settings.MINIO_PREFIX + bucket} already exists")
 
     files_bucket = settings.MINIO_PREFIX + "files"
