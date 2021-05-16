@@ -13,7 +13,7 @@ from django.core import serializers
 from django.test import modify_settings, override_settings
 from django.utils import timezone
 from django_elasticsearch_dsl.registries import registry
-from minio.error import NoSuchKey
+from minio.error import MinioException
 
 from importer.import_json import (
     import_data,
@@ -457,7 +457,7 @@ def test_manual_deletion(pytestconfig):
     # This is what we test
     models.File.objects.get(pk=file_id).manually_delete()
 
-    with pytest.raises(NoSuchKey):
+    with pytest.raises(MinioException):
         minio_client().get_object(minio_file_bucket, str(file_id))
 
     # Another import, to ensure that manually delete is respected
@@ -469,5 +469,5 @@ def test_manual_deletion(pytestconfig):
         [successful, failed] = importer.load_files(sample_city.name)
         assert successful == 0 and failed == 0
 
-    with pytest.raises(NoSuchKey):
+    with pytest.raises(MinioException):
         minio_client().get_object(minio_file_bucket, str(file_id))

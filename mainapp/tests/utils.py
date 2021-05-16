@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import List, Tuple, Dict, Union, DefaultDict
 
 from django.core.serializers.json import DjangoJSONEncoder
-from minio.error import NoSuchKey
+from minio.error import MinioException
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ class MinioMock:
         if object_name in self.storage[bucket]:
             return BytesIO(self.storage[bucket][object_name])
         else:
-            raise NoSuchKey(None)
+            raise MinioException(None)
 
     def remove_object(self, bucket: str, object_name: str):
         del self.storage[bucket][object_name]
