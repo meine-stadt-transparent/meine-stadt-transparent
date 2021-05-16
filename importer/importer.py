@@ -369,7 +369,7 @@ class Importer:
                             file.mime_type, content_type
                         )
                     )
-                if content_type.split(";")[0] == "text/html":
+                if content_type and content_type.split(";")[0] == "text/html":
                     logger.error(
                         f"File {file.id}: Content type was {content_type}, this seems to be a silent error"
                     )
