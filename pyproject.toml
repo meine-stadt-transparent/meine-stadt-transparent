@@ -53,7 +53,7 @@ wagtail = ">=2.12,<2.13"
 [tool.poetry.dev-dependencies]
 black = "21.5b1"
 django-debug-toolbar = "^3.0"
-pytest-django = "^4.1"
+pytest-django = "^4.3"
 responses = "^0.13.2"
 selenium = "3.141.0"
 tox = "^3.20"
