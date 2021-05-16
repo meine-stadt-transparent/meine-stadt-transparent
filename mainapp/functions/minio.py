@@ -12,8 +12,9 @@ Minio policy: files are publicly readable, cache and pgp keys are private
 
 logger = logging.getLogger(__name__)
 
-# The pgp-keys feature isn't used, so we shouldn't create a bucket for it
-bucket_list = ["files", "cache"]  # , "pgp-keys"]
+bucket_list = ["files", "cache"]
+if settings.ENABLE_PGP:
+    bucket_list.append("pgp-keys")
 
 
 def get_read_only_policy(bucket_name: str) -> dict:
