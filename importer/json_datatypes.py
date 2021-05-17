@@ -21,10 +21,12 @@ converter.register_structure_hook(
 format_version = 4
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class Person:
     # Overview page
     name: str
+    # Possible are "kp0051" and "pe0051"
+    view_type: Optional[str]
     party: Optional[str]
     begin: Optional[date] = None
     end: Optional[date] = None
@@ -48,7 +50,7 @@ class Person:
         return self.name
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class Paper:
     short_name: str
     name: str
@@ -61,7 +63,7 @@ class Paper:
         return self.reference
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class File:
     name: str
     original_id: int
@@ -73,7 +75,7 @@ class File:
         return self.original_id
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class Meeting:
     organization_name: str
     name: str
@@ -88,7 +90,7 @@ class Meeting:
         return self.name, self.start.astimezone(tz.tzutc())
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class Organization:
     name: str
     original_id: Optional[int]
@@ -99,7 +101,7 @@ class Organization:
         return self.name
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class Membership:
     organization_original_id: int
     person_original_id: Optional[int]
@@ -113,7 +115,7 @@ class Membership:
         return self.organization_original_id, self.person_name
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class AgendaItem:
     key: str
     position: int
@@ -130,7 +132,7 @@ class AgendaItem:
         return self.meeting_id, self.name
 
 
-@attr.s(auto_attribs=True, frozen=True)
+@attr.frozen()
 class RisMeta:
     name: str
     vendor: str
@@ -150,7 +152,7 @@ class RisMeta:
         return self.name.replace("/", "-")
 
 
-@attr.s(frozen=True, auto_attribs=True)
+@attr.frozen()
 class RisData:
     meta: RisMeta
     main_organization: Optional[Organization]
