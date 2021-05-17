@@ -3,26 +3,26 @@
     <div>
         <div class="row">
             <div class="col-sm-6 pt-3">
-                <a href="{% url 'info_about' %}" class="btn btn-primary btn-block">
+                <a href="{% url 'info_about' %}" class="btn btn-primary">
                     {% trans "About the project" %}
                 </a>
             </div>
             <div class="col-sm-6 pt-3">
                 {% if user.is_authenticated %}
-                    <a class="btn btn-primary btn-block"
+                    <a class="btn btn-primary"
                        href="{% url 'profile-home' %}">{% trans "My Account" context 'navigation' %}</a>
                 {% else %}
-                    <a class="btn btn-primary btn-block"
+                    <a class="btn btn-primary"
                        href="{% url 'account_signup' %}">{% trans "Notifications" context 'sign up' %}</a>
                 {% endif %}
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 pt-3">
-                <a href="{% url 'persons' %}" class="btn btn-primary btn-block">{% trans "Persons" %}</a>
+                <a href="{% url 'persons' %}" class="btn btn-primary">{% trans "Persons" %}</a>
             </div>
             <div class="col-sm-6 pt-3">
-                <a href="{% url 'organizations' %}" class="btn btn-primary btn-block">
+                <a href="{% url 'organizations' %}" class="btn btn-primary">
                     {% trans 'Organizations' %}</a>
             </div>
         </div>

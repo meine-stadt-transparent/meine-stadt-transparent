@@ -25,7 +25,7 @@
 .fc-event, .fc-event-dot {
   background-color: $calendarEventBackground;
   &:focus {
-    background-color: darken($calendarEventBackground, 10%);
+    background-color: shade-color($calendarEventBackground, 10%);
     outline: dotted 1px gray;
   }
 }

@@ -25,7 +25,7 @@
                         {% for organization in organization_group.all %}
                             <li>
                                     <span class="multi-list-filter-value
-{% if organization.id == main_organization %}font-weight-bold{% endif %}">
+{% if organization.id == main_organization %}fw-bold{% endif %}">
                                         <a href="{% url "organization" organization.id %}">{{ organization.name }}</a>
                                     </span>
                             </li>

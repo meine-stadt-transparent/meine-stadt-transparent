@@ -111,10 +111,10 @@
                                     <a href="{% url "meeting" item.meeting.id %}#item-{{ item.key }}">
                                         <div class="consultation-speech-bubble">
                                             {% if consultation.role %}
-                                                <div class="text-black font-weight-bold">{{ consultation.role }}</div>
+                                                <div class="text-black fw-bold">{{ consultation.role }}</div>
                                             {% endif %}
                                             {% if item %}
-                                                <div class="font-weight-bold">{{ item.meeting.name }}</div>
+                                                <div class="fw-bold">{{ item.meeting.name }}</div>
                                                 <div class="text-dark">{{ item.key }}. {{ item.name|linebreaksbr }}</div>
                                                 {% if item.result %}
                                                     <div class="result">{{ item.result }}</div>
@@ -130,11 +130,11 @@
                                 {# See e.g. https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?id=1016689 where the role is the title #}
                                 {% elif consultation.role %}
                                     <div class="consultation-speech-bubble">
-                                        <div class="font-weight-bold">{{ consultation.role }}</div>
+                                        <div class="fw-bold">{{ consultation.role }}</div>
                                     </div>
                                 {% else %}
                                     <div class="consultation-speech-bubble">
-                                        <div class="font-weight-bold">
+                                        <div class="fw-bold">
                                             <i>{% trans "No information available" %}</i>
                                         </div>
                                     </div>

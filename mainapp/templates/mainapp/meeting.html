@@ -40,7 +40,7 @@
                             <a class="btn btn-sm btn-light d-flex flex-column" href="{% url 'meeting' previous.id %}"
                                title="{{ previous.start.date }}: {{ previous }}">
                                 <div>
-                                    <span class="fa fa-chevron-left mr-1" aria-hidden="true"></span>
+                                    <span class="fa fa-chevron-left me-1" aria-hidden="true"></span>
                                     <span>{% trans 'Previous Meeting' %}</span>
                                 </div>
                                 {# TODO: Do we want that ? #}
@@ -48,13 +48,13 @@
                             </a>
                         {% endif %}
                     </div>
-                    <div class="pl-3">
+                    <div class="ps-3">
                         {% if following %}
                             <a class="btn btn-sm btn-light d-flex flex-column" href="{% url 'meeting' following.id %}"
                                title="{{ following.start.date }}: {{ following }}">
                                 <div>
                                     <span>{% trans 'Following Meeting' %}</span>
-                                    <span class="fa fa-chevron-right ml-1" aria-hidden="true"></span>
+                                    <span class="fa fa-chevron-right ms-1" aria-hidden="true"></span>
                                 </div>
                                 {# <small class="text-muted text-sm ">{{ following.start.date }}</small> #}
                             </a>
@@ -77,7 +77,7 @@
                                 tabindex="0">
 
                             {# div is not allowed inside buttons, but span also works #}
-                            <span class="d-flex text-left">
+                            <span class="d-flex text-start">
                                 <span><span class="fa-custom fa-map-marker" aria-hidden="true"></span></span>
                                 <span class="dropdown-toggle text-wrap">{{ meeting.location.short }}</span>
                             </span>
@@ -216,7 +216,7 @@
                     {% for agenda_item in agenda_items %}
                         <span id="item-{{ agenda_item.key }}" class="offsetted-anchor"></span>
                         <div class="d-flex align-content-start">
-                            <dt class="mr-2">
+                            <dt class="me-2">
                                 <a href="#item-{{ agenda_item.key }}" class="text-dark">{{ agenda_item.key }}</a>
                             </dt>
                             <dd>

@@ -19,8 +19,8 @@
 
 .meeting-vertical-bar {
   @include media-breakpoint-up(md) {
-    border-top: 1px solid $hr-border-color;
-    border-bottom: 1px solid $hr-border-color;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-top: 1rem;
     margin-bottom: 1rem;
   }

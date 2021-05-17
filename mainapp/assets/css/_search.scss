@@ -1,5 +1,9 @@
 @import "vars";
 @import "daterangepicker";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
 
 .navbar .search-autocomplete .form-control {
   max-width: $header-search-max-width;

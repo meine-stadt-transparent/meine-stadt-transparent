@@ -12,5 +12,5 @@
 }
 
 .nav-link.active:focus {
-  background-color: darken($nav-pills-link-active-bg, 5%);
+  background-color: shade-color($nav-pills-link-active-bg, 5%);
 }

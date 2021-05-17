@@ -5,7 +5,7 @@
 {% for membership_list in memberships %}
     <dl>
         {% for membership in membership_list %}
-            <dt class="font-weight-normal">
+            <dt class="fw-normal">
                 <a href="{% url "organization" membership.organization.id %}">
                     {% if membership.role %}
                         <span class="membership-info">{{ membership.role }}</span> in
@@ -14,7 +14,7 @@
                 </a>
                 <span>({{ membership.organization.name }})</span>
             </dt>
-            <dd class="font-weight-light">
+            <dd class="fw-light">
                 <div>
                     {% if membership.start and membership.end %}
                         <span class="membership-info">

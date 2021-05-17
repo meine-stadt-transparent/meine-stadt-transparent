@@ -1,3 +1,5 @@
+@import "~bootstrap/scss/functions";
+
 $footer-height: 96px !default;
 $header-height: 56px !default;
 $header-search-max-width: 200px !default;
@@ -17,10 +19,6 @@ $container-max-widths: (
 // Color aliases; hardcoded, as _variables.scss of bootstrap is not yet loaded here
 $navbar-dark-color: #a0a3a5;
 $primary: #0072ed !default; // A little bit darker than default, to ensure enough contrast
-$theme-colors: (
-  "navbar": #343a40, // $gray-800
-  "content-switcher": #6f777f,
-) !default;
 
 // There's one element with 800 and an outer with 10000
 $leaflet-controls-zindex: 1000 !default;
@@ -71,3 +69,13 @@ $index-meetings-btn: #308282 !default;
 $index-documents-section-background: #A8DBA8 !default;
 $index-documents-title-color: #111 !default;
 $index-documents-title-background: transparent !default;
+
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$custom-colors: (
+  "navbar": #343a40, // $gray-800
+  "content-switcher": #6f777f,
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
