@@ -25,9 +25,9 @@ format_version = 4
 class Person:
     # Overview page
     name: str
-    # Possible are "kp0051" and "pe0051"
-    view_type: Optional[str]
     party: Optional[str]
+    # Possible are "kp0051" and "pe0051"
+    view_type: Optional[str] = None
     begin: Optional[date] = None
     end: Optional[date] = None
     original_id: Optional[int] = None
