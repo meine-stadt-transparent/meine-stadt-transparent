@@ -241,7 +241,10 @@ class Cli:
                 else:
                     matching.append((name, system_id, original_id))
         if len(matching) == 0:
-            raise RuntimeError("Could not find anything for '{}'".format(userinput))
+            raise RuntimeError(
+                f"Could not find anything for '{userinput}'. "
+                f"Please check that it is in the list under {settings.OPARL_INDEX} or provide the body id."
+            )
         if len(matching) > 1:
             exact_matches = [
                 i for i in matching if i[0].casefold() == userinput.casefold()
@@ -255,7 +258,7 @@ class Cli:
                 raise RuntimeError(
                     (
                         "There are {} matches and {} exact matchs for '{}' and I can't decide which one to use. "
-                        + "Please provide a url yourself."
+                        + "Please provide a body url yourself."
                     ).format(len(matching), len(exact_matches), userinput)
                 )
         return matching[0][1:3]
