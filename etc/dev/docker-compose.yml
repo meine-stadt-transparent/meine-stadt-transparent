@@ -27,13 +27,13 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch-dev:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
     container_name: elasticsearch-dev
     environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
       - cluster.routing.allocation.disk.threshold_enabled=false
+      - discovery.type=single-node
     ulimits: # Elasticsearch needs those
       memlock:
         soft: -1
