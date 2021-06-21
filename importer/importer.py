@@ -11,10 +11,11 @@ from django import db
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, transaction, DatabaseError
 from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from elasticsearch import ElasticsearchException
 from requests import RequestException
 from tqdm import tqdm
 
@@ -420,8 +421,12 @@ class Importer:
         else:
             logger.warning("File {}: Couldn't get any text".format(file.id))
 
-        db.connections.close_all()
-        file.save()
+        try:
+            db.connections.close_all()
+            file.save()
+        except (ElasticsearchException, DatabaseError) as e:
+            logger.exception(f"File {file.id}: Failed to save: {e}")
+            return False
 
         return True
 
