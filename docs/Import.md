@@ -29,7 +29,7 @@ All commands have more options available through `--help`.
 
 ## Step 1: Body
 
-For the first step, you can use the magic from `import_body` with the case-sensitive cityname or the body id:
+For the first step, you can use the heuristic from `import_body` with the case-sensitive cityname or the body id:
 
 ```
 ./manage.py import_body Springfield
@@ -41,13 +41,13 @@ or
 ./manage.py import_body https://oparl.example.org/v1/body/Springfield
 ```
 
-If that worked, go to step 2. If you don't to use the magic, pass `--manual`:
+If that worked, go to step 2. If you don't to use the heuristic, pass `--manual`:
 
 ```
 ./manage.py import_body --manual https://oparl.example.org/v1/body/Springfield
 ```
 
-You'll need to find out the German "Amtliche Gemeindeschlüssel", which is a 8 letter value that each communality has. You might find your's with
+You'll need to find out the German "Amtliche Gemeindeschlüssel", which is an 8 letter value that each communality has. You might find yours with
 
 ```
 ./manage.py citytoags Springfield
