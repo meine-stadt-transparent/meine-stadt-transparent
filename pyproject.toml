@@ -51,7 +51,7 @@ tqdm = "^4.29"
 wagtail = ">=2.12,<2.13"
 
 [tool.poetry.dev-dependencies]
-black = "21.6b0"
+black = "21.7b0"
 django-debug-toolbar = "^3.0"
 pytest-django = "^4.1"
 responses = "^0.13.2"
