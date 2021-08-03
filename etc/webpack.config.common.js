@@ -3,7 +3,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const BundleTracker = require('webpack-bundle-tracker');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const merge = require('webpack-merge');
+const {merge} = require('webpack-merge');
 
 module.exports = {
     context: path.resolve(__dirname),
