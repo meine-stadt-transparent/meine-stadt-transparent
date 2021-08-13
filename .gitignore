@@ -1,19 +1,19 @@
 # Custom
 /*.env*
-testdata/fake_cache
-./custom_*/
-docs/index.md
-mainapp/assets/bundles/
+/testdata/fake_cache
+/custom_*/
+/docs/index.md
+/mainapp/assets/bundles/
 
 # Django
-*.sqlite3
-node_modules/
-storage/
-static/
-config/
-cache/
-media/
-site/
+/*.sqlite3
+/node_modules/
+/storage/
+/static/
+/config/
+/cache/
+/media/
+/site/
 
 # Python Stuff
 __pycache__/
@@ -21,10 +21,9 @@ __pycache__/
 *$py.class
 *.egg-info
 .tox
-venv*
-.venv*
-pip-log.txt
-dist
+/venv*
+/.venv*
+/dist
 
 # Translations
 *.mo

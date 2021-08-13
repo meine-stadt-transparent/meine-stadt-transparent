@@ -92,6 +92,10 @@ def extract_from_file(
                 file_id
             )
             logger.warning(message)
+        except OSError as e:
+            # Workaround for PyPDF2 bug
+            # https://github.com/codeformuenster/kubernetes-deployment/pull/65#issuecomment-894232803
+            logger.exception(f"PyPDF2 failed: {e}")
     elif mime_type == "text/text":
         parsed_text = file.read()
     else:
