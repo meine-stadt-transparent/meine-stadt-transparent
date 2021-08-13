@@ -1,4 +1,3 @@
-import os
 from typing import Optional, Dict, Any
 from unittest import mock
 
@@ -70,14 +69,16 @@ class TestDocumentParsing(TestCase):
         persons = extract_persons(text)
         self.assertTrue(doug not in persons)
 
-    def test_pdf_parsing(self):
-        file = os.path.join(
-            test_media_root, "Donald Knuth - The Complexity of Songs.pdf"
-        )
-        with open(file, "rb") as fp:
-            parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
-        self.assertTrue("bottles of beer" in parsed_text)
-        self.assertEqual(page_count, 3)
+
+def test_pdf_parsing(pytestconfig):
+    file = pytestconfig.rootpath.joinpath(test_media_root).joinpath(
+        "Donald Knuth - The Complexity of Songs.pdf"
+    )
+
+    with file.open("rb") as fp:
+        parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
+    assert "bottles of beer" in parsed_text
+    assert page_count == 3
 
 
 @pytest.mark.parametrize("filename", ["sample.tiff", "table.xls", "table.ods"])
