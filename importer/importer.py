@@ -193,13 +193,13 @@ class Importer:
 
     def fetch_list_initial(self, url: str) -> None:
         """Saves a complete external list as flattened json to the database"""
-        logger.info("Fetching List {}".format(url))
+        logger.info(f"Fetching List {url}")
 
         timestamp = timezone.now()
         next_url = url
         all_objects = set()
         while next_url:
-            logger.info("Fetching {}".format(next_url))
+            logger.info(f"Fetching {next_url}")
             response = self.loader.load(next_url)
 
             objects = set()
@@ -242,7 +242,7 @@ class Importer:
                     )
 
             all_objects.update(saved_objects)
-        logger.info("Found {} objects in {}".format(len(all_objects), url))
+        logger.info(f"Found {len(all_objects)} objects in {url}")
         ExternalList(url=url, last_update=timestamp).save()
 
     def fetch_list_update(self, url: str) -> List[str]:
@@ -305,7 +305,7 @@ class Importer:
                 elif isinstance(old_element.data.get(key), str):
                     old_urls.add(old_element.data[key])
 
-        removed = old_urls - set([i.url for i in new])
+        removed = old_urls - {i.url for i in new}
         fetch_later = CachedObject.objects.filter(url__in=removed).values_list(
             "url", flat=True
         )
@@ -337,7 +337,7 @@ class Importer:
             for list_type in self.lists:
                 fetch_later += self.fetch_list_update(body_entry.data[list_type])
 
-        logger.info("Importing {} removed embedded objects".format(len(fetch_later)))
+        logger.info(f"Importing {len(fetch_later)} removed embedded objects")
         for later in fetch_later:
             # We might actually have that object freshly from somewhere else
             fresh = CachedObject.objects.filter(url=later, to_import=True).exists()
@@ -425,7 +425,7 @@ class Importer:
                 )
             )
         else:
-            logger.warning("File {}: Couldn't get any text".format(file.id))
+            logger.warning(f"File {file.id}: Couldn't get any text")
 
         try:
             db.connections.close_all()
@@ -450,7 +450,7 @@ class Importer:
             .order_by("-id")
             .values_list("id", flat=True)
         )
-        logger.info("Downloading and analysing {} files".format(len(files)))
+        logger.info(f"Downloading and analysing {len(files)} files")
         address_pipeline = AddressPipeline(create_geoextract_data())
         pbar = None
         if sys.stdout.isatty() and not settings.TESTING:
@@ -494,6 +494,6 @@ class Importer:
             pbar.close()
 
         if failed > 0:
-            logger.error("{} files failed to download".format(failed))
+            logger.error(f"{failed} files failed to download")
 
         return successful, failed

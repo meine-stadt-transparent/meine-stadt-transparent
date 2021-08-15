@@ -213,7 +213,7 @@ def incremental_import(
 
 
 def make_id_map(cls: Type[SoftDeleteModelManager]) -> Dict[int, int]:
-    return dict((int(i), j) for i, j in cls.values_list("oparl_id", "id"))
+    return {int(i): j for i, j in cls.values_list("oparl_id", "id")}
 
 
 def normalize_name(name: str) -> Tuple[str, str, str]:

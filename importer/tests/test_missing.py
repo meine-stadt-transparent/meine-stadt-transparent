@@ -90,7 +90,7 @@ def test_missing_organization(caplog):
         importer.fetch_lists_initial([body_data.data])
         importer.import_objects()
 
-        assert set(i.oparl_id for i in Organization.objects.all()) == {
+        assert {i.oparl_id for i in Organization.objects.all()} == {
             "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230",
             "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231",
         }

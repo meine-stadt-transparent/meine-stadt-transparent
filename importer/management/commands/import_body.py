@@ -36,6 +36,6 @@ class Command(BaseCommand):
             importer.load_bodies(body_id)
             logger.info("Importing the body")
             [body] = importer.import_bodies()
-            logger.info("The body id is {}".format(body.id))
+            logger.info(f"The body id is {body.id}")
         else:
             cli.import_body_and_metadata(body_id, importer, userinput, options["ags"])

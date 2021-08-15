@@ -33,7 +33,7 @@ class Command(ImportBaseCommand):
                     failed += 1
 
             if failed > 0:
-                logger.error("{} files failed to download".format(failed))
+                logger.error(f"{failed} files failed to download")
         else:
             importer.load_files(
                 max_workers=options["max_workers"], fallback_city=body.short_name

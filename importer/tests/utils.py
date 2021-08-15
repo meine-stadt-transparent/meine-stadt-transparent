@@ -71,9 +71,9 @@ def make_list(data: List[JSON]) -> JSON:
 
 def make_file(file_id: int) -> JSON:
     return {
-        "id": "https://oparl.example.org/files/{}".format(file_id),
+        "id": f"https://oparl.example.org/files/{file_id}",
         "type": "https://schema.oparl.org/1.1/File",
-        "accessUrl": "https://oparl.example.org/files/{}.pdf".format(file_id),
+        "accessUrl": f"https://oparl.example.org/files/{file_id}.pdf",
         "name": "default",
         "created": old_date,
         "modified": old_date,

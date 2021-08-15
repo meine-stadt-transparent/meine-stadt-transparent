@@ -83,9 +83,7 @@ class Cli:
 
         if dotenv:
             logger.info(
-                "Done! Please add the following line to your dotenv file: \n\n"
-                + dotenv
-                + "\n"
+                f"Done! Please add the following line to your dotenv file: \n\n{dotenv}\n"
             )
 
     def import_body_and_metadata(
@@ -96,7 +94,7 @@ class Cli:
         ags: Optional[str],
         skip_body_extra: bool = False,
     ) -> Tuple[JSON, str]:
-        logger.info("Fetching the body {}".format(body_id))
+        logger.info(f"Fetching the body {body_id}")
         [body_data] = importer.load_bodies(body_id)
         logger.info("Importing the body")
         [body] = importer.import_bodies()
@@ -124,7 +122,7 @@ class Cli:
         )
         dotenv = ""
         if body.id != settings.SITE_DEFAULT_BODY:
-            dotenv += "SITE_DEFAULT_BODY={}\n".format(body.id)
+            dotenv += f"SITE_DEFAULT_BODY={body.id}\n"
         if dotenv:
             logger.info(
                 "Found the oparl endpoint. Please add the following line to your dotenv file "
@@ -150,16 +148,14 @@ class Cli:
         else:
             entrypoint, body_id = self.get_endpoint_from_body_url(userinput)
 
-        logger.info(
-            "Your body id is {} and your system id is {}".format(body_id, entrypoint)
-        )
+        logger.info(f"Your body id is {body_id} and your system id is {entrypoint}")
 
         return body_id, entrypoint
 
     def get_endpoint_from_body_url(self, userinput: str) -> Tuple[str, str]:
         # We can't use the resolver here as we don't know the system url yet, which the resolver needs for determining
         # the cache folder
-        logging.info("Using {} as url".format(userinput))
+        logging.info(f"Using {userinput} as url")
         response = requests_get(userinput)
         data = response.json()
         if data.get("type") not in [
@@ -171,9 +167,7 @@ class Cli:
         endpoint_id = data["id"]
         if userinput != endpoint_id:
             logger.warning(
-                "The body's url '{}' doesn't match the body's id '{}'".format(
-                    userinput, endpoint_id
-                )
+                f"The body's url '{userinput}' doesn't match the body's id '{endpoint_id}'"
             )
         return endpoint_system, endpoint_id
 
@@ -195,9 +189,7 @@ class Cli:
             if len(ags) == 8 or len(ags) == 5:
                 return ags, body.short_name
             else:
-                logger.error(
-                    "Ignoring ags '{}' with invalid legth {}".format(ags, len(ags))
-                )
+                logger.error(f"Ignoring ags '{ags}' with invalid length {len(ags)}")
 
         district = bool(re.match(settings.DISTRICT_REGEX, body.name, re.IGNORECASE))
 
@@ -218,7 +210,7 @@ class Cli:
         for source, value in to_check:
             ags = city_to_ags(value, district)
             if ags:
-                logger.debug("Found ags using the {}: '{}'".format(source, value))
+                logger.debug(f"Found ags using the {source}: '{value}'")
                 return ags, value
 
         raise RuntimeError(
@@ -252,13 +244,9 @@ class Cli:
             if len(exact_matches) == 1:
                 matching = exact_matches
             else:
-                logger.warning(
-                    "Found those entries: {}".format(json.dumps(matching, indent=4))
-                )
+                logger.warning(f"Found those entries: {json.dumps(matching, indent=4)}")
                 raise RuntimeError(
-                    (
-                        "There are {} matches and {} exact matchs for '{}' and I can't decide which one to use. "
-                        + "Please provide a body url yourself."
-                    ).format(len(matching), len(exact_matches), userinput)
+                    f"There are {len(matching)} matches and {len(exact_matches)} exact matches for '{userinput}' and "
+                    "I can't decide which one to use. Please provide a body url yourself."
                 )
         return matching[0][1:3]

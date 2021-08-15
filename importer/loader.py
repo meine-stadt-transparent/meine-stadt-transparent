@@ -21,7 +21,7 @@ class BaseLoader:
         self.system = system
 
     def load(self, url: str, query: Optional[Dict[str, str]] = None) -> JSON:
-        logger.debug("Loader is loading {}".format(url))
+        logger.debug(f"Loader is loading {url}")
         if query is None:
             query = dict()
         response = requests_get(url, params=query)
@@ -29,9 +29,7 @@ class BaseLoader:
         if data is None:  # json() can actually return None
             data = dict()
         if "id" in data and data["id"] != url:
-            logger.warning(
-                "Mismatch between url and id. url: {} id: {}".format(url, data["id"])
-            )
+            logger.warning(f"Mismatch between url and id. url: {url} id: {data['id']}")
         return data
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
@@ -248,7 +246,7 @@ class SomacosLoader(BaseLoader):
                 + "?"
                 + "&".join([key + "=" + value for key, value in query.items()])
             )
-        logger.debug("Loader is loading {}".format(url))
+        logger.debug(f"Loader is loading {url}")
         response = self.get_with_retry_on_500(url)
 
         data = response.json()
@@ -291,10 +289,10 @@ def get_loader_from_body(body_id: str) -> BaseLoader:
     """
     cached_body = CachedObject.objects.filter(url=body_id).first()
     if cached_body:
-        logger.info("The body {} is cached".format(body_id))
+        logger.info(f"The body {body_id} is cached")
         system_id = cached_body.data["system"]
     else:
-        logger.info("Fetching the body {}".format(body_id))
+        logger.info(f"Fetching the body {body_id}")
         response = requests_get(body_id)
         data = response.json()
         CachedObject.objects.create(

@@ -88,10 +88,11 @@ def extract_from_file(
                 file, strict=False, overwriteWarnings=False
             ).getNumPages()
         except (PdfReadError, KeyError):
-            message = "File {}: Pdf does not allow to read the number of pages".format(
-                file_id
+            logger.warning(
+                "File {}: Pdf does not allow to read the number of pages".format(
+                    file_id
+                )
             )
-            logger.warning(message)
         except OSError as e:
             # Workaround for PyPDF2 bug
             # https://github.com/codeformuenster/kubernetes-deployment/pull/65#issuecomment-894232803

@@ -109,7 +109,7 @@ class JsonToDb:
         self, oparl_id: str, object_type: Optional[Type[T]] = None
     ) -> DefaultFields:
         """Hacky metaprogramming to import any object based on its id"""
-        logging.info("Importing single object {}".format(oparl_id))
+        logging.info(f"Importing single object {oparl_id}")
 
         to_return = None
 
@@ -153,7 +153,7 @@ class JsonToDb:
             if entry.url == oparl_id:
                 to_return = instance
 
-        assert to_return, "Missing object for {}".format(oparl_id)
+        assert to_return, f"Missing object for {oparl_id}"
         return to_return
 
     def import_any_externalized(self, data: JSON) -> DefaultFields:
@@ -206,20 +206,16 @@ class JsonToDb:
         else:
             if warn and self.warn_missing and object_type != Location:
                 logger.warning(
-                    logger.warning(
-                        f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
-                        f"supposed to be a part of the external lists, but was not. "
-                        f"This is a bug in the OParl implementation."
-                    )
+                    f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
+                    f"supposed to be a part of the external lists, but was not. "
+                    f"This is a bug in the OParl implementation."
                 )
 
             try:
                 return self.import_anything(oparl_id, object_type)
             except HTTPError:
                 logger.exception(
-                    "Failed to download the {} {}".format(
-                        object_type.__name__, oparl_id
-                    )
+                    f"Failed to download the {object_type.__name__} {oparl_id}"
                 )
                 return None
 
@@ -238,7 +234,7 @@ class JsonToDb:
 
         if len(db_objects) != len(oparl_ids):
             found_ids = [db_object.oparl_id for db_object in db_objects]
-            missing = sorted((set(oparl_ids) - set(found_ids)))
+            missing = sorted(set(oparl_ids) - set(found_ids))
 
             if missing:
                 for oparl_id in missing:

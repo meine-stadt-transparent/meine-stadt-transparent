@@ -134,10 +134,12 @@ def clear_import(prefix: str, include_cache: bool = True) -> None:
     for class_object in import_order:
         name = class_object.__name__
         stats = class_object.objects.filter(oparl_id__startswith=prefix).delete()
-        logger.info("{}: {}".format(name, stats))
+        logger.info(f"{name}: {stats}")
     if include_cache:
-        logger.info(CachedObject.objects.filter(url__startswith=prefix).delete())
-        logger.info(ExternalList.objects.filter(url__startswith=prefix).delete())
+        deleted = CachedObject.objects.filter(url__startswith=prefix).delete()
+        logger.info(f"{deleted} cached objects deleted")
+        deleted = ExternalList.objects.filter(url__startswith=prefix).delete()
+        logger.info(f"{deleted} external lists deleted")
 
 
 def import_update(
@@ -153,7 +155,7 @@ def import_update(
     else:
         bodies = Body.objects.filter(oparl_id__isnull=False).all()
     for body in bodies:
-        logger.info("Updating body {}: {}".format(body, body.oparl_id))
+        logger.info(f"Updating body {body}: {body.oparl_id}")
         loader = get_loader_from_body(body.oparl_id)
         importer = Importer(loader, body, ignore_modified=ignore_modified)
         importer.update(body.oparl_id)

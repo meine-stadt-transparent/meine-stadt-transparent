@@ -37,7 +37,7 @@ class Command(BaseCommand):
         for class_object in import_plan:
             name = class_object.__name__
             stats = class_object.objects.filter(oparl_id__startswith=prefix).delete()
-            logger.info("{}: {}".format(name, stats))
+            logger.info(f"{name}: {stats}")
 
             CachedObject.objects.filter(
                 url__startswith=prefix, oparl_type=class_object.__name__

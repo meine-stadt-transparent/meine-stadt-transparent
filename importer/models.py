@@ -9,7 +9,7 @@ class ExternalList(models.Model):
     last_update = models.DateTimeField()
 
     def __str__(self):
-        return "{} with last update {}".format(self.url, self.last_update)
+        return f"{self.url} with last update {self.last_update}"
 
 
 class CachedObject(models.Model):
@@ -25,4 +25,4 @@ class CachedObject(models.Model):
         return self.url == other.url
 
     def __str__(self):
-        return "{}: {} ({})".format(self.oparl_type, self.url, self.to_import)
+        return f"{self.oparl_type}: {self.url} ({self.to_import})"

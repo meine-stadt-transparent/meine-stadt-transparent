@@ -135,7 +135,7 @@ class TestDataset(TestCase):
             self.assertEqual(
                 table.objects.count(),
                 count,
-                "{}: {} vs. {}".format(table, count, table.objects.all()),
+                f"{table}: {count} vs. {table.objects.all()}",
             )
             self.assertLess(table.objects.first().modified, now)
         self.assertEqual(File.objects.count(), 6)
@@ -173,7 +173,7 @@ class TestDataset(TestCase):
             self.assertEqual(
                 table.objects.count(),
                 count,
-                "{}: {} vs. {}".format(table, count, table.objects.all()),
+                f"{table}: {count} vs. {table.objects.all()}",
             )
         self.assertEqual(File.objects.count(), 6)
 
@@ -194,5 +194,5 @@ class TestDataset(TestCase):
             self.assertEqual(
                 table.objects.count(),
                 count - 1,
-                "{} {}".format(table, table.objects.all()),
+                f"{table} {table.objects.all()}",
             )
