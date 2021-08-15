@@ -19,7 +19,7 @@ Django = ">=3.2.6,<3.3.0"
 PyPDF2 = "^1.26"
 Wand = "^0.6.0"
 cattrs = { version = "^1.0.0", optional = true }
-django-allauth = ">=0.43,<0.45"
+django-allauth = ">=0.43,<0.46"
 django-anymail = { version = "^8.1", extras = ["mailjet", "sendgrid"] }
 django-decorator-include = ">=2.1,<4.0"
 django-elasticsearch-dsl = ">=7.1,<7.3"
