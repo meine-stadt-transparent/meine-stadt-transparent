@@ -16,7 +16,7 @@ from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from elasticsearch import ElasticsearchException
-from requests import RequestException
+from requests import RequestException, HTTPError
 from tqdm import tqdm
 
 from importer import JSON
@@ -379,8 +379,14 @@ class Importer:
                 tmp_file.write(content)
                 tmp_file.file.seek(0)
                 file.filesize = len(content)
-            except RequestException:
-                logger.exception(f"File {file.id}: Failed to download {url}")
+            except RequestException as e:
+                # Normal server error
+                if e.response and 400 <= e.response.status_code < 600:
+                    logger.error(
+                        f"File {file.id}: Failed to download {url} with error {e.response.status_code}"
+                    )
+                else:
+                    logger.exception(f"File {file.id}: Failed to download {url}")
                 return False
 
             logger.debug(
