@@ -1,4 +1,4 @@
-from typing import Optional, Dict, Any, Tuple, List, Type
+from typing import Optional, Dict, Any, Tuple, List
 
 import responses
 

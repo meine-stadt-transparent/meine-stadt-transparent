@@ -1,7 +1,6 @@
 import logging
 
 import responses
-from responses import Response
 
 from importer.loader import CCEgovLoader
 from importer.tests.utils import spurious_500

@@ -1,9 +1,13 @@
+import logging
+
 from django.conf import settings
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django_elasticsearch_dsl.registries import registry
 
 from mainapp.functions.minio import setup_minio
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -29,3 +33,4 @@ class Command(BaseCommand):
                 index.create(ignore=400)
         else:
             self.stdout.write("Elasticsearch is disabled; Not creating any indices")
+        logger.info("Setup successful")

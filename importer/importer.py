@@ -16,7 +16,7 @@ from django.template.defaultfilters import filesizeformat
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from elasticsearch import ElasticsearchException
-from requests import RequestException, HTTPError
+from requests import RequestException
 from tqdm import tqdm
 
 from importer import JSON
@@ -94,6 +94,7 @@ class Importer:
         else:
             for external_list in all_lists:
                 self.fetch_list_initial(external_list)
+        logger.info(f"Loading {all_lists} lists was successful")
 
     T = TypeVar("T", bound=DefaultFields)
 
@@ -177,6 +178,7 @@ class Importer:
 
         for type_class in import_plan:
             self.import_type(type_class, update)
+        logger.info("Object import was successful")
 
     def load_bodies(self, single_body_id: Optional[str] = None) -> List[CachedObject]:
         self.fetch_list_initial(self.loader.system["body"])
@@ -495,5 +497,9 @@ class Importer:
 
         if failed > 0:
             logger.error(f"{failed} files failed to download")
+        if successful > 0:
+            logger.info("File import successful")
+        else:
+            raise RuntimeError("All files failed to download")
 
         return successful, failed

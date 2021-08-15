@@ -6,17 +6,17 @@ Once everything is in the database, we import the objects in an order so that if
 
 Import order and dependencies:
 
- * LegislativeTerm: /
- * Location: /
- * Body: LegislativeTerm, Location
- * File: Location
- * Person: Location
- * Organization: Body, LegislativeTerm, Location
- * Membership: Person, Organization
- * Meeting: Location, Organization, Person
- * Paper: Organization, Person, File
- * Consultation: Meeting, Organization
- * AgendaItem: Meeting, Consultation, File
+* LegislativeTerm: /
+* Location: /
+* Body: LegislativeTerm, Location
+* File: Location
+* Person: Location
+* Organization: Body, LegislativeTerm, Location
+* Membership: Person, Organization
+* Meeting: Location, Organization, Person
+* Paper: Organization, Person, File
+* Consultation: Meeting, Organization
+* AgendaItem: Meeting, Consultation, File
 
 The current assumption is you have one body that you want to import, but it isn't hard to change that.
 

@@ -128,11 +128,18 @@ class Cli:
                 "Found the oparl endpoint. Please add the following line to your dotenv file "
                 "(you'll be reminded again after the import finished): \n\n" + dotenv
             )
+
         if not skip_body_extra:
             logger.info("Importing the shape of the city")
             import_outline(body)
             logger.info("Importing the streets")
             import_streets(body)
+            logger.info(f"Body {body.short_name} import with geo data successful.")
+        else:
+            logger.info(
+                f"Body {body.short_name} import successful. "
+                f"Don't forget to run import_streets, import_amenities and import_outline"
+            )
         return body_data.data, dotenv
 
     def get_entrypoint_and_body(
