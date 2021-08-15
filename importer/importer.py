@@ -497,7 +497,8 @@ class Importer:
 
         if failed > 0:
             logger.error(f"{failed} files failed to download")
-        if successful > 0:
+        # Success is if not all files failed or there simple were no files to import
+        if successful > 0 or failed == 0:
             logger.info("File import successful")
         else:
             raise RuntimeError("All files failed to download")
