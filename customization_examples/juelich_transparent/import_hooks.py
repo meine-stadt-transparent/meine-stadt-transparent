@@ -46,7 +46,6 @@ def sanitize_person(person):
 
 
 def sanitize_organization(orga):
-
     """
     This hook can be used to clean up some data from the API.
     In this example, we shorten some party names to prevent line-breaks on the person list.

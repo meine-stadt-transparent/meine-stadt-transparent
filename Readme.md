@@ -74,7 +74,7 @@ docker-compose run --rm django ./manage.py loaddata mainapp/fixtures/initdata.js
 
 You should now get a 200 response from [localhost:8000](http://localhost:8000).
 
-If you've not familiar with nginx, you should start with [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04).  Install nginx, [certbot](https://certbot.eff.org/) and the certbot nginx integration. For ubuntu it is e.g.
+If you've not familiar with nginx, you should start with [this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04). Install nginx, [certbot](https://certbot.eff.org/) and the certbot nginx integration. For ubuntu it is e.g.
 
 ```
 sudo add-apt-repository ppa:certbot/certbot
@@ -136,12 +136,12 @@ If you have a Kubernetes cluster, you can have a look at [this experimental setu
 
 ### Requirements
 
- - Python 3.8 or 3.9 with pip and [poetry](https://github.com/sdispater/poetry) 1.1
- - A recent node version (12 or 14) with npm (npm 6 is tested)
- - A webserver (nginx or apache is recommended)
- - A Database (MariaDB is recommended, though anything that django supports should work)
- - [minio](https://docs.min.io/)
- - If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 7.9 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/install-elasticsearch.html)
+- Python 3.8 or 3.9 with pip and [poetry](https://github.com/sdispater/poetry) 1.1
+- A recent node version (12 or 14) with npm (npm 6 is tested)
+- A webserver (nginx or apache is recommended)
+- A Database (MariaDB is recommended, though anything that django supports should work)
+- [minio](https://docs.min.io/)
+- If you want to use elasticsearch, you either need [docker and docker compose](https://docs.docker.com/engine/installation/) or will have to [install elasticsearch 7.9 yourself](https://www.elastic.co/guide/en/elasticsearch/reference/7.9/install-elasticsearch.html)
 
 On Debian/Ubuntu:
 
@@ -191,8 +191,7 @@ Please refer to [docs/Development.md](docs/Development.md)
 If you hit problems regarding memory when starting elasticsearch, please have a look at this
 [documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
 
-If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed,
-with Barracuda being set as the default format for new InnoDB-Tables (default), otherwise you will run into errors about too long Indexes.
+If MySQL/MariaDB is to be used as a database backend, a Version of at least 5.7 (MySQL) or 10.2 (MariaDB) is needed, with Barracuda being set as the default format for new InnoDB-Tables (default), otherwise you will run into errors about too long Indexes.
 
 ## License
 

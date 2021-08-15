@@ -1,12 +1,12 @@
 """
 Quick and dirty solution to quickly dump out potentially gigabytes of text into a json file
 """
+import json
+
 from django.core.management.base import BaseCommand
 from tqdm import tqdm
 
 from mainapp.models import File
-
-import json
 
 
 class Command(BaseCommand):

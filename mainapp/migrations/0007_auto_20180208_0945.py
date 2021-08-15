@@ -6,9 +6,9 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('mainapp', '0006_historicalagendaitem_historicalbody_historicalconsultation_historicalfile_historicallegislativeterm_'),
+        ('mainapp',
+         '0006_historicalagendaitem_historicalbody_historicalconsultation_historicalfile_historicallegislativeterm_'),
     ]
 
     operations = [

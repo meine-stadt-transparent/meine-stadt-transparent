@@ -20,10 +20,10 @@ If you've added the cron job, the data will automatically be updated. Otherwise 
 
 We import the data in four steps:
 
- * Import the body with some metadata
- * Get the bulk of data from the oparl api
- * Import the data to the database
- * Download and analyse the files
+* Import the body with some metadata
+* Get the bulk of data from the oparl api
+* Import the data to the database
+* Download and analyse the files
 
 All commands have more options available through `--help`.
 
@@ -54,6 +54,7 @@ You'll need to find out the German "Amtliche Gemeindeschlüssel", which is an 8 
 ```
 
 Examples:
+
 - München: 09162000
 - Augsburg: 09761000
 - Neumarkt-Sankt Veit: 09183129
@@ -121,6 +122,7 @@ Instead of crawling the whole API, it is possible to update only one specific it
 Sometimes, redundant, unnecessary or unnormalized information comes from an API that you might want to clean up during the import. To do that on an per-instance-basis without the need to patch the importer itself, we provide hooks you can attach custom sanitize-callbacks to. The callbacks are simple Python-scripts that take an object as input and return it in a sanitized version.
 
 The following steps are required to register a sanitize-hook:
+
 - Create a python script that will hold contain the functions, e.g. ``customization/import_hooks.py``. You can use [import_hooks.py](../customization_examples/juelich_transparent/import_hooks.py) as an example. Please note that the directory needs to contain a ``__init__.py``-file.
 - Register the script in your local ``.env``-file like this: ``CUSTOM_IMPORT_HOOKS=customization.import_hooks``
 - Please refer to our [example script](../customization_examples/juelich_transparent/import_hooks.py) to see which callbacks are available and how to write one.

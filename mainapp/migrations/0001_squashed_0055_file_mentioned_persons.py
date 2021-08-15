@@ -6,8 +6,6 @@ import django.db.models.deletion
 import django.utils.timezone
 import djgeojson.fields
 from django.conf import settings
-from django.conf import settings
-from django.contrib.sites.models import Site
 from django.db import migrations, models
 
 
@@ -17,7 +15,6 @@ from django.db import migrations, models
 # mainapp.migrations.0012_site
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -169,11 +166,15 @@ class Migration(migrations.Migration):
                 ('cancelled', models.BooleanField()),
                 ('start', models.DateTimeField()),
                 ('end', models.DateTimeField()),
-                ('public', models.IntegerField(blank=True, choices=[(0, 'unknown'), (1, 'public'), (2, 'not public'), (3, 'splitted')], default=0)),
-                ('auxiliary_files', models.ManyToManyField(blank=True, related_name='meeting_auxiliary_files', to='mainapp.File')),
+                ('public', models.IntegerField(blank=True, choices=[(0, 'unknown'), (1, 'public'), (2, 'not public'),
+                                                                    (3, 'splitted')], default=0)),
+                ('auxiliary_files',
+                 models.ManyToManyField(blank=True, related_name='meeting_auxiliary_files', to='mainapp.File')),
                 ('committees', models.ManyToManyField(blank=True, to='mainapp.Committee')),
-                ('invitation', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='meeting_invitation', to='mainapp.File')),
-                ('locations', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location')),
+                ('invitation', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                                 related_name='meeting_invitation', to='mainapp.File')),
+                ('locations', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                                to='mainapp.Location')),
             ],
             options={
                 'abstract': False,
@@ -207,7 +208,9 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('short_name', models.CharField(max_length=50)),
                 ('description', models.TextField(blank=True, null=True)),
-                ('is_change_request_of', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Paper')),
+                ('is_change_request_of',
+                 models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                   to='mainapp.Paper')),
                 ('submitter_committee', models.ManyToManyField(to='mainapp.Committee')),
                 ('submitter_department', models.ManyToManyField(to='mainapp.Department')),
             ],
@@ -229,7 +232,8 @@ class Migration(migrations.Migration):
                 ('short_name', models.CharField(max_length=20)),
                 ('body', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mainapp.Body')),
                 ('legislative_terms', models.ManyToManyField(blank=True, to='mainapp.LegislativeTerm')),
-                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location')),
+                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                               to='mainapp.Location')),
             ],
             options={
                 'abstract': False,
@@ -246,7 +250,8 @@ class Migration(migrations.Migration):
                 ('start', models.DateField()),
                 ('end', models.DateField()),
                 ('role', models.CharField(max_length=200)),
-                ('parliamentary_group', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mainapp.ParliamentaryGroup')),
+                ('parliamentary_group',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mainapp.ParliamentaryGroup')),
             ],
             options={
                 'abstract': False,
@@ -263,7 +268,8 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100)),
                 ('given_name', models.CharField(max_length=50)),
                 ('family_name', models.CharField(max_length=50)),
-                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location')),
+                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                               to='mainapp.Location')),
             ],
             options={
                 'abstract': False,
@@ -323,7 +329,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='meeting',
             name='meeting_series',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.MeetingSeries'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.MeetingSeries'),
         ),
         migrations.AddField(
             model_name='meeting',
@@ -333,12 +340,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='meeting',
             name='results_protocol',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='meeting_results_protocol', to='mainapp.File'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='meeting_results_protocol', to='mainapp.File'),
         ),
         migrations.AddField(
             model_name='meeting',
             name='verbatim_protocol',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='meeting_verbatim_protocol', to='mainapp.File'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='meeting_verbatim_protocol', to='mainapp.File'),
         ),
         migrations.AddField(
             model_name='file',
@@ -348,12 +357,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='file',
             name='paper',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Paper'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.Paper'),
         ),
         migrations.AddField(
             model_name='department',
             name='location',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.Location'),
         ),
         migrations.AddField(
             model_name='committeemembership',
@@ -368,12 +379,14 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='committee',
             name='location',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.Location'),
         ),
         migrations.AddField(
             model_name='body',
             name='center',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='body_center', to='mainapp.Location'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='body_center', to='mainapp.Location'),
         ),
         migrations.AddField(
             model_name='body',
@@ -383,7 +396,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='body',
             name='outline',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='body_outline', to='mainapp.Location'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='body_outline', to='mainapp.Location'),
         ),
         migrations.AddField(
             model_name='agendaitem',
@@ -393,7 +407,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='agendaitem',
             name='paper',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Paper'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.Paper'),
         ),
         migrations.AddField(
             model_name='agendaitem',
@@ -522,10 +537,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('phone', models.PositiveIntegerField(blank=True, null=True)),
-                ('completion_level', models.PositiveSmallIntegerField(default=0, verbose_name='Profile completion percentage')),
+                ('completion_level',
+                 models.PositiveSmallIntegerField(default=0, verbose_name='Profile completion percentage')),
                 ('email_is_verified', models.BooleanField(default=False, verbose_name='Email is verified')),
-                ('personal_info_is_completed', models.BooleanField(default=False, verbose_name='Personal info completed')),
-                ('user', models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='profile', to=settings.AUTH_USER_MODEL, verbose_name='User')),
+                ('personal_info_is_completed',
+                 models.BooleanField(default=False, verbose_name='Personal info completed')),
+                ('user',
+                 models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='profile',
+                                      to=settings.AUTH_USER_MODEL, verbose_name='User')),
             ],
             options={
                 'verbose_name_plural': 'User profiles',
@@ -703,7 +722,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='paper',
             name='main_file',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='paper_main_file', to='mainapp.File'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='paper_main_file', to='mainapp.File'),
         ),
         migrations.AlterField(
             model_name='paper',
@@ -776,7 +796,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='paper',
             name='paper_type',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.PaperType'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.PaperType'),
         ),
         migrations.AlterField(
             model_name='paper',
@@ -819,8 +840,10 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
                 ('deleted', models.BooleanField(default=False)),
-                ('meeting', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Meeting')),
-                ('paper', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Paper')),
+                ('meeting', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                              to='mainapp.Meeting')),
+                ('paper', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                            to='mainapp.Paper')),
                 ('role', models.CharField(blank=True, max_length=200, null=True)),
             ],
         ),
@@ -841,7 +864,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='agendaitem',
             name='resolution_file',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='resolution_file', to='mainapp.File'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='resolution_file', to='mainapp.File'),
         ),
         migrations.AddField(
             model_name='agendaitem',
@@ -861,7 +885,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='agendaitem',
             name='consultation',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Consultation'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.Consultation'),
         ),
         migrations.RemoveField(
             model_name='userprofile',
@@ -883,7 +908,8 @@ class Migration(migrations.Migration):
                 ('logo', models.CharField(blank=True, max_length=255, null=True)),
                 ('body', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mainapp.Body')),
                 ('legislative_terms', models.ManyToManyField(blank=True, to='mainapp.LegislativeTerm')),
-                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Location')),
+                ('location', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                               to='mainapp.Location')),
             ],
             options={
                 'abstract': False,
@@ -900,7 +926,8 @@ class Migration(migrations.Migration):
                 ('start', models.DateField(blank=True, null=True)),
                 ('end', models.DateField(blank=True, null=True)),
                 ('role', models.CharField(blank=True, max_length=200, null=True)),
-                ('organization', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Organization')),
+                ('organization',
+                 models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='mainapp.Organization')),
                 ('person', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='mainapp.Person')),
             ],
             options={
@@ -1018,7 +1045,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='organization',
             name='organization_type',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='mainapp.OrganizationType'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE,
+                                    to='mainapp.OrganizationType'),
             preserve_default=False,
         ),
         migrations.AddField(

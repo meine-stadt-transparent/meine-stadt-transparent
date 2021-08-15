@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 
 from csp.decorators import csp_update
 from django.conf import settings
@@ -12,7 +13,6 @@ from django.urls import reverse
 from django.utils import html
 from django.utils import timezone
 from django.views.generic import DetailView
-from urllib.parse import quote
 
 from importer.functions import requests_get
 from mainapp.functions.minio import minio_client, minio_file_bucket

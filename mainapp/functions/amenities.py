@@ -6,7 +6,6 @@ from mainapp.models import SearchPoi
 
 logger = logging.getLogger(__name__)
 
-
 query_template = """
 [out:json];area["de:amtlicher_gemeindeschluessel"~"^{}"];
 foreach(

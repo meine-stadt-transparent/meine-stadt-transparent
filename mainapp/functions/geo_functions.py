@@ -1,13 +1,13 @@
 import logging
 import re
 from typing import Optional, Dict, Any, List, Tuple
+from urllib.parse import urlparse
 
 from django.conf import settings
 from geopy import OpenCage, Nominatim, MapBox
 from geopy.exc import GeocoderServiceError
 from geopy.geocoders.base import Geocoder
 from slugify import slugify
-from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 

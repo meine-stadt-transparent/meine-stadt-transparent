@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.db import migrations
-from django.db import migrations
 
 
 def update_site(apps, schema_editor):

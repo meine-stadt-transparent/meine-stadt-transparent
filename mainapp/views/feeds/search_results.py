@@ -7,8 +7,8 @@ from django.urls import reverse
 from django.utils.feedgenerator import Enclosure
 from django.utils.translation import gettext as _
 
-from mainapp.functions.search_notification_tools import params_to_human_string
 from mainapp.functions.search import search_string_to_params, MainappSearch, parse_hit
+from mainapp.functions.search_notification_tools import params_to_human_string
 from mainapp.models import Paper, File
 
 

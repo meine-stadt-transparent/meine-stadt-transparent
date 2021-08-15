@@ -11,7 +11,6 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 
 from mainapp.functions.geo_functions import latlng_to_address
-from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.functions.search import (
     search_string_to_params,
     MainappSearch,
@@ -20,6 +19,7 @@ from mainapp.functions.search import (
     DOCUMENT_TYPE_NAMES,
     autocomplete,
 )
+from mainapp.functions.search_notification_tools import params_are_subscribable
 from mainapp.models import Body, Organization, Person
 from mainapp.views.utils import (
     handle_subscribe_requests,
