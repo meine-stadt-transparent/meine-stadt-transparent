@@ -4,7 +4,7 @@ Please see the [Readme](Readme.md#Update]) on what commands to run after an upda
 
 ## Unreleased
 
- * The import shows success messages after the main stages
+* The import shows success messages after the main stages
 
 ## v0.2.12 - 2021-06-21
 

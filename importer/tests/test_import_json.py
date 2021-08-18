@@ -440,9 +440,7 @@ def test_manual_deletion(pytestconfig):
         requests_mock.add(
             responses.GET,
             url,
-            body=Path(pytestconfig.rootdir)
-            .joinpath("testdata/media/file.txt")
-            .read_bytes(),
+            body=pytestconfig.rootpath.joinpath("testdata/media/file.txt").read_bytes(),
             status=200,
             content_type="text/plain",
         )

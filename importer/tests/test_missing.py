@@ -17,7 +17,7 @@ empty_page = {"data": [], "links": {}, "pagination": {}}
 
 
 @pytest.mark.django_db
-def test_missing_organization(caplog):
+def test_missing_organization(pytestconfig, caplog):
     with RequestsMock() as requests_mock:
         requests_mock.add(
             requests_mock.GET,
@@ -38,7 +38,11 @@ def test_missing_organization(caplog):
             "http://oparl.wuppertal.de/oparl/bodies",
             json={
                 "data": [
-                    json.loads(Path("testdata/oparl-missing/body.json").read_text())
+                    json.loads(
+                        pytestconfig.rootpath.joinpath(
+                            "testdata/oparl-missing/body.json"
+                        ).read_text()
+                    )
                 ],
                 "links": {},
                 "pagination": {},
@@ -64,7 +68,11 @@ def test_missing_organization(caplog):
             "http://oparl.wuppertal.de/oparl/bodies/0001/meetings",
             json={
                 "data": [
-                    json.loads(Path("testdata/oparl-missing/meeting.json").read_text())
+                    json.loads(
+                        pytestconfig.rootpath.joinpath(
+                            "testdata/oparl-missing/meeting.json"
+                        ).read_text()
+                    )
                 ],
                 "links": {},
                 "pagination": {},
@@ -79,7 +87,11 @@ def test_missing_organization(caplog):
         body_id = "http://oparl.wuppertal.de/oparl/bodies/0001"
         importer = Importer(
             BaseLoader(
-                json.loads(Path("testdata/oparl-missing/system.json").read_text())
+                json.loads(
+                    pytestconfig.rootpath.joinpath(
+                        "testdata/oparl-missing/system.json"
+                    ).read_text()
+                )
             ),
             force_singlethread=True,
         )
