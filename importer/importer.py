@@ -1,7 +1,6 @@
 import logging
 import sys
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-from itertools import repeat
 from tempfile import NamedTemporaryFile
 from typing import Optional, List, Type, Tuple
 from typing import TypeVar, Any, Set
@@ -30,6 +29,7 @@ from mainapp.functions.document_parsing import (
     extract_persons,
     AddressPipeline,
     create_geoextract_data,
+    limit_memory,
 )
 from mainapp.functions.minio import minio_client, minio_file_bucket
 from mainapp.models import (
@@ -438,6 +438,44 @@ class Importer:
 
         return True
 
+    def load_files_multiprocessing(
+        self,
+        address_pipeline: AddressPipeline,
+        fallback_city: str,
+        files: List[int],
+        max_workers: Optional[int] = None,
+        pbar: Optional[tqdm] = None,
+    ) -> int:
+        failed = 0
+        with ProcessPoolExecutor(
+            max_workers=max_workers, initializer=limit_memory
+        ) as executor:
+            tasks = [
+                (
+                    file,
+                    executor.submit(
+                        self.download_and_analyze_file,
+                        file,
+                        address_pipeline,
+                        fallback_city,
+                    ),
+                )
+                for file in files
+            ]
+            for file, task in tasks:
+                try:
+                    succeeded = task.result()
+                except MemoryError:
+                    logger.warning(
+                        f"File {file}: Import failed du to excessive memory usage (Limit: {settings.SUBPROCESS_MAX_RAM})"
+                    )
+                    succeeded = False
+                if not succeeded:
+                    failed += 1
+                if pbar:
+                    pbar.update()
+        return failed
+
     def load_files(
         self, fallback_city: str, max_workers: Optional[int] = None
     ) -> Tuple[int, int]:
@@ -467,17 +505,9 @@ class Importer:
             # and https://brobin.me/blog/2017/05/mutiprocessing-in-python-django-management-commands/
             db.connections.close_all()
 
-            with ProcessPoolExecutor(max_workers=max_workers) as executor:
-                for succeeded in executor.map(
-                    self.download_and_analyze_file,
-                    files,
-                    repeat(address_pipeline),
-                    repeat(fallback_city),
-                ):
-                    if not succeeded:
-                        failed += 1
-                    if pbar:
-                        pbar.update()
+            failed = self.load_files_multiprocessing(
+                address_pipeline, fallback_city, files, max_workers, pbar
+            )
 
         else:
             for file in files:

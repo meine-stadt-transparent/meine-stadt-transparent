@@ -77,7 +77,7 @@ DATABASES = {"default": env.db()}
 # https://stackoverflow.com/a/45233653/3549270
 SILENCED_SYSTEM_CHECKS = ["mysql.E001"]
 # https://docs.djangoproject.com/en/3.2/releases/3.2/#customizing-type-of-auto-created-primary-keys
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -216,6 +216,8 @@ NOMINATIM_URL = env.str("NOMINATIM_URL", "https://nominatim.openstreetmap.org")
 # Settings for Geo-Extraction
 GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
 GEOEXTRACT_LANGUAGE = env.str("GEOEXTRACT_LANGUAGE", LANGUAGE_CODE.split("-")[0])
+
+SUBPROCESS_MAX_RAM = env.int("SUBPROCESS_MAX_RAM", 1024 * 1024 * 1024)  # 1 GB
 
 CITY_AFFIXES = env.list(
     "CITY_AFFIXES",

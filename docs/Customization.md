@@ -178,6 +178,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
 * `TEMPLATE_DIRS`: Allows customization by overriding templates. See the readme for more details.
 * `TEXT_CHUNK_SIZE`: Our location extraction library fails with big inputs (see https://github.com/stadt-karlsruhe/geoextract/issues/7). That's why we split the text before analysing it, by default into 1MB chunks.
 * `NO_LOG_FILES`: Don't create any actual log files, only log to stdout/stderr. Useful when working with docker and log aggregation.
+* `SUBPROCESS_MAX_RAM`: Avoids out of memory errors by limiting the RAM of the import worker processes. Defaults to 1GB
 
 ## Appendix
 

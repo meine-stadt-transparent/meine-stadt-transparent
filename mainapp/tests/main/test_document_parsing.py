@@ -3,6 +3,7 @@ from unittest import mock
 
 import pytest
 from django.test import TestCase
+from django.test import override_settings
 
 from mainapp.functions.document_parsing import (
     extract_locations,
@@ -70,14 +71,32 @@ class TestDocumentParsing(TestCase):
         self.assertTrue(doug not in persons)
 
 
-def test_pdf_parsing(pytestconfig):
+def test_pdf_parsing(pytestconfig, caplog):
     file = pytestconfig.rootpath.joinpath(test_media_root).joinpath(
         "Donald Knuth - The Complexity of Songs.pdf"
     )
 
     with file.open("rb") as fp:
         parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
+    assert caplog.messages == []
     assert "bottles of beer" in parsed_text
+    assert page_count == 3
+
+
+@override_settings(SUBPROCESS_MAX_RAM=1 * 1024 * 1024)
+def test_pdf_parsing_oom(pytestconfig, caplog):
+    """Check error handling when pdftotext tries to use more than the allowed memory"""
+    file = pytestconfig.rootpath.joinpath(test_media_root).joinpath(
+        "Donald Knuth - The Complexity of Songs.pdf"
+    )
+
+    with file.open("rb") as fp:
+        parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
+    assert caplog.messages == [
+        "File 0: Failed to run pdftotext: Command '['pdftotext', "
+        f"PosixPath('{file}'), '-']' returned non-zero exit status 127.",
+    ]
+    assert parsed_text is None
     assert page_count == 3
 
 

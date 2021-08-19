@@ -1,11 +1,12 @@
-# In[]
 from typing import Optional, Dict, Any
 from unittest import mock
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from importer.importer import Importer
+from importer.loader import BaseLoader
 from importer.tests.utils import MockLoader
+from mainapp.functions.document_parsing import AddressPipeline
 from mainapp.models import Body, File
 from mainapp.tests.utils import MinioMock
 
@@ -45,3 +46,30 @@ class TestFileAnalysis(TestCase):
         self.assertEqual(len(file.parsed_text), 10019)
         self.assertEqual(file.coordinates(), [{"lat": 11.35, "lon": 142.2}])
         self.assertEqual(file.person_ids(), [1])
+
+
+class MockImporter(Importer):
+    # noinspection PyMissingConstructor
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def download_and_analyze_file(
+        self, file_id: int, address_pipeline: AddressPipeline, fallback_city: str
+    ) -> bool:
+        """Just allocates some MB for file 1"""
+        if file_id == 1:
+            print([[1 for _ in range(128)] for _ in range(128)])
+        return True
+
+
+def test_load_file_oom(caplog):
+    importer = MockImporter(BaseLoader({}), force_singlethread=True)
+
+    with override_settings(SUBPROCESS_MAX_RAM=1 * 1024 * 1024):
+        failed = importer.load_files_multiprocessing(
+            AddressPipeline([]), "München", list(range(64))
+        )
+        assert failed == 1
+        assert caplog.messages == [
+            "File 1: Import failed du to excessive memory usage (Limit: 1048576)"
+        ]

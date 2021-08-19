@@ -1,5 +1,6 @@
 import logging
 import re
+import resource
 import string
 import subprocess
 import tempfile
@@ -64,6 +65,19 @@ class AddressPipeline(geoextract.Pipeline):
         )
 
 
+def limit_memory():
+    """
+    https://gist.github.com/s3rvac/f97d6cbdfdb15c0a32e7e941f7f4a3fa
+
+    The tuple below is of the form (soft limit, hard limit). Limit only
+    the soft part so that the limit can be increased later (setting also
+    the hard limit would prevent that).
+    """
+    resource.setrlimit(
+        resource.RLIMIT_AS, (settings.SUBPROCESS_MAX_RAM, resource.RLIM_INFINITY)
+    )
+
+
 def extract_from_file(
     file: IO[bytes], filename: str, mime_type: str, file_id: int
 ) -> Tuple[Optional[str], Optional[int]]:
@@ -75,7 +89,11 @@ def extract_from_file(
         try:
             command = ["pdftotext", filename, "-"]
             completed = subprocess.run(
-                command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=True,
+                preexec_fn=limit_memory,
             )
             parsed_text = completed.stdout.decode("utf-8", "ignore")
             if completed.stderr:

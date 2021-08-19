@@ -5,6 +5,7 @@ Please see the [Readme](Readme.md#Update]) on what commands to run after an upda
 ## Unreleased
 
 * The import shows success messages after the main stages
+* The importer limits memory usage to 1GB per worker, set `SUBPROCESS_MAX_RAM` to change this default
 
 ## v0.2.12 - 2021-06-21
 
