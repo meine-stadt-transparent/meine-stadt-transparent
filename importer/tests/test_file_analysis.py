@@ -58,7 +58,8 @@ class MockImporter(Importer):
     ) -> bool:
         """Just allocates some MB for file 1"""
         if file_id == 1:
-            print([[1 for _ in range(128)] for _ in range(128)])
+            # print is just to avoid possible optimizations
+            print([[1 for _ in range(1024)] for _ in range(1024)])
         return True
 
 
