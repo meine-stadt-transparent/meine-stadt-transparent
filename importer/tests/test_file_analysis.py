@@ -1,6 +1,8 @@
+import os
 from typing import Optional, Dict, Any
 from unittest import mock
 
+import pytest
 from django.test import TestCase, override_settings
 
 from importer.importer import Importer
@@ -63,6 +65,9 @@ class MockImporter(Importer):
         return True
 
 
+@pytest.mark.skipif(
+    os.environ.get("CI"), "Github actions seems to not respect the memory limit"
+)
 def test_load_file_oom(caplog):
     importer = MockImporter(BaseLoader({}), force_singlethread=True)
 
