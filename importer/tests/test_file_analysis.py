@@ -66,7 +66,7 @@ class MockImporter(Importer):
 
 
 @pytest.mark.skipif(
-    os.environ.get("CI"), "Github actions seems to not respect the memory limit"
+    os.environ.get("CI"), reason="Github actions seems to not respect the memory limit"
 )
 def test_load_file_oom(caplog):
     importer = MockImporter(BaseLoader({}), force_singlethread=True)
