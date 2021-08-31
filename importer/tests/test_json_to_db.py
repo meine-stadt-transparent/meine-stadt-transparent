@@ -4,6 +4,7 @@ import os
 from datetime import date
 from unittest import mock
 
+import pytest
 from django.test import TestCase
 
 from importer.functions import externalize
@@ -287,3 +288,40 @@ class TestImporter(TestCase):
         self.assertEqual(person.given_name, "Max")
         self.assertEqual(person.family_name, "Mustermann")
         self.assertEqual(person.location, None)
+
+
+@pytest.mark.django_db
+def test_json_to_db_missing_object(caplog):
+    url = "https://lahr.ratsinfomanagement.net/webservice/oparl/v1.1/body/1/consultation/5999"
+    loader = MockLoader(api_data={url: None})
+    converter = JsonToDb(loader, default_body=Body(), ensure_organization_type=False)
+    with pytest.raises(
+        RuntimeError,
+        match=rf"The object {url} is missing \(and None doesn't allow dummies\)",
+    ):
+        converter.import_anything(url)
+    converter.import_anything(url, Consultation)
+    assert Consultation.objects.filter(oparl_id=url).count() == 1
+    assert caplog.messages == [
+        f"JSON loaded from {url} is not a dict/object",
+        f"JSON loaded from {url} is not a dict/object",
+        f"Using a dummy for {url}. THIS IS BAD.",
+    ]
+
+
+@pytest.mark.django_db
+def test_json_to_db_empty_object(caplog):
+    url = "https://lahr.ratsinfomanagement.net/webservice/oparl/v1.1/body/1/consultation/5999"
+    loader = MockLoader(api_data={url: {}})
+    converter = JsonToDb(loader, default_body=Body(), ensure_organization_type=False)
+    with pytest.raises(
+        RuntimeError,
+        match=f"The object {url} has not type field and object_type wasn't given",
+    ):
+        converter.import_anything(url)
+    converter.import_anything(url, Consultation)
+    assert Consultation.objects.filter(oparl_id=url).count() == 1
+    assert caplog.messages == [
+        f"Object loaded from {url} has no type field, inferred to https://schema.oparl.org/1.0/Consultation",
+        f"Object loaded from {url} has no id field, setting id to url",
+    ]

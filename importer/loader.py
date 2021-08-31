@@ -88,7 +88,7 @@ class SternbergLoader(BaseLoader):
         if "modified_since" in query and response == []:
             response = self.empty_page
 
-        if response.get("deleted", False) and not "type" in response:
+        if response.get("deleted", False) and "type" not in response:
             response["type"] = (
                 "https://schema.oparl.org/1.0/" + url.split("/")[-2].title()
             )

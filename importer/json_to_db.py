@@ -49,13 +49,16 @@ class JsonToDb:
         loader: BaseLoader,
         utils: Optional[Utils] = None,
         default_body: Optional[Body] = None,
+        ensure_organization_type: bool = True,
     ):
         self.loader = loader
         self.utils = utils or Utils()
         self.default_body = default_body
         self.warn_missing = True  # Some tests set this to False
 
-        self.ensure_organization_type()
+        # Some tests skip that
+        if ensure_organization_type:
+            self.ensure_organization_type()
 
     A = TypeVar("A", bound=DefaultFields)
 
@@ -105,31 +108,52 @@ class JsonToDb:
             id=department[0], defaults={"name": department[1]}
         )
 
+    def _make_dummy(self, oparl_id: str, object_type: Optional[Type[T]] = None) -> T:
+        """This is a horrible workaround for broken oparl implementations
+
+        See test_missing.py"""
+        if object_type and issubclass(object_type, DummyInterface):
+            logger.error(f"Using a dummy for {oparl_id}. THIS IS BAD.")
+            # noinspection PyTypeChecker
+            dummy: T = object_type.dummy(oparl_id)
+            dummy.save()
+            return dummy
+        else:
+            raise RuntimeError(
+                f"The object {oparl_id} is missing (and {object_type} doesn't allow dummies)"
+            )
+
     def import_anything(
         self, oparl_id: str, object_type: Optional[Type[T]] = None
     ) -> DefaultFields:
         """Hacky metaprogramming to import any object based on its id"""
         logging.info(f"Importing single object {oparl_id}")
 
-        to_return = None
-
         try:
             loaded = self.loader.load(oparl_id)
         except HTTPError as e:
             logger.error(f"Failed to load {oparl_id}: {e}")
-            # This is a horrible workaround for broken oparl implementations
-            # See test_missing.py
-            if object_type and issubclass(object_type, DummyInterface):
-                logger.error(f"Using a dummy for {oparl_id}. THIS IS BAD.")
-                # noinspection PyTypeChecker
-                dummy: T = object_type.dummy(oparl_id)
-                dummy.save()
-                return dummy
-            else:
-                raise
+            return self._make_dummy(oparl_id, object_type)
 
-        # When a resourced moved, the use specified id might be different from the object's id
-        # The loader prints a warning in that case
+        if not isinstance(loaded, dict):
+            logger.error(f"JSON loaded from {oparl_id} is not a dict/object")
+            return self._make_dummy(oparl_id, object_type)
+        if "type" not in loaded:
+            if object_type:
+                loaded["type"] = "https://schema.oparl.org/1.0/" + object_type.__name__
+                logger.warning(
+                    f"Object loaded from {oparl_id} has no type field, inferred to {loaded['type']}"
+                )
+            else:
+                raise RuntimeError(
+                    f"The object {oparl_id} has not type field and object_type wasn't given"
+                )
+
+        if "id" not in loaded:
+            logger.warning(
+                f"Object loaded from {oparl_id} has no id field, setting id to url"
+            )
+            loaded["id"] = oparl_id
         oparl_id = loaded["id"]
         externalized = list(externalize(loaded))
         # To avoid endless recursion, we sort the objects so that if A links to B then B gets imported first
@@ -139,6 +163,7 @@ class JsonToDb:
             )
         )
 
+        to_return = None
         for entry in externalized:
             instance = self.import_any_externalized(entry.data)
 

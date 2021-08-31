@@ -1,16 +1,16 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, Type
 
 from django.db import models
 
 if TYPE_CHECKING:
     from mainapp.models import AgendaItem
-from .helper import DefaultFields
+from .helper import DefaultFields, DummyInterface, T
 from .meeting import Meeting
 from .organization import Organization
 from .paper import Paper
 
 
-class Consultation(DefaultFields):
+class Consultation(DefaultFields, DummyInterface):
     """
     See https://github.com/OParl/spec/issues/381 for why we need an extra consultation when there is agenda item
     """
@@ -31,3 +31,7 @@ class Consultation(DefaultFields):
     def single_agenda_item(self) -> Optional["AgendaItem"]:
         if self.agendaitem_set.count() == 1:
             return self.agendaitem_set.first()
+
+    @classmethod
+    def dummy(cls: Type[T], oparl_id: str) -> T:
+        return Consultation(oparl_id=oparl_id)
