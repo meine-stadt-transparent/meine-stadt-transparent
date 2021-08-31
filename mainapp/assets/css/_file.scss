@@ -98,7 +98,7 @@
   }
 
   // This gives a nice two pane layout on medium-sized screens
-  @media (max-width: $container-width * 2) and (min-width: °breakpoint-max(lg, $grid-breakpoints)) {
+  @media (max-width: $container-width * 2) and (min-width: breakpoint-max(lg, $grid-breakpoints)) {
     .right-counterweight {
       display: none;
     }

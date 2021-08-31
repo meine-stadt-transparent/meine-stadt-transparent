@@ -43,7 +43,7 @@ $line-width: 4px;
     width: $circle-outer-radius * 2;
     height: $circle-outer-radius * 2;
     top: $top-offset;
-    right: -($circle-outer-radius + $line-width / 2);
+    right: -($circle-outer-radius + $line-width * 0.5);
     background-color: #fff;
     border-radius: 100%;
 
@@ -72,7 +72,7 @@ $line-width: 4px;
     left: 0;
     width: 0;
     height: 0;
-    top: $top-offset + $trianle-outer-size / 2 * 1.414;
+    top: $top-offset + $trianle-outer-size * 0.5 * 1.414;
   }
 
   .consultation-speech-bubble::before {

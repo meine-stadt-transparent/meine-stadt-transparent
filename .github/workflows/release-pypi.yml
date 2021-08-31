@@ -17,10 +17,10 @@ jobs:
           python-version: 3.8
       - name: Install poetry
         run: |
-          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python - --version 1.0.10
-          $HOME/.poetry/bin/poetry config virtualenvs.in-project true
+          curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --version 1.1.8
+          $HOME/.local/bin/poetry config virtualenvs.in-project true
       - name: Publish to PyPI
-        run: $HOME/.poetry/bin/poetry publish --build
+        run: $HOME/.local/bin/poetry publish --build
         env:
           POETRY_HTTP_BASIC_PYPI_USERNAME: ${{ secrets.POETRY_HTTP_BASIC_PYPI_USERNAME }}
           POETRY_HTTP_BASIC_PYPI_PASSWORD: ${{ secrets.POETRY_HTTP_BASIC_PYPI_PASSWORD }}
