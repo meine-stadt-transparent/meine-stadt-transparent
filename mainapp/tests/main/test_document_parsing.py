@@ -94,7 +94,7 @@ def test_pdf_parsing_oom(pytestconfig, caplog):
         parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
     assert caplog.messages == [
         "File 0: Failed to run pdftotext: Command '['pdftotext', "
-        f"PosixPath('{file}'), '-']' returned non-zero exit status 127.",
+        f"PosixPath('{file}'), '-']' returned non-zero exit status 127."
     ]
     assert parsed_text is None
     assert page_count == 3

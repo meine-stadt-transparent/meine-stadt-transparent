@@ -57,7 +57,7 @@ meeting_with_auxiliary_file_object = {
             "created": "2021-05-01T10:32:33+02:00",
             "modified": "2021-05-01T10:32:33+02:00",
             "deleted": False,
-        },
+        }
     ],
     "web": "https://www.bonn.sitzung-online.de/public/to010?SILFDNR=664",
     "created": "2021-04-25T22:31:05+02:00",

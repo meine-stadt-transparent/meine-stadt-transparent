@@ -192,7 +192,5 @@ class TestDataset(TestCase):
 
             # We use minus one because we only deleted the top level objects
             self.assertEqual(
-                table.objects.count(),
-                count - 1,
-                f"{table} {table.objects.all()}",
+                table.objects.count(), count - 1, f"{table} {table.objects.all()}"
             )
