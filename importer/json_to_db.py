@@ -112,16 +112,20 @@ class JsonToDb:
         """This is a horrible workaround for broken oparl implementations
 
         See test_missing.py"""
-        if object_type and issubclass(object_type, DummyInterface):
-            logger.error(f"Using a dummy for {oparl_id}. THIS IS BAD.")
-            # noinspection PyTypeChecker
-            dummy: T = object_type.dummy(oparl_id)
-            dummy.save()
-            return dummy
-        else:
+        if not object_type:
             raise RuntimeError(
-                f"The object {oparl_id} is missing (and {object_type} doesn't allow dummies)"
+                f"The object {oparl_id} is missing and the object type was not specified"
             )
+
+        if not issubclass(object_type, DummyInterface):
+            raise RuntimeError(
+                f"The object {oparl_id} is missing and {object_type.__name__} doesn't allow dummies"
+            )
+
+        # noinspection PyTypeChecker
+        dummy: T = object_type.dummy(oparl_id)
+        dummy.save()
+        return dummy
 
     def import_anything(
         self, oparl_id: str, object_type: Optional[Type[T]] = None
@@ -132,11 +136,15 @@ class JsonToDb:
         try:
             loaded = self.loader.load(oparl_id)
         except HTTPError as e:
-            logger.error(f"Failed to load {oparl_id}: {e}")
+            logger.error(
+                f"Failed to load {oparl_id}. Using a dummy instead. THIS IS BAD: {e}"
+            )
             return self._make_dummy(oparl_id, object_type)
 
         if not isinstance(loaded, dict):
-            logger.error(f"JSON loaded from {oparl_id} is not a dict/object")
+            logger.error(
+                f"JSON loaded from {oparl_id} is not a dict/object. Using a dummy instead. THIS IS BAD"
+            )
             return self._make_dummy(oparl_id, object_type)
         if "type" not in loaded:
             if object_type:
@@ -229,20 +237,15 @@ class JsonToDb:
         if entry:
             return self.import_any_externalized(entry.data)
         else:
+            # Locations have no list but aren't always inline in oparl 1.0
             if warn and self.warn_missing and object_type != Location:
-                logger.warning(
+                logger.error(
                     f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
                     f"supposed to be a part of the external lists, but was not. "
                     f"This is a bug in the OParl implementation."
                 )
 
-            try:
-                return self.import_anything(oparl_id, object_type)
-            except HTTPError:
-                logger.exception(
-                    f"Failed to download the {object_type.__name__} {oparl_id}"
-                )
-                return None
+            return self.import_anything(oparl_id, object_type)
 
     def retrieve_many(
         self,

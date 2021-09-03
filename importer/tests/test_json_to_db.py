@@ -297,15 +297,14 @@ def test_json_to_db_missing_object(caplog):
     converter = JsonToDb(loader, default_body=Body(), ensure_organization_type=False)
     with pytest.raises(
         RuntimeError,
-        match=rf"The object {url} is missing \(and None doesn't allow dummies\)",
+        match=rf"The object {url} is missing and the object type was not specified",
     ):
         converter.import_anything(url)
     converter.import_anything(url, Consultation)
     assert Consultation.objects.filter(oparl_id=url).count() == 1
     assert caplog.messages == [
-        f"JSON loaded from {url} is not a dict/object",
-        f"JSON loaded from {url} is not a dict/object",
-        f"Using a dummy for {url}. THIS IS BAD.",
+        f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS IS BAD",
+        f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS IS BAD",
     ]
 
 

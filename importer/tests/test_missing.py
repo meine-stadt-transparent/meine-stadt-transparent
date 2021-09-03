@@ -4,7 +4,6 @@ patch those up with dummies.
 """
 
 import json
-from pathlib import Path
 
 import pytest
 from responses import RequestsMock
@@ -16,6 +15,7 @@ from mainapp.models import Organization, Person
 empty_page = {"data": [], "links": {}, "pagination": {}}
 
 
+# noinspection HttpUrlsUsage
 @pytest.mark.django_db
 def test_missing_organization(pytestconfig, caplog):
     with RequestsMock() as requests_mock:
@@ -113,39 +113,30 @@ def test_missing_organization(pytestconfig, caplog):
         ]
 
     assert Person.objects.first().name == "Missing Person"
-
     assert caplog.messages == [
         "The Person http://oparl.wuppertal.de/oparl/bodies/0001/people/292 linked "
         "from http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed "
         "to be a part of the external lists, but was not. This is a bug in the OParl "
         "implementation.",
-        "Failed to load http://oparl.wuppertal.de/oparl/bodies/0001/people/292: 404 "
-        "Client Error: Not Found for url: "
+        "Failed to load http://oparl.wuppertal.de/oparl/bodies/0001/people/292. Using "
+        "a dummy instead. THIS IS BAD: 404 Client Error: Not Found for url: "
         "http://oparl.wuppertal.de/oparl/bodies/0001/people/292",
-        "Using a dummy for http://oparl.wuppertal.de/oparl/bodies/0001/people/292. "
-        "THIS IS BAD.",
         "The Organization "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230 linked from "
         "http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed to "
         "be a part of the external lists, but was not. This is a bug in the OParl "
         "implementation.",
         "Failed to load "
-        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230: 404 Client "
-        "Error: Not Found for url: "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230. Using a "
+        "dummy instead. THIS IS BAD: 404 Client Error: Not Found for url: "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230",
-        "Using a dummy for "
-        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/230. THIS IS "
-        "BAD.",
         "The Organization "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231 linked from "
         "http://oparl.wuppertal.de/oparl/bodies/0001/meetings/19160 was supposed to "
         "be a part of the external lists, but was not. This is a bug in the OParl "
         "implementation.",
         "Failed to load "
-        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231: 404 Client "
-        "Error: Not Found for url: "
+        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231. Using a "
+        "dummy instead. THIS IS BAD: 404 Client Error: Not Found for url: "
         "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231",
-        "Using a dummy for "
-        "http://oparl.wuppertal.de/oparl/bodies/0001/organizations/gr/231. THIS IS "
-        "BAD.",
     ]
