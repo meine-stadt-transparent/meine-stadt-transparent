@@ -64,17 +64,24 @@ $(function () {
 
 // Easy linking to tabs e.g. on the organization page
 $(function () {
-    import('bootstrap').then(_ => {
+    import('bootstrap').then(bootstrap => {
         // https://github.com/twbs/bootstrap/issues/25220#issuecomment-379216474
         const anchor = window.location.hash;
+        let tab;
         if (anchor !== "") {
-            $(`a[href="${anchor}"]`).tab('show');
+            tab = document.querySelector(`a[href="${anchor}"]`);
         } else {
-            $('a.nav-link.mst-active').tab('show');
+            tab = document.querySelector('a.nav-link.mst-active');
         }
-        // https://stackoverflow.com/a/50540931/3549270
-        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-            history.pushState({}, '', e.target.hash);
+        if (tab !== null) {
+            (new bootstrap.Tab(tab)).show();
+        }
+        // https://getbootstrap.com/docs/5.0/components/list-group/#events
+        let tabElms = document.querySelectorAll('a[data-bs-toggle="tab"]')
+        tabElms.forEach(function (tabElm) {
+            tabElm.addEventListener('shown.bs.tab', function (event) {
+                history.pushState({}, '', event.target.hash);
+            })
         });
     });
 });
