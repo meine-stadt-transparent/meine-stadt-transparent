@@ -8,36 +8,45 @@
   .home-container {
     padding: $index-section-default-padding 0;
   }
+
   .home-container-title {
     min-height: 50vh;
     display: flex;
     align-items: center;
     background-color: $index-title-section-background;
+
     .title-colors {
       color: $index-title-color;
       background-color: $index-title-background;
     }
   }
+
   .home-container-search {
     background-color: $index-search-section-background;
     color: $index-search-text;
   }
+
   .home-container-map {
     background-color: $index-map-section-background;
+
     .title-colors {
       display: inline-block;
       color: $index-map-title-color;
       background-color: $index-map-title-background;
     }
+
     padding-bottom: $index-section-default-padding * 2; // Some additional padding comes from the map background
   }
+
   .home-container-main-buttons {
     background-color: $index-main-buttons-section-background;
+
     .title-colors {
       display: inline-block;
       color: $index-main-buttons-title-color;
       background-color: $index-main-buttons-title-background;
     }
+
     .main-button-squared {
       position: relative;
       width: 100%;
@@ -78,27 +87,34 @@
       }
     }
   }
+
   .home-container-meetings {
     background-color: $index-meetings-section-background;
+
     .title-colors {
       display: inline-block;
       color: $index-meetings-title-color;
       background-color: $index-meetings-title-background;
     }
+
     .meeting-button {
       background-color: $index-meetings-btn;
       color: #fff;
       text-align: left;
+
       &:hover, &:active {
         background-color: shade-color($index-meetings-btn, 5%);
       }
+
       .col {
         padding-left: 10px;
         padding-right: 10px;
       }
+
       > div {
         padding: 10px;
       }
+
       .title {
         font-size: 1.1rem;
         font-weight: 500;
@@ -106,8 +122,10 @@
       }
     }
   }
+
   .home-container-documents {
     background-color: $index-documents-section-background;
+
     .title-colors {
       display: inline-block;
       color: $index-documents-title-color;
@@ -118,6 +136,7 @@
   .more-info-link {
     @extend .lead;
     text-align: right;
+
     a, a:link, a:visited {
       color: #005abf;
     }
@@ -135,8 +154,9 @@
   // The form-control-focus doesn't work with the shadow class as the latter takes precedent with `!important`,
   // so we roll our own
   box-shadow: $box-shadow;
+
   &:focus {
-     box-shadow: $box-shadow, $input-box-shadow, $input-focus-box-shadow;
+    box-shadow: $box-shadow, $input-box-shadow, $input-focus-box-shadow;
   }
 
   .leaflet-popup-content-wrapper {
@@ -204,6 +224,7 @@
   .leaflet-control-attribution a {
     color: #333;
   }
+
   .map-incative-hint {
     color: #555;
     font-style: italic;
@@ -219,6 +240,7 @@
     .btn {
       white-space: normal;
     }
+
     display: flex;
   }
 }

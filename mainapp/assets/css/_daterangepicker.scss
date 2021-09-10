@@ -401,11 +401,13 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
       top: 8px;
     }
   }
+
   &.rtl {
     .input-mini {
       padding-right: 28px;
       padding-left: 6px;
     }
+
     .daterangepicker_input i {
       left: auto;
       right: 8px;
@@ -458,6 +460,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
   .applyBtn {
     display: none;
   }
+
   &.show-calendar {
     .applyBtn {
       display: inline-block;
@@ -486,6 +489,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
           float: left;
         }
       }
+
       &.rtl {
         .ranges, .calendar {
           float: right;
@@ -496,6 +500,7 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     &.ltr {
       direction: ltr;
       text-align: left;
+
       .calendar {
         &.left {
           clear: left;
@@ -531,9 +536,11 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
         float: left;
       }
     }
+
     &.rtl {
       direction: rtl;
       text-align: right;
+
       .calendar {
         &.left {
           clear: right;
@@ -578,11 +585,13 @@ $daterangepicker-ranges-active-border-radius: $daterangepicker-border-radius !de
     .ranges {
       width: auto;
     }
+
     &.ltr {
       .ranges {
         float: left;
       }
     }
+
     &.rtl {
       .ranges {
         float: right;

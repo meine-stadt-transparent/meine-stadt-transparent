@@ -138,15 +138,18 @@
 
     .col {
       text-align: center;
+
       &:first-child {
         text-align: left;
         padding-left: calc(#{$grid-gutter-width} / 2 + #{$list-group-item-padding-x}); // Align with rest of the items
       }
+
       &:last-child {
         text-align: right;
       }
     }
   }
+
   .paper-link-row {
     .col {
       text-align: left;
@@ -154,6 +157,7 @@
       display: table;
       width: 100%;
       table-layout: fixed;
+
       a {
         display: block;
         white-space: nowrap;

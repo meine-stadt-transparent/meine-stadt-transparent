@@ -16,13 +16,16 @@ form.login {
     .address {
       font-weight: bold;
     }
+
     .verified, .unverified, .primary {
       font-size: 0.8em;
     }
   }
+
   .email-actions {
     margin-top: 20px;
   }
+
   .email-add-row h2 {
     padding-top: 0.5rem;
     font-size: inherit;
@@ -30,7 +33,7 @@ form.login {
 }
 
 .login-container {
-    max-width: 400px;
+  max-width: 400px;
 }
 
 .allauth-wrapper {

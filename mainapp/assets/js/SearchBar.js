@@ -7,20 +7,21 @@ export default class SearchBar {
         let urlTemplate = this.$input.data('suggest-url');
 
         this.$input.typeahead({
-                hint: false, // Hinting is kind of irritating if you are using the full-text search;
-                             // probably only makes sense when the first option is auto-selected on pressing enter.
-                autoselect: false
-            }, {
-                name: 'name',
-                display: 'name',
-                source: (query, syncResults, asyncResults) => {
-                    let url = urlTemplate.replace(/SEARCH_TERM/, query);
-                    $.get(url, (data) => {
-                        asyncResults(data);
-                    });
-                },
-                limit: 5
-            });
+            // Hinting is kind of irritating if you are using the full-text search;
+            // probably only makes sense when the first option is auto-selected on pressing enter.
+            hint: false,
+            autoselect: false
+        }, {
+            name: 'name',
+            display: 'name',
+            source: (query, syncResults, asyncResults) => {
+                let url = urlTemplate.replace(/SEARCH_TERM/, query);
+                $.get(url, (data) => {
+                    asyncResults(data);
+                });
+            },
+            limit: 5
+        });
 
         this.$input.on("typeahead:selected", function (ev, obj) {
             if (obj.url !== undefined) window.location.href = obj.url;

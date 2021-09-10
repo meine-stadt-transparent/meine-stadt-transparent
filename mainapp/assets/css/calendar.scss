@@ -3,9 +3,11 @@
 
 .fc-list-item {
   cursor: pointer;
+
   &:focus {
     background: #f6f6f6;
   }
+
   &.cancelled {
     text-decoration: line-through;
   }
@@ -24,6 +26,7 @@
 
 .fc-event, .fc-event-dot {
   background-color: $calendarEventBackground;
+
   &:focus {
     background-color: shade-color($calendarEventBackground, 10%);
     outline: dotted 1px gray;
