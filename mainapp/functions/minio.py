@@ -3,7 +3,7 @@ import logging
 
 from django.conf import settings
 from minio import Minio
-from minio.error import MinioException
+from minio.error import MinioException, S3Error
 from urllib3.exceptions import RequestError
 
 """
@@ -53,9 +53,14 @@ def setup_minio():
             logger.info(f"minio bucket {settings.MINIO_PREFIX + bucket} already exists")
 
     files_bucket = settings.MINIO_PREFIX + "files"
-    minio.set_bucket_policy(
-        files_bucket, json.dumps(get_read_only_policy(files_bucket))
-    )
+    try:
+        minio.set_bucket_policy(
+            files_bucket, json.dumps(get_read_only_policy(files_bucket))
+        )
+    except S3Error as e:
+        # Ignore missing backblaze API, we have set that value already
+        if e.message != "Backblaze B2 does not support this API call.":
+            raise
 
 
 _minio_singleton = None
