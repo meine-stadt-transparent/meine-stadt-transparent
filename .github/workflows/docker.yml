@@ -31,5 +31,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: DOCKER_GIT_SHA=${{ env.GITHUB_SHA }}
-          cache-from: type=registry,ref=konstin2/meine-stadt-transparent:main
-          cache-to: type=inline
+          # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md#registry-cache
+          cache-from: type=registry,ref=konstin2/meine-stadt-transparent:buildcache
+          cache-to: type=registry,ref=konstin2/meine-stadt-transparent:buildcache,mode=max
