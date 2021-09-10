@@ -15,7 +15,7 @@
                 <div class="dropdown paragraph">
                     <span class="fa-custom fa-history"></span>
                     <button class="btn btn-sm btn-secondary dropdown-toggle revision-dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ meeting.history.count }}{% trans " Revisions" context "X revisions" %}
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -71,8 +71,8 @@
             <div class="d-flex flex-column flex-md-row justify-content-between meeting-vertical-bar">
                 {% if meeting.location.geometry %}
                     <div class="dropdown location-dropdown std-element" data-location="{{ location_json }}">
-                        <button type="button" class="btn btn-sm btn-transparent" data-toggle="modal"
-                                data-target="#locationModal" name="meeting-location-dropdown" id="locationShowButton"
+                        <button type="button" class="btn btn-sm btn-transparent" data-bs-toggle="modal"
+                                data-bs-target="#locationModal" name="meeting-location-dropdown" id="locationShowButton"
                                 title="{{ meeting.location.description }}" aria-haspopup="true" aria-expanded="false"
                                 tabindex="0">
 
@@ -90,7 +90,7 @@
                                     <div class="modal-header">
                                         <h4 class="modal-title"
                                             id="MapModalLabel">{{ meeting.location.description }}</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -109,7 +109,7 @@
                                             OpenStreetMaps
                                         </a>
                                         <button type="button" class="btn btn-primary"
-                                                data-dismiss="modal">{% trans 'Close' %}
+                                                data-bs-dismiss="modal">{% trans 'Close' %}
                                         </button>
                                     </div>
                                 </div>

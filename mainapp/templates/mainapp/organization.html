@@ -45,7 +45,7 @@
         <ul class="nav nav-pills nav-fill" role="tablist">
             <li class="nav-item">
                 <a class="nav-link mst-active {% if not members %}text-muted{% endif %}"
-                   id="member-tab" data-toggle="tab"
+                   id="member-tab" data-bs-toggle="tab"
                    role="tab" aria-controls="{% trans 'Members' context 'Header' %}" aria-selected="true"
                    href="#member-list">
                     <span>{% trans "Members" context "Header" %}</span>
@@ -54,7 +54,7 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {% if not papers %}text-muted{% endif %}"
-                   id="paper-tab" data-toggle="tab" role="tab"
+                   id="paper-tab" data-bs-toggle="tab" role="tab"
                    href="#paper-list"
                    aria-controls="{% trans 'Paper' context 'Header' %}" aria-selected="false">
                     <span>{% trans "Paper" context "Header" %}</span>
@@ -62,7 +62,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if not meetings %}text-muted{% endif %}" id="meeting-tab" data-toggle="tab"
+                <a class="nav-link {% if not meetings %}text-muted{% endif %}" id="meeting-tab" data-bs-toggle="tab"
                    href="#calendar-list" role="tab"
                    aria-controls="{% trans 'Meetings' context 'Header' %}" aria-selected="false">
                     <span>{% trans "Meetings" context "Header" %}</span>

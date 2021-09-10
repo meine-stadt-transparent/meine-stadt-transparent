@@ -8,7 +8,7 @@
     <div class="dropdown">
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button"
                 id="locationSelectButton" title="{{ options.location_formatted }}"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="location-description" {% if not options.radius %}hidden="hidden"{% endif %}>
                 <span class="radius">{{ options.radius }}</span><span>{% trans "m around" context "Selecting a range in meters" %}</span>
                 <span class="location" data-lat="{{ options.lat }}"

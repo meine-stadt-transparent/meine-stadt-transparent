@@ -20,7 +20,7 @@
         {% if user.is_authenticated %}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarMyAccount" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {% trans "My Account" context 'navigation' %}
                 </a>
                 <form class="dropdown-menu" method="POST" action="{% url 'account_logout' %}"

@@ -73,7 +73,7 @@ $(function () {
             $('a.nav-link.mst-active').tab('show');
         }
         // https://stackoverflow.com/a/50540931/3549270
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        $('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
             history.pushState({}, '', e.target.hash);
         });
     });

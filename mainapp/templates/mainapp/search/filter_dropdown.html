@@ -5,7 +5,7 @@
     <h2 class="sr-only">{% trans label context "search_form" %}</h2>
     <div class="dropdown facet-dropdown">
         <button class="btn btn-sm btn-transparent dropdown-toggle" type="button" id="{{ key }}Button"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                 {% if items.count == 0 %}disabled{% endif %}>
             <span class="nothing-selected">{% trans label context "search_form" %}</span>
             <span class="selection"></span>

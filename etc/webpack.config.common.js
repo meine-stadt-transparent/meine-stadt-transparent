@@ -101,7 +101,7 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery",
             "Hammer": "hammerjs/hammer",
-            "Popper": "popper.js",
+            "Popper": "@popper/core",
             "L": "leaflet"
         }),
     ],
