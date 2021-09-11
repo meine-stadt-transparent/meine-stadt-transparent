@@ -68,17 +68,11 @@ import-json = ["cattrs"]
 mst-manage = 'manage:main'
 
 [tool.black]
-include = '\.pyi?$'
-exclude = '''
+extend-exclude = '''
 /(
-    \.git
-  | \.venv
-  | \.tox
   | mainapp/migrations
   | cms/migrations
   | importer/migrations
-  | node_modules
-  | static
 )/
 '''
 
