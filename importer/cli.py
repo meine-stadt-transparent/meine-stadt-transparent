@@ -221,9 +221,8 @@ class Cli:
                 return ags, value
 
         raise RuntimeError(
-            "Could not determine the Amtliche Gemeindeschlüssel using {}".format(
-                to_check
-            )
+            f"Could not determine the Amtliche Gemeindeschlüssel using {to_check}.\n"
+            f"Set it manually using `--ags`"
         )
 
     def get_endpoint_from_cityname(
