@@ -37,7 +37,7 @@
     "webpack-merge": "^5.7.3"
   },
   "dependencies": {
-    "@popperjs/core": "^2.10.1",
+    "@popperjs/core": "^2.11.0",
     "@sentry/browser": "^6.10.0",
     "bootstrap": "~5.1.0",
     "bootstrap-datepicker": "^1.9.0",
