@@ -477,7 +477,10 @@ class Importer:
         return failed
 
     def load_files(
-        self, fallback_city: str, max_workers: Optional[int] = None
+        self,
+        fallback_city: str,
+        max_workers: Optional[int] = None,
+        update: bool = False,
     ) -> Tuple[int, int]:
         """Downloads and analyses the actual file for the file entries in the database.
 
@@ -490,6 +493,9 @@ class Importer:
             .order_by("-id")
             .values_list("id", flat=True)
         )
+        if not files:
+            logger.info(f"No files to import")
+            return 0, 0
         logger.info(f"Downloading and analysing {len(files)} files")
         address_pipeline = AddressPipeline(create_geoextract_data())
         pbar = None
@@ -527,10 +533,9 @@ class Importer:
 
         if failed > 0:
             logger.error(f"{failed} files failed to download")
-        # Success is if not all files failed or there simple were no files to import
-        if successful > 0 or failed == 0:
-            logger.info("File import successful")
-        else:
-            raise RuntimeError("All files failed to download")
+            # not update because these might be files that failed before
+            if successful == 0 and not update:
+                raise RuntimeError("All files failed to download")
+        logger.info("{successful} files imported successfully")
 
         return successful, failed

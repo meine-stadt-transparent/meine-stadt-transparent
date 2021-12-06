@@ -161,7 +161,7 @@ def import_update(
         importer.update(body.oparl_id)
         importer.force_singlethread = True
         if download_files:
-            importer.load_files(body.short_name)
+            importer.load_files(body.short_name, update=True)
 
 
 def fix_sort_date(import_date: datetime.datetime):

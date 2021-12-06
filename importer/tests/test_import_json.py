@@ -416,12 +416,7 @@ def test_index_deletion():
     assert len(MainappSearch({"query": "Underwood"}).execute().hits) == 1
 
 
-@mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
-@pytest.mark.django_db
-def test_manual_deletion(pytestconfig):
-    """Check that after a file has been manually deleted, it can't get re-imported and it's gone from minio"""
-    url = "https://example.org/file/1"
-    file_id = 1
+def make_sample_file(file_id, url):
     sample_file = File(
         name="Bad File",
         original_id=file_id,
@@ -435,6 +430,16 @@ def test_manual_deletion(pytestconfig):
     body = Body(name=data.meta.name, short_name=data.meta.name, ags=data.meta.ags)
     body.save()
     import_data(body, data)
+    return body, data
+
+
+@mock.patch("mainapp.functions.minio._minio_singleton", new=MinioMock())
+@pytest.mark.django_db
+def test_manual_deletion(pytestconfig, caplog):
+    """Check that after a file has been manually deleted, it can't get re-imported and it's gone from minio"""
+    url = "https://example.org/file/1"
+    file_id = 1
+    body, data = make_sample_file(file_id, url)
 
     with responses.RequestsMock() as requests_mock:
         requests_mock.add(
@@ -469,3 +474,27 @@ def test_manual_deletion(pytestconfig):
 
     with pytest.raises(MinioException):
         minio_client().get_object(minio_file_bucket, str(file_id))
+
+    assert caplog.messages == [
+        "File 1 has an unknown mime type: 'text/plain'",
+        "File 1: Couldn't get any text",
+    ]
+
+
+@pytest.mark.django_db
+def test_file_404(pytestconfig, caplog):
+    """Check that after a file has been manually deleted, it can't get re-imported and it's gone from minio"""
+    url = "https://example.org/file/1"
+    file_id = 1
+    make_sample_file(file_id, url)
+
+    with responses.RequestsMock() as requests_mock:
+        requests_mock.add(responses.GET, url, status=404, content_type="text/plain")
+        importer = Importer(BaseLoader({}), force_singlethread=True)
+        [successful, failed] = importer.load_files(sample_city.name, update=True)
+        assert successful == 0 and failed == 1
+
+    assert caplog.messages == [
+        f"File 1: Failed to download {url}",
+        "1 files failed to download",
+    ]
