@@ -107,6 +107,25 @@ We've now got a fully working instance, just without files. Their import speed i
 ./manage.py import_files
 ```
 
+## Troubleshooting
+
+Since downloading the data from the oparl api can be very slow, you can dump the cache import into a file once finished and use it to retry the much quicker import.
+
+Export:
+
+```
+./manage.py dumpdata importer -o reinickendorf-importer.json
+```
+
+`flush` the database, import:
+
+```
+./manage.py loaddata importer-data.json
+./manage.py set_cache_to_reimport
+```
+
+After that you can continue from `import_body --manual`.
+
 ## Importing only a single object
 
 Instead of crawling the whole API, it is possible to update only one specific item using the `import_anything`-command. You will need to specify the urlof the OParl-Object. Here are examples how to import a person, a paper and a meeting:

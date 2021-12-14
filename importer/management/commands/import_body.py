@@ -5,6 +5,7 @@ from django.core.management.base import BaseCommand
 from importer.cli import Cli
 from importer.importer import Importer
 from importer.loader import get_loader_from_system
+from importer.models import CachedObject
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +36,12 @@ class Command(BaseCommand):
         body_id, entrypoint = cli.get_entrypoint_and_body(userinput, options["mirror"])
         importer = Importer(get_loader_from_system(entrypoint))
         if options["manual"]:
-            logger.info("Fetching the body")
-            importer.load_bodies(body_id)
+            if CachedObject.objects.filter(url=body_id).exists():
+                logger.info("Using fetched body")
+
+            else:
+                logger.info("Fetching the body")
+                importer.load_bodies(body_id)
             logger.info("Importing the body")
             [body] = importer.import_bodies()
             logger.info(f"The body id is {body.id}")
