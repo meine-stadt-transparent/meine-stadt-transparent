@@ -144,7 +144,15 @@ class Importer:
                     "sanitize_" + type_name.lower(), instance
                 )
 
-            instance.save()
+            try:
+                instance.save()
+            except IntegrityError as e:
+                if not e.args[1].startswith("Duplicate entry "):
+                    raise
+                else:
+                    logger.warning(
+                        f"Cyclic import with {type_name} {to_import.url} {e.args[0]}, ignoring"
+                    )
             if related_function and not instance.deleted:
                 related_function(to_import.data, instance)
             all_instances.append(instance)
@@ -209,7 +217,7 @@ class Importer:
             for element in response["data"]:
                 externalized = externalize(element)
                 for i in externalized:
-                    if not i.data.get("deleted") and not i in all_objects:
+                    if not i.data.get("deleted") and i not in all_objects:
                         objects.update(externalized)
 
             next_url = response["links"].get("next")
@@ -222,7 +230,8 @@ class Importer:
                 # https://stackoverflow.com/a/32720475/3549270
                 db.close_old_connections()
                 # The test are run with sqlite, which failed here with a TransactionManagementError:
-                # "An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block."
+                # "An error occurred in the current transaction.
+                # You can't execute queries until the end of the 'atomic' block."
                 # That's why we build our own atomic block
                 if settings.TESTING:
                     with transaction.atomic():
@@ -467,7 +476,8 @@ class Importer:
                     succeeded = task.result()
                 except MemoryError:
                     logger.warning(
-                        f"File {file}: Import failed du to excessive memory usage (Limit: {settings.SUBPROCESS_MAX_RAM})"
+                        f"File {file}: Import failed du to excessive memory usage "
+                        f"(Limit: {settings.SUBPROCESS_MAX_RAM})"
                     )
                     succeeded = False
                 if not succeeded:
