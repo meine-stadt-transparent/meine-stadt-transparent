@@ -16,16 +16,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Running migrations")
         call_command("migrate")
-        self.stdout.write("Creating minio buckets")
-        setup_minio()
         if settings.ELASTICSEARCH_ENABLED:
             self.stdout.write("Creating elasticsearch indices")
             # The logic comes from django_elasticsearch_dsl.managment.commands.search_index:_create
             for index in registry.get_indices(registry.get_models()):
+                # noinspection PyProtectedMember
                 self.stdout.write(
-                    "Creating elasticsearch index '{}' if not exists".format(
-                        index._name
-                    )
+                    f"Creating elasticsearch index '{index._name}' if not exists"
                 )
                 # https://elasticsearch-py.readthedocs.io/en/master/api.html:
                 # "ignore 400 cause by IndexAlreadyExistsException when creating an index"
@@ -33,4 +30,7 @@ class Command(BaseCommand):
                 index.create(ignore=400)
         else:
             self.stdout.write("Elasticsearch is disabled; Not creating any indices")
+        # This is more brittle, so we run it last
+        self.stdout.write("Creating minio buckets")
+        setup_minio()
         logger.info("Setup successful")

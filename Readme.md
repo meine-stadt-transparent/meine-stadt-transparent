@@ -46,8 +46,8 @@ To deliver the assets through nginx, we need to mount them to a local container:
 ```
 mkdir log
 chown 33:33 log
-mkdir -p /var/www/meine-stadt-transparent-static
-docker volume create --opt type=none --opt o=bind django_static --opt device=/var/www/meine-stadt-transparent-static
+rm -rf /var/www/meine-stadt-transparent-static # Delete existing or it will land in a subdirectory 
+docker cp django:/static /var/www/meine-stadt-transparent-static
 ```
 
 You can change the directory to any other as long as you match that later in your nginx conf.

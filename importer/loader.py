@@ -1,5 +1,9 @@
+import json
 import logging
+import re
 import time
+from json import JSONDecodeError
+
 from typing import Optional, Tuple, Dict, Any
 
 from requests import HTTPError, Response
@@ -110,7 +114,7 @@ class SternbergLoader(BaseLoader):
                 # There are deleted entries in unfiltered external lists (which they shouldn't) and then
                 # they don't even have type attributes (which are mandatory)
                 for entry in response["data"][:]:
-                    if entry.get("deleted") and not "type" in entry:
+                    if entry.get("deleted") and "type" not in entry:
                         response["data"].remove(entry)
 
             # Add missing "type"-attributes in single bodies
@@ -192,16 +196,43 @@ class CCEgovLoader(BaseLoader):
                     del data[key]
 
     def load(self, url: str, query: Optional[dict] = None) -> JSON:
+        logger.debug(f"Loader is loading {url}")
+        if query is None:
+            query = dict()
+
         try:
-            response = super().load(url, query)
+            response = requests_get(url, params=query)
         except HTTPError as e:
             if e.response.status_code == 500:
                 logger.error(f"Got an 500 for a CC e-gov request, retrying: {e}")
-                response = super().load(url, query)
+                response = requests_get(url, params=query)
             else:
                 raise
-        self.visit(response)
-        return response
+        text = response.text
+        try:
+            data = json.loads(text)
+        except JSONDecodeError:
+            logger.error(f"The server returned invalid json. This is a bug in the OParl implementation: {url}")
+            # Hack with based on std json code to load broken json where the control characters (U+0000 through
+            # U+001F except \n) weren't properly escaped
+            ESCAPE = re.compile(r'[\x00-\x09\x0B-\x1f]')
+            ESCAPE_DCT = {}
+            for i in range(0x20):
+                ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
+
+            def replace(match):
+                return ESCAPE_DCT[match.group(0)]
+
+            text = ESCAPE.sub(replace, text)
+            data = json.loads(text)
+
+        if data is None:  # json() can actually return None
+            data = dict()
+        if "id" in data and data["id"] != url:
+            logger.warning(f"Mismatch between url and id. url: {url} id: {data['id']}")
+
+        self.visit(data)
+        return data
 
     def load_file(self, url: str) -> Tuple[bytes, Optional[str]]:
         """Returns the content and the content type"""
@@ -230,7 +261,8 @@ class SomacosLoader(BaseLoader):
                         raise
                     else:
                         logger.error(
-                            f"Got an 500 for a Somacos request, retrying after sleeping {self.error_sleep_seconds}s: {e}"
+                            f"Got an 500 for a Somacos request, "
+                            f"retrying after sleeping {self.error_sleep_seconds}s: {e}"
                         )
                         time.sleep(self.error_sleep_seconds)
                         current_try += 1
@@ -251,9 +283,7 @@ class SomacosLoader(BaseLoader):
 
         data = response.json()
         if "id" in data and data["id"] != url:
-            logger.warning(
-                "Mismatch between url and id. url: {} id: {}".format(url, data["id"])
-            )
+            logger.warning(f"Mismatch between url and id. url: {url} id: {data['id']}")
         return data
 
 

@@ -4,7 +4,6 @@ services:
     image: konstin2/meine-stadt-transparent
     container_name: django
     volumes:
-      - django_static:/static
       - ./.env:/app/.env
       - ./log:/app/log
     ports:
@@ -58,8 +57,6 @@ services:
       command: server /minio_data
 
 volumes:
-  django_static:
-    external: true
   mariadb_data:
   elasticsearch_data:
   minio_data:

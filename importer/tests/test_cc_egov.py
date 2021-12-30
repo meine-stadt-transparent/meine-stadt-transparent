@@ -88,3 +88,24 @@ def test_auxiliary_file_object(caplog):
         "auxiliaryFile is supposed to be an array of objects, but is an object (in "
         "https://www.bonn.sitzung-online.de/public/oparl/meetings?id=664)"
     ]
+
+
+def test_broken_json(pytestconfig, caplog):
+    """Broken JSON with control character (U+0000 through U+001F except \n) that is not escaped"""
+    loader = CCEgovLoader({})
+    with responses.RequestsMock() as requests_mock:
+        requests_mock.add(
+            requests_mock.GET,
+            "https://ratsinfo.braunschweig.de/bi/oparl/1.0/papers.asp?id=1664",
+            pytestconfig.rootpath.joinpath("testdata/broken_json.json").read_text(),
+        )
+        loaded = loader.load(
+            "https://ratsinfo.braunschweig.de/bi/oparl/1.0/papers.asp?id=1664"
+        )
+        print(loaded["name"])
+        assert len(loaded["name"]) == 127
+    assert caplog.messages == [
+        "The server returned invalid json. "
+        "This is a bug in the OParl implementation: "
+        "https://ratsinfo.braunschweig.de/bi/oparl/1.0/papers.asp?id=1664"
+    ]
