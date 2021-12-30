@@ -1,6 +1,11 @@
 # This is needed for our development workflow
 # https://xkcd.com/1172/
 # See etc/docker-compose.yml for a production template
+# Mariadb setup:
+# ```
+# echo "GRANT ALL PRIVILEGES ON *.* TO 'meinestadttransparent'@'%' WITH GRANT OPTION;" | docker-compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -uroot -pmeinestadttransparent -hmariadb-dev
+# echo "CREATE SCHEMA <YOUR_DB_NAME_HERE>;" | docker-compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -umeinestadttransparent -pmeinestadttransparent -hmariadb-dev
+# ```
 
 version: '3'
 services:
@@ -16,7 +21,7 @@ services:
     image: mariadb:10
     container_name: mariadb-dev
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - ./mariadb_data:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
@@ -39,7 +44,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
+      - ./elasticsearch_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
@@ -56,15 +61,10 @@ services:
     image: minio/minio
     container_name: minio-dev
     volumes:
-      - minio_data:/minio_data
+      - ./minio_data:/minio_data
     environment:
       MINIO_ACCESS_KEY: meinestadttransparent
       MINIO_SECRET_KEY: meinestadttransparent
     ports:
       - 9000:9000
     command: server /minio_data
-
-volumes:
-  elasticsearch_data:
-  minio_data:
-  mariadb_data:
