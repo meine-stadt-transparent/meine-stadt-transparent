@@ -51,9 +51,15 @@ main#main-content.no-top-margin {
   }
 }
 
-// Currently only used by the matomo opt-out
+// Used by the matomo opt-out
 iframe {
   border: 0;
   height: 200px;
+  width: 100%;
+}
+
+iframe.embed-responsive-item {
+  border: 0;
+  height: 100%;
   width: 100%;
 }

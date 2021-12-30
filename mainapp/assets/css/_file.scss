@@ -53,17 +53,16 @@
   flex-direction: column;
 
   .pdf-wrapper {
+    display: flex;
     height: 100%;
-    flex: 1;
-
-    $file-disclaimer-height: 30px;
+    flex-direction: column;
 
     > .embed-responsive {
-      height: calc(100% - #{$file-disclaimer-height});
+      // Make as large as possible (pdf js collapses by default), leaving space for the footer
+      flex-grow: 1;
     }
 
     > .file-disclaimer {
-      height: $file-disclaimer-height;
       display: flex;
       flex-direction: column;
       justify-content: center;
