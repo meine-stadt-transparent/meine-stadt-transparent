@@ -1,6 +1,7 @@
 import logging
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django_elasticsearch_dsl.registries import registry
@@ -14,10 +15,18 @@ class Command(BaseCommand):
     help = "Set all database up (mariadb, elasticsearch and minio)"
 
     def handle(self, *args, **options):
-        self.stdout.write("Running migrations")
+        self.stdout.write("# Running migrations")
         call_command("migrate")
+
+        self.stdout.write("# Site settings")
+        site = Site.objects.get_current()
+        site.name = settings.PRODUCT_NAME
+        site.domain = settings.REAL_HOST
+        site.save()
+        Site.objects.clear_cache()
+
         if settings.ELASTICSEARCH_ENABLED:
-            self.stdout.write("Creating elasticsearch indices")
+            self.stdout.write("# Creating elasticsearch indices")
             # The logic comes from django_elasticsearch_dsl.managment.commands.search_index:_create
             for index in registry.get_indices(registry.get_models()):
                 # noinspection PyProtectedMember
@@ -29,8 +38,9 @@ class Command(BaseCommand):
                 # See also https://github.com/elastic/elasticsearch/issues/19862
                 index.create(ignore=400)
         else:
-            self.stdout.write("Elasticsearch is disabled; Not creating any indices")
+            self.stdout.write("# Elasticsearch is disabled; Not creating any indices")
+
         # This is more brittle, so we run it last
-        self.stdout.write("Creating minio buckets")
+        self.stdout.write("# Creating minio buckets")
         setup_minio()
         logger.info("Setup successful")

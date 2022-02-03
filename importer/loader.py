@@ -212,13 +212,15 @@ class CCEgovLoader(BaseLoader):
         try:
             data = json.loads(text)
         except JSONDecodeError:
-            logger.error(f"The server returned invalid json. This is a bug in the OParl implementation: {url}")
+            logger.error(
+                f"The server returned invalid json. This is a bug in the OParl implementation: {url}"
+            )
             # Hack with based on std json code to load broken json where the control characters (U+0000 through
             # U+001F except \n) weren't properly escaped
-            ESCAPE = re.compile(r'[\x00-\x09\x0B-\x1f]')
+            ESCAPE = re.compile(r"[\x00-\x09\x0B-\x1f]")
             ESCAPE_DCT = {}
             for i in range(0x20):
-                ESCAPE_DCT.setdefault(chr(i), '\\u{0:04x}'.format(i))
+                ESCAPE_DCT.setdefault(chr(i), "\\u{0:04x}".format(i))
 
             def replace(match):
                 return ESCAPE_DCT[match.group(0)]
