@@ -20,7 +20,7 @@ class Command(BaseCommand):
 
         self.stdout.write("# Site settings")
         site = Site.objects.get_current()
-        site.name = settings.PRODUCT_NAME
+        site.name = settings.SITE_NAME
         site.domain = settings.REAL_HOST
         site.save()
         Site.objects.clear_cache()
