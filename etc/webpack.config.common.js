@@ -91,8 +91,7 @@ module.exports = {
     },
     plugins: [
         new BundleTracker({
-            path: path.resolve(__dirname, '../mainapp/assets/bundles'),
-            filename: './webpack-stats.json'
+            filename: path.resolve(__dirname, '../mainapp/assets/bundles/webpack-stats.json')
         }),
         new MiniCssExtractPlugin({
             filename: process.env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css'

@@ -46,7 +46,6 @@
     <div class="hidden" id="sentry-dsn" data-sentry-dsn="{{ settings.TEMPLATE_META.sentry_dsn }}"></div>
 {% endif %}
 
-{% render_bundle 'vendor' 'js' %}
 {% render_bundle 'mainapp' 'js' %}
 
 {% block additional_js %}{% endblock %}
