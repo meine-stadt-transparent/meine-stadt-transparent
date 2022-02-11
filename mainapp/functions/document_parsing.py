@@ -1,5 +1,6 @@
 import logging
 import re
+import sys
 import resource
 import string
 import subprocess
@@ -73,6 +74,11 @@ def limit_memory():
     the soft part so that the limit can be increased later (setting also
     the hard limit would prevent that).
     """
+
+    if sys.platform == "darwin":
+        logger.warn("Memory limits not set on Darwin!")
+        return
+
     resource.setrlimit(
         resource.RLIMIT_AS, (settings.SUBPROCESS_MAX_RAM, resource.RLIM_INFINITY)
     )
