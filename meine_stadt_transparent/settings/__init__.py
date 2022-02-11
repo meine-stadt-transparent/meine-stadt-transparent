@@ -161,6 +161,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "node_modules/pdfjs-dist/viewer"),  # See desgin.md
 )
 
+SERVE_STATIC_FILES = env.str("SERVE_STATIC_FILES", DEBUG)
+
 MINIO_PREFIX = env.str("MINIO_PREFIX", "meine-stadt-transparent-")
 MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = env.str("MINIO_ACCESS_KEY", "meinestadttransparent")

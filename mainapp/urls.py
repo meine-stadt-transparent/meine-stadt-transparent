@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import url
 from django.urls import path, re_path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
 from mainapp.views.profile import profile_view, profile_delete
@@ -84,3 +85,6 @@ if settings.PROXY_ONLY_TEMPLATE:
             name="file-content-proxy",
         )
     )
+
+if settings.SERVE_STATIC_FILES:
+    urlpatterns += staticfiles_urlpatterns()
