@@ -155,6 +155,7 @@ Meine Stadt Transparent is fully internationalized with German translations main
 * `CITY_AFFIXES`: Often the data we get contains additional information in city names, e.g. "Landdeshauptstadt München" instead of "München", which we need to cut away. `CITY_AFFIXES` contains a list of those prefixes in German, currently "Stadt", "Landeshauptstadt", "Gemeinde", "Kreisverwaltung", "Landkreis" and "Kreis.
 * `DISTRICT_REGEX`: Sometimes, there's a city and a district of the same name. Those are disambiguated by checking whether the name matches this regex. Defaults to "(^| )kreis|kreis( |$)"
 * `GEOEXTRACT_SEARCH_COUNTRY`: Sets the country for the geocoding service. Defaults to "Deutschland"
+* `GEOEXTRACT_SEARCH_CITY`: Sets the fallback city name for the geocoding service. Defaults to the name of the main body
 * `GEOEXTRACT_LANGUAGE`: Language passed to geopy for geocoding, defaults to the first part of `LANGUAGE_CODE`, i.e. "de"
 
 ## Various

@@ -2,6 +2,7 @@ import logging
 
 from importer.management.commands._import_base_command import ImportBaseCommand
 from mainapp.functions.document_parsing import AddressPipeline, create_geoextract_data
+from meine_stadt_transparent import settings
 
 logger = logging.getLogger(__name__)
 
@@ -20,13 +21,14 @@ class Command(ImportBaseCommand):
 
     def handle(self, *args, **options):
         importer, body = self.get_importer(options)
-        logger.info(f"Using '{body.short_name}' as geotagging city")
+        fallback_city = settings.GEOEXTRACT_SEARCH_CITY or body.short_name
+        logger.info(f"Using '{fallback_city}' as geotagging city")
         if options["ids"]:
             address_pipeline = AddressPipeline(create_geoextract_data())
             failed = 0
             for file in options["ids"]:
                 succeeded = importer.download_and_analyze_file(
-                    file, address_pipeline, body.short_name
+                    file, address_pipeline, fallback_city=fallback_city
                 )
 
                 if not succeeded:
@@ -36,5 +38,6 @@ class Command(ImportBaseCommand):
                 logger.error(f"{failed} files failed to download")
         else:
             importer.load_files(
-                max_workers=options["max_workers"], fallback_city=body.short_name
+                max_workers=options["max_workers"],
+                fallback_city=fallback_city
             )

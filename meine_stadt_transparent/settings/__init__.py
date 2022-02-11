@@ -214,8 +214,10 @@ if GEOEXTRACT_ENGINE == "opencage":
 NOMINATIM_URL = env.str("NOMINATIM_URL", "https://nominatim.openstreetmap.org")
 
 # Settings for Geo-Extraction
-GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
 GEOEXTRACT_LANGUAGE = env.str("GEOEXTRACT_LANGUAGE", LANGUAGE_CODE.split("-")[0])
+
+GEOEXTRACT_SEARCH_COUNTRY = env.str("GEOEXTRACT_SEARCH_COUNTRY", "Deutschland")
+GEOEXTRACT_SEARCH_CITY = env.str("GEOEXTRACT_SEARCH_CITY", None)
 
 SUBPROCESS_MAX_RAM = env.int("SUBPROCESS_MAX_RAM", 1024 * 1024 * 1024)  # 1 GB
 
