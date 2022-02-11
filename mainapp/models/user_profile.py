@@ -13,7 +13,7 @@ class UserProfile(models.Model):
         User,
         null=True,
         related_name="profile",
-        verbose_name=_(u"User"),
+        verbose_name=_("User"),
         on_delete=models.CASCADE,
     )
     # Normally pgp keys are 40 chars long (for sha-1), but we're going to use some padding in case a different

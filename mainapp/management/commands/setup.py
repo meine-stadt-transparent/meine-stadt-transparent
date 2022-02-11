@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Set all database up (mariadb, elasticsearch and minio)"
+    help = (
+        "Set all database up (mariadb, elasticsearch and minio). "
+        "This command is idempotent, i.e. you can run it how often you want"
+    )
 
     def handle(self, *args, **options):
         self.stdout.write("# Running migrations")
