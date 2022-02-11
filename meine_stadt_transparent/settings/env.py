@@ -23,4 +23,4 @@ if not env_file.is_file() and not os.environ.get("REAL_HOST"):
         f"but also no configuration through environment variables (REAL_HOST is missing)"
     )
 
-env.read_env(str(env_file))
+env.read_env(env_file)
