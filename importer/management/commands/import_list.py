@@ -18,7 +18,7 @@ class Command(ImportBaseCommand):
     def handle(self, *args, **options):
         importer, body = self.get_importer(options)
         body_data = CachedObject.objects.get(url=body.oparl_id)
-        oparl_id = body_data[options["list"]]
+        oparl_id = body_data.data[options["list"]]
 
         if ExternalList.objects.filter(url=oparl_id).exists():
             importer.fetch_list_update(oparl_id)
