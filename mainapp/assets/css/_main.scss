@@ -18,10 +18,9 @@
 }
 
 .fa-custom {
-  @extend .fa;
+  @extend .fa-solid;
   @extend .fa-fw;
   @extend .me-1;
-  @extend .no-link-color;
 }
 
 #main-menu {

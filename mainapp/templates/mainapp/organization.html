@@ -80,7 +80,7 @@
             </div>
             <div id="paper-list" class="tab-pane fade" role="tabpanel"
                  aria-labelledby="paper-tab">
-                <a href="{{ to_search_url }}" class="btn btn-primary btn-sm pull-right">
+                <a href="{{ to_search_url }}" class="btn btn-primary btn-sm float-end">
                     {% trans "Open in Search" %}
                 </a>
                 {% if papers|length > 0 %}
@@ -116,7 +116,7 @@
             </div>
             <div id="calendar-list" class="tab-pane fade" role="tabpanel" aria-labelledby="calendar-tab">
                 <a href="{% url 'organizazion_ical' organization.id %}"
-                   class="btn btn-primary btn-sm pull-right clearfix">
+                   class="btn btn-primary btn-sm float-end clearfix">
                     <span class="fa fa-calendar-plus-o" aria-hidden="true"></span>
                     {% trans "Subscribe (iCal)" %}
                 </a>

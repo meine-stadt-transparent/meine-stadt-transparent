@@ -1,7 +1,7 @@
 {% load i18n %}
 <a href="{% url 'index' %}" class="navbar-brand">{{ settings.TEMPLATE_META.logo_name }}</a>
 <a href="{% url 'search' '' %}" class="navbar-toggler">
-    <span class="fa fa-search"></span>
+    <span class="fa fa-magnifying-glass"></span>
     <span class="sr-only">Search</span>
 </a>
 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#main-menu-content"
@@ -21,7 +21,7 @@
                    id="searchfield-mousetrap"
                    title="{% trans 'Search (Alt+F)' %}"
             >
-            <button class="search-icon fa fa-search" type="submit"
+            <button class="search-icon fa fa-magnifying-glass" type="submit"
                     title="{% trans 'Show search results' context 'aria label' %}">
                 <span class="sr-only">{% trans 'Show search results' context 'aria label' %}</span>
             </button>

@@ -24,10 +24,10 @@
                 <ul class="list-group list-group-flush">
                     {% for alert in alerts %}
                         <li class="list-group-item">
-                            <div class="pull-right d-flex">
+                            <div class="float-end d-flex">
                                 <a href="{% url 'search' query=alert.search_string %}"
                                    class="btn btn-outline-primary me-3">
-                                    <span class="fa fa-search" aria-hidden="true"></span>
+                                    <span class="fa fa-magnifying-glass" aria-hidden="true"></span>
                                     <span>{% trans "Search" %}</span>
                                 </a>
 
@@ -68,7 +68,7 @@
                     {% trans "Change your password" %}
                 </a>
 
-                <a href="{% url 'profile-delete' %}" class="pull-right btn btn-danger">
+                <a href="{% url 'profile-delete' %}" class="float-end btn btn-danger">
                     {% trans 'Delete account' %}
                 </a>
             </div>
@@ -82,7 +82,7 @@
 
                 <div class="card-body" id="select-pgp-key-box">
                     {% if not profile.pgp_key_fingerprint %}
-                        <div class="pull-right">
+                        <div class="float-end">
                             <form action="{% url 'profile-home' %}" method="POST" id="pgp-form"
                                   data-pgp-input="{{ profile.user.email }}"
                                   data-sks-keyserver="{{ settings.TEMPLATE_META.sks_keyserver }}">
@@ -104,7 +104,7 @@
                             {% trans "Select your pgp key receive encrypted notifications. Note that encryted notifications are plaintext only." %}
                         </div>
                     {% else %}
-                        <div class="pull-right">
+                        <div class="float-end">
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="delete_pgp_key" value="true">

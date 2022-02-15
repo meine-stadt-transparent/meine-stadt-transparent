@@ -63,20 +63,16 @@ module.exports = {
             }
         }, {
             test: /\.(jpe?g|gif|png)$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                    "outputPath": "images",
-                    "name": "[name].[ext]"
-                }
-            } // adding -[hash] would be better, but seems to lead to problems with default leaflet markers
+            type: 'asset/resource',
+            generator: {
+                outputPath: "images",
+                filename: '[name][ext]'
+            }
         }, {
-            test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
-            use: {
-                loader: 'file-loader',
-                options: {
-                    "name": "[name].[ext]"
-                }
+            test: /\.(woff(2)?|otf|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+            type: 'asset/resource',
+            generator: {
+                filename: '[name][ext]'
             }
         }, {
             test: /\.css$/,
