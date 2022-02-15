@@ -38,6 +38,5 @@ class Command(ImportBaseCommand):
                 logger.error(f"{failed} files failed to download")
         else:
             importer.load_files(
-                max_workers=options["max_workers"],
-                fallback_city=fallback_city
+                max_workers=options["max_workers"], fallback_city=fallback_city
             )

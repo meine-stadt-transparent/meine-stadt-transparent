@@ -161,9 +161,10 @@ def import_update(
         importer.update(body.oparl_id)
         importer.force_singlethread = True
         if download_files:
-            importer.load_files(body.short_name,
-                                fallback_city=settings.GEOEXTRACT_SEARCH_CITY,
-                                update=True)
+            importer.load_files(
+                fallback_city=settings.GEOEXTRACT_SEARCH_CITY or body.short_name,
+                update=True,
+            )
 
 
 def fix_sort_date(import_date: datetime.datetime):

@@ -79,7 +79,9 @@ class Cli:
 
         if not skip_files:
             logger.info("Loading the files")
-            importer.load_files(fallback_city=settings.GEOEXTRACT_SEARCH_CITY or userinput)
+            importer.load_files(
+                fallback_city=settings.GEOEXTRACT_SEARCH_CITY or userinput
+            )
 
         if dotenv:
             logger.info(
