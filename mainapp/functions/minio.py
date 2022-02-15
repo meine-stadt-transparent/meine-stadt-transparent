@@ -77,7 +77,8 @@ def minio_client() -> Minio:
             settings.MINIO_HOST,
             access_key=settings.MINIO_ACCESS_KEY,
             secret_key=settings.MINIO_SECRET_KEY,
-            secure=False,
+            secure=settings.MINIO_SECURE,
+            region=settings.MINIO_REGION
         )
         # Give a helpful error message
         try:
