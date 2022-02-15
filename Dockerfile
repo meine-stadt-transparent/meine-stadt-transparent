@@ -18,7 +18,7 @@ RUN npm run build:prod && npm run build:email
 FROM python:3.8-slim-buster AS venv-build
 
 RUN apt-get update && \
-    apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev libpq-dev gettext && \
     curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --version 1.1.8
 
 COPY pyproject.toml /app/pyproject.toml
@@ -37,7 +37,7 @@ FROM python:3.8-slim-buster
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
-    apt-get install -y git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev gettext && \
+    apt-get install -y git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev libpq-dev gettext && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
