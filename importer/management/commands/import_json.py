@@ -102,7 +102,7 @@ class Command(BaseCommand):
 
         if not options["skip_download"]:
             Importer(BaseLoader(dict()), force_singlethread=True).load_files(
-                fallback_city=body.short_name
+                fallback_city=settings.GEOEXTRACT_SEARCH_CITY or body.short_name
             )
 
         if not options["no_notify_users"]:

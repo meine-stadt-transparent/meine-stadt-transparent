@@ -26,7 +26,7 @@ class Command(BaseCommand):
         file.save()
 
     def handle(self, *args, **options):
-        fallback_city = Body.objects.get(id=settings.SITE_DEFAULT_BODY).short_name
+        fallback_city = settings.GEOEXTRACT_SEARCH_CITY or Body.objects.get(id=settings.SITE_DEFAULT_BODY).short_name
 
         if options["all"]:
             all_files = File.objects.all()
