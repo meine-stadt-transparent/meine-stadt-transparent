@@ -192,6 +192,7 @@ ELASTICSEARCH_DSL = {
     "default": {
         "hosts": ELASTICSEARCH_URL,
         "timeout": env.int("ELASTICSEARCH_TIMEOUT", 10),
+        "verify_certs": env.bool("ELASTICSEARCH_VERIFY_CERTS", True)
     }
 }
 
