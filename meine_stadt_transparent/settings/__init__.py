@@ -16,7 +16,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
 from meine_stadt_transparent.settings.env import env, TESTING
-from meine_stadt_transparent.settings.nested import INSTALLED_APPS, MIDDLEWARE
+from meine_stadt_transparent.settings.nested import INSTALLED_APPS, MIDDLEWARE, Q_CLUSTER
 from meine_stadt_transparent.settings.env import *  # noqa F403
 from meine_stadt_transparent.settings.nested import *  # noqa F403
 from meine_stadt_transparent.settings.security import *  # noqa F403
@@ -326,6 +326,8 @@ if SENTRY_DSN:
     with configure_scope() as scope:
         scope.set_tag("real_host", REAL_HOST)
 
+    Q_CLUSTER["error_reporter"] = {"sentry": {"dsn": SENTRY_DSN}}
+
 DJANGO_LOG_LEVEL = env.str("DJANGO_LOG_LEVEL", None)
 MAINAPP_LOG_LEVEL = env.str("MAINAPP_LOG_LEVEL", None)
 IMPORTER_LOG_LEVEL = env.str("IMPORTER_LOG_LEVEL", None)
@@ -402,6 +404,11 @@ LOGGING = {
             "propagate": False,
         },
         "django": {
+            "level": DJANGO_LOG_LEVEL or "WARNING",
+            "handlers": ["console", "django-error", "django"],
+            "propagate": False,
+        },
+        "django-q": {
             "level": DJANGO_LOG_LEVEL or "WARNING",
             "handlers": ["console", "django-error", "django"],
             "propagate": False,

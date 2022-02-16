@@ -52,6 +52,7 @@ splinter = ">=0.14,<0.18"
 tqdm = "^4.29"
 wagtail = ">=2.14,<2.17"
 psycopg2 = "^2.9.3"
+django-q = {extras = ["sentry"], version = "^1.3.9"}
 
 [tool.poetry.dev-dependencies]
 black = "22.1.0"

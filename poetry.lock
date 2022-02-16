@@ -1,10 +1,29 @@
 [[package]]
+name = "ansicon"
+version = "1.89.0"
+description = "Python wrapper for loading Jason Hood's ANSICON"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "anyascii"
 version = "0.3.0"
 description = "Unicode to ASCII transliteration"
 category = "main"
 optional = false
 python-versions = ">=3.3"
+
+[[package]]
+name = "arrow"
+version = "1.2.2"
+description = "Better dates & times for Python"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+python-dateutil = ">=2.7.0"
 
 [[package]]
 name = "asgiref"
@@ -83,6 +102,19 @@ colorama = ["colorama (>=0.4.3)"]
 d = ["aiohttp (>=3.7.4)"]
 jupyter = ["ipython (>=7.8.0)", "tokenize-rt (>=3.2.0)"]
 uvloop = ["uvloop (>=0.15.2)"]
+
+[[package]]
+name = "blessed"
+version = "1.19.1"
+description = "Easy, practical library for making terminal apps, by providing an elegant, well-documented interface to Colors, Keyboard input, and screen Positioning capabilities."
+category = "main"
+optional = false
+python-versions = ">=2.7"
+
+[package.dependencies]
+jinxed = {version = ">=1.1.0", markers = "platform_system == \"Windows\""}
+six = ">=1.9.0"
+wcwidth = ">=0.1.4"
 
 [[package]]
 name = "cattrs"
@@ -333,6 +365,52 @@ pytz = ">=2015.2"
 
 [package.extras]
 taggit = ["django-taggit (>=0.20)"]
+
+[[package]]
+name = "django-picklefield"
+version = "3.0.1"
+description = "Pickled object field for Django"
+category = "main"
+optional = false
+python-versions = ">=3"
+
+[package.dependencies]
+Django = ">=2.2"
+
+[package.extras]
+tests = ["tox"]
+
+[[package]]
+name = "django-q"
+version = "1.3.9"
+description = "A multiprocessing distributed task queue for Django"
+category = "main"
+optional = false
+python-versions = ">=3.6.2,<4"
+
+[package.dependencies]
+arrow = ">=1.1.0,<2.0.0"
+blessed = ">=1.17.6,<2.0.0"
+django = ">=2.2"
+django-picklefield = ">=3.0.1,<4.0.0"
+django-q-sentry = {version = ">=0.1", optional = true, markers = "extra == \"sentry\""}
+redis = ">=3.5.3,<4.0.0"
+
+[package.extras]
+testing = ["hiredis (>=1.0.1,<2.0.0)", "psutil (>=5.7.0,<6.0.0)", "django-redis (>=4.12.1,<5.0.0)", "iron-mq (>=0.9,<0.10)", "boto3 (>=1.14.12,<2.0.0)", "pymongo (>=3.10.1,<4.0.0)", "croniter (>=0.3.34,<0.4.0)"]
+rollbar = ["django-q-rollbar (>=0.1)"]
+sentry = ["django-q-sentry (>=0.1)"]
+
+[[package]]
+name = "django-q-sentry"
+version = "0.1.6"
+description = "A Sentry support plugin for Django Q"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sentry-sdk = ">=1.5.5"
 
 [[package]]
 name = "django-settings-export"
@@ -643,6 +721,17 @@ MarkupSafe = ">=2.0"
 
 [package.extras]
 i18n = ["Babel (>=2.7)"]
+
+[[package]]
+name = "jinxed"
+version = "1.1.0"
+description = "Jinxed Terminal Library"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+ansicon = {version = "*", markers = "platform_system == \"Windows\""}
 
 [[package]]
 name = "joblib"
@@ -1052,6 +1141,17 @@ optional = false
 python-versions = "*"
 
 [[package]]
+name = "redis"
+version = "3.5.3"
+description = "Python client for Redis key-value store"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[package.extras]
+hiredis = ["hiredis (>=0.1.3)"]
+
+[[package]]
 name = "regex"
 version = "2022.1.18"
 description = "Alternative regular expression module, to replace re."
@@ -1453,6 +1553,14 @@ doc = ["Sphinx (>=2.4.1)"]
 test = ["pytest (>=5.3.5)"]
 
 [[package]]
+name = "wcwidth"
+version = "0.2.5"
+description = "Measures the displayed width of unicode strings in a terminal"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "webencodings"
 version = "0.5.1"
 description = "Character encoding aliases for legacy web content"
@@ -1526,12 +1634,20 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "90abe46bc64ca3ec6dcd25bacc23f1810d93830273c628c92d1ee426a2b1f384"
+content-hash = "f4844a62402d43ad985dc97cf0c14be3316d2c7aece0030a40f690b7094c1641"
 
 [metadata.files]
+ansicon = [
+    {file = "ansicon-1.89.0-py2.py3-none-any.whl", hash = "sha256:f1def52d17f65c2c9682cf8370c03f541f410c1752d6a14029f97318e4b9dfec"},
+    {file = "ansicon-1.89.0.tar.gz", hash = "sha256:e4d039def5768a47e4afec8e89e83ec3ae5a26bf00ad851f914d1240b444d2b1"},
+]
 anyascii = [
     {file = "anyascii-0.3.0-py3-none-any.whl", hash = "sha256:68f6917fe5b22caf7dde8551b838e5e17d5e3c96c55734485699bd03ad92237f"},
     {file = "anyascii-0.3.0.tar.gz", hash = "sha256:24f27431fb64c6c93a33125fb66f8cba007a5262bc1faabeafeda5f4bb70b593"},
+]
+arrow = [
+    {file = "arrow-1.2.2-py3-none-any.whl", hash = "sha256:d622c46ca681b5b3e3574fcb60a04e5cc81b9625112d5fb2b44220c36c892177"},
+    {file = "arrow-1.2.2.tar.gz", hash = "sha256:05caf1fd3d9a11a1135b2b6f09887421153b94558e5ef4d090b567b47173ac2b"},
 ]
 asgiref = [
     {file = "asgiref-3.5.0-py3-none-any.whl", hash = "sha256:88d59c13d634dcffe0510be048210188edd79aeccb6a6c9028cdad6f31d730a9"},
@@ -1578,6 +1694,10 @@ black = [
     {file = "black-22.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:373922fc66676133ddc3e754e4509196a8c392fec3f5ca4486673e685a421321"},
     {file = "black-22.1.0-py3-none-any.whl", hash = "sha256:3524739d76b6b3ed1132422bf9d82123cd1705086723bc3e235ca39fd21c667d"},
     {file = "black-22.1.0.tar.gz", hash = "sha256:a7c0192d35635f6fc1174be575cb7915e92e5dd629ee79fdaf0dcfa41a80afb5"},
+]
+blessed = [
+    {file = "blessed-1.19.1-py2.py3-none-any.whl", hash = "sha256:63b8554ae2e0e7f43749b6715c734cc8f3883010a809bf16790102563e6cf25b"},
+    {file = "blessed-1.19.1.tar.gz", hash = "sha256:9a0d099695bf621d4680dd6c73f6ad547f6a3442fbdbe80c4b1daa1edbc492fc"},
 ]
 cattrs = [
     {file = "cattrs-1.10.0-py3-none-any.whl", hash = "sha256:35dd9063244263e63bd0bd24ea61e3015b00272cead084b2c40d788b0f857c46"},
@@ -1724,6 +1844,18 @@ django-modelcluster = [
     {file = "django-modelcluster-5.2.tar.gz", hash = "sha256:e541a46a0a899ef4778a4708be22e71cac3efacc09a6ff44bc065c5c9194c054"},
     {file = "django_modelcluster-5.2-py2.py3-none-any.whl", hash = "sha256:767084078b9e172540b271454ecc73cb320927131ca4b2c5f276daf771f9542f"},
 ]
+django-picklefield = [
+    {file = "django-picklefield-3.0.1.tar.gz", hash = "sha256:15ccba592ca953b9edf9532e64640329cd47b136b7f8f10f2939caa5f9ce4287"},
+    {file = "django_picklefield-3.0.1-py3-none-any.whl", hash = "sha256:3c702a54fde2d322fe5b2f39b8f78d9f655b8f77944ab26f703be6c0ed335a35"},
+]
+django-q = [
+    {file = "django-q-1.3.9.tar.gz", hash = "sha256:5c6b4d530aa3aabf9c6aa57376da1ca2abf89a1562b77038b7a04e52a4a0a91b"},
+    {file = "django_q-1.3.9-py3-none-any.whl", hash = "sha256:1b74ce3a8931990b136903e3a7bc9b07243282a2b5355117246f05ed5d076e68"},
+]
+django-q-sentry = [
+    {file = "django-q-sentry-0.1.6.linux-x86_64.tar.gz", hash = "sha256:bdbd9c7a48d543c2d74ae9a4c9004dfc0965cb11bc145c6cf4de3429be1b58ae"},
+    {file = "django_q_sentry-0.1.6-py3-none-any.whl", hash = "sha256:9b8b4d7fad253a7d9a47f2c2ab0d9dea83078b7ef45c8849dbb1e4176ef8d050"},
+]
 django-settings-export = [
     {file = "django-settings-export-1.2.1.tar.gz", hash = "sha256:fceeae49fc597f654c1217415d8e049fc81c930b7154f5d8f28c432db738ff79"},
 ]
@@ -1826,6 +1958,10 @@ itsdangerous = [
 jinja2 = [
     {file = "Jinja2-3.0.3-py3-none-any.whl", hash = "sha256:077ce6014f7b40d03b47d1f1ca4b0fc8328a692bd284016f806ed0eaca390ad8"},
     {file = "Jinja2-3.0.3.tar.gz", hash = "sha256:611bb273cd68f3b993fabdc4064fc858c5b47a973cb5aa7999ec1ba405c87cd7"},
+]
+jinxed = [
+    {file = "jinxed-1.1.0-py2.py3-none-any.whl", hash = "sha256:6a61ccf963c16aa885304f27e6e5693783676897cea0c7f223270c8b8e78baf8"},
+    {file = "jinxed-1.1.0.tar.gz", hash = "sha256:d8f1731f134e9e6b04d95095845ae6c10eb15cb223a5f0cabdea87d4a279c305"},
 ]
 joblib = [
     {file = "joblib-1.1.0-py2.py3-none-any.whl", hash = "sha256:f21f109b3c7ff9d95f8387f752d0d9c34a02aa2f7060c2135f465da0e5160ff6"},
@@ -2112,6 +2248,10 @@ pytz = [
     {file = "pytz-2021.3-py2.py3-none-any.whl", hash = "sha256:3672058bc3453457b622aab7a1c3bfd5ab0bdae451512f6cf25f64ed37f5b87c"},
     {file = "pytz-2021.3.tar.gz", hash = "sha256:acad2d8b20a1af07d4e4c9d2e9285c5ed9104354062f275f3fcd88dcef4f1326"},
 ]
+redis = [
+    {file = "redis-3.5.3-py2.py3-none-any.whl", hash = "sha256:432b788c4530cfe16d8d943a09d40ca6c16149727e4afe8c2c9d5580c59d9f24"},
+    {file = "redis-3.5.3.tar.gz", hash = "sha256:0e7e0cfca8660dea8b7d5cd8c4f6c5e29e11f31158c0b0ae91a397f00e5a05a2"},
+]
 regex = [
     {file = "regex-2022.1.18-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:34316bf693b1d2d29c087ee7e4bb10cdfa39da5f9c50fa15b07489b4ab93a1b5"},
     {file = "regex-2022.1.18-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:7a0b9f6a1a15d494b35f25ed07abda03209fa76c33564c09c9e81d34f4b919d7"},
@@ -2334,6 +2474,10 @@ wagtail = [
 wand = [
     {file = "Wand-0.6.7-py2.py3-none-any.whl", hash = "sha256:5ba497e90741a05ebce4603b04ee843150c566482a753554da54dc57d8503bba"},
     {file = "Wand-0.6.7.tar.gz", hash = "sha256:ebc01bccc25dba68414ab55b482341f9ad2b197d7f49d5e724f339bbf63fb6db"},
+]
+wcwidth = [
+    {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
+    {file = "wcwidth-0.2.5.tar.gz", hash = "sha256:c4d647b99872929fdb7bdcaa4fbe7f01413ed3d98077df798530e5b04f116c83"},
 ]
 webencodings = [
     {file = "webencodings-0.5.1-py2.py3-none-any.whl", hash = "sha256:a0af1213f3c2226497a97e2b3aa01a7e4bee4f403f95be16fc9acd2947514a78"},
