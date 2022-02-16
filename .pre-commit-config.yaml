@@ -8,6 +8,7 @@ repos:
   - id: check-yaml
   - id: check-toml
   - id: end-of-file-fixer
+    files: '\.(js|css|py|ya?ml|json|md|toml|ini)$'
   - id: check-docstring-first
   - id: check-symlinks
   - id: check-shebang-scripts-are-executable

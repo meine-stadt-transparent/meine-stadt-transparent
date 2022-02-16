@@ -5,6 +5,7 @@ import subprocess
 import warnings
 
 from importlib.util import find_spec
+from logging import Filter, LogRecord
 from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
 from pathlib import Path
@@ -16,6 +17,7 @@ from sentry_sdk.integrations.logging import ignore_logger
 
 from meine_stadt_transparent.settings.env import env, TESTING
 from meine_stadt_transparent.settings.nested import INSTALLED_APPS, MIDDLEWARE
+from meine_stadt_transparent.settings.env import *  # noqa F403
 from meine_stadt_transparent.settings.nested import *  # noqa F403
 from meine_stadt_transparent.settings.security import *  # noqa F403
 
@@ -351,7 +353,7 @@ def make_handler(
     return handler
 
 
-class WarningsFilter(logging.Filter):
+class WarningsFilter(Filter):
     """
     Removes bogus warnings.
 
@@ -360,7 +362,7 @@ class WarningsFilter(logging.Filter):
     module to filter them.
     """
 
-    def filter(self, record: logging.LogRecord) -> bool:
+    def filter(self, record: LogRecord) -> bool:
         irrelevant = (
             "Xref table not zero-indexed. ID numbers for objects will be corrected."
         )
