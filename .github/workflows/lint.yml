@@ -6,8 +6,20 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  black-format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
       - uses: psf/black@stable
+
+  flake8-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - uses: py-actions/flake8@v2
