@@ -98,11 +98,13 @@ def get_from_db(current_model: Type[django.db.models.Model]) -> Tuple[dict, dict
     db_value_list = current_model.objects.values_list("id", *field_lists[current_model])
     db_ids = dict()
     db_map = dict()
+
     for db_entry in db_value_list:
         field_dict = dict(zip(field_lists[current_model], db_entry[1:]))
         tuple_id = tuple(field_dict[i] for i in unique_field_dict[current_model])
         db_ids[tuple_id] = db_entry[0]
         db_map[tuple_id] = dict(zip(field_lists[current_model], db_entry[1:]))
+
     return db_ids, db_map
 
 
@@ -164,6 +166,7 @@ def incremental_import(
         f"Creating {len(to_be_created)} and "
         f"Updating {len(to_be_updated)}"
     )
+
     # Since we don't get the bulk created object ids back from django (yet?),
     # we just do this by timestamp - indexing more that necessary isn't wrong anyway
     before_bulk_create = timezone.now()
@@ -185,19 +188,24 @@ def incremental_import(
         # Changed/Created
         qs = current_model.objects.filter(modified__gte=before_bulk_create)
         qs_count = qs.count()
+
         assert qs_count >= len(
             to_be_created
         ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
+
         logger.info(f"Indexing {qs_count} {current_model.__name__} new objects")
         search_bulk_index(current_model, qs)
+
         # Deleted
         qs = current_model.objects_with_deleted.filter(
             deleted=True, modified__gte=before_bulk_create
         )
         qs_count = qs.count()
+
         assert (
             qs_count >= deleted_rows
         ), f"Only {qs_count} {current_model.__name__} for deletion, while at least {deleted_rows} were expected"
+
         logger.info(f"Deleting {qs_count} {current_model.__name__} from elasticsearch")
         search_bulk_index(current_model, qs, action="delete")
 
@@ -274,6 +282,7 @@ def convert_consultation(
 
 def convert_person(args: Tuple[str, str, str]) -> Dict[str, Any]:
     family_name, given_names, name = args
+
     return {"name": name, "given_name": given_names, "family_name": family_name}
 
 
@@ -512,8 +521,11 @@ def import_consultations(
 
 def import_persons(ris_data: RisData):
     logger.info(f"Importing {len(ris_data.persons)} persons")
+
     persons = [normalize_name(json_person.name) for json_person in ris_data.persons]
-    incremental_import(models.Person, [convert_person(i) for i in persons])
+    objects = [convert_person(i) for i in persons]
+
+    incremental_import(models.Person, objects)
 
 
 def import_meeting_organization(meeting_id_map, organization_name_id_map, ris_data):
