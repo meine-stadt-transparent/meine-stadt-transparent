@@ -6,10 +6,6 @@ from minio import Minio
 from minio.error import MinioException, S3Error
 from urllib3.exceptions import RequestError
 
-"""
-Minio policy: files are publicly readable, cache and pgp keys are private
-"""
-
 logger = logging.getLogger(__name__)
 
 bucket_list = ["files", "cache"]
@@ -18,6 +14,10 @@ if settings.ENABLE_PGP:
 
 
 def get_read_only_policy(bucket_name: str) -> dict:
+    """
+    Minio policy: files are publicly readable, cache and pgp keys are private
+    """
+
     return {
         "Version": "2012-10-17",
         "Statement": [

@@ -1,11 +1,11 @@
-from django.test import TestCase
-
 """
 The fixtures were created using:
 
 ./manage.py dumpdata --natural-foreign cms wagtailcore.page wagtailcore.site wagtailcore.pagerevision > cms/fixtures/simple_page.json
 ./manage.py dumpdata auth.user > cms/fixtures/user.json
 """
+
+from django.test import TestCase
 
 
 class TestCms(TestCase):

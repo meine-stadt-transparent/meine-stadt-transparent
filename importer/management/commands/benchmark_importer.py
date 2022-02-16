@@ -9,12 +9,12 @@ from mainapp.models import File, Paper, Consultation, AgendaItem, Body
 
 logger = logging.getLogger(__name__)
 
-"""
-Usage: a) Import Kall b) Run this c) Look at the timestamps
-"""
-
 
 class Command(BaseCommand):
+    """
+    Usage: a) Import Kall b) Run this c) Look at the timestamps
+    """
+
     help = "For development only"
 
     def add_arguments(self, parser):
