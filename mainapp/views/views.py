@@ -3,7 +3,6 @@ from urllib.parse import quote
 
 from csp.decorators import csp_update
 from django.conf import settings
-from django.conf.urls.static import static
 from django.db.models import Q, Count
 from django.http import HttpRequest
 from django.http import StreamingHttpResponse

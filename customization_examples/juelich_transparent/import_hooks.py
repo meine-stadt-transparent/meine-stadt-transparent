@@ -24,7 +24,7 @@ def sanitize_file(file):
     """
 
     file.name = re.sub(
-        "Sitzungsvorlage \((?P<name>.*)\)", "\g<name>", file.name, flags=re.DOTALL
+        r"Sitzungsvorlage \((?P<name>.*)\)", r"\g<name>", file.name, flags=re.DOTALL
     )
 
     return file

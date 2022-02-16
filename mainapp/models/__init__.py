@@ -1,18 +1,18 @@
-from .agenda_item import AgendaItem
-from .body import Body
-from .consultation import Consultation
-from .file import File
-from .helper import DefaultFields
-from .legislative_term import LegislativeTerm
-from .location import Location
-from .meeting import Meeting
-from .membership import Membership
-from .organization import Organization
-from .organization_type import OrganizationType
-from .paper import Paper
-from .paper_type import PaperType
-from .person import Person
-from .search_poi import SearchPoi
-from .search_street import SearchStreet
-from .user_alert import UserAlert
-from .user_profile import UserProfile
+from .agenda_item import AgendaItem  # noqa F401
+from .body import Body  # noqa F401
+from .consultation import Consultation  # noqa F401
+from .file import File  # noqa F401
+from .helper import DefaultFields  # noqa F401
+from .legislative_term import LegislativeTerm  # noqa F401
+from .location import Location  # noqa F401
+from .meeting import Meeting  # noqa F401
+from .membership import Membership  # noqa F401
+from .organization import Organization  # noqa F401
+from .organization_type import OrganizationType  # noqa F401
+from .paper import Paper  # noqa F401
+from .paper_type import PaperType  # noqa F401
+from .person import Person  # noqa F401
+from .search_poi import SearchPoi  # noqa F401
+from .search_street import SearchStreet  # noqa F401
+from .user_alert import UserAlert  # noqa F401
+from .user_profile import UserProfile  # noqa F401

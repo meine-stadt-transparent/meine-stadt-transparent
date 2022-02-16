@@ -3,19 +3,21 @@ import logging
 import os
 import subprocess
 import warnings
+
 from importlib.util import find_spec
-from logging import Filter, LogRecord
 from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
+from pathlib import Path
 
 import sentry_sdk
 from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
-from meine_stadt_transparent.settings.env import *
-from meine_stadt_transparent.settings.nested import *
-from meine_stadt_transparent.settings.security import *
+from meine_stadt_transparent.settings.env import env, TESTING
+from meine_stadt_transparent.settings.nested import INSTALLED_APPS, MIDDLEWARE
+from meine_stadt_transparent.settings.nested import *  # noqa F403
+from meine_stadt_transparent.settings.security import *  # noqa F403
 
 # Mute irrelevant warnings
 warnings.filterwarnings("ignore", message="`django-leaflet` is not available.")
@@ -349,7 +351,7 @@ def make_handler(
     return handler
 
 
-class WarningsFilter(Filter):
+class WarningsFilter(logging.Filter):
     """
     Removes bogus warnings.
 
@@ -358,7 +360,7 @@ class WarningsFilter(Filter):
     module to filter them.
     """
 
-    def filter(self, record: LogRecord) -> bool:
+    def filter(self, record: logging.LogRecord) -> bool:
         irrelevant = (
             "Xref table not zero-indexed. ID numbers for objects will be corrected."
         )

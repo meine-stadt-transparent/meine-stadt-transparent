@@ -41,7 +41,7 @@ class Cli:
             data = response.json()
             next_page = data["links"].get("next")
             for body in data["data"]:
-                if not "oparl-mirror:originalId" in body:
+                if "oparl-mirror:originalId" not in body:
                     continue
                 self.index.append(
                     (

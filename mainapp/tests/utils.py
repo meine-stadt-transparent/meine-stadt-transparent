@@ -42,7 +42,7 @@ class ElasticsearchMock:
             logger.warning("response: " + json.dumps(response, cls=DjangoJSONEncoder))
         except Exception:
             logger.warning("query: " + json.dumps(query, cls=DjangoJSONEncoder))
-        raise RuntimeError(f"Query not found")
+        raise RuntimeError("Query not found")
 
 
 class MinioMock:

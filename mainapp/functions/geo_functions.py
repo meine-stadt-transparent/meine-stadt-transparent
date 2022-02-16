@@ -80,7 +80,7 @@ def _format_opencage_location(location) -> str:
 
 
 def _format_nominatim_location(location) -> str:
-    if re.match("^\d", location.split(",")[0]):
+    if re.match(r"^\d", location.split(",")[0]):
         # Number at the beginning: probably a house number
         return location.split(",")[1] + " " + location.split(",")[0]
     else:
