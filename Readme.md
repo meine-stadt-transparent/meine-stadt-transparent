@@ -1,7 +1,6 @@
 # Meine Stadt Transparent
 
 ![Tests](https://github.com/meine-stadt-transparent/meine-stadt-transparent/workflows/Tests/badge.svg)
-[![Code Climate](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent/badges/gpa.svg)](https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent?ref=badge_shield)
 ![Docker build](https://github.com/meine-stadt-transparent/meine-stadt-transparent/workflows/Docker%20build/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-black.svg)](https://github.com/ambv/black)
