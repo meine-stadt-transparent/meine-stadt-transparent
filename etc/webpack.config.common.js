@@ -15,7 +15,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
         filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js'),
-        publicPath: "",
+        publicPath: '',
     },
     devtool: 'source-map',
     module: {
@@ -57,7 +57,7 @@ module.exports = {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    "presets": ["@babel/preset-env"],
+                    presets: ['@babel/preset-env'],
                     sourceMap: true
                 }
             }
@@ -65,7 +65,7 @@ module.exports = {
             test: /\.(jpe?g|gif|png)$/,
             type: 'asset/resource',
             generator: {
-                outputPath: "images",
+                outputPath: 'images',
                 filename: '[name][ext]'
             }
         }, {
@@ -77,8 +77,7 @@ module.exports = {
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']
-        }
-        ]
+        }]
     },
     resolve: {
         alias: {
@@ -93,11 +92,11 @@ module.exports = {
             filename: process.env.NODE_ENV === 'production' ? '[name]-[contenthash].css' : '[name].css'
         }),
         new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            "Hammer": "hammerjs/hammer",
-            "Popper": "@popper/core",
-            "L": "leaflet"
+            $: 'jquery',
+            jQuery: 'jquery',
+            Hammer: 'hammerjs/hammer',
+            Popper: '@popper/core',
+            L: 'leaflet'
         }),
     ],
     optimization: {
@@ -115,7 +114,7 @@ module.exports = {
 };
 
 
-let customization_folder = "./customization/";
+let customization_folder = './customization/';
 fs.readdirSync(customization_folder).forEach((dir) => {
     let configFile = customization_folder + dir + '/webpack.config.js';
     if (dir !== 'etc' && fs.existsSync(customization_folder + dir + '/webpack.config.js')) {
@@ -123,7 +122,7 @@ fs.readdirSync(customization_folder).forEach((dir) => {
             // Hint: require works relative to the directory of this file (etc/),
             // while fs.readdirSync relative to the project root, therefore this . -> .. trick
             module.exports = merge(module.exports, require('.' + configFile));
-            console.log("Using extra configuration: " + configFile);
+            console.log('Using extra configuration: ' + configFile);
         } catch (e) {
             console.error('Could not read file: ' + configFile)
         }
