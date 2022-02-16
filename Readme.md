@@ -152,7 +152,7 @@ sudo apt install python3-pip python3-venv python3-dev nodejs \
 Install dependencies.
 
 ```
-poetry config settings.virtualenvs.in-project true # This is not mandatory, yet quite useful
+poetry config virtualenvs.in-project true # This is not mandatory, yet quite useful
 poetry install
 npm install
 ```

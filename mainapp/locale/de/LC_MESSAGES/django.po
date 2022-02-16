@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-15 23:29+0100\n"
+"POT-Creation-Date: 2022-02-16 06:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: mainapp/functions/notify_users.py:83
+#: mainapp/functions/notify_users.py:82
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
@@ -36,7 +36,7 @@ msgctxt "Document Type Name"
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/functions/search.py:32 mainapp/models/organization.py:15
+#: mainapp/functions/search.py:32 mainapp/models/organization.py:17
 msgctxt "Document Type Name"
 msgid "Organization"
 msgstr "Gremium"
@@ -61,7 +61,7 @@ msgctxt "Document Type Name"
 msgid "Papers"
 msgstr "Vorlagen"
 
-#: mainapp/functions/search.py:39 mainapp/models/organization.py:22
+#: mainapp/functions/search.py:39 mainapp/models/organization.py:24
 msgctxt "Document Type Name"
 msgid "Organizations"
 msgstr "Gremien"
@@ -71,102 +71,119 @@ msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/functions/search.py:228
+#: mainapp/functions/search.py:264
 msgid ""
-"The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
-"DD HH:MM:SS: "
+"The value for after is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-"
+"MM-DD HH:MM:SS': {e}"
 msgstr ""
-"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD oder YYYY-"
-"MM-DD HH:MM:SS: "
+"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist 'YYYY-MM-DD' oder "
+"'YYYY-MM-DD HH:MM:SS': {e}"
 
-#: mainapp/functions/search.py:247
+#: mainapp/functions/search.py:282
+#, fuzzy, python-brace-format
+#| msgid ""
+#| "The value for before is invalid. The correct format is 'YYYY-MM-DD' or "
+#| "'YYYY-MM-DD HH:MM:SS': {e}"
 msgid ""
-"The value for after is invalid. The correct format is YYYY-MM-DD or YYYY-MM-"
-"DD HH:MM:SS "
+"The value for before is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-"
+"MM-DD HH:MM:SS': {e}"
 msgstr ""
-"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist YYYY-MM-DD oder YYYY-"
-"MM-DD HH:MM:SS: "
+"Das Anfangsdatum ist inkorrekt. Das korrekte Format ist 'YYYY-MM-DD' oder "
+"'YYYY-MM-DD HH:MM:SS': {e}"
 
-#: mainapp/functions/search_notification_tools.py:55
+#: mainapp/functions/search_notification_tools.py:57
 msgctxt "Search query"
 msgid "and"
 msgstr "und"
 
-#: mainapp/functions/search_notification_tools.py:60
+#: mainapp/functions/search_notification_tools.py:62
 msgctxt "Search query"
 msgid "Documents"
 msgstr "Dokumente"
 
-#: mainapp/functions/search_notification_tools.py:66
+#: mainapp/functions/search_notification_tools.py:68
 msgctxt "Search query"
 msgid "containing \"%STR%\""
 msgstr " mit \"%STR%\""
 
-#: mainapp/functions/search_notification_tools.py:75
+#: mainapp/functions/search_notification_tools.py:77
 msgctxt "Search query"
 msgid "mentioning %FROM%"
 msgstr "mit Erwähnung von %FROM%"
 
-#: mainapp/functions/search_notification_tools.py:84
+#: mainapp/functions/search_notification_tools.py:86
 msgctxt "Search query"
 msgid "assigned to %TO%"
 msgstr "%TO% zugewiesen"
 
-#: mainapp/functions/search_notification_tools.py:92
+#: mainapp/functions/search_notification_tools.py:94
 msgctxt "Search query"
 msgid "with a location within %DISTANCE%m around \"%PLACE%\""
 msgstr "mit einem Ortsbezug zu \"%PLACE%\" (max. %DISTANCE%m entfernt)"
 
-#: mainapp/functions/search_notification_tools.py:102
+#: mainapp/functions/search_notification_tools.py:104
 msgctxt "Search query"
 msgid "published from %FROM% to %TO%"
 msgstr "veröffentlicht von %FROM% bis %TO%"
 
-#: mainapp/functions/search_notification_tools.py:108
+#: mainapp/functions/search_notification_tools.py:110
 msgctxt "Search query"
 msgid "published before %TO%"
 msgstr "veröffentlicht vor %TO%"
 
-#: mainapp/functions/search_notification_tools.py:114
+#: mainapp/functions/search_notification_tools.py:116
 msgctxt "Search query"
 msgid "published after %FROM%"
 msgstr "veröffentlicht nach %FROM%"
 
-#: mainapp/models/location.py:27 mainapp/templates/mainapp/meeting.html:124
-#: mainapp/templates/mainapp/meeting.html:141
+#: mainapp/models/location.py:27 mainapp/templates/mainapp/meeting.html:127
+#: mainapp/templates/mainapp/meeting.html:144
 #: mainapp/templates/mainapp/organization.html:142
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: mainapp/models/organization.py:12
+#: mainapp/models/organization.py:14
 msgctxt "Document Type Name"
 msgid "Parliamentary Group"
 msgstr "Fraktion"
 
-#: mainapp/models/organization.py:13
+#: mainapp/models/organization.py:15
 msgctxt "Document Type Name"
 msgid "Committee"
 msgstr "Ausschuss"
 
-#: mainapp/models/organization.py:14
+#: mainapp/models/organization.py:16
 msgctxt "Document Type Name"
 msgid "Department"
 msgstr "Abteilung"
 
-#: mainapp/models/organization.py:19
+#: mainapp/models/organization.py:21
 msgctxt "Document Type Name"
 msgid "Parliamentary Groups"
 msgstr "Fraktionen"
 
-#: mainapp/models/organization.py:20
+#: mainapp/models/organization.py:22
 msgctxt "Document Type Name"
 msgid "Committees"
 msgstr "Ausschüsse"
 
-#: mainapp/models/organization.py:21
+#: mainapp/models/organization.py:23
 msgctxt "Document Type Name"
 msgid "Departments"
 msgstr "Abteilungen"
+
+#: mainapp/models/organization.py:61 mainapp/models/organization.py:65
+#: mainapp/models/person.py:49
+msgid "Missing"
+msgstr "Fehlend"
+
+#: mainapp/models/organization.py:64
+msgid "Missing Organization"
+msgstr "Fehlende Organization"
+
+#: mainapp/models/person.py:49
+msgid "Missing Person"
+msgstr "Fehlende Person"
 
 #: mainapp/models/user_profile.py:16
 msgid "User"
@@ -641,13 +658,13 @@ msgstr "Datenschutz"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: mainapp/templates/mainapp/calendar.html:23
-msgid "Subscribe to this calendar (with six months of history):"
-msgstr "Diesen Kalender abonnieren (bis 6 Monate in die Vergangenheit)"
-
 #: mainapp/templates/mainapp/calendar.html:25
-msgid "iCal"
-msgstr "iCal"
+msgid "with 6 months of history"
+msgstr "bis 6 Monate in die Vergangenheit"
+
+#: mainapp/templates/mainapp/calendar.html:27
+msgid "Subscribe to this iCal calendar"
+msgstr "Diesen Kalender als iCal abonnieren"
 
 #: mainapp/templates/mainapp/default_body_missing.html:9
 msgid "The configured default body does not exist"
@@ -684,15 +701,15 @@ msgid "The file is not available"
 msgstr "Die Datei ist nicht verfügbar"
 
 #: mainapp/templates/mainapp/file/info_lg.html:7
-#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:163
+#: mainapp/templates/mainapp/file/info_lg.html:33 mainapp/views/meeting.py:171
 msgid "Meeting"
 msgstr "Sitzung"
 
 #: mainapp/templates/mainapp/file/info_lg.html:14
 #: mainapp/templates/mainapp/file/info_lg.html:24
 #: mainapp/templates/mainapp/file/info_sm.html:48
-#: mainapp/templates/mainapp/meeting.html:237
-#: mainapp/templates/mainapp/meeting.html:244 mainapp/views/utils.py:38
+#: mainapp/templates/mainapp/meeting.html:240
+#: mainapp/templates/mainapp/meeting.html:247 mainapp/views/utils.py:38
 msgid "Paper"
 msgstr "Vorlage"
 
@@ -873,75 +890,75 @@ msgstr ""
 "Die Installation war erfolgreich, aber es sind noch keine Daten importiert "
 "worden"
 
-#: mainapp/templates/mainapp/meeting.html:18
+#: mainapp/templates/mainapp/meeting.html:19
 #: mainapp/templates/mainapp/paper.html:55
 msgctxt "X revisions"
 msgid " Revisions"
 msgstr " Revisionen"
 
-#: mainapp/templates/mainapp/meeting.html:43
+#: mainapp/templates/mainapp/meeting.html:44
 msgid "Previous Meeting"
 msgstr "Vorige Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:55
+#: mainapp/templates/mainapp/meeting.html:56
 msgid "Following Meeting"
 msgstr "Folgende Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:109
+#: mainapp/templates/mainapp/meeting.html:112
 msgid "Close"
 msgstr "Schließen"
 
-#: mainapp/templates/mainapp/meeting.html:117
+#: mainapp/templates/mainapp/meeting.html:120
 #: mainapp/templates/mainapp/organization.html:136
 msgid "Place of the meeting"
 msgstr "Ort der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:129
+#: mainapp/templates/mainapp/meeting.html:132
 msgid "Time of the Meeting"
 msgstr "Zeitpunkt der Sitzung"
 
-#: mainapp/templates/mainapp/meeting.html:147
+#: mainapp/templates/mainapp/meeting.html:150
 msgid "Main organization of the meeting: "
 msgstr "Träger der Sitzung: "
 
-#: mainapp/templates/mainapp/meeting.html:158
+#: mainapp/templates/mainapp/meeting.html:161
 msgid "Download the meeting in a format readable by most calendars"
 msgstr ""
 "Diesen Termin in einem für die meisten Kalendar lesbaren Format herunterladen"
 
-#: mainapp/templates/mainapp/meeting.html:160
+#: mainapp/templates/mainapp/meeting.html:163
 msgid "iCal-Export"
 msgstr "iCal-Export"
 
-#: mainapp/templates/mainapp/meeting.html:166
+#: mainapp/templates/mainapp/meeting.html:169
 msgid "This meeting has been cancelled"
 msgstr "Dieser Termin wurde abgesagt."
 
-#: mainapp/templates/mainapp/meeting.html:172
+#: mainapp/templates/mainapp/meeting.html:175
 msgid "Participating organizations:"
 msgstr "Teilnehmende Gremien:"
 
-#: mainapp/templates/mainapp/meeting.html:175
+#: mainapp/templates/mainapp/meeting.html:178
 msgid "Further Attendees:"
 msgstr "Weitere Teilnehmende:"
 
-#: mainapp/templates/mainapp/meeting.html:180
+#: mainapp/templates/mainapp/meeting.html:183
 msgid "Invitation: "
 msgstr "Einladung:"
 
-#: mainapp/templates/mainapp/meeting.html:186
+#: mainapp/templates/mainapp/meeting.html:189
 msgid "Results protocol: "
 msgstr "Ergebnisprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:192
+#: mainapp/templates/mainapp/meeting.html:195
 msgid "Verbatim protocol: "
 msgstr "Wortprotokoll: "
 
-#: mainapp/templates/mainapp/meeting.html:210
+#: mainapp/templates/mainapp/meeting.html:213
 msgid "Agenda"
 msgstr "Tagesordnung"
 
-#: mainapp/templates/mainapp/meeting.html:256
+#: mainapp/templates/mainapp/meeting.html:259
 msgid "An Agenda has not been published"
 msgstr "Die Tagesordnung wurde noch nicht bekannt gegeben"
 
@@ -1061,7 +1078,7 @@ msgstr "Öffentlicher Tagesordnungspunkt"
 msgid "non-public agenda item"
 msgstr "Nichtöffentlicher Tagesordnungspunkt"
 
-#: mainapp/templates/mainapp/paper.html:137
+#: mainapp/templates/mainapp/paper.html:138
 msgid "No information available"
 msgstr "Keine Informationen verfügbar"
 
@@ -1404,11 +1421,11 @@ msgstr "Neueste Dokumente"
 msgid "The latest search results."
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/views/meeting.py:171
+#: mainapp/views/meeting.py:179
 msgid "Meeting Series"
 msgstr "Sitzungs-Reihe"
 
-#: mainapp/views/meeting.py:184
+#: mainapp/views/meeting.py:192
 msgid "All Meetings"
 msgstr "Alle Sitzungen"
 

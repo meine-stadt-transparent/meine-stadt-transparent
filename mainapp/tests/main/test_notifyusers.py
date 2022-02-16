@@ -38,7 +38,7 @@ class TestNotifyUsers(TestCase):
 
         out = StringIO()
         call_command(
-            "notifyusers",
+            "notify_users",
             stdout=out,
             override_since=datetime.fromisoformat("2017-01-01"),
         )

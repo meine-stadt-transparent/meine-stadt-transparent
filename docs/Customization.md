@@ -41,7 +41,7 @@ See [django-anymail docs](https://anymail.readthedocs.io/en/stable/esps/) for ot
 The e-mail-configuration can be tested using the following command line call, which sends a test e-mail to the given e-mail-address:
 
 ```
-./manage.py test-email test@example.org
+./manage.py test_email test@example.org
 ```
 
 ### User management

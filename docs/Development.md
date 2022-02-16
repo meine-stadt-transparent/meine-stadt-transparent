@@ -72,13 +72,13 @@ To reindex the elasticsearch index (requires elastic search to be enabled):
 The following script is meant to be run as an hourly cron job through the `./manage.py cron`:
 
 ```
-./manage.py notifyusers
+./manage.py notify_users
 ```
 
 However, for debugging purposes, it can be called stand alone, skipping the actual e-mail-sending and using a custom date range. The following commands dumps the search results of all users since 2017-09-10:
 
 ```
-./manage.py notifyusers --simulate --override-since 2017-09-10
+./manage.py notify_users --simulate --override-since 2017-09-10
 ```
 
 ## OCR'ing documents
