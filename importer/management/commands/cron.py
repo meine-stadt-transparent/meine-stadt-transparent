@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class Command(BaseCommand):
     help = (
         "To be called by an hourly cron job. Updates the oparl dataset and sends notifications to users.\n"
-        "If you want more control call the import_update and notifyusers individually."
+        "If you want more control call the import_update and notify_users individually."
     )
 
     def handle(self, *args, **options):

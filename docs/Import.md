@@ -50,7 +50,7 @@ If that worked, go to step 2. If you don't to use the heuristic, pass `--manual`
 You'll need to find out the German "Amtliche Gemeindeschlüssel", which is an 8 letter value that each communality has. You might find yours with
 
 ```
-./manage.py citytoags Springfield
+./manage.py city_to_ags Springfield
 ```
 
 Examples:
