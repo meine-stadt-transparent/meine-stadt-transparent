@@ -1,8 +1,6 @@
 from django.db import models
 from jsonfield import JSONField
 
-from mainapp.models import File
-
 
 class ExternalList(models.Model):
     url = models.CharField(max_length=255, unique=True)

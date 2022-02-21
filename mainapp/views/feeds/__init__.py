@@ -1,2 +1,2 @@
-from .latest_papers import *
-from .search_results import *
+from .latest_papers import *  # noqa F401
+from .search_results import *  # noqa F401

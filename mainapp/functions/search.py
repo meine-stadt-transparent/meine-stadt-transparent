@@ -13,7 +13,6 @@ from django.urls import reverse
 from django.utils.html import escape
 from django.utils.translation import gettext, pgettext
 from django_elasticsearch_dsl.registries import registry
-from django_elasticsearch_dsl.search import Search
 from elasticsearch import TransportError
 from elasticsearch_dsl import Q, FacetedSearch, TermsFacet, Search, AttrDict
 from elasticsearch_dsl.query import Bool, MultiMatch, Query
@@ -291,7 +290,7 @@ def _add_date_before(search: Search, params: Dict[str, Any], options, errors) ->
 
 
 def escape_elasticsearch_query(query: str) -> str:
-    return query.replace("/", "\/")
+    return query.replace("/", "\\/")
 
 
 def html_escape_highlight(highlight: Optional[str]) -> Optional[str]:

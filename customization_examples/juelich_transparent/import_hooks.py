@@ -1,5 +1,3 @@
-import re
-
 """
 Using this file, you can attach sanitize-callbacks to the importer. The following functions can be used:
 - sanitize_file
@@ -13,6 +11,8 @@ Using this file, you can attach sanitize-callbacks to the importer. The followin
 To activate these callbacks, you need to register this file as described in the readme.
 """
 
+import re
+
 
 def sanitize_file(file):
     """
@@ -24,7 +24,7 @@ def sanitize_file(file):
     """
 
     file.name = re.sub(
-        "Sitzungsvorlage \((?P<name>.*)\)", "\g<name>", file.name, flags=re.DOTALL
+        r"Sitzungsvorlage \((?P<name>.*)\)", r"\g<name>", file.name, flags=re.DOTALL
     )
 
     return file

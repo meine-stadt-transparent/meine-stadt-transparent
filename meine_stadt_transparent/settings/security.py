@@ -1,4 +1,4 @@
-from meine_stadt_transparent.settings.env import *
+from meine_stadt_transparent.settings.env import env
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True

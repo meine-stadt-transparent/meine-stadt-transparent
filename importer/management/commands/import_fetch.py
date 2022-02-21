@@ -13,4 +13,4 @@ class Command(ImportBaseCommand):
         importer, body = self.get_importer(options)
         body_data = CachedObject.objects.get(url=body.oparl_id)
         importer.fetch_lists_initial([body_data.data])
-        logger.info(f"You can now import the data with `./manage.py import_objects`")
+        logger.info("You can now import the data with `./manage.py import_objects`")

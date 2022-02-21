@@ -35,4 +35,3 @@ docker-compose.override.yml
 etc/dev/minio_data
 etc/dev/elasticsearch_data
 etc/dev/mariadb_data
-

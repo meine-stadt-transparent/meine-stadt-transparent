@@ -63,7 +63,7 @@ class TestCron(TestCase):
 
     def run_cron(self, loader: BaseLoader, expected_mail_count: int):
         # Run cron. Check that nothing happened
-        with mock.patch("mainapp.functions.notify_users.send_mail") as mocked_send_mail:
+        with mock.patch("mainapp.functions.notify_users.send_mail"):
             with mock.patch(
                 "importer.loader.get_loader_from_body", new=lambda body_id: loader
             ):

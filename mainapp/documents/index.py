@@ -1,9 +1,3 @@
-from django.conf import settings
-from elasticsearch_dsl import analyzer, token_filter
-
-# noinspection PyProtectedMember
-from elasticsearch_dsl.analysis import Analyzer
-
 """
 The elasticsearch index configuration
 
@@ -28,6 +22,12 @@ the latter didn't show any improvement with the words I tried. Maybe we'd just n
 dictionary, but it's difficult enough to find any dicitionary and installing the custom
 dictionary is also not trivial.
 """
+
+from django.conf import settings
+from elasticsearch_dsl import analyzer, token_filter
+
+# noinspection PyProtectedMember
+from elasticsearch_dsl.analysis import Analyzer
 
 
 def get_autocomplete_analyzer():

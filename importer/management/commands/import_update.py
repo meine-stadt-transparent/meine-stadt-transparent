@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 class Command(ImportBaseCommand):
     help = """Update the data from an already imported oparl api.
-    
+
     Uses all imported bodies with an oparl id unless `--body` is specified.
     """
 

@@ -97,7 +97,9 @@ def test_broken_json(pytestconfig, caplog):
         requests_mock.add(
             requests_mock.GET,
             "https://ratsinfo.braunschweig.de/bi/oparl/1.0/papers.asp?id=1664",
-            pytestconfig.rootpath.joinpath("testdata/broken_json.json").read_text(),
+            pytestconfig.rootpath.joinpath(
+                "testdata/broken_json.broken_json"
+            ).read_text(),
         )
         loaded = loader.load(
             "https://ratsinfo.braunschweig.de/bi/oparl/1.0/papers.asp?id=1664"

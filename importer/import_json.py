@@ -368,6 +368,10 @@ def convert_file(json_file) -> Dict[str, Any]:
 
 def handle_counts(ris_data: RisData, allow_shrinkage: bool):
     """Prints the old and new counts and makes sure we don't accidentally delete entries"""
+
+    def formatter(x):
+        return " | ".join(f"{key_} {value_}" for key_, value_ in x.items())
+
     existing_counts = {
         "Paper": models.Paper.objects.count(),
         "File": models.File.objects.count(),
@@ -378,7 +382,6 @@ def handle_counts(ris_data: RisData, allow_shrinkage: bool):
         "Agenda Item": models.AgendaItem.objects.count(),
     }
     new_counts = ris_data.get_counts()
-    formatter = lambda x: " | ".join(f"{key_} {value_}" for key_, value_ in x.items())
     logger.info(f"Existing: {formatter(existing_counts)}")
     logger.info(f"New: {formatter(new_counts)}")
     if not allow_shrinkage:
@@ -438,7 +441,7 @@ def import_memberships(ris_data: RisData):
     persons_fixup_done = set()
     for json_membership in ris_data.memberships:
         family_name, given_names, name = normalize_name(json_membership.person_name)
-        if not name in person_name_map and name not in persons_fixup_done:
+        if name not in person_name_map and name not in persons_fixup_done:
             models.Person(
                 given_name=given_names, family_name=family_name, name=name
             ).save()

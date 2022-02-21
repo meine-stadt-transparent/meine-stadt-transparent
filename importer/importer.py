@@ -98,7 +98,9 @@ class Importer:
 
     T = TypeVar("T", bound=DefaultFields)
 
-    def import_type(self, type_class: Type[T], update: bool = False) -> List[T]:
+    def import_type(
+        self, type_class: Type[T], update: bool = False
+    ) -> List[T]:  # noqa F821
         """Import all object of a given type"""
 
         type_name = type_class.__name__
@@ -504,7 +506,7 @@ class Importer:
             .values_list("id", flat=True)
         )
         if not files:
-            logger.info(f"No files to import")
+            logger.info("No files to import")
             return 0, 0
         logger.info(f"Downloading and analysing {len(files)} files")
         address_pipeline = AddressPipeline(create_geoextract_data())

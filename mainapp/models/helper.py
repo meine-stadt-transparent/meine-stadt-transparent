@@ -86,7 +86,7 @@ class ShortableNameFields(models.Model):
 
 
 # noinspection PyTypeChecker
-T = TypeVar("T", bound="DummyMixin")
+T = TypeVar("T", bound="DummyMixin")  # noqa F821
 
 
 class DummyInterface:
