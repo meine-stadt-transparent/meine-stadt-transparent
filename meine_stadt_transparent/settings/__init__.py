@@ -286,6 +286,9 @@ EMBED_PARSED_TEXT_FOR_SCREENREADERS = env.bool(
 SEARCH_PAGINATION_LENGTH = 20
 
 SENTRY_DSN = env.str("SENTRY_DSN", None)
+SENTRY_ENVIRONMENT = env.str(
+    "SENTRY_ENVIRONMENT", "development" if DEBUG else "production"
+)
 
 # SENTRY_HEADER_ENDPOINT is defined in security.py
 
@@ -316,6 +319,7 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration()],
         release=release,
         ignore_errors=[KeyboardInterrupt],
+        environment=SENTRY_ENVIRONMENT,
         traces_sample_rate=env.int("SENTRY_TRACES_SAMPLE_RATE", 0.05),
     )
     ignore_logger("django.security.DisallowedHost")
