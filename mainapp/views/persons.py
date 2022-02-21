@@ -65,11 +65,9 @@ def person_grid_context(organization):
     members = []
     for membership in memberships:
         # Find all the parliamentary groups the current person is in
-        groups_names = [
-            i.organization.short_name for i in membership.person.prefetched_orgs
-        ]
-        groups_ids = [i.organization.id for i in membership.person.prefetched_orgs]
-        groups_css_classes = ["organization-" + str(i) for i in groups_ids]
+        groups = {}
+        for org in membership.person.prefetched_orgs:
+            groups[org.organization.short_name] = org.organization.id
 
         members.append(
             {
@@ -78,10 +76,13 @@ def person_grid_context(organization):
                 "start": membership.start,
                 "end": membership.end,
                 "role": membership.role,
-                "groups_classes": json.dumps(groups_css_classes),
-                "groups_names": ", ".join(groups_names),
+                "groups_classes": json.dumps(
+                    [f"organization-{i}" for i in groups.values()]
+                ),
+                "groups_names": ", ".join(groups.keys()),
             }
         )
+
     return members, parliamentarygroups
 
 
