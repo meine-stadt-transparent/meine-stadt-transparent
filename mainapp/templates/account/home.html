@@ -19,7 +19,7 @@
                 {% trans 'Notifications' %}
             </h2>
 
-            <div style="">{% if alerts|length > 0 %}
+            <div>{% if alerts|length > 0 %}
                 {# The flush allows us to reuse the card bodies border #}
                 <ul class="list-group list-group-flush">
                     {% for alert in alerts %}
