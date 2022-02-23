@@ -16,7 +16,11 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
 from meine_stadt_transparent.settings.env import env, TESTING
-from meine_stadt_transparent.settings.nested import INSTALLED_APPS, MIDDLEWARE, Q_CLUSTER
+from meine_stadt_transparent.settings.nested import (
+    INSTALLED_APPS,
+    MIDDLEWARE,
+    Q_CLUSTER,
+)
 from meine_stadt_transparent.settings.env import *  # noqa F403
 from meine_stadt_transparent.settings.nested import *  # noqa F403
 from meine_stadt_transparent.settings.security import *  # noqa F403
@@ -169,6 +173,8 @@ MINIO_PREFIX = env.str("MINIO_PREFIX", "meine-stadt-transparent-")
 MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = env.str("MINIO_ACCESS_KEY", "meinestadttransparent")
 MINIO_SECRET_KEY = env.str("MINIO_SECRET_KEY", "meinestadttransparent")
+
+SCHEDULES_ENABLED = env.bool("SCHEDULES_ENABLED", False)
 
 # When webpack compiles, it replaces the stats file contents with a compiling placeholder.
 # If debug is False and the stats file is in the project root, this leads to a WebpackLoaderBadStatsError.
