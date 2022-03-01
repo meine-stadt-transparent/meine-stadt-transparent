@@ -1133,7 +1133,7 @@ urllib3 = {version = ">=1.26,<2.0", extras = ["secure"]}
 
 [[package]]
 name = "sentry-sdk"
-version = "1.5.5"
+version = "1.5.6"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
@@ -2225,8 +2225,8 @@ selenium = [
     {file = "selenium-4.1.0-py3-none-any.whl", hash = "sha256:27e7b64df961d609f3d57237caa0df123abbbe22d038f2ec9e332fb90ec1a939"},
 ]
 sentry-sdk = [
-    {file = "sentry-sdk-1.5.5.tar.gz", hash = "sha256:98fd155fa5d5fec1dbabed32a1a4ae2705f1edaa5dae4e7f7b62a384ba30e759"},
-    {file = "sentry_sdk-1.5.5-py2.py3-none-any.whl", hash = "sha256:3817274fba2498c8ebf6b896ee98ac916c5598706340573268c07bf2bb30d831"},
+    {file = "sentry-sdk-1.5.6.tar.gz", hash = "sha256:ac2a50128409d57655279817aedcb7800cace1f76b266f3dd62055d5afd6e098"},
+    {file = "sentry_sdk-1.5.6-py2.py3-none-any.whl", hash = "sha256:1ab34e3851a34aeb3d1af1a0f77cec73978c4e9698e5210d050e4932953cb241"},
 ]
 shapely = [
     {file = "Shapely-1.8.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1c5632cedea6d815b61eb4c264da1c3f24a8ce2ceba2f74e30fba340ca230563"},
