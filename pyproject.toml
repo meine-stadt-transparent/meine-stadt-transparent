@@ -16,7 +16,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-Django = ">=3.2.6,<3.3.0"
+Django = ">=3.2.6,<4.1.0"
 PyPDF2 = "^1.26"
 Wand = "^0.6.0"
 cattrs = { version = "^1.0.0", optional = true }
