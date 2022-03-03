@@ -4,8 +4,6 @@ import logging
 from urllib.parse import quote, urlparse
 from datetime import timedelta
 
-import minio.api
-
 from csp.decorators import csp_update
 from django.conf import settings
 from django.db.models import Q, Count
@@ -246,12 +244,12 @@ def file_serve_proxy(
 
 
 def file_serve(request, id):
-    """ Ensure that the file is not deleted in the database """
+    """Ensure that the file is not deleted in the database"""
     file = get_object_or_404(File, id=id)
 
     name, ext = splitext(file.filename)
     if name.isnumeric() and file.name and len(file.name) < 50:
-        filename = f'{file.name}_{name}{ext}'
+        filename = f"{file.name}_{name}{ext}"
     else:
         filename = file.filename
 
@@ -268,9 +266,12 @@ def file_serve(request, id):
 
     if settings.MINIO_REDIRECT:
         public = settings.MINIO_PUBLIC_HOST is not None
-        url = minio_client(public).presigned_get_object(minio_file_bucket, str(id),
+        url = minio_client(public).presigned_get_object(
+            minio_file_bucket,
+            str(id),
             expires=timedelta(hours=2),
-            response_headers=headers)
+            response_headers=headers,
+        )
 
         minio_url = urlparse(url)
 

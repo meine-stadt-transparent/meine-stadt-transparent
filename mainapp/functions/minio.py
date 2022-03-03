@@ -81,7 +81,7 @@ def minio_client(public: bool = False) -> Minio:
             access_key=settings.MINIO_ACCESS_KEY,
             secret_key=settings.MINIO_SECRET_KEY,
             secure=settings.MINIO_SECURE,
-            region=settings.MINIO_REGION
+            region=settings.MINIO_REGION,
         )
 
         if settings.MINIO_PUBLIC_HOST:
@@ -90,7 +90,7 @@ def minio_client(public: bool = False) -> Minio:
                 access_key=settings.MINIO_ACCESS_KEY,
                 secret_key=settings.MINIO_SECRET_KEY,
                 secure=settings.MINIO_PUBLIC_SECURE,
-                region=settings.MINIO_REGION
+                region=settings.MINIO_REGION,
             )
         else:
             _minio_public_singleton = None

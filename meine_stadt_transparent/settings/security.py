@@ -10,7 +10,7 @@ SECURE_HSTS_PRELOAD = True
 # There might be deployments where a subdomain is still without https
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
-CSP_DEFAULT_SRC = ("'self'")
+CSP_DEFAULT_SRC = "'self'"
 
 if env.bool("MINIO_REDIRECT"):
     if env.str("MINIO_PUBLIC_HOST"):
