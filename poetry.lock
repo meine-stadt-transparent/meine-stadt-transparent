@@ -1511,7 +1511,7 @@ testing = ["coverage (>=4)", "coverage-enable-subprocess (>=1)", "flaky (>=3)", 
 
 [[package]]
 name = "wagtail"
-version = "2.16"
+version = "2.16.1"
 description = "A Django content management system."
 category = "main"
 optional = false
@@ -2468,8 +2468,8 @@ virtualenv = [
     {file = "virtualenv-20.13.1.tar.gz", hash = "sha256:e0621bcbf4160e4e1030f05065c8834b4e93f4fcc223255db2a823440aca9c14"},
 ]
 wagtail = [
-    {file = "wagtail-2.16-py3-none-any.whl", hash = "sha256:6ce5b16f3e3d5a2e391176b8ee982b1ad350a2345b3e676fa8f5e3a71a37c06b"},
-    {file = "wagtail-2.16.tar.gz", hash = "sha256:add16b877dbce7dc9a3bf13c3e65c8541a9bd80979451c7ed10f1dc087826c41"},
+    {file = "wagtail-2.16.1-py3-none-any.whl", hash = "sha256:129bb91c422e5c2b3603ebc67e9c392541cb564e55a5b864881905ca246a2c4e"},
+    {file = "wagtail-2.16.1.tar.gz", hash = "sha256:53dbd62a93da97c4ef6982652a103ab9be5bfe03f34cf5bc796c5d716b9020e8"},
 ]
 wand = [
     {file = "Wand-0.6.7-py2.py3-none-any.whl", hash = "sha256:5ba497e90741a05ebce4603b04ee843150c566482a753554da54dc57d8503bba"},
