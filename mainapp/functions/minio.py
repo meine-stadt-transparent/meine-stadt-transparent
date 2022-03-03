@@ -64,14 +64,17 @@ def setup_minio():
 
 
 _minio_singleton = None
+_minio_public_singleton = None
 
 
-def minio_client() -> Minio:
+def minio_client(public: bool = False) -> Minio:
     """
     If we eagerly create a minio connection, we can only allow importing inside of functions
     because otherwise django autoloading will load minio and we don't even get to mocking for the tests.
     """
     global _minio_singleton
+    global _minio_public_singleton
+
     if not _minio_singleton:
         _minio_singleton = Minio(
             settings.MINIO_HOST,
@@ -80,6 +83,18 @@ def minio_client() -> Minio:
             secure=settings.MINIO_SECURE,
             region=settings.MINIO_REGION
         )
+
+        if settings.MINIO_PUBLIC_HOST:
+            _minio_public_singleton = Minio(
+                settings.MINIO_PUBLIC_HOST,
+                access_key=settings.MINIO_ACCESS_KEY,
+                secret_key=settings.MINIO_SECRET_KEY,
+                secure=settings.MINIO_PUBLIC_SECURE,
+                region=settings.MINIO_REGION
+            )
+        else:
+            _minio_public_singleton = None
+
         # Give a helpful error message
         try:
             _minio_singleton.bucket_exists(minio_file_bucket)
@@ -87,4 +102,5 @@ def minio_client() -> Minio:
             raise RuntimeError(
                 f"Could not reach minio at {settings.MINIO_HOST}. Please make sure that minio is working."
             ) from e
-    return _minio_singleton
+
+    return _minio_singleton if not public else _minio_public_singleton

@@ -267,22 +267,10 @@ def file_serve(request, id):
         headers["X-Robots-Tag"] = "noindex"
 
     if settings.MINIO_REDIRECT:
-        if settings.MINIO_PUBLIC_HOST:
-            endpoint = settings.MINIO_PUBLIC_HOST
-            secure = settings.MINIO_PUBLIC_SECURE
-        else:
-            endpoint = settings.MINIO_HOST
-            secure = settings.MINIO_SECURE
-
-        mc = minio_client()
-        old_base_url = mc._base_url
-        mc._base_url = minio.api.BaseURL(("https://" if secure else "http://") + endpoint, settings.MINIO_REGION)
-
-        url = minio_client().presigned_get_object(minio_file_bucket, str(id),
+        public = settings.MINIO_PUBLIC_HOST is not None
+        url = minio_client(public).presigned_get_object(minio_file_bucket, str(id),
             expires=timedelta(hours=2),
             response_headers=headers)
-
-        mc._base_url = old_base_url
 
         minio_url = urlparse(url)
 
