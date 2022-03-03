@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "wagtail.core",
     "modelcluster",
     "taggit",
+    "django_q"
     # Note: The social login apps and elasticsearch integration is added further below
 ]
 
@@ -70,3 +71,22 @@ TEMPLATES = [
         },
     }
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "django_cache",
+    }
+}
+
+Q_CLUSTER = {
+    "name": "meine_stadt_transparent",
+    "compress": True,
+    "retry": 600,
+    "timeout": 300,
+    "queue_limit": 20000,
+    "label": "Queue",
+    "orm": "default",
+    "catch_up": False,
+    "poll": 1,
+}

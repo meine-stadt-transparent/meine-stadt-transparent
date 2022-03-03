@@ -6,6 +6,8 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django_elasticsearch_dsl.registries import registry
 
+from django_q.tasks import schedule
+
 from mainapp.functions.minio import setup_minio
 
 logger = logging.getLogger(__name__)
@@ -42,6 +44,12 @@ class Command(BaseCommand):
                 index.create(ignore=400)
         else:
             self.stdout.write("# Elasticsearch is disabled; Not creating any indices")
+
+        if settings.SCHEDULES_ENABLED:
+            self.stdout.write("# Creating django-q schedules")
+
+            # run `manage.py cron` every hour
+            schedule("django.core.management.call_command", "cron", schedule_type="H")
 
         # This is more brittle, so we run it last
         self.stdout.write("# Creating minio buckets")

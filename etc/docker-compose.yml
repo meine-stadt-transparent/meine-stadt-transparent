@@ -1,6 +1,6 @@
 version: '3'
 services:
-  django:
+  django: &django
     image: konstin2/meine-stadt-transparent
     container_name: django
     volumes:
@@ -10,6 +10,11 @@ services:
       - 8000:8000
     networks:
       - mst_network
+
+  django_worker:
+    <<: *django
+    containter_name: django_worker
+    command: ["/app/.venv/bin/python", "/app/manage.py", "qcluster"]
 
   mariadb:
     image: mariadb:10
