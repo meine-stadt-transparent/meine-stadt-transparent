@@ -12,7 +12,7 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True
 
 CSP_DEFAULT_SRC = "'self'"
 
-if env.bool("MINIO_REDIRECT"):
+if env.bool("MINIO_REDIRECT", False):
     if env.str("MINIO_PUBLIC_HOST"):
         endpoint = env.str("MINIO_PUBLIC_HOST")
         secure = env.bool("MINIO_PUBLIC_SECURE", True)
