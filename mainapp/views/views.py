@@ -250,13 +250,16 @@ def file_serve(request, id):
     file = get_object_or_404(File, id=id)
 
     name, ext = splitext(file.filename)
-    if name.isnumeric() and file.name:
+    if name.isnumeric() and file.name and len(file.name) < 50:
         filename = f'{file.name}_{name}{ext}'
     else:
         filename = file.filename
 
+    filename_safe = filename.encode("ascii", "ignore")
+
     headers = {
-        "Content-Disposition": f'attachment; filename="{filename}"',
+        # Encoding according to RFC5987
+        "Content-Disposition": f"attachment; filename=\"{quote(filename_safe)}\"; filename*=UTF-8''{quote(filename)}",
         "Content-Type": str(file.mime_type),
     }
 
