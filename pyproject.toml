@@ -59,7 +59,7 @@ black = "22.1.0"
 django-debug-toolbar = "^3.0"
 pytest-django = "^4.1"
 responses = "^0.18.0"
-selenium = "4.1.0"
+selenium = "4.1.2"
 tox = "^3.20"
 flake8 = "^4.0.1"
 
