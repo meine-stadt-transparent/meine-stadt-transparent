@@ -496,7 +496,7 @@ testing = ["tox (>=2.3.1)", "markov-draftjs (==0.1.1)", "memory-profiler (==0.47
 
 [[package]]
 name = "elasticsearch"
-version = "7.10.1"
+version = "7.17.1"
 description = "Python client for Elasticsearch"
 category = "main"
 optional = false
@@ -1637,7 +1637,7 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "93e0d8608fcd16513856fe42ad3ff682e039314b5c0b9e0b63f625d4be630e74"
+content-hash = "9a7329fac54bf221056d766d09d892cdd2f01ccb8ce66d98f8ffc4f5c1efcb98"
 
 [metadata.files]
 ansicon = [
@@ -1891,8 +1891,8 @@ draftjs-exporter = [
     {file = "draftjs_exporter-2.1.7.tar.gz", hash = "sha256:5839cbc29d7bce2fb99837a404ca40c3a07313f2a20e2700de7ad6aa9a9a18fb"},
 ]
 elasticsearch = [
-    {file = "elasticsearch-7.10.1-py2.py3-none-any.whl", hash = "sha256:4ebd34fd223b31c99d9f3b6b6236d3ac18b3046191a37231e8235b06ae7db955"},
-    {file = "elasticsearch-7.10.1.tar.gz", hash = "sha256:a725dd923d349ca0652cf95d6ce23d952e2153740cf4ab6daf4a2d804feeed48"},
+    {file = "elasticsearch-7.17.1-py2.py3-none-any.whl", hash = "sha256:8c79fe145f23826df144d1adc406a131e5cf3f41f302869fb5a1263b381e5ee2"},
+    {file = "elasticsearch-7.17.1.tar.gz", hash = "sha256:0061c49c3d4202802c09fba6734e48699a47cfeb737747acecc932ea73b7d318"},
 ]
 elasticsearch-dsl = [
     {file = "elasticsearch-dsl-7.4.0.tar.gz", hash = "sha256:c4a7b93882918a413b63bed54018a1685d7410ffd8facbc860ee7fd57f214a6d"},
