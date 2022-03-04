@@ -170,9 +170,15 @@ STATICFILES_DIRS = (
 )
 
 MINIO_PREFIX = env.str("MINIO_PREFIX", "meine-stadt-transparent-")
-MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
 MINIO_ACCESS_KEY = env.str("MINIO_ACCESS_KEY", "meinestadttransparent")
 MINIO_SECRET_KEY = env.str("MINIO_SECRET_KEY", "meinestadttransparent")
+MINIO_REGION = env.str("MINIO_REGION", "us-east-1")
+MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
+MINIO_SECURE = env.bool("MINIO_SECURE", False)
+
+MINIO_REDIRECT = env.bool("MINIO_REDIRECT", False)
+MINIO_PUBLIC_HOST = env.str("MINIO_PUBLIC_HOST", None)
+MINIO_PUBLIC_SECURE = env.bool("MINIO_PUBLIC_SECURE", True)
 
 SCHEDULES_ENABLED = env.bool("SCHEDULES_ENABLED", False)
 

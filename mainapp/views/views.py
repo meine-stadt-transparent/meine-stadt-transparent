@@ -1,11 +1,13 @@
+from os.path import splitext
+
 import logging
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
+from datetime import timedelta
 
 from csp.decorators import csp_update
 from django.conf import settings
 from django.db.models import Q, Count
-from django.http import HttpRequest
-from django.http import StreamingHttpResponse
+from django.http import HttpRequest, StreamingHttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.templatetags.static import static
 from django.urls import reverse
@@ -242,18 +244,45 @@ def file_serve_proxy(
 
 
 def file_serve(request, id):
-    logger.warning("Serving media files through django is slow")
+    """Ensure that the file is not deleted in the database"""
+    file = get_object_or_404(File, id=id)
 
-    """ Ensure that the file is not deleted in the database """
-    get_object_or_404(File, id=id)
+    name, ext = splitext(file.filename)
+    if name.isnumeric() and file.name and len(file.name) < 50:
+        filename = f"{file.name}_{name}{ext}"
+    else:
+        filename = file.filename
 
-    minio_file = minio_client().get_object(minio_file_bucket, str(id))
-    response = HttpResponse(minio_file.read())
+    filename_safe = filename.encode("ascii", "ignore")
 
-    response["Content-Type"] = minio_file.headers["Content-Type"]
+    headers = {
+        # Encoding according to RFC5987
+        "Content-Disposition": f"attachment; filename=\"{quote(filename_safe)}\"; filename*=UTF-8''{quote(filename)}",
+        "Content-Type": str(file.mime_type),
+    }
 
     if settings.SITE_SEO_NOINDEX:
-        response["X-Robots-Tag"] = "noindex"
+        headers["X-Robots-Tag"] = "noindex"
+
+    if settings.MINIO_REDIRECT:
+        public = settings.MINIO_PUBLIC_HOST is not None
+        url = minio_client(public).presigned_get_object(
+            minio_file_bucket,
+            str(id),
+            expires=timedelta(hours=2),
+            response_headers=headers,
+        )
+
+        minio_url = urlparse(url)
+
+        response = HttpResponseRedirect(minio_url.geturl())
+
+    else:
+        logger.warning("Serving media files through django is slow")
+
+        minio_file = minio_client().get_object(minio_file_bucket, str(id))
+
+        response = HttpResponse(minio_file.read(), headers=headers)
 
     return response
 
