@@ -1105,11 +1105,11 @@ six = ">=1.5"
 
 [[package]]
 name = "python-slugify"
-version = "5.0.2"
-description = "A Python Slugify application that handles Unicode"
+version = "6.1.1"
+description = "A Python slugify application that also handles Unicode"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.dependencies]
 text-unidecode = ">=1.3"
@@ -1637,7 +1637,7 @@ pgp = ["pgpy"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "e703f0f00718b9a994862a8a1dbd03b5357dffb0105b2ff5f858c10d8fc4b8c7"
+content-hash = "93e0d8608fcd16513856fe42ad3ff682e039314b5c0b9e0b63f625d4be630e74"
 
 [metadata.files]
 ansicon = [
@@ -1927,6 +1927,7 @@ geopy = [
     {file = "geopy-2.2.0.tar.gz", hash = "sha256:58b7edf526b8c32e33126570b5f4fcdfaa29d4416506064777ae8d84cd103fdd"},
 ]
 gunicorn = [
+    {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
     {file = "gunicorn-20.1.0.tar.gz", hash = "sha256:e0a968b5ba15f8a328fdfd7ab1fcb5af4470c28aaf7e55df02a99bc13138e6e8"},
 ]
 h11 = [
@@ -2245,8 +2246,8 @@ python-dateutil = [
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
 ]
 python-slugify = [
-    {file = "python-slugify-5.0.2.tar.gz", hash = "sha256:f13383a0b9fcbe649a1892b9c8eb4f8eab1d6d84b84bb7a624317afa98159cab"},
-    {file = "python_slugify-5.0.2-py2.py3-none-any.whl", hash = "sha256:6d8c5df75cd4a7c3a2d21e257633de53f52ab0265cd2d1dc62a730e8194a7380"},
+    {file = "python-slugify-6.1.1.tar.gz", hash = "sha256:00003397f4e31414e922ce567b3a4da28cf1436a53d332c9aeeb51c7d8c469fd"},
+    {file = "python_slugify-6.1.1-py2.py3-none-any.whl", hash = "sha256:8c0016b2d74503eb64761821612d58fcfc729493634b1eb0575d8f5b4aa1fbcf"},
 ]
 python3-openid = [
     {file = "python3-openid-3.2.0.tar.gz", hash = "sha256:33fbf6928f401e0b790151ed2b5290b02545e8775f982485205a066f874aaeaf"},
