@@ -1,8 +1,7 @@
-from os.path import splitext
-
 import logging
-from urllib.parse import quote, urlparse
 from datetime import timedelta
+from os.path import splitext
+from urllib.parse import quote, urlparse
 
 from csp.decorators import csp_update
 from django.conf import settings
@@ -228,14 +227,12 @@ def file(request, pk, context_meeting_id=None):
     return render(request, "mainapp/file/file.html", context)
 
 
-def file_serve_proxy(
-    request: HttpRequest, original_file_id: int
-) -> StreamingHttpResponse:
+def file_serve_proxy(request: HttpRequest, pk: int) -> StreamingHttpResponse:
     """Util to proxy back to the original RIS in case we don't want to download all the files"""
     # Ensure that the file is not deleted in the database
-    get_object_or_404(File, id=original_file_id)
+    get_object_or_404(File, pk=pk)
 
-    url = settings.PROXY_ONLY_TEMPLATE.format(original_file_id)
+    url = settings.PROXY_ONLY_TEMPLATE.format(pk)
 
     response = requests_get(url, stream=True)
     return StreamingHttpResponse(

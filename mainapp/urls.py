@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.conf.urls import url
 from django.urls import path, re_path
 
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
@@ -78,8 +77,8 @@ urlpatterns = [
 
 if settings.PROXY_ONLY_TEMPLATE:
     urlpatterns.append(
-        url(
-            r"^file-content-proxy/(?P<original_file_id>.*)$",
+        path(
+            r"file-content-proxy/<original_file_id:pk>",
             views.file_serve_proxy,
             name="file-content-proxy",
         )
