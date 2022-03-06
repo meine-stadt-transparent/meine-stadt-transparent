@@ -10,7 +10,7 @@ SECURE_HSTS_PRELOAD = True
 # There might be deployments where a subdomain is still without https
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", True)
 
-CSP_DEFAULT_SRC = "'self'"
+CSP_DEFAULT_SRC = ("'self'",)
 
 if env.bool("MINIO_REDIRECT", False):
     if env.str("MINIO_PUBLIC_HOST"):
@@ -20,7 +20,7 @@ if env.bool("MINIO_REDIRECT", False):
         endpoint = env.str("MINIO_HOST")
         secure = env.bool("MINIO_SECURE", False)
 
-    CSP_DEFAULT_SRC += ("https://" if secure else "http://") + endpoint
+    CSP_DEFAULT_SRC += (("https://" if secure else "http://") + endpoint,)
 
 CSP_SCRIPT_SRC = ("'self'",) + env.tuple("CSP_EXTRA_SCRIPT", default=tuple())
 CSP_IMG_SRC = ("'self'", "data:") + env.tuple("CSP_EXTRA_IMG", default=tuple())
