@@ -9,9 +9,9 @@
   "scripts": {
     "build:dev": "NODE_ENV=dev webpack --config ./etc/webpack.config.dev.js",
     "build:prod": "NODE_ENV=production webpack --config ./etc/webpack.config.prod.js",
-    "build:email": "heml build mainapp/assets/email/user-alert.heml -o mainapp/templates/email/user-alert.html",
+    "build:email": "mjml mainapp/assets/email/user-alert.mjml -o mainapp/templates/email/user-alert.html",
     "watch": "NODE_ENV=dev webpack --config etc/webpack.config.dev.js --watch",
-    "watch:email": "heml develop mainapp/assets/email/user-alert.heml"
+    "watch:email": "mjml -w mainapp/assets/email/user-alert.mjml -o mainapp/templates/email/user-alert.html"
   },
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
@@ -22,7 +22,6 @@
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
     "css-loader": "^6.6.0",
-    "heml": "^1.1.3",
     "mini-css-extract-plugin": "^2.5.3",
     "postcss": "^8.2.4",
     "postcss-loader": "^6.1.0",
@@ -50,6 +49,7 @@
     "leaflet": "^1.7.1",
     "leaflet.markercluster": "^1.4.1",
     "list.js": "^2.3.1",
+    "mjml": "^4.12.0",
     "moment": "^2.29.1",
     "mousetrap": "^1.6.5",
     "pdfjs-dist": "git+https://git@github.com/meine-stadt-transparent/pdfjs-dist.git#v2.7.1",

@@ -109,7 +109,7 @@ If a separate CSS-file is needed (e.g. in the case of fullcalendar), this would 
 
 ## E-Mail-Notifications
 
-The templates for the e-mail-notifications are created using [HEML](https://heml.io/). So we don't edit the HTML/Django-templates like [user-alert.html](../mainapp/templates/email/user-alert.html) directly, but the source .heml-files like [user-alert.heml](../mainapp/assets/email/user-alert.heml) and compile them using:
+The templates for the e-mail-notifications are created using [mjml](https://documentation.mjml.io/). So we don't edit the HTML/Django-templates like [user-alert.html](../mainapp/templates/email/user-alert.html) directly, but the source .mjml-files like [user-alert.heml](../mainapp/assets/email/user-alert.mjml) and compile them using:
 
 ```
 npm run build:email

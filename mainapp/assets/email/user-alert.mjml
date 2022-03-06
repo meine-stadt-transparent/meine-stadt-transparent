@@ -1,0 +1,92 @@
+<mjml>
+    <mj-raw position="file-start">{% load i18n %}</mj-raw>
+    <mj-head>
+        <mj-title>{% trans "New documents on Meine Stadt Transparent" context 'email-new-documents' %}</mj-title>
+        <mj-attributes>
+            <mj-class name="navbar-link" color="rgba(255, 255, 255, 0.5)" font-size="16px" font-weight="400"
+                      line-height="30px" margin-right="16px" padding-bottom="5px" padding-top="5px"
+                      vertical-align="middle"/>
+            <mj-all font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif"/>
+        </mj-attributes>
+    </mj-head>
+    <mj-body background-color="#EEE" width="700px" mj-class="body">
+        <mj-section background-color="#343A40" padding="5px" full-width="full-width" css-class="navbar">
+            <mj-column vertical-align="middle">
+                <mj-text mj-class="navbar-link">
+                    <a style="color: #fff; font-size: 20px; font-weight: 400; line-height: 30px; margin-right: 16px; padding-bottom: 5px; padding-top: 5px; vertical-align: middle; text-decoration: none"
+                       href="{{ base_url }}{% url 'index' %}">
+                        {{ site_name }}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'calendar' %}">
+                        {% trans "Calendar" context 'navigation' %}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'persons' %}">
+                        {% trans "Persons" context 'navigation' %}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'organizations' %}">
+                        {% trans "Organizations" context 'navigation' %}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'profile-home' %}">
+                        {% trans "My Account" context 'navigation' %}
+                    </a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+
+        <mj-section>
+            <mj-column>
+                <mj-text>
+                    <h1>{% trans "New documents on Meine Stadt Transparent" context 'email-new-documents' %}</h1>
+                </mj-text>
+                <mj-text padding="0px">
+                    {% for alert in alerts %}
+                    <div style="font-size: 24px; font-weight: 500; line-height: 1.2; padding: 12px 20px; margin-bottom: 0; background-color: #f7f7f7; border-bottom: 1px solid rgba(0,0,0,.125);">
+                        {{ alert.title }}
+                    </div>
+                    <div style="background-color: white; margin-bottom: 30px; line-height: 1.2">
+                        {% for result in alert.results %}
+                        <a href="{{ result.url }}"
+                           style="display: block; color: black; padding: 8px 20px; text-decoration: none">
+                            <div style="font-size: 20px; font-weight: 300;">{{ result.title }}</div>
+                            <div>{{ result.type_name }}</div>
+                            {% if result.highlight %}
+                            <div style="font-size: 12.8px; color: #545454">{{ result.highlight }}</div>
+                            {% endif %}
+                        </a>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </mj-text>
+            </mj-column>
+        </mj-section>
+        <mj-section background-color="#343A40" padding="5px" full-width="full-width" css-class="navbar">
+            <mj-column>
+                <mj-text mj-class="navbar-link">
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'info_contact' %}">
+                        {% trans "Contact" context 'navigation' %}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'info_privacy' %}">
+                        {% trans "Privacy Policy" context 'navigation' %}
+                    </a>
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'info_feedback' %}">
+                        {% trans "Feedback" context 'navigation' %}
+                    </a>
+                </mj-text>
+                <mj-text mj-class="navbar-link">
+                    <a style="margin-right: 16px; color: rgba(255, 255, 255, 0.5); text-decoration: none"
+                       href="{{ base_url }}{% url 'profile-home' %}">
+                        {% trans 'Unsubscribe / Manage your e-mail notifications' %}
+                    </a>
+                </mj-text>
+            </mj-column>
+        </mj-section>
+    </mj-body>
+</mjml>
+
