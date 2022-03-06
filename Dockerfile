@@ -1,5 +1,5 @@
 # Stage 1: Build the frontend assets
-FROM node:14 AS front-end
+FROM node:17 AS front-end
 
 ENV NODE_ENV=production
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY mainapp/assets /app/mainapp/assets
 RUN npm run build:prod && npm run build:email
 
 # Stage 2: Build the .venv folder
-FROM python:3.8-slim-buster AS venv-build
+FROM python:3.8-slim-bullseye AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev libpq-dev gettext && \
@@ -32,7 +32,7 @@ RUN mkdir cms importer mainapp meine_stadt_transparent && \
     $HOME/.local/bin/poetry install --no-dev -E import-json
 
 # Stage 3: The actual container
-FROM python:3.8-slim-buster
+FROM python:3.8-slim-bullseye
 
 ENV PYTHONUNBUFFERED=1
 
