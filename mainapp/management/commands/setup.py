@@ -22,6 +22,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("# Running migrations")
         call_command("migrate")
+        # https://docs.djangoproject.com/en/4.0/topics/cache/#creating-the-cache-table
+        self.stdout.write("# Creating cache table")
+        call_command("createcachetable")
 
         self.stdout.write("# Site settings")
         site = Site.objects.get_current()
