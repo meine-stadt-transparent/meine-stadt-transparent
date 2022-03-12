@@ -58,7 +58,6 @@ This document shall explain the important design decision, assumptions and trade
 * https://observatory.mozilla.org/analyze.html?host=meine-stadt-transparent.de (A+)
 * https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
 * https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent (Passing)
-* ![Docker image size](https://img.shields.io/microbadger/image-size/konstin2/meine-stadt-transparent.svg)
 
 ## pdfjs
 

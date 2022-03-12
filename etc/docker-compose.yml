@@ -1,7 +1,7 @@
 version: '3'
 services:
   django: &django
-    image: konstin2/meine-stadt-transparent
+    image: ghcr.io/meine-stadt-transparent/meine-stadt-transparent
     container_name: django
     volumes:
       - ./.env:/app/.env

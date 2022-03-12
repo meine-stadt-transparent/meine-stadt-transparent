@@ -4,7 +4,7 @@ set -xe
 
 docker-compose pull
 
-SHA=$(docker inspect -f '{{ index .Config.Labels "org.opencontainers.image.revision" }}' konstin2/meine-stadt-transparent:main)
+SHA=$(docker inspect -f '{{ index .Config.Labels "org.opencontainers.image.revision" }}' ghcr.io/meine-stadt-transparent/meine-stadt-transparent:main)
 VERSION="meine-stadt-transparent@${SHA}"
 echo $VERSION
 
