@@ -12,7 +12,7 @@ RUN npm ci --also=dev
 COPY etc /app/etc
 COPY customization /app/customization
 COPY mainapp/assets /app/mainapp/assets
-RUN npm run build:prod && npm run build:email
+RUN npm run build:prod && mkdir -p mainapp/templates/email/ && npm run build:email
 
 # Stage 2: Build the .venv folder
 FROM python:3.8-slim-bullseye AS venv-build
