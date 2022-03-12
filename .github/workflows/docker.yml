@@ -15,7 +15,7 @@ jobs:
         id: meta
         uses: crazy-max/ghaction-docker-meta@v2
         with:
-          images: ghcr.io/konstin/meine-stadt-transparent
+          images: ghcr.io/meine-stadt-transparent/meine-stadt-transparent
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to GitHub Container Registry
