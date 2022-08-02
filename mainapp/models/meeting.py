@@ -73,10 +73,20 @@ class Meeting(DefaultFields, ShortableNameFields):
         event.add("X-ALT-DESC;FMTTYPE=text/html", html_desc)
         # Really ugly ugly backporting to pytz after django switched away from it
         # TODO: Figure out if we can get icalendar and zoneinfo to harmonize
-        event.add("dtstart", timezone.localtime(self.start).astimezone(pytz.timezone(settings.TIME_ZONE)))
+        event.add(
+            "dtstart",
+            timezone.localtime(self.start).astimezone(
+                pytz.timezone(settings.TIME_ZONE)
+            ),
+        )
         event.add("url", url)
         if self.end:
-            event.add("dtend", timezone.localtime(self.end).astimezone(pytz.timezone(settings.TIME_ZONE)))
+            event.add(
+                "dtend",
+                timezone.localtime(self.end).astimezone(
+                    pytz.timezone(settings.TIME_ZONE)
+                ),
+            )
 
         if self.location and self.location.description:
             event.add("location", self.location.description)
