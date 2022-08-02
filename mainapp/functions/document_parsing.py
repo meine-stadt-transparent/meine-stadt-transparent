@@ -10,8 +10,8 @@ from typing import Dict, List, Optional, Tuple, IO
 
 import geoextract
 import requests
-from PyPDF2.pdf import PdfFileReader
-from PyPDF2.utils import PdfReadError
+from PyPDF2 import PdfFileReader
+from PyPDF2.errors import PdfReadError
 from django import db
 from django.conf import settings
 from wand.color import Color
@@ -108,14 +108,10 @@ def extract_from_file(
             logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
 
         try:
-            page_count = PdfFileReader(
-                file, strict=False, overwriteWarnings=False
-            ).getNumPages()
+            page_count = PdfFileReader(file, strict=False).getNumPages()
         except (PdfReadError, KeyError):
             logger.warning(
-                "File {}: Pdf does not allow to read the number of pages".format(
-                    file_id
-                )
+                f"File {file_id}: Pdf does not allow to read the number of pages"
             )
         except OSError as e:
             # Workaround for PyPDF2 bug
