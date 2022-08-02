@@ -135,8 +135,8 @@ If you have a Kubernetes cluster, you can have a look at [this experimental setu
 
 ### Requirements
 
-- Python 3.8 or 3.9 with pip and [poetry](https://github.com/sdispater/poetry) 1.1
-- A recent node version (12 or 14) with npm (npm 6 is tested)
+- Python 3.8, 3.9 or 3.10 with pip and [poetry](https://github.com/sdispater/poetry) 1.1
+- A recent node version (v16) with npm (v8)
 - A webserver (nginx or apache is recommended)
 - A Database (MariaDB is recommended, though anything that django supports should work)
 - [minio](https://docs.min.io/)
