@@ -1,3 +1,4 @@
+import pytz
 from django.conf import settings
 from django.db import models
 from django.template.loader import render_to_string
@@ -70,10 +71,12 @@ class Meeting(DefaultFields, ShortableNameFields):
             "mainapp/meeting_ical_alt_desc.html", {"description": self.name, "url": url}
         ).strip()
         event.add("X-ALT-DESC;FMTTYPE=text/html", html_desc)
-        event.add("dtstart", timezone.localtime(self.start))
+        # Really ugly ugly backporting to pytz after django switched away from it
+        # TODO: Figure out if we can get icalendar and zoneinfo to harmonize
+        event.add("dtstart", timezone.localtime(self.start).astimezone(pytz.timezone(settings.TIME_ZONE)))
         event.add("url", url)
         if self.end:
-            event.add("dtend", timezone.localtime(self.end))
+            event.add("dtend", timezone.localtime(self.end).astimezone(pytz.timezone(settings.TIME_ZONE)))
 
         if self.location and self.location.description:
             event.add("location", self.location.description)

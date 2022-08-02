@@ -94,14 +94,14 @@ def meeting(request, pk):
     extra_persons = set(selected_meeting.persons.all()) - meeting_persons
 
     if selected_meeting.end:
-        end = get_current_timezone().normalize(selected_meeting.end)
+        end = selected_meeting.end.replace(tzinfo=get_current_timezone())
     else:
         end = None
 
     context = {
         "meeting": selected_meeting,
         # Workaround missing timezone support in sqlite and mariadb
-        "start": get_current_timezone().normalize(selected_meeting.start),
+        "start": selected_meeting.start.replace(tzinfo=get_current_timezone()),
         "end": end,
         "map": build_map_object(),
         "location_json": json.dumps(location_geom),
