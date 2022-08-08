@@ -25,7 +25,7 @@ def robots_txt(_request):
 
 
 def sitemap_xml_entry(obj, priority):
-    return f""""<url>
+    return f"""<url>
   <loc>{settings.ABSOLUTE_URI_BASE}{obj.get_default_link()}</loc>
   <lastmod>{obj.modified.strftime("%Y-%m-%d")}</lastmod>
   <changefreq>weekly</changefreq>
