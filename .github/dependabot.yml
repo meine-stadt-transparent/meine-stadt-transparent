@@ -1,27 +1,17 @@
 version: 2
 updates:
-- package-ecosystem: pip
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "04:00"
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: elasticsearch-dsl
-    versions:
-    - "< 6.2"
-    - ">= 6.1.a"
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: monthly
-    time: "04:00"
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: bootstrap-daterangepicker
-    versions:
-    - "< 4"
-    - ">= 3.a"
-  - dependency-name: fullcalendar
-    versions:
-    - "> 3.10.2"
+  - package-ecosystem: pip
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 10
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 10
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+
