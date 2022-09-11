@@ -28,7 +28,7 @@ jobs:
         run: |
           curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --version 1.1.8
           $HOME/.local/bin/poetry config virtualenvs.in-project true
-      - uses: actions/cache@v1
+      - uses: actions/cache@v3
         with:
           path: .venv
           key: poetry-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
