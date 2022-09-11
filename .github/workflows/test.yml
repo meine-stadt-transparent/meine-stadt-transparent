@@ -28,7 +28,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'poetry'
-      - run: poetry install -E import json
+      - run: poetry install -E import-json
       - name: Test migrations
         # Ensure our migrations are working (squashing can cause weird problems)
         run: ENV_PATH=etc/test.env .venv/bin/python ./manage.py migrate
