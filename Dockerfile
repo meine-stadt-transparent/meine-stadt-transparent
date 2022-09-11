@@ -19,7 +19,7 @@ FROM python:3.8-slim-bullseye AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev libpq-dev gettext && \
-    curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - --version 1.1.8
+    curl -sSL https://install.python-poetry.org | python3 -
 
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
