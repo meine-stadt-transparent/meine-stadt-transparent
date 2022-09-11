@@ -548,6 +548,6 @@ class Importer:
             # not update because these might be files that failed before
             if successful == 0 and not update:
                 raise RuntimeError("All files failed to download")
-        logger.info("{successful} files imported successfully")
+        logger.info(f"{successful} files imported successfully")
 
         return successful, failed

@@ -1,4 +1,4 @@
-import Shuffle from "shufflejs/src/shuffle";
+import Shuffle from 'shufflejs';
 
 $(function () {
     let $gridEl = $('.persons-list'),

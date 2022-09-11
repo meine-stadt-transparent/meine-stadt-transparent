@@ -471,6 +471,7 @@ SETTINGS_EXPORT = [
 
 # Mandatory but afaik unsused value
 WAGTAIL_SITE_NAME = SITE_NAME
+WAGTAILADMIN_BASE_URL = ABSOLUTE_URI_BASE
 
 # Workaround to avoid filling up disk space
 PROXY_ONLY_TEMPLATE = env.str("PROXY_ONLY_TEMPLATE", None)
