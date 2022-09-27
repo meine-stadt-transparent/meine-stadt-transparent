@@ -24,7 +24,7 @@ jobs:
       # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#caching-packages
       - name: Install poetry
         run: | 
-          pipx install poetry
+          pipx install poetry==1.2.1
           poetry config virtualenvs.in-project true
       - uses: actions/setup-python@v4
         with:

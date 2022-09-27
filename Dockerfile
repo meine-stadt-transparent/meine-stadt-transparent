@@ -19,7 +19,7 @@ FROM python:3.8-slim-bullseye AS venv-build
 
 RUN apt-get update && \
     apt-get install -y curl gnupg git default-libmysqlclient-dev libmagickwand-dev poppler-utils libssl-dev libpq-dev gettext && \
-    curl -sSL https://install.python-poetry.org | python3 -
+    curl -sSL https://install.python-poetry.org | python3 - --version 1.2.1
 
 COPY pyproject.toml /app/pyproject.toml
 COPY poetry.lock /app/poetry.lock
@@ -29,7 +29,7 @@ WORKDIR /app
 RUN mkdir cms importer mainapp meine_stadt_transparent && \
     touch Readme.md cms/__init__.py importer/__init__.py mainapp/__init__.py meine_stadt_transparent/__init__.py && \
     $HOME/.local/bin/poetry config virtualenvs.in-project true && \
-    $HOME/.local/bin/poetry install --no-dev -E import-json
+    $HOME/.local/bin/poetry install --only main -E import-json
 
 # Stage 3: The actual container
 FROM python:3.8-slim-bullseye
