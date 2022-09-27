@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-16 06:26+0100\n"
+"POT-Creation-Date: 2022-09-27 22:01+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,60 +18,62 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: mainapp/functions/notify_users.py:82
+#: mainapp/management/commands/test_notification.py:78
 msgid "New search results"
 msgstr "Neue Suchergebnisse"
 
-#: mainapp/functions/search.py:29
+#: mainapp/functions/search.py:28
 msgctxt "Document Type Name"
 msgid "File"
 msgstr "Datei"
 
-#: mainapp/functions/search.py:30
+#: mainapp/functions/search.py:29
 msgctxt "Document Type Name"
 msgid "Meeting"
 msgstr "Sitzung"
 
-#: mainapp/functions/search.py:31
+#: mainapp/functions/search.py:30
 msgctxt "Document Type Name"
 msgid "Paper"
 msgstr "Vorlage"
 
-#: mainapp/functions/search.py:32 mainapp/models/organization.py:17
+#: mainapp/functions/search.py:31 mainapp/models/organization.py:17
 msgctxt "Document Type Name"
 msgid "Organization"
 msgstr "Gremium"
 
-#: mainapp/functions/search.py:33
+#: mainapp/functions/search.py:32
 msgctxt "Document Type Name"
 msgid "Person"
 msgstr "Person"
 
-#: mainapp/functions/search.py:36
+#: mainapp/functions/search.py:35
 msgctxt "Document Type Name"
 msgid "Files"
 msgstr "Dateien"
 
-#: mainapp/functions/search.py:37
+#: mainapp/functions/search.py:36
 msgctxt "Document Type Name"
 msgid "Meetings"
 msgstr "Sitzungen"
 
-#: mainapp/functions/search.py:38
+#: mainapp/functions/search.py:37
 msgctxt "Document Type Name"
 msgid "Papers"
 msgstr "Vorlagen"
 
-#: mainapp/functions/search.py:39 mainapp/models/organization.py:24
+#: mainapp/functions/search.py:38 mainapp/models/organization.py:24
 msgctxt "Document Type Name"
 msgid "Organizations"
 msgstr "Gremien"
 
-#: mainapp/functions/search.py:40
+#: mainapp/functions/search.py:39
 msgctxt "Document Type Name"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/functions/search.py:264
+#: mainapp/functions/search.py:263
+#, python-brace-format
 msgid ""
 "The value for after is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-"
 "MM-DD HH:MM:SS': {e}"
@@ -79,7 +81,7 @@ msgstr ""
 "Das Anfangsdatum ist inkorrekt. Das korrekte Format ist 'YYYY-MM-DD' oder "
 "'YYYY-MM-DD HH:MM:SS': {e}"
 
-#: mainapp/functions/search.py:282
+#: mainapp/functions/search.py:281
 #, fuzzy, python-brace-format
 #| msgid ""
 #| "The value for before is invalid. The correct format is 'YYYY-MM-DD' or "
@@ -529,56 +531,56 @@ msgstr ""
 msgid "Skip navigation"
 msgstr "Navigation überspringen"
 
-#: mainapp/templates/email/user-alert.html:71
-#: mainapp/templates/email/user-alert.html:104
+#: mainapp/templates/email/user-alert.html:6
+#: mainapp/templates/email/user-alert.html:138
 msgctxt "email-new-documents"
 msgid "New documents on Meine Stadt Transparent"
 msgstr "Neue Dokumente auf Meine Stadt Transparent"
 
-#: mainapp/templates/email/user-alert.html:91
+#: mainapp/templates/email/user-alert.html:104
 #: mainapp/templates/partials/base_navbar_mainmenu.html:9
 msgctxt "navigation"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: mainapp/templates/email/user-alert.html:91
+#: mainapp/templates/email/user-alert.html:105
 #: mainapp/templates/partials/base_navbar_mainmenu.html:13
 msgctxt "navigation"
 msgid "Persons"
 msgstr "Personen"
 
-#: mainapp/templates/email/user-alert.html:91
+#: mainapp/templates/email/user-alert.html:106
 #: mainapp/templates/partials/base_navbar_mainmenu.html:17
 msgctxt "navigation"
 msgid "Organizations"
 msgstr "Gremien"
 
-#: mainapp/templates/email/user-alert.html:91
+#: mainapp/templates/email/user-alert.html:107
 #: mainapp/templates/mainapp/index/index_main_buttons.html:13
 #: mainapp/templates/partials/base_navbar_mainmenu.html:24
 msgctxt "navigation"
 msgid "My Account"
 msgstr "Mein Zugang"
 
-#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/email/user-alert.html:180
 #: mainapp/templates/partials/base_footer.html:7
 msgctxt "navigation"
 msgid "Contact"
 msgstr "Kontakt"
 
-#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/email/user-alert.html:181
 #: mainapp/templates/partials/base_footer.html:12
 msgctxt "navigation"
 msgid "Privacy Policy"
 msgstr "Datenschutz"
 
-#: mainapp/templates/email/user-alert.html:128
+#: mainapp/templates/email/user-alert.html:182
 #: mainapp/templates/partials/base_footer.html:17
 msgctxt "navigation"
 msgid "Feedback"
 msgstr "Feedback"
 
-#: mainapp/templates/email/user-alert.html:129
+#: mainapp/templates/email/user-alert.html:188
 msgid "Unsubscribe / Manage your e-mail notifications"
 msgstr "Abbestellen / Bearbeiten sie die Benachrichtigungeinstellungen"
 
@@ -1273,7 +1275,12 @@ msgctxt "search_form"
 msgid "Oldest first"
 msgstr "Älteste zuerst"
 
-#: mainapp/templates/partials/base_footer.html:24
+#: mainapp/templates/partials/base_footer.html:26
+msgctxt "navigation"
+msgid "Language"
+msgstr "Sprache"
+
+#: mainapp/templates/partials/base_footer.html:47
 msgid "is a private project and not authorized by any city council"
 msgstr "ist ein privates Projekt und wird nicht vom Stadtrat selbst betrieben"
 
@@ -1463,7 +1470,7 @@ msgstr "Sie haben diese Abfrage bereits abonniert."
 msgid "search disabled"
 msgstr "Suche deaktiviert"
 
-#: mainapp/views/special.py:64
+#: mainapp/views/special.py:58
 msgid "Search for documents of %CITY%'s city council"
 msgstr "Suche nach Dokumenten des Stadrats von %CITY%"
 

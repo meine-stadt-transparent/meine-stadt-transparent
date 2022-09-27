@@ -17,6 +17,29 @@
                     {% trans "Feedback" context 'navigation' %}
                 </a>
             </li>
+            <li class="nav-item ">
+                {# https://docs.djangoproject.com/en/4.1/topics/i18n/translation/#the-set-language-redirect-view #}
+                <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                    <div class="dropup">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {% trans "Language" context 'navigation' %}
+                        </a>
+                        {% get_language_info for "en" as en %}
+                        {% get_language_info for "de" as de %}
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li>
+                                <button class="dropdown-item" type="submit" name="language"
+                                        value="{{ en.code }}">{{ en.name_local }}</button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item" type="submit" name="language"
+                                        value="{{ de.code }}">{{ de.name_local }}</button>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+            </li>
         </ul>
     </div>
     <div>

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 
 from mainapp.views import LatestPapersFeed, SearchResultsFeed
 from mainapp.views.profile import profile_view, profile_delete
@@ -68,6 +68,7 @@ urlpatterns = [
     path("profile/", profile_view, name="profile-home"),
     path("profile/delete/", profile_delete, name="profile-delete"),
     path("file-content/<int:id>", views.file_serve, name="file-content"),
+    path("i18n/", include("django.conf.urls.i18n")),
     path("robots.txt", views.robots_txt, name="robots-txt"),
     path("sitemap.xml", views.sitemap_xml, name="sitemap-xml"),
     path("opensearch.xml", views.opensearch_xml, name="opensearch-xml"),
