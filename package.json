@@ -23,7 +23,7 @@
     "browser-sync": "^2.26.14",
     "css-loader": "^6.6.0",
     "mini-css-extract-plugin": "^2.5.3",
-    "postcss": "^8.2.4",
+    "postcss": "^8.4.17",
     "postcss-loader": "^7.0.1",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.38.2",
