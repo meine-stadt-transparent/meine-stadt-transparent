@@ -16,7 +16,7 @@
   "author": "Konstantin Schütze, Tobias Hößl",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
+    "@babel/core": "^7.19.3",
     "@babel/preset-env": "^7.12.11",
     "autoprefixer": "^10.2.3",
     "babel-loader": "^8.2.2",
