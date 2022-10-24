@@ -3,8 +3,8 @@
 # See etc/docker-compose.yml for a production template
 # Mariadb setup:
 # ```
-# echo "GRANT ALL PRIVILEGES ON *.* TO 'meinestadttransparent'@'%' WITH GRANT OPTION;" | docker-compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -uroot -pmeinestadttransparent -hmariadb-dev
-# echo "CREATE SCHEMA <YOUR_DB_NAME_HERE>;" | docker-compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -umeinestadttransparent -pmeinestadttransparent -hmariadb-dev
+# echo "GRANT ALL PRIVILEGES ON *.* TO 'meinestadttransparent'@'%' WITH GRANT OPTION;" | docker compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -uroot -pmeinestadttransparent -hmariadb-dev
+# echo "CREATE SCHEMA <YOUR_DB_NAME_HERE>;" | docker compose -f etc/dev/docker-compose.yml run --rm mariadb-dev mariadb -umeinestadttransparent -pmeinestadttransparent -hmariadb-dev
 # ```
 
 version: '3'

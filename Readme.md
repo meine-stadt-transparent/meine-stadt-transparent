@@ -54,21 +54,21 @@ You can change the directory to any other as long as you match that later in you
 Start everything:
 
 ```
-docker-compose up
+docker compose up
 ```
 
-Wait until the elasticsearch log says `Cluster health status changed from [RED] to [YELLOW]` and open another terminal. You can later start the services as daemons with `-d` or stop them with `docker-compose down`.
+Wait until the elasticsearch log says `Cluster health status changed from [RED] to [YELLOW]` and open another terminal. You can later start the services as daemons with `-d` or stop them with `docker compose down`.
 
 Then we can run the migrations, create the buckets for minio (our file storage) and create the elasticsearch indices. If something failed you can rerun the setup command, it will only create missing indices.
 
 ```
-docker-compose run --rm django ./manage.py setup
+docker compose run --rm django ./manage.py setup
 ```
 
 Let's load some dummy data to check everythings wokring:
 
 ```
-docker-compose run --rm django ./manage.py loaddata mainapp/fixtures/initdata.json
+docker compose run --rm django ./manage.py loaddata mainapp/fixtures/initdata.json
 ```
 
 You should now get a 200 response from [localhost:8000](http://localhost:8000).
@@ -94,13 +94,13 @@ You now have a proper site at your domain!
 Now that everything is in place, drop the dummy data:
 
 ```
-docker-compose run --rm django ./manage.py flush
+docker compose run --rm django ./manage.py flush
 ```
 
 Instead, import real data by replacing `Springfield` with the name of your city. See [docs/Import.md](docs/Import.md) for details.
 
 ```
-docker-compose run --rm django ./manage.py import Springfield
+docker compose run --rm django ./manage.py import Springfield
 ```
 
 You should now have a usable instance!
@@ -108,10 +108,10 @@ You should now have a usable instance!
 Finally, create a daily cronjob with the following. This will import changed objects from the oparl api and then notify the users. Also make sure that there is a cronjob for certbot.
 
 ```
-docker-compose run --rm django ./manage.py cron
+docker compose run --rm django ./manage.py cron
 ```
 
-You can execute all the other commands from this readme by prepending them with `docker-compose run --rm django` (or starting a shell in the container). Note for advanced users: `.venv/bin/python` is configured as entrypoint.
+You can execute all the other commands from this readme by prepending them with `docker compose run --rm django` (or starting a shell in the container). Note for advanced users: `.venv/bin/python` is configured as entrypoint.
 
 Next, have a look at [docs/Customization.md](docs/Customization.md).
 
@@ -120,11 +120,11 @@ Next, have a look at [docs/Customization.md](docs/Customization.md).
 After pulling a new version of the docker container, you need to run the following commands to update the assets:
 
 ```
-docker-compose down
+docker compose down
 rm -r /var/www/meine-stadt-transparent-static
 mkdir /var/www/meine-stadt-transparent-static
-docker-compose run --rm django ./manage.py setup
-docker-compose up -d
+docker compose run --rm django ./manage.py setup
+docker compose up -d
 ```
 
 ### Kubernetes

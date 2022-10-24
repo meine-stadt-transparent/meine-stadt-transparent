@@ -7,4 +7,4 @@ This folder contains an easy to use dev setup where everything but the applicati
 127.0.0.1 meine-stadt-transparent.local
 ```
 
-Then run `docker-compose up nginx-dev mariadb-dev elasticsearch-dev` (or whatever services you need), configure `opensourceris.local` or `meine-stadt-transparent.local` as real host and open https://opensourceris.local or https://meine-stadt-transparent.local.
+Then run `docker compose up nginx-dev mariadb-dev elasticsearch-dev` (or whatever services you need), configure `opensourceris.local` or `meine-stadt-transparent.local` as real host and open https://opensourceris.local or https://meine-stadt-transparent.local.
