@@ -13,7 +13,8 @@ services:
 
   django_worker:
     <<: *django
-    containter_name: django_worker
+    container_name: django_worker
+    ports: []
     command: ["/app/.venv/bin/python", "/app/manage.py", "qcluster"]
 
   mariadb:
@@ -31,10 +32,12 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
     container_name: elasticsearch
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - ELASTIC_PASSWORD=changeme
+      - xpack.security.enabled=true
       - bootstrap.memory_lock=true
       - cluster.routing.allocation.disk.threshold_enabled=false
       - discovery.type=single-node

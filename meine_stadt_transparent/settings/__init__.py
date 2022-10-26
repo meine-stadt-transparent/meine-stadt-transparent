@@ -3,26 +3,25 @@ import logging
 import os
 import subprocess
 import warnings
-
 from importlib.util import find_spec
 from logging import Filter, LogRecord
+from pathlib import Path
 from subprocess import CalledProcessError
 from typing import Dict, Union, Optional
-from pathlib import Path
 
 import sentry_sdk
 from sentry_sdk import configure_scope
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.logging import ignore_logger
 
+from meine_stadt_transparent.settings.env import *  # noqa F403
 from meine_stadt_transparent.settings.env import env, TESTING
+from meine_stadt_transparent.settings.nested import *  # noqa F403
 from meine_stadt_transparent.settings.nested import (
     INSTALLED_APPS,
     MIDDLEWARE,
     Q_CLUSTER,
 )
-from meine_stadt_transparent.settings.env import *  # noqa F403
-from meine_stadt_transparent.settings.nested import *  # noqa F403
 from meine_stadt_transparent.settings.security import *  # noqa F403
 
 # Mute irrelevant warnings
@@ -203,6 +202,7 @@ if ELASTICSEARCH_ENABLED and "django_elasticsearch_dsl" not in INSTALLED_APPS:
         INSTALLED_APPS.append("django_elasticsearch_dsl")
 
 ELASTICSEARCH_URL = env.str("ELASTICSEARCH_URL", "localhost:9200")
+ELASTIC_PASSWORD = env.str("ELASTIC_PASSWORD", None)
 
 ELASTICSEARCH_DSL = {
     "default": {
@@ -211,6 +211,9 @@ ELASTICSEARCH_DSL = {
         "verify_certs": env.bool("ELASTICSEARCH_VERIFY_CERTS", True),
     }
 }
+
+if ELASTIC_PASSWORD:
+    ELASTICSEARCH_DSL["default"]["http_auth"] = ("elastic", ELASTIC_PASSWORD)
 
 ELASTICSEARCH_PREFIX = env.str("ELASTICSEARCH_PREFIX", "meine-stadt-transparent")
 if not ELASTICSEARCH_PREFIX.islower():

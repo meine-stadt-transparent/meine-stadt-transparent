@@ -9,6 +9,7 @@ We highly recommend configuring at least mailjet, mapbox and opencage.
 * `REAL_HOST`: The url of the website, e.g. `meine-stadt-transparent.de`
 * `SECRET_KEY`: A unique, secret string of random characters
 * `ELASTICSEARCH_URL`: This is normally either `elasticsearch:9200` with docker compose or `localhost:9200` otherwise.
+* `ELASTIC_PASSWORD`: Same as in docker-dompose.yml (it's possible to deactivate elasticsearch security and leave the password empty)
 * `MINIO_HOST`: This is normally either `minio:9000` with docker compose and `localhost:9000` otherwise.
 * `MINIO_ACCESS_KEY` and `MINIO_SECRET_KEY` are the username and password equivalent for minio, with must match the values you started minio with.
 * `STATIC_ROOT`: Location where the static files are. This defaults to `static` in the project root, which is correct without docker, but has to be set to `/static` with docker.

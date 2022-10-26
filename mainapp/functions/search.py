@@ -80,10 +80,15 @@ def get_document_indices():
 
 
 class ElasticsearchNotAvailableError(Exception):
+    inner_msg: str
+
+    def __init__(self, inner_msg: str):
+        self.inner_msg = inner_msg
+
     def __str__(self):
         return (
             f"Couldn't connect to elasticsearch at {settings.ELASTICSEARCH_URL}. "
-            f"See error trace for details"
+            f"See error trace for details: {self.inner_msg}"
         )
 
 
@@ -227,7 +232,7 @@ class MainappSearch(FacetedSearch):
         # N.B.: indexing reset from and size
         if self.limit:
             if self.offset:
-                search = search[self.offset : self.limit + self.offset]
+                search = search[self.offset: self.limit + self.offset]
             else:
                 search = search[: self.limit]
 
@@ -248,7 +253,7 @@ class MainappSearch(FacetedSearch):
         try:
             return super().execute()
         except TransportError as e:
-            raise ElasticsearchNotAvailableError() from e
+            raise ElasticsearchNotAvailableError(str(e)) from e
 
 
 def _add_date_after(
@@ -314,7 +319,7 @@ def search_string_to_params(query: str) -> Dict[str, Any]:
         for key in keys:
             if value.startswith(key + ":"):
                 values.remove(value)
-                value = value[len(key + ":") :]
+                value = value[len(key + ":"):]
                 params[key] = value
     if len(values) > 0:
         params["searchterm"] = " ".join(values).strip()
