@@ -232,7 +232,7 @@ class MainappSearch(FacetedSearch):
         # N.B.: indexing reset from and size
         if self.limit:
             if self.offset:
-                search = search[self.offset: self.limit + self.offset]
+                search = search[self.offset : self.limit + self.offset]
             else:
                 search = search[: self.limit]
 
@@ -319,7 +319,7 @@ def search_string_to_params(query: str) -> Dict[str, Any]:
         for key in keys:
             if value.startswith(key + ":"):
                 values.remove(value)
-                value = value[len(key + ":"):]
+                value = value[len(key + ":") :]
                 params[key] = value
     if len(values) > 0:
         params["searchterm"] = " ".join(values).strip()
