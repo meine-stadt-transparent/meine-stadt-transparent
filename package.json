@@ -43,7 +43,7 @@
     "bootstrap-daterangepicker": "^2.1.30",
     "chromedriver": "^107.0.0",
     "corejs-typeahead": "git+https://git@github.com/meine-stadt-transparent/typeahead.js",
-    "fullcalendar": "^3.10.2",
+    "fullcalendar": "^5.11.3",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
     "leaflet": "^1.7.1",
