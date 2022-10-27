@@ -1,16 +1,17 @@
 import logging
 import re
-import sys
 import resource
 import string
 import subprocess
+import sys
 import tempfile
+from io import BytesIO
 from subprocess import CalledProcessError
-from typing import Dict, List, Optional, Tuple, IO
+from typing import Dict, List, Optional, Tuple
 
 import geoextract
 import requests
-from PyPDF2 import PdfFileReader
+from PyPDF2 import PdfReader
 from PyPDF2.errors import PdfReadError
 from django import db
 from django.conf import settings
@@ -76,7 +77,7 @@ def limit_memory():
     """
 
     if sys.platform == "darwin":
-        logger.warn("Memory limits not set on Darwin!")
+        logger.warning("Memory limits not set on Darwin!")
         return
 
     resource.setrlimit(
@@ -85,7 +86,7 @@ def limit_memory():
 
 
 def extract_from_file(
-    file: IO[bytes], filename: str, mime_type: str, file_id: int
+    file: BytesIO, filename: str, mime_type: str, file_id: int
 ) -> Tuple[Optional[str], Optional[int]]:
     """Returns the text and the page count"""
 
@@ -108,7 +109,7 @@ def extract_from_file(
             logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
 
         try:
-            page_count = PdfFileReader(file, strict=False).getNumPages()
+            page_count = PdfReader(file, strict=False).getNumPages()
         except (PdfReadError, KeyError):
             logger.warning(
                 f"File {file_id}: Pdf does not allow to read the number of pages"
