@@ -69,6 +69,9 @@ import-json = ["cattrs"]
 [tool.poetry.scripts]
 mst-manage = 'manage:main'
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.98"
+
 [tool.black]
 extend-exclude = '''
 /(
@@ -77,6 +80,10 @@ extend-exclude = '''
   | importer/migrations
 )/
 '''
+
+[tool.ruff]
+ignore = ["E501"]
+extend-exclude = ["etc"]
 
 [build-system]
 requires = ["poetry~=1.1.0"]

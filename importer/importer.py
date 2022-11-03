@@ -3,7 +3,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from tempfile import NamedTemporaryFile
 from typing import Optional, List, Type, Tuple
-from typing import TypeVar, Any, Set
+from typing import TypeVar, Any
 from urllib.parse import parse_qs, urlparse
 
 from django import db

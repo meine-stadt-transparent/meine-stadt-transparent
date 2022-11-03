@@ -2,7 +2,7 @@ import datetime
 import logging
 import warnings
 from contextlib import nullcontext
-from typing import Optional, Set, List, Type
+from typing import Optional, Set, List
 
 import requests
 from django.db.models import OuterRef, Q, Subquery, F
@@ -24,7 +24,6 @@ from mainapp.models import (
     Paper,
     Consultation,
     AgendaItem,
-    DefaultFields,
 )
 from mainapp.models.file import fallback_date
 from meine_stadt_transparent import settings

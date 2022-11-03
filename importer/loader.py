@@ -4,7 +4,7 @@ import re
 import time
 from json import JSONDecodeError
 
-from typing import Optional, Tuple, Dict, Any
+from typing import Optional, Tuple, Dict
 
 from requests import HTTPError, Response
 
