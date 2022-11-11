@@ -1,7 +1,7 @@
 // noinspection ES6UnusedImports
 import style from '../css/mainapp.scss';
 
-import * as Sentry from '@sentry/browser';
+//import * as Sentry from '@sentry/browser';
 
 import HomeMap from "./HomeMap";
 import SearchBar from "./SearchBar";
@@ -39,12 +39,12 @@ let REGISTERED_CLASSES = {
 
 // initialize everything
 $(function () {
-    let dsnElement = document.getElementById("sentry-dsn");
+    /*let dsnElement = document.getElementById("sentry-dsn");
     if (dsnElement !== null) {
         Sentry.init({
             dsn: dsnElement.dataset["sentryDsn"],
         });
-    }
+    }*/
 
     // Allow webpack to optimize bootstrap into the vendor bundle
     import('bootstrap').then(_ => {
