@@ -24,6 +24,7 @@ __pycache__/
 /venv*
 /.venv*
 /dist
+.ruff_cache
 
 # Translations
 *.mo
