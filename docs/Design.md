@@ -52,12 +52,6 @@ This document shall explain the important design decision, assumptions and trade
 * Latest papers
 * Organizations
 
-## Linter
-
-* https://www.ssllabs.com/ssltest/analyze.html?d=meine%2dstadt%2dtransparent.de&s=185.183.157.234&hideResults=on (A+)
-* https://observatory.mozilla.org/analyze.html?host=meine-stadt-transparent.de (A+)
-* https://codeclimate.com/github/meine-stadt-transparent/meine-stadt-transparent (A)
-* https://app.fossa.io/projects/git%2Bgithub.com%2Fmeine-stadt-transparent%2Fmeine-stadt-transparent (Passing)
 
 ## pdfjs
 

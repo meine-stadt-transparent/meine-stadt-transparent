@@ -82,6 +82,20 @@ extend-exclude = '''
 ignore = ["E501"]
 extend-exclude = ["etc"]
 
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+
+[testenv]
+skip_install = true
+allowlist_externals = poetry
+commands_pre =
+    poetry install -E import-json
+commands =
+    poetry run pytest
+"""
+
 [build-system]
 requires = ["poetry~=1.1.0"]
 build-backend = "poetry.masonry.api"
