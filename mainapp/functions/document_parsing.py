@@ -109,7 +109,7 @@ def extract_from_file(
             logger.exception("File {}: Failed to run pdftotext: {}".format(file_id, e))
 
         try:
-            page_count = PdfReader(file, strict=False).getNumPages()
+            page_count = len(PdfReader(file, strict=False).pages)
         except (PdfReadError, KeyError):
             logger.warning(
                 f"File {file_id}: Pdf does not allow to read the number of pages"
