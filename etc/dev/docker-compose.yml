@@ -65,8 +65,8 @@ services:
     volumes:
       - ./minio_data:/minio_data
     environment:
-      MINIO_ACCESS_KEY: meinestadttransparent
-      MINIO_SECRET_KEY: meinestadttransparent
+      MINIO_ROOT_USER: meinestadttransparent
+      MINIO_ROOT_PASSWORD: meinestadttransparent
     ports:
       - 9000:9000
     command: server /minio_data
