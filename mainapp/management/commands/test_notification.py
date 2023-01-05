@@ -48,15 +48,21 @@ class Command(BaseCommand):
                     "title": "Stellungnahme V 0750 21 BMB",
                     "url": "https://dresden.meine-stadt-transparent.de/file/40738/",
                     "type_name": "Datei",
-                    "highlight": "Kultur- und Nachbarschaftszentren sind eine Antwort auf Fragen einer älter werdenden"
-                    "Gesellschaft bspw. zu Themen wie Einsamkeit, <mark>Digitalisierung</mark> und steigende",
+                    "highlight": (
+                        "Kultur- und Nachbarschaftszentren sind eine Antwort auf Fragen"
+                        " einer älter werdendenGesellschaft bspw. zu Themen wie"
+                        " Einsamkeit, <mark>Digitalisierung</mark> und steigende"
+                    ),
                 },
                 {
                     "title": "V0750/21",
                     "url": "https://dresden.meine-stadt-transparent.de/file/40757/",
                     "type_name": "Datei",
-                    "highlight": "Kultur- und Nachbarschaftszentren sind eine Antwort auf Fragen einer älter werdenden"
-                    "Gesellschaft bspw. zu Themen wie Einsamkeit, <mark>Digitalisierung</mark> und steigende",
+                    "highlight": (
+                        "Kultur- und Nachbarschaftszentren sind eine Antwort auf Fragen"
+                        " einer älter werdendenGesellschaft bspw. zu Themen wie"
+                        " Einsamkeit, <mark>Digitalisierung</mark> und steigende"
+                    ),
                 },
             ],
         }

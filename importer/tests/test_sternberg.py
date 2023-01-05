@@ -17,7 +17,10 @@ def test_empty_list_returns_error():
             "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper?modified_since=2019-05-30T22%3A00%3A08%2B00%3A00",
             content_type="text/html",
             status=404,
-            body='{"error":"Die angeforderte Ressource wurde nicht gefunden.","code":802,"type":"SD.NET RIM Webservice"}',
+            body=(
+                '{"error":"Die angeforderte Ressource wurde nicht'
+                ' gefunden.","code":802,"type":"SD.NET RIM Webservice"}'
+            ),
         )
 
         loader = SternbergLoader({})
@@ -94,7 +97,9 @@ def test_object_instead_of_list():
         "rgs": "051140000000",
         "contactEmail": "ratundehrenamt@krefeld.de",
         "contactName": "Karsten Sch\u00fcller",
-        "organization": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/organization",
+        "organization": (
+            "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/organization"
+        ),
         "person": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/person",
         "meeting": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/meeting",
         "paper": "https://ris.krefeld.de/webservice/oparl/v1.0/body/1/paper",

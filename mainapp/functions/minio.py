@@ -100,7 +100,8 @@ def minio_client(public: bool = False) -> Minio:
             _minio_singleton.bucket_exists(minio_file_bucket)
         except RequestError as e:
             raise RuntimeError(
-                f"Could not reach minio at {settings.MINIO_HOST}. Please make sure that minio is working."
+                f"Could not reach minio at {settings.MINIO_HOST}. Please make sure that"
+                " minio is working."
             ) from e
 
     return _minio_singleton if not public else _minio_public_singleton

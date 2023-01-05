@@ -265,7 +265,8 @@ def _add_date_after(
     except (ValueError, OverflowError) as e:
         errors.append(
             gettext(
-                f"The value for after is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
+                "The value for after is invalid. The correct format is 'YYYY-MM-DD' or"
+                f" 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
         return search
@@ -283,7 +284,8 @@ def _add_date_before(search: Search, params: Dict[str, Any], options, errors) ->
     except (ValueError, OverflowError) as e:
         errors.append(
             gettext(
-                f"The value for before is invalid. The correct format is 'YYYY-MM-DD' or 'YYYY-MM-DD HH:MM:SS': {e}"
+                "The value for before is invalid. The correct format is 'YYYY-MM-DD'"
+                f" or 'YYYY-MM-DD HH:MM:SS': {e}"
             )
         )
         return search

@@ -254,7 +254,10 @@ def file_serve(request, id):
 
     headers = {
         # Encoding according to RFC5987
-        "Content-Disposition": f"attachment; filename=\"{quote(filename_safe)}\"; filename*=UTF-8''{quote(filename)}",
+        "Content-Disposition": (
+            f'attachment; filename="{quote(filename_safe)}";'
+            f" filename*=UTF-8''{quote(filename)}"
+        ),
         "Content-Type": str(file.mime_type),
     }
 

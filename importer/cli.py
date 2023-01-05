@@ -85,7 +85,8 @@ class Cli:
 
         if dotenv:
             logger.info(
-                f"Done! Please add the following line to your dotenv file: \n\n{dotenv}\n"
+                "Done! Please add the following line to your dotenv file: \n\n"
+                "{dotenv}\n"
             )
 
     def import_body_and_metadata(
@@ -127,8 +128,9 @@ class Cli:
             dotenv += f"SITE_DEFAULT_BODY={body.id}\n"
         if dotenv:
             logger.info(
-                "Found the oparl endpoint. Please add the following line to your dotenv file "
-                "(you'll be reminded again after the import finished): \n\n" + dotenv
+                "Found the oparl endpoint. Please add the following line to your dotenv"
+                " file (you'll be reminded again after the import finished): \n\n"
+                + dotenv
             )
 
         if not skip_body_extra:
@@ -139,8 +141,8 @@ class Cli:
             logger.info(f"Body {body.short_name} import with geo data successful.")
         else:
             logger.info(
-                f"Body {body.short_name} import successful. "
-                f"Don't forget to run import_streets, import_amenities and import_outline"
+                f"Body {body.short_name} import successful. Don't forget to run"
+                " import_streets, import_amenities and import_outline"
             )
         return body_data.data, dotenv
 
@@ -176,7 +178,8 @@ class Cli:
         endpoint_id = data["id"]
         if userinput != endpoint_id:
             logger.warning(
-                f"The body's url '{userinput}' doesn't match the body's id '{endpoint_id}'"
+                f"The body's url '{userinput}' doesn't match the body's id"
+                f" '{endpoint_id}'"
             )
         return endpoint_system, endpoint_id
 
@@ -224,14 +227,14 @@ class Cli:
 
         raise RuntimeError(
             f"Could not determine the Amtliche Gemeindeschlüssel using {to_check}.\n"
-            f"Set it manually using `--ags`"
+            "Set it manually using `--ags`"
         )
 
     def get_endpoint_from_cityname(
         self, userinput: str, mirror: bool
     ) -> Tuple[str, str]:
         matching = []  # type: List[Tuple[str, str, str]]
-        for (name, original_id, mirror_id) in self.load_index():
+        for name, original_id, mirror_id in self.load_index():
             if userinput.casefold() in name.casefold():
                 # The oparl mirror doesn't give us the system id we need
                 response = requests_get(original_id)
@@ -242,8 +245,8 @@ class Cli:
                     matching.append((name, system_id, original_id))
         if len(matching) == 0:
             raise RuntimeError(
-                f"Could not find anything for '{userinput}'. "
-                f"Please check that it is in the list under {settings.OPARL_INDEX} or provide the body id."
+                f"Could not find anything for '{userinput}'. Please check that it is in"
+                f" the list under {settings.OPARL_INDEX} or provide the body id."
             )
         if len(matching) > 1:
             exact_matches = [
@@ -254,7 +257,8 @@ class Cli:
             else:
                 logger.warning(f"Found those entries: {json.dumps(matching, indent=4)}")
                 raise RuntimeError(
-                    f"There are {len(matching)} matches and {len(exact_matches)} exact matches for '{userinput}' and "
-                    "I can't decide which one to use. Please provide a body url yourself."
+                    f"There are {len(matching)} matches and {len(exact_matches)} exact"
+                    f" matches for '{userinput}' and I can't decide which one to use."
+                    " Please provide a body url yourself."
                 )
         return matching[0][1:3]

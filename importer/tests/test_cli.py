@@ -16,9 +16,13 @@ from mainapp.models import Body
 class TestCli(SimpleTestCase):
     def test_warning_body_url_mismatch(self):
         body = {
-            "id": "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp?id=1",
+            "id": (
+                "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/bodies.asp?id=1"
+            ),
             "type": "https://schema.oparl.org/1.0/Body",
-            "system": "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/system.asp",
+            "system": (
+                "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/system.asp"
+            ),
             "name": "Landkreis Märkisch-Oderland",
             "shortName": "KT",
             "organization": "http://ratsinfo-online.net/landkreis-mol-bi/oparl/1.0/organizations.asp?body=1",
@@ -46,9 +50,8 @@ class TestCli(SimpleTestCase):
                 self.assertEqual(
                     cm.output,
                     [
-                        "WARNING:{}:The body's url '{}' doesn't match the body's id '{}'".format(
-                            cli.__module__, body_url, body["id"]
-                        )
+                        "WARNING:{}:The body's url '{}' doesn't match the body's id"
+                        " '{}'".format(cli.__module__, body_url, body["id"])
                     ],
                 )
 

@@ -303,8 +303,14 @@ def test_json_to_db_missing_object(caplog):
     converter.import_anything(url, Consultation)
     assert Consultation.objects.filter(oparl_id=url).count() == 1
     assert caplog.messages == [
-        f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS IS BAD",
-        f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS IS BAD",
+        (
+            f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS"
+            " IS BAD"
+        ),
+        (
+            f"JSON loaded from {url} is not a dict/object. Using a dummy instead. THIS"
+            " IS BAD"
+        ),
     ]
 
 
@@ -321,6 +327,9 @@ def test_json_to_db_empty_object(caplog):
     converter.import_anything(url, Consultation)
     assert Consultation.objects.filter(oparl_id=url).count() == 1
     assert caplog.messages == [
-        f"Object loaded from {url} has no type field, inferred to https://schema.oparl.org/1.0/Consultation",
+        (
+            f"Object loaded from {url} has no type field, inferred to"
+            " https://schema.oparl.org/1.0/Consultation"
+        ),
         f"Object loaded from {url} has no id field, setting id to url",
     ]

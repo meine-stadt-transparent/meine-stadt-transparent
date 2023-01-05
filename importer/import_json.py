@@ -189,9 +189,10 @@ def incremental_import(
         qs = current_model.objects.filter(modified__gte=before_bulk_create)
         qs_count = qs.count()
 
-        assert qs_count >= len(
-            to_be_created
-        ), f"Only {qs_count} {current_model.__name__} were found for indexing, while at least {len(to_be_created)} were expected"
+        assert qs_count >= len(to_be_created), (
+            f"Only {qs_count} {current_model.__name__} were found for indexing, while"
+            f" at least {len(to_be_created)} were expected"
+        )
 
         logger.info(f"Indexing {qs_count} {current_model.__name__} new objects")
         search_bulk_index(current_model, qs)
@@ -202,9 +203,10 @@ def incremental_import(
         )
         qs_count = qs.count()
 
-        assert (
-            qs_count >= deleted_rows
-        ), f"Only {qs_count} {current_model.__name__} for deletion, while at least {deleted_rows} were expected"
+        assert qs_count >= deleted_rows, (
+            f"Only {qs_count} {current_model.__name__} for deletion, while at least"
+            f" {deleted_rows} were expected"
+        )
 
         logger.info(f"Deleting {qs_count} {current_model.__name__} from elasticsearch")
         search_bulk_index(current_model, qs, action="delete")
@@ -392,9 +394,9 @@ def handle_counts(ris_data: RisData, allow_shrinkage: bool):
             # The -3 is to allow some deletion or some failed page
             if new_counts[key] < value - 3:
                 raise RuntimeError(
-                    f"There are {value} {key} in the database, but only {new_counts[key]} in "
-                    f"the imported dataset. This indicates a scraper failure. "
-                    f"Use `--allow-shrinkage` to override."
+                    f"There are {value} {key} in the database, but only"
+                    f" {new_counts[key]} in the imported dataset. This indicates a"
+                    " scraper failure. Use `--allow-shrinkage` to override."
                 )
 
 

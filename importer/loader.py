@@ -180,7 +180,7 @@ class CCEgovLoader(BaseLoader):
         # `"auxiliaryFile": { ... }` -> `"auxiliaryFile": [{ ... }]`
         if "auxiliaryFile" in data and isinstance(data["auxiliaryFile"], dict):
             logger.warning(
-                f"auxiliaryFile is supposed to be an array of objects, "
+                "auxiliaryFile is supposed to be an array of objects, "
                 f"but is an object (in {data.get('id')})"
             )
             data["auxiliaryFile"] = [data["auxiliaryFile"]]
@@ -213,7 +213,8 @@ class CCEgovLoader(BaseLoader):
             data = json.loads(text)
         except JSONDecodeError:
             logger.error(
-                f"The server returned invalid json. This is a bug in the OParl implementation: {url}"
+                "The server returned invalid json. This is a bug in the OParl"
+                f" implementation: {url}"
             )
             # Hack with based on std json code to load broken json where the control characters (U+0000 through
             # U+001F except \n) weren't properly escaped
@@ -258,12 +259,13 @@ class SomacosLoader(BaseLoader):
                 if e.response.status_code == 500:
                     if current_try == self.max_retries:
                         logger.error(
-                            f"Request failed {self.max_retries} times with an Error 500, aborting: {e}"
+                            f"Request failed {self.max_retries} times with an Error"
+                            f" 500, aborting: {e}"
                         )
                         raise
                     else:
                         logger.error(
-                            f"Got an 500 for a Somacos request, "
+                            "Got an 500 for a Somacos request, "
                             f"retrying after sleeping {self.error_sleep_seconds}s: {e}"
                         )
                         time.sleep(self.error_sleep_seconds)

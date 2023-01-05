@@ -53,7 +53,10 @@ class Command(BaseCommand):
             action="store_true",
             dest="allow_shrinkage",
             default=False,
-            help="Don't fail when trying to import a smaller dataset over a bigger existing one",
+            help=(
+                "Don't fail when trying to import a smaller dataset over a bigger"
+                " existing one"
+            ),
         )
 
     def handle(self, *args, **options):
@@ -64,8 +67,9 @@ class Command(BaseCommand):
             json_data = json.load(fp)
             if json_data["format_version"] != format_version:
                 raise CommandError(
-                    f"This version of {settings.PRODUCT_NAME} can only import json format version {format_version}, "
-                    f"but the json file you provided is version {json_data['format_version']}"
+                    f"This version of {settings.PRODUCT_NAME} can only import json"
+                    f" format version {format_version}, but the json file you provided"
+                    f" is version {json_data['format_version']}"
                 )
             ris_data: RisData = converter.structure(json_data, RisData)
 
@@ -79,8 +83,9 @@ class Command(BaseCommand):
                 ags = city_to_ags(ris_data.meta.name, False)
                 if not ags:
                     raise RuntimeError(
-                        f"Failed to determine the Amtliche Gemeindeschlüssel for '{ris_data.meta.name}'. "
-                        f"Please look it up yourself and specify it with `--ags`"
+                        "Failed to determine the Amtliche Gemeindeschlüssel for"
+                        f" '{ris_data.meta.name}'. Please look it up yourself and"
+                        " specify it with `--ags`"
                     )
                 logger.info(f"The Amtliche Gemeindeschlüssel is {ags}")
             body = models.Body(

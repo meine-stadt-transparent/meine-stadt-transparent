@@ -7,12 +7,16 @@ from importer.functions import fix_sort_date
 
 
 class Command(BaseCommand):
-    help = "After the initial import, this command guesses the sort_date-Attribute of papers and files"
+    help = (
+        "After the initial import, this command guesses the sort_date-Attribute of"
+        " papers and files"
+    )
 
     def add_arguments(self, parser):
         help_str = (
             "The date of the first import in the format YYYY-MM-DD. "
-            + "All documents/files created up to this day will have the sort_date-Attribute modified."
+            + "All documents/files created up to this day will have the"
+            " sort_date-Attribute modified."
         )
         parser.add_argument("import_date", type=str, help=help_str)
 

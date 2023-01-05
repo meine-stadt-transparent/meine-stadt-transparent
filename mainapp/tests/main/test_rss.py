@@ -13,7 +13,10 @@ class TestRSS(TestCase):
         self.assertIn("<rss", response)
         self.assertIn("<title>Meine Stadt Transparent: Latest papers</title>", response)
         self.assertIn(
-            '&lt;a href="https://meine-stadt-transparent.local/file/5/"&gt;Some obligatory cat content.&lt;/a&gt;',
+            (
+                '&lt;a href="https://meine-stadt-transparent.local/file/5/"&gt;Some'
+                " obligatory cat content.&lt;/a&gt;"
+            ),
             response,
         )
         self.assertIn("Frank Underwood", response)

@@ -10,7 +10,10 @@ class Command(BaseCommand):
     help = "Upload the Knuth test pdf for file 1"
 
     def handle(self, *args, **options):
-        pdf = Path(settings.BASE_DIR).joinpath("testdata").joinpath("media").joinpath(
-            "Donald Knuth - The Complexity of Songs.pdf"
+        pdf = (
+            Path(settings.BASE_DIR)
+            .joinpath("testdata")
+            .joinpath("media")
+            .joinpath("Donald Knuth - The Complexity of Songs.pdf")
         )
         minio_client().fput_object(minio_file_bucket, "1", pdf)

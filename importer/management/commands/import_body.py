@@ -12,8 +12,8 @@ logger = logging.getLogger(__name__)
 
 class Command(BaseCommand):
     help = (
-        "Imports the body you gave by name or url, meaning creating the body itself and some metadata, "
-        "but not loading or importing the bulk of the other data"
+        "Imports the body you gave by name or url, meaning creating the body itself and"
+        " some metadata, but not loading or importing the bulk of the other data"
     )
 
     def add_arguments(self, parser):

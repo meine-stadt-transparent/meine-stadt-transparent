@@ -9,9 +9,9 @@ class PersonsTest(ChromeDriverTestCase):
     def _get_pos_by_name(self, name: str):
         # The position is identified by the tabindex
         js = (
-            f'Array.from(document.querySelectorAll(".shuffle-item--visible"))'
+            'Array.from(document.querySelectorAll(".shuffle-item--visible"))'
             f'.find(x => x.dataset.name == "{name}")?'
-            f'.querySelector("a").tabIndex'
+            '.querySelector("a").tabIndex'
         )
         pos = self.browser.evaluate_script(js)
         return pos

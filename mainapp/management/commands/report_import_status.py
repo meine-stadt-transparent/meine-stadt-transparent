@@ -42,14 +42,15 @@ class Command(BaseCommand):
         ).count()
         files_without_url = File.objects.filter(oparl_access_url__isnull=True).count()
         self.stdout.write(
-            f"Files total: {files_total}; with text: {files_with_text}; "
-            f"with locations: {files_with_location}; with persons: {files_with_persons}; "
-            f"not downloaded: {files_not_downloaded}; without url: {files_without_url}"
+            f"Files total: {files_total}; with text: {files_with_text}; with locations:"
+            f" {files_with_location}; with persons: {files_with_persons}; not"
+            f" downloaded: {files_not_downloaded}; without url: {files_without_url}"
         )
         bodies_with_outline = Body.objects.filter(outline__isnull=False).count()
         bodies_with_ags = Body.objects.filter(ags__isnull=False).count()
         self.stdout.write(
-            f"Bodies with an outline: {bodies_with_outline}; with an ags: {bodies_with_ags}"
+            f"Bodies with an outline: {bodies_with_outline}; with an ags:"
+            f" {bodies_with_ags}"
         )
 
         users_with_alerts = UserAlert.objects.values("user").distinct().count()
@@ -71,5 +72,6 @@ class Command(BaseCommand):
         missing_files = len(expected_files - existing_files)
         if missing_files > 0:
             self.stdout.write(
-                f"{missing_files} files are marked as imported but aren't available in minio"
+                f"{missing_files} files are marked as imported but aren't available in"
+                " minio"
             )

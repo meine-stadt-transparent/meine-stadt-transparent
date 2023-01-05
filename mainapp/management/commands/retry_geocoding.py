@@ -10,7 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Tries to geocode all locations without coordinates, e.g. because geocoding failed before."
+    help = (
+        "Tries to geocode all locations without coordinates, e.g. because geocoding"
+        " failed before."
+    )
 
     def handle(self, *args, **options):
         without_geometry = Location.objects.filter(

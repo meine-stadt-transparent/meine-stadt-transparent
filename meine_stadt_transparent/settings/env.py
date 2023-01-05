@@ -19,8 +19,8 @@ elif TESTING:
 
 if not env_file.is_file() and not os.environ.get("REAL_HOST"):
     raise ImproperlyConfigured(
-        f"There is no configuration file at {env_file} "
-        f"but also no configuration through environment variables (REAL_HOST is missing)"
+        f"There is no configuration file at {env_file} but also no configuration"
+        " through environment variables (REAL_HOST is missing)"
     )
 
 env.read_env(env_file)

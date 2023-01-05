@@ -145,8 +145,8 @@ def import_streets(body: Body, ags: Optional[str] = None):
         SearchStreet.objects.bulk_create(streets)
     except IntegrityError:
         logger.warning(
-            "The streets were already imported "
-            "(This will be fixed with the django 2.2 update through ignore_conflicts=True)"
+            "The streets were already imported (This will be fixed with the django 2.2"
+            " update through ignore_conflicts=True)"
         )
 
 

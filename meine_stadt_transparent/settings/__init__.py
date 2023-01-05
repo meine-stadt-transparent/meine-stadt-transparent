@@ -119,7 +119,9 @@ SITE_ID = 1
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        "NAME": (
+            "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
+        )
     },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
@@ -171,7 +173,7 @@ STATICFILES_DIRS = (
 MINIO_PREFIX = env.str("MINIO_PREFIX", "meine-stadt-transparent-")
 MINIO_ACCESS_KEY = env.str("MINIO_ACCESS_KEY", "meinestadttransparent")
 MINIO_SECRET_KEY = env.str("MINIO_SECRET_KEY", "meinestadttransparent")
-MINIO_REGION = env.str("MINIO_REGION",  None)
+MINIO_REGION = env.str("MINIO_REGION", None)
 MINIO_HOST = env.str("MINIO_HOST", "localhost:9000")
 MINIO_SECURE = env.bool("MINIO_SECURE", False)
 
@@ -450,7 +452,9 @@ OPARL_INDEX = env.str("OPARL_INDEX", "https://mirror.oparl.org/bodies")
 TEMPLATE_META = {
     "logo_name": env.str("TEMPLATE_LOGO_NAME", "MST"),
     "site_name": SITE_NAME,
-    "prototype_fund": "https://prototypefund.de/project/open-source-ratsinformationssystem",
+    "prototype_fund": (
+        "https://prototypefund.de/project/open-source-ratsinformationssystem"
+    ),
     "github": "https://github.com/meine-stadt-transparent/meine-stadt-transparent",
     "contact_mail": EMAIL_FROM,
     "main_css": env.str("TEMPLATE_MAIN_CSS", "mainapp"),
@@ -494,7 +498,8 @@ if DEBUG and not TESTING:
     else:
         logger = logging.getLogger(__name__)
         logger.warning(
-            "This is running in DEBUG mode, however the Django debug toolbar is not installed."
+            "This is running in DEBUG mode, however the Django debug toolbar is not"
+            " installed."
         )
         DEBUG_TOOLBAR_ACTIVE = False
 

@@ -88,7 +88,8 @@ def externalize(
         if isinstance(entry, dict):
             if "id" not in entry:
                 logger.warning(
-                    f"Embedded object '{key}' in {libobject['id']} does not have an id, skipping: {entry}"
+                    f"Embedded object '{key}' in {libobject['id']} does not have an id,"
+                    f" skipping: {entry}"
                 )
                 del libobject[key]
                 continue
@@ -106,7 +107,8 @@ def externalize(
             for pos, entry in enumerate(entry):
                 if "id" not in entry:
                     logger.warning(
-                        f"Embedded object '{key}' in {libobject['id']} does not have an id, skipping: {entry}"
+                        f"Embedded object '{key}' in {libobject['id']} does not have an"
+                        f" id, skipping: {entry}"
                     )
                     del libobject[key]
                     break

@@ -126,7 +126,9 @@ def test_import_json(send_mail_function):
     # Check that the notification was sent
     elasticsearch_mock = ElasticsearchMock(
         {
-            "importer/test-data/notification_request.json": "importer/test-data/notification_response.json"
+            "importer/test-data/notification_request.json": (
+                "importer/test-data/notification_response.json"
+            )
         }
     )
     if is_es_online():
@@ -305,7 +307,9 @@ def test_duplicate_meetings_with_id(fixture, target_number, target_number_with_d
         {
             "organization_name": "BV Uellendahl-Katernberg",
             "name": "BV Uellendahl-Katernberg",
-            "location": "Rathaus Barmen, Ratssaal, Johannes-Rau-Platz 1, 42275 Wuppertal",
+            "location": (
+                "Rathaus Barmen, Ratssaal, Johannes-Rau-Platz 1, 42275 Wuppertal"
+            ),
             "note": None,
             "original_id": 18329,
             "start": "2020-04-23T18:30:00+02:00",

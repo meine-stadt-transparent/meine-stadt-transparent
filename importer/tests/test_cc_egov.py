@@ -19,7 +19,9 @@ meeting_with_auxiliary_file_object = {
         "https://www.bonn.sitzung-online.de/public/oparl/organizations?typ=gr&id=334"
     ],
     "invitation": {
-        "id": "https://www.bonn.sitzung-online.de/public/oparl/files?id=2026137&dtyp=108",
+        "id": (
+            "https://www.bonn.sitzung-online.de/public/oparl/files?id=2026137&dtyp=108"
+        ),
         "type": "https://schema.oparl.org/1.1/File",
         "name": "Öffentliche Tagesordnung",
         "date": "2021-04-27T21:51:03+02:00",
@@ -33,7 +35,9 @@ meeting_with_auxiliary_file_object = {
         "deleted": False,
     },
     "auxiliaryFile": {
-        "id": "https://www.bonn.sitzung-online.de/public/oparl/files?id=268781&dtyp=134",
+        "id": (
+            "https://www.bonn.sitzung-online.de/public/oparl/files?id=268781&dtyp=134"
+        ),
         "type": "https://schema.oparl.org/1.1/File",
         "name": "Alle Anlagen öffentlich",
         "date": "2021-04-28T09:02:04+02:00",
@@ -48,12 +52,16 @@ meeting_with_auxiliary_file_object = {
     },
     "agendaItem": [
         {
-            "id": "https://www.bonn.sitzung-online.de/public/oparl/agendaItems?id=2002135",
+            "id": (
+                "https://www.bonn.sitzung-online.de/public/oparl/agendaItems?id=2002135"
+            ),
             "type": "https://schema.oparl.org/1.1/AgendaItem",
             "name": "Einführung und Verpflichtung",
             "number": "1",
             "order": 100001,
-            "meeting": "https://www.bonn.sitzung-online.de/public/oparl/meetings?id=664",
+            "meeting": (
+                "https://www.bonn.sitzung-online.de/public/oparl/meetings?id=664"
+            ),
             "created": "2021-05-01T10:32:33+02:00",
             "modified": "2021-05-01T10:32:33+02:00",
             "deleted": False,
@@ -69,8 +77,9 @@ meeting_with_auxiliary_file_object = {
 def test_spurious_500(caplog):
     spurious_500(CCEgovLoader({}))
     assert caplog.messages == [
-        "Got an 500 for a CC e-gov request, retrying: 500 Server Error: "
-        "Internal Server Error for url: https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
+        "Got an 500 for a CC e-gov request, retrying: 500 Server Error: Internal Server"
+        " Error for url:"
+        " https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=2"
     ]
 
 

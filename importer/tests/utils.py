@@ -110,7 +110,10 @@ def spurious_500(loader: BaseLoader):
                         "id": "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?id=1000030",
                         "type": "https://schema.oparl.org/1.0/Paper",
                         "body": "https://ratsinfo.leipzig.de/bi/oparl/1.0/bodies.asp?id=2387",
-                        "name": "Konzept der Stadt Leipzig zur fairen und nachhaltigen Beschaffung\r\n(eRis: DS V/3966)",
+                        "name": (
+                            "Konzept der Stadt Leipzig zur fairen und nachhaltigen"
+                            " Beschaffung\r\n(eRis: DS V/3966)"
+                        ),
                         "reference": "DS-00029/14",
                         "paperType": "Informationsvorlage",
                         "date": "2014-09-09",
@@ -131,7 +134,9 @@ def spurious_500(loader: BaseLoader):
                 ],
                 "pagination": {"elementsPerPage": 20},
                 "links": {
-                    "first": "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387",
+                    "first": (
+                        "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387"
+                    ),
                     "prev": "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=1",
                     "next": "https://ratsinfo.leipzig.de/bi/oparl/1.0/papers.asp?body=2387&p=3",
                 },

@@ -20,6 +20,7 @@ class Command(BaseCommand):
         missing_files = expected_files - existing_files
         if len(missing_files) > 0:
             self.stdout.write(
-                f"{len(missing_files)} files are marked as imported but aren't available in minio"
+                f"{len(missing_files)} files are marked as imported but aren't"
+                " available in minio"
             )
             File.objects.filter(id__in=missing_files).update(filesize=None)

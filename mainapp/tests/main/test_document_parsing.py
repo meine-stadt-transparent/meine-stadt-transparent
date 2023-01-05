@@ -54,7 +54,10 @@ class TestDocumentParsing(TestCase):
         doug = Person.objects.get(pk=4)
         will = Person.objects.get(pk=7)
 
-        text = "A text \nabout Frank Underwood, Stamper, Doug, and a \nmisspelled WilliamConway."
+        text = (
+            "A text \nabout Frank Underwood, Stamper, Doug, and a \nmisspelled"
+            " WilliamConway."
+        )
         persons = extract_persons(text)
         self.assertTrue(doug in persons)
         self.assertTrue(frank in persons)
@@ -104,13 +107,16 @@ def test_pdf_parsing_oom(pytestconfig, caplog):
 def test_pdf_as_tiff(pytestconfig, caplog, filename):
     """A tiff tagged as pdf, making PyPDF2 fail
 
-    https://github.com/codeformuenster/kubernetes-deployment/pull/65#issuecomment-894232803"""
+    https://github.com/codeformuenster/kubernetes-deployment/pull/65#issuecomment-894232803
+    """
     file = pytestconfig.rootpath.joinpath("testdata/media").joinpath(filename)
     with file.open("rb") as fp:
         parsed_text, page_count = extract_from_file(fp, file, "application/pdf", 0)
     assert caplog.messages == [
-        "File 0: Failed to run pdftotext: Command '['pdftotext', "
-        f"PosixPath('{file}'), '-']' returned non-zero exit status 1.",
+        (
+            "File 0: Failed to run pdftotext: Command '['pdftotext', "
+            f"PosixPath('{file}'), '-']' returned non-zero exit status 1."
+        ),
         "File 0: Pdf does not allow to read the number of pages",
     ]
     assert not parsed_text

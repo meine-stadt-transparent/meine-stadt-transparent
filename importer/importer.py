@@ -153,7 +153,8 @@ class Importer:
                     raise
                 else:
                     logger.warning(
-                        f"Cyclic import with {type_name} {to_import.url} {e.args[0]}, ignoring"
+                        f"Cyclic import with {type_name} {to_import.url} {e.args[0]},"
+                        " ignoring"
                     )
             if related_function and not instance.deleted:
                 related_function(to_import.data, instance)
@@ -385,7 +386,8 @@ class Importer:
                     )
                 if content_type and content_type.split(";")[0] == "text/html":
                     logger.error(
-                        f"File {file.id}: Content type was {content_type}, this seems to be a silent error"
+                        f"File {file.id}: Content type was {content_type}, this seems"
+                        " to be a silent error"
                     )
                     return False
                 file.mime_type = content_type or file.mime_type
@@ -396,7 +398,8 @@ class Importer:
                 # Normal server error
                 if e.response and 400 <= e.response.status_code < 600:
                     logger.error(
-                        f"File {file.id}: Failed to download {url} with error {e.response.status_code}"
+                        f"File {file.id}: Failed to download {url} with error"
+                        f" {e.response.status_code}"
                     )
                 else:
                     logger.exception(f"File {file.id}: Failed to download {url}")

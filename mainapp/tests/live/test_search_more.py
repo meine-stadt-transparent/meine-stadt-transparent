@@ -9,7 +9,9 @@ class FacettedSearchTest(TestCase):
     fixtures = ["initdata"]
     elasticsearch_mock = ElasticsearchMock(
         {
-            "testdata/elasticsearch/empty_word_query.json": "testdata/elasticsearch/more_than_10000_hits.json"
+            "testdata/elasticsearch/empty_word_query.json": (
+                "testdata/elasticsearch/more_than_10000_hits.json"
+            )
         }
     )
 

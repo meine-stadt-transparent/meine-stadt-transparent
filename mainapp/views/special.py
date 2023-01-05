@@ -36,8 +36,8 @@ def sitemap_xml_entry(obj, priority):
 
 def sitemap_xml(_request):
     xml = (
-        '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        + "\n"
+        '<?xml version="1.0" encoding="UTF-8"?><urlset'
+        ' xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + "\n"
     )
 
     for paper_obj in Paper.objects.all():
@@ -62,12 +62,17 @@ def opensearch_xml(_request):
     xml = (
         '<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" '
         'xmlns:moz="http://www.mozilla.org/2006/browser/search/">'
-        "<ShortName>" + escape(settings.TEMPLATE_META["site_name"]) + "</ShortName>"
-        "<Description>" + escape(description) + "</Description>"
+        "<ShortName>"
+        + escape(settings.TEMPLATE_META["site_name"])
+        + "</ShortName><Description>"
+        + escape(description)
+        + "</Description>"
         "<InputEncoding>UTF-8</InputEncoding>"
-        '<Url type="text/html" method="get" template="' + escape(url) + '"/>'
-        "<moz:SearchForm>" + settings.ABSOLUTE_URI_BASE + "</moz:SearchForm>"
-        "</OpenSearchDescription>"
+        '<Url type="text/html" method="get" template="'
+        + escape(url)
+        + '"/><moz:SearchForm>'
+        + settings.ABSOLUTE_URI_BASE
+        + "</moz:SearchForm></OpenSearchDescription>"
     )
     return HttpResponse(xml, content_type="application/opensearchdescription+xml")
 

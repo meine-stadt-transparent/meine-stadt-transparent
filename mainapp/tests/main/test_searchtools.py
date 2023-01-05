@@ -71,7 +71,8 @@ class TestSearchtools(TestCase):
 
     def test_search_string_to_params(self):
         instring = search_string_to_params(
-            "document-type:file,committee word  radius radius:50 sort:date_newest anotherword"
+            "document-type:file,committee word  radius radius:50 sort:date_newest"
+            " anotherword"
         )
         self.assertEqual(instring, self.params)
 
@@ -81,6 +82,9 @@ class TestSearchtools(TestCase):
         self.assertEqual(main_search.build_search().to_dict(), expected_params)
 
     def test_params_to_search_string(self):
-        expected = "document-type:file,committee radius:50 sort:date_newest word radius anotherword"
+        expected = (
+            "document-type:file,committee radius:50 sort:date_newest word radius"
+            " anotherword"
+        )
         search_string = params_to_search_string(self.params)
         self.assertEqual(search_string, expected)

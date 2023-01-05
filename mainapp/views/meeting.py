@@ -63,9 +63,9 @@ def calendar_data(request):
         data.append(
             {
                 "title": meeting.name,
-                "start": meeting.start.isoformat()
-                if meeting.start is not None
-                else None,
+                "start": (
+                    meeting.start.isoformat() if meeting.start is not None else None
+                ),
                 "end": meeting.end.isoformat() if meeting.end is not None else None,
                 "details": reverse("meeting", args=[meeting.id]),
                 "className": class_name,

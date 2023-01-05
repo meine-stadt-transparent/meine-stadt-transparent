@@ -19,7 +19,8 @@ class SoftDeleteModelManager(models.Manager):
 
     def update_or_create(self, defaults=None, **kwargs):
         raise ValueError(
-            "update_or_create with `objects` is bogus, use `objects_with_deleted` instead"
+            "update_or_create with `objects` is bogus, use `objects_with_deleted`"
+            " instead"
         )
 
 

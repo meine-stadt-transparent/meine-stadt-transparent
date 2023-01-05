@@ -114,12 +114,14 @@ class JsonToDb:
         See test_missing.py"""
         if not object_type:
             raise RuntimeError(
-                f"The object {oparl_id} is missing and the object type was not specified"
+                f"The object {oparl_id} is missing and the object type was not"
+                " specified"
             )
 
         if not issubclass(object_type, DummyInterface):
             raise RuntimeError(
-                f"The object {oparl_id} is missing and {object_type.__name__} doesn't allow dummies"
+                f"The object {oparl_id} is missing and {object_type.__name__} doesn't"
+                " allow dummies"
             )
 
         # noinspection PyTypeChecker
@@ -143,18 +145,21 @@ class JsonToDb:
 
         if not isinstance(loaded, dict):
             logger.error(
-                f"JSON loaded from {oparl_id} is not a dict/object. Using a dummy instead. THIS IS BAD"
+                f"JSON loaded from {oparl_id} is not a dict/object. Using a dummy"
+                " instead. THIS IS BAD"
             )
             return self._make_dummy(oparl_id, object_type)
         if "type" not in loaded:
             if object_type:
                 loaded["type"] = "https://schema.oparl.org/1.0/" + object_type.__name__
                 logger.warning(
-                    f"Object loaded from {oparl_id} has no type field, inferred to {loaded['type']}"
+                    f"Object loaded from {oparl_id} has no type field, inferred to"
+                    f" {loaded['type']}"
                 )
             else:
                 raise RuntimeError(
-                    f"The object {oparl_id} has not type field and object_type wasn't given"
+                    f"The object {oparl_id} has not type field and object_type wasn't"
+                    " given"
                 )
 
         if "id" not in loaded:
@@ -241,8 +246,8 @@ class JsonToDb:
             if warn and self.warn_missing and object_type != Location:
                 logger.error(
                     f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
-                    f"supposed to be a part of the external lists, but was not. "
-                    f"This is a bug in the OParl implementation."
+                    "supposed to be a part of the external lists, but was not. "
+                    "This is a bug in the OParl implementation."
                 )
 
             return self.import_anything(oparl_id, object_type)
@@ -268,9 +273,10 @@ class JsonToDb:
                 for oparl_id in missing:
                     if self.warn_missing:
                         logger.warning(
-                            f"The {object_type.__name__} {oparl_id} linked from {debug_id} was "
-                            f"supposed to be a part of the external lists, but was not. "
-                            f"This is a bug in the OParl implementation."
+                            f"The {object_type.__name__} {oparl_id} linked from"
+                            f" {debug_id} was supposed to be a part of the external"
+                            " lists, but was not. This is a bug in the OParl"
+                            " implementation."
                         )
 
                     db_objects.append(self.import_anything(oparl_id, object_type))
@@ -337,7 +343,6 @@ class JsonToDb:
     def legislative_term(
         self, lib_object: JSON, term: LegislativeTerm
     ) -> Optional[LegislativeTerm]:
-
         if not lib_object.get("startDate"):
             logger.error("Term has no start date - skipping")
             return None
@@ -455,9 +460,8 @@ class JsonToDb:
                 body.ags = body.ags[:8]
             else:
                 raise RuntimeError(
-                    "The Amtliche Gemeindeschlüssel of {} is longer than 8 characters: '{}'".format(
-                        body, body.ags
-                    )
+                    "The Amtliche Gemeindeschlüssel of {} is longer than 8 characters:"
+                    " '{}'".format(body, body.ags)
                 )
 
         # We don't really need the location because we have our own outline
@@ -473,8 +477,10 @@ class JsonToDb:
                 body.outline = location
             else:
                 logger.warning(
-                    "Location object is of type {}, which is neither 'Point' nor 'Polygon'."
-                    "Skipping this location.".format(location.geometry["type"])
+                    "Location object is of type {}, which is neither 'Point' nor"
+                    " 'Polygon'.Skipping this location.".format(
+                        location.geometry["type"]
+                    )
                 )
 
         return body
