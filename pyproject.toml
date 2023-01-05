@@ -20,8 +20,8 @@ Django = ">=4.1.1,<4.2.0"
 PyPDF2 = { version = "^2.9.0", extras = ["crypto"] }
 Wand = "^0.6.0"
 cattrs = { version = "^22.1.0", optional = true }
-django-allauth = "^0.51"
-django-anymail = { version = "^8.1", extras = ["mailjet", "sendgrid"] }
+django-allauth = "^0.52"
+django-anymail = { version = "^9.0", extras = ["mailjet", "sendgrid"] }
 django-decorator-include = ">=2.1,<4.0"
 django-elasticsearch-dsl = ">=7.1,<7.3"
 django-environ = "^0.9.0"
@@ -38,7 +38,7 @@ geoextract = "^0.3.1"
 geopy = "^2.0.0"
 gunicorn = "^20.0"
 html2text = ">=2019.8,<2021.0"
-icalendar = "^4.0"
+icalendar = "^5.0.4"
 jsonfield = "^3.1"
 minio = ">=5,<8"
 mysqlclient = ">=1.3,<3.0"
@@ -56,11 +56,11 @@ wagtail = ">=4.0,<4.1"
 [tool.poetry.dev-dependencies]
 black = { version = "^22.10.0", extras = ["d"] }
 django-debug-toolbar = "^3.0"
-flake8 = "^5.0.1"
 pytest-django = "^4.1"
 responses = "^0.22.0"
 selenium = "4.1.0"
-tox = "^3.20"
+tox = "^4.2.3"
+ruff = "0.0.211"
 
 [tool.poetry.extras]
 pgp = ["pgpy"]
@@ -68,9 +68,6 @@ import-json = ["cattrs"]
 
 [tool.poetry.scripts]
 mst-manage = 'manage:main'
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.0.98"
 
 [tool.black]
 extend-exclude = '''
