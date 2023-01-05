@@ -19,6 +19,10 @@ jobs:
           node-version: 18
       - name: Install pdftotext
         run: sudo apt-get install poppler-utils
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
       - name: npm ci
         run: npm ci
       # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#caching-packages
