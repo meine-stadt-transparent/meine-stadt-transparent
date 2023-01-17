@@ -47,7 +47,8 @@ SECRET_KEY = env.str("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = ["https://" + REAL_HOST, "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = [REAL_HOST, "127.0.0.1", "localhost"]
+CSRF_TRUSTED_ORIGINS = ["https://" + REAL_HOST]
 
 ROOT_URLCONF = "meine_stadt_transparent.urls"
 
