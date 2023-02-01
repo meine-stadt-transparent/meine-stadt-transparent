@@ -58,7 +58,7 @@ black = { version = "^22.10.0", extras = ["d"] }
 django-debug-toolbar = "^3.0"
 pytest-django = "^4.1"
 responses = "^0.22.0"
-selenium = "4.1.0"
+selenium = "4.8.0"
 tox = "^4.2.3"
 ruff = "0.0.211"
 
