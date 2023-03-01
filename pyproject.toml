@@ -60,7 +60,7 @@ pytest-django = "^4.1"
 responses = "^0.22.0"
 selenium = "4.1.0"
 tox = "^4.2.3"
-ruff = "0.0.211"
+ruff = "0.0.253"
 
 [tool.poetry.extras]
 pgp = ["pgpy"]
