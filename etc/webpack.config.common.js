@@ -14,7 +14,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, '../mainapp/assets/bundles/'),
-        filename: (process.env.NODE_ENV === 'production' ? '[name]-[hash].js' : '[name].js'),
+        filename: (process.env.NODE_ENV === 'production' ? '[name]-[fullhash].js' : '[name].js'),
         publicPath: '',
     },
     devtool: 'source-map',
