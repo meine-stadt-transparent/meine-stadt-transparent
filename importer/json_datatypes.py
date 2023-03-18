@@ -13,9 +13,9 @@ converter.register_unstructure_hook(date, lambda dt: dt.isoformat())
 converter.register_structure_hook(date, lambda ts, _: date.fromisoformat(ts))
 converter.register_structure_hook(
     Optional[Union[date, datetime]],
-    lambda ts, _: date.fromisoformat(ts)
-    if len(ts) == 10
-    else datetime.fromisoformat(ts),
+    lambda ts, _: (
+        date.fromisoformat(ts) if len(ts) == 10 else datetime.fromisoformat(ts)
+    ),
 )
 
 format_version = 4
