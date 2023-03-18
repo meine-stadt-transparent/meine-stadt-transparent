@@ -58,12 +58,13 @@ class UserProfile(models.Model):
         verbose_name = _("User profile")
         verbose_name_plural = _("User profiles")
 
-    def __unicode__(self):
-        return "User profile: %s" % self.user.username
+    def __str__(self):
+        return f"User profile {self.id}: {self.user.username}"
 
     # noinspection PyUnresolvedReferences
-    def has_unverified_email_adresses(self):
+    def has_unverified_email_addresses(self):
         for email in self.user.emailaddress_set.all():
             if not email.verified:
                 return True
         return False
+

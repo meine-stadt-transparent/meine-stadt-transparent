@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class="container mst-container-account">
-        {% if profile.has_unverified_email_adresses %}
+        {% if profile.has_unverified_email_addresses %}
             <section class="alert alert-warning mst-account-section">
                 <p>{% trans 'Your email address has not been verified' %}</p>
                 <a class="btn btn-primary" href="{% url 'account_email' %}">
