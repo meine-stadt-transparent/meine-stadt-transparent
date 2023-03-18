@@ -40,7 +40,7 @@
     "@sentry/browser": "^7.8.1",
     "bootstrap": "~5.2.0",
     "bootstrap-datepicker": "^1.9.0",
-    "bootstrap-daterangepicker": "^2.1.30",
+    "bootstrap-daterangepicker": "^3.1.0",
     "chromedriver": "^110.0.0",
     "corejs-typeahead": "git+https://git@github.com/meine-stadt-transparent/typeahead.js",
     "fullcalendar": "^3.10.2",
