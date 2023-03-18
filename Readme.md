@@ -46,7 +46,7 @@ To deliver the assets through nginx, we need to mount them to a local container:
 mkdir log
 chown 33:33 log
 rm -rf /var/www/meine-stadt-transparent-static # Delete existing or it will land in a subdirectory 
-docker cp django:/static /var/www/meine-stadt-transparent-static
+docker compose cp django:/static /var/www/meine-stadt-transparent-static
 ```
 
 You can change the directory to any other as long as you match that later in your nginx conf.
@@ -65,7 +65,7 @@ Then we can run the migrations, create the buckets for minio (our file storage) 
 docker compose run --rm django ./manage.py setup
 ```
 
-Let's load some dummy data to check everythings wokring:
+Let's load some dummy data to check everything works:
 
 ```
 docker compose run --rm django ./manage.py loaddata mainapp/fixtures/initdata.json
