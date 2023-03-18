@@ -58,7 +58,7 @@ class FacettedSearchTest(ChromeDriverTestCase):
         self.visit("/search/query/word/")
         self.assertTextIsPresent("Document Type")
         self.assertTextIsNotPresent("Meeting")
-        self.browser.click_link_by_id("documentTypeButton")
+        self.browser.find_by_id("documentTypeButton").click()
         self.assertTextIsPresent("Meeting")
         self.browser.check("document-type[person]")
         self.browser.check("document-type[file]")
