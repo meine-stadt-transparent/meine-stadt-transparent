@@ -6,76 +6,74 @@
         "mst-test-organization",
         "mst-test-person"
     ],
-    "body": {
-        "aggs": {
-            "_filter_document_type": {
-                "filter": {
-                    "match_all": {}
-                },
-                "aggs": {
-                    "document_type": {
-                        "terms": {
-                            "field": "_index"
-                        }
-                    }
-                }
+    "aggs": {
+        "_filter_document_type": {
+            "filter": {
+                "match_all": {}
             },
-            "_filter_person": {
-                "filter": {
-                    "match_all": {}
-                },
-                "aggs": {
-                    "person": {
-                        "terms": {
-                            "field": "person_ids"
-                        }
-                    }
-                }
-            },
-            "_filter_organization": {
-                "filter": {
-                    "match_all": {}
-                },
-                "aggs": {
-                    "organization": {
-                        "terms": {
-                            "field": "organization_ids"
-                        }
+            "aggs": {
+                "document_type": {
+                    "terms": {
+                        "field": "_index"
                     }
                 }
             }
         },
-        "sort": [
-            "_score"
-        ],
-        "indices_boost": [
-            {
-                "mst-test-person": 4
+        "_filter_person": {
+            "filter": {
+                "match_all": {}
             },
-            {
-                "mst-test-organization": 4
-            },
-            {
-                "mst-test-paper": 2
+            "aggs": {
+                "person": {
+                    "terms": {
+                        "field": "person_ids"
+                    }
+                }
             }
-        ],
-        "from": 0,
-        "size": 20,
-        "_source": [
-            "id",
-            "name",
-            "legal_date",
-            "reference_number",
-            "display_date"
-        ],
-        "highlight": {
-            "fields": {
-                "*": {
-                    "fragment_size": 150,
-                    "pre_tags": "<mark>",
-                    "post_tags": "</mark>"
+        },
+        "_filter_organization": {
+            "filter": {
+                "match_all": {}
+            },
+            "aggs": {
+                "organization": {
+                    "terms": {
+                        "field": "organization_ids"
+                    }
                 }
             }
         }
-    }
+    },
+    "sort": [
+        "_score"
+    ],
+    "indices_boost": [
+        {
+            "mst-test-person": 4
+        },
+        {
+            "mst-test-organization": 4
+        },
+        {
+            "mst-test-paper": 2
+        }
+    ],
+    "size": 20,
+    "_source": [
+        "id",
+        "name",
+        "legal_date",
+        "reference_number",
+        "display_date"
+    ],
+    "highlight": {
+        "fields": {
+            "*": {
+                "fragment_size": 150,
+                "pre_tags": "<mark>",
+                "post_tags": "</mark>"
+            }
+        }
+    },
+    "from_": 0
 }

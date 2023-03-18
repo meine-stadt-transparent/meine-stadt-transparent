@@ -7,6 +7,6 @@ charset = utf-8
 indent_size = 2
 indent_style = space
 
-[*.py]
+[*.{py,json}]
 indent_size = 4
 indent_style = space
