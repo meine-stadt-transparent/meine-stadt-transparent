@@ -32,7 +32,7 @@ services:
     command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
     container_name: elasticsearch
     environment:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
