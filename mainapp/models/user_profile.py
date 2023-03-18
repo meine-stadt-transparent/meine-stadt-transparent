@@ -67,4 +67,3 @@ class UserProfile(models.Model):
             if not email.verified:
                 return True
         return False
-
