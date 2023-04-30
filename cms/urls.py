@@ -2,7 +2,7 @@ from csp.decorators import csp_exempt
 from decorator_include import decorator_include
 from django.urls import re_path
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.core import urls as wagtail_urls
+from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [

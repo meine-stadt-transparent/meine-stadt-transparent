@@ -1,9 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
-from wagtail.core.fields import RichTextField
-from wagtail.core.models import Page, Orderable
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import RichTextField
+from wagtail.models import Page, Orderable
 
 
 class CMSPage(Page):
