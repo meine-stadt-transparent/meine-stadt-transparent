@@ -20,7 +20,7 @@ Django = ">=4.1.1,<4.2.0"
 PyPDF2 = { version = "^3.0.0", extras = ["crypto"] }
 Wand = "^0.6.0"
 cattrs = { version = "^22.1.0", optional = true }
-django-allauth = "^0.53"
+django-allauth = ">=0.53,<0.55"
 django-anymail = { version = "^9.0", extras = ["mailjet", "sendgrid"] }
 django-decorator-include = ">=2.1,<4.0"
 django-elasticsearch-dsl = ">=7.1,<7.4"
