@@ -14,20 +14,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
       - name: Install pdftotext
         run: sudo apt-get install poppler-utils
       - uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: 'npm'
       - name: npm ci
         run: npm ci
       # https://github.com/actions/setup-python/blob/main/docs/advanced-usage.md#caching-packages
       - name: Install poetry
-        run: | 
+        run: |
           pipx install poetry==1.4.0
           poetry config virtualenvs.in-project true
       - uses: actions/setup-python@v4
