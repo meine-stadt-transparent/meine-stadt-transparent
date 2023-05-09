@@ -2,6 +2,8 @@
 
 Please see the [Readme](Readme.md#Update]) on what commands to run after an update.
 
+* Upgrade python version in container image to 3.11
+
 ## v0.2.13 - 2021-08-31
 
 * The import shows success messages after the main stages
