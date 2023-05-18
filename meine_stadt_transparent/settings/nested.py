@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "wagtail",
     "modelcluster",
     "taggit",
-    "django_q"
+    "django_q",
     # Note: The social login apps and elasticsearch integration is added further below
 ]
 

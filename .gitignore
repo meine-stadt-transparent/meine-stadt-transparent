@@ -19,12 +19,9 @@
 __pycache__/
 *.py[cod]
 *$py.class
-*.egg-info
 .tox
-/venv*
-/.venv*
+.venv*
 /dist
-.ruff_cache
 
 # Translations
 *.mo
