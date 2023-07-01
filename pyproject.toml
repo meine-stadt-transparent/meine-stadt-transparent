@@ -51,7 +51,7 @@ requests = "^2.22"
 sentry-sdk = "^1.0.0"
 splinter = "~0.19"
 tqdm = "^4.29"
-wagtail = "~4.2.1"
+wagtail = ">=4.2.1,<5.1.0"
 
 [tool.poetry.dev-dependencies]
 black = { version = "^23.3.0", extras = ["d"] }
