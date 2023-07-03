@@ -1,3 +1,8 @@
+
+**Note: This project isn't maintained anymore, sorry**
+
+---
+
 # Meine Stadt Transparent
 
 ![Tests](https://github.com/meine-stadt-transparent/meine-stadt-transparent/workflows/Tests/badge.svg)
