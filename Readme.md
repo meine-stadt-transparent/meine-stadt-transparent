@@ -1,5 +1,5 @@
 
-**Note: This project isn't maintained anymore, sorry**
+**🪦 Note: This project isn't maintained anymore, sorry 🪦**
 
 ---
 
